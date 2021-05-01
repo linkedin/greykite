@@ -1,0 +1,749 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.sklearn.estimator.base_silverkite_estimator &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.sklearn.estimator.base_silverkite_estimator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.sklearn.estimator.base_silverkite_estimator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen, Reza Hosseini, Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;sklearn estimator with common functionality between</span>
+<span class="sd">SilverkiteEstimator and SimpleSilverkiteEstimator.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="kn">import</span> <span class="n">NotFittedError</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.common.col_name_utils</span> <span class="kn">import</span> <span class="n">create_pred_category</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_silverkite</span> <span class="kn">import</span> <span class="n">SilverkiteForecast</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_silverkite_helper</span> <span class="kn">import</span> <span class="n">get_silverkite_uncertainty_dict</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.silverkite_diagnostics</span> <span class="kn">import</span> <span class="n">SilverkiteDiagnostics</span>
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">min_gap_in_seconds</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties_forecast</span> <span class="kn">import</span> <span class="n">get_simple_time_frequency_from_period</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator">[docs]</a><span class="k">class</span> <span class="nc">BaseSilverkiteEstimator</span><span class="p">(</span><span class="n">BaseForecastEstimator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A base class for forecast estimators that fit using</span>
+<span class="sd">    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Allows estimators that fit using</span>
+<span class="sd">    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`</span>
+<span class="sd">    to share the same functions for input data validation,</span>
+<span class="sd">    fit postprocessing, predict, summary, plot_components, etc.</span>
+
+<span class="sd">    Subclasses should:</span>
+
+<span class="sd">        - Implement their own ``__init__`` that uses a superset of the parameters here.</span>
+<span class="sd">        - Implement their own ``fit``, with this sequence of steps:</span>
+
+<span class="sd">            - calls ``super().fit``</span>
+<span class="sd">            - calls ``SilverkiteForecast.forecast`` or ``SimpleSilverkiteForecast.forecast_simple`` and stores the result in ``self.model_dict``</span>
+<span class="sd">            - calls ``super().finish_fit``</span>
+
+<span class="sd">    Uses ``coverage`` to set prediction band width. Even though</span>
+<span class="sd">    coverage is not needed by ``forecast_silverkite``, it is included</span>
+<span class="sd">    in every ``BaseForecastEstimator`` to be used universally for</span>
+<span class="sd">    forecast evaluation.</span>
+
+<span class="sd">    Therefore, ``uncertainty_dict`` must be consistent with ``coverage``</span>
+<span class="sd">    if provided as a dictionary. If ``uncertainty_dict`` is None or</span>
+<span class="sd">    &quot;auto&quot;, an appropriate default value is set, according to ``coverage``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    score_func : callable, optional, default mean_squared_error</span>
+<span class="sd">        See `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.</span>
+<span class="sd">    coverage : `float` between [0.0, 1.0] or None, optional</span>
+<span class="sd">        See `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.</span>
+<span class="sd">    null_model_params : `dict`, optional</span>
+<span class="sd">        Dictionary with arguments to define DummyRegressor null model, default is `None`.</span>
+<span class="sd">        See `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.</span>
+<span class="sd">    uncertainty_dict : `dict` or `str` or None, optional</span>
+<span class="sd">        How to fit the uncertainty model.</span>
+<span class="sd">        See `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">        Note that this is allowed to be &quot;auto&quot;. If None or &quot;auto&quot;, will be set to</span>
+<span class="sd">        a default value by ``coverage`` before calling ``forecast_silverkite``.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    silverkite : Class or a derived class of `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast`</span>
+<span class="sd">        The silverkite algorithm instance used for forecasting</span>
+<span class="sd">    silverkite_diagnostics : Class or a derived class of `~greykite.algo.forecast.silverkite.silverkite_diagnostics.SilverkiteDiagnostics`</span>
+<span class="sd">        The silverkite class used for plotting and generating model summary.</span>
+<span class="sd">    model_dict : `dict` or None</span>
+<span class="sd">        A dict with fitted model and its attributes.</span>
+<span class="sd">        The output of `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">    pred_cols : `list` [`str`] or None</span>
+<span class="sd">        Names of the features used in the model.</span>
+<span class="sd">    feature_cols : `list` [`str`] or None</span>
+<span class="sd">        Column names of the patsy design matrix built by</span>
+<span class="sd">        `~greykite.algo.common.ml_models.design_mat_from_formula`.</span>
+<span class="sd">    df : `pandas.DataFrame` or None</span>
+<span class="sd">        The training data used to fit the model.</span>
+<span class="sd">    coef_ : `pandas.DataFrame` or None</span>
+<span class="sd">        Estimated coefficient matrix for the model.</span>
+<span class="sd">        Not available for ``random forest`` and ``gradient boosting`` methods and</span>
+<span class="sd">        set to the default value `None`.</span>
+<span class="sd">    _pred_category : `dict` or None</span>
+<span class="sd">        A dictionary with keys being the predictor category and</span>
+<span class="sd">        values being the predictors belonging to the category.</span>
+<span class="sd">        For details, see</span>
+<span class="sd">        `~greykite.sklearn.estimator.base_silverkite_estimator.BaseSilverkiteEstimator.pred_category`.</span>
+<span class="sd">    extra_pred_cols : `list` or None</span>
+<span class="sd">        User provided extra predictor names, for details, see</span>
+<span class="sd">        `~greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator`</span>
+<span class="sd">        or</span>
+<span class="sd">        `~greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator`.</span>
+<span class="sd">    forecast : `pandas.DataFrame` or None</span>
+<span class="sd">        Output of ``predict_silverkite``, set by ``self.predict``.</span>
+<span class="sd">    model_summary : `class` or `None`</span>
+<span class="sd">        The `~greykite.algo.common.model_summary.ModelSummary` class.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`</span>
+<span class="sd">        Function performing the fit and predict.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The subclasses will pass ``fs_components_df`` to ``forecast_silverkite``. The model terms</span>
+<span class="sd">    it creates internally are used to generate the component plots.</span>
+
+<span class="sd">        - `~greykite.common.features.timeseries_features.fourier_series_multi_fcn` uses</span>
+<span class="sd">          ``fs_components_df[&quot;names&quot;]`` (e.g. ``tod``, ``tow``) to build the fourier series</span>
+<span class="sd">          and to create column names.</span>
+
+<span class="sd">        - ``fs_components_df[&quot;seas_names&quot;]`` (e.g. ``daily``, ``weekly``) is appended</span>
+<span class="sd">          to the column names, if provided.</span>
+
+<span class="sd">    `~greykite.algo.forecast.silverkite.silverkite_diagnostics.SilverkiteDiagnostics.plot_silverkite_components` groups</span>
+<span class="sd">    based on ``fs_components_df[&quot;seas_names&quot;]`` passed to ``forecast_silverkite`` during fit.</span>
+<span class="sd">    E.g. any column containing ``daily`` is added to daily seasonality effect. The reason</span>
+<span class="sd">    is as follows:</span>
+
+<span class="sd">        1. User can provide ``tow`` and ``str_dow`` for weekly seasonality.</span>
+<span class="sd">        These should be aggregated, and we can do that only based on &quot;seas_names&quot;.</span>
+<span class="sd">        2. yearly and quarterly seasonality both use ``ct1`` as &quot;names&quot; column.</span>
+<span class="sd">        Only way to distinguish those effects is via &quot;seas_names&quot;.</span>
+<span class="sd">        3. ``ct1`` is also used for growth. If it is interacted with seasonality, the columns become</span>
+<span class="sd">        indistinguishable without &quot;seas_names&quot;.</span>
+
+<span class="sd">    Additionally, the function sets yaxis labels based on ``seas_names``:</span>
+<span class="sd">    ``daily`` as ylabel is much more informative than ``tod`` as ylabel in component plots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">silverkite</span><span class="p">:</span> <span class="n">SilverkiteForecast</span> <span class="o">=</span> <span class="n">SilverkiteForecast</span><span class="p">(),</span>
+            <span class="n">silverkite_diagnostics</span><span class="p">:</span> <span class="n">SilverkiteDiagnostics</span> <span class="o">=</span> <span class="n">SilverkiteDiagnostics</span><span class="p">(),</span>
+            <span class="n">score_func</span><span class="p">:</span> <span class="n">callable</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">uncertainty_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># initializes null model</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">)</span>
+
+        <span class="c1"># required in subclasses __init__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="n">uncertainty_dict</span>
+
+        <span class="c1"># set by `fit`</span>
+        <span class="c1"># fitted model in dictionary format returned from</span>
+        <span class="c1"># the `forecast_silverkite` function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silverkite</span><span class="p">:</span> <span class="n">SilverkiteForecast</span> <span class="o">=</span> <span class="n">silverkite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span><span class="p">:</span> <span class="n">SilverkiteDiagnostics</span> <span class="o">=</span> <span class="n">silverkite_diagnostics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_cols</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_cols</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Predictor category, lazy initialization as None.</span>
+        <span class="c1"># Will be updated in property function pred_category when needed.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pred_category</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_pred_cols</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># all silverkite estimators should support this.</span>
+
+        <span class="c1"># set by the predict method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># set by the summary method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_summary</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__set_uncertainty_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">time_col</span><span class="p">,</span> <span class="n">value_col</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if ``coverage`` is consistent with the ``uncertainty_dict``</span>
+<span class="sd">        used to train the ``forecast_silverkite`` model. Sets ``uncertainty_dict``</span>
+<span class="sd">        to a default value if ``coverage`` is provided, and vice versa.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries, with timestamp column,</span>
+<span class="sd">            value column, and any additional regressors.</span>
+<span class="sd">            The value column is the response, included in</span>
+<span class="sd">            ``X`` to allow transformation by `sklearn.pipeline.Pipeline`.</span>
+<span class="sd">        time_col: `str`</span>
+<span class="sd">            Time column name in ``X``.</span>
+<span class="sd">        value_col: `str`</span>
+<span class="sd">            Value column name in ``X``.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Intended to be called by `fit`.</span>
+
+<span class="sd">        ``X`` is necessary to define default parameters for</span>
+<span class="sd">        ``uncertainty_dict`` if ``coverage`` is provided but ``uncertainty_dict is None``</span>
+<span class="sd">         or ``uncertainty_dict==&quot;auto&quot;``.</span>
+<span class="sd">        (NB: ``X`` would not be necessary and this function could called from __init__</span>
+<span class="sd">        if ``forecast_silverkite`` provides a default value for ``uncertainty_dict``</span>
+<span class="sd">        given the target coverage).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="n">min_gap_in_seconds</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">)</span>
+        <span class="n">simple_freq</span> <span class="o">=</span> <span class="n">get_simple_time_frequency_from_period</span><span class="p">(</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="c1"># Updates `uncertainty_dict` if None or &quot;auto&quot; or missing quantiles,</span>
+        <span class="c1"># to match ``coverage``.</span>
+        <span class="c1"># Raises an exception if both are provided and they don&#39;t match.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="n">get_silverkite_uncertainty_dict</span><span class="p">(</span>
+            <span class="n">uncertainty</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span><span class="p">,</span>
+            <span class="n">simple_freq</span><span class="o">=</span><span class="n">simple_freq</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+
+        <span class="c1"># Updates coverage if None, to match the widest interval of</span>
+        <span class="c1"># ``uncertainty_dict``. If coverage is not None, they are</span>
+        <span class="c1"># already consistent, but we set it anyway.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">quantiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">][</span><span class="s2">&quot;quantiles&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="o">=</span> <span class="n">quantiles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">quantiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.fit"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pre-processing before fitting ``Silverkite`` forecast model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries, with timestamp column,</span>
+<span class="sd">            value column, and any additional regressors.</span>
+<span class="sd">            The value column is the response, included in</span>
+<span class="sd">            ``X`` to allow transformation by `sklearn.pipeline`.</span>
+<span class="sd">        y: ignored</span>
+<span class="sd">            The original timeseries values, ignored.</span>
+<span class="sd">            (The ``y`` for fitting is included in ``X``).</span>
+<span class="sd">        time_col: `str`</span>
+<span class="sd">            Time column name in ``X``.</span>
+<span class="sd">        value_col: `str`</span>
+<span class="sd">            Value column name in ``X``.</span>
+<span class="sd">        fit_params: `dict`</span>
+<span class="sd">            additional parameters for null model.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Subclasses are expected to call this at the beginning of their ``fit`` method,</span>
+<span class="sd">        before calling `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># NB: calls `__set_uncertainty_dict` before `super().fit` to ensure</span>
+        <span class="c1"># coverage is correct before fitting the null model.</span>
+        <span class="c1"># (null model does not currently use `coverage`, but may in the future.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__set_uncertainty_dict</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.finish_fit"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.finish_fit">[docs]</a>    <span class="k">def</span> <span class="nf">finish_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Makes important values of ``self.model_dict`` conveniently accessible.</span>
+
+<span class="sd">        To be called by subclasses at the end of their ``fit`` method. Sets</span>
+<span class="sd">        {``pred_cols``, ``feature_cols``, and ``coef_``}.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must set `self.model_dict` before calling this function.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;pred_cols&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;x_mat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+        <span class="c1"># model coefficients</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;ml_model&quot;</span><span class="p">],</span> <span class="s2">&quot;coef_&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;ml_model&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">feature_cols</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_silverkite_diagnostics_params</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_silverkite_diagnostics_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span> <span class="o">=</span> <span class="n">SilverkiteDiagnostics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_category</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.predict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates forecast for the dates specified in ``X``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries with timestamp column and any additional regressors.</span>
+<span class="sd">            Timestamps are the dates for prediction.</span>
+<span class="sd">            Value column, if provided in ``X``, is ignored.</span>
+<span class="sd">        y: ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions: `pandas.DataFrame`</span>
+<span class="sd">            Forecasted values for the dates in ``X``. Columns:</span>
+
+<span class="sd">                - ``TIME_COL``: dates</span>
+<span class="sd">                - ``PREDICTED_COL``: predictions</span>
+<span class="sd">                - ``PREDICTED_LOWER_COL``: lower bound of predictions, optional</span>
+<span class="sd">                - ``PREDICTED_UPPER_COL``: upper bound of predictions, optional</span>
+<span class="sd">                - [other columns], optional</span>
+
+<span class="sd">            ``PREDICTED_LOWER_COL`` and ``PREDICTED_UPPER_COL`` are present</span>
+<span class="sd">            if ``self.coverage`` is not None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Returns the cached result if applicable</span>
+        <span class="n">cached_predictions</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cached_predictions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cached_predictions</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;Call `fit` before calling `predict`.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;Subclass must call `finish_fit` inside the `fit` method.&quot;</span><span class="p">)</span>
+
+        <span class="n">pred_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">silverkite</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+            <span class="n">fut_df</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">trained_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">,</span>
+            <span class="n">past_df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">new_external_regressor_df</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="s2">&quot;fut_df&quot;</span><span class="p">]</span>  <span class="c1"># regressors are included in X</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">=</span> <span class="n">pred_df</span>
+        <span class="c1"># renames columns to standardized schema</span>
+        <span class="n">output_columns</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">}</span>
+
+        <span class="c1"># Checks if uncertainty is also returned.</span>
+        <span class="c1"># If so, extract the upper and lower limits of the tuples in</span>
+        <span class="c1"># ``uncertainty_col`` to be lower and upper limits of the prediction interval.</span>
+        <span class="c1"># Note that the tuple might have more than two elements if more than two</span>
+        <span class="c1"># ``quantiles`` are passed in ``uncertainty_dict``.</span>
+        <span class="n">uncertainty_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="si">}</span><span class="s2">_quantile_summary&quot;</span>
+        <span class="k">if</span> <span class="n">uncertainty_col</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">pred_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+            <span class="n">pred_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_df</span><span class="p">[</span><span class="n">uncertainty_col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">pred_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_df</span><span class="p">[</span><span class="n">uncertainty_col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">output_columns</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">,</span>
+                <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">,</span>
+                <span class="n">uncertainty_col</span><span class="p">:</span> <span class="n">uncertainty_col</span><span class="p">})</span>
+
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">pred_df</span><span class="p">[</span><span class="n">output_columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+                       <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">output_columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Caches the predictions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span> <span class="o">=</span> <span class="n">predictions</span>
+        <span class="k">return</span> <span class="n">predictions</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pred_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A dictionary that stores the predictor names in each category.</span>
+
+<span class="sd">        This property is not initialized until used. This speeds up the</span>
+<span class="sd">        fitting process. The categories includes</span>
+
+<span class="sd">            - &quot;intercept&quot; : the intercept.</span>
+<span class="sd">            - &quot;time_features&quot; : the predictors that include</span>
+<span class="sd">              `~greykite.common.constants.TIME_FEATURES`</span>
+<span class="sd">              but not</span>
+<span class="sd">              `~greykite.common.constants.SEASONALITY_REGEX`.</span>
+<span class="sd">            - &quot;event_features&quot; : the predictors that include</span>
+<span class="sd">              `~greykite.common.constants.EVENT_PREFIX`.</span>
+<span class="sd">            - &quot;trend_features&quot; : the predictors that include</span>
+<span class="sd">              `~greykite.common.constants.TREND_REGEX`</span>
+<span class="sd">              but not</span>
+<span class="sd">              `~greykite.common.constants.SEASONALITY_REGEX`.</span>
+<span class="sd">            - &quot;seasonality_features&quot; : the predictors that include</span>
+<span class="sd">              `~greykite.common.constants.SEASONALITY_REGEX`.</span>
+<span class="sd">            - &quot;lag_features&quot; : the predictors that include</span>
+<span class="sd">              `~greykite.common.constants.LAG_REGEX`.</span>
+<span class="sd">            - &quot;regressor_features&quot; : external regressors and other predictors</span>
+<span class="sd">              manually passed to ``extra_pred_cols``, but not in the categories above.</span>
+<span class="sd">            - &quot;interaction_features&quot; : the predictors that include</span>
+<span class="sd">              interaction terms, i.e., including a colon.</span>
+
+<span class="sd">        Note that each predictor falls into at least one category.</span>
+<span class="sd">        Some &quot;time_features&quot; may also be &quot;trend_features&quot;.</span>
+<span class="sd">        Predictors with an interaction are classified into all categories matched by</span>
+<span class="sd">        the interaction components. Thus, &quot;interaction_features&quot; are already included</span>
+<span class="sd">        in the other categories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;Must fit before getting predictor category.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_category</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># extra_pred_cols could be None/list</span>
+            <span class="n">extra_pred_cols</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_pred_cols</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_pred_cols</span>
+            <span class="c1"># regressor_cols could be non-exist/None/list</span>
+            <span class="c1"># the if catches non-exist and None</span>
+            <span class="n">regressor_cols</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;regressor_cols&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;regressor_cols&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pred_category</span> <span class="o">=</span> <span class="n">create_pred_category</span><span class="p">(</span>
+                <span class="n">pred_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;x_mat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                <span class="c1"># extra regressors are specified via &quot;regressor_cols&quot; in simple_silverkite_estimator</span>
+                <span class="n">extra_pred_cols</span><span class="o">=</span><span class="n">extra_pred_cols</span> <span class="o">+</span> <span class="n">regressor_cols</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_category</span>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.summary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_colwidth</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_silverkite_diagnostics_params</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">,</span> <span class="n">max_colwidth</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">plot_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;Call `fit` before calling `plot_components`.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_silverkite_diagnostics_params</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">silverkite_diagnostics</span><span class="o">.</span><span class="n">plot_components</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.plot_trend"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.plot_trend">[docs]</a>    <span class="k">def</span> <span class="nf">plot_trend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience function to plot the data and the trend component.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title: `str`, optional, default `None`</span>
+<span class="sd">            Plot title.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig: `plotly.graph_objs.Figure`</span>
+<span class="sd">            Figure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Trend plot&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_components</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.plot_seasonalities"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.plot_seasonalities">[docs]</a>    <span class="k">def</span> <span class="nf">plot_seasonalities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience function to plot the data and the seasonality components.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title: `str`, optional, default `None`</span>
+<span class="sd">            Plot title.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig: `plotly.graph_objs.Figure`</span>
+<span class="sd">            Figure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Seasonality plot&quot;</span>
+        <span class="n">seas_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;DAILY_SEASONALITY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;WEEKLY_SEASONALITY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;MONTHLY_SEASONALITY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;QUARTERLY_SEASONALITY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;YEARLY_SEASONALITY&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_components</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">seas_names</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseSilverkiteEstimator.plot_trend_changepoint_detection"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.BaseSilverkiteEstimator.plot_trend_changepoint_detection">[docs]</a>    <span class="k">def</span> <span class="nf">plot_trend_changepoint_detection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience function to plot the original trend changepoint detection results.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        params : `dict` or `None`, default `None`</span>
+<span class="sd">            The parameters in `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.plot`.</span>
+<span class="sd">            If set to `None`, all components will be plotted.</span>
+
+<span class="sd">            Note: seasonality components plotting is not supported currently. ``plot`` parameter must be False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objs.Figure`</span>
+<span class="sd">            Figure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">observation_original</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">trend_estimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">trend_change</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">yearly_seasonality_estimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">adaptive_lasso_estimate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">seasonality_change</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># currently for trend only</span>
+                <span class="n">seasonality_change_by_component</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">seasonality_estimate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># currently for trend only</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;seasonality_change&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;seasonality_estimate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># need to return the figure object</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;plot&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;changepoint_detector&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1426 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.common.features.timeseries_features &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.common.features.timeseries_features</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.common.features.timeseries_features</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Reza Hosseini, Albert Chen, Kaixu Yang, Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;Functions to generate derived time features useful</span>
+<span class="sd">in forecasting, such as growth, seasonality, holidays.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">fbprophet.hdays</span> <span class="k">as</span> <span class="nn">fbholidays</span>
+<span class="kn">import</span> <span class="nn">holidays</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">expit</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+
+
+<div class="viewcode-block" id="convert_date_to_continuous_time"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.convert_date_to_continuous_time">[docs]</a><span class="k">def</span> <span class="nf">convert_date_to_continuous_time</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts date to continuous time. Each year is one unit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dt : datetime object</span>
+<span class="sd">        the date to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    conti_date : `float`</span>
+<span class="sd">        the date represented in years</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">year_length</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span><span class="o">.</span><span class="n">tm_yday</span>
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span>
+            <span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">tm_yday</span> <span class="o">-</span> <span class="mi">1</span>
+             <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span> <span class="o">/</span> <span class="mi">24</span>
+             <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">minute</span> <span class="o">/</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+             <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">second</span> <span class="o">/</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">year_length</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_default_origin_for_time_vars</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sets default value for origin_for_time_vars</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Training data. A data frame which includes the timestamp and value columns</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name in `df` representing time for the time series data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dt_continuous_time : `float`</span>
+<span class="sd">        The time origin used to create continuous variables for time</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">convert_date_to_continuous_time</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="build_time_features_df"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.build_time_features_df">[docs]</a><span class="k">def</span> <span class="nf">build_time_features_df</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">conti_year_origin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function gets a datetime-like vector and creates new columns containing temporal</span>
+<span class="sd">    features useful for time series analysis and forecasting e.g. year, week of year, etc.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dt : array-like (1-dimensional)</span>
+<span class="sd">        A vector of datetime-like values</span>
+<span class="sd">    conti_year_origin : float</span>
+<span class="sd">        The origin used for creating continuous time.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    time_features_df : `pandas.DataFrame`</span>
+<span class="sd">        Dataframe with the following time features.</span>
+
+<span class="sd">            * &quot;datetime&quot;: `datetime.datetime` object, a combination of date and a time</span>
+<span class="sd">            * &quot;date&quot;: `datetime.date` object, date with the format (year, month, day)</span>
+<span class="sd">            * &quot;year&quot;: integer, year of the date e.g. 2018</span>
+<span class="sd">            * &quot;year_length&quot;: integer, number of days in the year e.g. 365 or 366</span>
+<span class="sd">            * &quot;quarter&quot;: integer, quarter of the date, 1, 2, 3, 4</span>
+<span class="sd">            * &quot;quarter_start&quot;: `pandas.DatetimeIndex`, date of beginning of the current quarter</span>
+<span class="sd">            * &quot;quarter_length&quot;: integer, number of days in the quarter, 90/91 for Q1, 91 for Q2, 92 for Q3 and Q4</span>
+<span class="sd">            * &quot;month&quot;: integer, month of the year, January=1, February=2, ..., December=12</span>
+<span class="sd">            * &quot;month_length&quot;: integer, number of days in the month, 28/ 29/ 30/ 31</span>
+<span class="sd">            * &quot;woy&quot;: integer, ISO 8601 week of the year where a week starts from Monday, 1, 2, ..., 53</span>
+<span class="sd">            * &quot;doy&quot;: integer, ordinal day of the year, 1, 2, ..., year_length</span>
+<span class="sd">            * &quot;doq&quot;: integer, ordinal day of the quarter, 1, 2, ..., quarter_length</span>
+<span class="sd">            * &quot;dom&quot;: integer, ordinal day of the month, 1, 2, ..., month_length</span>
+<span class="sd">            * &quot;dow&quot;: integer, day of the week, Monday=1, Tuesday=2, ..., Sunday=7</span>
+<span class="sd">            * &quot;str_dow&quot;: string, day of the week as a string e.g. &quot;1-Mon&quot;, &quot;2-Tue&quot;, ..., &quot;7-Sun&quot;</span>
+<span class="sd">            * &quot;str_doy&quot;: string, day of the year e.g. &quot;2020-03-20&quot; for March 20, 2020</span>
+<span class="sd">            * &quot;hour&quot;: integer, discrete hours of the datetime, 0, 1, ..., 23</span>
+<span class="sd">            * &quot;minute&quot;: integer, minutes of the datetime, 0, 1, ..., 59</span>
+<span class="sd">            * &quot;second&quot;: integer, seconds of the datetime, 0, 1, ..., 3599</span>
+<span class="sd">            * &quot;year_month&quot;: string, (year, month) e.g. &quot;2020-03&quot; for March 2020</span>
+<span class="sd">            * &quot;year_woy&quot;: string, (year, week of year) e.g. &quot;2020_42&quot; for 42nd week of 2020</span>
+<span class="sd">            * &quot;month_dom&quot;: string, (month, day of month) e.g. &quot;02/20&quot; for February 20th</span>
+<span class="sd">            * &quot;year_woy_dow&quot;: string, (year, week of year, day of week) e.g. &quot;2020_03_6&quot; for Saturday of 3rd week in 2020</span>
+<span class="sd">            * &quot;woy_dow&quot;: string, (week of year, day of week) e.g. &quot;03_6&quot; for Saturday of 3rd week</span>
+<span class="sd">            * &quot;dow_hr&quot;: string, (day of week, hour) e.g. &quot;4_09&quot; for 9am on Thursday</span>
+<span class="sd">            * &quot;dow_hr_min&quot;: string, (day of week, hour, minute) e.g. &quot;4_09_10&quot; for 9:10am on Thursday</span>
+<span class="sd">            * &quot;tod&quot;: float, time of day, continuous, 0.0 to 24.0</span>
+<span class="sd">            * &quot;tow&quot;: float, time of week, continuous, 0.0 to 7.0</span>
+<span class="sd">            * &quot;tom&quot;: float, standardized time of month, continuous, 0.0 to 1.0</span>
+<span class="sd">            * &quot;toq&quot;: float, time of quarter, continuous, 0.0 to 1.0</span>
+<span class="sd">            * &quot;toy&quot;: float, standardized time of year, continuous, 0.0 to 1.0</span>
+<span class="sd">            * &quot;conti_year&quot;: float, year in continuous time, eg 2018.5 means middle of the year 2018</span>
+<span class="sd">            * &quot;is_weekend&quot;: boolean, weekend indicator, True for weekend, else False</span>
+<span class="sd">            * &quot;dow_grouped&quot;: string, Monday-Thursday=1234-MTuWTh, Friday=5-Fri, Saturday=6-Sat, Sunday=7-Sun</span>
+<span class="sd">            * &quot;ct1&quot;: float, linear growth based on conti_year_origin, -infinity to infinity</span>
+<span class="sd">            * &quot;ct2&quot;: float, signed quadratic growth, -infinity to infinity</span>
+<span class="sd">            * &quot;ct3&quot;: float, signed cubic growth, -infinity to infinity</span>
+<span class="sd">            * &quot;ct_sqrt&quot;: float, signed square root growth, -infinity to infinity</span>
+<span class="sd">            * &quot;ct_root3&quot;: float, signed cubic root growth, -infinity to infinity</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of dt cannot be zero.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># basic time features</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">year_length</span> <span class="o">=</span> <span class="p">(</span><span class="mf">365.0</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">is_leap_year</span><span class="p">)</span>
+    <span class="n">quarter</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">quarter</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+    <span class="n">month_length</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">days_in_month</span>
+
+    <span class="c1"># finds first day of quarter</span>
+    <span class="n">quarter_start</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span>
+        <span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">quarter</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-01&quot;</span><span class="p">)</span>
+    <span class="n">next_quarter_start</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">tseries</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">QuarterBegin</span><span class="p">(</span><span class="n">startingMonth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">quarter_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">next_quarter_start</span> <span class="o">-</span> <span class="n">quarter_start</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+    <span class="c1"># finds offset from first day of quarter (rounds down to nearest day)</span>
+    <span class="n">doq</span> <span class="o">=</span> <span class="p">((</span><span class="n">dt</span> <span class="o">-</span> <span class="n">quarter_start</span><span class="p">)</span> <span class="o">/</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="s2">&quot;1D&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># week of year, &quot;woy&quot;, follows ISO 8601:</span>
+    <span class="c1">#   - Week 01 is the week with the year&#39;s first Thursday in it.</span>
+    <span class="c1">#   - A week begins with Monday and ends with Sunday.</span>
+    <span class="c1"># So the week number of the week that overlaps both years, is 1, 52, or 53,</span>
+    <span class="c1"># depending on whether it has more days in the previous year or new year.</span>
+    <span class="c1">#   - e.g. Jan 1st, 2018 is Monday. woy of first 8 days = [1, 1, 1, 1, 1, 1, 1, 2]</span>
+    <span class="c1">#   - e.g. Jan 1st, 2019 is Tuesday. woy of first 8 days = [1, 1, 1, 1, 1, 1, 2, 2]</span>
+    <span class="c1">#   - e.g. Jan 1st, 2020 is Wednesday. woy of first 8 days = [1, 1, 1, 1, 1, 2, 2, 2]</span>
+    <span class="c1">#   - e.g. Jan 1st, 2015 is Thursday. woy of first 8 days = [1, 1, 1, 1, 2, 2, 2, 2]</span>
+    <span class="c1">#   - e.g. Jan 1st, 2021 is Friday. woy of first 8 days = [53, 53, 53, 1, 1, 1, 1, 1]</span>
+    <span class="c1">#   - e.g. Jan 1st, 2022 is Saturday. woy of first 8 days = [52, 52, 1, 1, 1, 1, 1, 1]</span>
+    <span class="c1">#   - e.g. Jan 1st, 2023 is Sunday. woy of first 8 days = [52, 1, 1, 1, 1, 1, 1, 1]</span>
+    <span class="n">woy</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%V&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">doy</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">dayofyear</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">day</span>
+    <span class="n">dow</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">str_dow</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%u</span><span class="s2">-</span><span class="si">%a</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># e.g. 1-Mon, 2-Tue, ..., 7-Sun</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">minute</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">second</span>
+
+    <span class="c1"># grouped time feature</span>
+    <span class="n">str_doy</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>       <span class="c1"># e.g. 2020-03-20 for March 20, 2020</span>
+    <span class="n">year_month</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m&quot;</span><span class="p">)</span>       <span class="c1"># e.g. 2020-03 for March 2020</span>
+    <span class="n">month_dom</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>        <span class="c1"># e.g. 02/20 for February 20th</span>
+    <span class="n">year_woy</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%V&quot;</span><span class="p">)</span>         <span class="c1"># e.g. 2020_42 for 42nd week of 2020</span>
+    <span class="n">year_woy_dow</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%V_</span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># e.g. 2020_03_6 for Saturday of 3rd week in 2020</span>
+    <span class="n">woy_dow</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%W_</span><span class="si">%u</span><span class="s2">&quot;</span><span class="p">)</span>          <span class="c1"># e.g. 03_6 for Saturday of 3rd week</span>
+    <span class="n">dow_hr</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%u</span><span class="s2">_%H&quot;</span><span class="p">)</span>           <span class="c1"># e.g. 4_09 for 9am on Thursday</span>
+    <span class="n">dow_hr_min</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%u</span><span class="s2">_%H_%M&quot;</span><span class="p">)</span>    <span class="c1"># e.g. 4_09_10 for 9:10am on Thursday</span>
+
+    <span class="c1"># derived time features</span>
+    <span class="n">tod</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">+</span> <span class="p">(</span><span class="n">minute</span> <span class="o">/</span> <span class="mf">60.0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">second</span> <span class="o">/</span> <span class="mf">3600.0</span><span class="p">)</span>
+    <span class="n">tow</span> <span class="o">=</span> <span class="n">dow</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">tod</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span>
+    <span class="n">tom</span> <span class="o">=</span> <span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">tod</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">))</span> <span class="o">/</span> <span class="n">month_length</span>
+    <span class="n">toq</span> <span class="o">=</span> <span class="p">(</span><span class="n">doq</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">tod</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">))</span> <span class="o">/</span> <span class="n">quarter_length</span>
+    <span class="c1"># time of year, continuous, 0.0 to 1.0. e.g. Jan 1, 12 am = 0/365, Jan 2, 12 am = 1/365, ...</span>
+    <span class="c1"># To handle leap years, Feb 28 = 58/365 - 59/365, Feb 29 = 59/365, Mar 1 = 59/365 - 60/365</span>
+    <span class="c1"># offset term is nonzero only in leap years</span>
+    <span class="c1"># doy_offset reduces doy by 1 from from Mar 1st (doy &gt; 60)</span>
+    <span class="n">doy_offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">year_length</span> <span class="o">==</span> <span class="mi">366</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">doy</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="c1"># tod_offset sets tod to 0 on Feb 29th (doy == 60)</span>
+    <span class="n">tod_offset</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">year_length</span> <span class="o">==</span> <span class="mi">366</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">doy</span> <span class="o">==</span> <span class="mi">60</span><span class="p">)</span>
+    <span class="n">toy</span> <span class="o">=</span> <span class="p">(</span><span class="n">doy</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">doy_offset</span> <span class="o">+</span> <span class="p">(</span><span class="n">tod</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">tod_offset</span><span class="p">)</span> <span class="o">/</span> <span class="mf">365.0</span>
+
+    <span class="c1"># year of date in continuous time, eg 2018.5 means middle of year 2018</span>
+    <span class="c1"># this is useful for modeling features that do not care about leap year e.g. environmental variables</span>
+    <span class="n">conti_year</span> <span class="o">=</span> <span class="n">year</span> <span class="o">+</span> <span class="p">(</span><span class="n">doy</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">tod</span> <span class="o">/</span> <span class="mf">24.0</span><span class="p">))</span> <span class="o">/</span> <span class="n">year_length</span>
+    <span class="n">is_weekend</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">dow</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># weekend indicator</span>
+    <span class="c1"># categorical var with levels (Mon-Thu, Fri, Sat, Sun), could help when training data are sparse.</span>
+    <span class="n">dow_grouped</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">str_dow</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;1234-MTuWTh&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;1-Mon&quot;</span><span class="p">,</span> <span class="s2">&quot;2-Tue&quot;</span><span class="p">,</span> <span class="s2">&quot;3-Wed&quot;</span><span class="p">,</span> <span class="s2">&quot;4-Thu&quot;</span><span class="p">])</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># growth terms</span>
+    <span class="n">ct1</span> <span class="o">=</span> <span class="n">conti_year</span> <span class="o">-</span> <span class="n">conti_year_origin</span>
+    <span class="n">ct2</span> <span class="o">=</span> <span class="n">signed_pow</span><span class="p">(</span><span class="n">ct1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ct3</span> <span class="o">=</span> <span class="n">signed_pow</span><span class="p">(</span><span class="n">ct1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">ct_sqrt</span> <span class="o">=</span> <span class="n">signed_pow</span><span class="p">(</span><span class="n">ct1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ct_root3</span> <span class="o">=</span> <span class="n">signed_pow</span><span class="p">(</span><span class="n">ct1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># All keys must be added to constants.</span>
+    <span class="n">features_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="n">dt</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+        <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+        <span class="s2">&quot;year_length&quot;</span><span class="p">:</span> <span class="n">year_length</span><span class="p">,</span>
+        <span class="s2">&quot;quarter&quot;</span><span class="p">:</span> <span class="n">quarter</span><span class="p">,</span>
+        <span class="s2">&quot;quarter_start&quot;</span><span class="p">:</span> <span class="n">quarter_start</span><span class="p">,</span>
+        <span class="s2">&quot;quarter_length&quot;</span><span class="p">:</span> <span class="n">quarter_length</span><span class="p">,</span>
+        <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">month</span><span class="p">,</span>
+        <span class="s2">&quot;month_length&quot;</span><span class="p">:</span> <span class="n">month_length</span><span class="p">,</span>
+        <span class="s2">&quot;woy&quot;</span><span class="p">:</span> <span class="n">woy</span><span class="p">,</span>
+        <span class="s2">&quot;doy&quot;</span><span class="p">:</span> <span class="n">doy</span><span class="p">,</span>
+        <span class="s2">&quot;doq&quot;</span><span class="p">:</span> <span class="n">doq</span><span class="p">,</span>
+        <span class="s2">&quot;dom&quot;</span><span class="p">:</span> <span class="n">dom</span><span class="p">,</span>
+        <span class="s2">&quot;dow&quot;</span><span class="p">:</span> <span class="n">dow</span><span class="p">,</span>
+        <span class="s2">&quot;str_dow&quot;</span><span class="p">:</span> <span class="n">str_dow</span><span class="p">,</span>
+        <span class="s2">&quot;str_doy&quot;</span><span class="p">:</span> <span class="n">str_doy</span><span class="p">,</span>
+        <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="n">hour</span><span class="p">,</span>
+        <span class="s2">&quot;minute&quot;</span><span class="p">:</span> <span class="n">minute</span><span class="p">,</span>
+        <span class="s2">&quot;second&quot;</span><span class="p">:</span> <span class="n">second</span><span class="p">,</span>
+        <span class="s2">&quot;year_month&quot;</span><span class="p">:</span> <span class="n">year_month</span><span class="p">,</span>
+        <span class="s2">&quot;year_woy&quot;</span><span class="p">:</span> <span class="n">year_woy</span><span class="p">,</span>
+        <span class="s2">&quot;month_dom&quot;</span><span class="p">:</span> <span class="n">month_dom</span><span class="p">,</span>
+        <span class="s2">&quot;year_woy_dow&quot;</span><span class="p">:</span> <span class="n">year_woy_dow</span><span class="p">,</span>
+        <span class="s2">&quot;woy_dow&quot;</span><span class="p">:</span> <span class="n">woy_dow</span><span class="p">,</span>
+        <span class="s2">&quot;dow_hr&quot;</span><span class="p">:</span> <span class="n">dow_hr</span><span class="p">,</span>
+        <span class="s2">&quot;dow_hr_min&quot;</span><span class="p">:</span> <span class="n">dow_hr_min</span><span class="p">,</span>
+        <span class="s2">&quot;tod&quot;</span><span class="p">:</span> <span class="n">tod</span><span class="p">,</span>
+        <span class="s2">&quot;tow&quot;</span><span class="p">:</span> <span class="n">tow</span><span class="p">,</span>
+        <span class="s2">&quot;tom&quot;</span><span class="p">:</span> <span class="n">tom</span><span class="p">,</span>
+        <span class="s2">&quot;toq&quot;</span><span class="p">:</span> <span class="n">toq</span><span class="p">,</span>
+        <span class="s2">&quot;toy&quot;</span><span class="p">:</span> <span class="n">toy</span><span class="p">,</span>
+        <span class="s2">&quot;conti_year&quot;</span><span class="p">:</span> <span class="n">conti_year</span><span class="p">,</span>
+        <span class="s2">&quot;is_weekend&quot;</span><span class="p">:</span> <span class="n">is_weekend</span><span class="p">,</span>
+        <span class="s2">&quot;dow_grouped&quot;</span><span class="p">:</span> <span class="n">dow_grouped</span><span class="p">,</span>
+        <span class="s2">&quot;ct1&quot;</span><span class="p">:</span> <span class="n">ct1</span><span class="p">,</span>
+        <span class="s2">&quot;ct2&quot;</span><span class="p">:</span> <span class="n">ct2</span><span class="p">,</span>
+        <span class="s2">&quot;ct3&quot;</span><span class="p">:</span> <span class="n">ct3</span><span class="p">,</span>
+        <span class="s2">&quot;ct_sqrt&quot;</span><span class="p">:</span> <span class="n">ct_sqrt</span><span class="p">,</span>
+        <span class="s2">&quot;ct_root3&quot;</span><span class="p">:</span> <span class="n">ct_root3</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">features_dict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="k">def</span> <span class="nf">add_time_features_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="p">,</span> <span class="n">conti_year_origin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds a time feature data frame to a data frame</span>
+<span class="sd">    :param df: the input data frame</span>
+<span class="sd">    :param time_col: the name of the time column of interest</span>
+<span class="sd">    :param conti_year_origin: the origin of time for the continuous time variable</span>
+<span class="sd">    :return: the same data frame (df) augmented with new columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">time_df</span> <span class="o">=</span> <span class="n">build_time_features_df</span><span class="p">(</span>
+        <span class="n">dt</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+        <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">conti_year_origin</span><span class="p">)</span>
+    <span class="n">time_df</span> <span class="o">=</span> <span class="n">time_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">time_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_holidays"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.get_holidays">[docs]</a><span class="k">def</span> <span class="nf">get_holidays</span><span class="p">(</span><span class="n">countries</span><span class="p">,</span> <span class="n">year_start</span><span class="p">,</span> <span class="n">year_end</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function extracts a holiday data frame for the period of interest</span>
+<span class="sd">    [year_start to year_end] for the given countries.</span>
+<span class="sd">    This is done using the holidays libraries in pypi:fbprophet and pypi:holidays</span>
+<span class="sd">    Implementation resembles that of `~fbprophet.make_holidays.make_holidays_df`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    countries : `list` [`str`]</span>
+<span class="sd">        countries for which we need holidays</span>
+<span class="sd">    year_start : `int`</span>
+<span class="sd">        first year of interest, inclusive</span>
+<span class="sd">    year_end : `int`</span>
+<span class="sd">        last year of interest, inclusive</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    holiday_df_dict : `dict` [`str`, `pandas.DataFrame`]</span>
+<span class="sd">        - key: country name</span>
+<span class="sd">        - value: data frame with holidays for that country</span>
+<span class="sd">          Each data frame has two columns: EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">country_holiday_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">year_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">year_start</span><span class="p">,</span> <span class="n">year_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Fetch the holidays from fbprophet holiday set</span>
+            <span class="c1"># Suppress the following warning for India:</span>
+            <span class="c1">#   &quot;We only support Diwali and Holi holidays from 2010 to 2025&quot;</span>
+            <span class="k">if</span> <span class="n">country</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;India&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">]:</span>
+                <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+                    <span class="n">country_holidays</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fbholidays</span><span class="p">,</span> <span class="n">country</span><span class="p">)(</span><span class="n">years</span><span class="o">=</span><span class="n">year_list</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">country_holidays</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fbholidays</span><span class="p">,</span> <span class="n">country</span><span class="p">)(</span><span class="n">years</span><span class="o">=</span><span class="n">year_list</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c1"># Fetch the holidays from pypi:holidays set</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">country_holidays</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">holidays</span><span class="p">,</span> <span class="n">country</span><span class="p">)(</span><span class="n">years</span><span class="o">=</span><span class="n">year_list</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Holidays in </span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2"> are not currently supported!&quot;</span><span class="p">)</span>
+
+        <span class="n">country_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">country_holidays</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">country_holidays</span><span class="o">.</span><span class="n">values</span><span class="p">())})</span>
+        <span class="n">country_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">country_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">])</span>
+        <span class="n">country_holiday_dict</span><span class="p">[</span><span class="n">country</span><span class="p">]</span> <span class="o">=</span> <span class="n">country_df</span>
+
+    <span class="k">return</span> <span class="n">country_holiday_dict</span></div>
+
+
+<div class="viewcode-block" id="get_available_holiday_lookup_countries"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.get_available_holiday_lookup_countries">[docs]</a><span class="k">def</span> <span class="nf">get_available_holiday_lookup_countries</span><span class="p">(</span><span class="n">countries</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns list of available countries for modeling holidays</span>
+
+<span class="sd">    :param countries: List[str]</span>
+<span class="sd">        only look for available countries in this set</span>
+<span class="sd">    :return: List[str]</span>
+<span class="sd">        list of available countries for modeling holidays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fb_countries</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">fbholidays</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="n">fbholidays</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
+    <span class="n">holidays_countries</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">holidays</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="n">holidays</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
+    <span class="n">all_countries</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fb_countries</span> <span class="o">+</span> <span class="n">holidays_countries</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">countries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">countries</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">countries</span><span class="p">)</span>
+        <span class="n">found_countries</span> <span class="o">=</span> <span class="n">all_countries</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">countries</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">found_countries</span> <span class="o">=</span> <span class="n">all_countries</span>
+    <span class="n">found_countries</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="s2">&quot;HolidayBase&quot;</span><span class="p">)</span>  <span class="c1"># edge case, remove if found</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">found_countries</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_available_holidays_in_countries</span><span class="p">(</span>
+        <span class="n">countries</span><span class="p">,</span>
+        <span class="n">year_start</span><span class="p">,</span>
+        <span class="n">year_end</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dictionary mapping each country to its holidays</span>
+<span class="sd">        between the years specified.</span>
+
+<span class="sd">    :param countries: List[str]</span>
+<span class="sd">        countries for which we need holidays</span>
+<span class="sd">    :param year_start: int</span>
+<span class="sd">        first year of interest</span>
+<span class="sd">    :param year_end: int</span>
+<span class="sd">        last year of interest</span>
+<span class="sd">    :return: Dict[str, List[str]]</span>
+<span class="sd">        key: country name</span>
+<span class="sd">        value: list of holidays in that country between [year_start, year_end]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">country_holiday_dict</span> <span class="o">=</span> <span class="n">get_holidays</span><span class="p">(</span><span class="n">countries</span><span class="p">,</span> <span class="n">year_start</span><span class="p">,</span> <span class="n">year_end</span><span class="p">)</span>
+    <span class="n">country_holiday_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">country</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span>
+                            <span class="k">for</span> <span class="n">country</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">country_holiday_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">country_holiday_list</span>
+
+
+<div class="viewcode-block" id="get_available_holidays_across_countries"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.get_available_holidays_across_countries">[docs]</a><span class="k">def</span> <span class="nf">get_available_holidays_across_countries</span><span class="p">(</span>
+        <span class="n">countries</span><span class="p">,</span>
+        <span class="n">year_start</span><span class="p">,</span>
+        <span class="n">year_end</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a list of holidays that occur any of the countries</span>
+<span class="sd">    between the years specified.</span>
+
+<span class="sd">    :param countries: List[str]</span>
+<span class="sd">        countries for which we need holidays</span>
+<span class="sd">    :param year_start: int</span>
+<span class="sd">        first year of interest</span>
+<span class="sd">    :param year_end: int</span>
+<span class="sd">        last year of interest</span>
+<span class="sd">    :return: List[str]</span>
+<span class="sd">        names of holidays in any of the countries between [year_start, year_end]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">country_holiday_list</span> <span class="o">=</span> <span class="n">get_available_holidays_in_countries</span><span class="p">(</span>
+        <span class="n">countries</span><span class="o">=</span><span class="n">countries</span><span class="p">,</span>
+        <span class="n">year_start</span><span class="o">=</span><span class="n">year_start</span><span class="p">,</span>
+        <span class="n">year_end</span><span class="o">=</span><span class="n">year_end</span><span class="p">)</span>
+    <span class="n">holiday_across_countries</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">holiday</span> <span class="k">for</span> <span class="n">country</span><span class="p">,</span> <span class="n">holiday_list</span> <span class="ow">in</span> <span class="n">country_holiday_list</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">holiday_list</span><span class="p">}</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">holiday_across_countries</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="add_daily_events"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.add_daily_events">[docs]</a><span class="k">def</span> <span class="nf">add_daily_events</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">event_df_dict</span><span class="p">,</span>
+        <span class="n">date_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">,</span>
+        <span class="n">regular_day_label</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DEFAULT</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;For each key of event_df_dict, it adds a new column to a data frame (df)</span>
+<span class="sd">        with a date column (date_col).</span>
+<span class="sd">        Each new column will represent the events given for that key.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    As a side effect, the columns in ``event_df_dict`` are renamed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The data frame which has a date column.</span>
+<span class="sd">    event_df_dict : `dict` [`str`, `pandas.DataFrame`]</span>
+<span class="sd">        A dictionary of data frames, each representing events data</span>
+<span class="sd">        for the corresponding key.</span>
+<span class="sd">        Values are DataFrames with two columns:</span>
+
+<span class="sd">            - The first column contains the date. Must be at the same</span>
+<span class="sd">              frequency as ``df[date_col]`` for proper join. Must be in a</span>
+<span class="sd">              format recognized by `pandas.to_datetime`.</span>
+<span class="sd">            - The second column contains the event label for each date</span>
+
+<span class="sd">    date_col : `str`</span>
+<span class="sd">        Column name in ``df`` that contains the dates for joining against</span>
+<span class="sd">        the events in ``event_df_dict``.</span>
+<span class="sd">    regular_day_label : `str`</span>
+<span class="sd">        The label used for regular days which are not &quot;events&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df_daily_events : `pandas.DataFrame`</span>
+<span class="sd">        An augmented data frame version of df with new label columns --</span>
+<span class="sd">        one for each key of ``event_df_dict``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">event_df</span> <span class="ow">in</span> <span class="n">event_df_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">event_df</span> <span class="o">=</span> <span class="n">event_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_PREFIX</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">event_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">,</span> <span class="n">new_col</span><span class="p">]</span>
+        <span class="n">event_df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">event_df</span><span class="p">[</span><span class="n">date_col</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">event_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">date_col</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">new_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">new_col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">regular_day_label</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="k">def</span> <span class="nf">add_event_window</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">label_col</span><span class="p">,</span>
+        <span class="n">time_delta</span><span class="o">=</span><span class="s2">&quot;1D&quot;</span><span class="p">,</span>
+        <span class="n">pre_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">post_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">events_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;For a data frame of events with a time_col and label_col</span>
+<span class="sd">        it adds shifted events</span>
+<span class="sd">        prior and after the given events</span>
+<span class="sd">        For example if the event data frame includes the row</span>
+<span class="sd">            &#39;2019-12-25, Christmas&#39;</span>
+<span class="sd">        the function will produce dataframes with the events:</span>
+<span class="sd">            &#39;2019-12-24, Christmas&#39; and &#39;2019-12-26, Christmas&#39;</span>
+<span class="sd">        if pre_num and post_num are 1 or more.</span>
+<span class="sd">    :param df: pd.DataFrame</span>
+<span class="sd">        the events data frame with two columns &#39;time_col&#39; and &#39;label_col&#39;</span>
+<span class="sd">    :param time_col: str</span>
+<span class="sd">        The column with the timestamp of the events.</span>
+<span class="sd">        This can be daily but does not have to</span>
+<span class="sd">    :param label_col: str</span>
+<span class="sd">        the column with labels for the events</span>
+<span class="sd">    :param time_delta: str</span>
+<span class="sd">        the amount of the shift for each unit specified by a string</span>
+<span class="sd">        e.g. &quot;1D&quot; stands for one day delta</span>
+<span class="sd">    :param pre_num: int</span>
+<span class="sd">        the number of events to be added prior to the given event for each event in df</span>
+<span class="sd">    :param post_num: int</span>
+<span class="sd">        the number of events to be added after to the given event for each event in df</span>
+<span class="sd">    :param events_name: str</span>
+<span class="sd">        for each shift, we generate a new data frame</span>
+<span class="sd">        and those data frames will be stored in a dictionary with appropriate keys.</span>
+<span class="sd">        Each key starts with &quot;events_name&quot;</span>
+<span class="sd">        and follow up with:</span>
+<span class="sd">            &quot;_minus_1&quot;, &quot;_minus_2&quot;, &quot;_plus_1&quot;, &quot;_plus_2&quot;, ...</span>
+<span class="sd">        depending on pre_num and post_num</span>
+<span class="sd">    :return: dict[key: pd.Dataframe]</span>
+<span class="sd">        A dictionary of dataframes for each needed shift.</span>
+<span class="sd">        For example if pre_num=2 and post_num=3.</span>
+<span class="sd">        2 + 3 = 5 data frames will be stored in the return dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">df_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">pd_time_delta</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">time_delta</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pre_num</span><span class="p">):</span>
+        <span class="n">df0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="n">df0</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">pd_time_delta</span>
+        <span class="n">df0</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span>
+        <span class="n">df_dict</span><span class="p">[</span><span class="n">events_name</span> <span class="o">+</span> <span class="s2">&quot;_minus_&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df0</span>
+
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">post_num</span><span class="p">):</span>
+        <span class="n">df0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="n">df0</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">pd_time_delta</span>
+        <span class="n">df0</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span>
+        <span class="n">df_dict</span><span class="p">[</span><span class="n">events_name</span> <span class="o">+</span> <span class="s2">&quot;_plus_&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df0</span>
+
+    <span class="k">return</span> <span class="n">df_dict</span>
+
+
+<span class="k">def</span> <span class="nf">get_evenly_spaced_changepoints_values</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">,</span>
+        <span class="n">n_changepoints</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partitions interval into n_changepoints + 1 segments,</span>
+<span class="sd">        placing a changepoint at left endpoint of each segment.</span>
+<span class="sd">        The left most segment doesn&#39;t get a changepoint.</span>
+<span class="sd">        Changepoints should be determined from training data.</span>
+
+<span class="sd">    :param df: pd.DataFrame</span>
+<span class="sd">        training dataset. contains continuous_time_col</span>
+<span class="sd">    :param continuous_time_col: str</span>
+<span class="sd">        name of continuous time column (e.g. conti_year, ct1)</span>
+<span class="sd">    :param n_changepoints: int</span>
+<span class="sd">        number of changepoints requested</span>
+<span class="sd">    :return: np.array</span>
+<span class="sd">        values of df[continuous_time_col] at the changepoints</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">n_changepoints</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_changepoints must be &gt; 0&quot;</span><span class="p">)</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_steps</span> <span class="o">=</span> <span class="n">n_changepoints</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">step_size</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">n_steps</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">n_steps</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">continuous_time_col</span><span class="p">][</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+
+<span class="k">def</span> <span class="nf">get_evenly_spaced_changepoints_dates</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">n_changepoints</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partitions interval into n_changepoints + 1 segments,</span>
+<span class="sd">        placing a changepoint at left endpoint of each segment.</span>
+<span class="sd">        The left most segment doesn&#39;t get a changepoint.</span>
+<span class="sd">        Changepoints should be determined from training data.</span>
+
+<span class="sd">    :param df: pd.DataFrame</span>
+<span class="sd">        training dataset. contains continuous_time_col</span>
+<span class="sd">    :param time_col: str</span>
+<span class="sd">        name of time column</span>
+<span class="sd">    :param n_changepoints: int</span>
+<span class="sd">        number of changepoints requested</span>
+<span class="sd">    :return: pd.Series</span>
+<span class="sd">        values of df[time_col] at the changepoints</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">n_changepoints</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_changepoints must be &gt;= 0&quot;</span><span class="p">)</span>
+    <span class="n">changepoint_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">n_changepoints</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_changepoints</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="n">changepoint_indices</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="n">changepoint_indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)])]</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">changepoint_indices</span><span class="p">,</span> <span class="n">time_col</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">get_custom_changepoints_values</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">changepoint_dates</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the values of continuous_time_col at the</span>
+<span class="sd">        requested changepoint_dates.</span>
+
+<span class="sd">    :param df: pd.DataFrame</span>
+<span class="sd">        training dataset. contains continuous_time_col and time_col</span>
+<span class="sd">    :param changepoint_dates: Iterable[Union[int, float, str, datetime]]</span>
+<span class="sd">        Changepoint dates, interpreted by pd.to_datetime.</span>
+<span class="sd">        Changepoints are set at the closest time on or after these dates</span>
+<span class="sd">        in the dataset</span>
+<span class="sd">    :param time_col: str</span>
+<span class="sd">        The column name in `df` representing time for the time series data</span>
+<span class="sd">        The time column can be anything that can be parsed by pandas DatetimeIndex</span>
+<span class="sd">    :param continuous_time_col: str</span>
+<span class="sd">        name of continuous time column (e.g. conti_year, ct1)</span>
+<span class="sd">    :return: np.array</span>
+<span class="sd">        values of df[continuous_time_col] at the changepoints</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+    <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">)</span>
+    <span class="c1"># maps each changepoint to first date &gt;= changepoint in the dataframe</span>
+    <span class="c1"># if there is no such date, the changepoint is dropped (it would not be useful anyway)</span>
+    <span class="n">changepoint_ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="n">ts</span> <span class="o">&gt;=</span> <span class="n">date</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">changepoint_dates</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ts</span> <span class="o">&gt;=</span> <span class="n">date</span><span class="p">)]</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">changepoint_ts</span><span class="p">)</span>
+    <span class="n">changepoints</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">indices</span><span class="p">][</span><span class="n">continuous_time_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">if</span> <span class="n">changepoints</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">changepoints</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">changepoints</span>
+
+
+<span class="k">def</span> <span class="nf">get_changepoint_string</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets proper formatted strings for changepoint dates.</span>
+
+<span class="sd">    The default format is &quot;_%Y_%m_%d_%H&quot;. When necessary, it appends &quot;_%M&quot; or &quot;_%M_%S&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    changepoint_dates : `list`</span>
+<span class="sd">        List of changepoint dates, parsable by `pandas.to_datetime`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    date_strings : `list[`str`]`</span>
+<span class="sd">        List of string formatted changepoint dates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">))</span>
+    <span class="n">time_format</span> <span class="o">=</span> <span class="s2">&quot;_%Y_%m_</span><span class="si">%d</span><span class="s2">_%H&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">stamp</span><span class="o">.</span><span class="n">second</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">stamp</span> <span class="ow">in</span> <span class="n">changepoint_dates</span><span class="p">]):</span>
+        <span class="n">time_format</span> <span class="o">+=</span> <span class="s2">&quot;_%M_%S&quot;</span>
+    <span class="k">elif</span> <span class="nb">any</span><span class="p">([</span><span class="n">stamp</span><span class="o">.</span><span class="n">minute</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">stamp</span> <span class="ow">in</span> <span class="n">changepoint_dates</span><span class="p">]):</span>
+        <span class="n">time_format</span> <span class="o">+=</span> <span class="s2">&quot;_%M&quot;</span>
+    <span class="n">date_strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time_format</span><span class="p">)</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">changepoint_dates</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">date_strings</span>
+
+
+<span class="k">def</span> <span class="nf">get_changepoint_features</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">changepoint_values</span><span class="p">,</span>
+        <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">,</span>
+        <span class="n">growth_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">changepoint_dates</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns features for growth terms with continuous time origins at</span>
+<span class="sd">        the changepoint_values (locations) specified</span>
+
+<span class="sd">    Generates a time series feature for each changepoint:</span>
+<span class="sd">        Let t = continuous_time value, c = changepoint value</span>
+<span class="sd">        Then the changepoint feature value at time point t is</span>
+<span class="sd">            `growth_func(t - c) * I(t &gt;= c)`, where I is the indicator function</span>
+<span class="sd">        This represents growth as a function of time, where the time origin is</span>
+<span class="sd">        the changepoint</span>
+
+<span class="sd">    In the typical case where growth_func(0) = 0 (has origin at 0),</span>
+<span class="sd">        the total effect of the changepoints is continuous in time.</span>
+<span class="sd">        If `growth_func` is the identity function, and `continuous_time`</span>
+<span class="sd">        represents the year in continuous time, these terms form the basis for a</span>
+<span class="sd">        continuous, piecewise linear curve to the growth trend.</span>
+<span class="sd">        Fitting these terms with linear model, the coefficents represent slope</span>
+<span class="sd">        change at each changepoint</span>
+
+<span class="sd">    Intended usage</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    To make predictions (on test set)</span>
+<span class="sd">        Allow growth term as a function of time to change at these points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    :param df: pd.Dataframe</span>
+<span class="sd">        The dataset to make predictions. Contains column continuous_time_col.</span>
+<span class="sd">    :param changepoint_values: array-like</span>
+<span class="sd">        List of changepoint values (on same scale as df[continuous_time_col]).</span>
+<span class="sd">        Should be determined from training data</span>
+<span class="sd">    :param continuous_time_col: Optional[str]</span>
+<span class="sd">        Name of continuous time column in df</span>
+<span class="sd">        growth_func is applied to this column to generate growth term</span>
+<span class="sd">        If None, uses &quot;ct1&quot;, linear growth</span>
+<span class="sd">    :param growth_func: Optional[callable]</span>
+<span class="sd">        Growth function for defining changepoints (scalar -&gt; scalar).</span>
+<span class="sd">        If None, uses identity function to use continuous_time_col directly</span>
+<span class="sd">        as growth term</span>
+<span class="sd">    :param changepoint_dates: Optional[list]</span>
+<span class="sd">        List of change point dates, parsable by `pandas.to_datetime`.</span>
+<span class="sd">    :return: pd.DataFrame, shape (df.shape[0], len(changepoints))</span>
+<span class="sd">        Changepoint features, 0-indexed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">continuous_time_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">continuous_time_col</span> <span class="o">=</span> <span class="s2">&quot;ct1&quot;</span>
+    <span class="k">if</span> <span class="n">growth_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">growth_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">if</span> <span class="n">changepoint_dates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">time_postfixes</span> <span class="o">=</span> <span class="n">get_changepoint_string</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">time_postfixes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">changepoint_values</span><span class="p">)</span>
+
+    <span class="n">changepoint_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">changepoint</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">changepoint_values</span><span class="p">):</span>
+        <span class="n">time_feature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">continuous_time_col</span><span class="p">])</span> <span class="o">-</span> <span class="n">changepoint</span>  <span class="c1"># shifted time column (t - c_i)</span>
+        <span class="n">growth_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">growth_func</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">time_feature</span><span class="p">])</span>  <span class="c1"># growth as a function of time</span>
+        <span class="n">time_feature_ind</span> <span class="o">=</span> <span class="n">time_feature</span> <span class="o">&gt;=</span> <span class="mi">0</span>  <span class="c1"># Indicator(t &gt;= c_i), lets changepoint take effect starting at c_i</span>
+        <span class="n">new_col</span> <span class="o">=</span> <span class="n">growth_term</span> <span class="o">*</span> <span class="n">time_feature_ind</span>
+        <span class="n">new_changepoint</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">new_col</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">CHANGEPOINT_COL_PREFIX</span><span class="si">}{</span><span class="n">i</span><span class="si">}{</span><span class="n">time_postfixes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">changepoint_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">changepoint_df</span><span class="p">,</span> <span class="n">new_changepoint</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">changepoint_df</span>
+
+
+<span class="k">def</span> <span class="nf">get_changepoint_values_from_config</span><span class="p">(</span>
+        <span class="n">changepoints_dict</span><span class="p">,</span>
+        <span class="n">time_features_df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Applies the changepoint method specified in `changepoints_dict` to return the changepoint values</span>
+
+<span class="sd">    :param changepoints_dict: Optional[Dict[str, any]]</span>
+<span class="sd">        Specifies the changepoint configuration.</span>
+<span class="sd">        &quot;method&quot;: str</span>
+<span class="sd">            The method to locate changepoints. Valid options:</span>
+<span class="sd">                &quot;uniform&quot;. Places n_changepoints evenly spaced changepoints to allow growth to change.</span>
+<span class="sd">                &quot;custom&quot;. Places changepoints at the specified dates.</span>
+<span class="sd">            Additional keys to provide parameters for each particular method are described below.</span>
+<span class="sd">        &quot;continuous_time_col&quot;: Optional[str]</span>
+<span class="sd">            Column to apply `growth_func` to, to generate changepoint features</span>
+<span class="sd">            Typically, this should match the growth term in the model</span>
+<span class="sd">        &quot;growth_func&quot;: Optional[func]</span>
+<span class="sd">            Growth function (scalar -&gt; scalar). Changepoint features are created</span>
+<span class="sd">            by applying `growth_func` to &quot;continuous_time_col&quot; with offsets.</span>
+<span class="sd">            If None, uses identity function to use `continuous_time_col` directly</span>
+<span class="sd">            as growth term</span>
+<span class="sd">        If changepoints_dict[&quot;method&quot;] == &quot;uniform&quot;, this other key is required:</span>
+<span class="sd">            &quot;n_changepoints&quot;: int</span>
+<span class="sd">                number of changepoints to evenly space across training period</span>
+<span class="sd">        If changepoints_dict[&quot;method&quot;] == &quot;custom&quot;, this other key is required:</span>
+<span class="sd">            &quot;dates&quot;: Iterable[Union[int, float, str, datetime]]</span>
+<span class="sd">                Changepoint dates. Must be parsable by pd.to_datetime.</span>
+<span class="sd">                Changepoints are set at the closest time on or after these dates</span>
+<span class="sd">                in the dataset.</span>
+<span class="sd">    :param time_features_df: pd.Dataframe</span>
+<span class="sd">        training dataset. contains column &quot;continuous_time_col&quot;</span>
+<span class="sd">    :param time_col: str</span>
+<span class="sd">        The column name in `time_features_df` representing time for the time series data</span>
+<span class="sd">        The time column can be anything that can be parsed by pandas DatetimeIndex</span>
+<span class="sd">        Used only in the &quot;custom&quot; method.</span>
+<span class="sd">    :return: np.array</span>
+<span class="sd">        values of df[continuous_time_col] at the changepoints</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">changepoint_values</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">changepoints_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">valid_changepoint_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span><span class="p">]</span>
+        <span class="n">changepoint_method</span> <span class="o">=</span> <span class="n">changepoints_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">)</span>
+        <span class="n">continuous_time_col</span> <span class="o">=</span> <span class="n">changepoints_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;continuous_time_col&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">changepoint_method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;changepoint method must be specified&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">changepoint_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_changepoint_methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;changepoint method </span><span class="si">{</span><span class="n">changepoint_method</span><span class="si">}</span><span class="s2"> not recognized. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Must be one of </span><span class="si">{</span><span class="n">valid_changepoint_methods</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">changepoint_method</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;n_changepoints&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;continuous_time_col&quot;</span><span class="p">:</span> <span class="n">continuous_time_col</span><span class="p">}</span> <span class="k">if</span> <span class="n">continuous_time_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+                <span class="n">changepoint_values</span> <span class="o">=</span> <span class="n">get_evenly_spaced_changepoints_values</span><span class="p">(</span>
+                    <span class="n">df</span><span class="o">=</span><span class="n">time_features_df</span><span class="p">,</span>
+                    <span class="n">n_changepoints</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;n_changepoints&quot;</span><span class="p">],</span>
+                    <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">changepoint_method</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">time_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;time_col&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_col</span>
+            <span class="k">if</span> <span class="n">continuous_time_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s2">&quot;continuous_time_col&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">continuous_time_col</span>
+            <span class="n">changepoint_values</span> <span class="o">=</span> <span class="n">get_custom_changepoints_values</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">time_features_df</span><span class="p">,</span>
+                <span class="n">changepoint_dates</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;dates&quot;</span><span class="p">],</span>
+                <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">changepoint_values</span>
+
+
+<span class="k">def</span> <span class="nf">get_changepoint_features_and_values_from_config</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">changepoints_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">origin_for_time_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts changepoints from changepoint configuration and input data</span>
+
+<span class="sd">    :param df: pd.DataFrame</span>
+<span class="sd">        Training data. A data frame which includes the timestamp and value columns</span>
+<span class="sd">    :param time_col: str</span>
+<span class="sd">        The column name in `df` representing time for the time series data</span>
+<span class="sd">        The time column can be anything that can be parsed by pandas DatetimeIndex</span>
+<span class="sd">    :param changepoints_dict: Optional[Dict[str, any]]</span>
+<span class="sd">        Specifies the changepoint configuration.</span>
+<span class="sd">        &quot;method&quot;: str</span>
+<span class="sd">            The method to locate changepoints. Valid options:</span>
+<span class="sd">                &quot;uniform&quot;. Places n_changepoints evenly spaced changepoints to allow growth to change.</span>
+<span class="sd">                &quot;custom&quot;. Places changepoints at the specified dates.</span>
+<span class="sd">            Additional keys to provide parameters for each particular method are described below.</span>
+<span class="sd">        &quot;continuous_time_col&quot;: Optional[str]</span>
+<span class="sd">            Column to apply `growth_func` to, to generate changepoint features</span>
+<span class="sd">            Typically, this should match the growth term in the model</span>
+<span class="sd">        &quot;growth_func&quot;: Optional[func]</span>
+<span class="sd">            Growth function (scalar -&gt; scalar). Changepoint features are created</span>
+<span class="sd">            by applying `growth_func` to &quot;continuous_time_col&quot; with offsets.</span>
+<span class="sd">            If None, uses identity function to use `continuous_time_col` directly</span>
+<span class="sd">            as growth term</span>
+<span class="sd">        If changepoints_dict[&quot;method&quot;] == &quot;uniform&quot;, this other key is required:</span>
+<span class="sd">            &quot;n_changepoints&quot;: int</span>
+<span class="sd">                number of changepoints to evenly space across training period</span>
+<span class="sd">        If changepoints_dict[&quot;method&quot;] == &quot;custom&quot;, this other key is required:</span>
+<span class="sd">            &quot;dates&quot;: Iterable[Union[int, float, str, datetime]]</span>
+<span class="sd">                Changepoint dates. Must be parsable by pd.to_datetime.</span>
+<span class="sd">                Changepoints are set at the closest time on or after these dates</span>
+<span class="sd">                in the dataset.</span>
+<span class="sd">    :param origin_for_time_vars: Optional[float]</span>
+<span class="sd">        The time origin used to create continuous variables for time</span>
+<span class="sd">    :return: Dict[str, any]</span>
+<span class="sd">        Dictionary with the requested changepoints and associated information</span>
+<span class="sd">        changepoint_df: pd.DataFrame, shape (df.shape[0], len(changepoints))</span>
+<span class="sd">            Changepoint features for modeling the training data</span>
+<span class="sd">        changepoint_values: array-like</span>
+<span class="sd">            List of changepoint values (on same scale as df[continuous_time_col])</span>
+<span class="sd">            Can be used to generate changepoints for prediction.</span>
+<span class="sd">        continuous_time_col: Optional[str]</span>
+<span class="sd">            Name of continuous time column in df</span>
+<span class="sd">            growth_func is applied to this column to generate growth term.</span>
+<span class="sd">            If None, uses &quot;ct1&quot;, linear growth</span>
+<span class="sd">            Can be used to generate changepoints for prediction.</span>
+<span class="sd">        growth_func: Optional[callable]</span>
+<span class="sd">            Growth function for defining changepoints (scalar -&gt; scalar).</span>
+<span class="sd">            If None, uses identity function to use continuous_time_col directly</span>
+<span class="sd">            as growth term.</span>
+<span class="sd">            Can be used to generate changepoints for prediction.</span>
+<span class="sd">        changepoint_cols: List[str]</span>
+<span class="sd">            Names of the changepoint columns for modeling</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># extracts changepoint values</span>
+    <span class="k">if</span> <span class="n">changepoints_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">changepoint_values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">continuous_time_col</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">growth_func</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">origin_for_time_vars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">origin_for_time_vars</span> <span class="o">=</span> <span class="n">get_default_origin_for_time_vars</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="p">)</span>
+        <span class="n">time_features_df</span> <span class="o">=</span> <span class="n">build_time_features_df</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+            <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">)</span>
+
+        <span class="n">changepoint_values</span> <span class="o">=</span> <span class="n">get_changepoint_values_from_config</span><span class="p">(</span>
+            <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">,</span>
+            <span class="n">time_features_df</span><span class="o">=</span><span class="n">time_features_df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)</span>  <span class="c1"># datetime column generated by `build_time_features_df`</span>
+        <span class="n">continuous_time_col</span> <span class="o">=</span> <span class="n">changepoints_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;continuous_time_col&quot;</span><span class="p">)</span>
+        <span class="n">growth_func</span> <span class="o">=</span> <span class="n">changepoints_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;growth_func&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extracts changepoint column names</span>
+    <span class="k">if</span> <span class="n">changepoint_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">changepoint_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">changepoint_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">changepoints_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+            <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;dates&quot;</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+            <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="n">get_evenly_spaced_changepoints_dates</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">n_changepoints</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;n_changepoints&quot;</span><span class="p">]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># the changepoint features does not include the growth term</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">changepoint_df</span> <span class="o">=</span> <span class="n">get_changepoint_features</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">time_features_df</span><span class="p">,</span>
+            <span class="n">changepoint_values</span><span class="o">=</span><span class="n">changepoint_values</span><span class="p">,</span>
+            <span class="n">continuous_time_col</span><span class="o">=</span><span class="n">continuous_time_col</span><span class="p">,</span>
+            <span class="n">growth_func</span><span class="o">=</span><span class="n">growth_func</span><span class="p">,</span>
+            <span class="n">changepoint_dates</span><span class="o">=</span><span class="n">changepoint_dates</span><span class="p">)</span>
+        <span class="n">changepoint_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">changepoint_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;changepoint_df&quot;</span><span class="p">:</span> <span class="n">changepoint_df</span><span class="p">,</span>
+        <span class="s2">&quot;changepoint_values&quot;</span><span class="p">:</span> <span class="n">changepoint_values</span><span class="p">,</span>
+        <span class="s2">&quot;continuous_time_col&quot;</span><span class="p">:</span> <span class="n">continuous_time_col</span><span class="p">,</span>
+        <span class="s2">&quot;growth_func&quot;</span><span class="p">:</span> <span class="n">growth_func</span><span class="p">,</span>
+        <span class="s2">&quot;changepoint_cols&quot;</span><span class="p">:</span> <span class="n">changepoint_cols</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">get_changepoint_dates_from_changepoints_dict</span><span class="p">(</span>
+        <span class="n">changepoints_dict</span><span class="p">,</span>
+        <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the changepoint dates from ``changepoints_dict``</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    changepoints_dict : `dict` or `None`</span>
+<span class="sd">        The ``changepoints_dict`` which is compatible with</span>
+<span class="sd">        `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`</span>
+<span class="sd">    df : `pandas.DataFrame` or `None`, default `None`</span>
+<span class="sd">        The data df to put changepoints on.</span>
+<span class="sd">    time_col : `str` or `None`, default `None`</span>
+<span class="sd">        The column name of time column in ``df``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    changepoint_dates : `list`</span>
+<span class="sd">        List of changepoint dates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">changepoints_dict</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="s2">&quot;method&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">changepoints_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="ow">or</span> <span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+        <span class="c1"># changepoints_dict[&quot;dates&quot;] is `Iterable`, converts to list</span>
+        <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;dates&quot;</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;uniform&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">time_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;When the method of ``changepoints_dict`` is &#39;uniform&#39;, ``df`` and &quot;</span>
+                             <span class="s2">&quot;``time_col`` must be provided.&quot;</span><span class="p">)</span>
+        <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="n">get_evenly_spaced_changepoints_dates</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">n_changepoints</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">[</span><span class="s2">&quot;n_changepoints&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="c1"># the output is `pandas.Series`, converts to list</span>
+        <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="n">changepoint_dates</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The method of ``changepoints_dict`` can not be &#39;auto&#39;. &quot;</span>
+                         <span class="s2">&quot;Please specify or detect change points first.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">changepoint_dates</span>
+
+
+<div class="viewcode-block" id="add_event_window_multi"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.add_event_window_multi">[docs]</a><span class="k">def</span> <span class="nf">add_event_window_multi</span><span class="p">(</span>
+        <span class="n">event_df_dict</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">label_col</span><span class="p">,</span>
+        <span class="n">time_delta</span><span class="o">=</span><span class="s2">&quot;1D&quot;</span><span class="p">,</span>
+        <span class="n">pre_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">post_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;For a given dictionary of events data frames with a time_col and label_col</span>
+<span class="sd">    it adds shifted events prior and after the given events</span>
+<span class="sd">    For example if the event data frame includes the row &#39;2019-12-25, Christmas&#39; as a row</span>
+<span class="sd">    the function will produce dataframes with the events &#39;2019-12-24, Christmas&#39; and &#39;2019-12-26, Christmas&#39; if</span>
+<span class="sd">    pre_num and post_num are 1 or more.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    event_df_dict: `dict` [`str`, `pandas.DataFrame`]</span>
+<span class="sd">        A dictionary of events data frames</span>
+<span class="sd">        with each having two columns: ``time_col`` and ``label_col``.</span>
+<span class="sd">    time_col: `str`</span>
+<span class="sd">        The column with the timestamp of the events.</span>
+<span class="sd">        This can be daily but does not have to be.</span>
+<span class="sd">    label_col : `str`</span>
+<span class="sd">        The column with labels for the events.</span>
+<span class="sd">    time_delta : `str`, default &quot;1D&quot;</span>
+<span class="sd">        The amount of the shift for each unit specified by a string</span>
+<span class="sd">        e.g. &#39;1D&#39; stands for one day delta</span>
+<span class="sd">    pre_num : `int`, default 1</span>
+<span class="sd">        The number of events to be added prior to the given event for each event in df.</span>
+<span class="sd">    post_num: `int`, default 1</span>
+<span class="sd">        The number of events to be added after to the given event for each event in df.</span>
+<span class="sd">    pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None</span>
+<span class="sd">        Optionally override ``pre_num`` and ``post_num`` for each key in ``event_df_dict``.</span>
+<span class="sd">        For example, if ``event_df_dict`` has keys &quot;US&quot; and &quot;India&quot;, this parameter</span>
+<span class="sd">        can be set to ``pre_post_num_dict = {&quot;US&quot;: [1, 3], &quot;India&quot;: [1, 2]}``,</span>
+<span class="sd">        denoting that the &quot;US&quot; ``pre_num`` is 1 and ``post_num`` is 3, and &quot;India&quot; ``pre_num`` is 1</span>
+<span class="sd">        and ``post_num`` is 2. Keys not specified by ``pre_post_num_dict`` use the default given by</span>
+<span class="sd">        ``pre_num`` and ``post_num``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : `dict` [`str`, `pandas.DataFrame`]</span>
+<span class="sd">        A dictionary of dataframes for each needed shift. For example if pre_num=2 and post_num=3.</span>
+<span class="sd">        2 + 3 = 5 data frames will be stored in the return dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pre_post_num_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pre_post_num_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">shifted_df_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">event_df_key</span><span class="p">,</span> <span class="n">event_df</span> <span class="ow">in</span> <span class="n">event_df_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">event_df_key</span> <span class="ow">in</span> <span class="n">pre_post_num_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">pre_num0</span> <span class="o">=</span> <span class="n">pre_post_num_dict</span><span class="p">[</span><span class="n">event_df_key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">post_num0</span> <span class="o">=</span> <span class="n">pre_post_num_dict</span><span class="p">[</span><span class="n">event_df_key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pre_num0</span> <span class="o">=</span> <span class="n">pre_num</span>
+            <span class="n">post_num0</span> <span class="o">=</span> <span class="n">post_num</span>
+
+        <span class="n">df_dict0</span> <span class="o">=</span> <span class="n">add_event_window</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">event_df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">label_col</span><span class="o">=</span><span class="n">label_col</span><span class="p">,</span>
+            <span class="n">time_delta</span><span class="o">=</span><span class="n">time_delta</span><span class="p">,</span>
+            <span class="n">pre_num</span><span class="o">=</span><span class="n">pre_num0</span><span class="p">,</span>
+            <span class="n">post_num</span><span class="o">=</span><span class="n">post_num0</span><span class="p">,</span>
+            <span class="n">events_name</span><span class="o">=</span><span class="n">event_df_key</span><span class="p">)</span>
+
+        <span class="n">shifted_df_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">df_dict0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">shifted_df_dict</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_fourier_col_name</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">function_name</span><span class="o">=</span><span class="s2">&quot;sin&quot;</span><span class="p">,</span> <span class="n">seas_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns column name corresponding to a particular fourier term, as returned by fourier_series_fcn</span>
+
+<span class="sd">    :param k: int</span>
+<span class="sd">        fourier term</span>
+<span class="sd">    :param col_name: str</span>
+<span class="sd">        column in the dataframe used to generate fourier series</span>
+<span class="sd">    :param function_name: str</span>
+<span class="sd">        sin or cos</span>
+<span class="sd">    :param seas_name: strcols_interact</span>
+<span class="sd">        appended to new column names added for fourier terms</span>
+<span class="sd">    :return: str</span>
+<span class="sd">        column name in DataFrame returned by fourier_series_fcn</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># patsy doesn&#39;t allow &quot;.&quot; in formula term. Replace &quot;.&quot; with &quot;_&quot; rather than quoting &quot;Q()&quot; all fourier terms</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function_name</span><span class="si">}{</span><span class="n">k</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">seas_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">seas_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">name</span>
+
+
+<span class="k">def</span> <span class="nf">fourier_series_fcn</span><span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seas_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a function which creates fourier series matrix for a column of an input df</span>
+<span class="sd">    :param col_name: str</span>
+<span class="sd">        is the column name in the dataframe which is to be used for</span>
+<span class="sd">        generating fourier series. It needs to be a continuous variable.</span>
+<span class="sd">    :param period: float</span>
+<span class="sd">        the period of the fourier series</span>
+<span class="sd">    :param order: int</span>
+<span class="sd">        the order of the fourier series</span>
+<span class="sd">    :param seas_name: Optional[str]</span>
+<span class="sd">        appended to new column names added for fourier terms.</span>
+<span class="sd">        Useful to distinguish multiple fourier</span>
+<span class="sd">        series on same col_name with different periods.</span>
+<span class="sd">    :return: callable</span>
+<span class="sd">        a function which can be applied to any data.frame df</span>
+<span class="sd">        with a column name being equal to col_name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">fs_func</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">out_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="n">out_cols</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The data frame does not have the column: &quot;</span> <span class="o">+</span> <span class="n">col_name</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">sin_col_name</span> <span class="o">=</span> <span class="n">get_fourier_col_name</span><span class="p">(</span>
+                <span class="n">k</span><span class="p">,</span>
+                <span class="n">col_name</span><span class="p">,</span>
+                <span class="n">function_name</span><span class="o">=</span><span class="s2">&quot;sin&quot;</span><span class="p">,</span>
+                <span class="n">seas_name</span><span class="o">=</span><span class="n">seas_name</span><span class="p">)</span>
+            <span class="n">cos_col_name</span> <span class="o">=</span> <span class="n">get_fourier_col_name</span><span class="p">(</span>
+                <span class="n">k</span><span class="p">,</span>
+                <span class="n">col_name</span><span class="p">,</span>
+                <span class="n">function_name</span><span class="o">=</span><span class="s2">&quot;cos&quot;</span><span class="p">,</span>
+                <span class="n">seas_name</span><span class="o">=</span><span class="n">seas_name</span><span class="p">)</span>
+            <span class="n">out_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sin_col_name</span><span class="p">)</span>
+            <span class="n">out_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cos_col_name</span><span class="p">)</span>
+            <span class="n">omega</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">period</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">x</span>
+            <span class="n">out_df</span><span class="p">[</span><span class="n">sin_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">out_df</span><span class="p">[</span><span class="n">cos_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="n">out_df</span><span class="p">,</span> <span class="s2">&quot;cols&quot;</span><span class="p">:</span> <span class="n">out_cols</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">fs_func</span>
+
+
+<span class="k">def</span> <span class="nf">fourier_series_multi_fcn</span><span class="p">(</span>
+        <span class="n">col_names</span><span class="p">,</span>
+        <span class="n">periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">orders</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seas_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a func which adds multiple fourier series with multiple periods.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    col_names : `list` [`str`]</span>
+<span class="sd">        the column names which are to be used to generate Fourier series.</span>
+<span class="sd">        Each column can have its own period and order.</span>
+<span class="sd">    periods:  `list` [`float`] or None</span>
+<span class="sd">        the periods corresponding to each column given in col_names</span>
+<span class="sd">    orders : `list` [`int`] or None</span>
+<span class="sd">        the orders for each of the Fourier series</span>
+<span class="sd">    seas_names : `list` [`str`] or None</span>
+<span class="sd">        Appended to the Fourier series name.</span>
+<span class="sd">        If not provided (None) col_names will be used directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">col_names</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">periods</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">periods</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">k</span>
+    <span class="k">if</span> <span class="n">orders</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">orders</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;periods and orders must have the same length.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">fs_multi_func</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="n">out_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">out_cols</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">col_name</span> <span class="o">=</span> <span class="n">col_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">period</span> <span class="o">=</span> <span class="n">periods</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">orders</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">seas_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">seas_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">seas_name</span> <span class="o">=</span> <span class="n">seas_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">func0</span> <span class="o">=</span> <span class="n">fourier_series_fcn</span><span class="p">(</span>
+                <span class="n">col_name</span><span class="o">=</span><span class="n">col_name</span><span class="p">,</span>
+                <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span>
+                <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span>
+                <span class="n">seas_name</span><span class="o">=</span><span class="n">seas_name</span><span class="p">)</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="n">func0</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+            <span class="n">fs_df</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span>
+            <span class="n">fs_cols</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">]</span>
+            <span class="n">out_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">out_df</span><span class="p">,</span> <span class="n">fs_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">out_cols</span> <span class="o">=</span> <span class="n">out_cols</span> <span class="o">+</span> <span class="n">fs_cols</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="n">out_df</span><span class="p">,</span> <span class="s2">&quot;cols&quot;</span><span class="p">:</span> <span class="n">out_cols</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">fs_multi_func</span>
+
+
+<span class="k">def</span> <span class="nf">signed_pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Takes the absolute value of x and raises it to power of y.</span>
+<span class="sd">    Then it multiplies the result by sign of x.</span>
+<span class="sd">    This guarantees this function is non-decreasing.</span>
+<span class="sd">    This is useful in many contexts e.g. statistical modeling.</span>
+<span class="sd">    :param x: the base number which can be any real number</span>
+<span class="sd">    :param y: the power which can be any real number</span>
+<span class="sd">    :return: returns abs(x) to power of y multiplied by sign of x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">signed_pow_fcn</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">signed_pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="n">signed_sqrt</span> <span class="o">=</span> <span class="n">signed_pow_fcn</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">signed_sq</span> <span class="o">=</span> <span class="n">signed_pow_fcn</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">logistic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">growth_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">floor</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">inflection_point</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Evaluates the logistic function at x with the specified growth rate,</span>
+<span class="sd">        capacity, floor, and inflection point.</span>
+
+<span class="sd">    :param x: value to evaluate the logistic function</span>
+<span class="sd">    :type x: float</span>
+<span class="sd">    :param growth_rate: growth rate</span>
+<span class="sd">    :type growth_rate: float</span>
+<span class="sd">    :param capacity: max value (carrying capacity)</span>
+<span class="sd">    :type capacity: float</span>
+<span class="sd">    :param floor: min value (lower bound)</span>
+<span class="sd">    :type floor: float</span>
+<span class="sd">    :param inflection_point: the t value of the inflection point</span>
+<span class="sd">    :type inflection_point: float</span>
+<span class="sd">    :return: value of the logistic function at t</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">floor</span> <span class="o">+</span> <span class="n">capacity</span> <span class="o">*</span> <span class="n">expit</span><span class="p">(</span><span class="n">growth_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">inflection_point</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">get_logistic_func</span><span class="p">(</span><span class="n">growth_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">floor</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">inflection_point</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a function that evaluates the logistic function at t with the</span>
+<span class="sd">        specified growth rate, capacity, floor, and inflection point.</span>
+
+<span class="sd">        f(x) = floor + capacity / (1 + exp(-growth_rate * (x - inflection_point)))</span>
+
+<span class="sd">    :param growth_rate: growth rate</span>
+<span class="sd">    :type growth_rate: float</span>
+<span class="sd">    :param capacity: max value (carrying capacity)</span>
+<span class="sd">    :type capacity: float</span>
+<span class="sd">    :param floor: min value (lower bound)</span>
+<span class="sd">    :type floor: float</span>
+<span class="sd">    :param inflection_point: the t value of the inflection point</span>
+<span class="sd">    :type inflection_point: float</span>
+<span class="sd">    :return: the logistic function with specified parameters</span>
+<span class="sd">    :rtype: callable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">logistic</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">growth_rate</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">inflection_point</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

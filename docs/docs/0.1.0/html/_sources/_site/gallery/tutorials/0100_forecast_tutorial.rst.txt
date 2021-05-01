@@ -1,0 +1,1671 @@
+.. only:: html
+
+    .. note::
+        :class: sphx-glr-download-link-note
+
+        Click :ref:`here <sphx_glr_download_gallery_tutorials_0100_forecast_tutorial.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_gallery_tutorials_0100_forecast_tutorial.py:
+
+
+Tune your first forecast model
+==============================
+
+This is a basic tutorial for creating and tuning a forecast model.
+It is intended to provide a basic sense of a forecast process without
+assuming background knowledge in forecasting.
+
+You can use the ``PROPHET`` or ``SILVERKITE`` model.
+In this tutorial, we focus on ``SILVERKITE``.
+However, the basic ideas of tuning are similar to both models.
+You may see detailed information about ``PROPHET`` at
+`Prophet <../../pages/model_components/0100_introduction.html#prophet>`_.
+
+
+``SILVERKITE`` decomposes time series into various components, and it
+creates time-based features, autoregressive features,
+together with user-provided features such as macro-economic features
+and their interactions, then performs a machine learning regression
+model to learn the relationship between the time series and these
+features. The forecast is based on the learned relationship and
+the future values of these features. Therefore, including the correct
+features is the key to success.
+
+Common features include:
+
+    Datetime derivatives:
+        Including features derived from datetime such as ``day of year``,
+        ``hour of day``, ``weekday``, ``is_weekend`` and etc.
+        These features are useful in capturing special patterns.
+        For example, the patterns of weekdays and weekends are different
+        for most business related time series, and this can be modeled with ``is_weekend``.
+    Growth:
+        First defines the basic feature ``ct1`` that counts how
+        long has passed in terms of years (could be fraction)
+        since the first day of training data.
+        For example, if the training data starts with "2018-01-01",
+        then the date has ``ct1=0.0``, and "2018-01-02" has ``ct1=1/365``.
+        "2019-01-01" has ``ct1=1.0``. This ``ct1`` can be as granular
+        as needed. A separate growth function can be applied to ``ct1``
+        to support different types of growth model. For example, ``ct2``
+        is defined as the square of ``ct1`` to model quadratic growth.
+    Trend:
+        Trend describes the average tendency of the time series.
+        It is defined through the growth term with possible changepoints.
+        At every changepoint, the growth rate could change (faster or slower).
+        For example, if ``ct1`` (linear growth) is used with changepoints,
+        the trend is modeled as piece-wise linear.
+    Seasonality:
+        Seasonality describes the periodical pattern of the time series.
+        It contains multiple levels including daily seasonality, weekly seasonality,
+        monthly seasonality, quarterly seasonality and yearly seasonality.
+        Seasonality are defined through Fourier series with different orders.
+        The greater the order, the more detailed periodical pattern the model
+        can learn. However, an order that is too large can lead to overfitting.
+    Events:
+        Events include holidays and other short-term occurrences that could
+        temporarily affect the time series, such as Thanksgiving long weekend.
+        Typically, events are regular and repeat at know times in the future.
+        These features made of indicators that covers the event day and their neighbor days.
+    Autoregression:
+        Autoregressive features include the time series observations
+        in the past and their aggregations. For example, the past day's observation,
+        the same weekday on the past week, or the average of the past 7 days, etc.
+        can be used. Note that autoregression features are very useful in short term
+        forecasts, however, this should be avoided in long term forecast.
+        The reason is that long-term forecast focuses more on the correctness
+        of trend, seasonality and events. The lags and autoregressive terms in
+        a long-term forecast are calculated based on the forecasted values.
+        The further we forecast into the future, the more forecasted values we
+        need to create the autoregressive terms, making the forecast less stable.
+    Custom:
+        Extra features that are relevant to the time series such as macro-ecomonic
+        features that are expected to affect the time series.
+        Note that these features need to be manually provided for both
+        the training and forecasting periods.
+    Interactions:
+        Any interaction between the features above.
+
+Now let's use an example to go through the full forecasting and tuning process.
+In this example, we'll load a dataset representing ``log(daily page views)``
+on the Wikipedia page for Peyton Manning.
+It contains values from 2007-12-10 to 2016-01-20. More dataset info
+`here <https://facebook.github.io/prophet/docs/quick_start.html>`_.
+
+
+.. code-block:: default
+   :lineno-start: 87
+
+
+    import datetime
+
+    import numpy as np
+    import pandas as pd
+    import plotly
+
+    from greykite.algo.changepoint.adalasso.changepoint_detector import ChangepointDetector
+    from greykite.algo.forecast.silverkite.constants.silverkite_holiday import SilverkiteHoliday
+    from greykite.algo.forecast.silverkite.constants.silverkite_seasonality import SilverkiteSeasonalityEnum
+    from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import cols_interact
+    from greykite.common import constants as cst
+    from greykite.common.features.timeseries_features import build_time_features_df
+    from greykite.common.features.timeseries_features import convert_date_to_continuous_time
+    from greykite.framework.benchmark.data_loader_ts import DataLoaderTS
+    from greykite.framework.templates.autogen.forecast_config import EvaluationPeriodParam
+    from greykite.framework.templates.autogen.forecast_config import ForecastConfig
+    from greykite.framework.templates.autogen.forecast_config import MetadataParam
+    from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
+    from greykite.framework.templates.forecaster import Forecaster
+    from greykite.framework.templates.model_templates import ModelTemplateEnum
+    from greykite.framework.utils.result_summary import summarize_grid_search_results
+
+
+    # Loads dataset into UnivariateTimeSeries
+    dl = DataLoaderTS()
+    ts = dl.load_peyton_manning_ts()
+    df = ts.df  # cleaned pandas.DataFrame
+
+
+
+
+
+
+
+
+Exploratory data analysis (EDA)
+--------------------------------
+After reading in a time series, we could first do some exploratory data analysis.
+The `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries` class is
+used to store a timeseries and perform EDA.
+
+
+.. code-block:: default
+   :lineno-start: 122
+
+
+    # describe
+    print(ts.describe_time_col())
+    print(ts.describe_value_col())
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    {'data_points': 2964, 'mean_increment_secs': 86400.0, 'min_timestamp': Timestamp('2007-12-10 00:00:00'), 'max_timestamp': Timestamp('2016-01-20 00:00:00')}
+    count    2905.000000
+    mean        8.138958
+    std         0.845957
+    min         5.262690
+    25%         7.514800
+    50%         7.997999
+    75%         8.580168
+    max        12.846747
+    Name: y, dtype: float64
+
+
+
+
+The df has two columns, time column "ts" and value column "y".
+The data is daily that ranges from 2007-12-10 to 2016-01-20.
+The data value ranges from 5.26 to 12.84
+
+Let's plot the original timeseries.
+(The interactive plot is generated by ``plotly``: **click to zoom!**)
+
+
+.. code-block:: default
+   :lineno-start: 134
+
+
+    fig = ts.plot()
+    plotly.io.show(fig)
+
+
+
+
+.. raw:: html
+    :file: /Users/kayang/IdeaProjects/github/greykite/docs/gallery/tutorials/images/sphx_glr_0100_forecast_tutorial_001.html
+
+
+
+
+
+A few exploratory plots can be plotted to reveal the time series's properties.
+The `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries` class
+has a very powerful plotting tool
+`~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays`.
+A tutorial of using the function can be found at `Seasonality <../quickstart/0300_seasonality.html>`_.
+
+Baseline model
+--------------------
+A simple forecast can be created on the data set,
+see details in `Simple Forecast <../quickstart/0100_simple_forecast.html>`_.
+Note that if you do not provide any extra parameters, all model parameters are by default.
+The default parameters are chosen conservatively, so consider this a baseline
+model to assess forecast difficulty and make further improvements if necessary.
+
+
+.. code-block:: default
+   :lineno-start: 153
+
+
+    # Specifies dataset information
+    metadata = MetadataParam(
+        time_col="ts",  # name of the time column
+        value_col="y",  # name of the value column
+        freq="D"  # "H" for hourly, "D" for daily, "W" for weekly, etc.
+    )
+
+    forecaster = Forecaster()
+    result = forecaster.run_forecast_config(
+        df=df,
+        config=ForecastConfig(
+            model_template=ModelTemplateEnum.SILVERKITE.name,
+            forecast_horizon=365,  # forecasts 365 steps ahead
+            coverage=0.95,  # 95% prediction intervals
+            metadata_param=metadata
+        )
+    )
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Fitting 3 folds for each of 1 candidates, totalling 3 fits
+
+
+
+
+For a detailed documentation about the output from
+:py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`,
+see :doc:`/pages/stepbystep/0500_output`. Here we could plot the forecast.
+
+
+.. code-block:: default
+   :lineno-start: 176
+
+
+    forecast = result.forecast
+    fig = forecast.plot()
+    plotly.io.show(fig)
+
+
+
+
+.. raw:: html
+    :file: /Users/kayang/IdeaProjects/github/greykite/docs/gallery/tutorials/images/sphx_glr_0100_forecast_tutorial_002.html
+
+
+
+
+
+Model performance evaluation
+----------------------------
+We can see the forecast fits the existing data well; however, we do not
+have a good ground truth to assess how well it predicts into the future.
+
+Train-test-split
+^^^^^^^^^^^^^^^^
+The typical way to evaluate model performance is to reserve part of the training
+data and use it to measure the model performance.
+Because we always predict the future in a time series forecasting problem,
+we reserve data from the end of training set to measure the performance
+of our forecasts. This is called a time series train test split.
+
+By default, the results returned by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`
+creates a time series train test split and stores the test result in ``result.backtest``.
+The reserved testing data by default has the
+same length as the forecast horizon. We can access the evaluation results:
+
+
+.. code-block:: default
+   :lineno-start: 199
+
+
+    pd.DataFrame(result.backtest.test_evaluation, index=["Value"]).transpose()  # formats dictionary as a pd.DataFrame
+
+
+
+
+
+
+.. only:: builder_html
+
+    .. raw:: html
+
+        <div>
+        <style scoped>
+            .dataframe tbody tr th:only-of-type {
+                vertical-align: middle;
+            }
+
+            .dataframe tbody tr th {
+                vertical-align: top;
+            }
+
+            .dataframe thead th {
+                text-align: right;
+            }
+        </style>
+        <table border="1" class="dataframe">
+          <thead>
+            <tr style="text-align: right;">
+              <th></th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>CORR</th>
+              <td>0.756897</td>
+            </tr>
+            <tr>
+              <th>R2</th>
+              <td>-0.695154</td>
+            </tr>
+            <tr>
+              <th>MSE</th>
+              <td>0.865076</td>
+            </tr>
+            <tr>
+              <th>RMSE</th>
+              <td>0.930095</td>
+            </tr>
+            <tr>
+              <th>MAE</th>
+              <td>0.856716</td>
+            </tr>
+            <tr>
+              <th>MedAE</th>
+              <td>0.840022</td>
+            </tr>
+            <tr>
+              <th>MAPE</th>
+              <td>11.3071</td>
+            </tr>
+            <tr>
+              <th>MedAPE</th>
+              <td>11.2497</td>
+            </tr>
+            <tr>
+              <th>sMAPE</th>
+              <td>5.318</td>
+            </tr>
+            <tr>
+              <th>Q80</th>
+              <td>0.187063</td>
+            </tr>
+            <tr>
+              <th>Q95</th>
+              <td>0.0664152</td>
+            </tr>
+            <tr>
+              <th>Q99</th>
+              <td>0.0342425</td>
+            </tr>
+            <tr>
+              <th>OutsideTolerance1p</th>
+              <td>0.986226</td>
+            </tr>
+            <tr>
+              <th>OutsideTolerance2p</th>
+              <td>0.972452</td>
+            </tr>
+            <tr>
+              <th>OutsideTolerance3p</th>
+              <td>0.961433</td>
+            </tr>
+            <tr>
+              <th>OutsideTolerance4p</th>
+              <td>0.933884</td>
+            </tr>
+            <tr>
+              <th>OutsideTolerance5p</th>
+              <td>0.892562</td>
+            </tr>
+            <tr>
+              <th>Outside Tolerance (fraction)</th>
+              <td>None</td>
+            </tr>
+            <tr>
+              <th>R2_null_model_score</th>
+              <td>None</td>
+            </tr>
+            <tr>
+              <th>Prediction Band Width (%)</th>
+              <td>28.276</td>
+            </tr>
+            <tr>
+              <th>Prediction Band Coverage (fraction)</th>
+              <td>0.785124</td>
+            </tr>
+            <tr>
+              <th>Coverage: Lower Band</th>
+              <td>0.754821</td>
+            </tr>
+            <tr>
+              <th>Coverage: Upper Band</th>
+              <td>0.030303</td>
+            </tr>
+            <tr>
+              <th>Coverage Diff: Actual_Coverage - Intended_Coverage</th>
+              <td>-0.164876</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <br />
+        <br />
+
+Evaluation metrics
+^^^^^^^^^^^^^^^^^^
+From here we can see a list of metrics that measure the model performance on the test data.
+You may choose one or a few metrics to focus on. Typical metrics include:
+
+  MSE:
+      Mean squared error, the average squared error. Could be affected by extreme values.
+
+  RMSE:
+      Root mean squared error, the square root of MSE.
+
+  MAE:
+      Mean absolute error, the average of absolute error. Could be affected by extreme values.
+
+  MedAE:
+      Median absolute error, the median of absolute error. Less affected by extreme values.
+
+  MAPE:
+      Mean absolute percent error, measures the error percent with respective to the true values.
+      This is useful when you would like to consider the relative error instead of the absolute error.
+      For example, an error of 1 is considered as 10% for a true observation of 10, but as 1% for a true
+      observation of 100. This is the default metric we like.
+
+  MedAPE:
+      Median absolute percent error, the median version of MAPE, less affected by extreme values.
+
+Let's use MAPE as our metric in this example. Looking at these results,
+you may have a basic sense of how the model is performing on the unseen test data.
+On average, the baseline model's prediction is 11.3% away from the true values.
+
+Time series cross-validation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Forecast quality depends a lot of the evaluation time window.
+The evaluation window selected above might happen to be a relatively easy/hard period to predict.
+Thus, it is more robust to evaluate over a longer time window when dataset size allows.
+Let's consider a more general way of evaluating a forecast model: time series cross-validation.
+
+Time series cross-validation is based on a time series rolling split.
+Let's say we would like to perform an evaluation with a 3-fold cross-validation,
+The whole training data is split in 3 different ways.
+Since our forecast horizon is 365 days, we do:
+
+    First fold:
+      Train from 2007-12-10 to 2013-01-20, forecast from
+      2013-01-21 to 2014-01-20, and compare the forecast with the actual.
+    Second fold:
+      Train from 2007-12-10 to 2014-01-20, forecast from
+      2014-01-21 to 2015-01-20, and compare the forecast with the actual.
+    Third fold:
+      Train from 2007-12-10 to 2015-01-20, forecast from
+      2015-01-21 to 2016-01-20, and compare the forecast with the actual.
+
+The split could be more flexible, for example, the testing periods could have gaps.
+For more details about evaluation period configuration, see
+`Evaluation Period <../../pages/stepbystep/0400_configuration.html#evaluation-period>`_.
+The forecast model's performance will be the average of the three evaluations
+on the forecasts.
+
+By default, the results returned by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`
+also runs time series cross-validation internally.
+You are allowed to configure the cross-validation splits, as shown below.
+Here note that the ``test_horizon`` are reserved from the back of
+the data and not used for cross-validation.
+This part of testing data can further evaluate the model performance
+besides the cross-validation result, and is available for plotting.
+
+
+.. code-block:: default
+   :lineno-start: 268
+
+
+    # Defines the cross-validation config
+    evaluation_period = EvaluationPeriodParam(
+        test_horizon=365,             # leaves 365 days as testing data
+        cv_horizon=365,               # each cv test size is 365 days (same as forecast horizon)
+        cv_max_splits=3,              # 3 folds cv
+        cv_min_train_periods=365 * 4  # uses at least 4 years for training because we have 8 years data
+    )
+
+    # Runs the forecast
+    result = forecaster.run_forecast_config(
+        df=df,
+        config=ForecastConfig(
+            model_template=ModelTemplateEnum.SILVERKITE.name,
+            forecast_horizon=365,  # forecasts 365 steps ahead
+            coverage=0.95,  # 95% prediction intervals
+            metadata_param=metadata,
+            evaluation_period_param=evaluation_period
+        )
+    )
+
+    # Summarizes the cv result
+    cv_results = summarize_grid_search_results(
+        grid_search=result.grid_search,
+        decimals=1,
+        # The below saves space in the printed output. Remove to show all available metrics and columns.
+        cv_report_metrics=None,
+        column_order=["rank", "mean_test", "split_test", "mean_train", "split_train", "mean_fit_time", "mean_score_time", "params"])
+    # Transposes to save space in the printed output
+    cv_results["params"] = cv_results["params"].astype(str)
+    cv_results.set_index("params", drop=True, inplace=True)
+    cv_results.transpose()
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Fitting 3 folds for each of 1 candidates, totalling 3 fits
+
+
+.. only:: builder_html
+
+    .. raw:: html
+
+        <div>
+        <style scoped>
+            .dataframe tbody tr th:only-of-type {
+                vertical-align: middle;
+            }
+
+            .dataframe tbody tr th {
+                vertical-align: top;
+            }
+
+            .dataframe thead th {
+                text-align: right;
+            }
+        </style>
+        <table border="1" class="dataframe">
+          <thead>
+            <tr style="text-align: right;">
+              <th>params</th>
+              <th>[]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>rank_test_MAPE</th>
+              <td>1</td>
+            </tr>
+            <tr>
+              <th>mean_test_MAPE</th>
+              <td>7.3</td>
+            </tr>
+            <tr>
+              <th>split_test_MAPE</th>
+              <td>(5.1, 8.5, 8.4)</td>
+            </tr>
+            <tr>
+              <th>mean_train_MAPE</th>
+              <td>4.3</td>
+            </tr>
+            <tr>
+              <th>split_train_MAPE</th>
+              <td>(4.0, 4.3, 4.5)</td>
+            </tr>
+            <tr>
+              <th>mean_fit_time</th>
+              <td>10.2</td>
+            </tr>
+            <tr>
+              <th>mean_score_time</th>
+              <td>1.2</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <br />
+        <br />
+
+By default, all metrics in `~greykite.common.evaluation.ElementwiseEvaluationMetricEnum`
+are computed on each CV train/test split.
+The configuration of CV evaluation metrics can be found at
+`Evaluation Metric <../../pages/stepbystep/0400_configuration.html#evaluation-metric>`_.
+Here, we show the Mean Absolute Percentage Error (MAPE)
+across splits (see `~greykite.framework.utils.result_summary.summarize_grid_search_results`
+to control what to show and for details on the output columns).
+From the result, we see that the cross-validation ``mean_test_MAPE`` is 7.3%, which
+means the prediction is 7.3% away from the ground truth on average. We also see the
+3 cv folds have ``split_test_MAPE`` 5.1%, 8.5% and 8.4%, respectively.
+
+When we have different sets of model parameters, a good way to compare them is
+to run a time series cross-validation on each set of parameters, and pick the
+set of parameters that has the best cross-validated performance.
+
+Start tuning
+------------
+Now that you know how to evaluate model performance,
+let's see if we can improve the model by tuning its parameters.
+
+Anomaly
+^^^^^^^
+An anomaly is a deviation in the metric that is not expected to occur again
+in the future. Including anomaly points will lead the model to fit the
+anomaly as an intrinsic property of the time series, resulting in inaccurate forecasts.
+These anomalies could be identified through overlay plots, see
+`Seasonality <../quickstart/0300_seasonality.html>`_.
+
+
+.. code-block:: default
+   :lineno-start: 329
+
+
+    fig = ts.plot_quantiles_and_overlays(
+        groupby_time_feature="month_dom",
+        show_mean=True,
+        show_quantiles=False,
+        show_overlays=True,
+        overlay_label_time_feature="year",
+        overlay_style={"line": {"width": 1}, "opacity": 0.5},
+        center_values=True,
+        xlabel="day of year",
+        ylabel=ts.original_value_col,
+        title="yearly seasonality for each year (centered)",
+    )
+    plotly.io.show(fig)
+
+
+
+
+.. raw:: html
+    :file: /Users/kayang/IdeaProjects/github/greykite/docs/gallery/tutorials/images/sphx_glr_0100_forecast_tutorial_003.html
+
+
+
+
+
+From the yearly overlay plot above, we could see two big anomalies:
+one in March of 2012, and one in June of 2010. Other small anomalies
+could be identified as well, however, they have less influence.
+The ``SILVERKITE`` template currently supports masking anomaly points
+by supplying the ``anomaly_info`` as a dictionary. You could
+either assign adjusted values to them, or simply mask them as NA
+(in which case these dates will not be used in fitting).
+For a detailed introduction about the ``anomaly_info`` configuration,
+see :doc:`/pages/stepbystep/0300_input`.
+Here we define an ``anomaly_df`` dataframe to mask them as NA,
+and wrap it into the ``anomaly_info`` dictionary.
+
+
+.. code-block:: default
+   :lineno-start: 356
+
+
+    anomaly_df = pd.DataFrame({
+        # start and end date are inclusive
+        # each row is an anomaly interval
+        cst.START_DATE_COL: ["2010-06-05", "2012-03-01"],  # inclusive
+        cst.END_DATE_COL: ["2010-06-20", "2012-03-20"],  # inclusive
+        cst.ADJUSTMENT_DELTA_COL: [np.nan, np.nan],  # mask as NA
+    })
+    # Creates anomaly_info dictionary.
+    # This will be fed into the template.
+    anomaly_info = {
+        "value_col": "y",
+        "anomaly_df": anomaly_df,
+        "adjustment_delta_col": cst.ADJUSTMENT_DELTA_COL,
+    }
+
+
+
+
+
+
+
+
+Adding relevant features
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Growth and trend
+""""""""""""""""
+First we look at the growth and trend. Detailed growth configuration can be found
+at :doc:`/pages/model_components/0200_growth`.
+In these two features, we care less about the short-term fluctuations but rather long-term tendency.
+From the original plot we see there is no obvious growth pattern, thus we
+could use a linear growth to fit the model. On the other hand, there could be
+potential trend changepoints, at which time the linear growth changes its rate.
+Detailed changepoint configuration can be found at :doc:`/pages/model_components/0500_changepoints`.
+These points can be detected with the ``ChangepointDetector`` class. For a quickstart example,
+see `Changepoint detection <../quickstart/0200_changepoint_detection.html>`_.
+Here we explore the automatic changepoint detection.
+The parameters in this automatic changepoint detection is customized for this data set.
+We keep the ``yearly_seasonality_order`` the same as the model's yearly seasonality order.
+The ``regularization_strength`` controls how many changepoints are detected.
+0.5 is a good choice, while you may try other numbers such as 0.4 or 0.6 to see the difference.
+The ``resample_freq`` is set to 7 days, because we have a long training history, thus we should
+keep this relatively long (the intuition is that shorter changes will be ignored).
+We put 25 potential changepoints to be the candidates, because we do not expect too many changes.
+However, this could be higher.
+The ``yearly_seasonality_change_freq`` is set to 365 days, which means we refit the yearly seasonality
+every year, because it can be see from the time series plot that the yearly seasonality varies every year.
+The ``no_changepoint_distance_from_end`` is set to 365 days, which means we do not allow any changepoints
+at the last 365 days of training data. This avoids fitting the final trend with too little data.
+For long-term forecast, this is typically the same as the forecast horizon, while for short-term forecast,
+this could be a multiple of the forecast horizon.
+
+
+.. code-block:: default
+   :lineno-start: 402
+
+
+    model = ChangepointDetector()
+    res = model.find_trend_changepoints(
+        df=df,  # data df
+        time_col="ts",  # time column name
+        value_col="y",  # value column name
+        yearly_seasonality_order=10,  # yearly seasonality order, fit along with trend
+        regularization_strength=0.5,  # between 0.0 and 1.0, greater values imply fewer changepoints, and 1.0 implies no changepoints
+        resample_freq="7D",  # data aggregation frequency, eliminate small fluctuation/seasonality
+        potential_changepoint_n=25,  # the number of potential changepoints
+        yearly_seasonality_change_freq="365D",  # varying yearly seasonality for every year
+        no_changepoint_distance_from_end="365D")  # the proportion of data from end where changepoints are not allowed
+    fig = model.plot(
+        observation=True,
+        trend_estimate=False,
+        trend_change=True,
+        yearly_seasonality_estimate=False,
+        adaptive_lasso_estimate=True,
+        plot=False)
+    plotly.io.show(fig)
+
+
+
+
+.. raw:: html
+    :file: /Users/kayang/IdeaProjects/github/greykite/docs/gallery/tutorials/images/sphx_glr_0100_forecast_tutorial_004.html
+
+
+
+
+
+From the plot we see the automatically detected trend changepoints.
+The results shows that the time series is generally increasing until 2012,
+then generally decreasing. One possible explanation is that 2011 is
+the last year Peyton Manning was at the Indianapolis Colts before joining the
+Denver Broncos. If we feed the trend changepoint detection parameter to the template,
+these trend changepoint features will be automatically included in the model.
+
+
+.. code-block:: default
+   :lineno-start: 430
+
+
+    # The following specifies the growth and trend changepoint configurations.
+    growth = {
+        "growth_term": "linear"
+    }
+    changepoints = {
+        "changepoints_dict": dict(
+            method="auto",
+            yearly_seasonality_order=10,
+            regularization_strength=0.5,
+            resample_freq="7D",
+            potential_changepoint_n=25,
+            yearly_seasonality_change_freq="365D",
+            no_changepoint_distance_from_end="365D"
+        )
+    }
+
+
+
+
+
+
+
+
+Seasonality
+"""""""""""
+The next features we will look into are the seasonality features.
+Detailed seasonality configurations can be found at
+:doc:`/pages/model_components/0300_seasonality`.
+A detailed seasonality detection quickstart example on the same data set is
+available at `Seasonality Detection <../quickstart/0300_seasonality.html>`_.
+The conclusions about seasonality terms are:
+
+  - daily seasonality is not available (because frequency is daily);
+  - weekly and yearly patterns are evident (weekly will also interact with football season);
+  - monthly or quarterly seasonality is not evident.
+
+Therefore, for pure seasonality terms, we include weekly and yearly
+seasonality. The seasonality orders are something to be tuned; here
+let's take weekly seasonality order to be 5 and yearly seasonality order to be 10.
+For tuning info, see :doc:`/pages/model_components/0300_seasonality`.
+
+
+.. code-block:: default
+   :lineno-start: 465
+
+
+    # Includes yearly seasonality with order 10 and weekly seasonality with order 5.
+    # Set the other seasonality to False to disable them.
+    yearly_seasonality_order = 10
+    weekly_seasonality_order = 5
+    seasonality = {
+        "yearly_seasonality": yearly_seasonality_order,
+        "quarterly_seasonality": False,
+        "monthly_seasonality": False,
+        "weekly_seasonality": weekly_seasonality_order,
+        "daily_seasonality": False
+    }
+
+
+
+
+
+
+
+
+We will add the interaction between weekly seasonality and the football season
+later in this tutorial.
+The ``SILVERKITE`` template also supports seasonality changepoints. A seasonality
+changepoint is a time point after which the periodic effect behaves
+differently. For ``SILVERKITE``, this means the Fourier series coefficients are allowed
+to change. We could decide to add this feature if cross-validation performance is poor
+and seasonality changepoints are detected in exploratory analysis.
+For details, see :doc:`/gallery/quickstart/0200_changepoint_detection`.
+
+Holidays and events
+"""""""""""""""""""
+Then let's look at holidays and events. Detailed holiday and event configurations
+can be found at :doc:`/pages/model_components/0400_events`.
+Ask yourself which holidays are likely to affect the time series' values.
+We expect that major United States holidays may affect wikipedia pageviews,
+since most football fans are in the United States.
+Events such as superbowl could potentially increase the pageviews.
+Therefore, we add United States holidays and superbowls dates as custom events.
+Other important events that affect the time series can also be found
+through the yearly seasonality plots in `Seasonality <../quickstart/0300_seasonality.html>`_.
+
+
+.. code-block:: default
+   :lineno-start: 500
+
+
+    # Includes major holidays and the superbowl date.
+    events = {
+        # These holidays as well as their pre/post dates are modeled as individual events.
+        "holidays_to_model_separately": SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES,  # all holidays in "holiday_lookup_countries"
+        "holiday_lookup_countries": ["UnitedStates"],  # only look up holidays in the United States
+        "holiday_pre_num_days": 2,  # also mark the 2 days before a holiday as holiday
+        "holiday_post_num_days": 2,  # also mark the 2 days after a holiday as holiday
+        "daily_event_df_dict": {
+            "superbowl": pd.DataFrame({
+                "date": ["2008-02-03", "2009-02-01", "2010-02-07", "2011-02-06",
+                         "2012-02-05", "2013-02-03", "2014-02-02", "2015-02-01", "2016-02-07"],  # dates must cover training and forecast period.
+                "event_name": ["event"] * 9  # labels
+            })
+        },
+    }
+
+
+
+
+
+
+
+
+Autoregression
+""""""""""""""
+The autoregressive features are very useful in short-term forecasting, but
+could be risky to use in long-term forecasting. Detailed autoregression
+configurations can be found at :doc:`/pages/model_components/0800_autoregression`.
+
+Custom
+""""""
+Now we consider some custom features that could relate to the pageviews. The documentation for
+extra regressors can be found at :Doc:`/pages/model_components/0700_regressors`. As mentioned
+in `Seasonality <../quickstart/0300_seasonality.html>`_, we observe that the football
+season heavily affects the pageviews, therefore we need to use regressors to identify the football season.
+There are multiple ways to include this feature: adding indicator for the whole season;
+adding number of days till season start (end) and number of days since season start (end).
+The former puts a uniform effect over all in-season dates, while the latter quantify
+the on-ramp and down-ramp. If you are not sure which effect to include, it's ok to include both
+effects. ``SILVERKITE`` has the option to use Ridge regression as the fit algorithm to avoid
+over-fitting too many features. Note that many datetime features could also be added to
+the model as features. ``SILVERKITE`` calculates some of these features, which can be added to
+``extra_pred_cols`` as an arbitrary patsy expression.
+For a full list of such features, see `~greykite.common.features.timeseries_features.build_time_features_df`.
+
+If a feature is not automatically created by ``SILVERKITE``, we need to create it
+beforehand and append it to the data df.
+Here we create the "is_football_season" feature.
+Note that we also need to provide the customized column for the forecast horizon period as well.
+The way we do it is to first create the df with timestamps covering the forecast horizon.
+This can be done with the `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.make_future_dataframe`
+function within the `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries` class.
+Then we create a new column of our customized regressor for this augmented df.
+
+
+.. code-block:: default
+   :lineno-start: 548
+
+
+    # Makes augmented df with forecast horizon 365 days
+    df_full = ts.make_future_dataframe(periods=365)
+    # Builds "df_features" that contains datetime information of the "df"
+    df_features = build_time_features_df(
+        dt=df_full["ts"],
+        conti_year_origin=convert_date_to_continuous_time(df_full["ts"][0])
+    )
+
+    # Roughly approximates the football season.
+    # "woy" is short for "week of year", created above.
+    # Football season is roughly the first 6 weeks and last 17 weeks in a year.
+    is_football_season = (df_features["woy"] <= 6) | (df_features["woy"] >= 36)
+    # Adds the new feature to the dataframe.
+    df_full["is_football_season"] = is_football_season.astype(int).tolist()
+    df_full.reset_index(drop=True, inplace=True)
+
+    # Configures regressor column.
+    regressors = {
+        "regressor_cols": ["is_football_season"]
+    }
+
+
+
+
+
+
+
+
+Interactions
+""""""""""""
+Finally, let's consider what possible interactions are relevant to the forecast problem.
+Generally speaking, if a feature behaves differently on different values of another feature,
+these two features could have potential interaction effects.
+As in `Seasonality <../quickstart/0300_seasonality.html>`_, the weekly seasonality
+is different through football season and non-football season, therefore, the multiplicative
+term ``is_football_season x weekly_seasonality`` is able to capture this pattern.
+
+
+.. code-block:: default
+   :lineno-start: 579
+
+
+    fig = ts.plot_quantiles_and_overlays(
+        groupby_time_feature="str_dow",
+        show_mean=True,
+        show_quantiles=False,
+        show_overlays=True,
+        center_values=True,
+        overlay_label_time_feature="month",  # splits overlays by month
+        overlay_style={"line": {"width": 1}, "opacity": 0.5},
+        xlabel="day of week",
+        ylabel=ts.original_value_col,
+        title="weekly seasonality by month",
+    )
+    plotly.io.show(fig)
+
+
+
+
+.. raw:: html
+    :file: /Users/kayang/IdeaProjects/github/greykite/docs/gallery/tutorials/images/sphx_glr_0100_forecast_tutorial_005.html
+
+
+
+
+
+Now let's create the interaction terms: interaction between ``is_football_season`` and ``weekly seasonality``.
+The interaction terms between a feature and a seasonality feature
+can be created with the `~greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper.cols_interact` function.
+
+
+.. code-block:: default
+   :lineno-start: 598
+
+
+    football_week = cols_interact(
+        static_col="is_football_season",
+        fs_name=SilverkiteSeasonalityEnum.WEEKLY_SEASONALITY.value.name,
+        fs_order=weekly_seasonality_order,
+        fs_seas_name=SilverkiteSeasonalityEnum.WEEKLY_SEASONALITY.value.seas_names
+    )
+
+    extra_pred_cols = football_week
+
+
+
+
+
+
+
+
+Moreover, the multiplicative term ``month x weekly_seasonality`` and the ``dow_woy`` features also
+account for the varying weekly seasonality through the year. One could added these features, too.
+Here we just leave them out. You may use ``cols_interact`` again to create the ``month x weekly_seasonality``
+similar to ``is_football_season x weekly_seasonality``. ``dow_woy`` is automatically calcuated by ``SILVERKITE``,
+you may simply append the name to ``extra_pred_cols`` to include it in the model.
+
+Putting things together
+^^^^^^^^^^^^^^^^^^^^^^^
+Now let's put everything together and produce a new forecast.
+A detailed template documentation can be found at
+:doc:`/pages/stepbystep/0400_configuration`.
+We first configure the ``MetadataParam`` class.
+The ``MetadataParam`` class includes basic proporties of the time series itself.
+
+
+.. code-block:: default
+   :lineno-start: 622
+
+
+    metadata = MetadataParam(
+        time_col="ts",              # column name of timestamps in the time series df
+        value_col="y",              # column name of the time series values
+        freq="D",                   # data frequency, here we have daily data
+        anomaly_info=anomaly_info,  # this is the anomaly information we defined above,
+        train_end_date=datetime.datetime(2016, 1, 20)
+    )
+
+
+
+
+
+
+
+
+Next we define the ``ModelComponentsParam`` class based on the discussion on relevant features.
+The ``ModelComponentsParam`` include properties related to the model itself.
+
+
+.. code-block:: default
+   :lineno-start: 634
+
+
+    model_components = ModelComponentsParam(
+        seasonality=seasonality,
+        growth=growth,
+        events=events,
+        changepoints=changepoints,
+        autoregression=None,
+        regressors=regressors,  # is_football_season defined above
+        uncertainty={
+            "uncertainty_dict": "auto",
+        },
+        custom={
+            # What algorithm is used to learn the relationship between the time series and the features.
+            # Regularized fitting algorithms are recommended to mitigate high correlations and over-fitting.
+            # If you are not sure what algorithm to use, "ridge" is a good choice.
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge",
+            },
+            "extra_pred_cols": extra_pred_cols  # the interaction between is_football_season and weekly seasonality defined above
+        }
+    )
+
+
+
+
+
+
+
+
+Now let's run the model with the new configuration.
+The evaluation config is kept the same as the previous case;
+this is important for a fair comparison of parameter sets.
+
+
+.. code-block:: default
+   :lineno-start: 660
+
+
+    # Runs the forecast
+    result = forecaster.run_forecast_config(
+        df=df_full,
+        config=ForecastConfig(
+            model_template=ModelTemplateEnum.SILVERKITE.name,
+            forecast_horizon=365,  # forecasts 365 steps ahead
+            coverage=0.95,  # 95% prediction intervals
+            metadata_param=metadata,
+            model_components_param=model_components,
+            evaluation_period_param=evaluation_period
+        )
+    )
+
+    # Summarizes the cv result
+    cv_results = summarize_grid_search_results(
+        grid_search=result.grid_search,
+        decimals=1,
+        # The below saves space in the printed output. Remove to show all available metrics and columns.
+        cv_report_metrics=None,
+        column_order=["rank", "mean_test", "split_test", "mean_train", "split_train", "mean_fit_time", "mean_score_time", "params"])
+    # Transposes to save space in the printed output
+    cv_results["params"] = cv_results["params"].astype(str)
+    cv_results.set_index("params", drop=True, inplace=True)
+    cv_results.transpose()
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Fitting 3 folds for each of 1 candidates, totalling 3 fits
+
+
+.. only:: builder_html
+
+    .. raw:: html
+
+        <div>
+        <style scoped>
+            .dataframe tbody tr th:only-of-type {
+                vertical-align: middle;
+            }
+
+            .dataframe tbody tr th {
+                vertical-align: top;
+            }
+
+            .dataframe thead th {
+                text-align: right;
+            }
+        </style>
+        <table border="1" class="dataframe">
+          <thead>
+            <tr style="text-align: right;">
+              <th>params</th>
+              <th>[]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>rank_test_MAPE</th>
+              <td>1</td>
+            </tr>
+            <tr>
+              <th>mean_test_MAPE</th>
+              <td>5.5</td>
+            </tr>
+            <tr>
+              <th>split_test_MAPE</th>
+              <td>(3.9, 8.7, 3.8)</td>
+            </tr>
+            <tr>
+              <th>mean_train_MAPE</th>
+              <td>3.5</td>
+            </tr>
+            <tr>
+              <th>split_train_MAPE</th>
+              <td>(3.5, 3.6, 3.3)</td>
+            </tr>
+            <tr>
+              <th>mean_fit_time</th>
+              <td>16.5</td>
+            </tr>
+            <tr>
+              <th>mean_score_time</th>
+              <td>1.7</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <br />
+        <br />
+
+Now we see that after analyzing the problem and adding appropriate features,
+the cross-validation test MAPE is 5.4%, which is improved compared with the baseline (7.3%).
+The 3 cv folds also have their MAPE reduced to 3.9%, 8.7% and 3.8%, respectively.
+The first and third fold improved significantly. With some investigation, we can see that
+the second fold did not improve because there is a trend changepoint right at the the start
+of its test period.
+
+It would be hard to know this situation until we see it. In the cross-validation step, one
+way to avoid this is to set a different evaluation period. However, leaving this period
+also makes sense because it could happen again in the future.
+In the forecast period, we could monitor the forecast and actual, and re-train the model
+to adapt to the most recent pattern if we see a deviation. In the changepoints dictionary,
+tune ``regularization_strength`` or ``no_changepoint_distance_from_end`` accordingly, or
+add manually specified changepoints to the automatically detected ones. For details, see
+:doc:`/pages/model_components/0500_changepoints`.
+
+We could also plot the forecast.
+
+
+.. code-block:: default
+   :lineno-start: 704
+
+
+    forecast = result.forecast
+    fig = forecast.plot()
+    plotly.io.show(fig)
+
+
+
+
+.. raw:: html
+    :file: /Users/kayang/IdeaProjects/github/greykite/docs/gallery/tutorials/images/sphx_glr_0100_forecast_tutorial_006.html
+
+
+
+
+
+Check model summary
+^^^^^^^^^^^^^^^^^^^
+To further investigate the model mechanism, it's also helpful
+to see the model summary.
+The `~greykite.algo.common.model_summary.ModelSummary` module
+provides model results such as estimations, significance, p-values,
+confidence intervals, etc.
+that can help the user understand how the model works and
+what can be further improved.
+
+The model summary is a class method of the estimator and can be used as follows.
+
+
+.. code-block:: default
+   :lineno-start: 721
+
+
+    summary = result.model[-1].summary()  # -1 retrieves the estimator from the pipeline
+    print(summary)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ================================ Model Summary =================================
+
+    Number of observations: 2964,   Number of features: 287
+    Method: Ridge regression
+    Number of nonzero features: 287
+    Regularization parameter: 2.848
+
+    Residuals:
+             Min           1Q       Median           3Q          Max
+          -2.092      -0.2289     -0.05127       0.1587        3.205
+
+                 Pred_col   Estimate Std. Err Pr(>)_boot sig. code                   95%CI
+                Intercept      7.803  0.05644     <2e-16       ***          (7.697, 7.911)
+     events_Christmas Day    -0.3566   0.1258      0.008        **      (-0.5834, -0.1082)
+      events_C...bserved)    -0.3852   0.3026      0.156                 (-0.8485, 0.1182)
+      events_C...erved)-1     -0.289   0.3004      0.380                  (-0.871, 0.2054)
+      events_C...erved)-2    -0.2097   0.2534      0.484                 (-0.6512, 0.2136)
+      events_C...erved)+1   0.008593  0.06199      0.790                 (-0.1307, 0.1247)
+      events_C...erved)+2    0.04168  0.06143      0.466                (-0.07419, 0.1728)
+      events_C...as Day-1    -0.1885   0.1237      0.132                (-0.4295, 0.03304)
+      events_C...as Day-2   -0.07981   0.2041      0.708                 (-0.5426, 0.2293)
+      events_C...as Day+1    -0.2303   0.1287      0.066         .       (-0.447, 0.03431)
+      events_C...as Day+2    0.07615   0.0907      0.418                (-0.06914, 0.2773)
+      events_Columbus Day    -0.1138   0.1485      0.440                  (-0.3687, 0.233)
+      events_C...us Day-1    0.07423   0.0774      0.340                (-0.07081, 0.2286)
+      events_C...us Day-2   -0.05108  0.05998      0.388                (-0.1726, 0.06104)
+      events_C...us Day+1    0.01457  0.09987      0.868                 (-0.1756, 0.2088)
+      events_C...us Day+2   0.005195  0.09672      0.970                 (-0.1768, 0.2001)
+      events_I...ence Day   -0.03354  0.07278      0.632                 (-0.1629, 0.1239)
+      events_I...bserved)    -0.1073   0.0585      0.058         .     (-0.2199, 0.002294)
+      events_I...erved)-1    -0.1054  0.06964      0.128                (-0.2184, 0.02807)
+      events_I...erved)-2    -0.0639  0.05473      0.242                (-0.1648, 0.05273)
+      events_I...erved)+1    0.01105  0.06651      0.878                 (-0.1062, 0.1419)
+      events_I...erved)+2    0.08295   0.1094      0.508                  (-0.092, 0.3043)
+      events_I...ce Day-1     -0.117  0.05474      0.028         *     (-0.2052, 0.003532)
+      events_I...ce Day-2    -0.1045  0.05182      0.046         *    (-0.1998, 0.0006245)
+      events_I...ce Day+1   -0.03637  0.07348      0.638                 (-0.1629, 0.1162)
+      events_I...ce Day+2   -0.03666   0.0868      0.674                 (-0.1668, 0.1649)
+         events_Labor Day    -0.9081   0.1444     <2e-16       ***       (-1.139, -0.6035)
+       events_Labor Day-1   -0.08142   0.1297      0.512                  (-0.3218, 0.185)
+       events_Labor Day-2   -0.07605  0.05896      0.204                (-0.1898, 0.02933)
+       events_Labor Day+1    -0.4698   0.0986     <2e-16       ***       (-0.638, -0.2482)
+       events_Labor Day+2    -0.1605  0.07961      0.042         *      (-0.3243, -0.0287)
+      events_M... Jr. Day     0.2639    0.205      0.196                 (-0.1187, 0.6912)
+      events_M...r. Day-1     0.2341   0.2269      0.308                 (-0.1775, 0.6914)
+      events_M...r. Day-2   -0.06938  0.09035      0.462                 (-0.2372, 0.1058)
+      events_M...r. Day+1   -0.09268   0.1418      0.506                 (-0.3711, 0.2069)
+      events_M...r. Day+2    0.03705   0.1175      0.758                 (-0.1867, 0.2586)
+      events_Memorial Day     -0.172  0.04559     <2e-16       ***     (-0.2496, -0.08078)
+      events_M...al Day-1    -0.1218  0.06515      0.064         .      (-0.2304, 0.02653)
+      events_M...al Day-2   -0.06832   0.0845      0.402                 (-0.2187, 0.1131)
+      events_M...al Day+1   -0.03727  0.05916      0.528                (-0.1473, 0.08152)
+      events_M...al Day+2    0.08794   0.0791      0.266                (-0.05432, 0.2528)
+     events_New Years Day    -0.1494  0.08978      0.102                (-0.3054, 0.03796)
+      events_N...bserved)     0.0206  0.03689      0.490               (-0.06588, 0.08896)
+      events_N...erved)-1    -0.0941  0.06433      0.110                (-0.2114, 0.01389)
+      events_N...erved)-2   -0.04235   0.1272      0.660                 (-0.2962, 0.1822)
+      events_N...erved)+1     0.1807   0.1202      0.082         .        (-0.0228, 0.371)
+      events_N...erved)+2    0.04302  0.04445      0.296                (-0.03386, 0.1291)
+      events_N...rs Day-1   -0.02544   0.0836      0.772                 (-0.1758, 0.1557)
+      events_N...rs Day-2     0.1148   0.1084      0.298                (-0.09927, 0.3103)
+      events_N...rs Day+1     0.1684  0.07959      0.026         *      (0.009734, 0.3187)
+      events_N...rs Day+2     0.1893   0.1188      0.120                (-0.04864, 0.4129)
+      events_Thanksgiving   -0.07547  0.07052      0.280                (-0.2171, 0.06206)
+      events_T...giving-1    -0.2546  0.06659     <2e-16       ***      (-0.3677, -0.1059)
+      events_T...giving-2    -0.2523  0.07662     <2e-16       ***     (-0.4044, -0.09388)
+      events_T...giving+1   -0.04444  0.08172      0.580                 (-0.1974, 0.1138)
+      events_T...giving+2    -0.1189  0.05347      0.022         *     (-0.2198, -0.02324)
+      events_Veterans Day   -0.03341  0.05844      0.584                (-0.1493, 0.07117)
+      events_V...bserved)    -0.1164  0.07814      0.066         .           (-0.2364, 0.)
+      events_V...erved)-1    0.03432  0.03067      0.168              (-0.004986, 0.09873)
+      events_V...erved)-2  -0.008749  0.02244      0.468               (-0.06133, 0.03168)
+      events_V...erved)+1   -0.05363  0.03899      0.088         .           (-0.1203, 0.)
+      events_V...erved)+2   -0.04841  0.03628      0.100                     (-0.1181, 0.)
+      events_V...ns Day-1   -0.07678  0.06009      0.194                (-0.1887, 0.04334)
+      events_V...ns Day-2    -0.0182  0.07262      0.806                  (-0.1478, 0.133)
+      events_V...ns Day+1   -0.02022  0.06735      0.794                (-0.1549, 0.09341)
+      events_V...ns Day+2   -0.04613  0.04261      0.250                (-0.1311, 0.04341)
+      events_W...Birthday    -0.0329  0.08333      0.702                  (-0.184, 0.1524)
+      events_W...rthday-1    -0.2622  0.07092     <2e-16       ***        (-0.39, -0.1109)
+      events_W...rthday-2    -0.1086  0.05292      0.026         *     (-0.2059, -0.00379)
+      events_W...rthday+1   -0.05971  0.05814      0.292                (-0.1655, 0.06884)
+      events_W...rthday+2    -0.1126  0.03652     <2e-16       ***     (-0.1797, -0.04201)
+         events_superbowl     0.4419   0.2495      0.080         .      (-0.07707, 0.8795)
+            str_dow_2-Tue    0.02405  0.01381      0.090         .    (-0.001828, 0.05353)
+            str_dow_3-Wed    0.01784   0.0119      0.126              (-0.003074, 0.04508)
+            str_dow_4-Thu   0.006795  0.01245      0.616               (-0.01572, 0.03086)
+            str_dow_5-Fri   -0.02559  0.01249      0.030         *  (-0.04782, -0.0005557)
+            str_dow_6-Sat    -0.0495  0.01081     <2e-16       ***    (-0.07196, -0.02997)
+            str_dow_7-Sun  -0.008702  0.01579      0.594               (-0.03931, 0.01947)
+      is_footb...w_weekly   -0.05625  0.02288      0.010         *     (-0.1005, -0.01277)
+      is_footb...w_weekly     0.4787  0.02688     <2e-16       ***         (0.431, 0.5365)
+      is_footb...w_weekly   -0.02021  0.01174      0.084         .     (-0.04243, 0.00181)
+      is_footb...w_weekly     0.1007  0.01175     <2e-16       ***        (0.0784, 0.1235)
+      is_footb...w_weekly   -0.02886  0.01073      0.002        **   (-0.04922, -0.009043)
+      is_footb...w_weekly   0.008454  0.01356      0.540                (-0.0158, 0.03517)
+      is_footb...w_weekly    0.02886  0.01073      0.002        **     (0.009043, 0.04922)
+      is_footb...w_weekly   0.008454  0.01356      0.540                (-0.0158, 0.03517)
+      is_footb...w_weekly    0.02021  0.01174      0.084         .     (-0.00181, 0.04243)
+      is_footb...w_weekly     0.1007  0.01175     <2e-16       ***        (0.0784, 0.1235)
+                      ct1    -0.4201  0.06684     <2e-16       ***      (-0.5674, -0.3007)
+           is_weekend:ct1   -0.06344  0.03699      0.092         .     (-0.1339, 0.006971)
+        str_dow_2-Tue:ct1    -0.0147  0.06384      0.820                (-0.1506, 0.09646)
+        str_dow_3-Wed:ct1   -0.08275   0.0438      0.054         .     (-0.1695, -0.00523)
+        str_dow_4-Thu:ct1   -0.03337  0.03817      0.352                (-0.1141, 0.04231)
+        str_dow_5-Fri:ct1   -0.01293  0.03726      0.716               (-0.09441, 0.05076)
+        str_dow_6-Sat:ct1   -0.02598  0.04202      0.532                (-0.1045, 0.05285)
+        str_dow_7-Sun:ct1   -0.03745  0.06277      0.540                 (-0.166, 0.08611)
+       is_football_season     0.5158  0.08858     <2e-16       ***        (0.3554, 0.7019)
+        cp0_2008_07_21_00    -0.2149  0.06258     <2e-16       ***     (-0.3218, -0.07618)
+      is_weeke...07_21_00   -0.07226  0.03715      0.062         .     (-0.1423, 0.004979)
+      str_dow_...07_21_00   -0.05792  0.03331      0.080         .      (-0.1181, 0.01129)
+      str_dow_...07_21_00  -0.004965  0.02545      0.852               (-0.05024, 0.04879)
+      str_dow_...07_21_00    -0.0411  0.02365      0.078         .     (-0.08202, 0.00906)
+      str_dow_...07_21_00   -0.03848  0.02578      0.124                (-0.0836, 0.01662)
+      str_dow_...07_21_00   -0.06369  0.02687      0.022         *    (-0.1222, -0.006238)
+      str_dow_...07_21_00  -0.008568  0.03611      0.830                (-0.0779, 0.06224)
+        cp1_2008_11_10_00      1.003   0.0618     <2e-16       ***         (0.8707, 1.113)
+      is_weeke...11_10_00     0.2044  0.03223     <2e-16       ***         (0.1382, 0.259)
+      str_dow_...11_10_00     0.1291   0.0454     <2e-16       ***       (0.03627, 0.2225)
+      str_dow_...11_10_00     0.1554  0.03178     <2e-16       ***       (0.09092, 0.2171)
+      str_dow_...11_10_00     0.1136  0.02931      0.002        **       (0.05258, 0.1626)
+      str_dow_...11_10_00     0.1202  0.03661      0.004        **       (0.04767, 0.1891)
+      str_dow_...11_10_00     0.1074   0.0346     <2e-16       ***        (0.03988, 0.176)
+      str_dow_...11_10_00    0.09702  0.04063      0.012         *       (0.01057, 0.1715)
+        cp2_2009_03_09_00     0.3711  0.06317     <2e-16       ***         (0.2578, 0.493)
+      is_weeke...03_09_00     0.1121  0.03897      0.002        **       (0.03351, 0.1911)
+      str_dow_...03_09_00     0.0434  0.05005      0.362                (-0.05028, 0.1474)
+      str_dow_...03_09_00     0.0452  0.03764      0.242                (-0.02308, 0.1136)
+      str_dow_...03_09_00     0.0313  0.03465      0.348               (-0.04522, 0.09447)
+      str_dow_...03_09_00    0.04474  0.03828      0.230                (-0.03345, 0.1181)
+      str_dow_...03_09_00    0.07753  0.04136      0.064         .      (-0.00365, 0.1583)
+      str_dow_...03_09_00     0.0346   0.0524      0.518                (-0.06547, 0.1357)
+        cp3_2009_10_19_00    -0.4704  0.08022     <2e-16       ***      (-0.6251, -0.3129)
+      is_weeke...10_19_00    -0.1084  0.04271      0.014         *     (-0.1989, -0.02919)
+      str_dow_...10_19_00    -0.0759  0.05557      0.156                 (-0.183, 0.03927)
+      str_dow_...10_19_00    -0.0874  0.04234      0.048         *     (-0.1725, 0.001241)
+      str_dow_...10_19_00   -0.04999  0.03617      0.166                (-0.1234, 0.01731)
+      str_dow_...10_19_00   -0.05887  0.04502      0.200                (-0.1494, 0.03045)
+      str_dow_...10_19_00   -0.04535  0.04215      0.292                (-0.1346, 0.03121)
+      str_dow_...10_19_00   -0.06306  0.04672      0.182                  (-0.155, 0.0308)
+        cp4_2010_02_15_00     -0.477  0.08375     <2e-16       ***      (-0.6338, -0.3067)
+      is_weeke...02_15_00      -0.14   0.0538      0.002        **      (-0.2423, -0.0365)
+      str_dow_...02_15_00   -0.05004   0.0527      0.362                (-0.1526, 0.04665)
+      str_dow_...02_15_00   -0.08166  0.04671      0.092         .      (-0.1804, 0.01084)
+      str_dow_...02_15_00   -0.04409  0.03863      0.260                (-0.1197, 0.02939)
+      str_dow_...02_15_00   -0.08251  0.04607      0.068         .     (-0.1747, 0.005296)
+      str_dow_...02_15_00   -0.07317  0.04721      0.124                (-0.1666, 0.01109)
+      str_dow_...02_15_00   -0.06685  0.05797      0.280                (-0.1825, 0.04067)
+        cp5_2010_06_07_00     0.1524  0.06576      0.018         *       (0.01388, 0.2657)
+      is_weeke...06_07_00    0.04952  0.04023      0.202                (-0.04154, 0.1298)
+      str_dow_...06_07_00   0.005808  0.04433      0.896               (-0.08565, 0.08912)
+      str_dow_...06_07_00    0.05367  0.03333      0.126                (-0.01484, 0.1166)
+      str_dow_...06_07_00    0.04172  0.03363      0.256                (-0.02047, 0.1051)
+      str_dow_...06_07_00  -0.001987  0.04139      0.968               (-0.08427, 0.07125)
+      str_dow_...06_07_00     0.0292  0.03748      0.442               (-0.04314, 0.09857)
+      str_dow_...06_07_00    0.02032  0.04588      0.642                (-0.05784, 0.1151)
+        cp6_2011_01_24_00     0.2651  0.08334      0.002        **        (0.1092, 0.4358)
+      is_weeke...01_24_00    0.06135  0.05865      0.276                (-0.05371, 0.1763)
+      str_dow_...01_24_00    0.02369  0.06363      0.720                  (-0.106, 0.1347)
+      str_dow_...01_24_00     0.0421  0.04426      0.340                 (-0.04291, 0.136)
+      str_dow_...01_24_00    0.01953  0.04261      0.662                (-0.05535, 0.1014)
+      str_dow_...01_24_00    0.03062  0.05663      0.596                 (-0.08273, 0.131)
+      str_dow_...01_24_00    0.02935  0.04954      0.564                (-0.06562, 0.1235)
+      str_dow_...01_24_00      0.032  0.07221      0.666                 (-0.1091, 0.1646)
+        cp7_2011_05_16_00     0.3743  0.07689     <2e-16       ***        (0.2099, 0.5099)
+      is_weeke...05_16_00    0.06395  0.05279      0.236                (-0.03506, 0.1685)
+      str_dow_...05_16_00    0.07994  0.04255      0.066         .       (-0.0039, 0.1643)
+      str_dow_...05_16_00     0.0699   0.0431      0.104                (-0.02855, 0.1512)
+      str_dow_...05_16_00    0.03932  0.03973      0.330                (-0.03709, 0.1125)
+      str_dow_...05_16_00    0.05649   0.0524      0.268                 (-0.0451, 0.1539)
+      str_dow_...05_16_00    0.01349  0.05803      0.854                 (-0.1143, 0.1123)
+      str_dow_...05_16_00    0.05045  0.05212      0.342                (-0.05022, 0.1466)
+        cp8_2012_01_02_00    -0.2182  0.09674      0.036         *      (-0.449, -0.04303)
+      is_weeke...01_02_00   0.009077  0.05462      0.872                 (-0.1129, 0.1015)
+      str_dow_...01_02_00   -0.05135  0.06408      0.442                (-0.1824, 0.06283)
+      str_dow_...01_02_00   -0.07913  0.05388      0.132                (-0.1928, 0.02574)
+      str_dow_...01_02_00   -0.08078  0.05294      0.114                (-0.1866, 0.01837)
+      str_dow_...01_02_00     0.0531  0.07434      0.460                (-0.09138, 0.1955)
+      str_dow_...01_02_00  -0.009237  0.05971      0.898                 (-0.1308, 0.1012)
+      str_dow_...01_02_00    0.01831  0.06367      0.798                 (-0.1224, 0.1307)
+        cp9_2012_04_23_00    -0.9381  0.08609     <2e-16       ***       (-1.077, -0.7519)
+      is_weeke...04_23_00    -0.1823  0.05557     <2e-16       ***      (-0.2839, -0.0649)
+      str_dow_...04_23_00    -0.1463  0.05744      0.010         *     (-0.2627, -0.04246)
+      str_dow_...04_23_00    -0.1643  0.05554      0.002        **      (-0.278, -0.06338)
+      str_dow_...04_23_00    -0.1162  0.04919      0.018         *     (-0.2201, -0.02812)
+      str_dow_...04_23_00    -0.1539  0.05383      0.008        **     (-0.2628, -0.04683)
+      str_dow_...04_23_00    -0.1028  0.05857      0.074         .      (-0.2198, 0.01308)
+      str_dow_...04_23_00   -0.07953  0.05687      0.170                 (-0.1865, 0.0197)
+       cp10_2012_08_13_00    0.06176  0.09229      0.504                 (-0.1222, 0.2444)
+      is_weeke...08_13_00   -0.07427  0.04711      0.124                (-0.1631, 0.02551)
+      str_dow_...08_13_00    0.01243   0.0599      0.824                 (-0.1161, 0.1165)
+      str_dow_...08_13_00     0.0877  0.04029      0.030         *      (0.008989, 0.1674)
+      str_dow_...08_13_00    0.06894  0.04741      0.160                (-0.02839, 0.1485)
+      str_dow_...08_13_00   -0.04406  0.04788      0.350                (-0.1359, 0.05077)
+      str_dow_...08_13_00     0.0215  0.03929      0.584               (-0.05342, 0.09236)
+      str_dow_...08_13_00   -0.09577  0.05086      0.058         .     (-0.1856, 0.009061)
+       cp11_2013_04_01_00     0.6097  0.06101     <2e-16       ***        (0.4905, 0.7371)
+      is_weeke...04_01_00     0.1213  0.04108      0.002        **       (0.04406, 0.1955)
+      str_dow_...04_01_00      0.113   0.0559      0.054         .        (0.005956, 0.23)
+      str_dow_...04_01_00    0.07494  0.05013      0.126                (-0.02392, 0.1681)
+      str_dow_...04_01_00    0.07154  0.04999      0.138                  (-0.025, 0.1721)
+      str_dow_...04_01_00    0.09219  0.05184      0.080         .      (-0.01628, 0.1837)
+      str_dow_...04_01_00    0.05036  0.05482      0.348                (-0.05582, 0.1596)
+      str_dow_...04_01_00    0.07096  0.06581      0.276                (-0.05245, 0.1984)
+       cp12_2014_03_10_00    -0.4588  0.05719     <2e-16       ***      (-0.5695, -0.3468)
+      is_weeke...03_10_00   -0.07332  0.03847      0.070         .     (-0.1493, 0.005886)
+      str_dow_...03_10_00   -0.01682  0.08384      0.856                 (-0.1799, 0.1446)
+      str_dow_...03_10_00   -0.09497  0.05454      0.080         .        (-0.197, 0.0147)
+      str_dow_...03_10_00   -0.05342  0.04973      0.270                 (-0.1487, 0.0485)
+      str_dow_...03_10_00   -0.03822  0.05437      0.468                (-0.1492, 0.06523)
+      str_dow_...03_10_00   -0.07655  0.06255      0.216                (-0.2019, 0.03385)
+      str_dow_...03_10_00   0.003228  0.08072      0.968                 (-0.1487, 0.1741)
+      ct1:sin1_tow_weekly   -0.04642  0.04886      0.332                (-0.1542, 0.04207)
+      ct1:cos1_tow_weekly    -0.1795  0.07781      0.022         *      (-0.3416, -0.0303)
+      ct1:sin2_tow_weekly    0.06279  0.05713      0.264                (-0.04987, 0.1702)
+      ct1:cos2_tow_weekly    -0.1322  0.07473      0.072         .      (-0.2732, 0.01119)
+      cp0_2008...w_weekly    0.01753   0.0471      0.724                (-0.06246, 0.1202)
+      cp0_2008...w_weekly     0.0454  0.05651      0.446                (-0.05742, 0.1552)
+      cp0_2008...w_weekly   -0.07155  0.04907      0.140                (-0.1631, 0.02483)
+      cp0_2008...w_weekly    0.02691   0.0575      0.612                (-0.08473, 0.1389)
+      cp1_2008...w_weekly    0.06903  0.04659      0.136                (-0.02966, 0.1523)
+      cp1_2008...w_weekly     0.1525  0.06573      0.016         *       (0.01445, 0.2753)
+      cp1_2008...w_weekly    0.01559  0.05403      0.722                 (-0.0824, 0.1341)
+      cp1_2008...w_weekly     0.1392  0.06353      0.032         *       (0.02338, 0.2516)
+      cp2_2009...w_weekly   -0.03046  0.05353      0.566                (-0.1255, 0.07287)
+      cp2_2009...w_weekly    0.04712  0.06414      0.464                (-0.07786, 0.1794)
+      cp2_2009...w_weekly    0.03312  0.05832      0.560                (-0.07996, 0.1493)
+      cp2_2009...w_weekly    0.01379  0.05843      0.812                 (-0.1016, 0.1322)
+      cp3_2009...w_weekly   -0.04718  0.06225      0.450                (-0.1627, 0.08107)
+      cp3_2009...w_weekly   -0.04884  0.08263      0.554                 (-0.1983, 0.1229)
+      cp3_2009...w_weekly  -0.001207  0.06726      0.990                 (-0.1326, 0.1358)
+      cp3_2009...w_weekly  -0.007164  0.08162      0.938                 (-0.1559, 0.1576)
+      cp4_2010...w_weekly    0.02153  0.06934      0.726                 (-0.1109, 0.1573)
+      cp4_2010...w_weekly  -0.003041  0.08114      0.952                  (-0.164, 0.1524)
+      cp4_2010...w_weekly  -0.009966   0.0754      0.926                 (-0.1671, 0.1266)
+      cp4_2010...w_weekly   0.007884  0.07778      0.920                 (-0.1534, 0.1561)
+      cp5_2010...w_weekly    0.03148  0.05363      0.558                (-0.06968, 0.1369)
+      cp5_2010...w_weekly   -0.03428  0.06824      0.600                (-0.1687, 0.09162)
+      cp5_2010...w_weekly   -0.05894  0.05954      0.298                (-0.1661, 0.06902)
+      cp5_2010...w_weekly   -0.05203  0.05928      0.380                 (-0.1616, 0.0678)
+      cp6_2011...w_weekly   0.001124  0.07349      0.994                  (-0.1365, 0.141)
+      cp6_2011...w_weekly    0.06146  0.08185      0.444                (-0.09457, 0.2139)
+      cp6_2011...w_weekly  -0.004963  0.08934      0.948                 (-0.1851, 0.1634)
+      cp6_2011...w_weekly    0.04231  0.07335      0.570                 (-0.1033, 0.1922)
+      cp7_2011...w_weekly     0.0706   0.0688      0.300                (-0.06191, 0.2068)
+      cp7_2011...w_weekly    0.04115  0.06825      0.536                (-0.08039, 0.1807)
+      cp7_2011...w_weekly     0.0177  0.07224      0.780                 (-0.1275, 0.1533)
+      cp7_2011...w_weekly    0.02031  0.06859      0.774                 (-0.1129, 0.1632)
+      cp8_2012...w_weekly    -0.1807  0.07664      0.008        **     (-0.3326, -0.02671)
+      cp8_2012...w_weekly   -0.04509   0.1008      0.672                 (-0.2518, 0.1296)
+      cp8_2012...w_weekly    0.06708  0.08694      0.460                 (-0.1037, 0.2381)
+      cp8_2012...w_weekly   0.000601  0.09272      0.996                 (-0.1708, 0.1913)
+      cp9_2012...w_weekly   -0.09577  0.07688      0.236                (-0.2433, 0.04845)
+      cp9_2012...w_weekly   -0.01311  0.07999      0.866                 (-0.1815, 0.1379)
+      cp9_2012...w_weekly   -0.06793  0.07897      0.412                (-0.2197, 0.09274)
+      cp9_2012...w_weekly   -0.05262  0.08445      0.508                  (-0.2142, 0.112)
+      cp10_201...w_weekly     0.1982  0.07016      0.004        **       (0.06703, 0.3248)
+      cp10_201...w_weekly   -0.08764  0.09075      0.350                 (-0.262, 0.08358)
+      cp10_201...w_weekly   -0.01159  0.07642      0.880                 (-0.1596, 0.1372)
+      cp10_201...w_weekly    -0.0533  0.08414      0.536                 (-0.2265, 0.1246)
+      cp11_201...w_weekly    0.04788  0.05634      0.400                (-0.05463, 0.1622)
+      cp11_201...w_weekly    0.07602  0.07113      0.292                (-0.05948, 0.2137)
+      cp11_201...w_weekly    0.04648  0.06407      0.464                (-0.08595, 0.1786)
+      cp11_201...w_weekly    0.08498  0.06763      0.220                (-0.04587, 0.2114)
+      cp12_201...w_weekly   -0.04022   0.0488      0.392                (-0.1362, 0.05145)
+      cp12_201...w_weekly   -0.06984  0.08211      0.420                (-0.2362, 0.09063)
+      cp12_201...w_weekly  0.0003325  0.05826      0.994                 (-0.1136, 0.1151)
+      cp12_201...w_weekly   -0.08167  0.07772      0.304                (-0.2269, 0.06679)
+          sin1_tow_weekly     0.1053  0.03516      0.002        **       (0.04195, 0.1838)
+          cos1_tow_weekly    0.06865  0.04722      0.142                (-0.01998, 0.1627)
+          sin2_tow_weekly    -0.0226  0.02118      0.276               (-0.06339, 0.01859)
+          cos2_tow_weekly    0.04849  0.02451      0.056         .     (-0.00245, 0.09625)
+          sin3_tow_weekly   -0.00687  0.01329      0.590               (-0.03299, 0.01814)
+          cos3_tow_weekly   0.005713  0.02026      0.772               (-0.03302, 0.04422)
+          sin4_tow_weekly    0.00687  0.01329      0.590               (-0.01814, 0.03299)
+          cos4_tow_weekly   0.005713  0.02026      0.772               (-0.03302, 0.04422)
+          sin5_tow_weekly     0.0226  0.02118      0.276               (-0.01859, 0.06339)
+          cos5_tow_weekly    0.04849  0.02451      0.056         .     (-0.00245, 0.09625)
+          sin1_ct1_yearly   -0.04426  0.02176      0.036         *    (-0.08267, -0.00244)
+          cos1_ct1_yearly     0.4169   0.0525     <2e-16       ***        (0.3082, 0.5161)
+          sin2_ct1_yearly     0.1042  0.01435     <2e-16       ***       (0.07968, 0.1332)
+          cos2_ct1_yearly    -0.1489  0.01548     <2e-16       ***      (-0.1811, -0.1199)
+          sin3_ct1_yearly     0.1752  0.01565     <2e-16       ***         (0.144, 0.2039)
+          cos3_ct1_yearly   -0.01013  0.01319      0.448               (-0.03439, 0.01593)
+          sin4_ct1_yearly   -0.04372  0.01548      0.008        **    (-0.07627, -0.01766)
+          cos4_ct1_yearly    -0.0897  0.01228     <2e-16       ***     (-0.1121, -0.06409)
+          sin5_ct1_yearly   -0.06317  0.01329     <2e-16       ***    (-0.08972, -0.03926)
+          cos5_ct1_yearly   -0.01998  0.01001      0.044         *   (-0.03875, 5.104e-05)
+          sin6_ct1_yearly   -0.06777  0.01514     <2e-16       ***     (-0.09501, -0.0396)
+          cos6_ct1_yearly  -0.009463  0.01176      0.446               (-0.03141, 0.01393)
+          sin7_ct1_yearly   -0.04924  0.01092     <2e-16       ***    (-0.06965, -0.02828)
+          cos7_ct1_yearly    0.02889  0.01162      0.016         *     (0.006698, 0.05299)
+          sin8_ct1_yearly    0.01905  0.01232      0.128              (-0.005444, 0.04225)
+          cos8_ct1_yearly    0.06879  0.01228     <2e-16       ***      (0.04545, 0.09088)
+          sin9_ct1_yearly  -0.004435  0.01161      0.704               (-0.02623, 0.01877)
+          cos9_ct1_yearly   -0.03218  0.01148      0.006        **      (-0.0554, -0.0117)
+         sin10_ct1_yearly   -0.06601   0.0111     <2e-16       ***    (-0.08518, -0.04206)
+         cos10_ct1_yearly    -0.0234  0.01073      0.034         *   (-0.04419, -0.002468)
+    Signif. Code: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    Multiple R-squared: 0.7553,   Adjusted R-squared: 0.744
+    F-statistic: 64.947 on 130 and 2832 DF,   p-value: 1.110e-16
+    Model AIC: 18720.0,   model BIC: 19511.0
+
+    WARNING: the condition number is large, 1.42e+05. This might indicate that there are strong multicollinearity or other numerical problems.
+    WARNING: the F-ratio and its p-value on regularized methods might be misleading, they are provided only for reference purposes.
+
+
+
+
+
+The model summary shows the model information, the coefficients and their significance,
+and a few summary statistics. For example,
+we can see the changepoints and how much the growth rate
+changes at each changepoint.
+We can see that some of the holidays have significant
+effect in the model, such as Christmas, Labor day, Thanksgiving, etc.
+We can see the significance of the interaction between football season and weekly seasonality
+etc.
+
+For a more detailed guide on model summary, see
+:doc:`/gallery/quickstart/0400_model_summary`.
+
+Summary in model tuning
+-----------------------
+After the example, you may have some sense about how to select parameters and tune the model.
+Here we list a few steps and tricks that might help select the best models.
+What you may do:
+
+  #. Detect anomaly points with the overlay plots
+     (`~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays`).
+     Mask these points with NA. Do not specify the adjustment unless you are confident about how to correct the anomalies.
+
+  #. Choose an appropriate way to model the growth (linear, quadratic, square root, etc.)
+     If none of the typical growth shape fits the time series, you might consider linear
+     growth with trend changepoints. Try different changepoint detection configurations.
+     You may also plot the detected changepoints and see if it makes sense to you.
+     The template also supports custom changepoints. If the automatic changepoint detection result
+     does not make sense to you, you might supply your own changepoints.
+
+  #. Choose the appropriate seasonality orders. The higher the order, the more details the model can learn.
+     However, too large orders could overfit the training data. These can also be detected from the
+     overlay plots (`~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays`).
+     There isn't a unified way to choose seasonality, so explore different seasonality orders and compare the results.
+
+  #. Consider what events and holidays to model. Are there any custom events we need to add?
+     If you add a custom event, remember also adding the dates for the event in the forecast period.
+
+  #. Add external regressors that could be related to the time series. Note that you will need to provide the
+     values of the regressors in the forecast period as well. You may use another time series as a regressor,
+     as long as you have a ground truth/good forecast for it that covers your forecast period.
+
+  #. Adding interaction terms. Let's mention again here that there could be interaction between two features
+     if the behaviors of one feature are different when the other feature have different values.
+     Try to detect this through the overlay plot
+     (`~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays`), too.
+     By default, we have a few pre-defined interaction terms, see
+     `feature_set_enabled <../../pages/model_components/0600_custom.html#interactions>`_.
+
+  #. Choose an appropriate fit algorithm. This is the algorithm that models the relationship between the features
+     and the time series. See a full list of available algorithms at
+     `fit_algorithm <../../pages/model_components/0600_custom.html#fit-algorithm>`_.
+     If you are unsure about their difference, try some of them and compare the results. If you don't want to, choosing "ridge"
+     is a safe option.
+
+It is worth noting that the template supports automatic grid search with different sets of parameters.
+For each parameter, if you provide the configuration in a list, it will automatically run each combination
+and choose the one with the best cross-validation performance. This will save a lot of time.
+For details, see `grid search <../quickstart/0500_grid_search.html>`_.
+
+Follow your insights and intuitions, and play with the parameters, you will get good forecasts!
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 4 minutes  28.306 seconds)
+
+
+.. _sphx_glr_download_gallery_tutorials_0100_forecast_tutorial.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-python
+
+     :download:`Download Python source code: 0100_forecast_tutorial.py <0100_forecast_tutorial.py>`
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+     :download:`Download Jupyter notebook: 0100_forecast_tutorial.ipynb <0100_forecast_tutorial.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

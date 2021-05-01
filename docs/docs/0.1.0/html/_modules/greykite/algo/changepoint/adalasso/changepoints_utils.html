@@ -1,0 +1,1650 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.algo.changepoint.adalasso.changepoints_utils &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.algo.changepoint.adalasso.changepoints_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.algo.changepoint.adalasso.changepoints_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Utilities for changepoint detection via adaptive lasso.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">pandas.plotting</span> <span class="kn">import</span> <span class="n">register_matplotlib_converters</span>
+<span class="kn">from</span> <span class="nn">pandas.tseries.frequencies</span> <span class="kn">import</span> <span class="n">to_offset</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LassoCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">RidgeCV</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">CHANGEPOINT_COL_PREFIX</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">add_time_features_df</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">build_time_features_df</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">fourier_series_multi_fcn</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_changepoint_dates_from_changepoints_dict</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_changepoint_features</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_changepoint_features_and_values_from_config</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_default_origin_for_time_vars</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">get_pattern_cols</span>
+
+
+<span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>  <span class="c1"># np.where evaluates values before selecting by conditions, set this to suppress divide_by_zero error</span>
+
+
+<span class="n">register_matplotlib_converters</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">check_freq_unit_at_most_day</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks if the ``freq`` parameter passed to a function has unit at most &quot;D&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freq : `DateOffset`, `Timedelta` or `str`</span>
+<span class="sd">        The parameter passed as ``freq``.</span>
+<span class="sd">    name : `str`</span>
+<span class="sd">        The name of the parameter ``freq``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Because the input frequency has unit greater than &quot;D&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">in</span> <span class="n">freq</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">])):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;In </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">, the maximal unit is &#39;D&#39;, &quot;</span>
+                         <span class="s2">&quot;i.e., you may use units no more than &#39;D&#39; such as&quot;</span>
+                         <span class="s2">&quot;&#39;10D&#39;, &#39;5H&#39;, &#39;100T&#39;, &#39;200S&#39;. The reason is that &#39;W&#39;, &#39;M&#39; &quot;</span>
+                         <span class="s2">&quot;or higher has either cycles or indefinite number of days, &quot;</span>
+                         <span class="s2">&quot;thus is not parsable by pandas as timedelta.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">build_trend_feature_df_with_changes</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">origin_for_time_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">changepoints_dict</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A function to generate trend features from a given time series df.</span>
+
+<span class="sd">    The trend features include columns of the format max(0, x-c_i), where c_i is the i-th change point value.</span>
+<span class="sd">    If changepoints_dict has &quot;method&quot;: &quot;uniform&quot;, then n_changepoints change points plus the normal growth term are</span>
+<span class="sd">    generated uniformly over the whole time period. This is recommended.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The data df.</span>
+<span class="sd">    time_col : `str&#39;</span>
+<span class="sd">        The column name of time column in ``df``, entries can be parsed with pd.to_datetime.</span>
+<span class="sd">    origin_for_time_vars : `float` or `None`, default `None`</span>
+<span class="sd">        Original continuous time value, if not provided, will be parsed from data.</span>
+<span class="sd">    changepoints_dict: `str`: &quot;auto&quot; or `dict`, default &quot;auto&quot;</span>
+<span class="sd">        Change point dictionary, compatible with</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.get_changepoint_features_and_values_from_config`</span>
+<span class="sd">        If not provided, default is 100 change points evenly</span>
+<span class="sd">        distributed over the whole time period.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df :  `pandas.DataFrame`</span>
+<span class="sd">        Change point feature df with n_changepoints + 1 columns generated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Gets changepoints features from config. Evenly distributed with n_changepoints specified is recommended.</span>
+    <span class="k">if</span> <span class="n">origin_for_time_vars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">origin_for_time_vars</span> <span class="o">=</span> <span class="n">get_default_origin_for_time_vars</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">changepoints_dict</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+        <span class="n">changepoints_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;n_changepoints&quot;</span><span class="p">:</span> <span class="mi">100</span>
+        <span class="p">}</span>
+    <span class="n">changepoints</span> <span class="o">=</span> <span class="n">get_changepoint_features_and_values_from_config</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">,</span>
+        <span class="n">origin_for_time_vars</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoint_values&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># allows n_changepoints = 0</span>
+        <span class="n">changepoint_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">changepoint_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoint_values&quot;</span><span class="p">]])</span>
+    <span class="n">growth_func</span> <span class="o">=</span> <span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;growth_func&quot;</span><span class="p">]</span>
+    <span class="n">features_df</span> <span class="o">=</span> <span class="n">add_time_features_df</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">)</span>
+    <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="n">get_changepoint_dates_from_changepoints_dict</span><span class="p">(</span>
+        <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">,</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">)</span>
+    <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">+</span> <span class="n">changepoint_dates</span>
+    <span class="n">changepoint_features_df</span> <span class="o">=</span> <span class="n">get_changepoint_features</span><span class="p">(</span>
+        <span class="n">features_df</span><span class="p">,</span>
+        <span class="n">changepoint_values</span><span class="p">,</span>
+        <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">,</span>
+        <span class="n">growth_func</span><span class="o">=</span><span class="n">growth_func</span><span class="p">,</span>
+        <span class="n">changepoint_dates</span><span class="o">=</span><span class="n">changepoint_dates</span><span class="p">)</span>
+    <span class="n">changepoint_features_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">changepoint_features_df</span>
+
+
+<span class="k">def</span> <span class="nf">build_seasonality_feature_df_with_changes</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">origin_for_time_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">changepoints_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">fs_components_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tod&quot;</span><span class="p">,</span> <span class="s2">&quot;tow&quot;</span><span class="p">,</span> <span class="s2">&quot;toy&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">24.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+            <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+            <span class="s2">&quot;seas_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;daily&quot;</span><span class="p">,</span> <span class="s2">&quot;weekly&quot;</span><span class="p">,</span> <span class="s2">&quot;yearly&quot;</span><span class="p">]})):</span>
+    <span class="sd">&quot;&quot;&quot;A function to generate yearly seasonality features from a given time series df.</span>
+
+<span class="sd">    The seasonality features include n_changepoints * 2 columns of the format</span>
+<span class="sd">    1{x &gt; c_i} * sin(2 * pi / period * order * x) and 1{x &gt; c_i} * cos(2 * pi / period * order * x),</span>
+<span class="sd">    where c_i is the i-th change point value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The data df.</span>
+<span class="sd">    time_col : `str&#39;</span>
+<span class="sd">        The column name of time column in ``df``, entries can be parsed with pd.to_datetime.</span>
+<span class="sd">    origin_for_time_vars : `float` or `None`, default `None`</span>
+<span class="sd">        Original continuous time value, if not provided, will be parsed from data.</span>
+<span class="sd">    changepoints_dict: `dict` or `None`, default `None`</span>
+<span class="sd">        Change point dictionary, compatible with</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.get_changepoint_features_and_values_from_config`</span>
+<span class="sd">        If not provided, default is no change points.</span>
+<span class="sd">    fs_components_df: `pandas.DataFrame`</span>
+<span class="sd">        fs_components config df, compatible with</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.fourier_series_multi_fcn`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Seasonality feature df with [sum_{component_i} (2 * order_of_component_i)] * (num_changepoints + 1)</span>
+<span class="sd">        columns.</span>
+<span class="sd">        Each sum_{component_i} (2 * order_of_component_i) columns form a block. The first block contains the</span>
+<span class="sd">        original seasonality features, which accounts for the overall seasonality magnitudes. Each of the</span>
+<span class="sd">        rest num_changepoints block is a copy of the first block, with rows whose timestamps are before the</span>
+<span class="sd">        corresponding changepoint replaced by zeros. Such blocks only have effect on the seasonality</span>
+<span class="sd">        magnitudes after the corresponding changepoints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Gets changepoints features from config. Evenly distributed with n_changepoints specified is recommended.</span>
+    <span class="k">if</span> <span class="n">origin_for_time_vars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">origin_for_time_vars</span> <span class="o">=</span> <span class="n">get_default_origin_for_time_vars</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="p">)</span>
+    <span class="n">features_df</span> <span class="o">=</span> <span class="n">add_time_features_df</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">)</span>
+    <span class="n">fs_func</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fs_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">fs_components_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fs_components_df</span> <span class="o">=</span> <span class="n">fs_components_df</span><span class="p">[</span><span class="n">fs_components_df</span><span class="p">[</span><span class="s2">&quot;order&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">fs_components_df</span> <span class="o">=</span> <span class="n">fs_components_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fs_components_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fs_func</span> <span class="o">=</span> <span class="n">fourier_series_multi_fcn</span><span class="p">(</span>
+                <span class="n">col_names</span><span class="o">=</span><span class="n">fs_components_df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="n">periods</span><span class="o">=</span><span class="n">fs_components_df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">),</span>
+                <span class="n">orders</span><span class="o">=</span><span class="n">fs_components_df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order&quot;</span><span class="p">),</span>
+                <span class="n">seas_names</span><span class="o">=</span><span class="n">fs_components_df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seas_names&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">time_features_example_df</span> <span class="o">=</span> <span class="n">build_time_features_df</span><span class="p">(</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">][:</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># only needs the first two rows to get the column info</span>
+                <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">)</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="n">fs_func</span><span class="p">(</span><span class="n">time_features_example_df</span><span class="p">)</span>
+            <span class="n">fs_cols</span> <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="s2">&quot;cols&quot;</span><span class="p">]</span>
+    <span class="n">fs_features</span> <span class="o">=</span> <span class="n">fs_func</span><span class="p">(</span><span class="n">features_df</span><span class="p">)</span>
+    <span class="n">fs_df</span> <span class="o">=</span> <span class="n">fs_features</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span>
+    <span class="n">fs_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+    <span class="c1"># Augments regular Fourier columns to truncated Fourier columns.</span>
+    <span class="k">if</span> <span class="n">changepoints_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">changepoint_dates</span> <span class="o">=</span> <span class="n">get_changepoint_dates_from_changepoints_dict</span><span class="p">(</span>
+            <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span>
+        <span class="p">)</span>
+        <span class="c1"># The following lines truncates the fourier series at each change point</span>
+        <span class="c1"># For each change point, the values of the fourier series before the change point are</span>
+        <span class="c1"># set to zero. The column name is simply appending `_%Y_%m_%d_%H` after the original column names.</span>
+        <span class="n">col_names</span> <span class="o">=</span> <span class="n">fs_cols</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}{</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;_%Y_%m_</span><span class="si">%d</span><span class="s1">_%H&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">changepoint_dates</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fs_cols</span><span class="p">]</span>
+        <span class="n">fs_truncated_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">fs_df</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">fs_truncated_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">col_names</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">):</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">fs_truncated_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">fs_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):]</span>
+            <span class="n">fs_truncated_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">features_df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fs_df</span> <span class="o">=</span> <span class="n">fs_truncated_df</span>
+    <span class="k">return</span> <span class="n">fs_df</span>
+
+
+<span class="k">def</span> <span class="nf">build_seasonality_feature_df_from_detection_result</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">seasonality_changepoints</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="p">,</span>
+        <span class="n">include_original_block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">include_components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds seasonality feature df from detected seasonality change points.</span>
+
+<span class="sd">    The function is an extension of ``build_seasonality_feature_df_with_changes``. It can generate</span>
+<span class="sd">    a seasonality feature df with different change points for different components. These changepoints</span>
+<span class="sd">    are passed through a dictionary, which can be the output of</span>
+<span class="sd">    `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    __________</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The dataframe used to build seasonality feature df.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The name of the time column in ``df``.</span>
+<span class="sd">    seasonality_changepoints : `dict`</span>
+<span class="sd">        The seasonality change point dictionary. The keys are seasonality components, and the values</span>
+<span class="sd">        are the corresponding change points given in lists.</span>
+<span class="sd">        For example</span>
+
+<span class="sd">            &quot;weekly&quot;: [Timestamp(&#39;2020-01-01 00:00:00&#39;), Timestamp(&#39;2021-04-05 00:00:00&#39;)]</span>
+<span class="sd">            &quot;yearly&quot;: [Timestamp(&#39;2020-08-06 00:00:00&#39;)]</span>
+
+<span class="sd">    seasonality_components_df : `pandas.DataFrame`</span>
+<span class="sd">        The seasonality components dataframe that is compatible with</span>
+<span class="sd">        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`</span>
+<span class="sd">        The values in &quot;seas_names&quot; must equal to the keys in ``seasonality_changepoints``.</span>
+<span class="sd">    include_original_block : `bool`, default True</span>
+<span class="sd">        Whether to include the original untruncated block of sin or cos columns for each component. If set to</span>
+<span class="sd">        False, the original seasonality block for each component will be dropped.</span>
+<span class="sd">    include_components : `list` [`str`] or None, default None</span>
+<span class="sd">        The components to be included from the result. If None, all components will be included.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    seasonality_feature_df : `pandas.DataFrame`</span>
+<span class="sd">        The seasonality feature dataframe similar to the output of `build_seasonality_feature_df_with_changes``</span>
+<span class="sd">        but possibly with different changepoints on different components.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seasonality_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">seasonality_changepoints</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">include_components</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">include_components</span><span class="p">:</span>
+            <span class="n">seasonality_df_cp</span> <span class="o">=</span> <span class="n">build_seasonality_feature_df_with_changes</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">changepoints_dict</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;dates&quot;</span><span class="p">:</span> <span class="n">seasonality_changepoints</span><span class="p">[</span><span class="n">component</span><span class="p">]</span>
+                <span class="p">},</span>
+                <span class="n">fs_components_df</span><span class="o">=</span><span class="n">seasonality_components_df</span><span class="p">[</span><span class="n">seasonality_components_df</span><span class="p">[</span><span class="s2">&quot;seas_names&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">component</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">include_original_block</span><span class="p">:</span>
+                <span class="n">original_block_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">seasonality_components_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                    <span class="n">seasonality_components_df</span><span class="p">[</span><span class="s2">&quot;seas_names&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">component</span><span class="p">,</span> <span class="s2">&quot;order&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">seasonality_df_cp</span> <span class="o">=</span> <span class="n">seasonality_df_cp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">original_block_size</span><span class="p">:]</span>
+            <span class="n">seasonality_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">seasonality_df</span><span class="p">,</span> <span class="n">seasonality_df_cp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">extra_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">component</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">seasonality_changepoints</span> <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">include_components</span><span class="p">]</span> <span class="k">if</span> <span class="n">include_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">extra_components</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The following seasonality components have detected seasonality changepoints&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot; but these changepoints are not included in the model,&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot; because the seasonality component is not included in the model. </span><span class="si">{</span><span class="n">extra_components</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">seasonality_df</span>
+
+
+<span class="k">def</span> <span class="nf">compute_fitted_components</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">coef</span><span class="p">,</span>
+        <span class="n">regex</span><span class="p">,</span>
+        <span class="n">include_intercept</span><span class="p">,</span>
+        <span class="n">intercept</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the fitted values with selected regressors indicated by ``regex``</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `pandas.DataFrame`</span>
+<span class="sd">        The design matrix df with conventional column names.</span>
+<span class="sd">    coef : `numpy.array`</span>
+<span class="sd">        Estimated coefficients.</span>
+<span class="sd">    regex : regular expression</span>
+<span class="sd">        Pattern of the names of the columns to be used.</span>
+<span class="sd">    include_intercept : bool</span>
+<span class="sd">        Whether to include intercept.</span>
+<span class="sd">    intercept : `float`</span>
+<span class="sd">        The estimated intercept, must be provided if ``include_intercept`` == True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result: `pandas.Series`</span>
+<span class="sd">        The estimated component from selected regressors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">include_intercept</span> <span class="ow">and</span> <span class="n">intercept</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;``intercept`` must be provided when ``include_intercept`` is True.&quot;</span><span class="p">)</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">selected_columns</span> <span class="o">=</span> <span class="n">get_pattern_cols</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">regex</span><span class="p">)</span>
+    <span class="n">selected_columns_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">selected_columns</span><span class="p">]</span>
+    <span class="n">selected_coef</span> <span class="o">=</span> <span class="n">coef</span><span class="p">[</span><span class="n">selected_columns_idx</span><span class="p">]</span>
+    <span class="n">component</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">selected_columns</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">selected_coef</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">include_intercept</span><span class="p">:</span>
+        <span class="n">component</span> <span class="o">+=</span> <span class="n">intercept</span>
+    <span class="k">return</span> <span class="n">component</span>
+
+
+<span class="k">def</span> <span class="nf">plot_change</span><span class="p">(</span>
+        <span class="n">observation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">adaptive_lasso_estimate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">trend_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">trend_estimate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">year_seasonality_estimate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seasonality_change</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seasonality_estimate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="s2">&quot;Dates&quot;</span><span class="p">,</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="s2">&quot;Values&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Makes a plot of the observed data and estimated components, as well as detected changes</span>
+
+<span class="sd">    The function currently allows five different components to be plotted together. Specifically,</span>
+<span class="sd">    ``trend_change`` can be plotted with at least one of ``observations``, ``trend_estimate`` and</span>
+<span class="sd">    ``adaptive_lasso_estimate`` is provided.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    observation : `pandas.Series` with time index or `None`</span>
+<span class="sd">        The observed values, leave None to omit it from plot.</span>
+<span class="sd">    adaptive_lasso_estimate : `pandas.Series` with time index or `None`</span>
+<span class="sd">        The adaptive lasso estimated trend, leave None to omit it from plot.</span>
+<span class="sd">    trend_change : `pandas.Series` with time index or `None`</span>
+<span class="sd">        The detected trend change points, leave None to omit it from plot.</span>
+<span class="sd">        Plotted as vertical lines if observation is provided, otherwise plotted as markers.</span>
+<span class="sd">    trend_estimate : `pandas.Series` with time index or `None`</span>
+<span class="sd">        The estimated trend, leave None to omit it from plot.</span>
+<span class="sd">    year_seasonality_estimate : `pandas.Series` with time index or `None`</span>
+<span class="sd">        The estimated yearly seasonality, leave None to omit it from plot.</span>
+<span class="sd">    seasonality_change : `list` or `dict` or `None`</span>
+<span class="sd">        The detected seasonality change points, leave None to omit it from plot.</span>
+<span class="sd">        If the type is `list`, it should be a list of change points of all components.</span>
+<span class="sd">        If the type is `dict`, its keys should be the name of components, and values</span>
+<span class="sd">        should be the corresponding list of change points.</span>
+<span class="sd">    seasonality_estimate : `pandas.Series` or `None`</span>
+<span class="sd">        The estimated seasonality, leave None to omit it from plot.</span>
+<span class="sd">    title : `str` or `None`</span>
+<span class="sd">        Plot title.</span>
+<span class="sd">    xaxis : `str`</span>
+<span class="sd">        Plot x axis label.</span>
+<span class="sd">    yaxis : `str`</span>
+<span class="sd">        Plot y axis label.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : `plotly.graph_objects`</span>
+<span class="sd">        The plotted plotly object, can be shown with `iplot(fig)`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">trend_change</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">seasonality_change</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Timeseries Plot&quot;</span>
+        <span class="k">elif</span> <span class="n">trend_change</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Timeseries Plot with detected seasonality change points&quot;</span>
+        <span class="k">elif</span> <span class="n">seasonality_change</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Timeseries Plot with detected trend change points&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Timeseries Plot with detected trend and seasonality change points&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+    <span class="c1"># shows the true observation</span>
+    <span class="k">if</span> <span class="n">observation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">observation</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">observation</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#42A5F5&quot;</span><span class="p">),</span>  <span class="c1"># blue 400</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># shows the seasonality estimate</span>
+    <span class="k">if</span> <span class="n">seasonality_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;seasonality+trend&quot;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">seasonality_estimate</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">seasonality_estimate</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#B2FF59&quot;</span><span class="p">),</span>  <span class="c1"># light green A200</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># shows the adaptive lasso estimated trend</span>
+    <span class="k">if</span> <span class="n">adaptive_lasso_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;adaptive lasso estimated trend&quot;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">adaptive_lasso_estimate</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">adaptive_lasso_estimate</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#FFA726&quot;</span><span class="p">),</span>  <span class="c1"># orange 400</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># shows the detected trend change points</span>
+    <span class="c1"># shown as vertical lines if ``observation`` is provided, otherwise as markers</span>
+    <span class="k">if</span> <span class="n">trend_change</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">observation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">seasonality_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">observation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observation</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observation</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seasonality_estimate</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seasonality_estimate</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trend_change</span><span class="p">):</span>
+                <span class="n">showlegend</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                    <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;trend change point&quot;</span><span class="p">,</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                        <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">)],</span>
+                        <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">],</span>
+                        <span class="n">line</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">scatter</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span>
+                            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#F44336&quot;</span><span class="p">,</span>  <span class="c1"># red 500</span>
+                            <span class="n">width</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                            <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;dash&quot;</span>
+                        <span class="p">),</span>
+                        <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+                        <span class="n">legendgroup</span><span class="o">=</span><span class="s2">&quot;trend&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">trend_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">adaptive_lasso_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trend</span> <span class="o">=</span> <span class="n">trend_estimate</span> <span class="k">if</span> <span class="n">trend_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">adaptive_lasso_estimate</span>
+            <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">trend_change</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">trend</span><span class="p">[</span><span class="n">cp</span><span class="p">]</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                    <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;trend change points&quot;</span><span class="p">,</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;markers&quot;</span><span class="p">,</span>
+                        <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">)],</span>
+                        <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">value</span><span class="p">],</span>
+                        <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#F44336&quot;</span><span class="p">,</span>  <span class="c1"># red 500</span>
+                            <span class="n">size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;Black&quot;</span><span class="p">,</span>
+                                <span class="n">width</span><span class="o">=</span><span class="mf">1.5</span>
+                            <span class="p">)),</span>
+                        <span class="n">opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                        <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;trend_change is not shown. Must provide observations, trend_estimate, &quot;</span>
+                          <span class="s2">&quot;adaptive_lasso_estimate or seasonality_estimate to plot trend_change.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="c1"># shows the detected seasonality change points</span>
+    <span class="k">if</span> <span class="n">seasonality_change</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">observation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">seasonality_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">observation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observation</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">observation</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seasonality_estimate</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+                <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">seasonality_estimate</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seasonality_change</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seasonality_change</span><span class="p">):</span>
+                    <span class="n">showlegend</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;seasonality change point&quot;</span><span class="p">,</span>
+                            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                            <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">)],</span>
+                            <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">],</span>
+                            <span class="n">line</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">scatter</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span>
+                                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1E88E5&quot;</span><span class="p">,</span>  <span class="c1"># blue 600</span>
+                                <span class="n">width</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                                <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;dash&quot;</span>
+                            <span class="p">),</span>
+                            <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+                            <span class="n">legendgroup</span><span class="o">=</span><span class="s2">&quot;seasonality&quot;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seasonality_change</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#2196F3&quot;</span><span class="p">,</span> <span class="s2">&quot;#0D47A1&quot;</span><span class="p">]</span>  <span class="c1"># [blue 500, blue 900]</span>
+                <span class="n">dashes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dash&quot;</span><span class="p">,</span> <span class="s2">&quot;dot&quot;</span><span class="p">,</span> <span class="s2">&quot;dashdot&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="n">types</span> <span class="o">=</span> <span class="p">[(</span><span class="n">color</span><span class="p">,</span> <span class="n">dash</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">colors</span> <span class="k">for</span> <span class="n">dash</span> <span class="ow">in</span> <span class="n">dashes</span><span class="p">]</span>
+                <span class="n">quota</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">changepoints</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seasonality_change</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                    <span class="k">if</span> <span class="n">quota</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Only the first 8 components with detected change points&quot;</span>
+                                      <span class="s2">&quot;are plotted.&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">changepoints</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">cp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">changepoints</span><span class="p">):</span>
+                            <span class="n">showlegend</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;seasonality change point &quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">,</span>
+                                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                                    <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">cp</span><span class="p">)],</span>
+                                    <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">],</span>
+                                    <span class="n">line</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">scatter</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span>
+                                        <span class="n">color</span><span class="o">=</span><span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                        <span class="n">width</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                                        <span class="n">dash</span><span class="o">=</span><span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                                    <span class="p">),</span>
+                                    <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+                                    <span class="n">legendgroup</span><span class="o">=</span><span class="n">key</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="n">quota</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;seasonality_change must be either list or dict.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;seasonality_change is not shown. Must provide observations or&quot;</span>
+                          <span class="s2">&quot; seasonality_estimate to plot seasonality_change.&quot;</span><span class="p">)</span>
+    <span class="c1"># shows the estimated trend</span>
+    <span class="k">if</span> <span class="n">trend_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;trend&quot;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">trend_estimate</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">trend_estimate</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#FFFF00&quot;</span><span class="p">,</span>  <span class="c1"># yellow A200</span>
+                    <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="c1"># shows the estimated yearly seasonality</span>
+    <span class="k">if</span> <span class="n">year_seasonality_estimate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;yearly seasonality&quot;</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">year_seasonality_estimate</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">year_seasonality_estimate</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#BF360C&quot;</span><span class="p">),</span>  <span class="c1"># deep orange 900</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+                <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">xaxis</span><span class="p">),</span>
+        <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">yaxis</span><span class="p">),</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">fig</span>
+
+
+<span class="k">def</span> <span class="nf">adaptive_lasso_cv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>
+                      <span class="n">y</span><span class="p">,</span>
+                      <span class="n">initial_coef</span><span class="p">,</span>
+                      <span class="n">regularization_strength</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">max_min_ratio</span><span class="o">=</span><span class="mf">1e6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Performs the adaptive lasso cross-validation.</span>
+
+<span class="sd">     Algorithm is based on a transformation of `sklearn.linear_model.LassoCV()`.</span>
+<span class="sd">     If initial_coef is not available, a lasso estimator is computed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.array`</span>
+<span class="sd">        The design matrix.</span>
+<span class="sd">    y : `numpy.array`</span>
+<span class="sd">        The response vector.</span>
+<span class="sd">    initial_coef : `str` in [&quot;ridge&quot;, &quot;lasso&quot;, &quot;old&quot;] or `numpy.array`</span>
+<span class="sd">        How to obtain the initial estimator. If a `str` is provided, the corresponding model is trained</span>
+<span class="sd">        to obtain the initial estimator. If a `numpy.array` is provided, it is used as the initial</span>
+<span class="sd">        estimator.</span>
+<span class="sd">    regularization_strength : `float` in [0, 1] or `None`</span>
+<span class="sd">        The regularization strength for change points. Greater values imply fewer change points.</span>
+<span class="sd">        0 indicates all change points, and 1 indicates no change point.</span>
+<span class="sd">        If `None`, cross-validation will be used to select tuning parameter,</span>
+<span class="sd">        else the value will be used as the tuning parameters.</span>
+<span class="sd">    max_min_ratio : `float`</span>
+<span class="sd">        defines the min lambda by defining the ratio of lambda_max / lambda_min.</span>
+<span class="sd">        `sklearn.linear_model.lasso_path` uses 1e3, but 1e6 seems better here.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    intercept : `float`</span>
+<span class="sd">        The estimated intercept.</span>
+<span class="sd">    coef : `numpy.array`</span>
+<span class="sd">        The estimated coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">regularization_strength</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">regularization_strength</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">regularization_strength</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;regularization_strength must be between 0.0 and 1.0.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">regularization_strength</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># regularization_strength == 0 implies linear regression</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+    <span class="k">if</span> <span class="n">regularization_strength</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># regularization_strength == 1 implies no change point selected</span>
+        <span class="c1"># handle this case here separately for algorithm convergence and rounding concerns</span>
+        <span class="n">intercept</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">coef</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">initial_coef</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lasso&quot;</span><span class="p">:</span> <span class="n">LassoCV</span><span class="p">(),</span> <span class="s2">&quot;ols&quot;</span><span class="p">:</span> <span class="n">LinearRegression</span><span class="p">(),</span> <span class="s2">&quot;ridge&quot;</span><span class="p">:</span> <span class="n">RidgeCV</span><span class="p">()}[</span><span class="n">initial_coef</span><span class="p">]</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">initial_coef</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_coef</span><span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;the number of columns in x should equal to the length of weights&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;but got </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">initial_coef</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">initial_coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">initial_coef</span><span class="p">),</span> <span class="mf">1e16</span><span class="p">)</span>  <span class="c1"># 1e16 is big enough for most cases.</span>
+    <span class="n">x_t</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">weights</span>
+    <span class="k">if</span> <span class="n">regularization_strength</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">LassoCV</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># finds the minimum lambda that corresponds to no selection, formula derived from KKT condition.</span>
+        <span class="c1"># this is the max lambda we need to consider</span>
+        <span class="n">max_lam</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_t</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())))</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># the lambda we choose is ``regularization_strength``th log-percentile of [lambda_min, lambda_max]</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">max_lam</span> <span class="o">/</span> <span class="n">max_min_ratio</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">max_min_ratio</span><span class="p">)</span> <span class="o">*</span> <span class="n">regularization_strength</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">lam</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">intercept</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span> <span class="o">/</span> <span class="n">weights</span>
+    <span class="k">return</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">coef</span>
+
+
+<span class="k">def</span> <span class="nf">find_neighbor_changepoints</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">,</span> <span class="n">min_index_distance</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Finds neighbor change points given their indices</span>
+
+<span class="sd">    For example</span>
+<span class="sd">        x = [1, 2, 3, 7, 8, 10, 15, 20]</span>
+<span class="sd">    The return with `min_index_distance`=2 is</span>
+<span class="sd">        result = [[1, 2, 3], [7, 8], [10], [15], [20]]</span>
+<span class="sd">    The return with `min_index_distance`=3 is</span>
+<span class="sd">        result = [[1, 2, 3], [7, 8, 10], [15], [20]]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_idx : `list`</span>
+<span class="sd">        A list of the change point indices.</span>
+<span class="sd">    min_index_distance : `int`</span>
+<span class="sd">        The minimal index distance to be considered separate</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    neighbor_cps : `list`</span>
+<span class="sd">        A list of neighbor change points lists. Single change points are put in a list as well.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">min_index_distance</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`min_index_distance` must be positive.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">cp_idx</span><span class="p">]</span>
+    <span class="c1"># check if sorted</span>
+    <span class="n">is_sorted</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">cp_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cp_idx</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="n">is_sorted</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">break</span>
+    <span class="c1"># sort if `cp_idx` is not sorted</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_sorted</span><span class="p">:</span>
+        <span class="n">cp_idx</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The given `cp_idx` is not sorted. It has been sorted.&quot;</span><span class="p">)</span>
+    <span class="n">neighbor_cps</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">):</span>
+        <span class="n">neighbor_cps</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="n">neighbor_cps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cp_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">neighbor_cps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">min_index_distance</span><span class="p">:</span>
+            <span class="n">neighbor_cps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cp_idx</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">neighbor_cps</span>
+
+
+<span class="k">def</span> <span class="nf">get_trend_changes_from_adaptive_lasso</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>
+                                          <span class="n">y</span><span class="p">,</span>
+                                          <span class="n">changepoint_dates</span><span class="p">,</span>
+                                          <span class="n">initial_coef</span><span class="p">,</span>
+                                          <span class="n">min_index_distance</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                          <span class="n">regularization_strength</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses the adaptive lasso estimator to get change point dates.</span>
+
+<span class="sd">    The functions calls ``adaptive_lasso_cv`` to selected potential trend change points.</span>
+<span class="sd">    Then a filter is applied to eliminate change points that are too close.</span>
+<span class="sd">    Specifically, in a set of close change points, the one with the largest absolute</span>
+<span class="sd">    coefficient will be kept.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.array`</span>
+<span class="sd">        The design matrix.</span>
+<span class="sd">    y : `numpy.array`</span>
+<span class="sd">        The response vector.</span>
+<span class="sd">    changepoint_dates : `pandas.Series`</span>
+<span class="sd">        A pandas Series of all potential change point dates that were used to generate ``x``.</span>
+<span class="sd">    initial_coef : `str` in [&quot;ridge&quot;, &quot;lasso&quot;, &quot;old&quot;] or `numpy.array&#39;</span>
+<span class="sd">        How to obtain the initial estimator. If a `str` is provided, the corresponding model is trained</span>
+<span class="sd">        to obtain the initial estimator. If a `numpy.array` is provided, it is used as the initial</span>
+<span class="sd">        estimator.</span>
+<span class="sd">    min_index_distance : `int`</span>
+<span class="sd">        The minimal index distance that is allowed between two change points.</span>
+<span class="sd">    regularization_strength : `float` in [0, 1] or `None`</span>
+<span class="sd">        The regularization power for change points. Greater values imply fewer change points.</span>
+<span class="sd">        0 indicates all change points, and 1 indicates no change point.</span>
+<span class="sd">        If `None`, cross-validation will be used to select tuning parameter,</span>
+<span class="sd">        else the value will be used as the tuning parameters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    changepoints : `list`</span>
+<span class="sd">        Detected trend change points.</span>
+<span class="sd">    coefs : `list`</span>
+<span class="sd">        Adaptive lasso estimated coefficients.</span>
+<span class="sd">        First element is intercept, and second element is coefficients.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">coef</span> <span class="o">=</span> <span class="n">adaptive_lasso_cv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">initial_coef</span><span class="p">,</span> <span class="n">regularization_strength</span><span class="p">)</span>
+    <span class="c1"># x may contain yearly seasonality regressors, so we need i &lt; len(changepoint_dates)</span>
+    <span class="n">nonzero_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coef</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">changepoint_dates</span><span class="p">)]</span>
+    <span class="n">cp_blocks</span> <span class="o">=</span> <span class="n">find_neighbor_changepoints</span><span class="p">(</span>
+        <span class="n">cp_idx</span><span class="o">=</span><span class="n">nonzero_idx</span><span class="p">,</span>
+        <span class="n">min_index_distance</span><span class="o">=</span><span class="n">min_index_distance</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">cp_idx</span> <span class="o">=</span> <span class="n">filter_changepoints</span><span class="p">(</span><span class="n">cp_blocks</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">min_index_distance</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">changepoint_dates</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">cp_idx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="p">[</span><span class="n">intercept</span><span class="p">,</span> <span class="n">coef</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">compute_min_changepoint_index_distance</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">n_changepoints</span><span class="p">,</span>
+        <span class="n">min_distance_between_changepoints</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the minimal index distance between two consecutive detected change points.</span>
+
+<span class="sd">    Given a df, its time column, the number of change points that are evenly distributed,</span>
+<span class="sd">    and the min_distance_between_changepoints in `DateOffset, Timedelta or str`, gets the</span>
+<span class="sd">    min distance between change point indices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The dataframe that has a time column.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name of time in ``df``.</span>
+<span class="sd">    n_changepoints : `int`</span>
+<span class="sd">        Number of change points that are uniformly placed over the time period.</span>
+<span class="sd">    min_distance_between_changepoints : `DateOffset`, `Timedelta` or `str`</span>
+<span class="sd">        The minimal distance that is allowed between two detected change points.</span>
+<span class="sd">        Note: maximal unit is &#39;D&#39;, i.e., you may only use units no more than &#39;D&#39; such as</span>
+<span class="sd">        &#39;10D&#39;, &#39;5H&#39;, &#39;100T&#39;, &#39;200S&#39;. The reason is that &#39;W&#39;, &#39;M&#39; or higher has either</span>
+<span class="sd">        cycles or indefinite number of days, thus is not parsable by pandas as timedelta.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min_changepoint_index_distance : `int`</span>
+<span class="sd">        The minimal index distance that is allowed between two detected change points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n_changepoints</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">check_freq_unit_at_most_day</span><span class="p">(</span><span class="n">min_distance_between_changepoints</span><span class="p">,</span> <span class="s2">&quot;min_distance_between_changepoints&quot;</span><span class="p">)</span>
+    <span class="c1"># `to_offset` function handles string frequency without numbers such as &#39;D&#39; instead of &#39;1D&#39;,</span>
+    <span class="c1"># so we use `to_offset` here rather than `to_timedelta`.</span>
+    <span class="n">min_dist</span> <span class="o">=</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">min_distance_between_changepoints</span><span class="p">)</span>
+    <span class="c1"># There are `n_changepoints` change points and 1 growth term, so there is `n_changepoints` gaps</span>
+    <span class="c1"># Therefore the following is divided by `n_changepoints`</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">changepoint_dist</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">n_changepoints</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">changepoint_dist</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> \
+                           <span class="o">/</span> <span class="n">n_changepoints</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">min_dist</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="n">changepoint_dist</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()))</span>
+
+
+<span class="k">def</span> <span class="nf">filter_changepoints</span><span class="p">(</span><span class="n">cp_blocks</span><span class="p">,</span> <span class="n">coef</span><span class="p">,</span> <span class="n">min_index_distance</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filters change points that are too close.</span>
+
+<span class="sd">    Given the ``cp_block`` from the output of ``find_neighbor_changepoints`` and the corresponding</span>
+<span class="sd">    coefficients, finds the list of change points, one in each neighborhood list.</span>
+
+<span class="sd">    The algorithm keeps all individual change points. If more than one change points are in the</span>
+<span class="sd">    same block, with the maximum distance less than ``min_index_distance``, then only the one</span>
+<span class="sd">    with the maximum absolute coefficient is retained. If more than one change points are in the</span>
+<span class="sd">    same block, and the block covers a few ``max_index_distance`` length, then a greedy method</span>
+<span class="sd">    is used to select change points. The principle is that, we perform one pass of the change</span>
+<span class="sd">    points, within each ``max_index_distance``, we select one change point with the maximum</span>
+<span class="sd">    absolute coefficients. If the next change point is with in ``max_index_distance`` of the</span>
+<span class="sd">    previous one, the previous one is dropped. A back-tracking is also used to fill possible</span>
+<span class="sd">    change points when a change point is dropped.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_blocks : `list`</span>
+<span class="sd">        A list of list of change points, output from ``find_neighbor_changepoints``.</span>
+<span class="sd">    coef : `numpy.array`</span>
+<span class="sd">        The estimated coefficients for all potential change points.</span>
+<span class="sd">        Note: ``coef`` is a 1-D array, which is the output from regression model.</span>
+<span class="sd">    min_index_distance : `int`</span>
+<span class="sd">        The minimum index distance between two selected change points.</span>
+<span class="sd">        Note that this parameter is added to safe guard the extreme cases: if all</span>
+<span class="sd">        significant change points are included in the same block, with insignificant</span>
+<span class="sd">        change points connecting them, then we do not want to drop all and just leave</span>
+<span class="sd">        one change points. With this parameter, we can leave more than one change point</span>
+<span class="sd">        from each block, and keep them at least ``min_index_distance`` away.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    changepoint_indices : `list`</span>
+<span class="sd">        The indices of selected change points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">min_index_distance</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`min_index_distance` is the minimum distance between change point&quot;</span>
+                         <span class="s2">&quot;indices to consider them separate, and must be positive.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_index_distance</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">cp_blocks</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">block</span><span class="p">]</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># makes sure ``coef`` is 1-D array</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">coef</span><span class="p">[[</span><span class="n">i</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">cp_blocks</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">block</span><span class="p">]]</span>  <span class="c1"># Only needs the coefs that correspond to selected cp&#39;s.</span>
+    <span class="n">selected_changepoints</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">cp_blocks</span> <span class="o">==</span> <span class="p">[[]]:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cp_blocks</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># if only one cp in a block, leaves it</span>
+            <span class="n">selected_changepoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># needs coefs to decide</span>
+            <span class="n">coef_start</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">cp_blocks</span><span class="p">[:</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">coef_block</span> <span class="o">=</span> <span class="n">coef</span><span class="p">[</span><span class="n">coef_start</span><span class="p">:</span> <span class="n">coef_start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">block</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_index_distance</span><span class="p">:</span>
+                <span class="c1"># If block max distance is less than `min_index_distance`,</span>
+                <span class="c1"># only one cp can be selected,</span>
+                <span class="c1"># select the one with the greatest absolute coef</span>
+                <span class="n">selected_changepoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">coef_block</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">()])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># For longer blocks, the change points with the maximum</span>
+                <span class="c1"># absolute coefficients are selected, while keeping the</span>
+                <span class="c1"># distance beyond ``min_index_distance``.</span>
+                <span class="c1"># This prevents dropping too many change points in a long block.</span>
+                <span class="n">block_cps</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">last_coef</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">block</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="c1"># gets the current ``min_index_distance`` sized sub-block of cps and coefs</span>
+                    <span class="n">current_sub_block</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">block</span> <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">cp</span> <span class="o">&lt;</span> <span class="n">start</span> <span class="o">+</span> <span class="n">min_index_distance</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">current_sub_block</span><span class="p">:</span>
+                        <span class="n">start</span> <span class="o">+=</span> <span class="n">min_index_distance</span>
+                        <span class="k">continue</span>
+                    <span class="n">current_cp</span> <span class="o">=</span> <span class="n">current_sub_block</span><span class="p">[</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">coef_block</span><span class="p">[[</span><span class="n">block</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">current_sub_block</span><span class="p">]])</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+                    <span class="n">current_cp_idx</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_cp</span><span class="p">)</span>
+                    <span class="n">current_coef</span> <span class="o">=</span> <span class="n">coef_block</span><span class="p">[</span><span class="n">current_cp_idx</span><span class="p">]</span>
+                    <span class="c1"># the first change point, doesn&#39;t have to look back</span>
+                    <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">block_cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_cp</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># check the distance from the last change point</span>
+                        <span class="c1"># if distance is enough, we can fit the new change point</span>
+                        <span class="n">last_cp</span> <span class="o">=</span> <span class="n">block_cps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">current_cp</span> <span class="o">-</span> <span class="n">last_cp</span> <span class="o">&gt;=</span> <span class="n">min_index_distance</span><span class="p">:</span>
+                            <span class="n">block_cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_cp</span><span class="p">)</span>
+                        <span class="c1"># if the distance is not enough and the new cp has a greater absolute coef,</span>
+                        <span class="c1"># we have to remove the previous one with less absolute coef</span>
+                        <span class="c1"># however, we would like to see if another cp fits in between</span>
+                        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">current_coef</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">last_coef</span><span class="p">):</span>
+                            <span class="c1"># checks if an extra change point can fit between last_last_cp and current_cp</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">block_cps</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                                <span class="n">last_last_cp</span> <span class="o">=</span> <span class="n">block_cps</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="c1"># if no last_last_cp, there&#39;s not lower bound</span>
+                                <span class="n">last_last_cp</span> <span class="o">=</span> <span class="o">-</span><span class="n">min_index_distance</span>
+                            <span class="c1"># gets the cps that can fit between last_last_cp and current_cp</span>
+                            <span class="n">back_fill_potential_cp</span> <span class="o">=</span> <span class="p">[</span>
+                                <span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">block</span> <span class="k">if</span>
+                                <span class="n">last_last_cp</span> <span class="o">+</span> <span class="n">min_index_distance</span> <span class="o">&lt;=</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="n">current_cp</span> <span class="o">-</span> <span class="n">min_index_distance</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">back_fill_potential_cp</span><span class="p">:</span>
+                                <span class="c1"># if there is cp that can fit in between, gets the one with max absolute coef</span>
+                                <span class="n">potential_coef</span> <span class="o">=</span> <span class="n">coef</span><span class="p">[[</span><span class="n">block</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">back_fill_potential_cp</span><span class="p">]]</span>
+                                <span class="n">back_fill_cp</span> <span class="o">=</span> <span class="n">back_fill_potential_cp</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">potential_coef</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+                                <span class="c1"># append the cp in between</span>
+                                <span class="n">block_cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">back_fill_cp</span><span class="p">)</span>
+                            <span class="c1"># removes the last one and append the new one</span>
+                            <span class="n">block_cps</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">last_cp</span><span class="p">)</span>
+                            <span class="n">block_cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_cp</span><span class="p">)</span>
+                    <span class="c1"># updates last_coef for comparison</span>
+                    <span class="n">last_coef</span> <span class="o">=</span> <span class="n">current_coef</span>
+                    <span class="c1"># search ahead</span>
+                    <span class="n">start</span> <span class="o">+=</span> <span class="n">min_index_distance</span>
+                <span class="n">selected_changepoints</span> <span class="o">+=</span> <span class="n">block_cps</span>
+    <span class="k">return</span> <span class="n">selected_changepoints</span>
+
+
+<span class="k">def</span> <span class="nf">get_changes_from_beta</span><span class="p">(</span>
+        <span class="n">beta</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="p">,</span>
+        <span class="n">magnitude_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the seasonality magnitude change arrays for each seasonality component from the</span>
+<span class="sd">    estimated regression coefficients.</span>
+
+<span class="sd">    In total there are::</span>
+
+<span class="sd">        {sum_{i=1}^{number of components}(2 * order of component i)} * {number of changepoints + 1}</span>
+
+<span class="sd">    coefficients in ``beta``, where the + 1 counts the overall seasonality. These coefficients</span>
+<span class="sd">    indicate the change in magnitude for each term in each component at each change point.</span>
+<span class="sd">    We can&#39;t work on these directly, since the values are positive or negative.</span>
+
+<span class="sd">    Two options are available to calcumated the change metric, controlled by the parameter</span>
+<span class="sd">    ``magnitude_only``.</span>
+
+<span class="sd">    If ``magnitude_only`` == True, the cumulative sum is taken for every single cos or sin term</span>
+<span class="sd">    (from all components) along the change points. The results are the magnitudes for each cos</span>
+<span class="sd">    or sin term (from all components) at each change point. An L2 norm is taken over the cos and sin</span>
+<span class="sd">    terms&#39; magnitudes within the same component at the same change point. Now for each component</span>
+<span class="sd">    at every change point, we have one L2 norm value that represents the magnitude (no longer</span>
+<span class="sd">    cos or sin level). Then the magnitude changes for the same component between consecutive</span>
+<span class="sd">    change points are computed. This option captures total magnitude changes only.</span>
+
+<span class="sd">    If ``magnitude_only`` == False, an L2 norm is taken over the cos or sin magnitude changes</span>
+<span class="sd">    in the same component directly. This option captures shape changes as well.</span>
+
+<span class="sd">    A dictionary is returned with keys equal to the component names, and values are the corresponding</span>
+<span class="sd">    arrays of changes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    beta : `np.array`</span>
+<span class="sd">        The estimated regression coefficients.</span>
+<span class="sd">    seasonality_components_df : `pandas.DataFrame`</span>
+<span class="sd">        The df to generate seasonality design matrix, which is compatible with</span>
+<span class="sd">        ``seasonality_components_df`` in</span>
+<span class="sd">        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`</span>
+<span class="sd">    magnitude_only : `bool`, default False</span>
+<span class="sd">        Set to True to compute the L2 norms on the seasonality magnitudes, and set to False to compute the</span>
+<span class="sd">        L2 norms on the seasonailty changes.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    seasonality_magnitude : `dict`</span>
+<span class="sd">        Keys are seasonality components, and values are the arrays of changes at each changepoint for the</span>
+<span class="sd">        components.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    # 1 change point, 2 seasonality components: &quot;weekly&quot; has order 1, and &quot;yearly&quot; has order 2.</span>
+<span class="sd">    # so (1 + 2) * 2 * (1 + 1) = 12 coefficients in total.</span>
+<span class="sd">    # the terms above are</span>
+<span class="sd">    # [(weekly_order + yearly_order) * 2_terms_sin_cos] * (overall_seasonality + num_changepoints)</span>
+<span class="sd">    &gt;&gt;&gt; # the initial coefficients are [1, 1, 1, 1, 1, 1], and changes to [2, 0, 2, 2, 2, 0] at the change point</span>
+<span class="sd">    &gt;&gt;&gt; # the change is [1, -1, 1, 1, 1, -1].</span>
+<span class="sd">    &gt;&gt;&gt; beta = np.array([1, 1,     1, 1, 1, 1,          # initial coefficients</span>
+<span class="sd">    ...                  1, -1,    1, 1, 1, -1])        # changes to [2, 0,     2, 2, 2, 0]</span>
+<span class="sd">    &gt;&gt;&gt; seasonality_components_df = pd.DataFrame({</span>
+<span class="sd">    ...     &quot;name&quot;: [&quot;tow&quot;, &quot;conti_year&quot;],</span>
+<span class="sd">    ...     &quot;period&quot;: [7.0, 1.0],</span>
+<span class="sd">    ...     &quot;order&quot;: [1, 2],</span>
+<span class="sd">    ...     &quot;seas_names&quot;: [&quot;weekly&quot;, &quot;yearly&quot;]})</span>
+<span class="sd">    &gt;&gt;&gt; result = get_changes_from_beta(beta, seasonality_components_df, True)</span>
+<span class="sd">    &gt;&gt;&gt; # when ``magnitude_only`` is set to True, the norm is calculated on the magnitude coefficients</span>
+<span class="sd">    &gt;&gt;&gt; # we have norms = [[sqrt(2), 2], [2, 2 * sqrt(3)]]</span>
+<span class="sd">    &gt;&gt;&gt; # hence the changes at the change point are [2 - sqrt(2), 2 * sqrt(3) - 2]</span>
+<span class="sd">    &gt;&gt;&gt; # the first coefficients is always prepended.</span>
+<span class="sd">    &gt;&gt;&gt; for key, value in result.items():</span>
+<span class="sd">    &gt;&gt;&gt;     print(key, value)</span>
+<span class="sd">    weekly [1.41421356 0.58578644]</span>
+<span class="sd">    yearly [2.         1.46410162]</span>
+
+<span class="sd">    &gt;&gt;&gt; # when ``magnitude_only`` is set to False, the norm is calculated directly on the change coefficients</span>
+<span class="sd">    &gt;&gt;&gt; # we have changes [sqrt(2), 2] at the change point</span>
+<span class="sd">    &gt;&gt;&gt; result = get_changes_from_beta(beta, seasonality_components_df, False)</span>
+<span class="sd">    &gt;&gt;&gt; for key, value in result.items():</span>
+<span class="sd">    &gt;&gt;&gt;     print(key, value)</span>
+<span class="sd">    weekly [1.41421356 1.41421356]</span>
+<span class="sd">    yearly [2. 2.]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># gets the number of terms in each component</span>
+    <span class="n">num_terms</span> <span class="o">=</span> <span class="p">(</span><span class="n">seasonality_components_df</span><span class="p">[</span><span class="s2">&quot;order&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="c1"># gets the names of components</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">seasonality_components_df</span><span class="p">[</span><span class="s2">&quot;seas_names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="c1"># reshapes the regression coefficients and computes the magnitude coefficients</span>
+    <span class="c1"># the columns are the terms of different orders for each component</span>
+    <span class="c1"># each row is one change point</span>
+    <span class="n">beta_mat</span> <span class="o">=</span> <span class="n">beta</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">num_terms</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">magnitude_only</span><span class="p">:</span>
+        <span class="c1"># cumsum gets the coefficient for the term between this changepoint and the next one.</span>
+        <span class="n">coef_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">beta_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># computes the change magnitudes of each component at each time point, metric is l2 norm</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">num_terms</span><span class="p">)):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">num_terms</span><span class="p">[:</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">num_terms</span><span class="p">[:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">magnitude_only</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">components</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coef_mat</span><span class="p">[:,</span> <span class="n">start</span><span class="p">:</span> <span class="n">end</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">prepend</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">components</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">beta_mat</span><span class="p">[:,</span> <span class="n">start</span><span class="p">:</span> <span class="n">end</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">get_seasonality_changes_from_adaptive_lasso</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">changepoint_dates</span><span class="p">,</span>
+        <span class="n">initial_coef</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="p">,</span>
+        <span class="n">min_index_distance</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">regularization_strength</span><span class="o">=</span><span class="mf">0.6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses the adaptive lasso estimator to get change point dates.</span>
+
+<span class="sd">    The functions calls ``adaptive_lasso_cv`` to selected potential seasonality change points.</span>
+<span class="sd">    Then a filter is applied to eliminate change points that are too close.</span>
+<span class="sd">    Specifically, in a set of close change points, the one with the largest absolute</span>
+<span class="sd">    coefficient will be kept.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.array`</span>
+<span class="sd">        The design matrix.</span>
+<span class="sd">    y : `numpy.array`</span>
+<span class="sd">        The response vector.</span>
+<span class="sd">    changepoint_dates : `pandas.Series`</span>
+<span class="sd">        A pandas Series of all potential change point dates that were used to generate ``x``.</span>
+<span class="sd">    initial_coef : `str` in [&quot;ridge&quot;, &quot;lasso&quot;, &quot;old&quot;] or `numpy.array&#39;</span>
+<span class="sd">        How to obtain the initial estimator. If a `str` is provided, the corresponding model is trained</span>
+<span class="sd">        to obtain the initial estimator. If a `numpy.array` is provided, it is used as the initial</span>
+<span class="sd">        estimator.</span>
+<span class="sd">    seasonality_components_df : `pandas.DataFrame`</span>
+<span class="sd">        The df to generate seasonality design matrix, which is compatible with</span>
+<span class="sd">        ``seasonality_components_df`` in</span>
+<span class="sd">        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`</span>
+<span class="sd">    min_index_distance : `int`</span>
+<span class="sd">        The minimal index distance that is allowed between two change points.</span>
+<span class="sd">    regularization_strength : `float` in [0, 1]</span>
+<span class="sd">        The regularization power for change points. Greater values imply fewer change points.</span>
+<span class="sd">        0 indicates all change points, and 1 indicates no change point.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : `dict`</span>
+<span class="sd">        The detected seasonality change points result dictionary. Keys are the component names,</span>
+<span class="sd">        and values are the corresponding detected change points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intercept</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">adaptive_lasso_cv</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+        <span class="n">initial_coef</span><span class="o">=</span><span class="n">initial_coef</span><span class="p">,</span>
+        <span class="n">regularization_strength</span><span class="o">=</span><span class="n">regularization_strength</span><span class="p">,</span>
+        <span class="c1"># Typically, seasonality has fewer changepoints than trend. Lower ratio results in higher lambda.</span>
+        <span class="n">max_min_ratio</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">change_result</span> <span class="o">=</span> <span class="n">get_changes_from_beta</span><span class="p">(</span>
+        <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="o">=</span><span class="n">seasonality_components_df</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">changes</span> <span class="ow">in</span> <span class="n">change_result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">nonzero_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">changes</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">cp_blocks</span> <span class="o">=</span> <span class="n">find_neighbor_changepoints</span><span class="p">(</span>
+            <span class="n">cp_idx</span><span class="o">=</span><span class="n">nonzero_idx</span><span class="p">,</span>
+            <span class="n">min_index_distance</span><span class="o">=</span><span class="n">min_index_distance</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">cp_idx</span> <span class="o">=</span> <span class="n">filter_changepoints</span><span class="p">(</span><span class="n">cp_blocks</span><span class="p">,</span> <span class="n">changes</span><span class="p">,</span> <span class="n">min_index_distance</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">changepoint_dates</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">cp_idx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">estimate_trend_with_detected_changepoints</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">changepoints</span><span class="p">,</span>
+        <span class="n">yearly_seasonality_order</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Estimates the trend effect with detected change points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The data df.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name of the time column in ``df``.</span>
+<span class="sd">    value_col : `str`</span>
+<span class="sd">        The column name of the value column in ``df``.</span>
+<span class="sd">    changepoints : `list`</span>
+<span class="sd">        A list of detected trend change points.</span>
+<span class="sd">    yearly_seasonality_order : `int`</span>
+<span class="sd">        The yearly seasonality order.</span>
+<span class="sd">    estimator : `str`, default &quot;ridge&quot;</span>
+<span class="sd">        &quot;ols&quot; or &quot;ridge&quot;, the estimation model for trend estimation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    trend_estimate : `pandas.Series`</span>
+<span class="sd">        The estimated trend.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">trend_df</span> <span class="o">=</span> <span class="n">build_trend_feature_df_with_changes</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">changepoints_dict</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dates&quot;</span><span class="p">:</span> <span class="n">changepoints</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">yearly_seasonality_order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">long_seasonality_df</span> <span class="o">=</span> <span class="n">build_seasonality_feature_df_with_changes</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">fs_components_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;conti_year&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+                <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">yearly_seasonality_order</span><span class="p">],</span>
+                <span class="s2">&quot;seas_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;yearly&quot;</span><span class="p">]})</span>
+        <span class="p">)</span>
+        <span class="n">trend_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">trend_df</span><span class="p">,</span> <span class="n">long_seasonality_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">estimators</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ridge&quot;</span><span class="p">:</span> <span class="n">RidgeCV</span><span class="p">,</span>
+        <span class="s2">&quot;ols&quot;</span><span class="p">:</span> <span class="n">LinearRegression</span>
+    <span class="p">}</span>
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">estimators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">estimator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;estimator can only be either &#39;ridge&#39; or &#39;ols&#39;.&quot;</span><span class="p">)</span>
+    <span class="n">non_na_index</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trend_df</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">non_na_index</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">non_na_index</span><span class="p">])</span>
+    <span class="c1"># can&#39;t simply do .predict, because need to exclude the seasonality terms.</span>
+    <span class="n">trend_estimate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span>
+        <span class="n">trend_df</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="p">:(</span><span class="nb">len</span><span class="p">(</span><span class="n">changepoints</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">[:(</span><span class="nb">len</span><span class="p">(</span><span class="n">changepoints</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span> \
+        <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span>
+    <span class="n">trend_estimate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">trend_estimate</span><span class="p">)</span>
+    <span class="n">trend_estimate</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">trend_estimate</span>
+
+
+<span class="k">def</span> <span class="nf">estimate_seasonality_with_detected_changepoints</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">seasonality_changepoints</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="p">,</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="s2">&quot;ols&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Estimates the seasonality effect with detected change points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The data df.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name of the time column in ``df``.</span>
+<span class="sd">    value_col : `str`</span>
+<span class="sd">        The column name of the value column in ``df``.</span>
+<span class="sd">    seasonality_changepoints : `dict`</span>
+<span class="sd">        The detected seasonality change points dictionary, output from</span>
+<span class="sd">        `~greykite.algo.changepoint.adalasso.changepoints_utils.get_seasonality_changes_from_adaptive_lasso`</span>
+<span class="sd">    seasonality_components_df : `pandas.DataFrame`</span>
+<span class="sd">        The df to generate seasonality design matrix, which is compatible with</span>
+<span class="sd">        ``seasonality_components_df`` in</span>
+<span class="sd">        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`</span>
+<span class="sd">    estimator : `str`, default &quot;ols&quot;</span>
+<span class="sd">        &quot;ols&quot; or &quot;ridge&quot;, the estimation model for seasonality estimation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    seasonality_estimate : `pandas.Series`</span>
+<span class="sd">        The estimated seasonality.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seasonality_df</span> <span class="o">=</span> <span class="n">build_seasonality_feature_df_from_detection_result</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">seasonality_changepoints</span><span class="o">=</span><span class="n">seasonality_changepoints</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="o">=</span><span class="n">seasonality_components_df</span>
+    <span class="p">)</span>
+    <span class="n">estimators</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ridge&quot;</span><span class="p">:</span> <span class="n">RidgeCV</span><span class="p">,</span>
+        <span class="s2">&quot;ols&quot;</span><span class="p">:</span> <span class="n">LinearRegression</span>
+    <span class="p">}</span>
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">estimators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">estimator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;estimator can only be either &#39;ridge&#39; or &#39;ols&#39;.&quot;</span><span class="p">)</span>
+    <span class="n">non_na_index</span> <span class="o">=</span> <span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">seasonality_df</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">non_na_index</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">non_na_index</span><span class="p">])</span>
+    <span class="n">seasonality_estimate</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">seasonality_df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">seasonality_estimate</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">seasonality_estimate</span><span class="p">)</span>
+    <span class="n">seasonality_estimate</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">seasonality_estimate</span>
+
+
+<span class="k">def</span> <span class="nf">get_seasonality_changepoint_df_cols</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">seasonality_changepoints</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="p">,</span>
+        <span class="n">include_original_block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">include_components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the seasonality change point feature df column names.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The dataframe used to build seasonality feature df.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The name of the time column in ``df``.</span>
+<span class="sd">    seasonality_changepoints : `dict`</span>
+<span class="sd">        The seasonality change point dictionary. The keys are seasonality components, and the values</span>
+<span class="sd">        are the corresponding change points given in lists.</span>
+<span class="sd">        For example</span>
+
+<span class="sd">            &quot;weekly&quot;: [Timestamp(&#39;2020-01-01 00:00:00&#39;), Timestamp(&#39;2021-04-05 00:00:00&#39;)]</span>
+<span class="sd">            &quot;yearly&quot;: [Timestamp(&#39;2020-08-06 00:00:00&#39;)]</span>
+
+<span class="sd">    seasonality_components_df : `pandas.DataFrame`</span>
+<span class="sd">        The seasonality components dataframe that is compatible with</span>
+<span class="sd">        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`</span>
+<span class="sd">        The values in &quot;seas_names&quot; must equal to the keys in ``seasonality_changepoints``.</span>
+<span class="sd">    include_original_block : `bool`, default True</span>
+<span class="sd">        Whether to include the original untruncated block of sin or cos columns for each component. If set to</span>
+<span class="sd">        False, the original seasonality block for each component will be dropped.</span>
+<span class="sd">    include_components : `list` [`str`] or None, default None</span>
+<span class="sd">        The components to be included from the result. If None, all components will be included.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cols : `list`</span>
+<span class="sd">        List of column names for seasonality change points df.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># only needs two rows to get the column names, reduces running time.</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">seasonality_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">component</span><span class="p">,</span> <span class="n">dates</span> <span class="ow">in</span> <span class="n">seasonality_changepoints</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">include_components</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">include_components</span><span class="p">:</span>
+            <span class="n">regular_seasonality_df</span> <span class="o">=</span> <span class="n">build_seasonality_feature_df_with_changes</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">fs_components_df</span><span class="o">=</span><span class="n">seasonality_components_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">seasonality_components_df</span><span class="p">[</span><span class="s2">&quot;seas_names&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">component</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="p">)</span>
+            <span class="n">temp_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">regular_seasonality_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="n">include_original_block</span> <span class="k">else</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+                <span class="n">temp_cols</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}{</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;_%Y_%m_</span><span class="si">%d</span><span class="s1">_%H&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">regular_seasonality_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
+            <span class="n">seasonality_cols</span> <span class="o">+=</span> <span class="n">temp_cols</span>
+    <span class="k">return</span> <span class="n">seasonality_cols</span>
+
+
+<span class="k">def</span> <span class="nf">get_trend_changepoint_dates_from_cols</span><span class="p">(</span><span class="n">trend_cols</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the trend changepoint dates from trend changepoint column names.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    trend_cols : `list[`str`]`</span>
+<span class="sd">        List of trend changepoint column names. EX. &quot;changepoint2_2018_01_05_00&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    trend_changepoint_dates : `list[`timestamp`]`</span>
+<span class="sd">        List of trend changepoint dates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">trend_changepoint_dates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">trend_cols</span> <span class="o">=</span> <span class="n">get_pattern_cols</span><span class="p">(</span><span class="n">trend_cols</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;^</span><span class="si">{</span><span class="n">CHANGEPOINT_COL_PREFIX</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trend_cols</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">trend_cols</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">date</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;00&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">6</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>  <span class="c1"># 6 means Y m d H M S</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">date</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span><span class="si">}</span><span class="s1">&#39;</span>  <span class="c1"># Y-m-d H:M:S</span>
+            <span class="n">trend_changepoint_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">trend_changepoint_dates</span>
+
+
+<span class="k">def</span> <span class="nf">get_yearly_seasonality_changepoint_dates_from_freq</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">yearly_seasonality_change_freq</span><span class="p">,</span>
+        <span class="n">min_training_length</span><span class="o">=</span><span class="s2">&quot;183D&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets the yearly seasonality changepoint dates from change frequency.</span>
+
+<span class="sd">    This is an internal function used for varying yearly seasonality effects in</span>
+<span class="sd">    `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_trend_changepoints`</span>
+<span class="sd">    For a given ``yearly_seasonality_change_freq``, for example &quot;365D&quot;, it generates changepoint</span>
+<span class="sd">    dates according to this frequency within the timeframe of ``df``. The length of data after the last</span>
+<span class="sd">    changepoint date can not be less than ``least_training_length``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        The data df.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name for time column in ``df``.</span>
+<span class="sd">    yearly_seasonality_change_freq : `DateOffset`, `Timedelta` or `str` or `None`</span>
+<span class="sd">        How often to change the yearly seasonality model, i.e., how often to place yearly seasonality</span>
+<span class="sd">        changepoints.</span>
+<span class="sd">        Note that if you use `str` as input, the maximal supported unit is day, i.e.,</span>
+<span class="sd">        you might use &quot;200D&quot; but not &quot;12M&quot; or &quot;1Y&quot;.</span>
+<span class="sd">    min_training_length : `DateOffset`, `Timedelta` or `str` or `None`, default &quot;183D&quot;</span>
+<span class="sd">        The minimum length between the last changepoint date and the last date of ``df[time_col]``.</span>
+<span class="sd">        Changepoints too close to the end will be omitted. Recommended at least half a year.</span>
+<span class="sd">        Note that if you use `str` as input, the maximal supported unit is day, i.e.,</span>
+<span class="sd">        you might use &quot;200D&quot; but not &quot;12M&quot; or &quot;1Y&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    yearly_seasonality_changepoint_dates : `list` [ `pandas._libs.tslibs.timestamps.Timestamp` ]</span>
+<span class="sd">        A list of yearly seasonality changepoint dates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">yearly_seasonality_change_freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">check_freq_unit_at_most_day</span><span class="p">(</span><span class="n">yearly_seasonality_change_freq</span><span class="p">,</span> <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">)</span>
+    <span class="n">yearly_seasonality_change_freq</span> <span class="o">=</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">yearly_seasonality_change_freq</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">yearly_seasonality_change_freq</span><span class="o">.</span><span class="n">delta</span> <span class="o">&lt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">365</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;yearly_seasonality_change_freq is less than a year. It might be too short&quot;</span>
+                      <span class="s2">&quot;to fit accurate yearly seasonality.&quot;</span><span class="p">)</span>
+    <span class="n">check_freq_unit_at_most_day</span><span class="p">(</span><span class="n">min_training_length</span><span class="p">,</span> <span class="s2">&quot;least_training_length&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_training_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">min_training_length</span> <span class="o">=</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">min_training_length</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">min_training_length</span> <span class="o">=</span> <span class="n">to_offset</span><span class="p">(</span><span class="s2">&quot;0D&quot;</span><span class="p">)</span>
+    <span class="n">first_day_in_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">last_day_in_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">yearly_seasonality_changepoint_dates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">first_day_in_df</span><span class="p">,</span>
+        <span class="n">end</span><span class="o">=</span><span class="n">last_day_in_df</span> <span class="o">-</span> <span class="n">min_training_length</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="n">yearly_seasonality_change_freq</span><span class="p">))[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c1"># do not include the start date</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">yearly_seasonality_changepoint_dates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No yearly seasonality changepoint added. Either data length is too short&quot;</span>
+                      <span class="s2">&quot;or yearly_seasonality_change_freq is too long.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">yearly_seasonality_changepoint_dates</span>
+
+
+<div class="viewcode-block" id="combine_detected_and_custom_trend_changepoints"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints">[docs]</a><span class="k">def</span> <span class="nf">combine_detected_and_custom_trend_changepoints</span><span class="p">(</span>
+        <span class="n">detected_changepoint_dates</span><span class="p">,</span>
+        <span class="n">custom_changepoint_dates</span><span class="p">,</span>
+        <span class="n">min_distance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">keep_detected</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds custom trend changepoints to detected trend changepoints.</span>
+
+<span class="sd">    Compares the distance between custom changepoints and detected changepoints,</span>
+<span class="sd">    and drops a detected changepoint or a custom changepoint depending on ``keep_detected``</span>
+<span class="sd">    if their distance is less than ``min_distance``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    detected_changepoint_dates : `list`</span>
+<span class="sd">        A list of detected trend changepoints, parsable by `pandas.to_datetime`.</span>
+<span class="sd">    custom_changepoint_dates : `list`</span>
+<span class="sd">        A list of additional custom trend changepoints, parsable by `pandas.to_datetime`.</span>
+<span class="sd">    min_distance : `DateOffset`, `Timedelta`, `str` or None, default None</span>
+<span class="sd">        The minimum distance between detected changepoints and custom changepoints.</span>
+<span class="sd">        If a detected changepoint and a custom changepoint have distance less than ``min_distance``,</span>
+<span class="sd">        either the detected changepoint or the custom changepoint will be dropped according to ``keep_detected``.</span>
+<span class="sd">        Does not compare the distance within detected changepoints or custom changepoints.</span>
+<span class="sd">        Note: maximal unit is &#39;D&#39;, i.e., you may only use units no more than &#39;D&#39; such as</span>
+<span class="sd">        &#39;10D&#39;, &#39;5H&#39;, &#39;100T&#39;, &#39;200S&#39;. The reason is that &#39;W&#39;, &#39;M&#39; or higher has either</span>
+<span class="sd">        cycles or indefinite number of days, thus is not parsable by pandas as timedelta.</span>
+<span class="sd">        For example, see `pandas.tseries.frequencies.to_offset`.</span>
+<span class="sd">    keep_detected : `bool`, default False</span>
+<span class="sd">        When the distance of a detected changepoint and a custom changepoint is less than ``min_distance``,</span>
+<span class="sd">        whether to keep the detected changepoint or the custom changepoint.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    combined_changepoint_dates : `list`</span>
+<span class="sd">        A list of combined changepoints in ascending order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_freq_unit_at_most_day</span><span class="p">(</span><span class="n">min_distance</span><span class="p">,</span> <span class="s2">&quot;min_distance&quot;</span><span class="p">)</span>
+    <span class="n">detected_changepoint_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">detected_changepoint_dates</span><span class="p">)</span>
+    <span class="n">custom_changepoint_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">custom_changepoint_dates</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">detected_changepoint_dates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">custom_changepoint_dates</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">custom_changepoint_dates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">detected_changepoint_dates</span>
+    <span class="k">if</span> <span class="n">keep_detected</span><span class="p">:</span>
+        <span class="n">combined_changepoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">detected_changepoint_dates</span><span class="p">]</span>
+        <span class="n">addition_changepoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">custom_changepoint_dates</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">combined_changepoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">custom_changepoint_dates</span><span class="p">]</span>
+        <span class="n">addition_changepoints</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">detected_changepoint_dates</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">addition_cp</span> <span class="ow">in</span> <span class="n">addition_changepoints</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">min_distance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">current_min_distance</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">addition_cp</span> <span class="o">-</span> <span class="n">cp</span><span class="p">)</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">combined_changepoints</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">current_min_distance</span> <span class="o">&gt;=</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">min_distance</span><span class="p">):</span>
+                <span class="n">combined_changepoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">addition_cp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">combined_changepoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">addition_cp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">combined_changepoints</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

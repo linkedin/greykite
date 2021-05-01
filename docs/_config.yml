@@ -1,0 +1,87 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+#
+# If you need help with YAML syntax, here are some quick references for you:
+# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
+# https://learnxinyminutes.com/docs/yaml/
+#
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+
+title: Greykite - A fast and flexible forecasting library
+#email: your-email@example.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Greykite is a fast and flexible forecasting library developed by LinkedIn.
+  The library provides exploratory data analysis (EDA), model pipeline,
+  model benchmarking, etc. With the pipeline you can do transformation,
+  grid search and cross-validation, model evaluation and plotting.
+  The core algorithm, named Silverkite, uses feature engineering and
+  various machine learning algorithms to fit the time series model.
+  The algorithm comes with many popular time features,
+  such as seasonality fourier series and holiday indicators,
+  to be used as regressors.
+  Moreover, you can freely create any features that are related to the time series,
+  and use them to fit the machine learning model of your choice.
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://linkedin.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+#twitter_username: jekyllrb
+#github_username:  jekyll
+
+lsi: false
+safe: true
+incremental: false
+highlighter: rouge
+gist:
+  noscript: false
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing.
+# The following items will not be processed, by default.
+# Any item listed under the `exclude:` key here will be automatically added to
+# the internal "default list".
+#
+# Excluded items can be processed by explicitly listing the directories or
+# their entries' file path in the `include:` list.
+#
+# exclude:
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+
+
+# These files are in our docs.
+# By default they are not processed so our doc looks like plain text.
+# Include these files to include the theme and format.
+include:
+  - _static
+  - _images
+  - _sources
+  - _modules
+  - _downloads
+  - _docs
+  - _site

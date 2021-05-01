@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Auto-regression &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Uncertainty Intervals" href="0900_uncertainty.html" />
+    <link rel="prev" title="Regressors" href="0700_regressors.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Auto-regression</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#custom-auto-regression">Custom Auto-regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Auto-regression</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="auto-regression">
+<h1>Auto-regression<a class="headerlink" href="#auto-regression" title="Permalink to this headline">¶</a></h1>
+<p>Auto-regression can be utilized to improve forecasts by capturing the remaining temporal correlation after accounting
+for other features such as seasonality and growth.</p>
+<p>Silverkite allows for specifying lags. For example if Y(t) is the time series of interest, user can easily activate
+desired lags such as Y(t-1), Y(t-2) to be used in the model.</p>
+<p>Moreover Silverkite allows for more advanced auto-regression in the model by specifying “aggregated lags” which are
+predictors constructed by averaging several specified lags.</p>
+<p>This technique makes it possible to build models with longer term auto-correlation with only modest increase of the
+number of parameters. See <a class="reference external" href="https://link.springer.com/article/10.1007/s10651-010-0169-1">Hosseini et al. (2011)</a> for an early example of utilizing aggregated lags as predictors.</p>
+<p>Silverkite automatically activates auto-regression for forecast horizons which are less than or equal to 30 days.
+By default, Silverkite uses lags which are larger than the given forecast horizon periods to avoid having to do
+simulations to forecast the future.</p>
+<p>User does not need to explicitly specify auto-regression to activate the “auto”
+option. However the explicit code is as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+
+<span class="n">autoreg_dict</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span>
+
+<span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+    <span class="n">growth</span><span class="o">=</span><span class="n">growth</span><span class="p">,</span>
+    <span class="n">seasonality</span><span class="o">=</span><span class="n">seasonality</span><span class="p">,</span>
+    <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="p">,</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="n">changepoints</span><span class="p">,</span>
+    <span class="n">regressors</span><span class="o">=</span><span class="n">regressors</span><span class="p">,</span>
+    <span class="n">autoregression</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">autoreg_dict</span><span class="o">=</span><span class="n">autoreg_dict</span><span class="p">),</span>  <span class="c1"># auto-regression input is specified here</span>
+    <span class="n">uncertainty</span><span class="o">=</span><span class="n">uncertainty</span><span class="p">,</span>
+    <span class="n">custom</span><span class="o">=</span><span class="n">custom</span><span class="p">,</span>
+    <span class="n">hyperparameter_override</span><span class="o">=</span><span class="n">hyperparameter_override</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It is possible to also deactivate auto-regression by letting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">autoreg_dict</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<div class="section" id="custom-auto-regression">
+<h2>Custom Auto-regression<a class="headerlink" href="#custom-auto-regression" title="Permalink to this headline">¶</a></h2>
+<p>There are three ways to specify an auto-regressive structure. Below we give the example code and discuss what each
+component means in what follows.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Form (1): Specifies regular lags, e.g. lags 1, 2, 7</span>
+<span class="n">lag_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="c1"># Specifies aggregated lags in two forms</span>
+<span class="c1"># Form (2): Each group of lags to be aggregated is given in a list</span>
+<span class="n">orders_list</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">6</span><span class="p">]]</span> <span class="c1"># Two aggregated lag list are specified</span>
+<span class="c1"># Form (3): Each tuple has two elements specifying the beginning and end of aggregation</span>
+<span class="n">interval_list</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">2</span><span class="p">)]</span>
+<span class="n">agg_lag_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">orders_list</span><span class="o">=</span><span class="n">orders_list</span><span class="p">,</span> <span class="n">interval_list</span><span class="o">=</span><span class="n">interval_list</span><span class="p">)</span>
+<span class="n">autoreg_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">lag_dict</span><span class="o">=</span><span class="n">lag_dict</span><span class="p">,</span> <span class="n">agg_lag_dict</span><span class="o">=</span><span class="n">agg_lag_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The aggregated lag can be specified in two ways (forms 2 and 3) as demonstrated above.</p>
+<p>In Form (2), each set of lags to be aggregated is passed as a list.
+For example [7, 7*2, 7*3] corresponds to (Y(t-7) + Y(t-14) + Y(t-21))/3.
+For daily data one can interpret this predictor as the average value of the series on the same day of week in past three weeks.</p>
+<p>In Form (3), user can specify the starting and end point of the lags to be aggregated. For example (1, 7) corresponds
+to (Y(t-1) + Y(t-2) + … + Y(t-7)) / 7. One can interpret this predictor is the average value during the week prior to
+time t.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0900_uncertainty.html" class="btn btn-neutral float-right" title="Uncertainty Intervals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0700_regressors.html" class="btn btn-neutral" title="Regressors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

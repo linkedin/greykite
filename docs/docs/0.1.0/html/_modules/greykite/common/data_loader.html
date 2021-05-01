@@ -1,0 +1,558 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.common.data_loader &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.common.data_loader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.common.data_loader</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;Class to load datasets.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+
+
+<div class="viewcode-block" id="DataLoader"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader">[docs]</a><span class="k">class</span> <span class="nc">DataLoader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns datasets included in the library in `pandas.DataFrame` format.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    available_datasets : `list` [`str`]</span>
+<span class="sd">        The names of the available datasets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">available_datasets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_inventory</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DataLoader.get_data_home"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.get_data_home">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_data_home</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the folder path ``data_dir/data_sub_dir``.</span>
+<span class="sd">        If ``data_dir`` is None returns the internal data directory.</span>
+<span class="sd">        By default the Greykite data dir is set to a folder named &#39;data&#39; in the project source code.</span>
+<span class="sd">        Alternatively, it can be set programmatically by giving an explicit folder path.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_dir : `str` or None, default None</span>
+<span class="sd">            The path to the input data directory.</span>
+<span class="sd">            If None, it is set to &#39;{project_trunk}/data&#39;.</span>
+<span class="sd">        data_sub_dir : `str` or None, default None</span>
+<span class="sd">            The name of the input data sub directory.</span>
+<span class="sd">            Updates path by appending to the ``data_dir`` at the end.</span>
+<span class="sd">            If None, ``data_dir`` path is unchanged.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data_home : `str`</span>
+<span class="sd">            Path to the data folder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_sub_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_home</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Requested data directory &#39;</span><span class="si">{</span><span class="n">data_home</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data_home</span></div>
+
+<div class="viewcode-block" id="DataLoader.get_data_names"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.get_data_names">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_data_names</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the names of the ``.csv`` and ``.csv.xz`` files in ``data_path``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_path : `str`</span>
+<span class="sd">            Path to the data folder.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        file_names : `list` [`str`]</span>
+<span class="sd">            The names of the ``.csv`` and ``.csv.xz`` files in ``data_path``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">file_names</span>
+                      <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;.csv.xz&quot;</span><span class="p">))]</span>
+
+        <span class="k">return</span> <span class="n">file_names</span></div>
+
+<div class="viewcode-block" id="DataLoader.get_data_inventory"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.get_data_inventory">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_inventory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the names of the available internal datasets.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        file_names : `list` [`str`]</span>
+<span class="sd">            The names of the available internal datasets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="s2">&quot;hourly&quot;</span><span class="p">,</span> <span class="s2">&quot;daily&quot;</span><span class="p">,</span> <span class="s2">&quot;monthly&quot;</span><span class="p">]:</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_home</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+            <span class="n">file_names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_data_names</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">file_names</span></div>
+
+<div class="viewcode-block" id="DataLoader.get_df"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.get_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">data_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a ``pandas.DataFrame`` containing the dataset from ``data_path/data_name``.</span>
+<span class="sd">        The input data must be in ``.csv`` or ``.csv.xz`` format.</span>
+<span class="sd">        Raises a ValueError if the the specified input file is not found.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_path : `str`</span>
+<span class="sd">            Path to the data folder.</span>
+<span class="sd">        data_name : `str`</span>
+<span class="sd">            Name of the csv file to be loaded from. For example &#39;peyton_manning&#39;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            Input dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_name</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="n">file_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_names</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Given file path &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; is not found. Available datasets in &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;data directory &#39;</span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">&#39; are </span><span class="si">{</span><span class="n">file_names</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="DataLoader.load_peyton_manning"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.load_peyton_manning">[docs]</a>    <span class="k">def</span> <span class="nf">load_peyton_manning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the Daily Peyton Manning dataset.</span>
+
+<span class="sd">        This dataset contains log daily page views for the Wikipedia page for Peyton Manning.</span>
+<span class="sd">        One of the primary datasets used for demonstrations by Facebook ``Prophet`` algorithm.</span>
+<span class="sd">        Source: https://github.com/facebook/prophet/blob/master/examples/example_wp_log_peyton_manning.csv</span>
+
+<span class="sd">        Below is the dataset attribute information:</span>
+
+<span class="sd">            ts : date of the page view</span>
+<span class="sd">            y : log of the number of page views</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame` object with Peyton Manning data.</span>
+<span class="sd">            Has the following columns:</span>
+
+<span class="sd">                &quot;ts&quot; : date of the page view.</span>
+<span class="sd">                &quot;y&quot; : log of the number of page views.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_home</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="o">=</span><span class="s2">&quot;daily&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">data_name</span><span class="o">=</span><span class="s2">&quot;daily_peyton_manning&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="DataLoader.load_parking"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.load_parking">[docs]</a>    <span class="k">def</span> <span class="nf">load_parking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_code_number</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the Hourly Parking dataset.</span>
+<span class="sd">        This dataset contains occupancy rates (8:00 to 16:30) from 2016/10/04 to 2016/12/19</span>
+<span class="sd">        from car parks in Birmingham that are operated by NCP from Birmingham City Council.</span>
+<span class="sd">        Source: https://archive.ics.uci.edu/ml/datasets/Parking+Birmingham</span>
+<span class="sd">        UK Open Government Licence (OGL)</span>
+
+<span class="sd">        Below is the dataset attribute information:</span>
+
+<span class="sd">            SystemCodeNumber: car park ID</span>
+<span class="sd">            Capacity: car park capacity</span>
+<span class="sd">            Occupancy: car park occupancy rate</span>
+<span class="sd">            LastUpdated: date and time of the measure</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        system_code_number : `str` or None, default None</span>
+<span class="sd">            If None, occupancy rate is averaged across all the ``SystemCodeNumber``.</span>
+<span class="sd">            Else only the occupancy rate of the given ``system_code_number`` is returned.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame` object with Parking data.</span>
+<span class="sd">            Has the following columns:</span>
+
+<span class="sd">                &quot;LastUpdated&quot; : time, rounded to the nearest half hour.</span>
+<span class="sd">                &quot;Capacity&quot; : car park capacity</span>
+<span class="sd">                &quot;Occupancy&quot; : car park occupancy rate</span>
+<span class="sd">                &quot;OccupancyRatio&quot; : ``Occupancy`` divided by ``Capacity``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_home</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="o">=</span><span class="s2">&quot;hourly&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">data_name</span><span class="o">=</span><span class="s2">&quot;hourly_parking&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Rounds time column to nearest half hour point</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;LastUpdated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;LastUpdated&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="s2">&quot;30min&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;OccupancyRatio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Occupancy&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Capacity&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">system_code_number</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;LastUpdated&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;SystemCodeNumber&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">system_code_number</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="DataLoader.load_bikesharing"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.load_bikesharing">[docs]</a>    <span class="k">def</span> <span class="nf">load_bikesharing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the Hourly Bike Sharing Count dataset.</span>
+
+<span class="sd">        This dataset contains aggregated hourly count of the number of rented bikes.</span>
+<span class="sd">        The data also includes weather data: Maximum Daily temperature (tmax);</span>
+<span class="sd">        Minimum Daily Temperature (tmin); Precipitation (pn)</span>
+<span class="sd">        The raw bike-sharing data is provided by Capital Bikeshares.</span>
+<span class="sd">        Source: https://www.capitalbikeshare.com/system-data</span>
+<span class="sd">        The raw weather data (Baltimore-Washington INTL Airport)</span>
+<span class="sd">        https://www.ncdc.noaa.gov/data-access/land-based-station-data</span>
+
+<span class="sd">        Below is the dataset attribute information:</span>
+
+<span class="sd">            ts : hour and date</span>
+<span class="sd">            count : number of shared bikes</span>
+<span class="sd">            tmin : minimum daily temperature</span>
+<span class="sd">            tmax : maximum daily temperature</span>
+<span class="sd">            pn : precipitation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame` with bikesharing data.</span>
+<span class="sd">            Has the following columns:</span>
+
+<span class="sd">                &quot;date&quot; : day of year</span>
+<span class="sd">                &quot;ts&quot; : hourly timestamp</span>
+<span class="sd">                &quot;count&quot; : number of rented bikes across Washington DC.</span>
+<span class="sd">                &quot;tmin&quot; : minimum daily temperature</span>
+<span class="sd">                &quot;tmax&quot; : maximum daily temperature</span>
+<span class="sd">                &quot;pn&quot; : precipitation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_home</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="o">=</span><span class="s2">&quot;hourly&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">data_name</span><span class="o">=</span><span class="s2">&quot;hourly_bikesharing&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="DataLoader.load_beijing_pm"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.load_beijing_pm">[docs]</a>    <span class="k">def</span> <span class="nf">load_beijing_pm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the Beijing Particulate Matter (PM2.5) dataset.</span>
+<span class="sd">        https://archive.ics.uci.edu/ml/datasets/Beijing+PM2.5+Data</span>
+
+<span class="sd">        This hourly data set contains the PM2.5 data of US Embassy in Beijing. Meanwhile, meteorological data</span>
+<span class="sd">        from Beijing Capital International Airport are also included.</span>
+
+<span class="sd">        The dataset&#39;s time period is between Jan 1st, 2010 to Dec 31st, 2014. Missing data are denoted as NA.</span>
+
+<span class="sd">        Below is the dataset attribute information:</span>
+
+<span class="sd">            No : row number</span>
+<span class="sd">            year : year of data in this row</span>
+<span class="sd">            month : month of data in this row</span>
+<span class="sd">            day : day of data in this row</span>
+<span class="sd">            hour : hour of data in this row</span>
+<span class="sd">            pm2.5: PM2.5 concentration (ug/m^3)</span>
+<span class="sd">            DEWP : dew point (celsius)</span>
+<span class="sd">            TEMP : temperature (celsius)</span>
+<span class="sd">            PRES : pressure (hPa)</span>
+<span class="sd">            cbwd : combined wind direction</span>
+<span class="sd">            Iws : cumulated wind speed (m/s)</span>
+<span class="sd">            Is : cumulated hours of snow</span>
+<span class="sd">            Ir : cumulated hours of rain</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame` with Beijing PM2.5 data.</span>
+<span class="sd">            Has the following columns:</span>
+
+<span class="sd">                TIME_COL : hourly timestamp</span>
+<span class="sd">                &quot;year&quot; : year of data in this row</span>
+<span class="sd">                &quot;month&quot; : month of data in this row</span>
+<span class="sd">                &quot;day&quot; : day of data in this row</span>
+<span class="sd">                &quot;hour&quot; : hour of data in this row</span>
+<span class="sd">                &quot;pm&quot; : PM2.5 concentration (ug/m^3)</span>
+<span class="sd">                &quot;dewp&quot; : dew point (celsius)</span>
+<span class="sd">                &quot;temp&quot; : temperature (celsius)</span>
+<span class="sd">                &quot;pres&quot; : pressure (hPa)</span>
+<span class="sd">                &quot;cbwd&quot; : combined wind direction</span>
+<span class="sd">                &quot;iws&quot; : cumulated wind speed (m/s)</span>
+<span class="sd">                &quot;is&quot; : cumulated hours of snow</span>
+<span class="sd">                &quot;ir&quot; : cumulated hours of rain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_home</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_sub_dir</span><span class="o">=</span><span class="s2">&quot;hourly&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">data_name</span><span class="o">=</span><span class="s2">&quot;hourly_beijing_pm&quot;</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pm2.5&quot;</span><span class="p">:</span> <span class="s2">&quot;pm&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">hour_string</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">hour_datetime</span> <span class="o">=</span> <span class="n">hour_string</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">-%H&quot;</span><span class="p">))</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">TIME_COL</span><span class="p">,</span> <span class="n">hour_datetime</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="DataLoader.load_data"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.data_loader.DataLoader.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads dataset by name from the internal data library.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_name : `str`</span>
+<span class="sd">            Dataset to load from the internal data library.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : ``UnivariateTimeSeries`` object with ``data_name``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_name</span> <span class="o">==</span> <span class="s2">&quot;daily_peyton_manning&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_peyton_manning</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">data_name</span> <span class="o">==</span> <span class="s2">&quot;hourly_parking&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_parking</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data_name</span> <span class="o">==</span> <span class="s2">&quot;hourly_bikesharing&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_bikesharing</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">data_name</span> <span class="o">==</span> <span class="s2">&quot;hourly_beijing_pm&quot;</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_beijing_pm</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_inventory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_inventory</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input data name &#39;</span><span class="si">{</span><span class="n">data_name</span><span class="si">}</span><span class="s2">&#39; is not recognized. &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Must be one of </span><span class="si">{</span><span class="n">data_inventory</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

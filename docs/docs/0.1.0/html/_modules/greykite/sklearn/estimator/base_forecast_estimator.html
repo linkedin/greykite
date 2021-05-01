@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.sklearn.estimator.base_forecast_estimator &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.sklearn.estimator.base_forecast_estimator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.sklearn.estimator.base_forecast_estimator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;All forecast estimators must inherit from this class.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">RegressorMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">r2_null_model_score</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.null_model</span> <span class="kn">import</span> <span class="n">DummyEstimator</span>
+
+
+<span class="k">class</span> <span class="nc">BaseForecastEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">RegressorMixin</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A base class for forecast models. Fits a timeseries and predicts future values</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    score_func : callable, optional, default=mean_squared_error</span>
+<span class="sd">        Function to calculate model R2_null_model_score score,</span>
+<span class="sd">        with signature (actual, predicted).</span>
+<span class="sd">        `actual`, `predicted` are array-like with the same shape.</span>
+<span class="sd">        Smaller values are better.</span>
+
+<span class="sd">    coverage : float, optional, default=0.95</span>
+<span class="sd">        intended coverage of the prediction bands (0.0 to 1.0)</span>
+<span class="sd">        If None, the upper/lower predictions are not returned by `predict`</span>
+
+<span class="sd">        Every subclass must use `coverage` to set prediction band width. This ensures a common</span>
+<span class="sd">        BaseForecastEstimator interface for parameters used during fitting and forecast evaluation</span>
+
+<span class="sd">    null_model_params : dict with arguments passed to DummyRegressor, optional, default=None</span>
+<span class="sd">        Dictionary keys must be in (&quot;strategy&quot;, &quot;constant&quot;, &quot;quantile&quot;)</span>
+<span class="sd">        Defines null model. model score is R2_null_model_score of model error relative to null model, evaluated by score_func</span>
+<span class="sd">        If None, model score is score_func of the model itself</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    null_model : DummyEstimator</span>
+<span class="sd">        null model used to measure model score</span>
+<span class="sd">    time_col_ : str</span>
+<span class="sd">        Name of input data time column</span>
+<span class="sd">    value_col_ : str</span>
+<span class="sd">        Name of input data value column</span>
+<span class="sd">    last_predicted_X_ : `pandas.DataFrame` or None</span>
+<span class="sd">        The ``X`` last passed to ``self.predict()``.</span>
+<span class="sd">        Used to speed up predictions if the same ``X`` is passed repeatedly.</span>
+<span class="sd">        Resets to None when ``self.fit()`` is called.</span>
+<span class="sd">    cached_predictions_ : `pandas.DataFrame` or None</span>
+<span class="sd">        The return value of the last call to ``self.predict()``.</span>
+<span class="sd">        Used to speed up predictions if the same ``X`` is passed repeatedly.</span>
+<span class="sd">        Resets to None when ``self.fit()`` is called.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score_func</span><span class="o">=</span><span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">null_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes attributes common to every BaseForecastEstimator</span>
+
+<span class="sd">        Subclasses must also have these parameters. Every subclass must call:</span>
+
+<span class="sd">            super().__init__(score_func=score_func, coverage=coverage, null_model_params=null_model_params)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_func</span> <span class="o">=</span> <span class="n">score_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="o">=</span> <span class="n">coverage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">null_model_params</span> <span class="o">=</span> <span class="n">null_model_params</span>
+
+        <span class="c1"># initializes attributes defined in fit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">null_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># initializes attributes defined in predict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_predicted_X_</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># the most recent X passed to self.predict()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the most recent return value of self.predict()</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span> <span class="n">value_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fits a model to training data</span>
+<span class="sd">        Also fits the null model, if specified, for use in evaluating the `score` function</span>
+
+<span class="sd">        Every subclass must call this::</span>
+<span class="sd">            super().fit(X, y=y, time_col=time_col, value_col=value_col, **fit_params)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries, with timestamp column,</span>
+<span class="sd">            value column, and any additional regressors.</span>
+<span class="sd">            The value column is the response, included in</span>
+<span class="sd">            ``X`` to allow transformation by `sklearn.pipeline`.</span>
+<span class="sd">        y : ignored</span>
+<span class="sd">            The original timeseries values, ignored.</span>
+<span class="sd">            (The y for fitting is included in X.)</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            Time column name in X.</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            Value column name in X.</span>
+<span class="sd">        fit_params : `dict`</span>
+<span class="sd">            Additional parameters supported by subclass `fit` or null model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span> <span class="o">=</span> <span class="n">time_col</span>  <span class="c1"># to be used in `predict` to select proper column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span> <span class="o">=</span> <span class="n">value_col</span>
+        <span class="c1"># Null model must be initialized here, otherwise scikit-learn</span>
+        <span class="c1"># grid search will not be able to set the parameters.</span>
+        <span class="c1"># See https://scikit-learn.org/stable/developers/develop.html#instantiation.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_model_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Adds score function to null model parameters, and initializes null model</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">null_model_params</span><span class="p">[</span><span class="s2">&quot;score_func&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_func</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">null_model</span> <span class="o">=</span> <span class="n">DummyEstimator</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">null_model_params</span><span class="p">)</span>
+            <span class="c1"># Passes `sample_weight` rather than `**fit_params` to avoid unexpected keyword argument from the main</span>
+            <span class="c1">#   estimator&#39;s parameters</span>
+            <span class="n">sample_weight</span> <span class="o">=</span> <span class="n">fit_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sample_weight&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">null_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span> <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
+
+        <span class="c1"># Clears the cached result, because it is no longer valid for the updated model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_predicted_X_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates forecast for dates specified in X</span>
+
+<span class="sd">        To enable caching, every subclass must call this at the beginning</span>
+<span class="sd">        of its ``.predict()``. Before returning the result, the subclass</span>
+<span class="sd">        ``.predict()`` must set ``self.cached_predictions_`` to the return value.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries with timestamp column and any additional regressors.</span>
+<span class="sd">            Timestamps are the dates for prediction.</span>
+<span class="sd">            Value column, if provided in X, is ignored.</span>
+<span class="sd">        y : ignored</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions : `pandas.DataFrame`</span>
+<span class="sd">            Forecasted values for the dates in X. Columns:</span>
+
+<span class="sd">                - TIME_COL dates</span>
+<span class="sd">                - PREDICTED_COL predictions</span>
+<span class="sd">                - PREDICTED_LOWER_COL lower bound of predictions, optional</span>
+<span class="sd">                - PREDICTED_UPPER_COL upper bound of predictions, optional</span>
+<span class="sd">                - [other columns], optional</span>
+
+<span class="sd">            ``PREDICTED_LOWER_COL`` and ``PREDICTED_UPPER_COL`` are present</span>
+<span class="sd">            if ``self.coverage`` is not None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_predicted_X_</span><span class="p">):</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Returning cached predictions.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Updates `last_predicted_X` to the new value.</span>
+            <span class="c1"># To enable caching, the subclass must set</span>
+            <span class="c1"># `self.cached_predictions` to the returned result.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_predicted_X_</span> <span class="o">=</span> <span class="n">X</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates human readable string of how the model works, including relevant diagnostics</span>
+<span class="sd">        These details cannot be extracted from the forecast alone</span>
+<span class="sd">        Prints model configuration. Extend this in child class to print the trained model parameters.</span>
+
+<span class="sd">        Log message is printed to the cst.LOGGER_NAME logger.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>  <span class="c1"># print model input parameters</span>
+
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default scorer for the estimator (Used in GridSearchCV/RandomizedSearchCV if scoring=None)</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If null_model_params is not None, returns R2_null_model_score of model error</span>
+<span class="sd">        relative to null model, evaluated by score_func.</span>
+
+<span class="sd">        If null_model_params is None, returns score_func of the model itself.</span>
+
+<span class="sd">        By default, grid search (with no `scoring` parameter) optimizes improvement of ``score_func``</span>
+<span class="sd">        against null model.</span>
+
+<span class="sd">        To optimize a different score function, pass `scoring` to GridSearchCV/RandomizedSearchCV.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries with timestamp column and any additional regressors.</span>
+<span class="sd">            Value column, if provided in X, is ignored</span>
+<span class="sd">        y : `pandas.Series` or  `numpy.array`</span>
+<span class="sd">            Actual value, used to compute error</span>
+<span class="sd">        sample_weight : `pandas.Series` or  `numpy.array`</span>
+<span class="sd">            ignored</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        score : `float` or None</span>
+<span class="sd">            Comparison of predictions against null predictions, according to specified score function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">y_pred_null</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">r2_null_model_score</span><span class="p">(</span>
+                <span class="n">y</span><span class="p">,</span>
+                <span class="n">y_pred</span><span class="p">,</span>
+                <span class="n">y_pred_null</span><span class="o">=</span><span class="n">y_pred_null</span><span class="p">,</span>
+                <span class="n">loss_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_func</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">score</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

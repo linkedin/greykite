@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.templates.forecast_config_defaults &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.templates.forecast_config_defaults</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.templates.forecast_config_defaults</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Provides default parameter values for ``ForecastConfig``, shared across templates.</span>
+<span class="sd">The &quot;*_template.py&quot; files contain defaults particular to a specific template.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">COMPUTATION_N_JOBS</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">COMPUTATION_VERBOSE</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">CV_REPORT_METRICS_ALL</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">EVALUATION_PERIOD_CV_MAX_SPLITS</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ComputationParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationMetricParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationPeriodParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+
+
+<span class="k">class</span> <span class="nc">ForecastConfigDefaults</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class that applies default values to a</span>
+<span class="sd">    `~greykite.framework.templates.autogen.forecast_config.ForecastConfig` object.</span>
+
+<span class="sd">    Provides these methods:</span>
+
+<span class="sd">        - apply_metadata_defaults</span>
+<span class="sd">        - apply_evaluation_metric_defaults</span>
+<span class="sd">        - apply_evaluation_period_defaults</span>
+<span class="sd">        - apply_computation_defaults</span>
+<span class="sd">        - apply_model_components_defaults</span>
+<span class="sd">        - apply_forecast_config_defaults</span>
+
+<span class="sd">    Subclasses may override these if different defaults are desired.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;SILVERKITE&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The default model template. See `~greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+<span class="sd">    Uses a string to avoid circular imports.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply_computation_defaults</span><span class="p">(</span><span class="n">computation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ComputationParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComputationParam</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default ComputationParam values to the given object.</span>
+<span class="sd">        If an expected attribute value is provided, the value is unchanged. Otherwise the default value for it is used.</span>
+<span class="sd">        Other attributes are untouched.</span>
+<span class="sd">        If the input object is None, it creates a ComputationParam object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        computation : `~greykite.framework.templates.autogen.forecast_config.ComputationParam` or None</span>
+<span class="sd">            The ComputationParam object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        computation : `~greykite.framework.templates.autogen.forecast_config.ComputationParam`</span>
+<span class="sd">            Valid ComputationParam object with the provided attribute values and the default attribute values if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">computation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">computation</span> <span class="o">=</span> <span class="n">ComputationParam</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">computation</span><span class="o">.</span><span class="n">n_jobs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">computation</span><span class="o">.</span><span class="n">n_jobs</span> <span class="o">=</span> <span class="n">COMPUTATION_N_JOBS</span>
+        <span class="k">if</span> <span class="n">computation</span><span class="o">.</span><span class="n">verbose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">computation</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">COMPUTATION_VERBOSE</span>
+        <span class="k">return</span> <span class="n">computation</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply_evaluation_metric_defaults</span><span class="p">(</span><span class="n">evaluation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EvaluationMetricParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvaluationMetricParam</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default EvaluationMetricParam values to the given object.</span>
+<span class="sd">        If an expected attribute value is provided, the value is unchanged. Otherwise the default value for it is used.</span>
+<span class="sd">        Other attributes are untouched.</span>
+<span class="sd">        If the input object is None, it creates a EvaluationMetricParam object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        evaluation : `~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam` or None</span>
+<span class="sd">            The EvaluationMetricParam object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        evaluation : `~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam`</span>
+<span class="sd">            Valid EvaluationMetricParam object with the provided attribute values and the default attribute values if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">evaluation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">evaluation</span> <span class="o">=</span> <span class="n">EvaluationMetricParam</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_selection_metric</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># NB: subclass may want to override, if designed for a different objective (e.g. quantile loss)</span>
+            <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_selection_metric</span> <span class="o">=</span> <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_report_metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_report_metrics</span> <span class="o">=</span> <span class="n">CV_REPORT_METRICS_ALL</span>
+        <span class="k">return</span> <span class="n">evaluation</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply_evaluation_period_defaults</span><span class="p">(</span><span class="n">evaluation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EvaluationPeriodParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvaluationPeriodParam</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default EvaluationPeriodParam values to the given object.</span>
+<span class="sd">        If an expected attribute value is provided, the value is unchanged. Otherwise the default value for it is used.</span>
+<span class="sd">        Other attributes are untouched.</span>
+<span class="sd">        If the input object is None, it creates a EvaluationPeriodParam object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        evaluation : `~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam` or None</span>
+<span class="sd">            The EvaluationMetricParam object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        evaluation : `~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`</span>
+<span class="sd">            Valid EvaluationPeriodParam object with the provided attribute values and the default attribute values if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">evaluation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">evaluation</span> <span class="o">=</span> <span class="n">EvaluationPeriodParam</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_max_splits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_max_splits</span> <span class="o">=</span> <span class="n">EVALUATION_PERIOD_CV_MAX_SPLITS</span>
+        <span class="k">if</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_periods_between_train_test</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_periods_between_train_test</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">periods_between_train_test</span>
+        <span class="k">if</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_expanding_window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># NB: subclass may want to override.</span>
+            <span class="n">evaluation</span><span class="o">.</span><span class="n">cv_expanding_window</span> <span class="o">=</span> <span class="kc">True</span>   <span class="c1"># good for long-term forecasts, or when data are limited</span>
+        <span class="k">return</span> <span class="n">evaluation</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply_metadata_defaults</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetadataParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetadataParam</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default MetadataParam values to the given object.</span>
+<span class="sd">        If an expected attribute value is provided, the value is unchanged. Otherwise the default value for it is used.</span>
+<span class="sd">        Other attributes are untouched.</span>
+<span class="sd">        If the input object is None, it creates a MetadataParam object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metadata : `~greykite.framework.templates.autogen.forecast_config.MetadataParam` or None</span>
+<span class="sd">            The MetadataParam object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        metadata : `~greykite.framework.templates.autogen.forecast_config.MetadataParam`</span>
+<span class="sd">            Valid MetadataParam object with the provided attribute values and the default attribute values if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">time_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">time_col</span> <span class="o">=</span> <span class="n">TIME_COL</span>
+        <span class="k">if</span> <span class="n">metadata</span><span class="o">.</span><span class="n">value_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">value_col</span> <span class="o">=</span> <span class="n">VALUE_COL</span>
+        <span class="k">return</span> <span class="n">metadata</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply_model_components_defaults</span><span class="p">(</span><span class="n">model_components</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ModelComponentsParam</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModelComponentsParam</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ModelComponentsParam</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ModelComponentsParam</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default ModelComponentsParam values to the given object.</span>
+
+<span class="sd">        Converts None to a ModelComponentsParam object.</span>
+<span class="sd">        Unpacks a list of a single element to the element itself.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_components : `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam` or None or list of such items</span>
+<span class="sd">            The ModelComponentsParam object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_components : `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam` or list of such items</span>
+<span class="sd">            Valid ModelComponentsParam object with the provided attribute values and the default attribute values if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Converts single element to a list</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_components</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_components</span><span class="p">]</span>
+        <span class="c1"># Replaces all `None` with ModelComponentsParam()</span>
+        <span class="n">model_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ModelComponentsParam</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model_components</span><span class="p">]</span>
+        <span class="c1"># model_components can be provided as a list or a single element.</span>
+        <span class="c1"># A list of a single element is unpacked to that element.</span>
+        <span class="c1"># (Some template classes like SilverkiteTemplate do not allow model_components</span>
+        <span class="c1"># to be a list.)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_components</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="n">model_components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">model_components</span>
+
+    <span class="k">def</span> <span class="nf">apply_model_template_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default ModelComponentsParam values to the given object.</span>
+
+<span class="sd">        Unpacks a list of a single element to the element itself.</span>
+<span class="sd">        Sets default value if None.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_template : `str` or None or `list` [None, `str`]</span>
+<span class="sd">            The model template name.</span>
+<span class="sd">            See valid names in `~greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_template : `str` or `list` [`str`]</span>
+<span class="sd">            The model template name, with defaults value used if not provided.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Converts single element to a list</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">model_template</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_template</span><span class="p">]</span>
+        <span class="n">model_template</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">model_template</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_template</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_template</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># model_template can be provided as a list or a single element.</span>
+            <span class="c1"># A list of a single element is unpacked to that element.</span>
+            <span class="c1"># (Some template classes like SilverkiteTemplate do not allow model_template</span>
+            <span class="c1"># to be a list.)</span>
+            <span class="n">model_template</span> <span class="o">=</span> <span class="n">model_template</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">model_template</span>
+
+    <span class="k">def</span> <span class="nf">apply_forecast_config_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForecastConfig</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Applies the default Forecast Config values to the given config.</span>
+<span class="sd">        If an expected attribute value is provided, the value is unchanged.</span>
+<span class="sd">        Otherwise the default value for it is used.</span>
+<span class="sd">        Other attributes are untouched.</span>
+<span class="sd">        If the input config is None, it creates a Forecast Config.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.autogen.forecast_config.ForecastConfig` or None</span>
+<span class="sd">            Forecast configuration if available. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig`</span>
+<span class="sd">            A valid Forecast Config which contains the provided attribute values and the default attribute values if not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># makes a copy to avoid mutating input</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="n">config</span><span class="o">.</span><span class="n">computation_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_computation_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">computation_param</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_evaluation_metric_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_evaluation_period_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_metadata_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_model_components_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_model_template_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

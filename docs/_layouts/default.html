@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+
+<style type="text/css">
+  u {
+    border-bottom: 1px dotted;
+    text-decoration: none;
+  }
+</style>
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+
+    <main>
+        {{ content }}
+    </main>
+
+    {% include footer.html %}
+
+    {% include script.html %}
+
+  </body>
+
+</html>

@@ -1,0 +1,1005 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.output.univariate_forecast &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.output.univariate_forecast</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.output.univariate_forecast</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Forecast output.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">ElementwiseEvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">add_finite_filter_to_scorer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">calc_pred_coverage</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">calc_pred_err</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">fraction_outside_tolerance</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">r2_null_model_score</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">apply_func_to_columns</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">add_groupby_column</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">flexible_grouping_evaluation</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">grouping_evaluation</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_forecast_vs_actual</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_multivariate</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_univariate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.input.univariate_time_series</span> <span class="kn">import</span> <span class="n">UnivariateTimeSeries</span>
+
+
+<div class="viewcode-block" id="UnivariateForecast"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast">[docs]</a><span class="k">class</span> <span class="nc">UnivariateForecast</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Stores predicted and actual values.</span>
+<span class="sd">    Provides functionality to evaluate a forecast:</span>
+
+<span class="sd">        - plots true against actual with prediction bands.</span>
+<span class="sd">        - evaluates model performance.</span>
+
+<span class="sd">    Input should be one of two kinds of forecast results:</span>
+
+<span class="sd">        - model fit to train data, forecast on test set (actuals available).</span>
+<span class="sd">        - model fit to all data, forecast on future dates (actuals not available).</span>
+
+<span class="sd">    The input ``df`` is a concatenation of fitted and forecasted values.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Timestamp, predicted, and actual values.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        Column in ``df`` with timestamp (default &quot;ts&quot;).</span>
+<span class="sd">    actual_col : `str`</span>
+<span class="sd">        Column in ``df`` with actual values (default &quot;y&quot;).</span>
+<span class="sd">    predicted_col : `str`</span>
+<span class="sd">        Column in ``df`` with predicted values (default &quot;forecast&quot;).</span>
+<span class="sd">    predicted_lower_col : `str` or None</span>
+<span class="sd">        Column in ``df`` with predicted lower bound (default &quot;forecast_lower&quot;, optional).</span>
+<span class="sd">    predicted_upper_col : `str` or None</span>
+<span class="sd">        Column in ``df`` with predicted upper bound (default &quot;forecast_upper&quot;, optional).</span>
+<span class="sd">    null_model_predicted_col : `str` or None</span>
+<span class="sd">        Column in ``df`` with predicted value of null model (default &quot;forecast_null&quot;, optional).</span>
+<span class="sd">    ylabel : `str`</span>
+<span class="sd">        Unit of measurement (default &quot;y&quot;)</span>
+<span class="sd">    train_end_date : `str` or `datetime` or None, default None</span>
+<span class="sd">        End date for train period. If `None`, assumes all data were used for training.</span>
+<span class="sd">    test_start_date : `str` or `datetime` or None, default None</span>
+<span class="sd">        Start date of test period. If `None`, set to the ``time_col`` value immediately after</span>
+<span class="sd">        ``train_end_date``. This assumes that all data not used in training were used for testing.</span>
+<span class="sd">    forecast_horizon : `int` or None, default None</span>
+<span class="sd">        Number of periods forecasted into the future. Must be &gt; 0.</span>
+<span class="sd">    coverage : `float` or None</span>
+<span class="sd">        Intended coverage of the prediction bands (0.0 to 1.0).</span>
+<span class="sd">    r2_loss_function : `function`</span>
+<span class="sd">        Loss function to calculate ``cst.R2_null_model_score``, with signature</span>
+<span class="sd">        ``loss_func(y_true, y_pred)`` (default mean_squared_error)</span>
+<span class="sd">    estimator : An instance of an estimator that implements `greykite.models.base_forecast_estimator.BaseForecastEstimator`.</span>
+<span class="sd">        The fitted estimator, the last step in the forecast pipeline.</span>
+<span class="sd">    relative_error_tolerance : `float` or None, default None</span>
+<span class="sd">        Threshold to compute the ``Outside Tolerance`` metric,</span>
+<span class="sd">        defined as the fraction of forecasted values whose relative</span>
+<span class="sd">        error is strictly greater than ``relative_error_tolerance``.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+<span class="sd">        If `None`, the metric is not computed.</span>
+<span class="sd">    df_train : `pandas.DataFrame`</span>
+<span class="sd">        Subset of ``df`` where ``df[time_col]`` &lt;= ``train_end_date``.</span>
+<span class="sd">    df_test : `pandas.DataFrame`</span>
+<span class="sd">        Subset of ``df`` where ``df[time_col]`` &gt; ``train_end_date``.</span>
+<span class="sd">    train_evaluation : `dict` [`str`, `float`]</span>
+<span class="sd">        Evaluation metrics on training set.</span>
+<span class="sd">    test_evaluation : `dict` [`str`, `float`]</span>
+<span class="sd">        Evaluation metrics on test set (if actual values provided after train_end_date).</span>
+<span class="sd">    test_na_count : `int`</span>
+<span class="sd">        Count of NA values in test data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">actual_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">ACTUAL_COL</span><span class="p">,</span>
+            <span class="n">predicted_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">,</span>
+            <span class="n">predicted_lower_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">,</span>
+            <span class="n">predicted_upper_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">,</span>
+            <span class="n">null_model_predicted_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">NULL_PREDICTED_COL</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">test_start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+            <span class="n">r2_loss_function</span><span class="o">=</span><span class="n">mean_squared_error</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">predicted_lower_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">predicted_upper_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`coverage` must be provided when lower/upper bounds are set&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">coverage</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">coverage</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`coverage` must be between 0.0 and 1.0&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">train_end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">train_end_date</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;train_end_date </span><span class="si">{</span><span class="n">train_end_date</span><span class="si">}</span><span class="s2"> is not found in time column.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The time range in data is: from </span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The data size is: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Type of train_end_date is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">train_end_date</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Type of df[time_col] is </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+                <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="n">time_col</span><span class="p">,</span> <span class="n">actual_col</span><span class="p">,</span> <span class="n">predicted_col</span><span class="p">,</span> <span class="n">predicted_lower_col</span><span class="p">,</span> <span class="n">predicted_upper_col</span><span class="p">,</span>
+                            <span class="n">null_model_predicted_col</span><span class="p">]</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column not found in data frame&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span> <span class="o">=</span> <span class="n">time_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span> <span class="o">=</span> <span class="n">actual_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span> <span class="o">=</span> <span class="n">predicted_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predicted_lower_col</span> <span class="o">=</span> <span class="n">predicted_lower_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predicted_upper_col</span> <span class="o">=</span> <span class="n">predicted_upper_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">null_model_predicted_col</span> <span class="o">=</span> <span class="n">null_model_predicted_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ylabel</span> <span class="o">=</span> <span class="n">ylabel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span> <span class="o">=</span> <span class="n">train_end_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_start_date</span> <span class="o">=</span> <span class="n">test_start_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">forecast_horizon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="o">=</span> <span class="n">coverage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r2_loss_function</span> <span class="o">=</span> <span class="n">r2_loss_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relative_error_tolerance</span> <span class="o">=</span> <span class="n">relative_error_tolerance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span> <span class="n">infer_datetime_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">train_end_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">train_end_date</span><span class="p">,</span> <span class="n">infer_datetime_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_train</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">test_start_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># This expects no gaps in time column</span>
+            <span class="n">inferred_freq</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">infer_freq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">])</span>
+            <span class="c1"># Uses pd.date_range because pd.Timedelta does not work for complicated frequencies e.g. &quot;W-MON&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">,</span>
+                <span class="n">periods</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">freq</span><span class="o">=</span><span class="n">inferred_freq</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">test_start_date</span><span class="p">,</span> <span class="n">infer_datetime_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_test</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_start_date</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_na_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_test</span><span class="p">[</span><span class="n">actual_col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># compute evaluation metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_evaluation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_evaluation</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_evaluation_metrics_split</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__evaluation_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes various evaluation metrics for the forecast.</span>
+
+<span class="sd">        :param data: pd.DataFrame</span>
+<span class="sd">            with columns according to self.__init__ (e.g. subset of self.df)</span>
+<span class="sd">        :return: dictionary with evaluation metrics</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">calc_pred_err</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_error_tolerance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">FRACTION_OUTSIDE_TOLERANCE</span><span class="p">]</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+                <span class="n">fraction_outside_tolerance</span><span class="p">,</span>
+                <span class="n">rtol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">relative_error_tolerance</span><span class="p">)(</span>
+                    <span class="n">y_true</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span>
+                    <span class="n">y_pred</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">FRACTION_OUTSIDE_TOLERANCE</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">R2_null_model_score</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTION_BAND_WIDTH</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTION_BAND_COVERAGE</span><span class="p">,</span>
+                       <span class="n">cst</span><span class="o">.</span><span class="n">LOWER_BAND_COVERAGE</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">UPPER_BAND_COVERAGE</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">COVERAGE_VS_INTENDED_DIFF</span><span class="p">]:</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">metric</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+
+        <span class="c1"># evaluates cst.R2_null_model_score if null model is available</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_model_predicted_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">cst</span><span class="o">.</span><span class="n">R2_null_model_score</span><span class="p">:</span> <span class="n">r2_null_model_score</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span>
+                                                                         <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">],</span>
+                                                                         <span class="n">y_pred_null</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">null_model_predicted_col</span><span class="p">],</span>
+                                                                         <span class="n">loss_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">r2_loss_function</span><span class="p">)})</span>
+
+        <span class="c1"># evaluates prediction bands if available</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted_lower_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted_upper_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">calc_pred_coverage</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span>
+                <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">],</span>
+                <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_lower_col</span><span class="p">],</span>
+                <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_upper_col</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+            <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">metrics</span>
+
+<div class="viewcode-block" id="UnivariateForecast.compute_evaluation_metrics_split"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.compute_evaluation_metrics_split">[docs]</a>    <span class="k">def</span> <span class="nf">compute_evaluation_metrics_split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes __evaluation_metrics for train and test set separately.</span>
+
+<span class="sd">        :return: dictionary with train and test evaluation metrics</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__evaluation_metrics</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df_train</span><span class="p">)</span>
+        <span class="c1"># only test evaluation if there are actuals (e.g. not future prediction and not all missing)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_na_count</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__evaluation_metrics</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df_test</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Train&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_evaluation</span><span class="p">,</span>
+            <span class="s2">&quot;Test&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_evaluation</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.plot"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plots predicted against actual.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kwargs : additional parameters</span>
+<span class="sd">            Additional parameters to pass to</span>
+<span class="sd">            `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">            such as title, colors, and line styling.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objs.Figure`</span>
+<span class="sd">            Plotly figure of forecast against actuals, with prediction</span>
+<span class="sd">            intervals if available.</span>
+
+<span class="sd">            See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">            return value for how to plot the figure and add customization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">plot_forecast_vs_actual</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">actual_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">,</span>
+            <span class="n">predicted_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">,</span>
+            <span class="n">predicted_lower_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_lower_col</span><span class="p">,</span>
+            <span class="n">predicted_upper_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_upper_col</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.get_grouping_evaluation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.get_grouping_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">get_grouping_evaluation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">(),</span>
+            <span class="n">score_func_name</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">(),</span>
+            <span class="n">which</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Group-wise computation of forecasting error.</span>
+<span class="sd">        Can be used to evaluate error/ aggregated value by a time feature,</span>
+<span class="sd">        over time, or by a user-provided column.</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        score_func : callable, optional</span>
+<span class="sd">            Function that maps two arrays to a number.</span>
+<span class="sd">            Signature (y_true: array, y_pred: array) -&gt; error: float</span>
+<span class="sd">        score_func_name : `str` or None, optional</span>
+<span class="sd">            Name of the score function used to report results.</span>
+<span class="sd">            If None, defaults to &quot;metric&quot;.</span>
+<span class="sd">        which: `str`</span>
+<span class="sd">            &quot;train&quot; or &quot;test&quot;. Which dataset to evaluate.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        grouped_df : `pandas.DataFrame` with two columns:</span>
+
+<span class="sd">            (1) grouping_func_name:</span>
+<span class="sd">                evaluation metric computing forecasting error of timeseries.</span>
+<span class="sd">            (2) group name:</span>
+<span class="sd">                group name depends on the grouping method:</span>
+<span class="sd">                ``groupby_time_feature`` for ``groupby_time_feature``</span>
+<span class="sd">                ``cst.TIME_COL`` for ``groupby_sliding_window_size``</span>
+<span class="sd">                ``groupby_custom_column.name`` for ``groupby_custom_column``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_train</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">which</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_test</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">score_func</span> <span class="o">=</span> <span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">score_func</span><span class="p">)</span>  <span class="c1"># in case it&#39;s not already added</span>
+        <span class="k">if</span> <span class="n">score_func_name</span><span class="p">:</span>
+            <span class="n">grouping_func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">score_func_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">grouping_func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2"> metric&quot;</span>
+
+        <span class="k">def</span> <span class="nf">grouping_func</span><span class="p">(</span><span class="n">grp</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">score_func</span><span class="p">(</span><span class="n">grp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span> <span class="n">grp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">])</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">add_groupby_column</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">grouping_evaluation</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">],</span>
+            <span class="n">groupby_col</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;groupby_col&quot;</span><span class="p">],</span>
+            <span class="n">grouping_func</span><span class="o">=</span><span class="n">grouping_func</span><span class="p">,</span>
+            <span class="n">grouping_func_name</span><span class="o">=</span><span class="n">grouping_func_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grouped_df</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.plot_grouping_evaluation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.plot_grouping_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">plot_grouping_evaluation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">(),</span>
+            <span class="n">score_func_name</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">(),</span>
+            <span class="n">which</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes error by group and plots the result.</span>
+<span class="sd">        Can be used to plot error by a time feature, over time, or by a user-provided column.</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        score_func : callable, optional</span>
+<span class="sd">            Function that maps two arrays to a number.</span>
+<span class="sd">            Signature (y_true: array, y_pred: array) -&gt; error: float</span>
+<span class="sd">        score_func_name : `str` or None, optional</span>
+<span class="sd">            Name of the score function used to report results.</span>
+<span class="sd">            If None, defaults to &quot;metric&quot;.</span>
+<span class="sd">        which: `str`, optional, default &quot;train&quot;</span>
+<span class="sd">            Which dataset to evaluate, &quot;train&quot; or &quot;test&quot;.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        xlabel : `str`, optional, default None</span>
+<span class="sd">            X-axis label of the plot.</span>
+<span class="sd">        ylabel : `str`, optional, default None</span>
+<span class="sd">            Y-axis label of the plot.</span>
+<span class="sd">        title : `str` or None, optional</span>
+<span class="sd">            Plot title, if None this function creates a suitable title.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objs.Figure`</span>
+<span class="sd">            plotly graph object showing forecasting error by group.</span>
+<span class="sd">            x-axis label depends on the grouping method:</span>
+<span class="sd">            ``groupby_time_feature`` for ``groupby_time_feature``</span>
+<span class="sd">            ``time_col`` for ``groupby_sliding_window_size``</span>
+<span class="sd">            ``groupby_custom_column.name`` for ``groupby_custom_column``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grouping_evaluation</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_name</span><span class="o">=</span><span class="n">score_func_name</span><span class="p">,</span>
+            <span class="n">which</span><span class="o">=</span><span class="n">which</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+
+        <span class="n">xcol</span><span class="p">,</span> <span class="n">ycol</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_univariate</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">grouped_df</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">xcol</span><span class="p">,</span>
+            <span class="n">y_col</span><span class="o">=</span><span class="n">ycol</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.autocomplete_map_func_dict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.autocomplete_map_func_dict">[docs]</a>    <span class="k">def</span> <span class="nf">autocomplete_map_func_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_func_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sweeps through ``map_func_dict``, converting values that are</span>
+<span class="sd">        `~greykite.common.evaluation.ElementwiseEvaluationMetricEnum`</span>
+<span class="sd">        member names to their corresponding row-wise evaluation function with appropriate</span>
+<span class="sd">        column names for this UnivariateForecast instance.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            map_func_dict = {</span>
+<span class="sd">                &quot;squared_error&quot;: ElementwiseEvaluationMetricEnum.SquaredError.name,</span>
+<span class="sd">                &quot;coverage&quot;: ElementwiseEvaluationMetricEnum.Coverage.name,</span>
+<span class="sd">                &quot;custom_metric&quot;: custom_function</span>
+<span class="sd">            }</span>
+
+<span class="sd">            is converted to</span>
+
+<span class="sd">            map_func_dict = {</span>
+<span class="sd">                &quot;squared_error&quot;: lambda row: ElementwiseEvaluationMetricEnum.SquaredError.get_metric_func()(</span>
+<span class="sd">                                            row[self.actual_col],</span>
+<span class="sd">                                            row[self.predicted_col]),</span>
+<span class="sd">                &quot;coverage&quot;: lambda row: ElementwiseEvaluationMetricEnum.Coverage.get_metric_func()(</span>
+<span class="sd">                                            row[self.actual_col],</span>
+<span class="sd">                                            row[self.predicted_lower_col],</span>
+<span class="sd">                                            row[self.predicted_upper_col]),</span>
+<span class="sd">                &quot;custom_metric&quot;: custom_function</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        map_func_dict : `dict` or None</span>
+<span class="sd">            Same as `~greykite.common.viz.timeseries_plotting.flexible_grouping_evaluation`,</span>
+<span class="sd">            with one exception: values may a ElementwiseEvaluationMetricEnum member name.</span>
+<span class="sd">            There are converted a callable for ``flexible_grouping_evaluation``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        map_func_dict : `dict`</span>
+<span class="sd">            Can be passed to `~greykite.common.viz.timeseries_plotting.flexible_grouping_evaluation`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">map_func_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">updated_map_func_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">updated_map_func_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">map_func_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">ElementwiseEvaluationMetricEnum</span><span class="o">.</span><span class="n">__members__</span><span class="p">:</span>
+                        <span class="n">enum</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetricEnum</span><span class="p">[</span><span class="n">func</span><span class="p">]</span>
+                        <span class="n">row_func</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+                        <span class="n">args</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_args</span><span class="p">()</span>
+                        <span class="n">arg_mapping</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># maps canonical names to the names in self.df</span>
+                            <span class="n">cst</span><span class="o">.</span><span class="n">ACTUAL_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_col</span><span class="p">,</span>
+                            <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">,</span>
+                            <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted_lower_col</span><span class="p">,</span>
+                            <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted_upper_col</span><span class="p">,</span>
+                            <span class="n">cst</span><span class="o">.</span><span class="n">NULL_PREDICTED_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_model_predicted_col</span><span class="p">,</span>
+                            <span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span>
+                        <span class="p">}</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg_mapping</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Auto-complete for </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2"> is not &quot;</span>
+                                             <span class="sa">f</span><span class="s2">&quot;enabled, please specify the full function.&quot;</span><span class="p">)</span>
+
+                        <span class="c1"># Creates a function that passes the appropriate columns</span>
+                        <span class="c1"># to the elementwise evaluation function</span>
+                        <span class="n">updated_map_func_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">apply_func_to_columns</span><span class="p">(</span><span class="n">row_func</span><span class="p">,</span> <span class="n">cols</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">valid_names</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ElementwiseEvaluationMetricEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">])</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2"> is not a recognized elementwise evaluation &quot;</span>
+                                         <span class="sa">f</span><span class="s2">&quot;metric. Must be one of: </span><span class="si">{</span><span class="n">valid_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># `func` is a callable</span>
+                    <span class="n">updated_map_func_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="k">return</span> <span class="n">updated_map_func_dict</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.get_flexible_grouping_evaluation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">get_flexible_grouping_evaluation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">which</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">map_func_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">agg_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">extend_col_names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Group-wise computation of evaluation metrics. Whereas ``self.get_grouping_evaluation``</span>
+<span class="sd">        computes one metric, this allows computation of any number of custom metrics.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">            * Mean and quantiles of squared error by group.</span>
+<span class="sd">            * Mean and quantiles of residuals by group.</span>
+<span class="sd">            * Mean and quantiles of actual and forecast by group.</span>
+<span class="sd">            * % of actuals outside prediction intervals by group</span>
+<span class="sd">            * any combination of the above metrics by the same group</span>
+
+<span class="sd">        First adds a groupby column by passing ``groupby_`` parameters to</span>
+<span class="sd">        `~greykite.common.viz.timeseries_plotting.add_groupby_column`.</span>
+<span class="sd">        Then computes grouped evaluation metrics by passing ``map_func_dict``,</span>
+<span class="sd">        ``agg_kwargs`` and ``extend_col_names`` to</span>
+<span class="sd">        `~greykite.common.viz.timeseries_plotting.flexible_grouping_evaluation`.</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided.</span>
+
+<span class="sd">        which: `str`</span>
+<span class="sd">            &quot;train&quot; or &quot;test&quot;. Which dataset to evaluate.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        map_func_dict : `dict` [`str`, `callable`] or None, default None</span>
+<span class="sd">            Row-wise transformation functions to create new columns.</span>
+<span class="sd">            If None, no new columns are added.</span>
+
+<span class="sd">                - key: new column name</span>
+<span class="sd">                - value: row-wise function to apply to ``df`` to generate the column value.</span>
+<span class="sd">                         Signature (row: `pandas.DataFrame`) -&gt; transformed value: `float`.</span>
+
+<span class="sd">            For example::</span>
+
+<span class="sd">                map_func_dict = {</span>
+<span class="sd">                    &quot;residual&quot;: lambda row: row[&quot;actual&quot;] - row[&quot;forecast&quot;],</span>
+<span class="sd">                    &quot;squared_error&quot;: lambda row: (row[&quot;actual&quot;] - row[&quot;forecast&quot;])**2</span>
+<span class="sd">                }</span>
+
+<span class="sd">            Some predefined functions are available in</span>
+<span class="sd">            `~greykite.common.evaluation.ElementwiseEvaluationMetricEnum`. For example::</span>
+
+<span class="sd">                map_func_dict = {</span>
+<span class="sd">                    &quot;residual&quot;: lambda row: ElementwiseEvaluationMetricEnum.Residual.get_metric_func()(</span>
+<span class="sd">                        row[&quot;actual&quot;],</span>
+<span class="sd">                        row[&quot;forecast&quot;]),</span>
+<span class="sd">                    &quot;squared_error&quot;: lambda row: ElementwiseEvaluationMetricEnum.SquaredError.get_metric_func()(</span>
+<span class="sd">                        row[&quot;actual&quot;],</span>
+<span class="sd">                        row[&quot;forecast&quot;]),</span>
+<span class="sd">                    &quot;q90_loss&quot;: lambda row: ElementwiseEvaluationMetricEnum.Quantile90.get_metric_func()(</span>
+<span class="sd">                        row[&quot;actual&quot;],</span>
+<span class="sd">                        row[&quot;forecast&quot;]),</span>
+<span class="sd">                    &quot;abs_percent_error&quot;: lambda row: ElementwiseEvaluationMetricEnum.AbsolutePercentError.get_metric_func()(</span>
+<span class="sd">                        row[&quot;actual&quot;],</span>
+<span class="sd">                        row[&quot;forecast&quot;]),</span>
+<span class="sd">                    &quot;coverage&quot;: lambda row: ElementwiseEvaluationMetricEnum.Coverage.get_metric_func()(</span>
+<span class="sd">                        row[&quot;actual&quot;],</span>
+<span class="sd">                        row[&quot;forecast_lower&quot;],</span>
+<span class="sd">                        row[&quot;forecast_upper&quot;]),</span>
+<span class="sd">                }</span>
+
+<span class="sd">            As shorthand, it is sufficient to provide the enum member name.  These are</span>
+<span class="sd">            auto-expanded into the appropriate function.</span>
+<span class="sd">            So the following is equivalent::</span>
+
+<span class="sd">                map_func_dict = {</span>
+<span class="sd">                    &quot;residual&quot;: ElementwiseEvaluationMetricEnum.Residual.name,</span>
+<span class="sd">                    &quot;squared_error&quot;: ElementwiseEvaluationMetricEnum.SquaredError.name,</span>
+<span class="sd">                    &quot;q90_loss&quot;: ElementwiseEvaluationMetricEnum.Quantile90.name,</span>
+<span class="sd">                    &quot;abs_percent_error&quot;: ElementwiseEvaluationMetricEnum.AbsolutePercentError.name,</span>
+<span class="sd">                    &quot;coverage&quot;: ElementwiseEvaluationMetricEnum.Coverage.name,</span>
+<span class="sd">                }</span>
+
+<span class="sd">        agg_kwargs : `dict` or None, default None</span>
+<span class="sd">            Passed as keyword args to `pandas.core.groupby.DataFrameGroupBy.aggregate` after creating</span>
+<span class="sd">            new columns and grouping by ``groupby_col``.</span>
+
+<span class="sd">            See `pandas.core.groupby.DataFrameGroupBy.aggregate` or</span>
+<span class="sd">            `~greykite.common.viz.timeseries_plotting.flexible_grouping_evaluation`</span>
+<span class="sd">            for details.</span>
+
+<span class="sd">        extend_col_names : `bool` or None, default False</span>
+<span class="sd">            How to flatten index after aggregation.</span>
+<span class="sd">            In some cases, the column index after aggregation is a multi-index.</span>
+<span class="sd">            This parameter controls how to flatten an index with 2 levels to 1 level.</span>
+
+<span class="sd">                - If None, the index is not flattened.</span>
+<span class="sd">                - If True, column name is a composite: ``{index0}_{index1}``</span>
+<span class="sd">                  Use this option if index1 is not unique.</span>
+<span class="sd">                - If False, column name is simply ``{index1}``</span>
+
+<span class="sd">            Ignored if the ColumnIndex after aggregation has only one level (e.g.</span>
+<span class="sd">            if named aggregation is used in ``agg_kwargs``).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df_transformed : `pandas.DataFrame`</span>
+<span class="sd">            ``df`` after transformation and optional aggregation.</span>
+
+<span class="sd">            If ``groupby_col`` is None, returns ``df`` with additional columns as the keys in ``map_func_dict``.</span>
+<span class="sd">            Otherwise, ``df`` is grouped by ``groupby_col`` and this becomes the index. Columns</span>
+<span class="sd">            are determined by ``agg_kwargs`` and ``extend_col_names``.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        `~greykite.common.viz.timeseries_plotting.add_groupby_column` : called by this function</span>
+<span class="sd">        `~greykite.common.viz.timeseries_plotting.flexible_grouping_evaluation` : called by this function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_train</span> <span class="k">if</span> <span class="n">which</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_test</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">add_groupby_column</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span>
+
+        <span class="n">map_func_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autocomplete_map_func_dict</span><span class="p">(</span><span class="n">map_func_dict</span><span class="p">)</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">flexible_grouping_evaluation</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">map_func_dict</span><span class="o">=</span><span class="n">map_func_dict</span><span class="p">,</span>
+            <span class="n">groupby_col</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;groupby_col&quot;</span><span class="p">],</span>
+            <span class="n">agg_kwargs</span><span class="o">=</span><span class="n">agg_kwargs</span><span class="p">,</span>
+            <span class="n">extend_col_names</span><span class="o">=</span><span class="n">extend_col_names</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grouped_df</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.plot_flexible_grouping_evaluation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.plot_flexible_grouping_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">plot_flexible_grouping_evaluation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">which</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">map_func_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">agg_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">extend_col_names</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="s2">&quot;auto-fill&quot;</span><span class="p">,</span>
+            <span class="n">default_color</span><span class="o">=</span><span class="s2">&quot;rgba(0, 145, 202, 1.0)&quot;</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plots group-wise evaluation metrics. Whereas</span>
+<span class="sd">        `~greykite.framework.output.univariate_forecast.UnivariateForecast.plot_grouping_evaluation`</span>
+<span class="sd">        shows one metric, this can show any number of custom metrics.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">            * Mean and quantiles of squared error by group.</span>
+<span class="sd">            * Mean and quantiles of residuals by group.</span>
+<span class="sd">            * Mean and quantiles of actual and forecast by group.</span>
+<span class="sd">            * % of actuals outside prediction intervals by group</span>
+<span class="sd">            * any combination of the above metrics by the same group</span>
+
+<span class="sd">        See `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation`</span>
+<span class="sd">        for details.</span>
+
+<span class="sd">        which: `str`</span>
+<span class="sd">            &quot;train&quot; or &quot;test&quot;. Which dataset to evaluate.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        map_func_dict : `dict` [`str`, `callable`] or None, default None</span>
+<span class="sd">            Grouping evaluation metric specification, along with ``agg_kwargs``.</span>
+<span class="sd">            See `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation`.</span>
+<span class="sd">        agg_kwargs : `dict` or None, default None</span>
+<span class="sd">            Grouping evaluation metric specification, along with ``map_func_dict``.</span>
+<span class="sd">            See `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation`.</span>
+<span class="sd">        extend_col_names : `bool` or None, default False</span>
+<span class="sd">            How to name the grouping metrics.</span>
+<span class="sd">            See `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation`.</span>
+<span class="sd">        y_col_style_dict: `dict` [`str`, `dict` or None] or &quot;plotly&quot; or &quot;auto&quot; or &quot;auto-fill&quot;, default &quot;auto-fill&quot;</span>
+<span class="sd">            The column(s) to plot on the y-axis, and how to style them. The names should match</span>
+<span class="sd">            those generated by ``agg_kwargs`` and ``extend_col_names``.</span>
+<span class="sd">            The function</span>
+<span class="sd">            `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation`</span>
+<span class="sd">            can be used to check the column names.</span>
+
+<span class="sd">            For convenience, start with &quot;auto-fill&quot; or &quot;plotly&quot;, then adjust styling as needed.</span>
+
+<span class="sd">            See `~greykite.common.viz.timeseries_plotting.plot_multivariate` for details.</span>
+
+<span class="sd">        default_color: `str`, default &quot;rgba(0, 145, 202, 1.0)&quot; (blue)</span>
+<span class="sd">            Default line color when ``y_col_style_dict`` is one of &quot;auto&quot;, &quot;auto-fill&quot;.</span>
+<span class="sd">        xlabel : `str` or None, default None</span>
+<span class="sd">            x-axis label. If None, default is ``x_col``.</span>
+<span class="sd">        ylabel : `str` or None, default None</span>
+<span class="sd">            y-axis label. If None, y-axis is not labeled.</span>
+<span class="sd">        title : `str` or None, default None</span>
+<span class="sd">            Plot title. If None and ``ylabel`` is provided, a default title is used.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objs.Figure`</span>
+<span class="sd">            Interactive plotly graph showing the evaluation metrics.</span>
+
+<span class="sd">            See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">            return value for how to plot the figure and add customization.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_flexible_grouping_evaluation` : called by this function</span>
+<span class="sd">        `~greykite.common.viz.timeseries_plotting.plot_multivariate` : called by this function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_flexible_grouping_evaluation</span><span class="p">(</span>
+            <span class="n">which</span><span class="o">=</span><span class="n">which</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">,</span>
+            <span class="n">map_func_dict</span><span class="o">=</span><span class="n">map_func_dict</span><span class="p">,</span>
+            <span class="n">agg_kwargs</span><span class="o">=</span><span class="n">agg_kwargs</span><span class="p">,</span>
+            <span class="n">extend_col_names</span><span class="o">=</span><span class="n">extend_col_names</span><span class="p">)</span>
+
+        <span class="n">x_col</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">grouped_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+            <span class="n">grouped_df</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">x_col</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="n">y_col_style_dict</span><span class="p">,</span>
+            <span class="n">default_color</span><span class="o">=</span><span class="n">default_color</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.make_univariate_time_series"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.make_univariate_time_series">[docs]</a>    <span class="k">def</span> <span class="nf">make_univariate_time_series</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts prediction into a UnivariateTimeSeries</span>
+<span class="sd">        Useful to convert a forecast into the input regressor for a subsequent forecast.</span>
+
+<span class="sd">        :return: UnivariateTimeSeries</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">UnivariateTimeSeries</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">]]</span>
+              <span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ylabel</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ylabel</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ts</span></div>
+
+<div class="viewcode-block" id="UnivariateForecast.plot_components"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.plot_components">[docs]</a>    <span class="k">def</span> <span class="nf">plot_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Class method to plot the components of a `UnivariateForecast` object.</span>
+
+<span class="sd">        ``Silverkite`` calculates component plots based on ``fit`` dataset.</span>
+<span class="sd">        ``Prophet`` calculates component plots based on ``predict`` dataset.</span>
+
+<span class="sd">        For estimator specific component plots with advanced plotting options call</span>
+<span class="sd">        ``self.estimator.plot_components()``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig: `plotly.graph_objs.Figure` for ``Silverkite``</span>
+<span class="sd">             `matplotlib.figure.Figure` for ``Prophet``</span>
+<span class="sd">             Figure plotting components against appropriate time scale.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">plot_components</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

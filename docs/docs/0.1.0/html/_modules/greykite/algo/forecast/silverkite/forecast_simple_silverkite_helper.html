@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original authors: Albert Chen, Reza Hosseini</span>
+<span class="sd">&quot;&quot;&quot;Helper functions for</span>
+<span class="sd">`~greykite.algo.forecast.silverkite.forecast_simple_silverkite.py.`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_DF_DATE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_DF_LABEL_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_INDICATOR</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">add_event_window_multi</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_fourier_col_name</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_holidays</span>
+
+
+<span class="k">def</span> <span class="nf">cols_interact</span><span class="p">(</span>
+        <span class="n">static_col</span><span class="p">,</span>
+        <span class="n">fs_name</span><span class="p">,</span>
+        <span class="n">fs_order</span><span class="p">,</span>
+        <span class="n">fs_seas_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns all interactions between static_col and fourier series up to specified order</span>
+
+<span class="sd">    :param static_col:</span>
+<span class="sd">        column to interact with fourier series. can be an arbitrary patsy model term</span>
+<span class="sd">        e.g. &quot;ct1&quot;, &quot;C(woy)&quot;, &quot;is_weekend:Q(&#39;events_Christmas Day&#39;)&quot;</span>
+<span class="sd">    :param fs_name:</span>
+<span class="sd">        column the fourier series is generated from, same as col_name in fourier_series_fcn</span>
+<span class="sd">    :param fs_order: int</span>
+<span class="sd">        generate interactions up to this order. must be &lt;= order in fourier_series_fcn</span>
+<span class="sd">    :param fs_seas_name: str</span>
+<span class="sd">        same as seas_name in fourier_series_fcn</span>
+<span class="sd">    :return: list[str]</span>
+<span class="sd">        interaction terms to include in patsy model formula</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">interaction_columns</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">fs_order</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fs_order</span><span class="p">):</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">sin_col_name</span> <span class="o">=</span> <span class="n">get_fourier_col_name</span><span class="p">(</span>
+            <span class="n">k</span><span class="p">,</span>
+            <span class="n">fs_name</span><span class="p">,</span>
+            <span class="n">function_name</span><span class="o">=</span><span class="s2">&quot;sin&quot;</span><span class="p">,</span>
+            <span class="n">seas_name</span><span class="o">=</span><span class="n">fs_seas_name</span><span class="p">)</span>
+        <span class="n">cos_col_name</span> <span class="o">=</span> <span class="n">get_fourier_col_name</span><span class="p">(</span>
+            <span class="n">k</span><span class="p">,</span>
+            <span class="n">fs_name</span><span class="p">,</span>
+            <span class="n">function_name</span><span class="o">=</span><span class="s2">&quot;cos&quot;</span><span class="p">,</span>
+            <span class="n">seas_name</span><span class="o">=</span><span class="n">fs_seas_name</span><span class="p">)</span>
+        <span class="n">interaction_columns</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">static_col</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">sin_col_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">interaction_columns</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">static_col</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">cos_col_name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">interaction_columns</span>
+
+
+<span class="k">def</span> <span class="nf">dedup_holiday_dict</span><span class="p">(</span><span class="n">holidays_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Removes duplicates from get_holidays output</span>
+
+<span class="sd">    :param holidays_dict: dict(str, pd.DataFrame(EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL))</span>
+<span class="sd">        dictionary from get_holidays</span>
+<span class="sd">    :return:</span>
+<span class="sd">        concatenates rows of all DataFrames in holiday_df</span>
+<span class="sd">        drops duplicate holiday names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">country</span><span class="p">,</span> <span class="n">country_holiday_df</span> <span class="ow">in</span> <span class="n">holidays_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">result</span><span class="p">,</span> <span class="n">country_holiday_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">split_events_into_dictionaries</span><span class="p">(</span>
+        <span class="n">events_df</span><span class="p">,</span>
+        <span class="n">events</span><span class="p">,</span>
+        <span class="n">date_col</span><span class="o">=</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">,</span>
+        <span class="n">name_col</span><span class="o">=</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">,</span>
+        <span class="n">default_category</span><span class="o">=</span><span class="s2">&quot;Other&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Splits pd.Dataframe(date, holiday) into separate dataframes, one per event</span>
+
+<span class="sd">    Can be used to create the `daily_event_df_dict` parameter for `forecast_silverkite`.</span>
+<span class="sd">    Each event specified in `events` gets its own effect in the model.</span>
+<span class="sd">        Other events are grouped together and modeled with the same effect</span>
+
+<span class="sd">    :param events_df: pd.DataFrame with date_col and name_col columns</span>
+<span class="sd">        contains events</span>
+<span class="sd">    :param events: list(str)</span>
+<span class="sd">        names of events in events_df.name_col.unique() to split into separate</span>
+<span class="sd">        dataframes</span>
+<span class="sd">    :param date_col: str, default &quot;date&quot;</span>
+<span class="sd">        column in event_df containing the date</span>
+<span class="sd">    :param name_col: str, default EVENT_DF_LABEL_COL</span>
+<span class="sd">        column in event_df containing the event name</span>
+<span class="sd">    :param default_category: str</span>
+<span class="sd">        name of default event</span>
+
+<span class="sd">    :return: dict(label: pd.Dataframe(date_col, name_col))</span>
+<span class="sd">        with keys = events + [default_category]</span>
+<span class="sd">            name_col column has a constant value = EVENT_INDICATOR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># separates rows corresponding to each event into their own dataframe</span>
+    <span class="k">for</span> <span class="n">event_name</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+        <span class="n">event_df</span> <span class="o">=</span> <span class="n">events_df</span><span class="p">[</span><span class="n">events_df</span><span class="p">[</span><span class="n">name_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">event_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">event_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">event_df</span><span class="p">[</span><span class="n">name_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">EVENT_INDICATOR</span>  <span class="c1"># All dates in this df are for the event</span>
+            <span class="n">event_key</span> <span class="o">=</span> <span class="n">event_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># ensures patsy module can parse column name in formula</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">event_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Requested holiday &#39;</span><span class="si">{</span><span class="n">event_name</span><span class="si">}</span><span class="s2">&#39; does not occur in the provided countries&quot;</span><span class="p">)</span>
+
+    <span class="c1"># groups other events into the same bucket</span>
+    <span class="n">other_df</span> <span class="o">=</span> <span class="n">events_df</span><span class="p">[</span><span class="o">~</span><span class="n">events_df</span><span class="p">[</span><span class="n">name_col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">events</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">other_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">other_df</span><span class="p">[</span><span class="n">name_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">EVENT_INDICATOR</span>
+        <span class="n">default_category</span> <span class="o">=</span> <span class="n">default_category</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">default_category</span><span class="p">]</span> <span class="o">=</span> <span class="n">other_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># there must be no duplicated dates in each DataFrame</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">generate_holiday_events</span><span class="p">(</span>
+        <span class="n">countries</span><span class="p">,</span>
+        <span class="n">holidays_to_model_separately</span><span class="p">,</span>
+        <span class="n">year_start</span><span class="p">,</span>
+        <span class="n">year_end</span><span class="p">,</span>
+        <span class="n">pre_num</span><span class="p">,</span>
+        <span class="n">post_num</span><span class="p">,</span>
+        <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">default_category</span><span class="o">=</span><span class="s2">&quot;Other&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns holidays within the countries between ``year_start`` and ``year_end``.</span>
+<span class="sd">    Creates a separate key, value for each item in ``holidays_to_model_separately``.</span>
+<span class="sd">    The rest are grouped together.</span>
+
+<span class="sd">    Useful when multiple countries share the same holiday (e.g. New Year&#39;s Day),</span>
+<span class="sd">    to model a single effect for that holiday.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    countries : `list` [`str`]</span>
+<span class="sd">        Countries of interest.</span>
+<span class="sd">    holidays_to_model_separately : `list` [`str`]</span>
+<span class="sd">        Holidays to model.</span>
+<span class="sd">    year_start: `int`</span>
+<span class="sd">        Start year for holidays.</span>
+<span class="sd">    year_end: `int`</span>
+<span class="sd">        Ending year for holidays.</span>
+<span class="sd">    pre_num: `int`</span>
+<span class="sd">        Days to model a separate effect prior to each holiday</span>
+<span class="sd">    post_num: `int`</span>
+<span class="sd">        Days to model a separate effect after each holiday.</span>
+<span class="sd">    pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None</span>
+<span class="sd">        Overrides ``pre_num`` and ``post_num`` for each holiday in</span>
+<span class="sd">        ``holidays_to_model_separately``.</span>
+<span class="sd">        For example, if ``holidays_to_model_separately`` contains &quot;Thanksgiving&quot; and &quot;Labor Day&quot;,</span>
+<span class="sd">        this parameter can be set to ``{&quot;Thanksgiving&quot;: [1, 3], &quot;Labor Day&quot;: [1, 2]}``,</span>
+<span class="sd">        denoting that the &quot;Thanksgiving&quot; ``pre_num`` is 1 and ``post_num`` is 3, and &quot;Labor Day&quot;</span>
+<span class="sd">        ``pre_num`` is 1 and ``post_num`` is 2.</span>
+<span class="sd">        Holidays not specified use the default given by ``pre_num`` and ``post_num``.</span>
+<span class="sd">    default_category: `str`</span>
+<span class="sd">        Default category name, for holidays in countries not included</span>
+<span class="sd">        in ``holidays_to_model_separately``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    daily_event_df_dict : `dict` [`str`, `pandas.DataFrame` (EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL)]</span>
+<span class="sd">        suitable for use as ``daily_event_df_dict`` parameter in ``forecast_silverkite``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># retrieves separate DataFrame for each country, with list of holidays</span>
+    <span class="n">holidays_dict</span> <span class="o">=</span> <span class="n">get_holidays</span><span class="p">(</span>
+        <span class="n">countries</span><span class="p">,</span>
+        <span class="n">year_start</span><span class="o">=</span><span class="n">year_start</span><span class="p">,</span>
+        <span class="n">year_end</span><span class="o">=</span><span class="n">year_end</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">holidays_dict</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># requested holidays are not found the countries</span>
+        <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># merges country DataFrames, removes duplicate holidays</span>
+        <span class="n">holiday_df</span> <span class="o">=</span> <span class="n">dedup_holiday_dict</span><span class="p">(</span><span class="n">holidays_dict</span><span class="p">)</span>
+        <span class="c1"># creates separate DataFrame for each holiday</span>
+        <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="n">split_events_into_dictionaries</span><span class="p">(</span>
+            <span class="n">holiday_df</span><span class="p">,</span>
+            <span class="n">holidays_to_model_separately</span><span class="p">,</span>
+            <span class="n">default_category</span><span class="o">=</span><span class="n">default_category</span><span class="p">)</span>
+
+        <span class="c1"># Removes &quot;&#39;&quot; from keys in `pre_post_num_dict` because they are</span>
+        <span class="c1"># removed from holiday names by ``split_events_into_dictionaries``.</span>
+        <span class="k">if</span> <span class="n">pre_post_num_dict</span><span class="p">:</span>
+            <span class="c1"># ``.copy()`` is used below to avoid altering the dictionary keys within iteration on same keys</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="n">pre_post_num_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">new_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">daily_event_df_dict</span><span class="p">:</span>
+                    <span class="n">pre_post_num_dict</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pre_post_num_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">new_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">daily_event_df_dict</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Requested holiday &#39;</span><span class="si">{</span><span class="n">new_key</span><span class="si">}</span><span class="s2">&#39; is not valid. Valid holidays are: &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">daily_event_df_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+        <span class="n">shifted_event_dict</span> <span class="o">=</span> <span class="n">add_event_window_multi</span><span class="p">(</span>
+            <span class="n">event_df_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">,</span>
+            <span class="n">label_col</span><span class="o">=</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">,</span>
+            <span class="n">time_delta</span><span class="o">=</span><span class="s2">&quot;1D&quot;</span><span class="p">,</span>
+            <span class="n">pre_num</span><span class="o">=</span><span class="n">pre_num</span><span class="p">,</span>
+            <span class="n">post_num</span><span class="o">=</span><span class="n">post_num</span><span class="p">,</span>
+            <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="n">pre_post_num_dict</span><span class="p">)</span>
+
+        <span class="n">daily_event_df_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">shifted_event_dict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">daily_event_df_dict</span>
+
+
+<span class="k">def</span> <span class="nf">patsy_categorical_term</span><span class="p">(</span>
+        <span class="n">term</span><span class="p">,</span>
+        <span class="n">levels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">coding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">quote</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns categorical term for patsy.</span>
+<span class="sd">        Optionally specify levels, coding, and quote the term</span>
+<span class="sd">    :param term: str</span>
+<span class="sd">        name of the categorical variable</span>
+<span class="sd">    :param levels: list(str) or None</span>
+<span class="sd">        levels for the categorical variable</span>
+<span class="sd">    :param coding: str</span>
+<span class="sd">        A valid coding. E.g. Treatment, Sum, Diff, Poly</span>
+<span class="sd">        https://patsy.readthedocs.io/en/latest/API-reference.html#handling-categorical-data</span>
+<span class="sd">    :param quote: bool</span>
+<span class="sd">        whether to quote the term. Useful if there is a space or &quot;.&quot; in the term</span>
+<span class="sd">    :return: str</span>
+<span class="sd">        categorical factor for patsy model formula</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">quote</span><span class="p">:</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Q(&#39;</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+    <span class="c1"># constructs the string for the patsy model term</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;C(</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">coding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, </span><span class="si">{</span><span class="n">coding</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">levels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, levels=</span><span class="si">{</span><span class="n">levels</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">string</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
+    <span class="k">return</span> <span class="n">string</span>
+
+
+<div class="viewcode-block" id="get_event_pred_cols"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper.get_event_pred_cols">[docs]</a><span class="k">def</span> <span class="nf">get_event_pred_cols</span><span class="p">(</span><span class="n">daily_event_df_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates the names of internal predictor columns from</span>
+<span class="sd">    the event dictionary passed to</span>
+<span class="sd">    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">    These can be passed via the ``extra_pred_cols`` parameter to model event effects.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The returned strings are patsy model formula terms.</span>
+<span class="sd">        Each provides full set of levels so that prediction works even if a</span>
+<span class="sd">        level is not found in the training set.</span>
+
+<span class="sd">        If a level does not appear in the training set, its coefficient may</span>
+<span class="sd">        be unbounded in the &quot;linear&quot; fit_algorithm. A method with regularization</span>
+<span class="sd">        avoids this issue (e.g. &quot;ridge&quot;, &quot;elastic_net&quot;).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    daily_event_df_dict : `dict` or None, optional, default None</span>
+<span class="sd">        A dictionary of data frames, each representing events data for the corresponding key.</span>
+<span class="sd">        See `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    event_pred_cols : `list` [`str`]</span>
+<span class="sd">        List of patsy model formula terms, one for each</span>
+<span class="sd">        key of ``daily_event_df_dict``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">event_pred_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">daily_event_df_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">daily_event_df_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="c1"># `add_daily_events` creates a column with this name.</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_PREFIX</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="c1"># Its values are set to the event df label column. Dates that do not correspond</span>
+            <span class="c1"># to the event are set to `cst.EVENT_DEFAULT`.</span>
+            <span class="n">event_levels</span> <span class="o">=</span> <span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DEFAULT</span><span class="p">]</span>  <span class="c1"># reference level for non-event days</span>
+            <span class="n">event_levels</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">daily_event_df_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>  <span class="c1"># this event&#39;s levels</span>
+            <span class="n">event_pred_cols</span> <span class="o">+=</span> <span class="p">[</span><span class="n">patsy_categorical_term</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">event_levels</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">event_pred_cols</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

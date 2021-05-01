@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pre-processing, Selective Grid Search &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Benchmarking" href="../benchmarking/benchmarking.html" />
+    <link rel="prev" title="Uncertainty Intervals" href="0900_uncertainty.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pre-processing, Selective Grid Search</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pipeline-steps">Pipeline steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-processing">Pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selective-grid-search">Selective grid search</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Pre-processing, Selective Grid Search</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pre-processing-selective-grid-search">
+<h1>Pre-processing, Selective Grid Search<a class="headerlink" href="#pre-processing-selective-grid-search" title="Permalink to this headline">¶</a></h1>
+<p>Forecasts are generated by a <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>. It uses transformers
+to pre-process the input data, followed by an estimator to fit the model and make
+predictions. Use <code class="docutils literal notranslate"><span class="pre">model_components.hyperparameter_override</span></code> to override
+pipeline parameters set by the other <code class="docutils literal notranslate"><span class="pre">model_components</span></code> attributes.</p>
+<p>A few reasons to set this:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Define pre-processing steps before the data is passed to the estimator
+for fitting and prediction. By default, there is no pre-processing except
+to impute null values in the response and numeric regressors.
+The other <code class="docutils literal notranslate"><span class="pre">model_components</span></code> attributes set estimator parameters,
+but not pre-processing parameters.</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>Whether/how to classify outliers (default=off)</p></li>
+<li><p>Whether/how to normalize regressors (default=off)</p></li>
+<li><p>The method for missing data interpolation (default=linear)</p></li>
+<li><p>Whether degenerate columns should be removed before fitting (default=off)</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Run selective grid search over a list of hyperparameter grids. Without override,
+the template returns a single grid for full grid search over all combinations.
+See details below.</p></li>
+<li><p>Tune Estimator params that are not accessible via <code class="docutils literal notranslate"><span class="pre">model_components</span></code>. These parameters
+are omitted by design, and likely do not need to be set. For example:</p></li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">estimator__origin_for_time_vars</span></code> (valid for the Silverkite model).
+The time origin is automatically set to the first date of the dataset, but override is possible.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">estimator__silverkite</span></code> (valid for the Silverkite model).
+Allows override of the algorithm used to fit the model.
+It can be used to provide an algorithm instance with customized behavior.</p>
+<p>If using a high-level silverkite template that relies on
+<a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a>,
+the value should be an instance of
+<a class="reference internal" href="../autodoc/doc.html#greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast" title="greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteForecast</span></code></a>.
+Otherwise, if using a low-level silverkite template that relies on
+<a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator" title="greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteEstimator</span></code></a>,
+the value should be an instance of
+<a class="reference internal" href="../autodoc/doc.html#greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast" title="greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteForecast</span></code></a>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">estimator__silverkite_diagnostics</span></code> (valid for the Silverkite model).
+Allows override of the SilverkiteDiagnostics class that generates plots for the model.
+It can be used to provide an instance with customized behavior for plotting the components.
+Value should be an instance of <em class="xref py py-obj">SilverkiteDiagnostics</em>.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<div class="section" id="pipeline-steps">
+<h2>Pipeline steps<a class="headerlink" href="#pipeline-steps" title="Permalink to this headline">¶</a></h2>
+<p>The forecast pipeline contains data preprocessing and estimation steps,
+as outlined in the <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> below.</p>
+<p>The pipeline steps are defined by
+<a class="reference internal" href="../autodoc/doc.html#greykite.framework.pipeline.utils.get_basic_pipeline" title="greykite.framework.pipeline.utils.get_basic_pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_basic_pipeline</span></code></a>,
+copied here for reference.</p>
+<p><code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code> lets you set these components. It takes as dictionary whose
+keys have the format:
+<code class="docutils literal notranslate"><span class="pre">{named_step}__{parameter_name}</span></code> for the named steps of the <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>.</p>
+<p>See examples and the default values below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="c1"># Transforms the data prior to fitting</span>
+    <span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">PandasFeatureUnion</span><span class="p">([</span>
+        <span class="c1"># Pass-through of time column.</span>
+        <span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="s2">&quot;select_date&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">([</span><span class="n">TIME_COL</span><span class="p">]))</span>
+        <span class="p">])),</span>
+        <span class="c1"># Transforms value column (prediction target, as input to `fit`).</span>
+        <span class="c1"># This column is ignored by `predict`.</span>
+        <span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="s2">&quot;select_val&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">([</span><span class="n">VALUE_COL</span><span class="p">])),</span>
+            <span class="c1"># For example, set z_cutoff parameter of this ZscoreOutlierTransformer</span>
+            <span class="c1"># via ``input__response__outlier__z_cutoff``</span>
+            <span class="p">(</span><span class="s2">&quot;outlier&quot;</span><span class="p">,</span> <span class="n">ZscoreOutlierTransformer</span><span class="p">(</span><span class="n">z_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>
+            <span class="c1"># Uses linear interpolation to fill in missing response values.</span>
+            <span class="c1"># To avoid fitting to imputed values, set impute_algorithm=None.</span>
+            <span class="c1"># Algorithms that require missing values to be imputed must use `impute_algorithm`.</span>
+            <span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">NullTransformer</span><span class="p">(</span><span class="n">impute_algorithm</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">))</span>
+        <span class="p">])),</span>
+        <span class="c1"># Transforms numeric regressors.</span>
+        <span class="p">(</span><span class="s2">&quot;regressors_numeric&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="s2">&quot;select_reg&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">(</span><span class="n">regressor_cols</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;select_reg_numeric&quot;</span><span class="p">,</span> <span class="n">DtypeColumnSelector</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;outlier&quot;</span><span class="p">,</span> <span class="n">ZscoreOutlierTransformer</span><span class="p">(</span><span class="n">z_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>
+            <span class="c1"># For example, set NormalizeTransformer parameters via</span>
+            <span class="c1"># `input__regressors_numeric__normalize__{parameter_name}`</span>
+            <span class="p">(</span><span class="s2">&quot;normalize&quot;</span><span class="p">,</span> <span class="n">NormalizeTransformer</span><span class="p">(</span><span class="n">normalize_algorithm</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>  <span class="c1"># no normalization by default</span>
+            <span class="c1"># Uses linear interpolation to fill in missing regressor values.</span>
+            <span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">NullTransformer</span><span class="p">(</span><span class="n">impute_algorithm</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">))</span>
+        <span class="p">])),</span>
+        <span class="c1"># Pass-through of non-numeric regressors.</span>
+        <span class="p">(</span><span class="s2">&quot;regressors_other&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+            <span class="p">(</span><span class="s2">&quot;select_reg&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">(</span><span class="n">regressor_cols</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;select_reg_non_numeric&quot;</span><span class="p">,</span> <span class="n">DtypeColumnSelector</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">))</span>
+        <span class="p">]))</span>
+    <span class="p">])),</span>
+    <span class="c1"># Optionally removes columns with constant value (default=False)</span>
+    <span class="p">(</span><span class="s2">&quot;degenerate&quot;</span><span class="p">,</span> <span class="n">DropDegenerateTransformer</span><span class="p">()),</span>
+    <span class="c1"># Performs the forecast `fit` and `predict`.</span>
+    <span class="c1"># &quot;Estimator&quot; is either `SimpleSilverkiteEstimator` or `ProphetEstimator`,</span>
+    <span class="c1"># as selected by `ForecastConfig.model_template`.</span>
+    <span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="n">Estimator</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span> <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span>
+    <span class="p">))</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pre-processing">
+<h2>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">¶</a></h2>
+<p>Below are some examples of how to set pre-processing parameters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some templates can handle gaps in the timeseries, such as <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> and <code class="docutils literal notranslate"><span class="pre">PROPHET</span></code>.
+They do not require the response value to be imputed.</p>
+<p>For these templates, if you have missing response values in your data, it may be
+beneficial not to impute the values, to avoid fitting the model to imputed values.
+Set <code class="docutils literal notranslate"><span class="pre">input__response__null__impute_algorithm</span></code> to None and see if forecast
+quality improves.</p>
+<p>If your timeseries has regular missing values (e.g. observations only
+between 9am-5pm each day, null otherwise), it is especially important to
+set <code class="docutils literal notranslate"><span class="pre">input__response__null__impute_algorithm</span></code> to None.</p>
+<p>If a few values are missing at random, you may also try setting it to None,
+or use your expert knowledge to pick a suitable interpolation method
+(“interpolate” or “ts_interpolate” with corresponding <code class="docutils literal notranslate"><span class="pre">impute_params</span></code>),
+as shown below.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The default values (if not specified)</span>
+<span class="n">hyperparameter_override</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="c1"># Transformers for the response (value_col), the fitting target.</span>
+    <span class="c1"># Allows outlier removal (replace with null), followed by null imputation.</span>
+    <span class="n">input__response__outlier__use_fit_baseline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">input__response__outlier__z_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input__response__null__impute_algorithm</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">,</span>
+    <span class="n">input__response__null__impute_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">input__response__null__impute_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input__response__null__max_frac</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span>
+    <span class="c1"># Transformers for numeric regressors provided in ``df``,</span>
+    <span class="c1"># used to predict the response.</span>
+    <span class="c1"># Allows outlier removal, normalization, and null imputation.</span>
+    <span class="n">input__regressors_numeric__outlier__use_fit_baseline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__outlier__z_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__normalize__normalize_algorithm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__normalize__normalize_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__null__impute_algorithm</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__null__impute_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__null__impute_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__null__max_frac</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span>
+    <span class="c1"># Whether to drop degenerate regressors before fitting.</span>
+    <span class="c1"># May cause fit to fail if a column is dropped and not</span>
+    <span class="c1"># found by the estimator.</span>
+    <span class="n">degenerate__drop_degenerate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Example custom pre-processing configuration</span>
+<span class="n">hyperparameter_override</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="c1"># Sets z-cutoff to a high value. Response values above this</span>
+    <span class="c1"># are replaced with NaN and imputed.</span>
+    <span class="n">input__response__outlier__z_cutoff</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="c1"># Sets response null imputation to use the average value</span>
+    <span class="c1"># 7 and 14 periods ago (if input data has daily frequency,</span>
+    <span class="c1"># this is the value 1 week and 2 weeks ago on the same day of week).</span>
+    <span class="n">input__response__null__impute_algorithm</span><span class="o">=</span><span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span>
+    <span class="n">input__response__null__impute_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+        <span class="n">iter_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>  <span class="c1"># repeats up to 5x if missing values take multiple iterations to fill</span>
+    <span class="p">),</span>
+    <span class="n">input__response__null__impute_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># guarantees all nulls are imputed (default)</span>
+    <span class="c1"># Sets z-cutoff to a high value. Numeric regressor values above this</span>
+    <span class="c1"># are replaced with NaN and imputed.</span>
+    <span class="n">input__regressors_numeric__outlier__z_cutoff</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="c1"># Uses `sklearn.preprocessing.RobustScaler` to normalize numeric regressors</span>
+    <span class="c1"># before fitting. Sets parameters to this scaler via `normalize_params`.</span>
+    <span class="n">input__regressors_numeric__normalize__normalize_algorithm</span><span class="o">=</span><span class="s2">&quot;RobustScaler&quot;</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__normalize__normalize_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">quantile_range</span><span class="o">=</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="c1"># Same null imputation configuration for the numeric regressors</span>
+    <span class="n">input__regressors_numeric__null__impute_algorithm</span><span class="o">=</span><span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span>
+    <span class="n">input__regressors_numeric__null__impute_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+        <span class="n">iter_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">input__regressors_numeric__null__impute_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># Drops degenerate columns before fitting</span>
+    <span class="n">degenerate__drop_degenerate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># As usual, list can be used for any of the parameters,</span>
+<span class="c1"># for grid search over the options.</span>
+<span class="n">hyperparameter_override</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="n">input__response__outlier__z_cutoff</span><span class="o">=</span><span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">input__response__null__impute_algorithm</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span> <span class="s2">&quot;interpolate&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>See more details about the transformer parameters here:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.transform.zscore_outlier_transformer.ZscoreOutlierTransformer" title="greykite.sklearn.transform.zscore_outlier_transformer.ZscoreOutlierTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZscoreOutlierTransformer</span></code></a></p></li>
+<li><p><a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.transform.normalize_transformer.NormalizeTransformer" title="greykite.sklearn.transform.normalize_transformer.NormalizeTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalizeTransformer</span></code></a></p></li>
+<li><p><a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.transform.null_transformer.NullTransformer" title="greykite.sklearn.transform.null_transformer.NullTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NullTransformer</span></code></a></p></li>
+<li><p><a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.transform.drop_degenerate_transformer.DropDegenerateTransformer" title="greykite.sklearn.transform.drop_degenerate_transformer.DropDegenerateTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DropDegenerateTransformer</span></code></a></p></li>
+</ul>
+</div></blockquote>
+<p>Do not set the parameters of <code class="docutils literal notranslate"><span class="pre">ColumnSelector</span></code> or <code class="docutils literal notranslate"><span class="pre">DTypeColumnSelector</span></code>.</p>
+</div>
+<div class="section" id="selective-grid-search">
+<h2>Selective grid search<a class="headerlink" href="#selective-grid-search" title="Permalink to this headline">¶</a></h2>
+<p>Rather than provide a single grid, <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code></a>
+allows passing a list of grids.</p>
+<p>This can be useful if your search space is large:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If you have 6 parameter with 3 values each, the search space is 3^6=729, too large to be practical.</p></li>
+<li><p>You could set <code class="docutils literal notranslate"><span class="pre">hyperparameter_budget</span></code>, but because this searches at random,
+some parameter values might not be explored.</p></li>
+<li><p>Instead, one strategy is to grid search on each parameter independently, for 3*6=18 options.</p></li>
+<li><p>The optimal values from this initial grid search can rule out “bad” parameter values. Further
+grid search can scan combinations of “good” parameters.</p></li>
+</ul>
+</div></blockquote>
+<p>To use this approach, the specified <code class="docutils literal notranslate"><span class="pre">model_components</span></code> should be a single “best guess” model
+from which to make small changes for exploration.</p>
+<p>Modifications to this base model are defined by <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code>. It can be a dictionary
+as shown above, or a list of dictionaries. For selective grid search, provide a list of dictionaries.
+Each dictionary in the list updates the hyperparameters specified by <code class="docutils literal notranslate"><span class="pre">model_components</span></code>
+to generate the search space.</p>
+<p>To override <code class="docutils literal notranslate"><span class="pre">estimator</span></code> parameters, use <code class="docutils literal notranslate"><span class="pre">&quot;estimator__{param}&quot;</span></code> in <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">param</span></code> is a parameter used to initialize.</p>
+<p>See more details about the estimator parameters here:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a> (SILVERKITE template)</p></li>
+<li><p><a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator" title="greykite.sklearn.estimator.prophet_estimator.ProphetEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProphetEstimator</span></code></a> (PROPHET template)</p></li>
+</ul>
+</div></blockquote>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hyperparameter_override</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="c1"># Uses the original, unmodified estimator parameters from `model_components`.</span>
+        <span class="c1"># We can set pre-processing parameters in selective grid search.</span>
+        <span class="c1"># In this example, we change the null imputation algorithm</span>
+        <span class="c1"># in all the grids.</span>
+        <span class="s2">&quot;input__response__null__impute_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="c1"># Explores two options for holiday countries</span>
+        <span class="s2">&quot;estimator__holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;UnitedStates&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;UnitedKingdom&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;India&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;France&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;China&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;UnitedStates&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;India&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;input__response__null__impute_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="c1"># Explores two options for fit algorithms</span>
+        <span class="s2">&quot;estimator__fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span>
+            <span class="p">),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;elastic_net&quot;</span>
+            <span class="p">),</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;input__response__null__impute_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="c1"># Tries adding a changepoint</span>
+        <span class="s2">&quot;estimator__changepoints_dict&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+                <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2019-08-01-00&quot;</span><span class="p">],</span>
+                <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">,</span>
+                <span class="n">growth_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+            <span class="p">)</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;input__response__null__impute_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ts_interpolate&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c1"># etc.</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The illustrates how override updates the parameters set by the
+other <code class="docutils literal notranslate"><span class="pre">model_components</span></code> attributes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original grid defined by the other model_components attributes.</span>
+<span class="n">original_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="c1"># Override options.</span>
+<span class="n">hyperparameter_override</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]},</span>
+<span class="p">]</span>
+<span class="c1"># The resulting search space:</span>
+<span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>     <span class="c1"># original</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">]},</span>  <span class="c1"># replaced</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]},</span>  <span class="c1"># added</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;estimator__param2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]},</span>       <span class="c1"># added</span>
+<span class="p">]</span>
+<span class="c1"># After auto-list conversion, this grid is passed</span>
+<span class="c1"># to `sklearn.model_selection.RandomizedSearchCV`</span>
+<span class="c1"># to set the Pipeline parameters.</span>
+<span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]},</span>
+<span class="p">]</span>
+
+<span class="c1"># The search space has 7 options.</span>
+<span class="c1"># To see this more clearly, consider the</span>
+<span class="c1"># equivalent (flattened) search space.</span>
+<span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;estimator__param2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">]},</span>
+<span class="p">]</span>
+
+<span class="c1"># To cover the above (7) options without using hyperparameter</span>
+<span class="c1"># override, we&#39;d need to check 12 combinations (2 x 3 x 2)</span>
+<span class="c1"># as shown in the grid below.</span>
+<span class="c1"># Thus, the override allows for more precise grid search over the</span>
+<span class="c1"># combinations of interest.</span>
+<span class="n">original_grid</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;estimator__param&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="s2">&quot;estimator__param1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;estimator__param2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../benchmarking/benchmarking.html" class="btn btn-neutral float-right" title="Benchmarking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0900_uncertainty.html" class="btn btn-neutral" title="Uncertainty Intervals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
