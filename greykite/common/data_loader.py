@@ -63,7 +63,7 @@ class DataLoader:
             Path to the data folder.
         """
         if data_dir is None:
-            data_dir = Path(__file__).parents[2].joinpath("data")
+            data_dir = Path(__file__).parents[1].joinpath("data")
 
         if data_sub_dir is None:
             data_home = os.path.abspath(data_dir)

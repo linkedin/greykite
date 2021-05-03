@@ -16,11 +16,11 @@ requirements = [
     "ipython==7.1.1",
     "ipywidgets==7.2.1",
     "jupyter==1.0.0",
-    "jupyter-client==5.2.3",
+    "jupyter-client==6.1.5",
     "jupyter-console==6.",  # used version 6 to avoid conflict with ipython version
-    "jupyter-core==4.4.0",
+    "jupyter-core==4.7.1",
     "matplotlib==3.0.3",
-    "nbformat==4.4.0",
+    "nbformat==5.1.3",
     "notebook==5.4.1",
     "numpy==1.20.1",
     "osqp==0.6.1",
@@ -40,10 +40,11 @@ requirements = [
     "sphinx-rtd-theme==0.4.2",
     "statsmodels==0.12.0",
     "testfixtures==6.14.2",
+    "tornado==5.1.1",
     "tqdm==4.52.0"]
 
 # Here we change some dependencies versions according to python version
-# to minimize the chance of install failures. 
+# to minimize the chance of install failures.
 if sys.version_info < (3 , 7):
     requirements = ["numpy==1.19.1" if i=="numpy==1.20.1" else i for i in requirements]
 
@@ -58,7 +59,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8"
     ],

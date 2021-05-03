@@ -23,7 +23,7 @@ evaluation, benchmarking, and plotting.
 Other open source algorithms can be supported through Greykite’s interface to take advantage of this framework,
 as listed below.
 
-For a demo, please see our `documentation <https://linkedin.github.io/greykite>`_.
+For a demo, please see our `quickstart <https://linkedin.github.io/greykite/get_started>`_.
 
 Distinguishing Features
 -----------------------
@@ -95,24 +95,28 @@ You can obtain forecasts with only a few lines of code:
     forecaster.forecast_result
     # ...
 
-For a demo, check out our step-by-step quickstart and tutorials in the documentation.
+For a demo, please see our `quickstart <https://linkedin.github.io/greykite/get_started>`_.
 
 Setup and Installation
 ----------------------
+
+Greykite is available on Pypi and can be installed with pip:
 
 .. code-block::
 
     pip install greykite
 
+For more installation tips, see `installation <http://linkedin.github.io/greykite/installation>`_.
+
 Documentation
 -------------
 
-Please find our full documentation at `here <http://linkedin.github.io/greykite>`_.
+Please find our full documentation at `here <http://linkedin.github.io/greykite/docs>`_.
 
 Learn More
 ----------
 
-* Paper (link coming soon!)
+* `Paper <https://arxiv.org/abs/3727174>`_
 * Blog post (link coming soon!)
 
 Citation
