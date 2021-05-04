@@ -1,12 +1,10 @@
 ﻿Greykite: A flexible, intuitive and fast forecasting library
 
+.. raw:: html
 
-.. image:: https://github.com/linkedin/greykite/blob/master/LOGO-C8.png
-   :width: 600px
-   :height: 400px
-   :scale: 80 %
-   :alt: Greykite
-   :align: center
+   <p align="center">
+   <img src="https://github.com/linkedin/greykite/blob/master/LOGO-C8.png" width="450" height="300">
+   </p>
 
 Why Greykite?
 -------------
