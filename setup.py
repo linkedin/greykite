@@ -53,7 +53,7 @@ setup_requirements = ["pytest-runner", ]
 test_requirements = ["pytest>=3", ]
 
 setup(
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
@@ -81,6 +81,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/linkedin/greykite",
-    version="0.0.1",
+    version="0.0.2",
     zip_safe=False,
 )
