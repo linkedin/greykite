@@ -5,8 +5,10 @@
 import sys
 from setuptools import setup, find_packages
 
-with open("README.rst") as readme_file:
-   LONG_DESC = readme_file.read()
+
+with open("README_PYPI.rst") as readme_file:
+    LONG_DESC = readme_file.read()
+
 
 requirements = [
     "cvxpy==1.1.4",
