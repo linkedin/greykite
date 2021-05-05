@@ -111,7 +111,7 @@ For more installation tips, see `installation <http://linkedin.github.io/greykit
 Documentation
 -------------
 
-Please find our full documentation at `here <http://linkedin.github.io/greykite/docs>`_.
+Please find our full documentation `here <http://linkedin.github.io/greykite/docs>`_.
 
 Learn More
 ----------
