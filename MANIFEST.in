@@ -1,3 +1,4 @@
+include README_PYPI.rst
 recursive-include data *
 recursive-include tests *
 recursive-exclude * __pycache__
