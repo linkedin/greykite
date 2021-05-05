@@ -114,7 +114,7 @@ Please find our full documentation `here <http://linkedin.github.io/greykite/doc
 Learn More
 ----------
 
-* `Paper <https://arxiv.org/abs/3727174>`_
+* `Paper <https://arxiv.org/abs/2105.01098>`_
 * Blog post (link coming soon!)
 
 Citation
