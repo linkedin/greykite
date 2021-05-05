@@ -11,7 +11,8 @@ with open("README_PYPI.rst") as readme_file:
 
 
 requirements = [
-    "cvxpy==1.1.4",
+    "Cython==0.29.23",
+    "cvxpy==1.1.12",
     "fbprophet==0.5",
     "holidays==0.9.10",  # 0.10.2,
     "ipykernel==4.8.2",
@@ -21,10 +22,10 @@ requirements = [
     "jupyter-client==6.1.5",
     "jupyter-console==6.",  # used version 6 to avoid conflict with ipython version
     "jupyter-core==4.7.1",
-    "matplotlib==3.0.3",
+    "matplotlib==3.4.1",
     "nbformat==5.1.3",
     "notebook==5.4.1",
-    "numpy==1.20.1",
+    "numpy==1.20.2",
     "osqp==0.6.1",
     "overrides==2.8.0",
     "pandas==1.1.3",
@@ -32,7 +33,7 @@ requirements = [
     "Pillow==8.0.1",
     "plotly==3.10.0",
     "pystan==2.18.0.0",
-    "pyzmq==17.1.2",
+    "pyzmq==22.0.3",
     "scipy==1.5.4",
     "seaborn==0.9.0",
     "six==1.15.0",
@@ -40,15 +41,15 @@ requirements = [
     "Sphinx==3.2.1",
     "sphinx-gallery==0.6.1",
     "sphinx-rtd-theme==0.4.2",
-    "statsmodels==0.12.0",
+    "statsmodels==0.12.2",
     "testfixtures==6.14.2",
     "tornado==5.1.1",
     "tqdm==4.52.0"]
 
 # Here we change some dependencies versions according to python version
 # to minimize the chance of install failures.
-if sys.version_info < (3 , 7):
-    requirements = ["numpy==1.19.1" if i=="numpy==1.20.1" else i for i in requirements]
+if sys.version_info < (3, 7):
+    requirements = ["numpy==1.19.1" if i=="numpy==1.20.2" else i for i in requirements]
 
 setup_requirements = ["pytest-runner", ]
 

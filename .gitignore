@@ -92,6 +92,9 @@ instance/
 # Scrapy stuff:
 .scrapy
 
+# Jekyll:
+docs/_site/
+
 # Sphinx documentation
 docs/_build/
 
@@ -133,6 +136,7 @@ ENV/
 
 # IDE settings
 .vscode/
+.idea/
 
 # generated docs
 docs/gallery
