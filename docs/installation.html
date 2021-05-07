@@ -9,7 +9,7 @@ layout: default
     <h4>Python</h4>
     <hr style="width: 100%; margin-left: 0">
     <p>
-      Greykite is currently available in Python, and has been tested on the following versions on Linux and MacOS:
+      Greykite is currently available in Python, and has been tested on the following versions on Linux, MacOS, and Windows:
       <li><u><a href="https://www.python.org/downloads/release/python-377/">Python 3.7.7</a></u></li>
       <li><u><a href="https://www.python.org/downloads/release/python-386/">Python 3.8.6</a></u></li>
     </p>
@@ -20,7 +20,12 @@ layout: default
     <p>We recommend setting up python <u><a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#installing-virtualenv">virtual environment</a></u>
       with the proper python version (e.g. 3.7.7) to install greykite.</p>
     <p>To install in a virtual environment, the steps typically look like this:</p>
-    <h5>Mac</h5>
+    <h5>Linux</h5>
+    <p>In your directory of interest, with the python version you want to use,</p>
+    <pre><code class="greykite-code-block">$ python -m venv greykite-env
+  $ source greykite-env/bin/activate
+  $ pip install greykite</code></pre>
+    <h5>MacOS</h5>
     <p>Install xcode if you don’t already have it:</p>
     <code class="greykite-code-block-in-line">$ xcode-select --install</code>.
     <p>Install openblas if you don’t already have it:</p>
@@ -29,26 +34,64 @@ layout: default
     <pre><code class="greykite-code-block">$ python -m venv greykite-env
   $ source greykite-env/bin/activate
   $ OPENBLAS="$(brew --prefix openblas)" pip install greykite</code></pre>
-    <h5>Linux</h5>
-    <p>In your directory of interest, with the python version you want to use,</p>
-    <pre><code class="greykite-code-block">$ python -m venv greykite-env
-  $ source greykite-env/bin/activate
-  $ pip install greykite</code></pre>
+    <p>If you encounter issues with any dependency, install the version required by greykite using pip. For example:</p>
+    <code class="greykite-code-block-in-line">$ pip install numpy==1.20.2</code>.
+    <p>Then try installing greykite again:</p>
+    <code class="greykite-code-block-in-line">$ OPENBLAS="$(brew --prefix openblas)" pip install greykite</code>.
     <h5>Windows</h5>
     <p>We highly recommend using <u><a href="https://docs.conda.io/en/latest/miniconda.html">miniconda</a></u> for installation,
   to use m2w64-toolchain for GCC. Anaconda also works, but it comes with extra packages that may
   need to be reinstalled with the proper version anyway.</p>
+    <p>We recommend Python 3.7 on Windows to avoid potential issues with fbprophet.</p>
     <pre><code class="greykite-code-block">$ conda create --name greykite-venv python=3.7
   $ conda activate greykite-venv
   $ conda install -c msys2 libpython m2w64-toolchain
   $ conda install pip
   $ pip install greykite</code></pre>
-    <p>If you encounter issues with any dependency, install it using conda. For example:</p>
+    <p>If you encounter issues with any dependency, install the version required by greykite using conda. For example:</p>
     <code class="greykite-code-block-in-line">$ conda install -c conda-forge pystan=2.18.0.0</code>.
-    <p>Then run `pip install greykite` again.</p>
+    <p>Then try installing greykite again:</p>
+    <code class="greykite-code-block-in-line">$ pip install greykite</code>.
+    <br>
+    <h4>Check installation</h4>
+    <hr style="width: 100%; margin-left: 0">
+    <p>To test installation, first check if the greykite package is available:</p>
+    <code class="greykite-code-block-in-line">$ pip show greykite</code>.
+    <p>Then run a quickstart or tutorial example from our <u><a href="/docs.html">docs</a></u> to
+      create a forecast and get familiar with the library.</p>
+    <p>You may open a jupyter notebook to run code as follows:</p>
+    <code class="greykite-code-block-in-line">$ jupyter notebook</code>.
+    <p>To render plots in the notebook, use notebook mode and replace `plotly.io.show` with `iplot`:</p>
+    <pre><code class="greykite-code-block">$ from plotly.offline import init_notebook_mode, iplot
+  $ init_notebook_mode(connected=True)  # for plots to render in jupyter notebook
+  $ # ... notebook code ...
+  $ # plotly.io.show(fig)  # replace these with `iplot`
+  $ iplot(fig)</code></pre>
     <br>
     <h4>FAQs</h4>
     <hr style="width: 100%; margin-left: 0">
+    <h5>All platforms</h5>
+    <ol>
+      <li>
+        <p>During installation, I see the following error and warning:</p>
+        <pre><code class="greykite-code-block">ERROR: Failed building wheel for pystan
+  DEPRECATION: pystan was installed using the legacy 'setup.py install' method, because a wheel could not be built for it.</code></pre>
+        <p>This is just a warning. The package was successfully installed using a legacy install method. You may see this for some packages, such as pystan, fbprophet or pyzmq. </p>
+        <ol type="a">
+          <li>Check if installation succeeded: <code class="greykite-code-block-in-line">$ pip show greykite</code>.</li>
+          <li>If not, install the package first using pip or conda, then try installing greykite again.</li>
+        </ol>
+      </li>
+      <li>
+        <p>After installation, when I try to open jupyter notebook, it takes forever to connect to kernel.</p>
+        <p>This is likely because tornado 6.0 breaks notebook. In this case, you need to</p>
+        <ol type="a">
+          <li>uninstall tornado: <code class="greykite-code-block-in-line">$ pip uninstall tornado</code>.
+          </li>
+          <li>install tornado 5.*: <code class="greykite-code-block-in-line">$ pip install tornado==5.1.1</code>.</li>
+        </ol>
+      </li>
+    </ol>
     <h5>Linux</h5>
       <ol>
         <li>
@@ -87,17 +130,7 @@ layout: default
             <li>reinstall python and greykite.</li>
           </ol>
         </li>
-        <li>
-          <p>After installation, when I try to open jupyter notebook, it takes forever to connect to kernel.</p>
-          <p>This is likely because tornado 6.0 breaks notebook. In this case, you need to</p>
-          <ol type="a">
-            <li>uninstall tornado: <code class="greykite-code-block-in-line">$ pip uninstall tornado</code>.
-            </li>
-            <li>install tornado 5.*: <code class="greykite-code-block-in-line">$ pip install tornado==5.1.1</code>.</li>
-          </ol>
-        </li>
       </ol>
-
     <h5>MacOS</h5>
     <ol>
       <li>
@@ -111,8 +144,7 @@ layout: default
   To build Scipy from sources, BLAS & LAPACK libraries need to be installed.</code></pre>
         <p>This is because Numpy no longer supports MacOS accelerated framework. In this case, you need to</p>
         <ol type="a">
-          <li>install the openblas library: <code class="greykite-code-block-in-line">$ brew install openblas</code>.
-          </li>
+          <li>install the openblas library: <code class="greykite-code-block-in-line">$ brew install openblas</code>.</li>
           <li>reinstall greykite with the brew-installed openblas: <code class="greykite-code-block-in-line">$ OPENBLAS="$(brew --prefix openblas)" pip install greykite</code>.</li>
         </ol>
       </li>
@@ -121,19 +153,10 @@ layout: default
         <pre><code class="greykite-code-block">ERROR: Could not build wheels for scipy which use PEP 517 and cannot be installed directly
   WARNING: You are using pip version 19.2.3, however version 21.1 is available.
   You should consider upgrading via the 'pip install --upgrade pip' command.</code></pre>
-        <p>In this case, you need to upgrade pip:</p>
+        <p>In this case, you need to</p>
         <ol type="a">
-          <li><code class="greykite-code-block-in-line">$ pip install --upgrade pip</code>.
-          </li>
-        </ol>
-      </li>
-      <li>
-        <p>After installation, when I try to open jupyter notebook, it takes forever to connect to kernel.</p>
-        <p>This is likely because tornado 6.0 breaks notebook. In this case, you need to</p>
-        <ol type="a">
-          <li>uninstall tornado: <code class="greykite-code-block-in-line">$ pip uninstall tornado</code>.
-          </li>
-          <li>install tornado 5.*: <code class="greykite-code-block-in-line">$ pip install tornado==5.1.1</code>.</li>
+          <li>upgrade pip: <code class="greykite-code-block-in-line">$ pip install --upgrade pip</code>.</li>
+          <li>reinstall greykite: <code class="greykite-code-block-in-line">$ OPENBLAS="$(brew --prefix openblas)" pip install greykite</code>.</li>
         </ol>
       </li>
       <li>
@@ -143,20 +166,18 @@ layout: default
  a framework on Mac OS X. Please either reinstall Python as a framework, or try one of the other backends. If you are
  using (Ana)Conda please install python.app and replace the use of 'python' with 'pythonw'. See 'Working with Matplotlib
  on OSX' in the Matplotlib FAQ for more information.</code></pre>
-        <p>This is because python is not properly installed as a fraemwork. In this case, you can reinstall python properly, or you can switch the backend</p>
+        <p>This is because python is not properly installed as a framework. In this case, you can reinstall python properly, or you can switch the backend.</p>
         <ol type="a">
-          <li>create the profile <code class="greykite-code-block-in-line">$ vim ~/.matplotlib/matplotlibrc</code>.
-          </li>
+          <li>create the profile <code class="greykite-code-block-in-line">$ vim ~/.matplotlib/matplotlibrc</code>.</li>
           <li>specify the backend TkAgg by adding the following to the profile: <code class="greykite-code-block-in-line">backend: TkAgg</code>.</li>
         </ol>
       </li>
       <li>
         <p>After installation, during imports, I see the following error with <code class="greykite-code-block-in-line">matplotlib</code>:</p>
         <pre><code class="greykite-code-block">E   ModuleNotFoundError: No module named '_tkinter'</code></pre>
-        <p>This is because python is not properly installed as a fraemwork. In this case, you can reinstall python properly, or you can switch the backend</p>
+        <p>This is because python is not properly installed as a framework. In this case, you can reinstall python properly, or you can switch the backend.</p>
         <ol type="a">
-          <li>create the profile <code class="greykite-code-block-in-line">$ vim ~/.matplotlib/matplotlibrc</code>.
-          </li>
+          <li>create the profile <code class="greykite-code-block-in-line">$ vim ~/.matplotlib/matplotlibrc</code>.</li>
           <li>specify the backend Agg by adding the following to the profile: <code class="greykite-code-block-in-line">backend: agg</code>.</li>
         </ol>
       </li>
