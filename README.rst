@@ -6,7 +6,6 @@
    <img src="https://github.com/linkedin/greykite/blob/master/LOGO-C8.png" width="450" height="300">
    </p>
 
-
 Why Greykite?
 -------------
 
@@ -117,7 +116,6 @@ Learn More
 
 * `Paper <https://arxiv.org/abs/2105.01098>`_
 * `Blog post <https://engineering.linkedin.com/blog/2021/greykite--a-flexible--intuitive--and-fast-forecasting-library>`_
-
 
 Citation
 --------
