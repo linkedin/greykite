@@ -115,7 +115,7 @@ Learn More
 ----------
 
 * `Paper <https://arxiv.org/abs/2105.01098>`_
-* Blog post (link coming soon!)
+* `Blog post <https://engineering.linkedin.com/blog/2021/greykite--a-flexible--intuitive--and-fast-forecasting-library>`_
 
 Citation
 --------
