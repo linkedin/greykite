@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Greykite - A fast and flexible forecasting library
+title: Greykite - A flexible, intuitive and fast forecasting library
 #email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   Greykite is a fast and flexible forecasting library developed by LinkedIn.
@@ -33,7 +33,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Moreover, you can freely create any features that are related to the time series,
   and use them to fit the machine learning model of your choice.
 
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/greykite" # the subpath of your site, e.g. /blog
 url: "https://linkedin.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 #github_username:  jekyll

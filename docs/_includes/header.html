@@ -1,5 +1,5 @@
 <nav class="grey darken-3" role="navigation">
-  <div class="nav-wrapper container"><a id="logo-container" class="brand-logo" href="{{ "/" | relative_url }}"><img src="/logo-inline.png" width="200px" align="center"></a>
+  <div class="nav-wrapper container"><a id="logo-container" class="brand-logo" href="{{ "/" | relative_url }}"><img src="/greykite/logo-inline.png" width="200px" align="center"></a>
     {% assign default_paths = site.pages | map: "path" %}
     {% assign page_paths = site.header_pages | default: default_paths %}
 
@@ -13,7 +13,7 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-            <li><a href="/docs.html">Docs</a></li>
+            <li><a href="/greykite/docs.html">Docs</a></li>
             <li><a href="http://github.com/linkedin/greykite">Github</a></li>
             <li><a href="https://pypi.org/project/greykite/">PyPI</a></li>
           </ul>
@@ -28,7 +28,7 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-            <li><a href="/docs.html">Docs</a></li>
+            <li><a href="/greykite/docs.html">Docs</a></li>
             <li><a href="https://github.com/linkedin/greykite">Github</a></li>
             <li><a href="https://pypi.org/project/greykite/">PyPI</a></li>
           </ul>
