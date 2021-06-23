@@ -72,7 +72,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
 
         self._estimator: BaseForecastEstimator = estimator
         """The estimator instance to use as the final step in the pipeline.
-        An instance of `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
+        An instance of `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
         """
 
         # Attributes used by `~greykite.framework.templates.base_template.apply_template_for_pipeline_params`.
@@ -102,7 +102,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
     @property
     def estimator(self):
         """The estimator instance to use as the final step in the pipeline.
-        An instance of `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
+        An instance of `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
         """
         return self._estimator
 

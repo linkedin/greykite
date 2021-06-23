@@ -42,7 +42,7 @@ def test_benchmark_silverkite_template_with_simulated_data():
     assert result_silverkite_simulated["train_period"] == train_period
     assert result_silverkite_simulated["forecast_horizon"] == 30
     assert result_silverkite_simulated["cv_folds"] == 3
-    # Not checking the other parameters as it will add ~10 secs
+    # Not checking the other parameters as it will add ~10 secs for every mint build
 
 
 def test_benchmark_silverkite_template_with_real_data():
@@ -76,7 +76,7 @@ def test_benchmark_silverkite_template_with_real_data():
     assert result_silverkite_real["train_period"] == df.shape[0]
     assert result_silverkite_real["forecast_horizon"] == 30
     assert result_silverkite_real["cv_folds"] == 3
-    # Not checking the other parameters as it will add ~10 secs
+    # Not checking the other parameters as it will add ~10 secs for every mint build
 
 
 def test_get_default_benchmark_simulated_datasets():

@@ -14,6 +14,7 @@ from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteD
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
 from greykite.common.constants import END_DATE_COL
 from greykite.common.constants import METRIC_COL
+from greykite.common.constants import PREDICTED_COL
 from greykite.common.constants import START_DATE_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
@@ -1955,11 +1956,11 @@ def test_run_template_4():
         [('estimator__yearly_seasonality', 2), ('estimator__growth_term', 'linear')],
     ]
     assert all(param in list(grid_results["params"]) for param in expected_params)
-    assert result.grid_search.best_index_ == 2
-    assert result.backtest.test_evaluation[rmse] == pytest.approx(3.470, rel=1e-2)
-    assert result.backtest.test_evaluation[q80] == pytest.approx(0.936, rel=1e-2)
-    assert result.forecast.train_evaluation[rmse] == pytest.approx(2.861, rel=1e-2)
-    assert result.forecast.train_evaluation[q80] == pytest.approx(1.165, rel=1e-2)
+    assert result.grid_search.best_index_ == 1
+    assert result.backtest.test_evaluation[rmse] == pytest.approx(14.57, rel=1e-2)
+    assert result.backtest.test_evaluation[q80] == pytest.approx(2.636, rel=1e-2)
+    assert result.forecast.train_evaluation[rmse] == pytest.approx(3.869, rel=1e-2)
+    assert result.forecast.train_evaluation[q80] == pytest.approx(1.413, rel=1e-2)
     check_forecast_pipeline_result(
         result,
         coverage=0.99,
@@ -2214,7 +2215,7 @@ def test_run_template_8():
             config=config,
         )
         rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
-        assert result.backtest.test_evaluation[rmse] == pytest.approx(4.08, rel=1e-1)
+        assert result.backtest.test_evaluation[rmse] == pytest.approx(3.25, rel=1e-1)
         check_forecast_pipeline_result(
             result,
             coverage=0.9,
@@ -2279,6 +2280,49 @@ def test_run_template_weekly():
         coverage=None,
         expected_grid_size=4
     )
+
+
+def test_run_template_forecast_one_by_one():
+    dl = DataLoader()
+    data = dl.load_peyton_manning()
+    evaluation_period = EvaluationPeriodParam(
+        cv_expanding_window=False,  # rolling start date
+        cv_horizon=7,
+        cv_min_train_periods=365,
+        cv_periods_between_train_test=0,
+        test_horizon=7,
+        cv_max_splits=1
+    )
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE_WEEKLY.name,
+        forecast_horizon=7,
+        evaluation_period_param=evaluation_period,
+        model_components_param=ModelComponentsParam(
+            autoregression=dict(autoreg_dict="auto")),
+        forecast_one_by_one=[1, 2, 4]
+    )
+    data["ts"] = pd.to_datetime(data["ts"])
+    new_df = data.iloc[:730]
+    result = Forecaster().run_forecast_config(
+        df=new_df,
+        config=config,
+    )
+    assert len(result.model[-1].estimators) == 3  # 3 models were used.
+    # We specified 1, 2, 4 in config, so the forecast horizons should be 1, 3, 7
+    assert result.model[-1].estimators[0].forecast_horizon == 1
+    assert result.model[-1].estimators[1].forecast_horizon == 3
+    assert result.model[-1].estimators[2].forecast_horizon == 7
+    # We have the right forecasts from each model.
+    future_df = result.forecast.df_test[[TIME_COL]]
+    assert_equal(
+        result.model[-1].estimators[0].predict(future_df.iloc[:1])[[PREDICTED_COL]].values,
+        result.forecast.df_test.iloc[:1][[PREDICTED_COL]].values)
+    assert_equal(
+        result.model[-1].estimators[1].predict(future_df.iloc[1:3])[[PREDICTED_COL]].values,
+        result.forecast.df_test.iloc[1:3][[PREDICTED_COL]].values)
+    assert_equal(
+        result.model[-1].estimators[2].predict(future_df.iloc[3:7])[[PREDICTED_COL]].values,
+        result.forecast.df_test.iloc[3:7][[PREDICTED_COL]].values)
 
 
 def test_silverkite_empty():

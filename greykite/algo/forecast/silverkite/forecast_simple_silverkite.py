@@ -93,6 +93,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             max_daily_seas_interaction_order: Optional[int] = None,
             max_weekly_seas_interaction_order: Optional[int] = None,
             autoreg_dict: Optional[Dict] = None,
+            lagged_regressor_dict: Optional[Dict] = None,
             seasonality_changepoints_dict: Optional[Dict] = None,
             min_admissible_value: Optional[float] = None,
             max_admissible_value: Optional[float] = None,
@@ -398,6 +399,31 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
             See more details for above parameters in
             `~greykite.common.features.timeseries_lags.build_autoreg_df`.
+        lagged_regressor_dict : `dict` or None, default None
+            A dictionary with arguments for `greykite.common.features.timeseries_lags.build_autoreg_df_multi`.
+            The keys of the dictionary are the target lagged regressor column names.
+            It can leverage the regressors included in ``df``.
+            The value of each key is either a `dict` or `str`.
+            If `dict`, it has the following keys:
+
+                ``"lag_dict"`` : `dict` or None
+                ``"agg_lag_dict"`` : `dict` or None
+                ``"series_na_fill_func"`` : callable
+
+            If `str`, it represents a method and a dictionary will be constructed using that `str`.
+            Currently the only implemented method is "auto" which uses
+            `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_lagged_regressor_dict`
+            to create a dictionary for each lagged regressor.
+            An example::
+
+                lagged_regressor_dict = {
+                    "regressor1": {
+                        "lag_dict": {"orders": [1, 2, 3]},
+                        "agg_lag_dict": {
+                            "orders_list": [[7, 7 * 2, 7 * 3]],
+                            "interval_list": [(8, 7 * 2)]},
+                        "series_na_fill_func": lambda s: s.bfill().ffill()},
+                    "regressor2": "auto"}
         seasonality_changepoints_dict : `dict` or None, optional, default `None`
             The parameter dictionary for seasonality change point detection. Parameters are in
             `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`.
@@ -499,14 +525,16 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         parameters : `dict`
             Parameters to call :func:`~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.
         """
-        if regressor_cols is None:
-            regressor_cols = []
-
         if extra_pred_cols is None:
             extra_pred_cols = []
         else:
             # Does not modify the input list
             extra_pred_cols = extra_pred_cols.copy()
+
+        # Specifies regressors (via ``extra_pred_cols``)
+        if regressor_cols is None:
+            regressor_cols = []
+        extra_pred_cols += regressor_cols
 
         if time_properties is None:
             # ``df`` only contains the dates for training,
@@ -547,10 +575,6 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         if growth_term is not None:
             growth_term_formula = GROWTH_COL_ALIAS[growth_term]
             extra_pred_cols += [growth_term_formula]
-
-        # Specifies regressors (via ``extra_pred_cols``)
-        if regressor_cols is not None:
-            extra_pred_cols += regressor_cols
 
         # Specifies events (via ``daily_event_df_dict``, ``extra_pred_cols``).
         # Constant daily effect.
@@ -641,6 +665,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             daily_event_df_dict=daily_event_df_dict,
             fs_components_df=fs_components_df,
             autoreg_dict=autoreg_dict,                                      # pass-through
+            lagged_regressor_dict=lagged_regressor_dict,                    # pass-through
             changepoints_dict=changepoints_dict,                            # pass-through
             seasonality_changepoints_dict=seasonality_changepoints_dict,    # pass-through
             changepoint_detector=changepoint_detector,

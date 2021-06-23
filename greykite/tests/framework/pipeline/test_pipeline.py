@@ -1,5 +1,6 @@
 import datetime
 import math
+import sys
 import warnings
 
 import numpy as np
@@ -45,6 +46,12 @@ from greykite.sklearn.transform.normalize_transformer import NormalizeTransforme
 from greykite.sklearn.transform.null_transformer import NullTransformer
 from greykite.sklearn.transform.pandas_feature_union import PandasFeatureUnion
 from greykite.sklearn.transform.zscore_outlier_transformer import ZscoreOutlierTransformer
+
+
+try:
+    import fbprophet  # noqa
+except ModuleNotFoundError:
+    pass
 
 
 @pytest.fixture
@@ -536,6 +543,8 @@ def test_train_end_date_gap_regressors():
     assert result.forecast.test_start_date == expected_forecast_test_start_date
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_exceptions(df):
     """Tests error messages when CV is skipped and there are
     multiple hyperparameter options.
@@ -1025,6 +1034,8 @@ def test_default():
         expected_grid_size=1)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_simple():
     """Tests forecast_pipeline function with Prophet and default parameters"""
     data = generate_df_for_tests(freq="H", periods=24*10)
@@ -1072,6 +1083,8 @@ def test_prophet_simple():
         assert result.backtest.df_test.shape == (24, 5)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_with_regressor():
     """Tests forecast_pipeline function with Prophet,
     input regressors, and default parameters
@@ -1124,6 +1137,8 @@ def test_prophet_with_regressor():
         greater_is_better=False)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_complex():
     """Tests forecast_pipeline function with Prophet,
     custom parameters, missing data, and holidays
@@ -1263,7 +1278,8 @@ def test_silverkite_longterm():
 
 
 def test_silverkite_regressor():
-    """Tests forecast_pipeline with silverkite and input regressors"""
+    """Tests forecast_pipeline with silverkite and input regressors,
+    autoregression and lagged regressors"""
     data = generate_df_with_reg_for_tests(
         freq="1D",
         periods=20 * 7,  # short-term: 20 weeks of data
@@ -1285,7 +1301,22 @@ def test_silverkite_regressor():
             regressor_cols,
             regressor_cols + ["ct_sqrt"]
         ],  # two cases: no growth term and single growth term
-        "estimator__fit_algorithm_dict": [{"fit_algorithm": "linear"}]
+        "estimator__fit_algorithm_dict": [{"fit_algorithm": "linear"}],
+        "estimator__autoreg_dict": [{
+            "lag_dict": {"orders": [7]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7*2, 7*3]],
+                "interval_list": [(7, 7*2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()}],
+        "estimator__lagged_regressor_dict": [{
+            "regressor1": {
+                "lag_dict": {"orders": [1, 2, 3]},
+                "agg_lag_dict": {
+                    "orders_list": [[7, 7 * 2, 7 * 3]],
+                    "interval_list": [(8, 7 * 2)]},
+                "series_na_fill_func": lambda s: s.bfill().ffill()},
+            "regressor2": "auto"
+        }]
     }
     test_horizon = 2 * 7
     periods_between_train_test = 2
@@ -1329,7 +1360,29 @@ def test_silverkite_regressor():
     expected_forecast_train_size = result.timeseries.fit_df.shape[0]
     assert result.forecast.estimator.model_dict["x_mat"].shape[0] == expected_forecast_train_size
 
+    model = result.model.steps[-1][-1]
+    trained_model = model.model_dict
+    pred_cols = trained_model["pred_cols"]
+    expected_feature_cols = {
+        # regressor columns
+        "regressor1",
+        "regressor2",
+        "regressor_categ",
+        # lagged regressor columns
+        'regressor1_lag1',
+        'regressor1_lag2',
+        'regressor1_lag3',
+        'regressor1_avglag_7_14_21',
+        'regressor1_avglag_8_to_14',
+        'regressor2_lag35',
+        'regressor2_avglag_35_42_49',
+        'regressor2_avglag_30_to_36'
+    }
+    assert expected_feature_cols.issubset(pred_cols)
 
+
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_custom_pipeline():
     """Tests forecast_pipeline function with custom pipeline"""
     data = generate_df_for_tests(freq="D", periods=30*8)  # 8 months

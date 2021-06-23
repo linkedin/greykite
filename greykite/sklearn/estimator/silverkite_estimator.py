@@ -117,6 +117,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
                 "order": [3, 3, 5],
                 "seas_names": ["daily", "weekly", "yearly"]}),
             autoreg_dict=None,
+            lagged_regressor_dict=None,
             changepoints_dict=None,
             seasonality_changepoints_dict=None,
             changepoint_detector=None,
@@ -151,6 +152,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.daily_event_df_dict = daily_event_df_dict
         self.fs_components_df = fs_components_df
         self.autoreg_dict = autoreg_dict
+        self.lagged_regressor_dict = lagged_regressor_dict
         self.changepoints_dict = changepoints_dict
         self.seasonality_changepoints_dict = seasonality_changepoints_dict
         self.changepoint_detector = changepoint_detector
@@ -229,6 +231,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             daily_event_df_dict=self.daily_event_df_dict,
             fs_components_df=self.fs_components_df,
             autoreg_dict=self.autoreg_dict,
+            lagged_regressor_dict=self.lagged_regressor_dict,
             changepoints_dict=self.changepoints_dict,
             seasonality_changepoints_dict=self.seasonality_changepoints_dict,
             changepoint_detector=self.changepoint_detector,

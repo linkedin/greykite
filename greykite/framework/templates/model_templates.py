@@ -50,6 +50,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Type
 
+from greykite.framework.templates.auto_arima_template import AutoArimaTemplate
 from greykite.framework.templates.prophet_template import ProphetTemplate
 from greykite.framework.templates.silverkite_template import SilverkiteTemplate
 from greykite.framework.templates.simple_silverkite_template import SimpleSilverkiteTemplate
@@ -185,3 +186,8 @@ class ModelTemplateEnum(Enum):
                     "and prediction intervals. Uses `ProphetEstimator`.")
     """Prophet model with growth, seasonality, holidays, additional regressors
     and prediction intervals. Uses `ProphetEstimator`."""
+    AUTO_ARIMA = ModelTemplate(
+        template_class=AutoArimaTemplate,
+        description="Auto ARIMA model with fit and prediction intervals. "
+                    "Uses `AutoArimaEstimator`.")
+    """ARIMA model with automatic order selection. Uses `AutoArimaEstimator`."""

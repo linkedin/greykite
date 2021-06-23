@@ -368,6 +368,8 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
                 cst.PREDICTED_LOWER_COL: cst.PREDICTED_LOWER_COL,
                 cst.PREDICTED_UPPER_COL: cst.PREDICTED_UPPER_COL,
                 uncertainty_col: uncertainty_col})
+            if cst.ERR_STD_COL in pred_df.columns:
+                output_columns.update({cst.ERR_STD_COL: cst.ERR_STD_COL})
 
         predictions = (pred_df[output_columns.keys()]
                        .rename(output_columns, axis=1))

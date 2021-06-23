@@ -125,6 +125,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             max_daily_seas_interaction_order: Optional[int] = None,
             max_weekly_seas_interaction_order: Optional[int] = None,
             autoreg_dict: Optional[Dict] = None,
+            lagged_regressor_dict: Optional[Dict] = None,
             seasonality_changepoints_dict: Optional[Dict] = None,
             min_admissible_value: Optional[float] = None,
             max_admissible_value: Optional[float] = None,
@@ -171,6 +172,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.max_daily_seas_interaction_order = max_daily_seas_interaction_order
         self.max_weekly_seas_interaction_order = max_weekly_seas_interaction_order
         self.autoreg_dict = autoreg_dict
+        self.lagged_regressor_dict = lagged_regressor_dict
         self.seasonality_changepoints_dict = seasonality_changepoints_dict
         self.min_admissible_value = min_admissible_value
         self.max_admissible_value = max_admissible_value
@@ -261,6 +263,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             max_daily_seas_interaction_order=self.max_daily_seas_interaction_order,
             max_weekly_seas_interaction_order=self.max_weekly_seas_interaction_order,
             autoreg_dict=self.autoreg_dict,
+            lagged_regressor_dict=self.lagged_regressor_dict,
             seasonality_changepoints_dict=self.seasonality_changepoints_dict,
             min_admissible_value=self.min_admissible_value,
             max_admissible_value=self.max_admissible_value,

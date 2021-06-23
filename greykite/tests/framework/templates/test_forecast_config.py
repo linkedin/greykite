@@ -431,3 +431,26 @@ def test_forecast_config_json_multiple_model_componments_parameter():
     config = forecast_config_from_dict(forecast_dict)
     assert config.evaluation_metric_param.cv_report_metrics == "ALL"
     assert config.to_dict()
+
+
+def test_forecast_one_by_one():
+    # None
+    config = ForecastConfig(forecast_one_by_one=None)
+    assert config.to_dict()["forecast_one_by_one"] is None
+    config = ForecastConfig().from_dict({"forecast_one_by_one": None})
+    assert config.forecast_one_by_one is None
+    # int
+    config = ForecastConfig(forecast_one_by_one=1)
+    assert config.to_dict()["forecast_one_by_one"] == 1
+    config = ForecastConfig().from_dict({"forecast_one_by_one": 1})
+    assert config.forecast_one_by_one == 1
+    # bool
+    config = ForecastConfig(forecast_one_by_one=True)
+    assert config.to_dict()["forecast_one_by_one"] is True
+    config = ForecastConfig().from_dict({"forecast_one_by_one": False})
+    assert config.forecast_one_by_one is False
+    # List of int
+    config = ForecastConfig(forecast_one_by_one=[1, 2, 3])
+    assert config.to_dict()["forecast_one_by_one"] == [1, 2, 3]
+    config = ForecastConfig().from_dict({"forecast_one_by_one": [1, 2, 3]})
+    assert config.forecast_one_by_one == [1, 2, 3]

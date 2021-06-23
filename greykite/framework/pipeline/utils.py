@@ -240,7 +240,7 @@ def get_basic_pipeline(
 
     Parameters
     ----------
-    estimator : instance of an estimator that implements `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`, default SimpleSilverkiteEstimator()  # noqa: E501
+    estimator : instance of an estimator that implements `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`, default SimpleSilverkiteEstimator()  # noqa: E501
         Estimator to use as the final step in the pipeline.
     score_func : `str` or callable, default ``EvaluationMetricEnum.MeanAbsolutePercentError.name``
         Score function used to select optimal model in CV.

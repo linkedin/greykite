@@ -75,6 +75,12 @@ def from_list_str(x: Any) -> List[str]:
     return x
 
 
+def from_list_int(x: Any) -> List[int]:
+    assert isinstance(x, list)
+    assert all(isinstance(item, int) for item in x)
+    return x
+
+
 def from_float(x: Any) -> float:
     assert isinstance(x, (float, int)) and not isinstance(x, bool)
     return float(x)
@@ -368,6 +374,13 @@ class ForecastConfig:
     """Number of periods to forecast into the future. Must be > 0.
     If None, default is determined from input data frequency.
     """
+    forecast_one_by_one: Optional[Union[int, List[int]]] = None
+    """The options to activate the forecast one-by-one algorithm.
+    See :class:`~greykite.sklearn.estimator.one_by_one_estimator.OneByOneEstimator`.
+    Can be boolean, int, of list of int.
+    If int, it has to be less than or equal to the forecast horizon.
+    If list of int, the sum has to be the forecast horizon.
+    """
     metadata_param: Optional[MetadataParam] = None
     """Information about the input data. See
     :class:`~greykite.framework.templates.autogen.forecast_config.MetadataParam`.
@@ -393,6 +406,7 @@ class ForecastConfig:
         evaluation_metric_param = from_union([EvaluationMetricParam.from_dict, from_none], obj.get("evaluation_metric_param"))
         evaluation_period_param = from_union([EvaluationPeriodParam.from_dict, from_none], obj.get("evaluation_period_param"))
         forecast_horizon = from_union([from_int, from_none], obj.get("forecast_horizon"))
+        forecast_one_by_one = from_union([from_int, from_bool, from_none, from_list_int], obj.get("forecast_one_by_one"))
         metadata_param = from_union([MetadataParam.from_dict, from_none], obj.get("metadata_param"))
         if not isinstance(obj.get("model_components_param"), list):
             obj["model_components_param"] = [obj.get("model_components_param")]
@@ -406,6 +420,7 @@ class ForecastConfig:
             evaluation_metric_param=evaluation_metric_param,
             evaluation_period_param=evaluation_period_param,
             forecast_horizon=forecast_horizon,
+            forecast_one_by_one=forecast_one_by_one,
             metadata_param=metadata_param,
             model_components_param=model_components_param,
             model_template=model_template)
@@ -417,6 +432,7 @@ class ForecastConfig:
         result["evaluation_metric_param"] = from_union([lambda x: to_class(EvaluationMetricParam, x), from_none], self.evaluation_metric_param)
         result["evaluation_period_param"] = from_union([lambda x: to_class(EvaluationPeriodParam, x), from_none], self.evaluation_period_param)
         result["forecast_horizon"] = from_union([from_int, from_none], self.forecast_horizon)
+        result["forecast_one_by_one"] = from_union([from_int, from_bool, from_none, from_list_int], self.forecast_one_by_one)
         result["metadata_param"] = from_union([lambda x: to_class(MetadataParam, x), from_none], self.metadata_param)
         if not isinstance(self.model_components_param, list):
             self.model_components_param = [self.model_components_param]

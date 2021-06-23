@@ -249,8 +249,6 @@ class ReconcileAdditiveForecasts:
     (# periods between forecasted date and train_end_date),
     because the optimal adjustment may differ.
 
-    See http://go/raf for details.
-
     Attributes
     ----------
     forecasts : `pandas.DataFrame`, shape (n, m)
