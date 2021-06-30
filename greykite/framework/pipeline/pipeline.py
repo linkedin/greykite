@@ -113,6 +113,7 @@ def validate_pipeline_input(pipeline_function):
             # model
             pipeline=None,
             regressor_cols=None,
+            lagged_regressor_cols=None,
             estimator=SimpleSilverkiteEstimator(),
             hyperparameter_grid=None,
             hyperparameter_budget=None,
@@ -217,6 +218,7 @@ def validate_pipeline_input(pipeline_function):
             anomaly_info=anomaly_info,
             pipeline=pipeline,
             regressor_cols=regressor_cols,
+            lagged_regressor_cols=lagged_regressor_cols,
             estimator=estimator,
             hyperparameter_grid=hyperparameter_grid,
             hyperparameter_budget=hyperparameter_budget,
@@ -258,6 +260,7 @@ def forecast_pipeline(
         # model
         pipeline=None,
         regressor_cols=None,
+        lagged_regressor_cols=None,
         estimator=SimpleSilverkiteEstimator(),
         hyperparameter_grid=None,
         hyperparameter_budget=None,
@@ -383,6 +386,12 @@ def forecast_pipeline(
         It should contain only the regressors that are being used in the grid search.
         If None, no regressor columns are used.
         Regressor columns that are unavailable in ``df`` are dropped.
+
+    lagged_regressor_cols : `list` [`str`] or None, default None
+        A list of additional columns needed for lagged regressors in the training and prediction DataFrames.
+        This list can have overlap with ``regressor_cols``.
+        If None, no additional columns are added to the DataFrame.
+        Lagged regressor columns that are unavailable in ``df`` are dropped.
 
     estimator : instance of an estimator that implements `greykite.algo.models.base_forecast_estimator.BaseForecastEstimator`
         Estimator to use as the final step in the pipeline.
@@ -588,8 +597,12 @@ def forecast_pipeline(
               set of parameters to skip cross-validation.
             * If ``test_horizon=0``, ``forecast_result.backtest`` is None.
     """
-    if hyperparameter_grid is None:
+    if hyperparameter_grid is None or hyperparameter_grid == []:
         hyperparameter_grid = {}
+    # When hyperparameter_grid is a singleton list, unlist it
+    if isinstance(hyperparameter_grid, list) and len(hyperparameter_grid) == 1:
+        hyperparameter_grid = hyperparameter_grid[0]
+
     # Loads full dataset
     ts = UnivariateTimeSeries()
     ts.load_data(
@@ -601,6 +614,7 @@ def forecast_pipeline(
         tz=tz,
         train_end_date=train_end_date,
         regressor_cols=regressor_cols,
+        lagged_regressor_cols=lagged_regressor_cols,
         anomaly_info=anomaly_info)
 
     # Splits data into training and test sets. ts.df uses standardized column names
@@ -629,7 +643,8 @@ def forecast_pipeline(
             relative_error_tolerance=relative_error_tolerance,
             coverage=coverage,
             null_model_params=null_model_params,
-            regressor_cols=ts.regressor_cols)
+            regressor_cols=ts.regressor_cols,
+            lagged_regressor_cols=ts.lagged_regressor_cols)
 
     # Searches for the best parameters, and refits model with selected parameters on the entire training set
     if cv_horizon == 0 or cv_max_splits == 0:

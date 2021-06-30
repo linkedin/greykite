@@ -324,23 +324,23 @@ def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
         extra_pred_cols=["dow_hr", "ct1"],
         lagged_regressor_dict=lagged_regressor_dict)
 
-    lagged_regressor_orig_cols = trained_model["lagged_regressor_orig_cols"]
+    lagged_regressor_cols = trained_model["lagged_regressor_cols"]
 
     # Three equivalent ways of generating predictions
     result1 = silverkite.predict_n_no_sim(
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=test_df[lagged_regressor_orig_cols])
+        new_external_regressor_df=test_df[lagged_regressor_cols])
     result2 = silverkite.predict_no_sim(
         fut_df=test_df[[TIME_COL, VALUE_COL]],
         trained_model=trained_model,
-        past_df=train_df[lagged_regressor_orig_cols],
-        new_external_regressor_df=test_df[lagged_regressor_orig_cols])
+        past_df=train_df[lagged_regressor_cols],
+        new_external_regressor_df=test_df[lagged_regressor_cols])
     result3 = silverkite.predict_no_sim(
-        fut_df=test_df[[TIME_COL, VALUE_COL] + lagged_regressor_orig_cols],
+        fut_df=test_df[[TIME_COL, VALUE_COL] + lagged_regressor_cols],
         trained_model=trained_model,
-        past_df=train_df[lagged_regressor_orig_cols],
+        past_df=train_df[lagged_regressor_cols],
         new_external_regressor_df=None)
 
     assert_frame_equal(result1, result2, check_like=True)
@@ -362,7 +362,7 @@ def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
     result4 = silverkite.predict_no_sim(
         fut_df=test_df[[TIME_COL, VALUE_COL]].head(1),
         trained_model=trained_model,
-        past_df=train_df[lagged_regressor_orig_cols],
+        past_df=train_df[lagged_regressor_cols],
         new_external_regressor_df=None)
     result5 = silverkite.predict_n_no_sim(
         fut_time_num=1,
@@ -374,14 +374,14 @@ def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
     # Otherwise, if `min_lagged_regressor_order` is less than `fut_time_num`
     # Testing for Exception
     expected_match = (
-        "All columns in `lagged_regressor_orig_cols` must appear in `df`")
+        "All columns in `lagged_regressor_cols` must appear in `df`")
 
-    # lagged_regressor_orig_cols is None
+    # lagged_regressor_cols is None
     with pytest.raises(ValueError, match=expected_match):
         silverkite.predict_no_sim(
             fut_df=test_df[[TIME_COL, VALUE_COL]].head(2),
             trained_model=trained_model,
-            past_df=train_df[lagged_regressor_orig_cols],
+            past_df=train_df[lagged_regressor_cols],
             new_external_regressor_df=None)
 
 
@@ -918,7 +918,7 @@ def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
     # with and without lagged regressors
     def fit_forecast_with_regressor(
             regressor_cols=[],
-            lagged_regressor_orig_cols=[],
+            lagged_regressor_cols=[],
             lagged_regressor_dict=None,
             test_past_df=None):
         silverkite = SilverkiteForecast()
@@ -937,7 +937,7 @@ def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
             lagged_regressor_dict=lagged_regressor_dict)
 
         all_extra_cols = regressor_cols
-        for col in lagged_regressor_orig_cols:
+        for col in lagged_regressor_cols:
             if col not in all_extra_cols:
                 all_extra_cols.append(col)
         fut_df = silverkite.predict_n_no_sim(
@@ -953,7 +953,7 @@ def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
     # without lagged regressors
     res = fit_forecast_with_regressor(
         regressor_cols=regressor_cols,
-        lagged_regressor_orig_cols=[],
+        lagged_regressor_cols=[],
         lagged_regressor_dict=None)
     fut_df = res["fut_df"]
     trained_model = res["trained_model"]
@@ -961,7 +961,7 @@ def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
     # with lagged regressors
     res = fit_forecast_with_regressor(
         regressor_cols=regressor_cols,
-        lagged_regressor_orig_cols=regressor_cols,
+        lagged_regressor_cols=regressor_cols,
         lagged_regressor_dict=lagged_regressor_dict)
     fut_df_with_lagged_regressor = res["fut_df"]
     trained_model_with_lagged_regressor = res["trained_model"]
@@ -969,7 +969,7 @@ def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
     # with lagged regressors but no regressors
     res = fit_forecast_with_regressor(
         regressor_cols=[],
-        lagged_regressor_orig_cols=regressor_cols,
+        lagged_regressor_cols=regressor_cols,
         lagged_regressor_dict=lagged_regressor_dict)
     fut_df_no_regressor = res["fut_df"]
     trained_model_no_regressor = res["trained_model"]
@@ -1084,9 +1084,8 @@ def test_forecast_silverkite_with_true_lagged_regressor():
 
     def fit_forecast_with_regressor(
             regressor_cols=[],
-            lagged_regressor_orig_cols=[],
-            lagged_regressor_dict=None,
-            test_past_df=None):
+            lagged_regressor_cols=[],
+            lagged_regressor_dict=None):
         silverkite = SilverkiteForecast()
         trained_model = silverkite.forecast(
             df=train_df,
@@ -1099,7 +1098,7 @@ def test_forecast_silverkite_with_true_lagged_regressor():
             lagged_regressor_dict=lagged_regressor_dict)
 
         all_extra_cols = regressor_cols
-        for col in lagged_regressor_orig_cols:
+        for col in lagged_regressor_cols:
             if col not in all_extra_cols:
                 all_extra_cols.append(col)
         fut_df = silverkite.predict_n_no_sim(
@@ -1115,7 +1114,7 @@ def test_forecast_silverkite_with_true_lagged_regressor():
     # with regressors but no lagged regressors
     res = fit_forecast_with_regressor(
         regressor_cols=regressor_cols,
-        lagged_regressor_orig_cols=[],
+        lagged_regressor_cols=[],
         lagged_regressor_dict=None)
     fut_df = res["fut_df"]
     trained_model = res["trained_model"]
@@ -1125,7 +1124,7 @@ def test_forecast_silverkite_with_true_lagged_regressor():
     # with lagged regressors
     res = fit_forecast_with_regressor(
         regressor_cols=regressor_cols,
-        lagged_regressor_orig_cols=regressor_cols,
+        lagged_regressor_cols=regressor_cols,
         lagged_regressor_dict=lagged_regressor_dict)
     fut_df_with_lagged_regressor = res["fut_df"]
     trained_model_with_lagged_regressor = res["trained_model"]
@@ -1135,7 +1134,7 @@ def test_forecast_silverkite_with_true_lagged_regressor():
     # with lagged regressors but no regressors
     res = fit_forecast_with_regressor(
         regressor_cols=[],
-        lagged_regressor_orig_cols=regressor_cols,
+        lagged_regressor_cols=regressor_cols,
         lagged_regressor_dict=lagged_regressor_dict)
     fut_df_no_regressor = res["fut_df"]
     trained_model_no_regressor = res["trained_model"]
@@ -3469,7 +3468,7 @@ def test_build_lagged_regressor_features(lagged_regressor_dict):
 
     lagged_regressor_df = silverkite._SilverkiteForecast__build_lagged_regressor_features(
         df=df,
-        lagged_regressor_orig_cols=lagged_regressor_orig_col_names,
+        lagged_regressor_cols=lagged_regressor_orig_col_names,
         lagged_regressor_func=lagged_regressor_func,
         phase="fit",
         past_df=past_df)
@@ -3517,14 +3516,14 @@ def test_build_lagged_regressor_features(lagged_regressor_dict):
     # Testing for Exception
     expected_match = (
         "At 'predict' phase, if lagged_regressor_func is not None,"
-        " 'past_df' and 'lagged_regressor_orig_cols' must be provided to "
+        " 'past_df' and 'lagged_regressor_cols' must be provided to "
         "`build_lagged_regressor_features`")
 
-    # lagged_regressor_orig_cols is None
+    # lagged_regressor_cols is None
     with pytest.raises(ValueError, match=expected_match):
         silverkite._SilverkiteForecast__build_lagged_regressor_features(
             df=df,
-            lagged_regressor_orig_cols=None,
+            lagged_regressor_cols=None,
             lagged_regressor_func=lagged_regressor_func,
             phase="predict",
             past_df=past_df)
@@ -3533,7 +3532,7 @@ def test_build_lagged_regressor_features(lagged_regressor_dict):
     with pytest.raises(ValueError, match=expected_match):
         silverkite._SilverkiteForecast__build_lagged_regressor_features(
             df=df,
-            lagged_regressor_orig_cols=regressor_cols,
+            lagged_regressor_cols=regressor_cols,
             lagged_regressor_func=lagged_regressor_func,
             phase="predict",
             past_df=None)

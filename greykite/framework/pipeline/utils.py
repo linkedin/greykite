@@ -43,6 +43,7 @@ from greykite.common.evaluation import fraction_outside_tolerance
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
 from greykite.common.python_utils import get_integer
+from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.time_properties_forecast import get_default_horizon_from_period
 from greykite.framework.constants import CUSTOM_SCORE_FUNC_NAME
 from greykite.framework.constants import CV_REPORT_METRICS_ALL
@@ -225,7 +226,8 @@ def get_basic_pipeline(
         relative_error_tolerance=None,
         coverage=0.95,
         null_model_params=None,
-        regressor_cols=None):
+        regressor_cols=None,
+        lagged_regressor_cols=None):
     """Returns a basic pipeline for univariate forecasting.
     Allows for outlier detection, normalization, null imputation,
     degenerate column removal, and forecast model fitting. By default,
@@ -271,7 +273,7 @@ def get_basic_pipeline(
         For example, 0.05 allows for 5% relative error.
         Required if ``score_func`` is
         `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.
-    coverage : `float` or None, optional, default=0.95
+    coverage : `float` or None, default=0.95
         Intended coverage of the prediction bands (0.0 to 1.0)
         If None, the upper/lower predictions are not returned
         Ignored if `pipeline` is provided. Uses coverage of the ``pipeline`` estimator instead.
@@ -307,12 +309,16 @@ def get_basic_pipeline(
 
         Note: CV model selection always optimizes ``score_func`, not
         the ``R2_null_model_score``.
-
     regressor_cols : `list` [`str`] or None, default None
         A list of regressor columns used in the training and prediction DataFrames.
         It should contain only the regressors that are being used in the grid search.
         If None, no regressor columns are used.
         Regressor columns that are unavailable in ``df`` are dropped.
+    lagged_regressor_cols: `list` [`str`] or None, default None
+        A list of additional columns needed for lagged regressors in the training and prediction DataFrames.
+        This list can have overlap with ``regressor_cols``.
+        If None, no additional columns are added to the DataFrame.
+        Lagged regressor columns that are unavailable in ``df`` are dropped.
 
     Returns
     -------
@@ -328,6 +334,9 @@ def get_basic_pipeline(
 
     if regressor_cols is None:
         regressor_cols = []
+    if lagged_regressor_cols is None:
+        lagged_regressor_cols = []
+    all_reg_cols = unique_elements_in_list(regressor_cols + lagged_regressor_cols)
 
     # A new unfitted estimator with the same parameters
     estimator_clone = clone(estimator)
@@ -356,14 +365,14 @@ def get_basic_pipeline(
                 ("null", NullTransformer(impute_algorithm="interpolate"))
             ])),
             ("regressors_numeric", Pipeline([
-                ("select_reg", ColumnSelector(regressor_cols)),
+                ("select_reg", ColumnSelector(all_reg_cols)),
                 ("select_reg_numeric", DtypeColumnSelector(include="number")),
                 ("outlier", ZscoreOutlierTransformer(z_cutoff=None)),
                 ("normalize", NormalizeTransformer(normalize_algorithm=None)),  # no normalization by default
                 ("null", NullTransformer(impute_algorithm="interpolate"))
             ])),
             ("regressors_other", Pipeline([
-                ("select_reg", ColumnSelector(regressor_cols)),
+                ("select_reg", ColumnSelector(all_reg_cols)),
                 ("select_reg_non_numeric", DtypeColumnSelector(exclude="number"))
             ]))
         ])),

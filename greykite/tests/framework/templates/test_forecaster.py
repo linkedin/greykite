@@ -683,6 +683,7 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__max_daily_seas_interaction_order": [0],
             "estimator__max_weekly_seas_interaction_order": [2],
             "estimator__autoreg_dict": [None],
+            "estimator__lagged_regressor_dict": [None],
             "estimator__min_admissible_value": [None],
             "estimator__max_admissible_value": [None],
             "estimator__uncertainty_dict": [None],

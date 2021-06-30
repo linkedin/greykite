@@ -303,6 +303,8 @@ class ModelComponentsParam:
     """
     regressors: Optional[Dict[str, Any]] = None
     """For modeling regressors, see template for details"""
+    lagged_regressors: Optional[Dict[str, Any]] = None
+    """For modeling lagged regressors, see template for details"""
     seasonality: Optional[Dict[str, Any]] = None
     """For modeling seasonality, see template for details"""
     uncertainty: Optional[Dict[str, Any]] = None
@@ -321,6 +323,7 @@ class ModelComponentsParam:
             lambda x: from_list_dict_or_none(lambda x: x, x),
             from_none], obj.get("hyperparameter_override"))
         regressors = from_union([lambda x: from_dict(lambda x: x, x), from_none], obj.get("regressors"))
+        lagged_regressors = from_union([lambda x: from_dict(lambda x: x, x), from_none], obj.get("lagged_regressors"))
         seasonality = from_union([lambda x: from_dict(lambda x: x, x), from_none], obj.get("seasonality"))
         uncertainty = from_union([lambda x: from_dict(lambda x: x, x), from_none], obj.get("uncertainty"))
         return ModelComponentsParam(
@@ -331,6 +334,7 @@ class ModelComponentsParam:
             growth=growth,
             hyperparameter_override=hyperparameter_override,
             regressors=regressors,
+            lagged_regressors=lagged_regressors,
             seasonality=seasonality,
             uncertainty=uncertainty)
 
@@ -346,6 +350,7 @@ class ModelComponentsParam:
             lambda x: from_list_dict_or_none(lambda x: x, x),
             from_none], self.hyperparameter_override)
         result["regressors"] = from_union([lambda x: from_dict(lambda x: x, x), from_none], self.regressors)
+        result["lagged_regressors"] = from_union([lambda x: from_dict(lambda x: x, x), from_none], self.lagged_regressors)
         result["seasonality"] = from_union([lambda x: from_dict(lambda x: x, x), from_none], self.seasonality)
         result["uncertainty"] = from_union([lambda x: from_dict(lambda x: x, x), from_none], self.uncertainty)
         return result

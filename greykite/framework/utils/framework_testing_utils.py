@@ -450,6 +450,7 @@ def mock_pipeline(
         # model
         pipeline=None,
         regressor_cols=None,
+        lagged_regressor_cols=None,
         estimator=SimpleSilverkiteEstimator(),
         hyperparameter_grid=None,
         hyperparameter_budget=None,
@@ -488,6 +489,7 @@ def mock_pipeline(
         "anomaly_info": anomaly_info,
         "pipeline": pipeline,
         "regressor_cols": regressor_cols,
+        "lagged_regressor_cols": lagged_regressor_cols,
         "estimator": estimator,
         "hyperparameter_grid": hyperparameter_grid,
         "hyperparameter_budget": hyperparameter_budget,

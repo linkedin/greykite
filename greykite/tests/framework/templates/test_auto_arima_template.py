@@ -137,6 +137,7 @@ def test_auto_arima_template_default():
         anomaly_info=None,
         # model
         regressor_cols=None,
+        lagged_regressor_cols=None,
         estimator=None,
         hyperparameter_grid=template.hyperparameter_grid,
         hyperparameter_budget=None,
@@ -333,6 +334,7 @@ def test_auto_arima_template_custom():
         anomaly_info=metadata.anomaly_info,
         # model
         regressor_cols=template.regressor_cols,
+        lagged_regressor_cols=template.lagged_regressor_cols,
         estimator=None,
         hyperparameter_grid=template.hyperparameter_grid,
         hyperparameter_budget=computation.hyperparameter_budget,

@@ -209,6 +209,7 @@ def get_canonical_data(
         tz: str = None,
         train_end_date: datetime = None,
         regressor_cols: List[str] = None,
+        lagged_regressor_cols: List[str] = None,
         anomaly_info: Optional[Union[Dict, List[Dict]]] = None):
     """Loads data to internal representation. Parses date column,
     sets timezone aware index.
@@ -225,23 +226,27 @@ def get_canonical_data(
         The time column can be anything that can be parsed by pandas DatetimeIndex.
     value_col: `str`
         The column name which has the value of interest to be forecasted.
-    freq : `str`, optional, default None
+    freq : `str` or None, default None
         Timeseries frequency, DateOffset alias, If None automatically inferred.
-    date_format : `str`, optional, default None
+    date_format : `str` or None, default None
         strftime format to parse time column, eg ``%m/%d/%Y``.
         Note that ``%f`` will parse all the way up to nanoseconds.
         If None (recommended), inferred by `pandas.to_datetime`.
-    tz : `str` or pytz.timezone object, optional, default None
+    tz : `str` or pytz.timezone object or None, default None
         Passed to `pandas.tz_localize` to localize the timestamp.
-    train_end_date : `datetime.datetime`, optional, default None
+    train_end_date : `datetime.datetime` or None, default None
         Last date to use for fitting the model. Forecasts are generated after this date.
         If None, it is set to the minimum of ``self.last_date_for_val`` and
         ``self.last_date_for_reg``.
-    regressor_cols: `list` [`str`], optional, default None
+    regressor_cols: `list` [`str`] or None, default None
         A list of regressor columns used in the training and prediction DataFrames.
         If None, no regressor columns are used.
-        Regressor columns that are unavailable in ``df`` are dropped.
-        anomaly_info : `dict` or None, default None
+        Regressor columns that are unavailable in ``df`` are dropped.git
+    lagged_regressor_cols: `list` [`str`] or None, default None
+        A list of additional columns needed for lagged regressors in thggede training and prediction DataFrames.
+        This list can have overlap with ``regressor_cols``.
+        If None, no additional columns are added to the DataFrame.
+        Lagged regressor columns that are unavailable in ``df`` are dropped.
     anomaly_info : `dict` or `list` [`dict`] or None, default None
         Anomaly adjustment info. Anomalies in ``df``
         are corrected before any forecasting is done.
@@ -304,8 +309,10 @@ def get_canonical_data(
 
             ``"regressor_cols"`` : `list` [`str`]
                 A list of regressor columns.
+             ``"lagged_regressor_cols"`` : `list` [`str`]
+                A list of lagged regressor columns.
             ``"fit_cols"`` : `list` [`str`]
-                Names of time column, value column, and regressor columns.
+                Names of time column, value column, regressor columns, and lagged regressor columns.
             ``"train_end_date"`` : `datetime.datetime`
                 Last date or timestamp for training. It is always less than or equal to
                 minimum non-null values of ``last_date_for_val`` and ``last_date_for_reg``.
@@ -314,6 +321,9 @@ def get_canonical_data(
             ``"last_date_for_reg"`` : `datetime.datetime` or None
                 Date or timestamp corresponding to last non-null value in ``df[regressor_cols]``.
                 If ``regressor_cols`` is None, ``last_date_for_reg`` is None.
+            ``"last_date_for_lag_reg"`` : `datetime.datetime` or None
+                Date or timestamp corresponding to last non-null value in ``df[lagged_regressor_cols]``.
+                If ``lagged_regressor_cols`` is None, ``last_date_for_lag_reg`` is None.
     """
     if time_col not in df.columns:
         raise ValueError(f"{time_col} column is not in input data")
@@ -407,7 +417,21 @@ def get_canonical_data(
         last_date_for_reg = df[df[regressor_cols].notnull().any(axis=1)][TIME_COL].max()
         max_train_end_date = min(last_date_for_val, last_date_for_reg)
     else:
+        regressor_cols = []
         max_train_end_date = last_date_for_val
+
+    last_date_for_lag_reg = None
+    if lagged_regressor_cols:
+        available_regressor_cols = [col for col in df.columns if col not in [TIME_COL, VALUE_COL]]
+        cols_not_selected = set(lagged_regressor_cols) - set(available_regressor_cols)
+        lagged_regressor_cols = [col for col in lagged_regressor_cols if col in available_regressor_cols]
+        if cols_not_selected:
+            warnings.warn(f"The following columns are not available to use as "
+                          f"lagged regressors: {sorted(cols_not_selected)}")
+        last_date_for_lag_reg = df[df[lagged_regressor_cols].notnull().any(axis=1)][TIME_COL].max()
+    else:
+        lagged_regressor_cols = []
+
     # Chooses appropriate train_end_date
     if train_end_date is None:
         train_end_date = max_train_end_date
@@ -427,9 +451,8 @@ def get_canonical_data(
             UserWarning)
         train_end_date = max_train_end_date
 
-    if regressor_cols is None:
-        regressor_cols = []
-    fit_cols = [TIME_COL, VALUE_COL] + regressor_cols
+    extra_reg_cols = [col for col in df.columns if col not in regressor_cols and col in lagged_regressor_cols]
+    fit_cols = [TIME_COL, VALUE_COL] + regressor_cols + extra_reg_cols
     fit_df = df[df[TIME_COL] <= train_end_date][fit_cols]
 
     return {
@@ -439,8 +462,10 @@ def get_canonical_data(
         "freq": freq,
         "time_stats": time_stats,
         "regressor_cols": regressor_cols,
+        "lagged_regressor_cols": lagged_regressor_cols,
         "fit_cols": fit_cols,
         "train_end_date": train_end_date,
         "last_date_for_val": last_date_for_val,
         "last_date_for_reg": last_date_for_reg,
+        "last_date_for_lag_reg": last_date_for_lag_reg,
     }

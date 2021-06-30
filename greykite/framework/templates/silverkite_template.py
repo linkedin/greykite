@@ -30,10 +30,12 @@ import functools
 from typing import Dict
 from typing import Optional
 
+import numpy as np
 import pandas as pd
 
 from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteForecast
 from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
+from greykite.common.features.timeseries_lags import build_autoreg_df_multi
 from greykite.common.python_utils import dictionaries_values_to_lists
 from greykite.common.python_utils import unique_in_list
 from greykite.common.python_utils import update_dictionaries
@@ -173,6 +175,14 @@ def apply_default_model_components(
         overwrite_dict=model_components.regressors,
         allow_unknown_keys=False)
 
+    default_lagged_regressors = {
+        "lagged_regressor_dict": [None],
+    }
+    model_components.lagged_regressors = update_dictionary(
+        default_lagged_regressors,
+        overwrite_dict=model_components.lagged_regressors,
+        allow_unknown_keys=False)
+
     default_uncertainty = {
         "uncertainty_dict": [None],
     }
@@ -306,6 +316,37 @@ class SilverkiteTemplate(BaseTemplate):
 
                 Allowed keys: None. (Use ``model_components.custom["extra_pred_cols"]`` to specify
                 regressors.)
+            lagged_regressors: `dict` [`str`, `dict`] or None, optional
+                Specifies the lagged regressors configuration. Dictionary with the following optional key:
+
+                ``"lagged_regressor_dict"``: `dict` or None or a list of such values for grid search
+                    A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`.
+                    The keys of the dictionary are the target lagged regressor column names.
+                    It can leverage the regressors included in ``df``.
+                    The value of each key is either a `dict` or `str`.
+                    If `dict`, it has the following keys:
+
+                        ``"lag_dict"`` : `dict` or None
+                        ``"agg_lag_dict"`` : `dict` or None
+                        ``"series_na_fill_func"`` : callable
+
+                    If `str`, it represents a method and a dictionary will be constructed using that `str`.
+                    Currently the only implemented method is "auto" which uses
+                    `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_lagged_regressor_dict`
+                    to create a dictionary for each lagged regressor.
+                    An example::
+
+                        lagged_regressor_dict = {
+                            "regressor1": {
+                                "lag_dict": {"orders": [1, 2, 3]},
+                                "agg_lag_dict": {
+                                    "orders_list": [[7, 7 * 2, 7 * 3]],
+                                    "interval_list": [(8, 7 * 2)]},
+                                "series_na_fill_func": lambda s: s.bfill().ffill()},
+                            "regressor2": "auto"}
+
+                    Check the docstring of `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`
+                    for more details for each argument.
             uncertainty: `dict` [`str`, `any`] or None, optional
                 How to model the uncertainty. A dictionary with keys corresponding to
                 parameters in `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
@@ -411,6 +452,93 @@ class SilverkiteTemplate(BaseTemplate):
             regressor_cols = None
         return regressor_cols
 
+    def get_lagged_regressor_info(self):
+        """Returns lagged regressor column names and minimal/maximal lag order. The lag order
+        can be used to check potential imputation in the computation of lags.
+
+        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.
+
+        Returns
+        -------
+        lagged_regressor_info : `dict`
+            A dictionary that includes the lagged regressor column names and maximal/minimal lag order
+            The keys are:
+
+                lagged_regressor_cols : `list` [`str`] or None
+                    See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.
+                overall_min_lag_order : `int` or None
+                overall_max_lag_order : `int` or None
+
+            For example::
+
+                self.config.model_components_param.lagged_regressors["lagged_regressor_dict"] = [
+                    {"regressor1": {
+                        "lag_dict": {"orders": [7]},
+                        "agg_lag_dict": {
+                            "orders_list": [[7, 7 * 2, 7 * 3]],
+                            "interval_list": [(8, 7 * 2)]},
+                        "series_na_fill_func": lambda s: s.bfill().ffill()}
+                    },
+                    {"regressor2": {
+                        "lag_dict": {"orders": [2]},
+                        "agg_lag_dict": {
+                            "orders_list": [[7, 7 * 2]],
+                            "interval_list": [(8, 7 * 2)]},
+                        "series_na_fill_func": lambda s: s.bfill().ffill()}
+                    },
+                    {"regressor3": "auto"}
+                ]
+
+            Then the function returns::
+
+                lagged_regressor_info = {
+                    "lagged_regressor_cols": ["regressor1", "regressor2", "regressor3"],
+                    "overall_min_lag_order": 2,
+                    "overall_max_lag_order": 21
+                }
+
+            Note that "regressor3" is skipped as the "auto" option makes sure the lag order is proper.
+        """
+        lagged_regressor_info = {
+            "lagged_regressor_cols": None,
+            "overall_min_lag_order": None,
+            "overall_max_lag_order": None
+        }
+        if (self.config is None or self.config.model_components_param is None or
+                self.config.model_components_param.lagged_regressors is None):
+            return lagged_regressor_info
+
+        lag_reg_dict = self.config.model_components_param.lagged_regressors.get("lagged_regressor_dict", None)
+        if lag_reg_dict is None or lag_reg_dict == [None]:
+            return lagged_regressor_info
+
+        lag_reg_dict_list = [lag_reg_dict] if isinstance(lag_reg_dict, dict) else lag_reg_dict
+        lagged_regressor_cols = []
+        overall_min_lag_order = np.inf
+        overall_max_lag_order = -np.inf
+        for d in lag_reg_dict_list:
+            if isinstance(d, dict):
+                lagged_regressor_cols += list(d.keys())
+                # Also gets the minimal lag order for each lagged_regressor_dict.
+                # Looks at each individual regressor column, "auto" is skipped because
+                # "auto" always makes sure that minimal lag order is at least forecast horizon.
+                for key, value in d.items():
+                    if isinstance(value, dict):
+                        d_tmp = {key: value}
+                        lag_reg_components = build_autoreg_df_multi(value_lag_info_dict=d_tmp)
+                        overall_min_lag_order = min(
+                            lag_reg_components["min_order"],
+                            overall_min_lag_order)
+                        overall_max_lag_order = max(
+                            lag_reg_components["max_order"],
+                            overall_max_lag_order)
+        lagged_regressor_cols = list(set(lagged_regressor_cols))
+
+        lagged_regressor_info["lagged_regressor_cols"] = lagged_regressor_cols
+        lagged_regressor_info["overall_min_lag_order"] = overall_min_lag_order
+        lagged_regressor_info["overall_max_lag_order"] = overall_max_lag_order
+        return lagged_regressor_info
+
     def get_hyperparameter_grid(self):
         """Returns hyperparameter grid.
 
@@ -453,6 +581,7 @@ class SilverkiteTemplate(BaseTemplate):
             "estimator__daily_event_df_dict": self.config.model_components_param.events["daily_event_df_dict"],
             "estimator__fs_components_df": self.config.model_components_param.seasonality["fs_components_df"],
             "estimator__autoreg_dict": self.config.model_components_param.autoregression["autoreg_dict"],
+            "estimator__lagged_regressor_dict": self.config.model_components_param.lagged_regressors["lagged_regressor_dict"],
             "estimator__changepoints_dict": self.config.model_components_param.changepoints["changepoints_dict"],
             "estimator__seasonality_changepoints_dict": self.config.model_components_param.changepoints["seasonality_changepoints_dict"],
             "estimator__changepoint_detector": [None],

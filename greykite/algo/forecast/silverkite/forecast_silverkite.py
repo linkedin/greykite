@@ -52,6 +52,8 @@ from greykite.common.features.timeseries_features import get_changepoint_feature
 from greykite.common.features.timeseries_features import get_default_origin_for_time_vars
 from greykite.common.features.timeseries_lags import build_autoreg_df
 from greykite.common.features.timeseries_lags import build_autoreg_df_multi
+from greykite.common.logging import LoggingLevelEnum
+from greykite.common.logging import log_message
 from greykite.common.python_utils import get_pattern_cols
 from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.time_properties import describe_timeseries
@@ -286,7 +288,7 @@ class SilverkiteForecast():
             See more details for above parameters in
             `~greykite.common.features.timeseries_lags.build_autoreg_df`.
         lagged_regressor_dict : `dict` or None, default None
-            A dictionary with arguments for `greykite.common.features.timeseries_lags.build_autoreg_df_multi`.
+            A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`.
             The keys of the dictionary are the target lagged regressor column names.
             It can leverage the regressors included in ``df``.
             The value of each key is either a `dict` or `str`.
@@ -311,7 +313,7 @@ class SilverkiteForecast():
                         "series_na_fill_func": lambda s: s.bfill().ffill()},
                     "regressor2": "auto"}
 
-            Check the docstring of `greykite.common.features.timeseries_lags.build_autoreg_df_multi`
+            Check the docstring of `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`
             for more details for each argument.
         changepoints_dict : `dict` or None, optional, default None
             Specifies the changepoint configuration.
@@ -488,7 +490,7 @@ class SilverkiteForecast():
                     The dictionary that specifies the autoregression configuration.
                 lagged_regressor_dict: `dict`
                     The dictionary that specifies the lagged regressors configuration.
-                lagged_regressor_orig_cols: `list` [`str`]
+                lagged_regressor_cols: `list` [`str`]
                     List of regressor column names used for lagged regressor
                 normalize_method: `str`
                     The normalization method.
@@ -784,10 +786,11 @@ class SilverkiteForecast():
         # Adds lagged regressor columns to feature matrix
         lagged_regressor_func = None
         lagged_regressor_col_names = []
-        lagged_regressor_orig_cols = []
+        lagged_regressor_cols = []
         min_lagged_regressor_order = None
         max_lagged_regressor_order = None
         if lagged_regressor_dict is not None:
+            key_remove = []
             for key, value in lagged_regressor_dict.items():
                 if isinstance(value, str):
                     if value.lower() != "auto":
@@ -795,7 +798,18 @@ class SilverkiteForecast():
                     lag_reg_dict_info = self.__get_default_lagged_regressor_dict(
                         freq_in_days=inferred_freq_in_days,
                         forecast_horizon=forecast_horizon)
-                    lagged_regressor_dict[key] = lag_reg_dict_info["lag_reg_dict"]
+                    # If "auto" determines that no lag is needed, remove the key
+                    if lag_reg_dict_info["lag_reg_dict"] is None:
+                        key_remove += [key]
+                    else:
+                        lagged_regressor_dict[key] = lag_reg_dict_info["lag_reg_dict"]
+            for key in key_remove:
+                lagged_regressor_dict.pop(key, None)
+                log_message(f"Column {key} has been dropped from `lagged_regressor_dict` and was not "
+                            f"used for lagged regressor as determined by 'auto' option.", LoggingLevelEnum.INFO)
+        # Converts empty dictionary to None if all keys are removed
+        if lagged_regressor_dict == {}:
+            lagged_regressor_dict = None
 
         has_lagged_regressor_structure = False
         if lagged_regressor_dict is not None:
@@ -803,13 +817,13 @@ class SilverkiteForecast():
             lagged_regressor_components = build_autoreg_df_multi(value_lag_info_dict=lagged_regressor_dict)
             lagged_regressor_func = lagged_regressor_components["autoreg_func"]
             lagged_regressor_col_names = lagged_regressor_components["autoreg_col_names"]
-            lagged_regressor_orig_cols = lagged_regressor_components["autoreg_orig_col_names"]
+            lagged_regressor_cols = lagged_regressor_components["autoreg_orig_col_names"]
             min_lagged_regressor_order = lagged_regressor_components["min_order"]
             max_lagged_regressor_order = lagged_regressor_components["max_order"]
 
             lagged_regressor_df = self.__build_lagged_regressor_features(
                 df=df,
-                lagged_regressor_orig_cols=lagged_regressor_orig_cols,
+                lagged_regressor_cols=lagged_regressor_cols,
                 lagged_regressor_func=lagged_regressor_func,
                 phase="fit",
                 past_df=None)
@@ -885,7 +899,7 @@ class SilverkiteForecast():
         trained_model["fs_components_df"] = fs_components_df
         trained_model["autoreg_dict"] = autoreg_dict
         trained_model["lagged_regressor_dict"] = lagged_regressor_dict
-        trained_model["lagged_regressor_orig_cols"] = lagged_regressor_orig_cols
+        trained_model["lagged_regressor_cols"] = lagged_regressor_cols
         trained_model["normalize_method"] = normalize_method
         trained_model["daily_event_df_dict"] = daily_event_df_dict
         trained_model["changepoints_dict"] = changepoints_dict
@@ -964,7 +978,7 @@ class SilverkiteForecast():
         max_lag_order = trained_model["max_lag_order"]
         max_lagged_regressor_order = trained_model["max_lagged_regressor_order"]
         min_lagged_regressor_order = trained_model["min_lagged_regressor_order"]
-        lagged_regressor_orig_cols = trained_model["lagged_regressor_orig_cols"]
+        lagged_regressor_cols = trained_model["lagged_regressor_cols"]
 
         if max_lag_order is not None and (past_df is None or past_df.shape[0] < max_lag_order):
             warnings.warn(
@@ -1039,18 +1053,18 @@ class SilverkiteForecast():
                 # those columns, but we do need to make sure these columns are included
                 # as required by `build_lagged_regressor_features`.
                 if min_lagged_regressor_order >= fut_df.shape[0]:
-                    for col in lagged_regressor_orig_cols:
+                    for col in lagged_regressor_cols:
                         if col not in fut_df.columns:
                             features_df_fut[col] = np.nan
                 # case 2: ``min_lagged_regressor_order`` < ``fut_df.shape[0]``
-                # In this case ``fut_df`` has to contain chose columns, and an error
+                # In this case ``fut_df`` has to contain those columns, and an error
                 # will be raised when `build_lagged_regressor_features` is called.
                 lagged_regressor_df = self.__build_lagged_regressor_features(
                     df=features_df_fut.copy(),
-                    lagged_regressor_orig_cols=trained_model["lagged_regressor_orig_cols"],
+                    lagged_regressor_cols=trained_model["lagged_regressor_cols"],
                     lagged_regressor_func=trained_model["lagged_regressor_func"],
                     phase="predict",
-                    past_df=past_df[trained_model["lagged_regressor_orig_cols"]])
+                    past_df=past_df[trained_model["lagged_regressor_cols"]])
                 features_df_fut = pd.concat(
                     [features_df_fut, lagged_regressor_df],
                     axis=1,
@@ -1545,7 +1559,7 @@ class SilverkiteForecast():
             Boolean to determine if errors are to be incorporated in the simulations.
             If None, it will be set to True if uncertainty is passed to the model and
             otherwise will be set to False
-        force_no_sim : `bool`, defaul False
+        force_no_sim : `bool`, default False
             If True, prediction with no simulations is forced.
             This can be useful when speed is of concern or for validation purposes.
             In this case, the potential non-available lags will be imputed.
@@ -1572,7 +1586,7 @@ class SilverkiteForecast():
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
-                (3) Quantile summary reponse in ``f"{value_col}_quantile_summary`` column.
+                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
                     This column only appears if the model includes uncertainty.
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
@@ -1612,9 +1626,19 @@ class SilverkiteForecast():
                 "However model does not support uncertainty. "
                 "To support uncertainty pass `uncertainty_dict` to the model.")
 
-        # We do not need to check the minimal lag order for lagged regressors
-        # since all columns needed for building lagged regressors must be included
-        # in ``fut_df`` or ``new_external_regressor_df``
+        # If the minimal lag order for lagged regressors is less than the size of fut_df,
+        # raise a warning of potential imputation of lagged regressor columns.
+        # Note that all lagged regressor columns must be included in ``fut_df`` or ``new_external_regressor_df``
+        min_lagged_regressor_order = trained_model["min_lagged_regressor_order"]
+        lagged_regressor_dict = trained_model['lagged_regressor_dict']
+        if min_lagged_regressor_order is not None and min_lagged_regressor_order < fut_df.shape[0]:
+            warnings.warn(
+                f"Trained model's `min_lagged_regressor_order` ({int(min_lagged_regressor_order)}) "
+                f"is less than the size of `fut_df` ({fut_df.shape[0]}), "
+                f"NaN values (if there are any) in lagged regressor columns have been imputed. "
+                f"More info: {lagged_regressor_dict}.",
+                UserWarning)
+
         has_autoreg_structure = trained_model["has_autoreg_structure"]
 
         # In absence of autoregression, we can return quickly.
@@ -1894,7 +1918,7 @@ class SilverkiteForecast():
                 and last date appearing in ``fut_df``.
                 Note that this value can be smaller or larger than the number of
                 rows of ``fut_df``.
-                This is caclulated by adding the number of potentially missing timestamps
+                This is calculated by adding the number of potentially missing timestamps
                 and the number of time periods appearing after the training end point.
                 Also note if there are no timestamps after the training end point in
                 ``fut_df``, this value will be zero.
@@ -2314,7 +2338,7 @@ class SilverkiteForecast():
     def __build_lagged_regressor_features(
             self,
             df,
-            lagged_regressor_orig_cols,
+            lagged_regressor_cols,
             lagged_regressor_func,
             phase="fit",
             past_df=None):
@@ -2324,10 +2348,10 @@ class SilverkiteForecast():
         ----------
         df : `pandas.Dataframe`
             Dataframe to predict on, passed to ``lagged_regressor_func``.
-        lagged_regressor_orig_cols : `list` [`str`], optional
+        lagged_regressor_cols : `list` [`str`], optional
             This is the original column names for the lagged regressors.
             This parameter is only required if lagged regressor methods are used.
-            ``lagged_regressor_orig_cols`` is needed at the "predict" phase to add to the ``df``
+            ``lagged_regressor_cols`` is needed at the "predict" phase to add to the ``df``
             with NULL values so it can be appended to ``past_df``.
         lagged_regressor_func : callable, optional
             A function constructed by
@@ -2360,28 +2384,28 @@ class SilverkiteForecast():
         """
         # we raise an exception if we are in the 'predict' phase
         # and `lagged_regressor_func` is not None
-        # but either of ``past_df`` or ``lagged_regressor_orig_cols`` is not provided
+        # but either of ``past_df`` or ``lagged_regressor_cols`` is not provided
         # This is because in that case `lagged_regressor_func` will not be able to provide useful
         # lag-based predictors
         if phase == "predict":
-            if lagged_regressor_orig_cols is None or past_df is None:
+            if lagged_regressor_cols is None or past_df is None:
                 raise ValueError(
                     "At 'predict' phase, if lagged_regressor_func is not None,"
-                    " 'past_df' and 'lagged_regressor_orig_cols' must be provided to "
+                    " 'past_df' and 'lagged_regressor_cols' must be provided to "
                     "`build_lagged_regressor_features`")
 
         if df is not None:
-            df_col_missing = set(lagged_regressor_orig_cols).difference(set(df.columns))
+            df_col_missing = set(lagged_regressor_cols).difference(set(df.columns))
             if len(df_col_missing) > 0:
                 raise ValueError(
-                    "All columns in `lagged_regressor_orig_cols` must appear in `df`, "
+                    "All columns in `lagged_regressor_cols` must appear in `df`, "
                     f"but {df_col_missing} is missing in `df`.")
 
         if past_df is not None:
-            past_df_col_missing = set(lagged_regressor_orig_cols).difference(set(past_df.columns))
+            past_df_col_missing = set(lagged_regressor_cols).difference(set(past_df.columns))
             if len(past_df_col_missing) > 0:
                 raise ValueError(
-                    "All columns in `lagged_regressor_orig_cols` must appear in `past_df`, "
+                    "All columns in `lagged_regressor_cols` must appear in `past_df`, "
                     f"but {past_df_col_missing} is missing in `past_df`.")
 
         lagged_regressor_df = lagged_regressor_func(df=df, past_df=past_df)
