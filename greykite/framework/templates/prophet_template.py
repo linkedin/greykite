@@ -32,7 +32,6 @@ from typing import Dict
 from typing import Optional
 
 import pandas as pd
-from fbprophet.make_holidays import make_holidays_df
 
 from greykite.common.python_utils import dictionaries_values_to_lists
 from greykite.common.python_utils import update_dictionaries
@@ -212,7 +211,14 @@ class ProphetTemplate(BaseTemplate):
     """Default holiday countries to use if countries='auto'"""
     def __init__(
             self,
-            estimator: BaseForecastEstimator = ProphetEstimator()):
+            estimator: Optional[BaseForecastEstimator] = None):
+        try:
+            global make_holidays_df
+            from fbprophet.make_holidays import make_holidays_df
+        except ModuleNotFoundError:
+            raise ValueError("Module 'fbprophet' is not installed. Please install it manually.")
+        if estimator is None:
+            estimator = ProphetEstimator()
         super().__init__(estimator=estimator)
 
     @property

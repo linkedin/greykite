@@ -32,6 +32,7 @@ from greykite.common.features.timeseries_features import get_fourier_col_name
 from greykite.common.features.timeseries_features import get_holidays
 from greykite.common.features.timeseries_impute import impute_with_lags
 from greykite.common.features.timeseries_lags import build_autoreg_df
+from greykite.common.features.timeseries_lags import build_autoreg_df_multi
 from greykite.common.python_utils import assert_equal
 from greykite.common.python_utils import get_pattern_cols
 from greykite.common.testing_utils import generate_anomalous_data
@@ -54,6 +55,27 @@ def hourly_data():
         periods=24 * 500,
         train_start_date=datetime.datetime(2018, 7, 1),
         conti_year_origin=2018)
+
+
+@pytest.fixture
+def lagged_regressor_dict():
+    """Generate a dictionary of 3 lagged regressors with different dtypes"""
+    return {
+        "regressor1": {
+            "lag_dict": {"orders": [1, 168]},
+            "agg_lag_dict": {
+                "orders_list": [[168, 168 * 2, 168 * 3]],
+                "interval_list": [(169, 168 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor_bool": {
+            "lag_dict": {"orders": [1, 168]},
+            "agg_lag_dict": {
+                "orders_list": [[168, 168 * 2, 168 * 3]],
+                "interval_list": [(169, 168 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor_categ": {
+            "lag_dict": {"orders": [1, 168]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()}}
 
 
 def plt_comparison_forecast_vs_observed(
@@ -272,6 +294,95 @@ def test_forecast_silverkite_hourly_regressor():
         test_df=test_df,
         file_name=None)
     """
+
+
+def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
+    """Tests silverkite with regressors and random forest fit"""
+    hourly_data = generate_df_with_reg_for_tests(
+        freq="H",
+        periods=24 * 500,
+        train_start_date=datetime.datetime(2018, 7, 1),
+        conti_year_origin=2018)
+    train_df = hourly_data["train_df"].reset_index(drop=True)
+    test_df = hourly_data["test_df"].reset_index(drop=True)
+    fut_time_num = hourly_data["fut_time_num"]
+
+    # Fits a model that only contains lagged regressors but no regressors
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        training_fraction=None,
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5],
+            "seas_names": None}),
+        extra_pred_cols=["dow_hr", "ct1"],
+        lagged_regressor_dict=lagged_regressor_dict)
+
+    lagged_regressor_cols = trained_model["lagged_regressor_cols"]
+
+    # Three equivalent ways of generating predictions
+    result1 = silverkite.predict_n_no_sim(
+        fut_time_num=fut_time_num,
+        trained_model=trained_model,
+        freq="H",
+        new_external_regressor_df=test_df[lagged_regressor_cols])
+    result2 = silverkite.predict_no_sim(
+        fut_df=test_df[[TIME_COL, VALUE_COL]],
+        trained_model=trained_model,
+        past_df=train_df[lagged_regressor_cols],
+        new_external_regressor_df=test_df[lagged_regressor_cols])
+    result3 = silverkite.predict_no_sim(
+        fut_df=test_df[[TIME_COL, VALUE_COL] + lagged_regressor_cols],
+        trained_model=trained_model,
+        past_df=train_df[lagged_regressor_cols],
+        new_external_regressor_df=None)
+
+    assert_frame_equal(result1, result2, check_like=True)
+    assert_frame_equal(result1, result3, check_like=True)
+
+    err = calc_pred_err(test_df[VALUE_COL], result1[VALUE_COL])
+    enum = EvaluationMetricEnum.Correlation
+    assert round(err[enum.get_metric_name()], 1) == 0.8
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    assert round(err[enum.get_metric_name()], 1) == 2.0
+    # Checks to make sure the frequency is set properly
+    assert np.array_equal(result1[TIME_COL].values, test_df[TIME_COL].values)
+
+    # Tests when no `new_external_regressor_df` is provided
+
+    # If `min_lagged_regressor_order` (in this case 1) is greater than or equal to test_df.shape[0],
+    # the prediction should run without any error even without `new_external_regressor_df`
+    # and the following two should return identical results
+    result4 = silverkite.predict_no_sim(
+        fut_df=test_df[[TIME_COL, VALUE_COL]].head(1),
+        trained_model=trained_model,
+        past_df=train_df[lagged_regressor_cols],
+        new_external_regressor_df=None)
+    result5 = silverkite.predict_n_no_sim(
+        fut_time_num=1,
+        trained_model=trained_model,
+        freq="H",
+        new_external_regressor_df=None)
+    assert_frame_equal(result4, result5, check_like=True)
+
+    # Otherwise, if `min_lagged_regressor_order` is less than `fut_time_num`
+    # Testing for Exception
+    expected_match = (
+        "All columns in `lagged_regressor_cols` must appear in `df`")
+
+    # lagged_regressor_cols is None
+    with pytest.raises(ValueError, match=expected_match):
+        silverkite.predict_no_sim(
+            fut_df=test_df[[TIME_COL, VALUE_COL]].head(2),
+            trained_model=trained_model,
+            past_df=train_df[lagged_regressor_cols],
+            new_external_regressor_df=None)
 
 
 def test_forecast_silverkite_freq():
@@ -789,6 +900,266 @@ def test_forecast_silverkite_with_autoreg(hourly_data):
             autoreg_dict="non-existing-method",
             test_past_df=test_past_df,
             simulation_based=True)
+
+
+def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
+    """Tests forecast_silverkite with lagged regressors"""
+    hourly_data = generate_df_with_reg_for_tests(
+        freq="H",
+        periods=24 * 500,
+        train_start_date=datetime.datetime(2018, 7, 1),
+        conti_year_origin=2018)
+    regressor_cols = ["regressor1", "regressor_bool", "regressor_categ"]
+    train_df = hourly_data["train_df"].reset_index(drop=True)
+    test_df = hourly_data["test_df"].reset_index(drop=True)
+    fut_time_num = hourly_data["fut_time_num"]
+
+    # we define a local function to apply `forecast_silverkite`
+    # with and without lagged regressors
+    def fit_forecast_with_regressor(
+            regressor_cols=[],
+            lagged_regressor_cols=[],
+            lagged_regressor_dict=None,
+            test_past_df=None):
+        silverkite = SilverkiteForecast()
+        trained_model = silverkite.forecast(
+            df=train_df,
+            time_col=TIME_COL,
+            value_col=VALUE_COL,
+            train_test_thresh=None,
+            origin_for_time_vars=2018,
+            fs_components_df=pd.DataFrame({
+                "name": ["tod", "tow"],
+                "period": [24.0, 7.0],
+                "order": [1, 1],
+                "seas_names": ["daily", "weekly"]}),
+            extra_pred_cols=["ct1"] + regressor_cols,
+            lagged_regressor_dict=lagged_regressor_dict)
+
+        all_extra_cols = regressor_cols
+        for col in lagged_regressor_cols:
+            if col not in all_extra_cols:
+                all_extra_cols.append(col)
+        fut_df = silverkite.predict_n_no_sim(
+            fut_time_num=fut_time_num,
+            trained_model=trained_model,
+            freq="H",
+            new_external_regressor_df=test_df[all_extra_cols])
+
+        return {
+            "fut_df": fut_df,
+            "trained_model": trained_model}
+
+    # without lagged regressors
+    res = fit_forecast_with_regressor(
+        regressor_cols=regressor_cols,
+        lagged_regressor_cols=[],
+        lagged_regressor_dict=None)
+    fut_df = res["fut_df"]
+    trained_model = res["trained_model"]
+
+    # with lagged regressors
+    res = fit_forecast_with_regressor(
+        regressor_cols=regressor_cols,
+        lagged_regressor_cols=regressor_cols,
+        lagged_regressor_dict=lagged_regressor_dict)
+    fut_df_with_lagged_regressor = res["fut_df"]
+    trained_model_with_lagged_regressor = res["trained_model"]
+
+    # with lagged regressors but no regressors
+    res = fit_forecast_with_regressor(
+        regressor_cols=[],
+        lagged_regressor_cols=regressor_cols,
+        lagged_regressor_dict=lagged_regressor_dict)
+    fut_df_no_regressor = res["fut_df"]
+    trained_model_no_regressor = res["trained_model"]
+
+    # testing errors
+    # without lagged regressors
+    err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    e1 = err[enum.get_metric_name()]
+    assert round(e1, 1) == 2.7
+    # with lagged regressors
+    err = calc_pred_err(test_df[VALUE_COL], fut_df_with_lagged_regressor[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    e2 = err[enum.get_metric_name()]
+    assert e2 > 0 and e2 / e1 < 0.8
+    # with lagged regressors but no regressors
+    err = calc_pred_err(test_df[VALUE_COL], fut_df_no_regressor[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    e3 = err[enum.get_metric_name()]
+    assert e3 > e2
+
+    # trained models
+    assert trained_model["has_lagged_regressor_structure"] is False
+    assert trained_model_with_lagged_regressor["has_lagged_regressor_structure"] is True
+    assert trained_model_with_lagged_regressor["lagged_regressor_dict"] == lagged_regressor_dict
+    assert trained_model_with_lagged_regressor["lagged_regressor_func"] is not None
+    assert trained_model_with_lagged_regressor["min_lagged_regressor_order"] == 1
+    assert trained_model_with_lagged_regressor["max_lagged_regressor_order"] == 504
+
+    expected_pred_cols = [
+        'ct1',
+        'regressor1',
+        'regressor_bool',
+        'regressor_categ',
+        'sin1_tod_daily',
+        'cos1_tod_daily',
+        'sin1_tow_weekly',
+        'cos1_tow_weekly']
+
+    expected_pred_cols_with_lagged_regressor = [
+        'ct1',
+        'regressor1',
+        'regressor_bool',
+        'regressor_categ',
+        'sin1_tod_daily',
+        'cos1_tod_daily',
+        'sin1_tow_weekly',
+        'cos1_tow_weekly',
+        'regressor1_lag1',
+        'regressor1_lag168',
+        'regressor1_avglag_168_336_504',
+        'regressor1_avglag_169_to_336',
+        'regressor_bool_lag1',
+        'regressor_bool_lag168',
+        'regressor_bool_avglag_168_336_504',
+        'regressor_bool_avglag_169_to_336',
+        'regressor_categ_lag1',
+        'regressor_categ_lag168']
+
+    expected_pred_cols_no_regressor = [
+        'ct1',
+        'sin1_tod_daily',
+        'cos1_tod_daily',
+        'sin1_tow_weekly',
+        'cos1_tow_weekly',
+        'regressor1_lag1',
+        'regressor1_lag168',
+        'regressor1_avglag_168_336_504',
+        'regressor1_avglag_169_to_336',
+        'regressor_bool_lag1',
+        'regressor_bool_lag168',
+        'regressor_bool_avglag_168_336_504',
+        'regressor_bool_avglag_169_to_336',
+        'regressor_categ_lag1',
+        'regressor_categ_lag168']
+
+    assert trained_model["pred_cols"] == expected_pred_cols
+    assert trained_model_with_lagged_regressor["pred_cols"] == expected_pred_cols_with_lagged_regressor
+    assert trained_model_no_regressor["pred_cols"] == expected_pred_cols_no_regressor
+
+    trained_mape = trained_model["training_evaluation"]["MAPE"]
+    trained_mape_with_lagged_regressor = trained_model_with_lagged_regressor["training_evaluation"]["MAPE"]
+    trained_mape_no_regressor = trained_model_no_regressor["training_evaluation"]["MAPE"]
+    assert round(trained_mape, 0) == 446
+    assert round(trained_mape_with_lagged_regressor, 0) == 337
+    assert round(trained_mape_no_regressor, 0) == 315
+
+
+def test_forecast_silverkite_with_true_lagged_regressor():
+    """Tests efficacy of lagged regressor by a timeseries generated by a true lagged regressor"""
+    n = 1000
+    date_list = pd.date_range(
+        start=datetime.datetime(2018, 7, 1),
+        periods=n,
+        freq="D").tolist()
+    regressor = pd.Series(np.round(np.sin(np.array(range(n))), 8))
+    lagged_regressor = regressor.shift(3).bfill().ffill()
+    y = 10 + lagged_regressor
+
+    df = pd.DataFrame({
+        "ts": date_list,
+        "regressor1": regressor,
+        "regressor1_lag": lagged_regressor,
+        "y": y})
+    train_df = df.iloc[:800].reset_index(drop=True)
+    test_df = df.iloc[800:].reset_index(drop=True)
+    fut_time_num = test_df.shape[0]
+
+    regressor_cols = ["regressor1"]
+    lagged_regressor_dict = {
+        "regressor1": {"lag_dict": {"orders": [3]}}}
+
+    def fit_forecast_with_regressor(
+            regressor_cols=[],
+            lagged_regressor_cols=[],
+            lagged_regressor_dict=None):
+        silverkite = SilverkiteForecast()
+        trained_model = silverkite.forecast(
+            df=train_df,
+            time_col=TIME_COL,
+            value_col=VALUE_COL,
+            train_test_thresh=None,
+            origin_for_time_vars=2018,
+            fs_components_df=None,
+            extra_pred_cols=["ct1"] + regressor_cols,
+            lagged_regressor_dict=lagged_regressor_dict)
+
+        all_extra_cols = regressor_cols
+        for col in lagged_regressor_cols:
+            if col not in all_extra_cols:
+                all_extra_cols.append(col)
+        fut_df = silverkite.predict_n_no_sim(
+            fut_time_num=fut_time_num,
+            trained_model=trained_model,
+            freq="H",
+            new_external_regressor_df=test_df[all_extra_cols])
+
+        return {
+            "fut_df": fut_df,
+            "trained_model": trained_model}
+
+    # with regressors but no lagged regressors
+    res = fit_forecast_with_regressor(
+        regressor_cols=regressor_cols,
+        lagged_regressor_cols=[],
+        lagged_regressor_dict=None)
+    fut_df = res["fut_df"]
+    trained_model = res["trained_model"]
+
+    assert trained_model["pred_cols"] == ["ct1", "regressor1"]
+
+    # with lagged regressors
+    res = fit_forecast_with_regressor(
+        regressor_cols=regressor_cols,
+        lagged_regressor_cols=regressor_cols,
+        lagged_regressor_dict=lagged_regressor_dict)
+    fut_df_with_lagged_regressor = res["fut_df"]
+    trained_model_with_lagged_regressor = res["trained_model"]
+
+    assert trained_model_with_lagged_regressor["pred_cols"] == ["ct1", "regressor1", "regressor1_lag3"]
+
+    # with lagged regressors but no regressors
+    res = fit_forecast_with_regressor(
+        regressor_cols=[],
+        lagged_regressor_cols=regressor_cols,
+        lagged_regressor_dict=lagged_regressor_dict)
+    fut_df_no_regressor = res["fut_df"]
+    trained_model_no_regressor = res["trained_model"]
+
+    assert trained_model_no_regressor["pred_cols"] == ["ct1", "regressor1_lag3"]
+
+    # checks lagged regressor efficacy by comparing prediction errors
+    # with regressors but no lagged regressors
+    err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    e1 = err[enum.get_metric_name()]
+
+    # with lagged regressors
+    err = calc_pred_err(test_df[VALUE_COL], fut_df_with_lagged_regressor[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    e2 = err[enum.get_metric_name()]
+
+    # with lagged regressors but no regressors
+    err = calc_pred_err(test_df[VALUE_COL], fut_df_no_regressor[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    e3 = err[enum.get_metric_name()]
+
+    assert e2 < 0.1 * e1
+    assert e3 < 0.1 * e1
+    assert e2 < e3
 
 
 def test_forecast_silverkite_2min():
@@ -1542,6 +1913,161 @@ def test_predict_silverkite_with_regressors():
 
     expected_fut_df_gap[TIME_COL] = pd.to_datetime(expected_fut_df_gap[TIME_COL])
     assert_frame_equal(fut_df_gap, expected_fut_df_gap)
+
+
+def test_predict_silverkite_with_lagged_regressors():
+    """Testing ``SilverkiteForecast.predict`` in presence of lagged regressors"""
+    data = generate_df_with_reg_for_tests(
+        freq="1D",
+        periods=20 * 7,  # short-term: 20 weeks of data
+        remove_extra_cols=True,
+        mask_test_actuals=True)
+
+    regressor_cols = ["regressor1", "regressor2", "regressor_categ"]
+    keep_cols = [TIME_COL, VALUE_COL] + regressor_cols
+    train_df = data["train_df"][keep_cols]
+    test_df = data["test_df"][keep_cols]
+    fut_df = test_df.copy()
+
+    # Specify 2 configurations of autoreg_dict
+    # autoreg_dict1 would need simulation in predict phase
+    # autoreg_dict2 does not need simulation in predict phase
+    autoreg_dict1 = {
+        "lag_dict": {"orders": [7]},
+        "agg_lag_dict": {
+            "orders_list": [[7, 7*2, 7*3]],
+            "interval_list": [(8, 7*2)]},
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    autoreg_dict2 = {
+        "lag_dict": {"orders": [28]},
+        "agg_lag_dict": {
+            "orders_list": [],
+            "interval_list": [(7*4 + 1, 7*5)]},
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    lagged_regressor_dict = {
+        "regressor1": {
+            "lag_dict": {"orders": [1, 2, 3]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7 * 2, 7 * 3]],
+                "interval_list": [(8, 7 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor2": "auto"
+    }
+
+    fs_components_df = pd.DataFrame({
+        "name": ["tow", "conti_year"],
+        "period": [7.0, 1.0],
+        "order": [3, 0],
+        "seas_names": ["weekly", None]})
+
+    # Has autoregression and simulation is used in predict phase
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        fit_algorithm="linear",
+        fs_components_df=fs_components_df,
+        extra_pred_cols=regressor_cols,
+        autoreg_dict=autoreg_dict1,
+        lagged_regressor_dict=lagged_regressor_dict)
+
+    np.random.seed(123)
+    result1 = silverkite.predict(
+        fut_df=fut_df.head(10),  # this is bigger than the minimal order in autoreg_dict1
+        trained_model=trained_model,
+        past_df=train_df,
+        new_external_regressor_df=None,
+        force_no_sim=False)
+
+    expected_lag_cols = [
+        "y_lag7",
+        "y_avglag_7_14_21",
+        "y_avglag_8_to_14",
+        "regressor1_lag1",
+        "regressor1_lag2",
+        "regressor1_lag3",
+        "regressor1_avglag_7_14_21",
+        "regressor1_avglag_8_to_14",
+        "regressor2_lag35",
+        "regressor2_avglag_35_42_49",
+        "regressor2_avglag_30_to_36"]
+
+    assert set(expected_lag_cols).issubset(trained_model["pred_cols"])
+    assert result1["fut_df"].shape == (10, 2)
+    assert result1["fut_df"].isna().sum().sum() == 0
+
+    # Has autoregression and simulation is not used in predict phase
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        fit_algorithm="linear",
+        fs_components_df=fs_components_df,
+        extra_pred_cols=regressor_cols,
+        autoreg_dict=autoreg_dict2,
+        lagged_regressor_dict=lagged_regressor_dict)
+
+    np.random.seed(123)
+    result2 = silverkite.predict(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=train_df,
+        new_external_regressor_df=None,
+        force_no_sim=False)
+
+    expected_lag_cols = [
+        "y_lag28",
+        "y_avglag_29_to_35",
+        "regressor1_lag1",
+        "regressor1_lag2",
+        "regressor1_lag3",
+        "regressor1_avglag_7_14_21",
+        "regressor1_avglag_8_to_14",
+        "regressor2_lag35",
+        "regressor2_avglag_35_42_49",
+        "regressor2_avglag_30_to_36"]
+
+    assert set(expected_lag_cols).issubset(trained_model["pred_cols"])
+    assert result2["fut_df"].shape == (27, 2)
+    assert result2["fut_df"].isna().sum().sum() == 0
+
+    # No autoregression
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        fit_algorithm="linear",
+        fs_components_df=fs_components_df,
+        extra_pred_cols=regressor_cols,
+        autoreg_dict=None,
+        lagged_regressor_dict=lagged_regressor_dict)
+
+    np.random.seed(123)
+    result3 = silverkite.predict(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=train_df,
+        new_external_regressor_df=None,
+        force_no_sim=False)
+
+    expected_lag_cols = [
+        "regressor1_lag1",
+        "regressor1_lag2",
+        "regressor1_lag3",
+        "regressor1_avglag_7_14_21",
+        "regressor1_avglag_8_to_14",
+        "regressor2_lag35",
+        "regressor2_avglag_35_42_49",
+        "regressor2_avglag_30_to_36"]
+
+    assert set(expected_lag_cols).issubset(trained_model["pred_cols"])
+    assert result3["fut_df"].shape == (27, 2)
+    assert result3["fut_df"].isna().sum().sum() == 0
 
 
 def test_predict_silverkite_exceptions():
@@ -2920,6 +3446,98 @@ def test_build_autoreg_features(hourly_data):
             past_df=None)
 
 
+def test_build_lagged_regressor_features(lagged_regressor_dict):
+    """Testing of build_lagged_regressor_features with lagged_regressor_func"""
+    hourly_data = generate_df_with_reg_for_tests(
+        freq="H",
+        periods=24 * 500,
+        train_start_date=datetime.datetime(2018, 7, 1),
+        conti_year_origin=2018)
+
+    silverkite = SilverkiteForecast()
+    past_df = hourly_data["train_df"]
+    df = hourly_data["test_df"]
+    df.index = pd.RangeIndex(start=10, stop=10+df.shape[0], step=1)  # non-default index
+
+    regressor_cols = ["regressor1", "regressor_bool", "regressor_categ"]
+
+    lagged_regressor_components = build_autoreg_df_multi(value_lag_info_dict=lagged_regressor_dict)
+    lagged_regressor_func = lagged_regressor_components["autoreg_func"]
+    lagged_regressor_orig_col_names = lagged_regressor_components["autoreg_orig_col_names"]
+    assert set(lagged_regressor_orig_col_names).difference(regressor_cols) == set()
+
+    lagged_regressor_df = silverkite._SilverkiteForecast__build_lagged_regressor_features(
+        df=df,
+        lagged_regressor_cols=lagged_regressor_orig_col_names,
+        lagged_regressor_func=lagged_regressor_func,
+        phase="fit",
+        past_df=past_df)
+
+    assert_equal(lagged_regressor_df.index, df.index)
+    assert None not in df.columns
+    expected_cols = [
+        'regressor1_lag1',
+        'regressor1_lag168',
+        'regressor1_avglag_168_336_504',
+        'regressor1_avglag_169_to_336',
+        'regressor_bool_lag1',
+        'regressor_bool_lag168',
+        'regressor_bool_avglag_168_336_504',
+        'regressor_bool_avglag_169_to_336',
+        'regressor_categ_lag1',
+        'regressor_categ_lag168']
+    assert list(lagged_regressor_df.columns) == expected_cols, (
+        "expected column names for lag data do not appear in obtained feature df")
+
+    obtained_lagged_regressor_df = lagged_regressor_df[expected_cols][:2].round(1)
+    expected_lagged_regressor_df = pd.DataFrame({
+        "regressor1_lag1": [1.1, 0.2],
+        "regressor1_lag168": [1.5, 2.3],
+        "regressor1_avglag_168_336_504": [1.3, 1.7],
+        "regressor1_avglag_169_to_336": [2.1, 2.1],
+        "regressor_bool_lag1": [True, True],
+        "regressor_bool_lag168": [False, True],
+        "regressor_bool_avglag_168_336_504": [0.3, 0.7],
+        "regressor_bool_avglag_169_to_336": [0.7, 0.7],
+        "regressor_categ_lag1": ["c2", "c2"],
+        "regressor_categ_lag168": ["c3", "c3"]}, index=df.index[:2])
+    # Expected lag data must appear in the result dataframe
+    assert_frame_equal(expected_lagged_regressor_df, obtained_lagged_regressor_df)
+
+    # Expected lag1 value must come from last element of `past_df`.
+    # Last value in `past_df` should appear as lag1 for first value in `df`.
+    expected_lag1_value1 = round(past_df.tail(1)["regressor1"].values[0], 1)
+    expected_lag1_value2 = past_df.tail(1)["regressor_bool"].values[0]
+    expected_lag1_value3 = past_df.tail(1)["regressor_categ"].values[0]
+    assert obtained_lagged_regressor_df["regressor1_lag1"].values[0] == expected_lag1_value1
+    assert obtained_lagged_regressor_df["regressor_bool_lag1"].values[0] == expected_lag1_value2
+    assert obtained_lagged_regressor_df["regressor_categ_lag1"].values[0] == expected_lag1_value3
+
+    # Testing for Exception
+    expected_match = (
+        "At 'predict' phase, if lagged_regressor_func is not None,"
+        " 'past_df' and 'lagged_regressor_cols' must be provided to "
+        "`build_lagged_regressor_features`")
+
+    # lagged_regressor_cols is None
+    with pytest.raises(ValueError, match=expected_match):
+        silverkite._SilverkiteForecast__build_lagged_regressor_features(
+            df=df,
+            lagged_regressor_cols=None,
+            lagged_regressor_func=lagged_regressor_func,
+            phase="predict",
+            past_df=past_df)
+
+    # past_df is None
+    with pytest.raises(ValueError, match=expected_match):
+        silverkite._SilverkiteForecast__build_lagged_regressor_features(
+            df=df,
+            lagged_regressor_cols=regressor_cols,
+            lagged_regressor_func=lagged_regressor_func,
+            phase="predict",
+            past_df=None)
+
+
 def test_get_default_autoreg_dict():
     """Testing ``get_default_autoreg_dict``."""
     # Daily, horizon 1 days
@@ -3043,6 +3661,187 @@ def test_get_default_autoreg_dict():
     assert autoreg_dict["lag_dict"]["orders"] == [1, 2, 3]
     assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24*7), (24*7+1, 24*7*2)]
     assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*7*2, 24*7*3]]
+
+
+def test_get_default_lagged_regressor_dict():
+    """Testing ``get_default_lagged_regressor_dict``."""
+
+    # Hourly, horizon 1
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1/24,
+        forecast_horizon=1)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 24*7
+    assert lag_reg_dict["lag_dict"]["orders"] == [1]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(1, 24*7)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*14, 24*21]]
+
+    # Hourly, horizon 2
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1/24,
+        forecast_horizon=2)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 24*7
+    assert lag_reg_dict["lag_dict"]["orders"] == [24*7]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(2, 24*7+1)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*14, 24*21]]
+
+    # Hourly, horizon 24
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1/24,
+        forecast_horizon=24)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 24*7
+    assert lag_reg_dict["lag_dict"]["orders"] == [24*7]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(24, 24*8-1)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*14, 24*21]]
+
+    # Hourly, horizon 24*8
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1/24,
+        forecast_horizon=24*8)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 24*14
+    assert lag_reg_dict["lag_dict"]["orders"] == [24*14]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(24*8, 24*15-1)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*14, 24*21, 24*28]]
+
+    # Hourly, horizon 24*31
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1/24,
+        forecast_horizon=24*31)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 24*35
+    assert lag_reg_dict is None
+
+    # Daily, horizon 1
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1,
+        forecast_horizon=1)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 7
+    assert lag_reg_dict["lag_dict"]["orders"] == [1]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(1, 7)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[7, 14, 21]]
+
+    # Daily, horizon 2
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1,
+        forecast_horizon=2)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 7
+    assert lag_reg_dict["lag_dict"]["orders"] == [7]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(2, 8)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[7, 14, 21]]
+
+    # Daily, horizon 7
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1,
+        forecast_horizon=7)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 7
+    assert lag_reg_dict["lag_dict"]["orders"] == [7]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(7, 13)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[7, 14, 21]]
+
+    # Daily, horizon 8
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1,
+        forecast_horizon=8)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 14
+    assert lag_reg_dict["lag_dict"]["orders"] == [14]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(8, 14)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[14, 21, 28]]
+
+    # Daily, horizon 31
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=1,
+        forecast_horizon=31)
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order == 35
+    assert lag_reg_dict is None
+
+    # Weekly, horizon 1
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=7,
+        forecast_horizon=1)
+
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order is None
+    assert lag_reg_dict["lag_dict"]["orders"] == [1]
+    assert lag_reg_dict["agg_lag_dict"] is None
+
+    # Weekly, horizon 4
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=7,
+        forecast_horizon=4)
+
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order is None
+    assert lag_reg_dict["lag_dict"]["orders"] == [4]
+    assert lag_reg_dict["agg_lag_dict"] is None
+
+    # Weekly, horizon 5
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=7,
+        forecast_horizon=5)
+
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order is None
+    assert lag_reg_dict is None
+
+    # Monthly, horizon 1
+    silverkite = SilverkiteForecast()
+    lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
+        freq_in_days=30,
+        forecast_horizon=1)
+
+    lag_reg_dict = lag_reg_info["lag_reg_dict"]
+    proper_order = lag_reg_info["proper_order"]
+
+    assert proper_order is None
+    assert lag_reg_dict["lag_dict"]["orders"] == [1]
+    assert lag_reg_dict["agg_lag_dict"] is None
 
 
 def test_normalize_changepoint_values():

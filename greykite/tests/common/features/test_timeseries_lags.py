@@ -494,11 +494,10 @@ def test_build_autoreg_df_exception():
 
 def test_build_autoreg_df_multi():
     """Testing build_autoreg_df_multi"""
-
     df = pd.DataFrame({
         "y": range(10),
         "x1": range(100, 110),
-        "x2": range(200, 210)})
+        "x2": [True, False, False, False, True, True, False, True, False, True]})
 
     value_col = "y"
     lagged_regressor_value_cols = ["x1", "x2"]
@@ -515,17 +514,21 @@ def test_build_autoreg_df_multi():
     for col in lagged_regressor_value_cols:
         value_lag_info_dict[col] = {
             "lag_dict": {"orders": [1, 2, 7]},
-            "agg_lag_dict": None,
+            "agg_lag_dict": {
+                "orders_list": [[7, 7*2, 7*3]],
+                "interval_list": [(1, 7)]},
             "series_na_fill_func": lambda s: s.bfill().ffill()}
 
     autoreg_info = build_autoreg_df_multi(
         value_lag_info_dict=value_lag_info_dict,
         series_na_fill_func=lambda s: s.bfill().ffill())
 
+    autoreg_orig_col_names = autoreg_info["autoreg_orig_col_names"]
     autoreg_col_names = autoreg_info["autoreg_col_names"]
     autoreg_func = autoreg_info["autoreg_func"]
     autoreg_df = autoreg_func(df=df)
 
+    expected_autoreg_orig_col_names = ["y", "x1", "x2"]
     expected_col_names = [
         "y_lag1",
         "y_lag2",
@@ -536,11 +539,24 @@ def test_build_autoreg_df_multi():
         "x1_lag1",
         "x1_lag2",
         "x1_lag7",
+        "x1_avglag_7_14_21",
+        "x1_avglag_1_to_7",
         "x2_lag1",
         "x2_lag2",
-        "x2_lag7"]
+        "x2_lag7",
+        "x2_avglag_7_14_21",
+        "x2_avglag_1_to_7"]
 
-    # checking column names
+    # Checking data types
+    expected_dtypes = ['float'] * 11 + ['bool'] * 3 + ['float'] * 2
+    assert (autoreg_df.dtypes != expected_dtypes).sum() == 0
+
+    # Checking min and max lag order
+    assert autoreg_info["min_order"] == 1
+    assert autoreg_info["max_order"] == 21
+
+    # Checking column names
+    assert autoreg_orig_col_names == expected_autoreg_orig_col_names
     assert autoreg_col_names == expected_col_names
     assert list(autoreg_df.columns) == expected_col_names
 
@@ -557,17 +573,30 @@ def test_build_autoreg_df_multi():
         autoreg_df["y_avglag_1_to_7"].round(1).values,
         expected_values1)
 
-    # Checks values for `x2_lag2`
-    expected_values2 = [200, 200, 200, 201, 202, 203, 204, 205, 206, 207]
+    # Checking values for `x2_avglag_1_to_7`
+    # Note: x2 is: True, False, False, False, True, True, False, True, False, True
+    # Therefore for example the last value for `x2_avglag_1_to_7` will be
+    # 3 / 7 = 0.43, which is rounded to 0.4 as reflected below
+    # The first two values are expected to be 1 as past data is imputed with
+    # the first element in x2, which is True
+    # The third value is expectd to be (1 + 1 + 1 + 1 + 1 + 1 + 0) / 7 = 0.85
+    # which will be rounded to 0.9 as reflected below
+    expected_values2 = [1.0, 1.0, 0.9, 0.7, 0.6, 0.6, 0.6, 0.4, 0.4, 0.4]
     assert np.allclose(
-        autoreg_df["x2_lag2"].round(1).values,
+        round(autoreg_df["x2_avglag_1_to_7"], 1),
         expected_values2)
+
+    # Checks values for `x2_lag2`
+    expected_values3 = [True, True, True, False, False, False, True, True, False, True]
+    assert np.allclose(
+        autoreg_df["x2_lag2"],
+        expected_values3)
 
     # Tests with a given `past_df`
     past_df = pd.DataFrame({
         "y": [-10]*10,
         "x1": [-100]*10,
-        "x2": [-1000]*10})
+        "x2": [False]*10})
 
     autoreg_df = autoreg_func(
         df=df,
@@ -579,4 +608,4 @@ def test_build_autoreg_df_multi():
 
     assert np.allclose(
         autoreg_df["x2_lag7"],
-        [-1000]*7 + [200, 201, 202])
+        [False]*7 + [True, False, False])

@@ -75,11 +75,16 @@ class UnivariateTimeSeries:
         Name of value column in original input data.
     regressor_cols: `list` [`str`]
         A list of regressor columns in the training and prediction DataFrames.
+    lagged_regressor_cols: `list` [`str`]
+        A list of additional columns needed for lagged regressors in the training and prediction DataFrames.
     last_date_for_val: `datetime.datetime` or None, default None
         Date or timestamp corresponding  to last non-null value in ``df[original_value_col]``.
     last_date_for_reg: `datetime.datetime` or None, default None
         Date or timestamp corresponding to last non-null value in ``df[regressor_cols]``.
         If ``regressor_cols`` is None, ``last_date_for_reg`` is None.
+    last_date_for_lag_reg: `datetime.datetime` or None, default None
+        Date or timestamp corresponding to last non-null value in ``df[lagged_regressor_cols]``.
+        If ``lagged_regressor_cols`` is None, ``last_date_for_lag_reg`` is None.
     train_end_date: `datetime.datetime`
         Last date or timestamp in ``fit_df``. It is always less than or equal to
         minimum non-null values of ``last_date_for_val`` and ``last_date_for_reg``.
@@ -110,8 +115,10 @@ class UnivariateTimeSeries:
         self.original_time_col: Optional[str] = None
         self.original_value_col: Optional[str] = None
         self.regressor_cols: List[str] = []
+        self.lagged_regressor_cols: List[str] = []
         self.last_date_for_val: Optional[datetime] = None
         self.last_date_for_reg: Optional[datetime] = None
+        self.last_date_for_lag_reg: Optional[datetime] = None
         self.train_end_date: Optional[str] = None
         self.fit_cols: List[str] = []
         self.fit_df: Optional[pd.DataFrame] = None
@@ -130,6 +137,7 @@ class UnivariateTimeSeries:
             tz: str = None,
             train_end_date: datetime = None,
             regressor_cols: List[str] = None,
+            lagged_regressor_cols: List[str] = None,
             anomaly_info: Optional[Union[Dict, List[Dict]]] = None):
         """Loads data to internal representation. Parses date column,
         sets timezone aware index.
@@ -146,23 +154,27 @@ class UnivariateTimeSeries:
             The time column can be anything that can be parsed by pandas DatetimeIndex.
         value_col: `str`
             The column name which has the value of interest to be forecasted.
-        freq : `str`, optional, default None
+        freq : `str` or None, default None
             Timeseries frequency, DateOffset alias, If None automatically inferred.
-        date_format : `str`, optional, default None
+        date_format : `str` or None, default None
             strftime format to parse time column, eg ``%m/%d/%Y``.
             Note that ``%f`` will parse all the way up to nanoseconds.
             If None (recommended), inferred by `pandas.to_datetime`.
-        tz : `str` or pytz.timezone object, optional, default None
+        tz : `str` or pytz.timezone object or None, default None
             Passed to `pandas.tz_localize` to localize the timestamp.
-        train_end_date : `datetime.datetime`, optional, default None
+        train_end_date : `datetime.datetime` or None, default None
             Last date to use for fitting the model. Forecasts are generated after this date.
             If None, it is set to the minimum of ``self.last_date_for_val`` and
             ``self.last_date_for_reg``.
-        regressor_cols: `list` [`str`], optional, default None
+        regressor_cols: `list` [`str`] or None, default None
             A list of regressor columns used in the training and prediction DataFrames.
             If None, no regressor columns are used.
             Regressor columns that are unavailable in ``df`` are dropped.
-            anomaly_info : `dict` or None, default None
+        lagged_regressor_cols: `list` [`str`] or None, default None
+            A list of additional columns needed for lagged regressors in the training and prediction DataFrames.
+            This list can have overlap with ``regressor_cols``.
+            If None, no additional columns are added to the DataFrame.
+            Lagged regressor columns that are unavailable in ``df`` are dropped.
         anomaly_info : `dict` or `list` [`dict`] or None, default None
             Anomaly adjustment info. Anomalies in ``df``
             are corrected before any forecasting is done.
@@ -217,6 +229,7 @@ class UnivariateTimeSeries:
             tz=tz,
             train_end_date=train_end_date,
             regressor_cols=regressor_cols,
+            lagged_regressor_cols=lagged_regressor_cols,
             anomaly_info=anomaly_info)
         self.df = canonical_data_dict["df"]
         self.df_before_adjustment = canonical_data_dict["df_before_adjustment"]
@@ -224,10 +237,12 @@ class UnivariateTimeSeries:
         self.freq = canonical_data_dict["freq"]
         self.time_stats = canonical_data_dict["time_stats"]
         self.regressor_cols = canonical_data_dict["regressor_cols"]
+        self.lagged_regressor_cols = canonical_data_dict["lagged_regressor_cols"]
         self.fit_cols = canonical_data_dict["fit_cols"]
         self.train_end_date = canonical_data_dict["train_end_date"]
         self.last_date_for_val = canonical_data_dict["last_date_for_val"]
         self.last_date_for_reg = canonical_data_dict["last_date_for_reg"]
+        self.last_date_for_lag_reg = canonical_data_dict["last_date_for_lag_reg"]
 
         # y (possibly with null values) after gaps have been filled in and anomalies corrected
         self.y = self.df[VALUE_COL]
@@ -241,6 +256,7 @@ class UnivariateTimeSeries:
         log_message(f"last date for {self.original_value_col}: {self.last_date_for_val}", LoggingLevelEnum.INFO)
         log_message(f"last date with any regressor: {self.last_date_for_reg}", LoggingLevelEnum.INFO)
         log_message(f"columns available to use as regressors: {', '.join(self.regressor_cols)}", LoggingLevelEnum.INFO)
+        log_message(f"columns available to use as lagged regressors: {', '.join(self.lagged_regressor_cols)}", LoggingLevelEnum.INFO)
 
         return self
 

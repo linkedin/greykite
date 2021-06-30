@@ -18,10 +18,11 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# original author: Sayan Patra
+# original authors: Sayan Patra, Yi Su
 """Class to load datasets."""
 import datetime
 import os
+import warnings
 from pathlib import Path
 
 import pandas as pd
@@ -51,7 +52,6 @@ class DataLoader:
         ----------
         data_dir : `str` or None, default None
             The path to the input data directory.
-            If None, it is set to '{project_trunk}/data'.
         data_sub_dir : `str` or None, default None
             The name of the input data sub directory.
             Updates path by appending to the ``data_dir`` at the end.
@@ -94,6 +94,62 @@ class DataLoader:
                       if file_name.endswith((".csv", ".csv.xz"))]
 
         return file_names
+
+    @staticmethod
+    def get_aggregated_data(df, agg_freq=None, agg_func=None):
+        """Returns aggregated data.
+
+        Parameters
+        ----------
+        df : `pandas.DataFrame`.
+            The input data must have TIME_COL ("ts") column and the columns in the keys of ``agg_func``.
+
+        agg_freq : `str` or None, default None
+            If None, data will not be aggregated and will include all columns.
+            Possible values: "daily", "weekly", or "monthly".
+
+        agg_func : `Dict` [`str`, `str`], default None
+            A dictionary of the columns to be aggregated and the correponding aggregating functions.
+            Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
+            An exmple input can be {"col1":"mean", "col2":"sum"}
+            If None, data will not be aggregated and will include all columns.
+
+        Returns
+        -------
+        df : `pandas.DataFrame`
+            The aggregated dataframe.
+        """
+        if TIME_COL not in df.columns:
+            raise ValueError(f"{TIME_COL} must be in the DataFrame.")
+
+        if not agg_freq and not agg_func:
+            return df
+        elif agg_freq and agg_func:
+            df_raw = df[list(agg_func.keys())]
+            df_raw.insert(0, TIME_COL, pd.to_datetime(df[TIME_COL]))
+            # Aggregate to daily
+            df_tmp = df_raw.resample("D", on=TIME_COL).agg(agg_func)
+            df_daily = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
+            # Aggregate to weekly
+            df_tmp = df_raw.resample("W-MON", on=TIME_COL).agg(agg_func)
+            df_weekly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
+            # Aggregate to monthly
+            df_tmp = df_raw.resample("MS", on=TIME_COL).agg(agg_func)
+            df_monthly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
+            if agg_freq == "daily":
+                return df_daily
+            elif agg_freq == "weekly":
+                return df_weekly
+            elif agg_freq == "monthly":
+                return df_monthly
+            else:
+                warnings.warn("Invalid \"agg_freq\", must be one of \"daily\", \"weekly\" or \"monthly\". "
+                              "Non-aggregated data is returned.")
+                return df_raw
+        else:
+            warnings.warn("Both \"agg_freq\" and \"agg_func\" must be provided. "
+                          "Non-aggregated data is returned.")
+            return df
 
     def get_data_inventory(self):
         """Returns the names of the available internal datasets.
@@ -201,8 +257,8 @@ class DataLoader:
             df = df[df["SystemCodeNumber"] == system_code_number].reset_index(drop=True)
         return df
 
-    def load_bikesharing(self):
-        """Loads the Hourly Bike Sharing Count dataset.
+    def load_bikesharing(self, agg_freq=None, agg_func=None):
+        """Loads the Hourly Bike Sharing Count dataset with possible aggregations.
 
         This dataset contains aggregated hourly count of the number of rented bikes.
         The data also includes weather data: Maximum Daily temperature (tmax);
@@ -220,10 +276,14 @@ class DataLoader:
             tmax : maximum daily temperature
             pn : precipitation
 
+        Parameters
+        ----------
+        Refer to the input of function `get_aggregated_data`.
+
         Returns
         -------
         df : `pandas.DataFrame` with bikesharing data.
-            Has the following columns:
+            If no ``freq`` was specified, the returned data has the following columns:
 
                 "date" : day of year
                 "ts" : hourly timestamp
@@ -231,12 +291,13 @@ class DataLoader:
                 "tmin" : minimum daily temperature
                 "tmax" : maximum daily temperature
                 "pn" : precipitation
+            Otherwise, only ``agg_col`` column is returned.
         """
         data_path = self.get_data_home(data_dir=None, data_sub_dir="hourly")
         df = self.get_df(data_path=data_path, data_name="hourly_bikesharing")
-        return df
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
 
-    def load_beijing_pm(self):
+    def load_beijing_pm(self, agg_freq=None, agg_func=None):
         """Loads the Beijing Particulate Matter (PM2.5) dataset.
         https://archive.ics.uci.edu/ml/datasets/Beijing+PM2.5+Data
 
@@ -261,12 +322,16 @@ class DataLoader:
             Is : cumulated hours of snow
             Ir : cumulated hours of rain
 
+        Parameters
+        ----------
+        Refer to the input of function `get_aggregated_data`.
+
         Returns
         -------
         df : `pandas.DataFrame` with Beijing PM2.5 data.
             Has the following columns:
 
-                TIME_COL : hourly timestamp
+                "ts" : hourly timestamp
                 "year" : year of data in this row
                 "month" : month of data in this row
                 "day" : day of data in this row
@@ -290,7 +355,8 @@ class DataLoader:
         hour_string = df["year"].astype(str) + "-" + df["month"].astype(str) + "-" + df["day"].astype(str) + "-" + df["hour"].astype(str)
         hour_datetime = hour_string.apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d-%H"))
         df.insert(0, TIME_COL, hour_datetime)
-        return df
+
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
 
     def load_data(self, data_name, **kwargs):
         """Loads dataset by name from the internal data library.
@@ -309,9 +375,9 @@ class DataLoader:
         elif data_name == "hourly_parking":
             df = self.load_parking(**kwargs)
         elif data_name == "hourly_bikesharing":
-            df = self.load_bikesharing()
+            df = self.load_bikesharing(**kwargs)
         elif data_name == "hourly_beijing_pm":
-            df = self.load_beijing_pm()
+            df = self.load_beijing_pm(**kwargs)
         else:
             data_inventory = self.get_data_inventory()
             raise ValueError(f"Input data name '{data_name}' is not recognized. "

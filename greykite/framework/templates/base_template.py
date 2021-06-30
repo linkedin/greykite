@@ -52,6 +52,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
 
         - estimator (__init__ default value)
         - get_regressor_cols
+        - get_lagged_regressor_info
         - get_hyperparameter_grid
 
     Subclasses may optionally want to override:
@@ -72,7 +73,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
 
         self._estimator: BaseForecastEstimator = estimator
         """The estimator instance to use as the final step in the pipeline.
-        An instance of `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
+        An instance of `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
         """
 
         # Attributes used by `~greykite.framework.templates.base_template.apply_template_for_pipeline_params`.
@@ -85,6 +86,10 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
         self.regressor_cols = None
         """A list of regressor columns used in the training and prediction DataFrames.
         If None, no regressor columns are used.
+        """
+        self.lagged_regressor_cols = None
+        """A list of lagged regressor columns used in the training and prediction DataFrames.
+        If None, no lagged regressor columns are used.
         """
         self.pipeline = None
         """Pipeline to fit. The final named step must be called "estimator"."""
@@ -102,7 +107,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
     @property
     def estimator(self):
         """The estimator instance to use as the final step in the pipeline.
-        An instance of `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
+        An instance of `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.
         """
         return self._estimator
 
@@ -125,6 +130,30 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
             See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.
         """
         pass
+
+    def get_lagged_regressor_info(self):
+        """Returns lagged regressor column names and minimal/maximal lag order. The lag order
+        can be used to check potential imputation in the computation of lags.
+
+        Can be overridden by subclass.
+
+        Returns
+        -------
+        lagged_regressor_info : `dict`
+            A dictionary that includes the lagged regressor column names and maximal/minimal lag order
+            The keys are:
+
+                lagged_regressor_cols : `list` [`str`] or None
+                    See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.
+                overall_min_lag_order : `int` or None
+                overall_max_lag_order : `int` or None
+        """
+        lagged_regressor_info = {
+            "lagged_regressor_cols": None,
+            "overall_min_lag_order": None,
+            "overall_max_lag_order": None
+        }
+        return lagged_regressor_info
 
     def get_pipeline(self):
         """Returns pipeline.
@@ -159,7 +188,8 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
             relative_error_tolerance=self.config.evaluation_metric_param.relative_error_tolerance,
             coverage=self.config.coverage,
             null_model_params=self.config.evaluation_metric_param.null_model_params,
-            regressor_cols=self.regressor_cols)
+            regressor_cols=self.regressor_cols,
+            lagged_regressor_cols=self.lagged_regressor_cols)
 
     def get_forecast_time_properties(self):
         """Returns forecast time parameters.
@@ -173,6 +203,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
             - self.score_func
             - self.score_func_greater_is_better
             - self.regressor_cols
+            - self.lagged_regressor_cols
             - self.estimator
             - self.pipeline
 
@@ -205,6 +236,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
             freq=self.config.metadata_param.freq,
             train_end_date=self.config.metadata_param.train_end_date,
             regressor_cols=self.regressor_cols,
+            lagged_regressor_cols=self.lagged_regressor_cols,
             forecast_horizon=self.config.forecast_horizon)
 
     @abstractmethod
@@ -267,6 +299,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
         Uses the methods in this class to set:
 
             - ``"regressor_cols"`` : get_regressor_cols()
+            - ``lagged_regressor_cols`` : get_lagged_regressor_info()
             - ``"pipeline"`` : get_pipeline()
             - ``"time_properties"`` : get_forecast_time_properties()
             - ``"hyperparameter_grid"`` : get_hyperparameter_grid()
@@ -283,6 +316,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
         self.score_func_greater_is_better = metric.get_metric_greater_is_better()
 
         self.regressor_cols = self.get_regressor_cols()
+        self.lagged_regressor_cols = self.get_lagged_regressor_info().get("lagged_regressor_cols", None)
         self.pipeline = self.get_pipeline()
         self.time_properties = self.get_forecast_time_properties()
         self.hyperparameter_grid = self.get_hyperparameter_grid()
@@ -299,6 +333,7 @@ class BaseTemplate(TemplateInterface, ForecastConfigDefaults, ABC):
             # model
             pipeline=self.pipeline,
             regressor_cols=self.regressor_cols,
+            lagged_regressor_cols=self.lagged_regressor_cols,
             estimator=None,  # ignored when `pipeline` is provided
             hyperparameter_grid=self.hyperparameter_grid,
             hyperparameter_budget=self.config.computation_param.hyperparameter_budget,

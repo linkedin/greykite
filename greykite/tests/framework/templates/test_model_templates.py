@@ -1,3 +1,4 @@
+from greykite.framework.templates.auto_arima_template import AutoArimaTemplate
 from greykite.framework.templates.model_templates import ModelTemplateEnum
 from greykite.framework.templates.prophet_template import ProphetTemplate
 from greykite.framework.templates.silverkite_template import SilverkiteTemplate
@@ -23,3 +24,6 @@ def test_model_template_enum():
 
     assert ModelTemplateEnum.PROPHET.value.template_class == ProphetTemplate
     assert "Prophet model" in ModelTemplateEnum.PROPHET.value.description
+
+    assert ModelTemplateEnum.AUTO_ARIMA.value.template_class == AutoArimaTemplate
+    assert "Auto ARIMA model" in ModelTemplateEnum.AUTO_ARIMA.value.description

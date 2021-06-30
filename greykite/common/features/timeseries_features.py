@@ -23,15 +23,12 @@
 in forecasting, such as growth, seasonality, holidays.
 """
 
-import inspect
 import math
-import warnings
 from datetime import datetime
 
-import fbprophet.hdays as fbholidays
-import holidays
 import numpy as np
 import pandas as pd
+from holidays_ext import get_holidays as get_hdays
 from scipy.special import expit
 
 from greykite.common import constants as cst
@@ -279,8 +276,7 @@ def add_time_features_df(df, time_col, conti_year_origin):
 def get_holidays(countries, year_start, year_end):
     """This function extracts a holiday data frame for the period of interest
     [year_start to year_end] for the given countries.
-    This is done using the holidays libraries in pypi:fbprophet and pypi:holidays
-    Implementation resembles that of `~fbprophet.make_holidays.make_holidays_df`
+    This is done using the holidays libraries in pypi:holidays-ext
 
     Parameters
     ----------
@@ -301,27 +297,15 @@ def get_holidays(countries, year_start, year_end):
     country_holiday_dict = {}
     year_list = list(range(year_start, year_end + 1))
 
-    for country in countries:
-        try:
-            # Fetch the holidays from fbprophet holiday set
-            # Suppress the following warning for India:
-            #   "We only support Diwali and Holi holidays from 2010 to 2025"
-            if country in ["India", "IN"]:
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore")
-                    country_holidays = getattr(fbholidays, country)(years=year_list)
-            else:
-                country_holidays = getattr(fbholidays, country)(years=year_list)
-        except AttributeError:
-            # Fetch the holidays from pypi:holidays set
-            try:
-                country_holidays = getattr(holidays, country)(years=year_list)
-            except AttributeError:
-                raise AttributeError(f"Holidays in {country} are not currently supported!")
+    country_holidays = get_hdays.get_holiday(
+        country_list=countries,
+        years=year_list
+    )
 
+    for country, holidays in country_holidays.items():
         country_df = pd.DataFrame({
-            cst.EVENT_DF_DATE_COL: list(country_holidays.keys()),
-            cst.EVENT_DF_LABEL_COL: list(country_holidays.values())})
+            cst.EVENT_DF_DATE_COL: list(holidays.keys()),
+            cst.EVENT_DF_LABEL_COL: list(holidays.values())})
         country_df[cst.EVENT_DF_DATE_COL] = pd.to_datetime(country_df[cst.EVENT_DF_DATE_COL])
         country_holiday_dict[country] = country_df
 
@@ -336,21 +320,9 @@ def get_available_holiday_lookup_countries(countries=None):
     :return: List[str]
         list of available countries for modeling holidays
     """
-    fb_countries = [
-        name for name, obj in inspect.getmembers(fbholidays)
-        if inspect.isclass(obj) and obj.__module__ == fbholidays.__name__]
-    holidays_countries = [
-        name for name, obj in inspect.getmembers(holidays)
-        if inspect.isclass(obj) and obj.__module__ == holidays.__name__]
-    all_countries = set(fb_countries + holidays_countries)
-
-    if countries is not None:
-        countries = set(countries)
-        found_countries = all_countries.intersection(countries)
-    else:
-        found_countries = all_countries
-    found_countries.discard("HolidayBase")  # edge case, remove if found
-    return sorted(list(found_countries))
+    return get_hdays.get_available_holiday_lookup_countries(
+        countries=countries
+    )
 
 
 def get_available_holidays_in_countries(
@@ -370,10 +342,11 @@ def get_available_holidays_in_countries(
         key: country name
         value: list of holidays in that country between [year_start, year_end]
     """
-    country_holiday_dict = get_holidays(countries, year_start, year_end)
-    country_holiday_list = {country: list(sorted(set(df[cst.EVENT_DF_LABEL_COL].values)))
-                            for country, df in country_holiday_dict.items()}
-    return country_holiday_list
+    return get_hdays.get_available_holidays_in_countries(
+        countries=countries,
+        year_start=year_start,
+        year_end=year_end
+    )
 
 
 def get_available_holidays_across_countries(
@@ -392,14 +365,11 @@ def get_available_holidays_across_countries(
     :return: List[str]
         names of holidays in any of the countries between [year_start, year_end]
     """
-    country_holiday_list = get_available_holidays_in_countries(
+    return get_hdays.get_available_holidays_across_countries(
         countries=countries,
         year_start=year_start,
-        year_end=year_end)
-    holiday_across_countries = {
-        holiday for country, holiday_list in country_holiday_list.items()
-        for holiday in holiday_list}
-    return list(sorted(holiday_across_countries))
+        year_end=year_end
+    )
 
 
 def add_daily_events(

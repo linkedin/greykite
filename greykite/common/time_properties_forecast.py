@@ -81,6 +81,7 @@ def get_forecast_time_properties(
         value_col=VALUE_COL,
         freq=None,
         regressor_cols=None,
+        lagged_regressor_cols=None,
         train_end_date=None,
         forecast_horizon=None):
     """Returns the number of training points in `df`, the start year, and prediction end year
@@ -104,6 +105,10 @@ def get_forecast_time_properties(
         A list of regressor columns used in the training and prediction DataFrames.
         If None, no regressor columns are used.
         Regressor columns that are unavailable in ``df`` are dropped.
+    lagged_regressor_cols : `list` [`str`] or None, optional, default None
+        A list of lagged regressor columns used in the training and prediction DataFrames.
+        If None, no lagged regressor columns are used.
+        Lagged regressor columns that are unavailable in ``df`` are dropped.
     train_end_date : `datetime.datetime`, optional, default None
         Last date to use for fitting the model. Forecasts are generated after this date.
         If None, it is set to the last date with a non-null value in
@@ -151,7 +156,8 @@ def get_forecast_time_properties(
         value_col=value_col,
         freq=freq,
         train_end_date=train_end_date,
-        regressor_cols=regressor_cols)
+        regressor_cols=regressor_cols,
+        lagged_regressor_cols=lagged_regressor_cols)
     fit_df = canonical_data_dict["fit_df"]
 
     # Calculates basic time properties

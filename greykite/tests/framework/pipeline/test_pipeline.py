@@ -1,5 +1,6 @@
 import datetime
 import math
+import sys
 import warnings
 
 import numpy as np
@@ -25,6 +26,7 @@ from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.common.evaluation import add_finite_filter_to_scorer
 from greykite.common.evaluation import add_preaggregation_to_scorer
 from greykite.common.python_utils import assert_equal
+from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.testing_utils import generate_df_for_tests
 from greykite.common.testing_utils import generate_df_with_reg_for_tests
 from greykite.framework.constants import CV_REPORT_METRICS_ALL
@@ -45,6 +47,12 @@ from greykite.sklearn.transform.normalize_transformer import NormalizeTransforme
 from greykite.sklearn.transform.null_transformer import NullTransformer
 from greykite.sklearn.transform.pandas_feature_union import PandasFeatureUnion
 from greykite.sklearn.transform.zscore_outlier_transformer import ZscoreOutlierTransformer
+
+
+try:
+    import fbprophet  # noqa
+except ModuleNotFoundError:
+    pass
 
 
 @pytest.fixture
@@ -69,7 +77,7 @@ def df_reg():
     return df
 
 
-def get_dummy_pipeline(include_preprocessing=False, regressor_cols=None):
+def get_dummy_pipeline(include_preprocessing=False, regressor_cols=None, lagged_regressor_cols=None):
     """Returns a ``pipeline`` argument to ``forecast_pipeline``
     that uses ``DummyEstimator`` to make it easy to unit test
     ``forecast_pipeline``.
@@ -81,6 +89,9 @@ def get_dummy_pipeline(include_preprocessing=False, regressor_cols=None):
     regressor_cols : `list` [`str`] or None, default None
         Names of regressors in ``df`` passed to ``forecast_pipeline``.
         Only used if ``include_preprocessing=True``.
+    lagged_regressor_cols : `list` [`str`] or None, default None
+        Names of lagged regressor columns in ``df`` passed to ``forecast_pipeline``.
+        Only used if ``include_preprocessing=True``.
 
     Returns
     -------
@@ -89,6 +100,9 @@ def get_dummy_pipeline(include_preprocessing=False, regressor_cols=None):
     """
     if regressor_cols is None:
         regressor_cols = []
+    if lagged_regressor_cols is None:
+        lagged_regressor_cols = []
+    all_reg_cols = unique_elements_in_list(regressor_cols + lagged_regressor_cols)
     steps = []
     if include_preprocessing:
         steps += [
@@ -102,14 +116,14 @@ def get_dummy_pipeline(include_preprocessing=False, regressor_cols=None):
                     ("null", NullTransformer())
                 ])),
                 ("regressors_numeric", Pipeline([
-                    ("select_reg", ColumnSelector(regressor_cols)),
+                    ("select_reg", ColumnSelector(all_reg_cols)),
                     ("select_reg_numeric", DtypeColumnSelector(include="number")),
                     ("outlier", ZscoreOutlierTransformer()),
                     ("normalize", NormalizeTransformer()),  # no normalization by default
                     ("null", NullTransformer())
                 ])),
                 ("regressors_other", Pipeline([
-                    ("select_reg", ColumnSelector(regressor_cols)),
+                    ("select_reg", ColumnSelector(all_reg_cols)),
                     ("select_reg_non_numeric", DtypeColumnSelector(exclude="number"))
                 ]))
             ])),
@@ -224,6 +238,7 @@ def test_input(df, df_reg):
         - freq
         - anomaly_info
         - regressor_cols
+        - lagged_regressor_cols
     """
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -273,6 +288,7 @@ def test_input(df, df_reg):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         reg_cols = ["regressor1", "regressor2", "regressor_bool", "regressor_categ"]
+        lag_reg_cols = ["regressor1", "regressor_bool"]
         df_reg = df_reg.rename({
             TIME_COL: "custom_time_col",
             VALUE_COL: "custom_value_col"
@@ -284,7 +300,8 @@ def test_input(df, df_reg):
         df_reg.drop(drop_indices, axis=0, inplace=True)
         dummy_pipeline = get_dummy_pipeline(
             include_preprocessing=True,  # fills in gaps
-            regressor_cols=reg_cols)
+            regressor_cols=reg_cols,
+            lagged_regressor_cols=lag_reg_cols)
         result = forecast_pipeline(
             df_reg,
             time_col="custom_time_col",
@@ -295,6 +312,7 @@ def test_input(df, df_reg):
             anomaly_info=None,
             pipeline=dummy_pipeline,
             regressor_cols=reg_cols,
+            lagged_regressor_cols=lag_reg_cols,
             hyperparameter_grid=None,
             forecast_horizon=10,
             test_horizon=10,
@@ -303,6 +321,7 @@ def test_input(df, df_reg):
         assert ts.original_time_col == "custom_time_col"
         assert ts.original_value_col == "custom_value_col"
         assert ts.regressor_cols == reg_cols
+        assert ts.lagged_regressor_cols == lag_reg_cols
         assert ts.freq == "H"
         assert ts.time_stats["min_timestamp"] == pd.to_datetime(df_reg["custom_time_col"]).min()
         assert ts.time_stats["max_timestamp"] == pd.to_datetime(df_reg["custom_time_col"]).max()
@@ -536,6 +555,8 @@ def test_train_end_date_gap_regressors():
     assert result.forecast.test_start_date == expected_forecast_test_start_date
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_exceptions(df):
     """Tests error messages when CV is skipped and there are
     multiple hyperparameter options.
@@ -1025,6 +1046,8 @@ def test_default():
         expected_grid_size=1)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_simple():
     """Tests forecast_pipeline function with Prophet and default parameters"""
     data = generate_df_for_tests(freq="H", periods=24*10)
@@ -1072,6 +1095,8 @@ def test_prophet_simple():
         assert result.backtest.df_test.shape == (24, 5)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_with_regressor():
     """Tests forecast_pipeline function with Prophet,
     input regressors, and default parameters
@@ -1124,6 +1149,8 @@ def test_prophet_with_regressor():
         greater_is_better=False)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_complex():
     """Tests forecast_pipeline function with Prophet,
     custom parameters, missing data, and holidays
@@ -1263,13 +1290,15 @@ def test_silverkite_longterm():
 
 
 def test_silverkite_regressor():
-    """Tests forecast_pipeline with silverkite and input regressors"""
+    """Tests forecast_pipeline with silverkite and input regressors,
+    autoregression and lagged regressors"""
     data = generate_df_with_reg_for_tests(
         freq="1D",
         periods=20 * 7,  # short-term: 20 weeks of data
         remove_extra_cols=True,
         mask_test_actuals=True)
     regressor_cols = ["regressor1", "regressor2", "regressor_categ"]
+    lagged_regressor_cols = ["regressor1", "regressor2"]
     keep_cols = [TIME_COL, VALUE_COL] + regressor_cols
     df = data["df"][keep_cols]
     coverage = 0.1
@@ -1285,7 +1314,22 @@ def test_silverkite_regressor():
             regressor_cols,
             regressor_cols + ["ct_sqrt"]
         ],  # two cases: no growth term and single growth term
-        "estimator__fit_algorithm_dict": [{"fit_algorithm": "linear"}]
+        "estimator__fit_algorithm_dict": [{"fit_algorithm": "linear"}],
+        "estimator__autoreg_dict": [{
+            "lag_dict": {"orders": [7]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7*2, 7*3]],
+                "interval_list": [(7, 7*2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()}],
+        "estimator__lagged_regressor_dict": [{
+            "regressor1": {
+                "lag_dict": {"orders": [1, 2, 3]},
+                "agg_lag_dict": {
+                    "orders_list": [[7, 7 * 2, 7 * 3]],
+                    "interval_list": [(8, 7 * 2)]},
+                "series_na_fill_func": lambda s: s.bfill().ffill()},
+            "regressor2": "auto"
+        }]
     }
     test_horizon = 2 * 7
     periods_between_train_test = 2
@@ -1297,6 +1341,7 @@ def test_silverkite_regressor():
         date_format=None,  # not recommended, but possible to specify
         freq=None,
         regressor_cols=regressor_cols,
+        lagged_regressor_cols=lagged_regressor_cols,
         estimator=SilverkiteEstimator(),
         hyperparameter_grid=hyperparameter_grid,
         hyperparameter_budget=1,
@@ -1329,7 +1374,152 @@ def test_silverkite_regressor():
     expected_forecast_train_size = result.timeseries.fit_df.shape[0]
     assert result.forecast.estimator.model_dict["x_mat"].shape[0] == expected_forecast_train_size
 
+    model = result.model.steps[-1][-1]
+    trained_model = model.model_dict
+    pred_cols = trained_model["pred_cols"]
+    expected_feature_cols = {
+        # regressor columns
+        "regressor1",
+        "regressor2",
+        "regressor_categ",
+        # lagged regressor columns
+        'regressor1_lag1',
+        'regressor1_lag2',
+        'regressor1_lag3',
+        'regressor1_avglag_7_14_21',
+        'regressor1_avglag_8_to_14',
+        'regressor2_lag35',
+        'regressor2_avglag_35_42_49',
+        'regressor2_avglag_30_to_36'
+    }
+    assert expected_feature_cols.issubset(pred_cols)
 
+
+def test_silverkite_regressor_with_missing_values():
+    """Tests forecast_pipeline with silverkite and input regressors and lagged regressors.
+    In particular, lagged regressor columns are not a subset of regressor columns.
+    Multiple lag order + forecast horizon combinations are tested for warnings."""
+    data = generate_df_with_reg_for_tests(
+        freq="D",
+        periods=20 * 7,
+        train_start_date=datetime.datetime(2018, 1, 1),
+        remove_extra_cols=True,
+        mask_test_actuals=False)
+    regressor_cols_all = ["regressor1", "regressor2"]
+    regressor_cols = ["regressor1"]
+    lagged_regressor_cols = ["regressor2"]
+    keep_cols = [TIME_COL, VALUE_COL] + regressor_cols_all
+    df = data["df"][keep_cols].copy()
+    # Setting NaN values at the end
+    # VALUE_COL and regressor2 have the same length
+    # regressor1 has 5 more future values than VALUE_COL and regressor2
+    # Therefore, the max forecast horizon is 5
+    df.loc[df.tail(8).index, VALUE_COL] = np.nan
+    df.loc[df.tail(3).index, "regressor1"] = np.nan
+    df.loc[df.tail(8).index, "regressor2"] = np.nan
+
+    hyperparameter_grid = {
+        "estimator__fs_components_df": [None],
+        "estimator__extra_pred_cols": [
+            regressor_cols
+        ],  # two cases: no growth term and single growth term
+        "estimator__fit_algorithm_dict": [{"fit_algorithm": "linear"}],
+        "estimator__lagged_regressor_dict": [{
+            "regressor2": {
+                "lag_dict": {"orders": [3]},
+                "agg_lag_dict": {
+                    "orders_list": [[7, 7 * 2, 7 * 3]],
+                    "interval_list": [(8, 7 * 2)]},
+                "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+        }, {
+            "regressor2": {
+                "lag_dict": {"orders": [5]},
+                "agg_lag_dict": {
+                    "orders_list": [[7, 7 * 2, 7 * 3]],
+                    "interval_list": [(8, 7 * 2)]},
+                "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+        }]
+    }
+
+    # When any minimal lagged regressor order in the grids is less than forecast_horizon,
+    # there should a warning of lagged regressor columns being imputed
+    forecast_horizon = 5
+    test_horizon = 7
+    periods_between_train_test = 0
+    with pytest.warns(Warning) as record:
+        result = forecast_pipeline(
+            df,
+            time_col=TIME_COL,
+            value_col=VALUE_COL,
+            regressor_cols=regressor_cols,
+            lagged_regressor_cols=lagged_regressor_cols,
+            estimator=SilverkiteEstimator(),
+            hyperparameter_grid=hyperparameter_grid,
+            forecast_horizon=forecast_horizon,
+            test_horizon=test_horizon,
+            periods_between_train_test=periods_between_train_test,
+            cv_max_splits=2
+        )
+        all_warnings = "".join([warn.message.args[0] for warn in record])
+        assert "test_horizon should never be larger than forecast_horizon" in all_warnings
+        assert "Trained model's `min_lagged_regressor_order` (3) is less than the size of `fut_df` (5)" in all_warnings
+    assert result.model[-1].model_dict["min_lagged_regressor_order"] == 5
+
+    # Checks model
+    expected_pred_cols = [
+        'regressor1',
+        'regressor2_lag5',
+        'regressor2_avglag_7_14_21',
+        'regressor2_avglag_8_to_14'
+    ]
+    assert result.model[-1].model_dict["pred_cols"] == expected_pred_cols
+
+    expected_train_size = result.timeseries.fit_df.shape[0]  # 132
+    assert result.timeseries.fit_df.shape == (expected_train_size, 4)  # 132
+    assert result.model[-1].model_dict["x_mat"].shape == (expected_train_size, 5)  # 132
+
+    # Checks backtest
+    expected_backtest_train_size = expected_train_size - test_horizon - periods_between_train_test  # 132 - 5 - 0
+    assert result.backtest.estimator.model_dict["x_mat"].shape == (expected_backtest_train_size, 5)  # 127
+    assert result.backtest.df_test.shape == (test_horizon, 5)  # 5
+
+    # Checks forecast
+    assert result.forecast.df_test.shape == (forecast_horizon, 5)  # 5
+
+    # Checks key dates
+    assert result.timeseries.train_end_date == datetime.datetime(2018, 5, 12)
+    assert result.backtest.df_test[TIME_COL].iloc[0] == datetime.datetime(2018, 5, 6)
+    assert result.forecast.df_test[TIME_COL].iloc[0] == datetime.datetime(2018, 5, 13)
+
+    # More edge cases
+    # When overall minimal lagged regressor order for all grids is at least forecast_horizon,
+    # there is no warning
+    forecast_horizon = 3
+    test_horizon = 3
+    periods_between_train_test = 0
+    with pytest.warns(Warning) as record:
+        result = forecast_pipeline(
+            df,
+            time_col=TIME_COL,
+            value_col=VALUE_COL,
+            regressor_cols=regressor_cols,
+            lagged_regressor_cols=lagged_regressor_cols,
+            estimator=SilverkiteEstimator(),
+            hyperparameter_grid=hyperparameter_grid,
+            forecast_horizon=forecast_horizon,
+            test_horizon=test_horizon,
+            periods_between_train_test=periods_between_train_test,
+            cv_max_splits=2
+        )
+        all_warnings = "".join([warn.message.args[0] for warn in record])
+        assert "Trained model's `min_lagged_regressor_order` (3) is less than the size of `fut_df` (3)" not in all_warnings
+    assert result.model[-1].model_dict["min_lagged_regressor_order"] == 5
+
+
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_custom_pipeline():
     """Tests forecast_pipeline function with custom pipeline"""
     data = generate_df_for_tests(freq="D", periods=30*8)  # 8 months

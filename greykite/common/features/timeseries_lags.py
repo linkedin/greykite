@@ -475,6 +475,11 @@ def build_autoreg_df(
             # dataframe (via `iloc`)
             lag_df = lag_info["lag_df"].iloc[-(df.shape[0]):].reset_index(
                 drop=True)
+            # cast dtype to 'bool' if original dtype is 'bool', need to make sure there is no NaN
+            # there is an edge case where ``df[value_col]`` is NaN but ``past_df[value_col]`` is not
+            # e.g., in predict phase with autoregression, ``df_fut[value_col]`` would be NaN
+            if (df[value_col].dtype == 'bool' or past_df[value_col].dtype == 'bool') and lag_df.isna().sum().sum() == 0:
+                lag_df = lag_df.astype('bool')
 
         # we get col_names for agg_lag_df
         agg_lag_df = None
@@ -546,11 +551,21 @@ def build_autoreg_df_multi(
             which has the lagged values for all the relevant columns
         "autoreg_col_names" : List[str]
             A list of all the generated columns
+        "autoreg_orig_col_names" : List[str]
+            A list of all the original target value columns
+        "max_order" : int
+            Maximum lag order for all target value columns
+        "min_order" : int
+            Minimum lag order for all target value columns
 
     """
 
     multi_autoreg_info = {}
     autoreg_col_names = []
+    autoreg_orig_col_names = list(value_lag_info_dict.keys())
+    min_order = np.inf
+    max_order = 0
+
     for value_col, lag_info in value_lag_info_dict.items():
         # we assign the interpolation function to be the default specified above
         # in this function
@@ -584,6 +599,10 @@ def build_autoreg_df_multi(
             autoreg_col_names += lag_col_names
         if agg_lag_col_names is not None:
             autoreg_col_names += agg_lag_col_names
+
+        # extract the min_order and max_order for each col and update the overall lagged_regressor_order
+        min_order = np.nanmin([min_order, autoreg_info["min_order"]])
+        max_order = np.nanmax([max_order, autoreg_info["max_order"]])
 
     def build_lags_func_multi(df, past_df=None):
         """A function which generates a lagged dataframe
@@ -627,4 +646,8 @@ def build_autoreg_df_multi(
 
     return {
         "autoreg_func": build_lags_func_multi,
-        "autoreg_col_names": autoreg_col_names}
+        "autoreg_col_names": autoreg_col_names,
+        "autoreg_orig_col_names": autoreg_orig_col_names,
+        "min_order": min_order,
+        "max_order": max_order
+    }

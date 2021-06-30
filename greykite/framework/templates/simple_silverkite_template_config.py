@@ -622,6 +622,9 @@ SILVERKITE = ModelComponentsParam(
     regressors={
         "regressor_cols": []
     },
+    lagged_regressors={
+        "lagged_regressor_dict": None
+    },
     uncertainty={
         "uncertainty_dict": None
     },

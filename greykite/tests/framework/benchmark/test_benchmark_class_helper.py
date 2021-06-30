@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -18,6 +20,14 @@ from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
 from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
 
 
+try:
+    import fbprophet  # noqa
+except ModuleNotFoundError:
+    pass
+
+
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_forecast_pipeline_rolling_evaluation_prophet():
     """Checks the output rolling evaluation with Prophet template"""
     data = generate_df_with_reg_for_tests(

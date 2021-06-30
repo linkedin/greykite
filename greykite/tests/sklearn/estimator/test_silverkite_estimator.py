@@ -27,6 +27,14 @@ def params():
             "orders_list": [[7, 7*2, 7*3]],
             "interval_list": [(7, 7*2)]},
         "series_na_fill_func": lambda s: s.bfill().ffill()}
+    lagged_regressor_dict = {
+        "regressor1": {
+            "lag_dict": {"orders": [1, 2, 3]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7 * 2, 7 * 3]],
+                "interval_list": [(8, 7 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor2": "auto"}
     uncertainty_dict = {
         "uncertainty_method": "simple_conditional_residuals",
         "params": {
@@ -54,6 +62,7 @@ def params():
             "order": [3],
             "seas_names": [None]}),
         "autoreg_dict": autoreg_dict,
+        "lagged_regressor_dict": lagged_regressor_dict,
         "min_admissible_value": None,
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict,
@@ -76,6 +85,14 @@ def params2():
             "orders_list": [[7, 7*2, 7*3]],
             "interval_list": [(7, 7*2)]},
         "series_na_fill_func": lambda s: s.bfill().ffill()}
+    lagged_regressor_dict = {
+        "regressor1": {
+            "lag_dict": {"orders": [1, 2, 3]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7 * 2, 7 * 3]],
+                "interval_list": [(8, 7 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor2": "auto"}
     uncertainty_dict = {
         "uncertainty_method": "simple_conditional_residuals",
         "params": {
@@ -103,6 +120,7 @@ def params2():
             "order": [3],
             "seas_names": [None]}),
         "autoreg_dict": autoreg_dict,
+        "lagged_regressor_dict": lagged_regressor_dict,
         "min_admissible_value": None,
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict,
@@ -557,6 +575,70 @@ def test_autoreg(daily_data):
     expected_autoreg_terms = {
         "y_lag1", "y_lag2", "y_lag3", "y_avglag_7_14_21", "y_avglag_1_to_7", "y_avglag_8_to_14"}
     assert expected_autoreg_terms.issubset(pred_cols)
+
+
+def test_lagged_regressors(daily_data_with_reg, params):
+    """Tests a basic model with lagged regressors"""
+    train_df = daily_data_with_reg["train_df"]
+    test_df = daily_data_with_reg["test_df"][:20]
+
+    # default forecast horizon, no uncertainty
+    model = SilverkiteEstimator(
+        lagged_regressor_dict=params["lagged_regressor_dict"])
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    assert model.forecast is None
+
+    trained_model = model.model_dict
+    assert trained_model["lagged_regressor_dict"] == params["lagged_regressor_dict"]
+    pred_cols = trained_model["pred_cols"]
+    expected_lagged_regression_terms = {
+        'regressor1_lag1',
+        'regressor1_lag2',
+        'regressor1_lag3',
+        'regressor1_avglag_7_14_21',
+        'regressor1_avglag_8_to_14',
+        'regressor2_lag35',
+        'regressor2_avglag_35_42_49',
+        'regressor2_avglag_30_to_36'
+    }
+    assert expected_lagged_regression_terms.issubset(pred_cols)
+
+    model.predict(test_df)
+    expected_forecast_cols = {"ts", "y"}
+    assert expected_forecast_cols.issubset(list(model.forecast.columns))
+
+    # Passes forecast horizon of 10, and uncertainty dict
+    model = SilverkiteEstimator(
+        uncertainty_dict=params["uncertainty_dict"],
+        lagged_regressor_dict=params["lagged_regressor_dict"],
+        forecast_horizon=10)
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    assert model.forecast is None
+
+    trained_model = model.model_dict
+    pred_cols = trained_model["pred_cols"]
+    expected_lagged_regression_terms = {
+        'regressor1_lag1',
+        'regressor1_lag2',
+        'regressor1_lag3',
+        'regressor1_avglag_7_14_21',
+        'regressor1_avglag_8_to_14',
+        'regressor2_lag35',
+        'regressor2_avglag_35_42_49',
+        'regressor2_avglag_30_to_36'
+    }
+    assert expected_lagged_regression_terms.issubset(pred_cols)
+
+    model.predict(test_df)
+    expected_forecast_cols = {"ts", "y", 'y_quantile_summary', 'err_std',
+                              'forecast_lower', 'forecast_upper'}
+    assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
 
 def test_validate_fs_components_df():

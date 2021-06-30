@@ -120,6 +120,7 @@ def assert_forecast_config(config: Optional[ForecastConfig] = None):
     assert (config.model_components_param.hyperparameter_override == [{"h1": 4}, {"h2": 5}, None]
             or config.model_components_param.hyperparameter_override == [{"h1": 4}, {"h2": 5}, {}])
     assert config.model_components_param.regressors == {"names": ["regressor1", "regressor2"]}
+    assert config.model_components_param.lagged_regressors == {"lagged_regressor_dict": {"lag_reg_param": 0}}
     assert config.model_components_param.seasonality == {"seas_param": 6}
     assert config.model_components_param.uncertainty == {"uncertainty_param": 7}
     assert config.computation_param.hyperparameter_budget is None
@@ -152,6 +153,7 @@ def test_forecast_config():
             events={"events_param": 3},
             hyperparameter_override=[{"h1": 4}, {"h2": 5}, None],
             regressors={"names": ["regressor1", "regressor2"]},
+            lagged_regressors={"lagged_regressor_dict": {"lag_reg_param": 0}},
             seasonality={"seas_param": 6},
             uncertainty={"uncertainty_param": 7}),
         computation_param=ComputationParam(n_jobs=None)
@@ -200,6 +202,7 @@ def assert_forecast_config_json(config: Optional[ForecastConfig] = None):
     assert (config.model_components_param.hyperparameter_override == [{"h1": 4}, {"h2": 5}, None]
             or config.model_components_param.hyperparameter_override == [{"h1": 4}, {"h2": 5}, {}])
     assert config.model_components_param.regressors == {"names": ["regressor1", "regressor2"]}
+    assert config.model_components_param.lagged_regressors == {"lagged_regressor_dict": {"lag_reg_param": 0}}
     assert config.model_components_param.seasonality == {"seas_param": 6}
     assert config.model_components_param.uncertainty == {"uncertainty_param": 7}
     assert config.computation_param.hyperparameter_budget is None
@@ -248,6 +251,9 @@ def test_forecast_config_json():
             "regressors": {
                 "names": ["regressor1", "regressor2"]
             },
+            "lagged_regressors": {
+                "lagged_regressor_dict": {"lag_reg_param": 0}
+            },
             "seasonality": {
                 "seas_param": 6
             },
@@ -293,6 +299,7 @@ def assert_forecast_config_json_multiple_model_componments_parameter(config: Opt
     assert (model_components_param_1.hyperparameter_override is None
             or model_components_param_1.hyperparameter_override is None)
     assert model_components_param_1.regressors == {"names": ["regressor1", "regressor2"]}
+    assert model_components_param_1.lagged_regressors is None
     assert model_components_param_1.seasonality == {"seas_param": 2}
     assert model_components_param_1.uncertainty == {"uncertainty_param": 3}
     # Second model_components_param
@@ -305,6 +312,7 @@ def assert_forecast_config_json_multiple_model_componments_parameter(config: Opt
     assert (model_components_param_2.hyperparameter_override == [{"h1": 4}, {"h2": 5}, None]
             or model_components_param_2.hyperparameter_override == [{"h1": 4}, {"h2": 5}, {}])
     assert model_components_param_2.regressors == {"names": ["regressor1", "regressor2"]}
+    assert model_components_param_2.lagged_regressors == {"lagged_regressor_dict": {"lag_reg_param": 0}}
     assert model_components_param_2.seasonality == {"seas_param": 6}
     assert model_components_param_2.uncertainty == {"uncertainty_param": 7}
     assert config.to_dict()  # runs without error
@@ -367,6 +375,9 @@ def test_forecast_config_json_multiple_model_componments_parameter():
             "regressors": {
                 "names": ["regressor1", "regressor2"]
             },
+            "lagged_regressors": {
+                "lagged_regressor_dict": {"lag_reg_param": 0}
+            },
             "seasonality": {
                 "seas_param": 6
             },
@@ -407,6 +418,9 @@ def test_forecast_config_json_multiple_model_componments_parameter():
             "regressors": {
                 "names": ["regressor1", "regressor2"]
             },
+            "lagged_regressors": {
+                "lagged_regressor_dict": {"lag_reg_param": 0}
+            },
             "seasonality": {
                 "seas_param": 6
             },
@@ -431,3 +445,26 @@ def test_forecast_config_json_multiple_model_componments_parameter():
     config = forecast_config_from_dict(forecast_dict)
     assert config.evaluation_metric_param.cv_report_metrics == "ALL"
     assert config.to_dict()
+
+
+def test_forecast_one_by_one():
+    # None
+    config = ForecastConfig(forecast_one_by_one=None)
+    assert config.to_dict()["forecast_one_by_one"] is None
+    config = ForecastConfig().from_dict({"forecast_one_by_one": None})
+    assert config.forecast_one_by_one is None
+    # int
+    config = ForecastConfig(forecast_one_by_one=1)
+    assert config.to_dict()["forecast_one_by_one"] == 1
+    config = ForecastConfig().from_dict({"forecast_one_by_one": 1})
+    assert config.forecast_one_by_one == 1
+    # bool
+    config = ForecastConfig(forecast_one_by_one=True)
+    assert config.to_dict()["forecast_one_by_one"] is True
+    config = ForecastConfig().from_dict({"forecast_one_by_one": False})
+    assert config.forecast_one_by_one is False
+    # List of int
+    config = ForecastConfig(forecast_one_by_one=[1, 2, 3])
+    assert config.to_dict()["forecast_one_by_one"] == [1, 2, 3]
+    config = ForecastConfig().from_dict({"forecast_one_by_one": [1, 2, 3]})
+    assert config.forecast_one_by_one == [1, 2, 3]

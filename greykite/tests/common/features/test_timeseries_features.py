@@ -240,14 +240,12 @@ def test_add_time_features_df():
 def test_get_holidays():
     """Tests get_holidays"""
     # request holidays by country code
-    countries = ["CN", "IN", "US", "UK"]  # CN, IN are from pypi:fbprophet; US, UK are from pypi:holidays
+    countries = ["CN", "IN", "US", "UK"]
     res_code = get_holidays(countries, year_start=2017, year_end=2025)
 
     in_df = res_code["IN"]
     row_index = in_df[EVENT_DF_DATE_COL] == "2017-01-01"
     assert in_df.loc[row_index, EVENT_DF_LABEL_COL].values[0] == "New Year's Day"
-    # IN is in both sets. checks that pypi:fbprophet takes precedence over pypi:holidays
-    # only in pypi:fbprophet
     row_index = in_df[EVENT_DF_DATE_COL] == "2017-11-01"
     assert in_df.loc[row_index, EVENT_DF_LABEL_COL].values[0] == "All Saints Day"
     uk_df = res_code["UK"]
@@ -283,7 +281,7 @@ def test_get_available_holiday_lookup_countries():
     valid_countries = get_available_holiday_lookup_countries()
     assert "Croatia" in valid_countries
     assert "datetime" not in valid_countries  # imported classes are excluded
-    assert len(valid_countries) == 110
+    assert len(valid_countries) == 112
 
     countries = ["IN", "India", "US", "UnitedStates", "UK"]
     valid_countries = get_available_holiday_lookup_countries(countries)

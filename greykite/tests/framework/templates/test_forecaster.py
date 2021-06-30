@@ -1,3 +1,4 @@
+import sys
 import warnings
 from enum import Enum
 
@@ -31,6 +32,12 @@ from greykite.framework.utils.framework_testing_utils import assert_basic_pipeli
 from greykite.framework.utils.framework_testing_utils import assert_forecast_pipeline_result_equal
 from greykite.framework.utils.framework_testing_utils import check_forecast_pipeline_result
 from greykite.framework.utils.result_summary import summarize_grid_search_results
+
+
+try:
+    import fbprophet  # noqa
+except ModuleNotFoundError:
+    pass
 
 
 @pytest.fixture
@@ -178,8 +185,9 @@ def test_get_template_class():
     assert forecaster._Forecaster__get_template_class() == SimpleSilverkiteTemplate
     assert forecaster._Forecaster__get_template_class(
         config=ForecastConfig(model_template=ModelTemplateEnum.SILVERKITE_WEEKLY.name)) == SimpleSilverkiteTemplate
-    assert forecaster._Forecaster__get_template_class(
-        config=ForecastConfig(model_template=ModelTemplateEnum.PROPHET.name)) == ProphetTemplate
+    if "fbprophet" in sys.modules:
+        assert forecaster._Forecaster__get_template_class(
+            config=ForecastConfig(model_template=ModelTemplateEnum.PROPHET.name)) == ProphetTemplate
     assert forecaster._Forecaster__get_template_class(
         config=ForecastConfig(model_template=ModelTemplateEnum.SK.name)) == SilverkiteTemplate
 
@@ -197,7 +205,7 @@ def test_get_template_class():
                                          f"Must be one of: SILVERKITE, SILVERKITE_DAILY_90, "
                                          f"SILVERKITE_WEEKLY, SILVERKITE_HOURLY_1, SILVERKITE_HOURLY_24, "
                                          f"SILVERKITE_HOURLY_168, SILVERKITE_HOURLY_336, SILVERKITE_EMPTY, "
-                                         f"SK, PROPHET or satisfy the `SimpleSilverkiteTemplate` rules."):
+                                         f"SK, PROPHET, AUTO_ARIMA or satisfy the `SimpleSilverkiteTemplate` rules."):
         forecaster = Forecaster()
         forecaster._Forecaster__get_template_class(
             config=ForecastConfig(model_template=model_template))
@@ -262,10 +270,11 @@ def test_get_template_class():
     )
     assert forecaster._Forecaster__get_template_class() == MySimpleSilverkiteTemplate
 
-    model_template = ModelTemplateEnum.PROPHET.name  # `model_template` name is wrong
-    with pytest.raises(ValueError, match=f"Model Template '{model_template}' is not recognized! "
-                                         f"Must be one of: MYSILVERKITE, SILVERKITE or satisfy the `SimpleSilverkiteTemplate` rules."):
-        forecaster._Forecaster__get_template_class(config=ForecastConfig(model_template=model_template))
+    if "fbprophet" in sys.modules:
+        model_template = ModelTemplateEnum.PROPHET.name  # `model_template` name is wrong
+        with pytest.raises(ValueError, match=f"Model Template '{model_template}' is not recognized! "
+                                             f"Must be one of: MYSILVERKITE, SILVERKITE or satisfy the `SimpleSilverkiteTemplate` rules."):
+            forecaster._Forecaster__get_template_class(config=ForecastConfig(model_template=model_template))
 
     model_template = SimpleSilverkiteTemplateOptions()  # dataclass
     with LogCapture(LOGGER_NAME) as log_capture:
@@ -355,25 +364,26 @@ def test_apply_forecast_config(df_config):
         assert_basic_pipeline_equal(pipeline_params.pop("pipeline"), expected_pipeline)
         assert_equal(pipeline_params, expected_pipeline_params)
 
-    # `model_component` of config is incompatible with model_template
-    forecaster = Forecaster()
-    config = ForecastConfig(
-        model_template=ModelTemplateEnum.PROPHET.name,
-        model_components_param=ModelComponentsParam(
-            regressors={
-                "regressor_cols": reg_cols
-            }
+    if "fbprophet" in sys.modules:
+        # `model_component` of config is incompatible with model_template
+        forecaster = Forecaster()
+        config = ForecastConfig(
+            model_template=ModelTemplateEnum.PROPHET.name,
+            model_components_param=ModelComponentsParam(
+                regressors={
+                    "regressor_cols": reg_cols
+                }
+            )
         )
-    )
-    with pytest.raises(ValueError) as record:
-        forecaster.apply_forecast_config(df=df, config=config)
-        assert "Unexpected key(s) found: {\'regressor_cols\'}. The valid keys are: " \
-               "dict_keys([\'add_regressor_dict\'])" in str(record)
+        with pytest.raises(ValueError) as record:
+            forecaster.apply_forecast_config(df=df, config=config)
+            assert "Unexpected key(s) found: {\'regressor_cols\'}. The valid keys are: " \
+                   "dict_keys([\'add_regressor_dict\'])" in str(record)
 
-    # metadata of config is incompatible with df
-    df = df.rename(columns={TIME_COL: "some_time_col", VALUE_COL: "some_value_col"})
-    with pytest.raises(ValueError, match="ts column is not in input data"):
-        forecaster.apply_forecast_config(df=df, config=config)
+        # metadata of config is incompatible with df
+        df = df.rename(columns={TIME_COL: "some_time_col", VALUE_COL: "some_value_col"})
+        with pytest.raises(ValueError, match="ts column is not in input data"):
+            forecaster.apply_forecast_config(df=df, config=config)
 
 
 def test_run_forecast_config():
@@ -673,6 +683,7 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__max_daily_seas_interaction_order": [0],
             "estimator__max_weekly_seas_interaction_order": [2],
             "estimator__autoreg_dict": [None],
+            "estimator__lagged_regressor_dict": [None],
             "estimator__min_admissible_value": [None],
             "estimator__max_admissible_value": [None],
             "estimator__uncertainty_dict": [None],

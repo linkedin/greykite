@@ -1,5 +1,6 @@
 import datetime
 import math
+import sys
 from functools import partial
 
 import numpy as np
@@ -19,6 +20,12 @@ from greykite.framework.output.univariate_forecast import UnivariateForecast
 from greykite.framework.pipeline.utils import get_forecast
 from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
 from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
+
+
+try:
+    import fbprophet  # noqa
+except ModuleNotFoundError:
+    pass
 
 
 @pytest.fixture
@@ -754,10 +761,19 @@ def test_plot_components():
         assert f"The following components have not been specified in the model: " \
                f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
 
+
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+def test_plot_components_prophet():
+    X = pd.DataFrame({
+        cst.TIME_COL: pd.date_range("2018-01-01", periods=10, freq="D"),
+        cst.VALUE_COL: np.arange(1, 11)
+    })
+    coverage = 0.95
+
     # Test Prophet
     trained_model = Pipeline([("estimator", ProphetEstimator(coverage=coverage))])
     trained_model.fit(X, X[cst.VALUE_COL])
     forecast = get_forecast(X, trained_model)
-    # with pytest.raises(Exception):
-    #    fig = forecast.plot_components()
-    #    assert fig is not None
+    fig = forecast.plot_components()
+    assert fig is not None

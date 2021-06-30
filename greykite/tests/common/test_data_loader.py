@@ -1,7 +1,9 @@
 import os
 
+import pandas as pd
 import pytest
 
+from greykite.common.constants import TIME_COL
 from greykite.common.data_loader import DataLoader
 from greykite.common.testing_utils import assert_equal
 
@@ -44,6 +46,50 @@ def test_get_data_names():
         "daily_peyton_manning"}
 
 
+def test_get_aggregated_data():
+    dl = DataLoader()
+    test_df = pd.DataFrame({
+        TIME_COL: pd.date_range("2020-01-01 00:00", "2020-12-31 23:00", freq="1H"),
+        "col1": 1,
+        "col2": 2,
+        "col3": 3,
+        "col4": 4,
+        "col5": 5,
+    })
+    agg_func = {"col1": "sum", "col2": "mean", "col3": "median", "col4": "min", "col5": "max"}
+    # For each frequency,
+    # (1) make sure the `TIME_COL` column is correctly included
+    # (2) verify the aggregation part works correctly
+    # Daily aggregation
+    df = dl.get_aggregated_data(test_df, agg_freq="daily", agg_func=agg_func)
+    assert df.shape == (366, len(agg_func) + 1)
+    assert (df["col1"] != 24).sum() == 0
+    assert (df["col2"] != 2).sum() == 0
+    assert (df["col3"] != 3).sum() == 0
+    assert (df["col4"] != 4).sum() == 0
+    assert (df["col5"] != 5).sum() == 0
+    # Weekly aggregation
+    df = dl.get_aggregated_data(test_df, agg_freq="weekly", agg_func=agg_func)
+    assert df.shape == (53, len(agg_func) + 1)
+    assert (df["col1"] != 24*7).sum() == 2
+    assert (df["col2"] != 2).sum() == 0
+    assert (df["col3"] != 3).sum() == 0
+    assert (df["col4"] != 4).sum() == 0
+    assert (df["col5"] != 5).sum() == 0
+    # Monthly aggregation
+    df = dl.get_aggregated_data(test_df, agg_freq="monthly", agg_func=agg_func)
+    assert df.shape == (12, len(agg_func) + 1)
+    assert (df["col1"].isin([24*29, 24*30, 24*31])).sum() == 12
+    assert (df["col2"] != 2).sum() == 0
+    assert (df["col3"] != 3).sum() == 0
+    assert (df["col4"] != 4).sum() == 0
+    assert (df["col5"] != 5).sum() == 0
+
+    df = test_df.drop(columns=[TIME_COL])
+    with pytest.raises(ValueError, match=f"{TIME_COL}"):
+        dl.get_aggregated_data(df, agg_freq="monthly", agg_func=agg_func)
+
+
 def test_get_data_inventory():
     dl = DataLoader()
     file_names = dl.get_data_inventory()
@@ -71,7 +117,7 @@ def test_get_df():
     # Daily data
     data_path = dl.get_data_home(data_dir=None, data_sub_dir="daily")
     df = dl.get_df(data_path=data_path, data_name="daily_peyton_manning")
-    assert list(df.columns) == ["ts", "y"]
+    assert list(df.columns) == [TIME_COL, "y"]
     assert df.shape == (2905, 2)
 
     # Hourly data
@@ -92,7 +138,7 @@ def test_get_df():
 def test_load_peyton_manning():
     dl = DataLoader()
     df = dl.load_peyton_manning()
-    assert list(df.columns) == ["ts", "y"]
+    assert list(df.columns) == [TIME_COL, "y"]
     assert df.shape == (2905, 2)
 
 
@@ -110,17 +156,39 @@ def test_load_hourly_parking():
 def test_load_hourly_bikesharing():
     dl = DataLoader()
     df = dl.load_bikesharing()
-    assert list(df.columns) == ["date", "ts", "count", "tmin", "tmax", "pn"]
+    assert list(df.columns) == ["date", TIME_COL, "count", "tmin", "tmax", "pn"]
     assert df.shape == (78421, 6)
+
+    agg_func = {"count": "sum", "tmin": "min", "tmax": "max", "pn": "mean"}
+    df = dl.load_bikesharing(agg_freq="daily", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (3269, len(agg_func) + 1)
+    df = dl.load_bikesharing(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (468, len(agg_func) + 1)
+    df = dl.load_bikesharing(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (109, len(agg_func) + 1)
 
 
 def test_load_hourly_beijing_pm():
     dl = DataLoader()
     df = dl.load_beijing_pm()
     assert list(df.columns) == [
-        "ts", "year", "month", "day", "hour", "pm", "dewp",
+        TIME_COL, "year", "month", "day", "hour", "pm", "dewp",
         "temp", "pres", "cbwd", "iws", "is", "ir"]
     assert df.shape == (43824, 13)
+
+    agg_func = {"pm": "mean", "dewp": "mean", "temp": "max", "pres": "mean", "iws": "sum", "is": "sum", "ir": "sum"}
+    df = dl.load_beijing_pm(agg_freq="daily", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (1826, len(agg_func) + 1)
+    df = dl.load_beijing_pm(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (262, len(agg_func) + 1)
+    df = dl.load_beijing_pm(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (60, len(agg_func) + 1)
 
 
 def test_load_data():

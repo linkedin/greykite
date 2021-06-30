@@ -9,7 +9,7 @@ from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.python_utils import assert_equal
 from greykite.sklearn.estimator.null_model import DummyEstimator
-from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
+from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverkiteEstimator
 from greykite.sklearn.transform.column_selector import ColumnSelector
 from greykite.sklearn.transform.null_transformer import NullTransformer
 from greykite.sklearn.transform.pandas_feature_union import PandasFeatureUnion
@@ -65,7 +65,7 @@ def test_feature_union(X):
         X[[ACTUAL_COL]],
         X[[TIME_COL]],
         X[[TIME_COL]],
-     ], axis=1))
+    ], axis=1))
 
 
 def test_transformer_union(X, fs):
@@ -95,9 +95,9 @@ def test_pipeline_union(X, fs):
      directly"""
     model_estimator = Pipeline([
         ("input", fs),
-        ("estimator", ProphetEstimator(score_func=mean_squared_error,
-                                       coverage=0.80,
-                                       null_model_params={"strategy": "mean"}))
+        ("estimator", SimpleSilverkiteEstimator(score_func=mean_squared_error,
+                                                coverage=0.80,
+                                                null_model_params={"strategy": "mean"}))
     ])
 
     # fits pipeline with estimator, and extract dummy null model

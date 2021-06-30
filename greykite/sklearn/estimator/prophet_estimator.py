@@ -20,9 +20,15 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # original author: Albert Chen, Rachit Kumar, Sayan Patra
 """sklearn estimator for fbprophet"""
+import sys
 
-import fbprophet
-from fbprophet.plot import plot_components
+
+try:
+    import fbprophet
+    from fbprophet.plot import plot_components
+except ModuleNotFoundError:
+    pass
+
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import mean_squared_error
 
@@ -140,6 +146,9 @@ class ProphetEstimator(BaseForecastEstimator):
             uncertainty_samples=1000,
             add_regressor_dict=None,
             add_seasonality_dict=None):
+        if "fbprophet" not in sys.modules:
+            raise ValueError("The module 'fbprophet' is not installed. Please install manually.")
+
         # every subclass of BaseForecastEstimator must call super().__init__
         super().__init__(
             score_func=score_func,
@@ -226,7 +235,7 @@ class ProphetEstimator(BaseForecastEstimator):
             holidays_prior_scale=self.holidays_prior_scale,
             changepoint_prior_scale=self.changepoint_prior_scale,
             mcmc_samples=self.mcmc_samples,
-            interval_width=self.coverage,
+            interval_width=(self.coverage or 0.8),  # Prophet can't take None for this param.
             uncertainty_samples=self.uncertainty_samples
         )
         # if extra regressors are given, we add them to temporal features data

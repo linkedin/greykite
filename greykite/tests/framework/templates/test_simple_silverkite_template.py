@@ -14,6 +14,7 @@ from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteD
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
 from greykite.common.constants import END_DATE_COL
 from greykite.common.constants import METRIC_COL
+from greykite.common.constants import PREDICTED_COL
 from greykite.common.constants import START_DATE_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
@@ -240,6 +241,9 @@ def test_get_single_model_components_param_from_template():
         regressors={
             "regressor_cols": []
         },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
         uncertainty={
             "uncertainty_dict": None
         },
@@ -286,6 +290,9 @@ def test_get_single_model_components_param_from_template():
         },
         regressors={
             "regressor_cols": []
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
         },
         uncertainty={
             "uncertainty_dict": None
@@ -336,6 +343,9 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
     }
     assert model_components.regressors == {
         "regressor_cols": []
+    }
+    assert model_components.lagged_regressors == {
+       "lagged_regressor_dict": None
     }
     assert model_components.uncertainty == {
         "uncertainty_dict": None
@@ -394,6 +404,11 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         regressors={
             "regressor_cols": ["r1", "r2"]
         },
+        lagged_regressors={
+            "lagged_regressor_dict": {
+                "dummy_key": "test_value"
+            }
+        },
         uncertainty={
             "uncertainty_dict": "auto",
         },
@@ -449,6 +464,11 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
     }
     assert updated_components.regressors == {
         "regressor_cols": ["r1", "r2"]
+    }
+    assert updated_components.lagged_regressors == {
+        "lagged_regressor_dict": {
+            "dummy_key": "test_value"
+        }
     }
     assert updated_components.uncertainty == {
         "uncertainty_dict": "auto"
@@ -543,6 +563,9 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
         regressors={
             "regressor_cols": None
         },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
         uncertainty={
             "uncertainty_dict": None
         })
@@ -612,6 +635,9 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
         regressors={
             "regressor_cols": None
         },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
         uncertainty={
             "uncertainty_dict": None
         },
@@ -669,6 +695,9 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
         },
         regressors={
             "regressor_cols": None
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
         },
         uncertainty={
             "uncertainty_dict": None
@@ -735,6 +764,9 @@ def test_get_model_components_and_override_from_model_template_single():
         },
         regressors={
             "regressor_cols": ["x"]
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
         },
         uncertainty={
             "uncertainty_dict": None
@@ -870,6 +902,42 @@ def test_get_regressor_cols():
     assert set(regressor_cols) == {"c1", "c2", "c3", "c5", "c6", "c7"}
 
 
+def test_get_lagged_regressor_info():
+    # Without lagged regressors
+    template = SimpleSilverkiteTemplate()
+    template.config = template.apply_forecast_config_defaults()
+    expected_lagged_regressor_info = {
+        "lagged_regressor_cols": None,
+        "overall_min_lag_order": None,
+        "overall_max_lag_order": None
+    }
+    assert template.get_lagged_regressor_info() == expected_lagged_regressor_info
+
+    # With lagged regressors
+    template.config.model_components_param = ModelComponentsParam(
+        lagged_regressors={
+            "lagged_regressor_dict": [{
+                "regressor2": {
+                    "lag_dict": {"orders": [5]},
+                    "agg_lag_dict": {
+                        "orders_list": [[7, 7 * 2, 7 * 3]],
+                        "interval_list": [(8, 7 * 2)]},
+                    "series_na_fill_func": lambda s: s.bfill().ffill()}
+            }, {
+                "regressor_bool": {
+                    "lag_dict": {"orders": [1]},
+                    "agg_lag_dict": {
+                        "orders_list": [[7, 7 * 2]],
+                        "interval_list": [(8, 7 * 2)]},
+                    "series_na_fill_func": lambda s: s.bfill().ffill()}
+            }]
+        })
+    lagged_regressor_info = template.get_lagged_regressor_info()
+    assert set(lagged_regressor_info["lagged_regressor_cols"]) == {"regressor2", "regressor_bool"}
+    assert lagged_regressor_info["overall_min_lag_order"] == 1
+    assert lagged_regressor_info["overall_max_lag_order"] == 21
+
+
 def test_apply_default_model_components_daily_90():
     template = SimpleSilverkiteTemplate()
     template.config = template.apply_forecast_config_defaults()
@@ -924,6 +992,7 @@ def test_apply_default_model_components_daily_90():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         ),
         # Config 2
@@ -966,6 +1035,7 @@ def test_apply_default_model_components_daily_90():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         ),
         # Config 3
@@ -1016,6 +1086,7 @@ def test_apply_default_model_components_daily_90():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         ),
         # Config 4
@@ -1066,6 +1137,7 @@ def test_apply_default_model_components_daily_90():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         )
     ]
@@ -1117,6 +1189,7 @@ def test_apply_default_model_components_weekly():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         ),
         # Config 2
@@ -1167,6 +1240,7 @@ def test_apply_default_model_components_weekly():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         ),
         # Config 3
@@ -1217,6 +1291,7 @@ def test_apply_default_model_components_weekly():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         ),
         # Config 4
@@ -1267,6 +1342,7 @@ def test_apply_default_model_components_weekly():
             estimator__max_admissible_value=[None],
             estimator__autoreg_dict=[None],
             estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
         )
     ]
@@ -1320,6 +1396,7 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagno
         "estimator__uncertainty_dict": [None],
         "estimator__growth_term": ["linear"],
         "estimator__regressor_cols": [[]],
+        "estimator__lagged_regressor_dict": [None],
         "estimator__feature_sets_enabled": ["auto"],
         "estimator__extra_pred_cols": [[]]
     }
@@ -1480,6 +1557,7 @@ def test_simple_silverkite_template():
         anomaly_info=None,
         # model
         regressor_cols=None,
+        lagged_regressor_cols=None,
         estimator=None,
         hyperparameter_grid=template.hyperparameter_grid,
         hyperparameter_budget=None,
@@ -1610,6 +1688,11 @@ def test_simple_silverkite_template_custom():
                 "regressor_bool",
                 "regressor_categ"]
         },
+        lagged_regressors={
+            "lagged_regressor_dict": {
+                "dummy_key": "test_value"
+            }
+        },
         uncertainty={
             "uncertainty_dict": "auto",
         },
@@ -1659,6 +1742,7 @@ def test_simple_silverkite_template_custom():
         anomaly_info=metadata.anomaly_info,
         # model
         regressor_cols=template.regressor_cols,
+        lagged_regressor_cols=template.lagged_regressor_cols,
         estimator=None,
         hyperparameter_grid=template.hyperparameter_grid,
         hyperparameter_budget=computation.hyperparameter_budget,
@@ -1955,11 +2039,11 @@ def test_run_template_4():
         [('estimator__yearly_seasonality', 2), ('estimator__growth_term', 'linear')],
     ]
     assert all(param in list(grid_results["params"]) for param in expected_params)
-    assert result.grid_search.best_index_ == 2
-    assert result.backtest.test_evaluation[rmse] == pytest.approx(3.470, rel=1e-2)
-    assert result.backtest.test_evaluation[q80] == pytest.approx(0.936, rel=1e-2)
-    assert result.forecast.train_evaluation[rmse] == pytest.approx(2.861, rel=1e-2)
-    assert result.forecast.train_evaluation[q80] == pytest.approx(1.165, rel=1e-2)
+    assert result.grid_search.best_index_ == 1
+    assert result.backtest.test_evaluation[rmse] == pytest.approx(14.57, rel=1e-2)
+    assert result.backtest.test_evaluation[q80] == pytest.approx(2.636, rel=1e-2)
+    assert result.forecast.train_evaluation[rmse] == pytest.approx(3.869, rel=1e-2)
+    assert result.forecast.train_evaluation[q80] == pytest.approx(1.413, rel=1e-2)
     check_forecast_pipeline_result(
         result,
         coverage=0.99,
@@ -2214,13 +2298,176 @@ def test_run_template_8():
             config=config,
         )
         rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
-        assert result.backtest.test_evaluation[rmse] == pytest.approx(4.08, rel=1e-1)
+        assert result.backtest.test_evaluation[rmse] == pytest.approx(3.25, rel=1e-1)
         check_forecast_pipeline_result(
             result,
             coverage=0.9,
             strategy=None,
             score_func=EvaluationMetricEnum.MeanAbsolutePercentError.name,
             greater_is_better=False)
+
+
+def test_run_template_9():
+    """Tests:
+     - regressor and lagged regressors
+     - coverage
+     - custom parameters
+     - null model
+     - weekly data
+    """
+    data = generate_df_with_reg_for_tests(
+        freq="W-MON",
+        periods=140,
+        remove_extra_cols=True,
+        mask_test_actuals=True)
+    reg_cols_all = ["regressor1", "regressor2", "regressor_bool", "regressor_categ"]
+    reg_cols = ["regressor1"]
+    keep_cols = [TIME_COL, VALUE_COL] + reg_cols_all
+    df = data["df"][keep_cols]
+    metric = EvaluationMetricEnum.MeanAbsoluteError
+    evaluation_metric = EvaluationMetricParam(
+        cv_selection_metric=metric.name,
+        agg_periods=7,
+        agg_func=np.max,
+        null_model_params={
+            "strategy": "quantile",
+            "constant": None,
+            "quantile": 0.5
+        }
+    )
+    evaluation_period = EvaluationPeriodParam(
+        test_horizon=10,
+        periods_between_train_test=5,
+        cv_horizon=4,
+        cv_min_train_periods=80,
+        cv_expanding_window=False,
+        cv_periods_between_splits=20,
+        cv_periods_between_train_test=3,
+        cv_max_splits=3
+    )
+    model_components = ModelComponentsParam(
+        regressors={
+            "regressor_cols": reg_cols
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": {
+                "regressor2": {
+                    "lag_dict": {"orders": [5]},
+                    "agg_lag_dict": {
+                        "orders_list": [[7, 7 * 2, 7 * 3]],
+                        "interval_list": [(8, 7 * 2)]}
+                },
+                "regressor_bool": "auto",
+                "regressor_categ": {
+                    "lag_dict": {"orders": [5]}
+                }
+            }
+        },
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": {"cv": 2}
+            }
+        }
+    )
+    computation = ComputationParam(
+        verbose=2
+    )
+    forecast_horizon = 27
+    coverage = 0.90
+
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE.name,
+        forecast_horizon=forecast_horizon,
+        coverage=coverage,
+        evaluation_metric_param=evaluation_metric,
+        evaluation_period_param=evaluation_period,
+        model_components_param=model_components,
+        computation_param=computation,
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        result = Forecaster().run_forecast_config(
+            df=df,
+            config=config)
+        rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
+        q80 = EvaluationMetricEnum.Quantile80.get_metric_name()
+        assert result.backtest.test_evaluation[rmse] == pytest.approx(3.021, rel=1e-2)
+        assert result.backtest.test_evaluation[q80] == pytest.approx(0.885, rel=1e-2)
+        assert result.forecast.train_evaluation[rmse] == pytest.approx(2.439, rel=1e-2)
+        assert result.forecast.train_evaluation[q80] == pytest.approx(0.891, rel=1e-2)
+        check_forecast_pipeline_result(
+            result,
+            coverage=coverage,
+            strategy=None,
+            score_func=metric.name,
+            greater_is_better=False)
+        # Checks lagged regressor columns
+        actual_pred_cols = set(result.model[-1].model_dict["pred_cols"])
+        actual_x_mat_cols = set(result.model[-1].model_dict["x_mat"].columns)
+        expected_pred_cols = {
+            'regressor1',
+            'ct1',
+            'regressor2_lag5',
+            'regressor2_avglag_7_14_21',
+            'regressor2_avglag_8_to_14',
+            'regressor_categ_lag5'
+        }
+        expected_x_mat_cols = {
+            'regressor1',
+            'ct1',
+            'regressor2_lag5',
+            'regressor2_avglag_7_14_21',
+            'regressor2_avglag_8_to_14',
+            'regressor_categ_lag5[T.c2]',
+            'regressor_categ_lag5[T.c2]'
+        }
+        assert expected_pred_cols.issubset(actual_pred_cols)
+        assert expected_x_mat_cols.issubset(actual_x_mat_cols)
+
+    with pytest.raises(KeyError, match="missing_regressor"):
+        model_components = ModelComponentsParam(
+            regressors={
+                "regressor_cols": ["missing_regressor"]
+            }
+        )
+        Forecaster().run_forecast_config(
+            df=df,
+            config=ForecastConfig(
+                model_template=ModelTemplateEnum.SILVERKITE.name,
+                model_components_param=model_components,
+            ))
+
+    with pytest.raises(KeyError, match="missing_lagged_regressor"):
+        model_components = ModelComponentsParam(
+            lagged_regressors={
+                "lagged_regressor_dict": {
+                    "missing_lagged_regressor": {"lag_dict": {"orders": [5]}}
+                }
+            }
+        )
+        Forecaster().run_forecast_config(
+            df=df,
+            config=ForecastConfig(
+                model_template=ModelTemplateEnum.SILVERKITE.name,
+                model_components_param=model_components,
+            ))
+
+    with pytest.raises(KeyError, match="missing_lagged_regressor"):
+        model_components = ModelComponentsParam(
+            lagged_regressors={
+                "lagged_regressor_dict": {
+                    "missing_lagged_regressor": {"lag_dict": {"orders": [5]}},
+                    "regressor_bool": {"lag_dict": {"orders": [5]}}
+                }
+            }
+        )
+        Forecaster().run_forecast_config(
+            df=df,
+            config=ForecastConfig(
+                model_template=ModelTemplateEnum.SILVERKITE.name,
+                model_components_param=model_components,
+            ))
 
 
 def test_run_template_daily_90():
@@ -2279,6 +2526,49 @@ def test_run_template_weekly():
         coverage=None,
         expected_grid_size=4
     )
+
+
+def test_run_template_forecast_one_by_one():
+    dl = DataLoader()
+    data = dl.load_peyton_manning()
+    evaluation_period = EvaluationPeriodParam(
+        cv_expanding_window=False,  # rolling start date
+        cv_horizon=7,
+        cv_min_train_periods=365,
+        cv_periods_between_train_test=0,
+        test_horizon=7,
+        cv_max_splits=1
+    )
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE_WEEKLY.name,
+        forecast_horizon=7,
+        evaluation_period_param=evaluation_period,
+        model_components_param=ModelComponentsParam(
+            autoregression=dict(autoreg_dict="auto")),
+        forecast_one_by_one=[1, 2, 4]
+    )
+    data["ts"] = pd.to_datetime(data["ts"])
+    new_df = data.iloc[:730]
+    result = Forecaster().run_forecast_config(
+        df=new_df,
+        config=config,
+    )
+    assert len(result.model[-1].estimators) == 3  # 3 models were used.
+    # We specified 1, 2, 4 in config, so the forecast horizons should be 1, 3, 7
+    assert result.model[-1].estimators[0].forecast_horizon == 1
+    assert result.model[-1].estimators[1].forecast_horizon == 3
+    assert result.model[-1].estimators[2].forecast_horizon == 7
+    # We have the right forecasts from each model.
+    future_df = result.forecast.df_test[[TIME_COL]]
+    assert_equal(
+        result.model[-1].estimators[0].predict(future_df.iloc[:1])[[PREDICTED_COL]].values,
+        result.forecast.df_test.iloc[:1][[PREDICTED_COL]].values)
+    assert_equal(
+        result.model[-1].estimators[1].predict(future_df.iloc[1:3])[[PREDICTED_COL]].values,
+        result.forecast.df_test.iloc[1:3][[PREDICTED_COL]].values)
+    assert_equal(
+        result.model[-1].estimators[2].predict(future_df.iloc[3:7])[[PREDICTED_COL]].values,
+        result.forecast.df_test.iloc[3:7][[PREDICTED_COL]].values)
 
 
 def test_silverkite_empty():

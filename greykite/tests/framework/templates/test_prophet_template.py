@@ -1,10 +1,10 @@
 import datetime
+import sys
 import warnings
 
 import numpy as np
 import pandas as pd
 import pytest
-from fbprophet.make_holidays import make_holidays_df
 from pandas.util.testing import assert_frame_equal
 
 import greykite.common.constants as cst
@@ -27,6 +27,16 @@ from greykite.framework.utils.framework_testing_utils import assert_basic_pipeli
 from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
 
 
+try:
+    import fbprophet
+    from fbprophet.make_holidays import make_holidays_df
+    fbprophet
+except ModuleNotFoundError:
+    pass
+
+
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def default_holidays():
     """Default holidays by country params"""
@@ -42,6 +52,8 @@ def default_holidays():
     return expected_holidays
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_property():
     """Tests properties"""
     assert ProphetTemplate().allow_model_template_list is False
@@ -58,6 +70,8 @@ def test_property():
     assert template.estimator is estimator
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_prophet_holidays():
     """Tests get_prophet_holidays"""
     year_list = list(range(2014, 2030+2))
@@ -138,6 +152,8 @@ def test_get_prophet_holidays():
             upper_window=upper_window)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_regressor_cols():
     """Tests get_regressor_names"""
     # `add_regressor_dict` is a list of dict
@@ -229,6 +245,8 @@ def test_get_regressor_cols():
     assert template.get_regressor_cols() is None
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_default():
     """Tests get_hyperparameter_grid and apply_prophet_model_components_defaults"""
     template = ProphetTemplate()
@@ -261,6 +279,8 @@ def test_prophet_hyperparameter_grid_default():
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_seasonality_growth(default_holidays):
     """Tests get_hyperparameter_grid for basic seasonality, growth and other default params"""
     seasonality = {"yearly_seasonality": [True], "weekly_seasonality": [False]}
@@ -296,6 +316,8 @@ def test_prophet_hyperparameter_grid_seasonality_growth(default_holidays):
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_events():
     """Tests get_prophet_hyperparameter_grid for selected Countries" holidays"""
     # holiday params
@@ -349,6 +371,8 @@ def test_prophet_hyperparameter_grid_events():
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_exception():
     """Tests prophet_hyperparameter_grid exceptions"""
     # unknown argument
@@ -390,6 +414,8 @@ def test_prophet_hyperparameter_grid_exception():
         template.get_hyperparameter_grid()
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_warn():
     """Tests get_prophet_hyperparameter_grid warnings"""
     # holiday params
@@ -454,6 +480,8 @@ def test_prophet_hyperparameter_grid_warn():
         assert_equal(hyp1, hyp2)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_custom_seasonality(default_holidays):
     """Tests get_prophet_hyperparameter_grid for custom seasonality params, other params being defaults"""
     seasonality = {
@@ -622,6 +650,8 @@ def test_prophet_hyperparameter_grid_custom_seasonality(default_holidays):
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_changepoints_uncertainty_custom(default_holidays):
     """Tests get_prophet_hyperparameter_grid for selected
     changepoints, regressor, and uncertainty"""
@@ -717,6 +747,8 @@ def test_prophet_hyperparameter_grid_changepoints_uncertainty_custom(default_hol
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_auto_list(default_holidays):
     """Tests `get_prophet_hyperparameter_grid` automatic list conversion
     via `dictionaries_values_to_lists`. Holidays are tested separately
@@ -818,6 +850,8 @@ def test_prophet_hyperparameter_grid_auto_list(default_holidays):
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_hyperparameter_override(default_holidays):
     """Tests the hyperparameter_override functionality.
     Use hyperparameter_override to override parameters and
@@ -865,6 +899,8 @@ def test_hyperparameter_override(default_holidays):
     assert_equal(hyperparameter_grid, [updated_grid, expected_grid])
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_apply_template_decorator():
     data = generate_df_for_tests(freq="D", periods=10)
     df = data["df"]
@@ -878,6 +914,8 @@ def test_apply_template_decorator():
         )
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_template_default():
     """Tests prophet_template with default values, for limited data"""
     # prepares input data
@@ -905,6 +943,7 @@ def test_prophet_template_default():
         anomaly_info=None,
         # model
         regressor_cols=None,
+        lagged_regressor_cols=None,
         estimator=None,
         hyperparameter_grid=template.hyperparameter_grid,
         hyperparameter_budget=None,
@@ -935,6 +974,8 @@ def test_prophet_template_default():
     assert_equal(params, expected_params)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_template_custom():
     """Tests prophet_template with custom values, with long range input"""
     # prepares input data
@@ -1094,6 +1135,7 @@ def test_prophet_template_custom():
         anomaly_info=metadata.anomaly_info,
         # model
         regressor_cols=template.regressor_cols,
+        lagged_regressor_cols=template.lagged_regressor_cols,
         estimator=None,
         hyperparameter_grid=template.hyperparameter_grid,
         hyperparameter_budget=computation.hyperparameter_budget,
@@ -1124,6 +1166,8 @@ def test_prophet_template_custom():
     assert_equal(params, expected_params)
 
 
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_run_prophet_template_custom():
     """Tests running prophet template through the pipeline"""
     data = generate_df_with_reg_for_tests(

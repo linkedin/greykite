@@ -9,6 +9,7 @@ from greykite.common.constants import VALUE_COL
 from greykite.common.enums import TimeEnum
 from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.common.python_utils import assert_equal
+from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.testing_utils import assert_eval_function_equal
 from greykite.common.testing_utils import generate_df_with_reg_for_tests
 from greykite.framework.templates.autogen.forecast_config import EvaluationMetricParam
@@ -38,7 +39,8 @@ def df():
         VALUE_COL: value_col
     }, axis=1, inplace=True)
     regressor_cols = ["regressor1", "regressor2", "regressor_categ"]
-    keep_cols = [time_col, value_col] + regressor_cols
+    lagged_regressor_cols = ["regressor2", "regressor_bool"]
+    keep_cols = [time_col, value_col] + unique_elements_in_list(regressor_cols + lagged_regressor_cols)
     return df[keep_cols]
 
 
@@ -58,6 +60,13 @@ class MyTemplate(BaseTemplate):
     def get_regressor_cols(self):
         return ["regressor1", "regressor2", "regressor_categ"]
 
+    def get_lagged_regressor_info(self):
+        return {
+            "lagged_regressor_cols": ["regressor2", "regressor_bool"],
+            "overall_min_lag_order": 1,
+            "overall_max_lag_order": 7
+        }
+
     def get_hyperparameter_grid(self):
         return {}
 
@@ -73,6 +82,7 @@ def test_base_template():
     assert mt.score_func_greater_is_better is None
     assert isinstance(mt.estimator, SilverkiteEstimator)
     assert mt.regressor_cols is None
+    assert mt.lagged_regressor_cols is None
     assert mt.pipeline is None
     assert mt.time_properties is None
     assert mt.hyperparameter_grid is None
@@ -83,10 +93,19 @@ def test_get_regressor_cols():
     assert mt.get_regressor_cols() == ["regressor1", "regressor2", "regressor_categ"]
 
 
+def test_get_lagged_regressor_info():
+    mt = MyTemplate()
+    lagged_regressor_info = mt.get_lagged_regressor_info()
+    assert lagged_regressor_info["lagged_regressor_cols"] == ["regressor2", "regressor_bool"]
+    assert lagged_regressor_info["overall_min_lag_order"] == 1
+    assert lagged_regressor_info["overall_max_lag_order"] == 7
+
+
 def test_get_pipeline(df):
     mt = MyTemplate()
     # Initializes attributes needed by the function
     mt.regressor_cols = mt.get_regressor_cols()
+    mt.lagged_regressor_cols = mt.get_lagged_regressor_info()["lagged_regressor_cols"]
     metric = EvaluationMetricEnum.MeanSquaredError
     mt.score_func = metric.name
     mt.score_func_greater_is_better = metric.get_metric_greater_is_better()
@@ -104,7 +123,8 @@ def test_get_pipeline(df):
     assert estimator.coverage == mt.config.coverage
     assert mt.estimator is not estimator
     assert mt.estimator.coverage is None
-    assert pipeline.named_steps["input"].transformer_list[2][1].named_steps["select_reg"].column_names == mt.regressor_cols
+    expected_col_names = ["regressor1", "regressor2", "regressor_categ", "regressor_bool"]
+    assert pipeline.named_steps["input"].transformer_list[2][1].named_steps["select_reg"].column_names == expected_col_names
     assert_eval_function_equal(pipeline.steps[-1][-1].score_func,
                                metric.get_metric_func())
 
@@ -126,6 +146,7 @@ def test_get_forecast_time_properties(df):
         )
     )
     mt.regressor_cols = mt.get_regressor_cols()
+    mt.lagged_regressor_cols = mt.get_lagged_regressor_info()["lagged_regressor_cols"]
     time_properties = mt.get_forecast_time_properties()
 
     period = 3600  # seconds between observations
@@ -172,8 +193,9 @@ def test_apply_template_for_pipeline_params(df):
     assert estimator.coverage == mt.config.coverage
     assert mt.estimator is not estimator
     assert mt.estimator.coverage is None
-    assert (pipeline_params["pipeline"].named_steps["input"].transformer_list[2][1].named_steps["select_reg"].column_names
-            == mt.get_regressor_cols())
+    expected_col_names = unique_elements_in_list(mt.get_regressor_cols() + mt.get_lagged_regressor_info()["lagged_regressor_cols"])
+    assert pipeline_params["pipeline"].named_steps["input"].transformer_list[2][1].named_steps["select_reg"].column_names\
+        == expected_col_names
 
     # Tests `apply_template_decorator`
     assert mt.config == mt.apply_forecast_config_defaults(config)

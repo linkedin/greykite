@@ -33,6 +33,14 @@ def params():
             "orders_list": [[7, 7*2, 7*3]],
             "interval_list": [(7, 7*2)]},
         "series_na_fill_func": lambda s: s.bfill().ffill()}
+    lagged_regressor_dict = {
+        "regressor1": {
+            "lag_dict": {"orders": [1, 2, 3]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7 * 2, 7 * 3]],
+                "interval_list": [(8, 7 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor2": "auto"}
     uncertainty_dict = {
         "uncertainty_method": "simple_conditional_residuals",
         "params": {
@@ -71,6 +79,7 @@ def params():
         "max_daily_seas_interaction_order": None,
         "max_weekly_seas_interaction_order": None,
         "autoreg_dict": autoreg_dict,
+        "lagged_regressor_dict": lagged_regressor_dict,
         "min_admissible_value": None,
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict,
@@ -97,6 +106,14 @@ def params2():
             "orders_list": [[7, 7*2, 7*3]],
             "interval_list": [(7, 7*2)]},
         "series_na_fill_func": lambda s: s.bfill().ffill()}
+    lagged_regressor_dict = {
+        "regressor1": {
+            "lag_dict": {"orders": [1, 2, 3]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7 * 2, 7 * 3]],
+                "interval_list": [(8, 7 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()},
+        "regressor2": "auto"}
     uncertainty_dict = {
         "uncertainty_method": "simple_conditional_residuals",
         "params": {
@@ -135,6 +152,7 @@ def params2():
         "max_daily_seas_interaction_order": None,
         "max_weekly_seas_interaction_order": None,
         "autoreg_dict": autoreg_dict,
+        "lagged_regressor_dict": lagged_regressor_dict,
         "min_admissible_value": None,
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict,

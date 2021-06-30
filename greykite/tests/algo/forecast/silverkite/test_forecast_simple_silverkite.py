@@ -290,6 +290,7 @@ def test_passthrough(daily_data_reg):
             "method": "uniform",
             "n_changepoints": 20},
         autoreg_dict={"autoreg_param": "value"},
+        lagged_regressor_dict={"lagged_regressor_param": "value"},
         min_admissible_value=1,
         max_admissible_value=10,
         uncertainty_dict={"uncertainty_param": "value"})
@@ -568,6 +569,7 @@ def test_convert_simple_silverkite_params_hourly(hourly_data):
         changepoints_dict=None,
         fs_components_df=expected_fs,
         autoreg_dict=None,
+        lagged_regressor_dict=None,
         seasonality_changepoints_dict=None,
         min_admissible_value=None,
         max_admissible_value=None,

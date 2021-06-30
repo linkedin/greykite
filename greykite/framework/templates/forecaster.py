@@ -35,12 +35,16 @@ from greykite.common.logging import log_message
 from greykite.common.python_utils import unique_elements_in_list
 from greykite.framework.pipeline.pipeline import ForecastResult
 from greykite.framework.pipeline.pipeline import forecast_pipeline
+from greykite.framework.pipeline.utils import get_basic_pipeline
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import forecast_config_from_dict
 from greykite.framework.templates.forecast_config_defaults import ForecastConfigDefaults
 from greykite.framework.templates.model_templates import ModelTemplateEnum
+from greykite.framework.templates.pickle_utils import dump_obj
+from greykite.framework.templates.pickle_utils import load_obj
 from greykite.framework.templates.simple_silverkite_template import SimpleSilverkiteTemplate
 from greykite.framework.templates.template_interface import TemplateInterface
+from greykite.sklearn.estimator.one_by_one_estimator import OneByOneEstimator
 
 
 class Forecaster:
@@ -213,6 +217,38 @@ class Forecaster:
 
         return template_class
 
+    def __apply_forecast_one_by_one_to_pipeline_parameters(self):
+        """If forecast_one_by_one is activated,
+
+            1. replaces the estimator with ``OneByOneEstimator`` in pipeline.
+            2. Adds one by one estimator's parameters to ``hyperparameter_grid``.
+        """
+        if self.config.forecast_one_by_one not in (None, False):
+            pipeline = get_basic_pipeline(
+                estimator=OneByOneEstimator(
+                    estimator=self.template.estimator.__class__.__name__,
+                    forecast_horizon=self.config.forecast_horizon),
+                score_func=self.template.score_func,
+                score_func_greater_is_better=self.template.score_func_greater_is_better,
+                agg_periods=self.template.config.evaluation_metric_param.agg_periods,
+                agg_func=self.template.config.evaluation_metric_param.agg_func,
+                relative_error_tolerance=self.template.config.evaluation_metric_param.relative_error_tolerance,
+                coverage=self.template.config.coverage,
+                null_model_params=self.template.config.evaluation_metric_param.null_model_params,
+                regressor_cols=self.template.regressor_cols)
+            self.pipeline_params["pipeline"] = pipeline
+            if isinstance(self.pipeline_params["hyperparameter_grid"], list):
+                for i in range(len(self.pipeline_params["hyperparameter_grid"])):
+                    self.pipeline_params["hyperparameter_grid"][i]["estimator__forecast_horizon"] = [
+                        self.config.forecast_horizon]
+                    self.pipeline_params["hyperparameter_grid"][i]["estimator__estimator_map"] = [
+                        self.config.forecast_one_by_one]
+            else:
+                self.pipeline_params["hyperparameter_grid"]["estimator__forecast_horizon"] = [
+                    self.config.forecast_horizon]
+                self.pipeline_params["hyperparameter_grid"]["estimator__estimator_map"] = [
+                    self.config.forecast_one_by_one]
+
     def apply_forecast_config(
             self,
             df: pd.DataFrame,
@@ -255,6 +291,7 @@ class Forecaster:
         self.template_class = self.__get_template_class(self.config)
         self.template = self.template_class()
         self.pipeline_params = self.template.apply_template_for_pipeline_params(df=df, config=self.config)
+        self.__apply_forecast_one_by_one_to_pipeline_parameters()
         return self.pipeline_params
 
     def run_forecast_config(
@@ -321,3 +358,62 @@ class Forecaster:
             df=df,
             config=config)
         return self.forecast_result
+
+    def dump_forecast_result(
+            self,
+            destination_dir,
+            object_name="object",
+            dump_design_info=True,
+            overwrite_exist_dir=False):
+        """Dumps ``self.forecast_result`` to local pickle files.
+
+        Parameters
+        ----------
+        destination_dir : `str`
+            The pickle destination directory.
+        object_name : `str`
+            The stored file name.
+        dump_design_info : `bool`, default True
+            Whether to dump design info.
+            Design info is a patsy class that includes the design matrix information.
+            It takes longer to dump design info.
+        overwrite_exist_dir : `bool`, default False
+            What to do when ``destination_dir`` already exists.
+            Removes the original directory when exists, if set to True.
+
+        Returns
+        -------
+        This function writes to local files and does not return anything.
+        """
+        if self.forecast_result is None:
+            raise ValueError("self.forecast_result is None, nothing to dump.")
+        dump_obj(
+            obj=self.forecast_result,
+            dir_name=destination_dir,
+            obj_name=object_name,
+            dump_design_info=dump_design_info,
+            overwrite_exist_dir=overwrite_exist_dir
+        )
+
+    def load_forecast_result(
+            self,
+            source_dir,
+            load_design_info=True):
+        """Loads ``self.forecast_result`` from local files created by ``self.dump_result``.
+
+        Parameters
+        ----------
+        source_dir : `str`
+            The source file directory.
+        load_design_info : `bool`, default True
+            Whether to load design info.
+            Design info is a patsy class that includes the design matrix information.
+            It takes longer to load design info.
+        """
+        if self.forecast_result is not None:
+            raise ValueError("self.forecast_result is not None, please create a new instance.")
+        self.forecast_result = load_obj(
+            dir_name=source_dir,
+            obj=None,
+            load_design_info=load_design_info
+        )
