@@ -116,6 +116,7 @@ Please find our full documentation `here <http://linkedin.github.io/greykite/doc
 Learn More
 ----------
 
+* `Website <https://linkedin.github.io/greykite>`_
 * `Paper <https://arxiv.org/abs/2105.01098>`_
 * `Blog post <https://engineering.linkedin.com/blog/2021/greykite--a-flexible--intuitive--and-fast-forecasting-library>`_
 
@@ -137,6 +138,17 @@ Please cite Greykite in your publications if it helps your research:
       year   = {2021}
     }
 
+.. code-block::
+
+    @misc{reza2021greykite-paper,
+      author = {Reza Hosseini and
+                Kaixu Yang and
+                Albert Chen and
+                Sayan Patra},
+      title  = {A flexible forecasting model for production systems},
+      url    = {https://arxiv.org/abs/2105.01098},
+      year   = {2021}
+    }
 
 License
 -------
