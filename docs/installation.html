@@ -17,6 +17,12 @@ layout: default
     <p style="text-indent: 2rem"><code class="greykite-code-block-in-line">$ pip install greykite</code></p>
     <p>or</p>
     <p style="text-indent: 2rem"><code class="greykite-code-block-in-line">$ python -m pip install greykite</code>.</p>
+    <div style="margin-left: 2rem; border: black; border-width: 1px; border-style: solid">
+    <p style="margin-left: 2rem"><b>Note: </b> starting from version 0.2.0, fbprophet and its dependencies were converted to optional dependencies. They are not installed with greykite. To use the related functionalities, you will need to install them manually. To install fbprophet, you can do</p>
+    <p style="text-indent: 4rem"><code class="greykite-code-block-in-line">$ pip install fbprophet==0.5</code></p>
+    <p style="margin-left: 2rem">Greykite was tested with fbprophet 0.5 but is also compatible with fbprophet 0.6 and 0.7, except for some parameters introduced in the later versions.</p>
+    </div>
+
     <p>We recommend setting up python <u><a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#installing-virtualenv">virtual environment</a></u>
       with the proper python version (e.g. 3.7.7) to install greykite.</p>
     <p>To install in a virtual environment, the steps typically look like this:</p>
@@ -43,7 +49,7 @@ layout: default
     <p>We highly recommend using <u><a href="https://docs.conda.io/en/latest/miniconda.html">miniconda</a></u> for installation,
   to use m2w64-toolchain for GCC. Anaconda also works, but it comes with extra packages that may
   need to be reinstalled with the proper version anyway.</p>
-    <p>We recommend Python 3.7 on Windows to avoid potential issues with fbprophet.</p>
+    <p>In general, both Python 3.6 and 3.7 work on windows. If you think you will need fbprophet, we recommend Python 3.7 on Windows to avoid potential issues.</p>
     <pre><code class="greykite-code-block">$ conda create --name greykite-venv python=3.7
   $ conda activate greykite-venv
   $ conda install -c msys2 libpython m2w64-toolchain
@@ -64,11 +70,11 @@ layout: default
     <p>You may open a jupyter notebook to run code as follows:</p>
     <code class="greykite-code-block-in-line">$ jupyter notebook</code>.
     <p>To render plots in the notebook, use notebook mode and replace `plotly.io.show` with `iplot`:</p>
-    <pre><code class="greykite-code-block">$ from plotly.offline import init_notebook_mode, iplot
-  $ init_notebook_mode(connected=True)  # for plots to render in jupyter notebook
-  $ # ... notebook code ...
-  $ # plotly.io.show(fig)  # replace these with `iplot`
-  $ iplot(fig)</code></pre>
+    <pre><code class="greykite-code-block">>>> from plotly.offline import init_notebook_mode, iplot
+  >>> init_notebook_mode(connected=True)  # for plots to render in jupyter notebook
+  >>> # ... notebook code ...
+  >>> # plotly.io.show(fig)  # replace these with `iplot`
+  >>> iplot(fig)</code></pre>
     <br>
     <h4>FAQs</h4>
     <hr style="width: 100%; margin-left: 0">
@@ -83,6 +89,7 @@ layout: default
           <li>Check if installation succeeded: <code class="greykite-code-block-in-line">$ pip show greykite</code>.</li>
           <li>If not, install the package first using pip or conda, then try installing greykite again.</li>
         </ol>
+          <p><b>Update:</b> if you are installing greykite >=0.2.0, fbprophet and pystan are optional dependencies. This issue will only potentially appear when you install fbprophet manually.</p>
       </li>
       <li>
         <p>After installation, when I try to open jupyter notebook, it takes forever to connect to kernel.</p>
