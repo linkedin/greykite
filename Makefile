@@ -47,17 +47,17 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-lint: ## check style with flake8
-	flake8 greykite tests
+flake8: ## check style with flake8
+	flake8 greykite --max-line-length=160 --ignore=E121,E123,E126,E226,E24,E704,W503,W504,F541,E402,E741
 
 test: ## run tests quickly with the default Python
-	pytest
+	pytest greykite/tests
 
 test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source greykite -m pytest
+	coverage run --source greykite -m pytest greykite/tests
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
@@ -65,10 +65,12 @@ coverage: ## check code coverage quickly with the default Python
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/greykite.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ greykite
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+	$(BROWSER) docs/build/docs/greykite/html/index.html
+
+open-docs: ## open docs
+	$(BROWSER) docs/build/docs/greykite/html/index.html
 
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
