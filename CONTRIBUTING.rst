@@ -18,14 +18,6 @@ As a contributor, you represent that the code you submit is your original work o
 By submitting code, you (and, if applicable, your employer) are licensing the submitted code to LinkedIn
 and the open source community subject to the BSD 2-Clause license.
 
-Responsible Disclosure of Security Vulnerabilities
---------------------------------------------------
-
-Please, do not file reports on Github for security issues.
-Please, review the guidelines at https://www.linkedin.com/help/linkedin/answer/62924.
-Reports should be encrypted using LinkedIn's `Public PGP Key <https://www.linkedin.com/help/linkedin/answer/79676>`_
-and sent to security@linkedin.com, preferably with the title "GitHub linkedin/Greykite — < short summary >".
-
 Contribution Guidelines
 -----------------------
 
