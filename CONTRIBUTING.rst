@@ -39,7 +39,7 @@ Greykite uses `sphinx <https://www.sphinx-doc.org/en/master/>`_
 and `sphinx-gallery <https://sphinx-gallery.github.io/stable/index.html>`_ to generate documentation pages.
 Please make sure the content are well rendered if you contribute to the documentation.
 
-Please make sure the code/docstring styles are the same with the other code in the same file/module before creating a pull request.
+Please make sure the code/docstring styles are the same as the other code in the same file/module before creating a pull request.
 
 Contribution Steps
 ^^^^^^^^^^^^^^^^^^
