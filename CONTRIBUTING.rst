@@ -100,7 +100,7 @@ Makes sure your code works
 
     make docs
 
-  as well as that the generated documentation pages looks good. The generated docs are in docs/build/docs/greykite/html. Please take a full screenshot of the generated page with your browser.
+  and that the generated documentation pages look good. The generated docs are in docs/build/docs/greykite/html. Please take a full screenshot of the generated page with your browser.
 
 * Currently we do not allow modifying dependencies for stability reasons.
 
