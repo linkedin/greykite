@@ -936,7 +936,7 @@ def get_lasso_coef_df_by_multi_sample_split(info_dict):
             confidence_intervals.append([0., 0.])
         else:
             check_index = (p_value_rankings[i] > gamma_min) & (beta_estimates[i] != 0)
-            if len(check_index) == 0:
+            if check_index.sum() == 0:
                 confidence_intervals.append([0., 0.])
             else:
                 lb = np.min(ordinary_confidence_interval_lb[i, check_index])
