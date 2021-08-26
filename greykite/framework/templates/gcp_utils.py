@@ -19,8 +19,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # original author: Kaixu Yang
-
-## GCP functionality author: McKenzie Quinn
+## GCP functionality author: McKenzie Quinn, August 2021
 """Util functions to pickle and load forecast results."""
 import inspect
 import os

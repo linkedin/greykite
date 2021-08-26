@@ -19,6 +19,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # original author: Albert Chen
+# updated: McKenzie Quinn August 2021
 """Main entry point to create a forecast.
 Generates a forecast from input data and config and stores the result.
 """
