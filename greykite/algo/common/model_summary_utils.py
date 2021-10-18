@@ -288,7 +288,7 @@ def add_model_params_lm(info_dict):
         elif fit_algorithm == "elastic_net":
             info_dict["model"] = "Elastic Net regression"
             info_dict["alpha"] = ml_model.alpha_
-            info_dict["l1_ratio"] = ml_model.l1_ratio
+            info_dict["l1_ratio"] = ml_model.l1_ratio_
         elif fit_algorithm == "sgd":
             info_dict["model"] = "Elastic Net regression via SGD"
             info_dict["alpha"] = ml_model.alpha  # does not have underscore, because this is not cv
