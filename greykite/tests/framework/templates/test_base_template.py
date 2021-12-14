@@ -13,6 +13,7 @@ from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.testing_utils import assert_eval_function_equal
 from greykite.common.testing_utils import generate_df_with_reg_for_tests
 from greykite.framework.templates.autogen.forecast_config import EvaluationMetricParam
+from greykite.framework.templates.autogen.forecast_config import EvaluationPeriodParam
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import MetadataParam
 from greykite.framework.templates.base_template import BaseTemplate
@@ -176,6 +177,9 @@ def test_apply_template_for_pipeline_params(df):
         ),
         evaluation_metric_param=EvaluationMetricParam(
             cv_selection_metric="MeanSquaredError"
+        ),
+        evaluation_period_param=EvaluationPeriodParam(
+            cv_use_most_recent_splits=True
         )
     )
     original_config = dataclasses.replace(config)
@@ -196,6 +200,7 @@ def test_apply_template_for_pipeline_params(df):
     expected_col_names = unique_elements_in_list(mt.get_regressor_cols() + mt.get_lagged_regressor_info()["lagged_regressor_cols"])
     assert pipeline_params["pipeline"].named_steps["input"].transformer_list[2][1].named_steps["select_reg"].column_names\
         == expected_col_names
+    assert pipeline_params["cv_use_most_recent_splits"] == config.evaluation_period_param.cv_use_most_recent_splits
 
     # Tests `apply_template_decorator`
     assert mt.config == mt.apply_forecast_config_defaults(config)

@@ -161,6 +161,8 @@ class OneByOneEstimator(BaseForecastEstimator):
         The list of estimator fit method outputs.
     pred_indices : `list` [`int`]
         The list of indices used to splice forecasts.
+    forecast : `pandas.DataFrame`
+        The cached forecast results from the last call of ``self.predict``.
     """
     def __init__(
             self,
@@ -184,7 +186,7 @@ class OneByOneEstimator(BaseForecastEstimator):
         self.forecast_horizon = forecast_horizon
         self.estimator_map = estimator_map
 
-        # Set by fit method.
+        # Set by `fit` method.
         self.estimator_map_list = None  # List of forecast horizons for each estimator
         self.estimator_param_names = None  # Estimator parameter names
         self.estimator_class = None  # Estimator class
@@ -192,6 +194,9 @@ class OneByOneEstimator(BaseForecastEstimator):
         self.model_results = None  # Estimator fit outputs
         self.pred_indices = None  # Indices to splice forecasts
         self.train_end_date = None  # Last training timestamp
+
+        # Set by `predict` method.
+        self.forecast = None
 
     def set_params(self, **params):
         """Overrides the set_params method in `sklearn.base.BaseEstimator`
@@ -294,7 +299,8 @@ class OneByOneEstimator(BaseForecastEstimator):
                 self.estimator_map_list = estimator_map
             else:
                 if sum(self.estimator_map) != self.forecast_horizon:
-                    raise ValueError("Sum of forecast one by one estimator map must equal to forecast horizon.")
+                    raise ValueError(
+                        "Sum of forecast one by one estimator map must equal to forecast horizon.")
                 self.estimator_map_list = deepcopy(self.estimator_map)
             self.estimators = []
             self.pred_indices = [0]
@@ -409,18 +415,21 @@ class OneByOneEstimator(BaseForecastEstimator):
                 level=LoggingLevelEnum.WARNING)
             return self.estimators[-1].predict(X)
 
-        # From now on assume X is exactly the forecast horizon.
+        # The past df is always forecasted with the last estimator.
+        past_prediction = None
+        if not is_future.all():
+            past_prediction = self.estimators[-1].predict(X.loc[~is_future])
+
+        # From now on assume ``x_future`` is exactly the forecast horizon.
         # Makes predictions according to the estimator map.
         predictions = [
             estimator.predict(x_future.iloc[self.pred_indices[i]: self.pred_indices[i+1]])
             for i, estimator in enumerate(self.estimators)
         ]
-        # The past df is always forecasted with the last estimator.
-        if not is_future.all():
-            past_prediction = self.estimators[-1].predict(X.loc[~is_future])
-            predictions = [past_prediction] + predictions
+        predictions = pd.concat([past_prediction] + predictions, axis=0).reset_index(drop=True)
+        self.forecast = predictions
 
-        return pd.concat(predictions)
+        return predictions
 
     def summary(self):
         """Returns the model summary.

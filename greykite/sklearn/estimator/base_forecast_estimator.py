@@ -24,6 +24,7 @@
 from abc import ABC
 from abc import abstractmethod
 
+import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.base import RegressorMixin
 from sklearn.metrics import mean_squared_error
@@ -33,6 +34,8 @@ from greykite.common.evaluation import r2_null_model_score
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
 from greykite.sklearn.estimator.null_model import DummyEstimator
+from greykite.sklearn.uncertainty.exceptions import UncertaintyError
+from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
 
 
 class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
@@ -96,6 +99,9 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
         # initializes attributes defined in predict
         self.last_predicted_X_ = None    # the most recent X passed to self.predict()
         self.cached_predictions_ = None  # the most recent return value of self.predict()
+
+        # initializes attributes defined in ``fit_uncertainty``
+        self.uncertainty_model = None  # the uncertainty model
 
     @abstractmethod
     def fit(self, X, y=None, time_col=cst.TIME_COL, value_col=cst.VALUE_COL, **fit_params):
@@ -230,3 +236,147 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
         else:
             score = self.score_func(y, y_pred)
         return score
+
+    def fit_uncertainty(
+            self,
+            df: pd.DataFrame,
+            uncertainty_dict: dict,
+            **kwargs):
+        """Fits the uncertainty model with a given ``df`` and ``uncertainty_dict``.
+
+        Parameters
+        ----------
+        df : `pandas.DataFrame`
+            A dataframe representing the data to fit the uncertainty model.
+        uncertainty_dict : `dict` [`str`, any]
+            The uncertainty model specification. It should have the following keys:
+
+                "uncertainty_method": a string that is in
+                    `~greykite.sklearn.uncertainty.uncertainty_methods.UncertaintyMethodEnum`.
+                "params": a dictionary that includes any additional parameters needed by the uncertainty method.
+
+        kwargs : additional parameters to be fed into the uncertainty method.
+            These parameters are from the estimator attributes, not given by user.
+
+        Returns
+        -------
+        The function sets ``self.uncertainty_model`` and does not return anything.
+        """
+        # When ``uncertainty_dict`` is not provided but ``self.coverage`` is provided,
+        # it falls back to the "simple conditional residuals" uncertainty method.
+        if (uncertainty_dict is None or uncertainty_dict == {}) and self.coverage is not None:
+            uncertainty_dict = dict(
+                uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+                params=dict(
+                    value_col=self.value_col_
+                )
+            )
+        # Gets the uncertainty method.
+        if uncertainty_dict is not None:
+            uncertainty_method = uncertainty_dict.get("uncertainty_method", None)
+        else:
+            uncertainty_method = None
+        # Tries to find the uncertainty method from Enum.
+        if uncertainty_method is not None:
+            try:
+                uncertainty_model = UncertaintyMethodEnum[uncertainty_method].value.model_class
+            except (KeyError, AttributeError):
+                # If not found in Enum, do not stop, return.
+                # The ``self.uncertainty_model`` is not set and will not be used in prediction.
+                log_message(
+                    message=f"Uncertainty method {uncertainty_method} is not found in `UncertaintyMethodEnum`, "
+                            f"uncertainty fitting is skipped. Valid methods are "
+                            f"{', '.join(UncertaintyMethodEnum.__dict__['_member_names_'])}.",
+                    level=LoggingLevelEnum.WARNING
+                )
+                return
+            uncertainty_dict = self._populate_uncertainty_params(uncertainty_dict)
+            # Tries to fit the model. If ``UncertaintyError`` happened,
+            # catch it and do not raise an error.
+            try:
+                self.uncertainty_model = uncertainty_model(
+                    uncertainty_dict=uncertainty_dict,
+                    time_col=self.time_col_,
+                    value_col=self.value_col_,
+                    coverage=self.coverage,
+                    **kwargs
+                )
+                self.uncertainty_model.fit(df)
+            except UncertaintyError as e:
+                self.uncertainty_model = None
+                log_message(
+                    message=f"The following errors occurred during fitting the uncertainty model, "
+                            f"the uncertainty model is skipped. {e}",
+                    level=LoggingLevelEnum.WARNING
+                )
+
+    def predict_uncertainty(
+            self,
+            df: pd.DataFrame):
+        """Makes predictions of prediction intervals for ``df`` based on the predictions
+        and ``self.uncertainty_model``.
+
+        Parameters
+        ----------
+        df : `pandas.DataFrame`
+            The dataframe to calculate prediction intervals upon.
+            It should have either ``self.value_col_`` or
+            `~greykite.common.constants.PREDICT_COL` which the
+            prediction interval is based on.
+
+        Returns
+        -------
+        result_df : `pandas.DataFrame`
+            The ``df`` with prediction interval columns.
+        """
+        # Skip prediction when no uncertainty model is trained.
+        if self.uncertainty_model is None:
+            log_message(
+                message=f"The uncertainty model is not trained.",
+                level=LoggingLevelEnum.WARNING
+            )
+            return
+
+        result_df = None
+        # Tries to predict prediction intervals,
+        # and skip if ``UncertaintyError`` occurred.
+        try:
+            result_df = self.uncertainty_model.predict(df)
+        except UncertaintyError as e:
+            log_message(
+                message=f"The following errors occurred during predicting the uncertainty model, "
+                        f"the uncertainty model is skipped. {e}",
+                level=LoggingLevelEnum.WARNING
+            )
+        return result_df
+
+    def _populate_uncertainty_params(
+            self,
+            uncertainty_dict: dict):
+        """If any parameters of the ``uncertainty_dict`` for specific uncertainty methods
+        need to be populated from the estimator, they should be added here.
+
+        Parameters
+        ----------
+        uncertainty_dict : `dict` [`str`, any]
+            The original uncertainty dictionary.
+
+        Returns
+        -------
+        uncertainty_dict : `dict` [`str`, any]
+            The uncertainty dictionary with additional parameters populated from the estimator.
+        """
+        if uncertainty_dict.get("uncertainty_method") == UncertaintyMethodEnum.simple_conditional_residuals.name:
+            # Populates ``value_col`` and ``residual_col`` for "simple_conditional_residuals" method.
+            # The method always uses residual based prediction intervals.
+            # If ``value_col`` is not in ``params``, ``self.value_col_`` will be used.
+            # If ``residual_col`` is not in ``params``,
+            # a residual column will be calculated based on the ``cst.PREDICT_COL``.
+            # The algorithm assumes there's always ``cst.PREDICT_COL`` in the input df.
+            params = uncertainty_dict.get("params", {})
+            if "value_col" not in params:
+                params["value_col"] = self.value_col_
+            if "residual_col" not in params:
+                params["residual_col"] = "residual_col"
+            uncertainty_dict["params"] = params
+        return uncertainty_dict

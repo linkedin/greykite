@@ -17,8 +17,10 @@ Parameters unique to the Silverkite algorithm are included under ``model_compone
         max_daily_seas_interaction_order=max_daily_seas_interaction_order,
         max_weekly_seas_interaction_order=max_weekly_seas_interaction_order,
         extra_pred_cols=extra_pred_cols,
+        drop_pred_cols=drop_pred_cols,
+        explicit_pred_cols=explicit_pred_cols,
         min_admissible_value=min_admissible_value,
-        max_admissible_value=max_admissible_value
+        max_admissible_value=max_admissible_value,
     )
 
 
@@ -141,8 +143,6 @@ Examples:
     )
 
 .. note::
-
-  Greykite uses `sklearn 0.23.0`.
 
   "linear" is a good starting point. Sometimes the fit can be numerically unstable
   if you request holidays that don't appear in your dataset. In that case, try
@@ -346,8 +346,8 @@ To check which features sets are enabled by default for your dataset, call
         feature_sets_enabled="auto")
 
 
-Extra predictors
-----------------
+Specify model terms
+-------------------
 
 For even finer control than ``feature_sets_enabled``, you can specify additional model terms
 via ``extra_pred_cols``. Any valid patsy model formula term is accepted. You need to know how
@@ -398,6 +398,25 @@ Example:
     them to ``feature_sets_enabled``.
 
 
+Similarly, you may specify terms to exclude via ``"drop_pred_cols"``:
+
+.. code-block:: none
+
+    drop_pred_cols : `list` [`str`] or None, default None
+        Names of predictor columns to be dropped from the final model.
+        Ignored if None.
+
+To directly specify all the terms used in the final model, use ``"explicit_pred_cols"``:
+
+.. code-block:: none
+
+    explicit_pred_cols : `list` [`str`] or None, default None
+        Names of the explicit predictor columns which will be
+        the only variables in the final model. Note that this overwrites
+        the generated predictors in the model and may include new
+        terms not appearing in the predictors (e.g. interaction terms).
+        Ignored if None.
+
 Forecast limits
 ---------------
 
@@ -422,7 +441,7 @@ Examples:
 
 .. code-block:: python
 
-    # requires non-negative forecast
+    # enforce non-negative forecast
     custom = dict(
         min_admissible_value=0
     )
@@ -432,3 +451,30 @@ Examples:
         min_admissible_value=1e3
         max_admissible_value=1e6
     )
+
+Normalization
+-------------
+
+It can be helpful to normalize features, especially when features have different magnitudes
+and regularization is used.
+
+.. code-block:: none
+
+    normalize_method : `str` or None, default None
+        The normalization method for the feature matrix.
+        Available values are "statistical" and "min_max".
+
+Examples:
+
+.. code-block:: python
+
+    custom = dict(
+        normalize_method="statistical"
+    )
+    custom = dict(
+        normalize_method="min_max"
+    )
+
+The ``statistical`` method removes the "mean" and divides by "std" for each column.
+The ``min_max`` method removes the "min" and divides by the "max - min"
+for each column. For details, see `~greykite.common.features.normalize.normalize_df`.

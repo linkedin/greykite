@@ -72,7 +72,7 @@ def get_default_origin_for_time_vars(df, time_col):
     dt_continuous_time : `float`
         The time origin used to create continuous variables for time
     """
-    date = pd.to_datetime(df[time_col][0])
+    date = pd.to_datetime(df[time_col].iloc[0])
     return convert_date_to_continuous_time(date)
 
 

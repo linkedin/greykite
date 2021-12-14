@@ -196,6 +196,8 @@ class ProphetTemplate(BaseTemplate):
                 to `sklearn.model_selection.RandomizedSearchCV`.
             autoregression: `dict` [`str`, `any`] or None
                 Ignored. Prophet template does not support autoregression.
+            lagged_regressors: `dict` [`str`, `any`] or None
+                Ignored. Prophet template does not support lagged regressors.
             custom: `dict` [`str`, `any`] or None
                 Ignored. There are no custom options.
         model_template: `str`

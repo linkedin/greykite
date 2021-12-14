@@ -27,6 +27,7 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+import pandas as pd
 from sklearn.metrics import mean_squared_error
 
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite import SimpleSilverkiteForecast
@@ -125,17 +126,22 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             max_daily_seas_interaction_order: Optional[int] = None,
             max_weekly_seas_interaction_order: Optional[int] = None,
             autoreg_dict: Optional[Dict] = None,
+            past_df: Optional[pd.DataFrame] = None,
             lagged_regressor_dict: Optional[Dict] = None,
             seasonality_changepoints_dict: Optional[Dict] = None,
             min_admissible_value: Optional[float] = None,
             max_admissible_value: Optional[float] = None,
             uncertainty_dict: Optional[Dict] = None,
+            normalize_method: Optional[str] = None,
             growth_term: Optional[str] = "linear",
             regressor_cols: Optional[List[str]] = None,
             feature_sets_enabled: Optional[Union[bool, Dict[str, bool]]] = None,
             extra_pred_cols: Optional[List[str]] = None,
+            drop_pred_cols: Optional[List[str]] = None,
+            explicit_pred_cols: Optional[List[str]] = None,
             regression_weight_col: Optional[str] = None,
-            simulation_based: Optional[bool] = False):
+            simulation_based: Optional[bool] = False,
+            simulation_num: int = 10):
         # every subclass of BaseSilverkiteEstimator must call super().__init__
         super().__init__(
             silverkite=silverkite,
@@ -172,17 +178,22 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.max_daily_seas_interaction_order = max_daily_seas_interaction_order
         self.max_weekly_seas_interaction_order = max_weekly_seas_interaction_order
         self.autoreg_dict = autoreg_dict
+        self.past_df = past_df
         self.lagged_regressor_dict = lagged_regressor_dict
         self.seasonality_changepoints_dict = seasonality_changepoints_dict
         self.min_admissible_value = min_admissible_value
         self.max_admissible_value = max_admissible_value
         self.uncertainty_dict = uncertainty_dict
+        self.normalize_method = normalize_method
         self.growth_term = growth_term
         self.regressor_cols = regressor_cols
         self.feature_sets_enabled = feature_sets_enabled
         self.extra_pred_cols = extra_pred_cols
+        self.drop_pred_cols = drop_pred_cols
+        self.explicit_pred_cols = explicit_pred_cols
         self.regression_weight_col = regression_weight_col
         self.simulation_based = simulation_based
+        self.simulation_num = simulation_num
         # ``forecast_simple_silverkite`` generates a ``fs_components_df`` to call
         # ``forecast_silverkite`` that is compatible with ``BaseSilverkiteEstimator``.
         # Unlike ``SilverkiteEstimator``, this does not need to call ``validate_inputs``.
@@ -263,17 +274,22 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             max_daily_seas_interaction_order=self.max_daily_seas_interaction_order,
             max_weekly_seas_interaction_order=self.max_weekly_seas_interaction_order,
             autoreg_dict=self.autoreg_dict,
+            past_df=self.past_df,
             lagged_regressor_dict=self.lagged_regressor_dict,
             seasonality_changepoints_dict=self.seasonality_changepoints_dict,
             min_admissible_value=self.min_admissible_value,
             max_admissible_value=self.max_admissible_value,
             uncertainty_dict=self.uncertainty_dict,
+            normalize_method=self.normalize_method,
             growth_term=self.growth_term,
             regressor_cols=self.regressor_cols,
             feature_sets_enabled=self.feature_sets_enabled,
             extra_pred_cols=self.extra_pred_cols,
+            drop_pred_cols=self.drop_pred_cols,
+            explicit_pred_cols=self.explicit_pred_cols,
             regression_weight_col=self.regression_weight_col,
-            simulation_based=self.simulation_based)
+            simulation_based=self.simulation_based,
+            simulation_num=self.simulation_num)
 
         # Sets attributes based on ``self.model_dict``
         super().finish_fit()

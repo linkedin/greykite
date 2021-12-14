@@ -6,6 +6,9 @@ from greykite.framework.templates.simple_silverkite_template_config import SILVE
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_ALGO
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_AR
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_CP
+from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_DAILY_1_CONFIG_1
+from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_DAILY_1_CONFIG_2
+from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_DAILY_1_CONFIG_3
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_DSI
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_EMPTY
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_FEASET
@@ -13,6 +16,7 @@ from greykite.framework.templates.simple_silverkite_template_config import SILVE
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_GR
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_HOL
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_SEAS
+from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_WITH_AR
 from greykite.framework.templates.simple_silverkite_template_config import SILVERKITE_WSI
 from greykite.framework.templates.simple_silverkite_template_config import VALID_FREQ
 from greykite.framework.templates.simple_silverkite_template_config import SimpleSilverkiteTemplateConstants
@@ -64,6 +68,10 @@ def test_simple_silvekite_template_constants():
     assert constants.MULTI_TEMPLATES == MULTI_TEMPLATES
 
     assert constants.SILVERKITE == SILVERKITE
+    assert constants.SILVERKITE_WITH_AR == SILVERKITE_WITH_AR
+    assert constants.SILVERKITE_DAILY_1_CONFIG_1 == SILVERKITE_DAILY_1_CONFIG_1
+    assert constants.SILVERKITE_DAILY_1_CONFIG_2 == SILVERKITE_DAILY_1_CONFIG_2
+    assert constants.SILVERKITE_DAILY_1_CONFIG_3 == SILVERKITE_DAILY_1_CONFIG_3
     assert constants.SILVERKITE_COMPONENT_KEYWORDS.AR.value == SILVERKITE_AR
     assert constants.SILVERKITE_EMPTY == SILVERKITE_EMPTY
 

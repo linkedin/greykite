@@ -109,9 +109,9 @@ class DataLoader:
             Possible values: "daily", "weekly", or "monthly".
 
         agg_func : `Dict` [`str`, `str`], default None
-            A dictionary of the columns to be aggregated and the correponding aggregating functions.
+            A dictionary of the columns to be aggregated and the corresponding aggregating functions.
             Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
-            An exmple input can be {"col1":"mean", "col2":"sum"}
+            An example input can be {"col1":"mean", "col2":"sum"}
             If None, data will not be aggregated and will include all columns.
 
         Returns
@@ -358,6 +358,92 @@ class DataLoader:
 
         return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
 
+    def load_hierarchical_actuals(self):
+        """Loads hierarchical actuals.
+
+        This dataset contains synthetic data that satisfy hierarchical constraints.
+        Consider the 3-level tree with the parent-child relationships below.
+                00        # level 0
+              /    \
+           10       11    # level 1
+          / | \     /\  # noqa: W605
+        20 21 22   23 24  # level 2
+
+        There is one root node (00) with 2 children.
+        The first child (10) has 3 children.
+        The second child (11) has 2 children.
+
+        Let `x_{ij}` be the value of the `j`th node in level `i` of the tree ({`ij`} is shown in diagram above).
+        We require the value of a parent to equal the sum of the values of its children.
+        There are 3 constraints in this hierarchy, satisfied at all time points:
+
+            * `x_00 = x_10 + x_11`
+            * `x_10 = x_20 + x_21 + x_22`
+            * `x_11 = x_23 + x_24`
+
+        Below is the dataset attribute information:
+
+            "ts" : date of the (synthetic) observation
+            "00" : value for node 00
+            "10" : value for node 10
+            "11" : value for node 11
+            "20" : value for node 20
+            "21" : value for node 21
+            "22" : value for node 22
+            "23" : value for node 23
+            "24" : value for node 24
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with synthetic hierarchical data.
+            Has the following columns:
+
+                "ts" : date of the (synthetic) observation
+                "00" : value for node 00
+                "10" : value for node 10
+                "11" : value for node 11
+                "20" : value for node 20
+                "21" : value for node 21
+                "22" : value for node 22
+                "23" : value for node 23
+                "24" : value for node 24
+
+            The values satisfy the hierarchical constraints above.
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="daily")
+        df = self.get_df(data_path=data_path, data_name="daily_hierarchical_actuals")
+        return df
+
+    def load_hierarchical_forecasts(self):
+        """Loads hierarchical forecasts.
+
+        This dataset contains forecasts for the actuals
+        given by `~greykite.common.data_loader.DataLoader.load_hierarchical_actuals`.
+        The attributes are the same.
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with forecasts for synthetic hierarchical data.
+            Has the following columns:
+
+                "ts" : date of the forecasted value
+                "00" : value for node 00
+                "10" : value for node 10
+                "11" : value for node 11
+                "20" : value for node 20
+                "21" : value for node 21
+                "22" : value for node 22
+                "23" : value for node 23
+                "24" : value for node 24
+
+            The forecasts do not satisfy the hierarchical constraints.
+            The index and columns are identical to
+            `~greykite.common.data_loader.DataLoader.load_hierarchical_actuals`.
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="daily")
+        df = self.get_df(data_path=data_path, data_name="daily_hierarchical_forecasts")
+        return df
+
     def load_data(self, data_name, **kwargs):
         """Loads dataset by name from the internal data library.
 
@@ -378,6 +464,10 @@ class DataLoader:
             df = self.load_bikesharing(**kwargs)
         elif data_name == "hourly_beijing_pm":
             df = self.load_beijing_pm(**kwargs)
+        elif data_name == "daily_hierarchical_actuals":
+            df = self.load_hierarchical_actuals()
+        elif data_name == "daily_hierarchical_forecasts":
+            df = self.load_hierarchical_forecasts()
         else:
             data_inventory = self.get_data_inventory()
             raise ValueError(f"Input data name '{data_name}' is not recognized. "

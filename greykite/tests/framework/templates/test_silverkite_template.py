@@ -134,6 +134,7 @@ def test_apply_default_model_components(model_components_param, silverkite, silv
     }
     assert model_components.autoregression == {
         "autoreg_dict": [None],
+        "simulation_num": [10]
     }
     assert model_components.regressors == {}
     assert model_components.uncertainty == {
@@ -144,12 +145,16 @@ def test_apply_default_model_components(model_components_param, silverkite, silv
         "silverkite_diagnostics": [SilverkiteDiagnostics()],
         "origin_for_time_vars": [None],
         "extra_pred_cols": ["ct1"],  # linear growth
+        "drop_pred_cols": [None],
+        "explicit_pred_cols": [None],
         "fit_algorithm_dict": [{
             "fit_algorithm": "linear",
             "fit_algorithm_params": None,
         }],
         "min_admissible_value": [None],
         "max_admissible_value": [None],
+        "regression_weight_col": [None],
+        "normalize_method": [None]
     }, ignore_keys={
         "silverkite": None,
         "silverkite_diagnostics": None
@@ -177,19 +182,23 @@ def test_apply_default_model_components(model_components_param, silverkite, silv
         },
         "seasonality_changepoints_dict": [None],
     }
-    assert updated_components.autoregression == {"autoreg_dict": [None]}
+    assert updated_components.autoregression == {"autoreg_dict": [None], "simulation_num": [10]}
     assert updated_components.uncertainty == model_components_param.uncertainty
     assert updated_components.custom == {  # combination of defaults and provided params
         "silverkite": silverkite,  # the same object that was passed in (not a copy)
         "silverkite_diagnostics": silverkite_diagnostics,
         "origin_for_time_vars": [time_properties["origin_for_time_vars"]],  # from time_properties
         "extra_pred_cols": [["ct1"], ["ct2"], ["regressor1", "regressor3"]],
+        "drop_pred_cols": [None],
+        "explicit_pred_cols": [None],
         "max_admissible_value": 4,
         "fit_algorithm_dict": [{
             "fit_algorithm": "linear",
             "fit_algorithm_params": None,
         }],
         "min_admissible_value": [None],
+        "normalize_method": [None],
+        "regression_weight_col": [None],
     }
 
     # `time_properties` without start_year key
@@ -326,6 +335,8 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
         "estimator__silverkite_diagnostics": [SilverkiteDiagnostics()],
         "estimator__origin_for_time_vars": [None],
         "estimator__extra_pred_cols": [["ct1"]],
+        "estimator__drop_pred_cols": [None],
+        "estimator__explicit_pred_cols": [None],
         "estimator__train_test_thresh": [None],
         "estimator__training_fraction": [None],
         "estimator__fit_algorithm_dict": [{
@@ -338,12 +349,15 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
             "order": [3, 3, 1, 1, 5],
             "seas_names": ["daily", "weekly", "monthly", "quarterly", "yearly"]})],
         "estimator__autoreg_dict": [None],
+        "estimator__simulation_num": [10],
         "estimator__lagged_regressor_dict": [None],
         "estimator__changepoints_dict": [None],
         "estimator__seasonality_changepoints_dict": [None],
         "estimator__changepoint_detector": [None],
         "estimator__min_admissible_value": [None],
         "estimator__max_admissible_value": [None],
+        "estimator__normalize_method": [None],
+        "estimator__regression_weight_col": [None],
         "estimator__uncertainty_dict": [None],
     }
     assert_equal(hyperparameter_grid, expected_grid, ignore_keys={"estimator__silverkite": None, "estimator__silverkite_diagnostics": None})
@@ -359,6 +373,8 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
         "estimator__silverkite_diagnostics": [silverkite_diagnostics],
         "estimator__origin_for_time_vars": [2020],
         "estimator__extra_pred_cols": [["ct1"], ["ct2"], ["regressor1", "regressor3"]],
+        "estimator__drop_pred_cols": [None],
+        "estimator__explicit_pred_cols": [None],
         "estimator__train_test_thresh": [None],
         "estimator__training_fraction": [None],
         "estimator__fit_algorithm_dict": [{
@@ -368,6 +384,7 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
         "estimator__daily_event_df_dict": [None],
         "estimator__fs_components_df": [None],
         "estimator__autoreg_dict": [None],
+        "estimator__simulation_num": [10],
         "estimator__lagged_regressor_dict": [None],
         "estimator__changepoints_dict": [{
             "method": "uniform",
@@ -377,6 +394,8 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
         "estimator__changepoint_detector": [None],
         "estimator__min_admissible_value": [None],
         "estimator__max_admissible_value": [4],
+        "estimator__normalize_method": [None],
+        "estimator__regression_weight_col": [None],
         "estimator__uncertainty_dict": [{
             "uncertainty_method": "simple_conditional_residuals"
         }],
@@ -475,6 +494,7 @@ def test_silverkite_template():
         cv_horizon=None,
         cv_min_train_periods=None,
         cv_expanding_window=True,
+        cv_use_most_recent_splits=None,
         cv_periods_between_splits=None,
         cv_periods_between_train_test=None,
         cv_max_splits=3
@@ -543,6 +563,7 @@ def test_silverkite_template_custom(model_components_param):
         cv_horizon=3,
         cv_min_train_periods=4,
         cv_expanding_window=True,
+        cv_use_most_recent_splits=True,
         cv_periods_between_splits=5,
         cv_periods_between_train_test=6,
         cv_max_splits=7
@@ -602,6 +623,7 @@ def test_silverkite_template_custom(model_components_param):
         cv_horizon=evaluation_period.cv_horizon,
         cv_min_train_periods=evaluation_period.cv_min_train_periods,
         cv_expanding_window=evaluation_period.cv_expanding_window,
+        cv_use_most_recent_splits=evaluation_period.cv_use_most_recent_splits,
         cv_periods_between_splits=evaluation_period.cv_periods_between_splits,
         cv_periods_between_train_test=evaluation_period.cv_periods_between_train_test,
         cv_max_splits=evaluation_period.cv_max_splits

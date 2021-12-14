@@ -21,7 +21,7 @@
 # original author: Reza Hosseini
 """Calculates normal quantiles for each row of dataframe."""
 
-import scipy
+from scipy import stats
 
 
 def normal_quantiles_df(
@@ -41,14 +41,14 @@ def normal_quantiles_df(
     df = df.copy()
     if mean_col is None:
         df["normal_quantiles"] = df.apply(
-            lambda row: scipy.stats.norm.ppf(
+            lambda row: stats.norm.ppf(
                 loc=fixed_mean,
                 scale=row[std_col],
                 q=quantiles),
             axis=1)
     else:
         df["normal_quantiles"] = df.apply(
-            lambda row: scipy.stats.norm.ppf(
+            lambda row: stats.norm.ppf(
                 loc=row[mean_col],
                 scale=row[std_col],
                 q=quantiles),

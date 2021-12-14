@@ -164,18 +164,19 @@ How it works
 Each changepoint as introduces a regressor whose value is 0 before the changepoint, and
 whose value after the changepoint is defined by ``continuous_time_col`` and ``growth_func``.
 
-Let ``g(t) = the value of continuous_time_col at t``.
-A changepoint at date ``t0`` adds a regressor defined by:
+Let :math:`g(t)` be the value of continuous_time_col at :math:`t`.
+A changepoint at date :math:`t_0` adds a regressor defined by:
 
-* ``growth_func(g(t)-g(t0))`` if ``t >= t0``
-* ``0`` otherwise
+* :math:`\text{growth_func}(g(t)-g(t_0))` if :math:`t >= t_0`
+* :math:`0` otherwise.
 
 For linear growth (``continuous_time_col="ct1"``), this is simply:
 
-* ``growth_func(t-t0)`` if ``t >= t0``
-* ``0`` otherwise
+* :math:`\text{growth_func}(t-t_0)` if :math:`t >= t_0`
+* :math:`0` otherwise.
 
-, where ``t-t0`` is the fractional years since ``t0``.
+
+(:math:`t-t_0`` is the fractional years since :math:`t_0`.)
 
 For most applications, you can set ``continuous_time_col="ct1"`` and define
 ``growth_func`` to model type of curve you want with time.

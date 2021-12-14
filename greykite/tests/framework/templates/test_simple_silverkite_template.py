@@ -89,8 +89,12 @@ def test_template_name_from_dataclass():
 
 def test_decode_single_template():
     sst = SimpleSilverkiteTemplate()
-    # Does not change "SILVERKITE".
+    # Does not change "SILVERKITE" or "SILVERKITE_WITH_AR" or "SILVERKITE_DAILY_1_CONFIG_{i}", i = 1, 2, 3.
     assert sst._SimpleSilverkiteTemplate__decode_single_template("SILVERKITE") == "SILVERKITE"
+    assert sst._SimpleSilverkiteTemplate__decode_single_template("SILVERKITE_WITH_AR") == "SILVERKITE_WITH_AR"
+    assert sst._SimpleSilverkiteTemplate__decode_single_template("SILVERKITE_DAILY_1_CONFIG_1") == "SILVERKITE_DAILY_1_CONFIG_1"
+    assert sst._SimpleSilverkiteTemplate__decode_single_template("SILVERKITE_DAILY_1_CONFIG_2") == "SILVERKITE_DAILY_1_CONFIG_2"
+    assert sst._SimpleSilverkiteTemplate__decode_single_template("SILVERKITE_DAILY_1_CONFIG_3") == "SILVERKITE_DAILY_1_CONFIG_3"
     # Puts components in the correct order.
     assert (sst._SimpleSilverkiteTemplate__decode_single_template("HOURLY_AR_AUTO_CP_LT_FEASET_AUTO_HOL_NONE_GR_LINEAR_ALGO_RIDGE_SEAS_NM") ==
             "HOURLY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_AUTO_ALGO_RIDGE_AR_AUTO_DSI_AUTO_WSI_AUTO")
@@ -107,6 +111,10 @@ def test_decode_single_template():
     assert (sst._SimpleSilverkiteTemplate__decode_single_template("DAILY") ==
             "DAILY_SEAS_LT_GR_LINEAR_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO")
     # Error: not recognized as a single template.
+    with pytest.raises(
+            ValueError,
+            match=f"Template not recognized. Please make sure the frequency belongs to \\['HOURLY', 'DAILY', 'WEEKLY'\\]."):
+        sst._SimpleSilverkiteTemplate__decode_single_template("SILVERKITE_DAILY_1")
     with pytest.raises(
             ValueError,
             match=f"Template not recognized. Please make sure the frequency belongs to \\['HOURLY', 'DAILY', 'WEEKLY'\\]."):
@@ -154,18 +162,24 @@ def test_decode_single_template():
 def test_check_template_type():
     sst = SimpleSilverkiteTemplate()
     assert sst.check_template_type("SILVERKITE") == "single"
+    assert sst.check_template_type("SILVERKITE_WITH_AR") == "single"
+    assert sst.check_template_type("SILVERKITE_DAILY_1_CONFIG_1") == "single"
+    assert sst.check_template_type("SILVERKITE_DAILY_1_CONFIG_2") == "single"
+    assert sst.check_template_type("SILVERKITE_DAILY_1_CONFIG_3") == "single"
     assert sst.check_template_type("WEEKLY") == "single"
     assert sst.check_template_type("WEEKLY_CP_LT") == "single"
     assert sst.check_template_type("WEEKLY_LT") == "single"
+    assert sst.check_template_type("SILVERKITE_DAILY_1") == "multi"
     assert sst.check_template_type("SILVERKITE_DAILY_90") == "multi"
     assert sst.check_template_type("SILVERKITE_WEEKLY") == "multi"
     assert sst.check_template_type(SimpleSilverkiteTemplateOptions()) == "single"
     with pytest.raises(
             ValueError,
-            match=f"The template name SILVERKITE_WEEKLY_100 is not recognized. It must be 'SILVERKITE', 'SILVERKITE_EMPTY', "
+            match=f"The template name SILVERKITE_WEEKLY_100 is not recognized. It must be 'SILVERKITE', 'SILVERKITE_WITH_AR', "
+                  f"'SILVERKITE_DAILY_1_CONFIG_1', 'SILVERKITE_DAILY_1_CONFIG_2', 'SILVERKITE_DAILY_1_CONFIG_3', 'SILVERKITE_EMPTY', "
                   f"a `SimpleSilverkiteTemplateOptions` data class, of the type"
                   " '\\{FREQ\\}_SEAS_\\{VAL\\}_GR_\\{VAL\\}_CP_\\{VAL\\}_HOL_\\{VAL\\}_FEASET_\\{VAL\\}_ALGO_\\{VAL\\}_AR_\\{VAL\\}' or"
-                  f" belong to \\['SILVERKITE_DAILY_90', 'SILVERKITE_WEEKLY', 'SILVERKITE_HOURLY_1', 'SILVERKITE_HOURLY_24', "
+                  f" belong to \\['SILVERKITE_DAILY_1', 'SILVERKITE_DAILY_90', 'SILVERKITE_WEEKLY', 'SILVERKITE_HOURLY_1', 'SILVERKITE_HOURLY_24', "
                   f"'SILVERKITE_HOURLY_168', 'SILVERKITE_HOURLY_336'\\]."):
         sst.check_template_type("SILVERKITE_WEEKLY_100")
 
@@ -174,6 +188,14 @@ def test_get_name_string_from_model_template():
     sst = SimpleSilverkiteTemplate()
     name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("SILVERKITE")
     assert name_string == ["SILVERKITE"]
+    name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("SILVERKITE_WITH_AR")
+    assert name_string == ["SILVERKITE_WITH_AR"]
+    name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("SILVERKITE_DAILY_1_CONFIG_1")
+    assert name_string == ["SILVERKITE_DAILY_1_CONFIG_1"]
+    name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("SILVERKITE_DAILY_1_CONFIG_2")
+    assert name_string == ["SILVERKITE_DAILY_1_CONFIG_2"]
+    name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("SILVERKITE_DAILY_1_CONFIG_3")
+    assert name_string == ["SILVERKITE_DAILY_1_CONFIG_3"]
     name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("SILVERKITE_EMPTY")
     assert name_string == ["DAILY_SEAS_NONE_GR_NONE_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_OFF_WSI_OFF"]
     name_string = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template("DAILY_SEAS_HV_CP_HV")
@@ -189,6 +211,10 @@ def test_get_name_string_from_model_template():
     name_strings = sst._SimpleSilverkiteTemplate__get_name_string_from_model_template(
         [
             "SILVERKITE",
+            "SILVERKITE_WITH_AR",
+            "SILVERKITE_DAILY_1_CONFIG_1",
+            "SILVERKITE_DAILY_1_CONFIG_2",
+            "SILVERKITE_DAILY_1_CONFIG_3",
             "SILVERKITE_EMPTY",
             "SILVERKITE_WEEKLY",
             "DAILY_SEAS_NONE_GR_NONE_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_OFF_WSI_OFF",
@@ -199,6 +225,10 @@ def test_get_name_string_from_model_template():
     )
     assert name_strings == [
         "SILVERKITE",
+        "SILVERKITE_WITH_AR",
+        "SILVERKITE_DAILY_1_CONFIG_1",
+        "SILVERKITE_DAILY_1_CONFIG_2",
+        "SILVERKITE_DAILY_1_CONFIG_3",
         "DAILY_SEAS_NONE_GR_NONE_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_OFF_WSI_OFF",
         "WEEKLY_SEAS_NM_GR_LINEAR_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO",
         "WEEKLY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO",
@@ -236,7 +266,8 @@ def test_get_single_model_components_param_from_template():
             "seasonality_changepoints_dict": None
         },
         autoregression={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": []
@@ -256,8 +287,252 @@ def test_get_single_model_components_param_from_template():
             "max_daily_seas_interaction_order": 5,
             "max_weekly_seas_interaction_order": 2,
             "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "normalize_method": None
+        }
+    )
+    model_components = sst._SimpleSilverkiteTemplate__get_single_model_components_param_from_template("SILVERKITE_WITH_AR")
+    assert model_components == ModelComponentsParam(
+        seasonality={
+            "yearly_seasonality": "auto",
+            "quarterly_seasonality": "auto",
+            "monthly_seasonality": "auto",
+            "weekly_seasonality": "auto",
+            "daily_seasonality": "auto",
+        },
+        growth={
+            "growth_term": "linear"
+        },
+        events={
+            "holidays_to_model_separately": "auto",
+            "holiday_lookup_countries": "auto",
+            "holiday_pre_num_days": 2,
+            "holiday_post_num_days": 2,
+            "holiday_pre_post_num_dict": None,
+            "daily_event_df_dict": None,
+        },
+        changepoints={
+            "changepoints_dict": None,
+            "seasonality_changepoints_dict": None
+        },
+        autoregression={
+            "autoreg_dict": "auto",
+            "simulation_num": 10
+        },
+        regressors={
+            "regressor_cols": []
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
+        uncertainty={
+            "uncertainty_dict": None
+        },
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None,
+            },
+            "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+            "max_daily_seas_interaction_order": 5,
+            "max_weekly_seas_interaction_order": 2,
+            "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
+            "min_admissible_value": None,
+            "max_admissible_value": None,
+            "normalize_method": None
+        }
+    )
+    model_components = sst._SimpleSilverkiteTemplate__get_single_model_components_param_from_template("SILVERKITE_DAILY_1_CONFIG_1")
+    assert model_components == ModelComponentsParam(
+        seasonality={
+            "yearly_seasonality": 8,
+            "quarterly_seasonality": 0,
+            "monthly_seasonality": 7,
+            "weekly_seasonality": 1,
+            "daily_seasonality": 0,
+        },
+        growth={
+            "growth_term": "linear"
+        },
+        events={
+            "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
+            "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
+            "holiday_pre_num_days": 2,
+            "holiday_post_num_days": 2,
+            "holiday_pre_post_num_dict": None,
+            "daily_event_df_dict": None,
+        },
+        changepoints={
+            "changepoints_dict": {
+                "method": "auto",
+                "resample_freq": "7D",
+                "regularization_strength": 0.809,
+                "potential_changepoint_distance": "7D",
+                "no_changepoint_distance_from_end": "7D",
+                "yearly_seasonality_order": 8,
+                "yearly_seasonality_change_freq": None,
+            },
+            "seasonality_changepoints_dict": None
+        },
+        autoregression={
+            "autoreg_dict": "auto",
+            "simulation_num": 10
+        },
+        regressors={
+            "regressor_cols": []
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
+        uncertainty={
+            "uncertainty_dict": None
+        },
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None,
+            },
+            "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+            "max_daily_seas_interaction_order": 5,
+            "max_weekly_seas_interaction_order": 2,
+            "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
+            "min_admissible_value": None,
+            "max_admissible_value": None,
+            "normalize_method": None
+        }
+    )
+    model_components = sst._SimpleSilverkiteTemplate__get_single_model_components_param_from_template("SILVERKITE_DAILY_1_CONFIG_2")
+    assert model_components == ModelComponentsParam(
+        seasonality={
+            "yearly_seasonality": 1,
+            "quarterly_seasonality": 0,
+            "monthly_seasonality": 4,
+            "weekly_seasonality": 6,
+            "daily_seasonality": 0,
+        },
+        growth={
+            "growth_term": "linear"
+        },
+        events={
+            "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
+            "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
+            "holiday_pre_num_days": 2,
+            "holiday_post_num_days": 2,
+            "holiday_pre_post_num_dict": None,
+            "daily_event_df_dict": None,
+        },
+        changepoints={
+            "changepoints_dict": {
+                "method": "auto",
+                "resample_freq": "7D",
+                "regularization_strength": 0.624,
+                "potential_changepoint_distance": "7D",
+                "no_changepoint_distance_from_end": "17D",
+                "yearly_seasonality_order": 1,
+                "yearly_seasonality_change_freq": None,
+            },
+            "seasonality_changepoints_dict": None
+        },
+        autoregression={
+            "autoreg_dict": "auto",
+            "simulation_num": 10
+        },
+        regressors={
+            "regressor_cols": []
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
+        uncertainty={
+            "uncertainty_dict": None
+        },
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None,
+            },
+            "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+            "max_daily_seas_interaction_order": 5,
+            "max_weekly_seas_interaction_order": 2,
+            "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
+            "min_admissible_value": None,
+            "max_admissible_value": None,
+            "normalize_method": None
+        }
+    )
+    model_components = sst._SimpleSilverkiteTemplate__get_single_model_components_param_from_template("SILVERKITE_DAILY_1_CONFIG_3")
+    assert model_components == ModelComponentsParam(
+        seasonality={
+            "yearly_seasonality": 40,
+            "quarterly_seasonality": 0,
+            "monthly_seasonality": 0,
+            "weekly_seasonality": 2,
+            "daily_seasonality": 0,
+        },
+        growth={
+            "growth_term": "linear"
+        },
+        events={
+            "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
+            "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
+            "holiday_pre_num_days": 2,
+            "holiday_post_num_days": 2,
+            "holiday_pre_post_num_dict": None,
+            "daily_event_df_dict": None,
+        },
+        changepoints={
+            "changepoints_dict": {
+                "method": "auto",
+                "resample_freq": "7D",
+                "regularization_strength": 0.590,
+                "potential_changepoint_distance": "7D",
+                "no_changepoint_distance_from_end": "8D",
+                "yearly_seasonality_order": 40,
+                "yearly_seasonality_change_freq": None,
+            },
+            "seasonality_changepoints_dict": None
+        },
+        autoregression={
+            "autoreg_dict": "auto",
+            "simulation_num": 10
+        },
+        regressors={
+            "regressor_cols": []
+        },
+        lagged_regressors={
+            "lagged_regressor_dict": None
+        },
+        uncertainty={
+            "uncertainty_dict": None
+        },
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None,
+            },
+            "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+            "max_daily_seas_interaction_order": 5,
+            "max_weekly_seas_interaction_order": 2,
+            "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
+            "min_admissible_value": None,
+            "max_admissible_value": None,
+            "normalize_method": None
         }
     )
     model_components = sst._SimpleSilverkiteTemplate__get_single_model_components_param_from_template(
@@ -286,7 +561,8 @@ def test_get_single_model_components_param_from_template():
             "seasonality_changepoints_dict": None
         },
         autoregression={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": []
@@ -306,8 +582,12 @@ def test_get_single_model_components_param_from_template():
             "max_daily_seas_interaction_order": 0,
             "max_weekly_seas_interaction_order": 0,
             "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "normalize_method": None
         }
     )
 
@@ -339,7 +619,8 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "seasonality_changepoints_dict": None
     }
     assert model_components.autoregression == {
-        "autoreg_dict": None
+        "autoreg_dict": None,
+        "simulation_num": 10
     }
     assert model_components.regressors == {
         "regressor_cols": []
@@ -359,8 +640,12 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "max_daily_seas_interaction_order": 5,
         "max_weekly_seas_interaction_order": 2,
         "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "regression_weight_col": None,
         "min_admissible_value": None,
         "max_admissible_value": None,
+        "normalize_method": None
     }
     assert model_components.hyperparameter_override is None
 
@@ -399,7 +684,8 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         autoregression={
             "autoreg_dict": {
                 "dummy_key": "test_value"
-            }
+            },
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": ["r1", "r2"]
@@ -460,7 +746,8 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
     assert updated_components.autoregression == {
         "autoreg_dict": {
             "dummy_key": "test_value"
-        }
+        },
+        "simulation_num": 10
     }
     assert updated_components.regressors == {
         "regressor_cols": ["r1", "r2"]
@@ -482,8 +769,12 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "max_daily_seas_interaction_order": 5,
         "max_weekly_seas_interaction_order": 2,
         "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "regression_weight_col": None,
         "min_admissible_value": None,
         "max_admissible_value": None,
+        "normalize_method": None
     }
     assert updated_components.hyperparameter_override == {
         "input__response__null__max_frac": 0.1,
@@ -558,7 +849,8 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
             "max_admissible_value": None
         },
         autoregression={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": None
@@ -630,7 +922,8 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
             "max_admissible_value": None
         },
         autoregression={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": None
@@ -691,7 +984,8 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
             "max_admissible_value": None
         },
         autoregression={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": None
@@ -756,11 +1050,16 @@ def test_get_model_components_and_override_from_model_template_single():
             "max_daily_seas_interaction_order": 0,
             "max_weekly_seas_interaction_order": 2,
             "extra_pred_cols": [],
+            "drop_pred_cols": None,
+            "explicit_pred_cols": None,
+            "regression_weight_col": None,
             "min_admissible_value": None,
-            "max_admissible_value": None
+            "max_admissible_value": None,
+            "normalize_method": None
         },
         autoregression={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10
         },
         regressors={
             "regressor_cols": ["x"]
@@ -938,6 +1237,177 @@ def test_get_lagged_regressor_info():
     assert lagged_regressor_info["overall_max_lag_order"] == 21
 
 
+def test_apply_default_model_components_daily_1():
+    template = SimpleSilverkiteTemplate()
+    template.config = template.apply_forecast_config_defaults()
+    template.config.model_template = "SILVERKITE_DAILY_1"
+    hyperparameter_grid = template.get_hyperparameter_grid()
+    assert hyperparameter_grid == [
+        # Config 1
+        dict(
+            # Seasonality orders
+            estimator__yearly_seasonality=[8],
+            estimator__quarterly_seasonality=[0],
+            estimator__monthly_seasonality=[7],
+            estimator__weekly_seasonality=[1],
+            estimator__daily_seasonality=[0],
+            # Growth and changepoints
+            estimator__growth_term=["linear"],
+            estimator__changepoints_dict=[{
+                "method": "auto",
+                "resample_freq": "7D",
+                "regularization_strength": 0.809,
+                "potential_changepoint_distance": "7D",
+                "no_changepoint_distance_from_end": "7D",
+                "yearly_seasonality_order": 8,
+                "yearly_seasonality_change_freq": None
+            }],
+            estimator__seasonality_changepoints_dict=[None],
+            # Holidays
+            estimator__holidays_to_model_separately=[SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO],
+            estimator__holiday_lookup_countries=[SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO],
+            estimator__holiday_pre_num_days=[2],
+            estimator__holiday_post_num_days=[2],
+            estimator__holiday_pre_post_num_dict=[None],
+            estimator__daily_event_df_dict=[None],
+            # Feature sets
+            estimator__feature_sets_enabled=["auto"],
+            # Fit algorithm
+            estimator__fit_algorithm_dict=[{
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None
+            }],
+            # Other parameters
+            estimator__max_daily_seas_interaction_order=[5],
+            estimator__max_weekly_seas_interaction_order=[2],
+            estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
+            estimator__min_admissible_value=[None],
+            estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
+            estimator__autoreg_dict=["auto"],
+            estimator__simulation_num=[10],
+            estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
+            estimator__uncertainty_dict=[None],
+            estimator__time_properties=[None],
+            estimator__origin_for_time_vars=[None],
+            estimator__train_test_thresh=[None],
+            estimator__training_fraction=[None]
+        ),
+        # Config 2
+        dict(
+            # Seasonality orders
+            estimator__yearly_seasonality=[1],
+            estimator__quarterly_seasonality=[0],
+            estimator__monthly_seasonality=[4],
+            estimator__weekly_seasonality=[6],
+            estimator__daily_seasonality=[0],
+            # Growth and changepoints
+            estimator__growth_term=["linear"],
+            estimator__changepoints_dict=[{
+                "method": "auto",
+                "resample_freq": "7D",
+                "regularization_strength": 0.624,
+                "potential_changepoint_distance": "7D",
+                "no_changepoint_distance_from_end": "17D",
+                "yearly_seasonality_order": 1,
+                "yearly_seasonality_change_freq": None
+            }],
+            estimator__seasonality_changepoints_dict=[None],
+            # Holidays
+            estimator__holidays_to_model_separately=[SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO],
+            estimator__holiday_lookup_countries=[SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO],
+            estimator__holiday_pre_num_days=[2],
+            estimator__holiday_post_num_days=[2],
+            estimator__holiday_pre_post_num_dict=[None],
+            estimator__daily_event_df_dict=[None],
+            # Feature sets
+            estimator__feature_sets_enabled=["auto"],
+            # Fit algorithm
+            estimator__fit_algorithm_dict=[{
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None
+            }],
+            # Other parameters
+            estimator__max_daily_seas_interaction_order=[5],
+            estimator__max_weekly_seas_interaction_order=[2],
+            estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
+            estimator__min_admissible_value=[None],
+            estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
+            estimator__autoreg_dict=["auto"],
+            estimator__simulation_num=[10],
+            estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
+            estimator__uncertainty_dict=[None],
+            estimator__time_properties=[None],
+            estimator__origin_for_time_vars=[None],
+            estimator__train_test_thresh=[None],
+            estimator__training_fraction=[None]
+        ),
+        # Config 3
+        dict(
+            # Seasonality orders
+            estimator__yearly_seasonality=[40],
+            estimator__quarterly_seasonality=[0],
+            estimator__monthly_seasonality=[0],
+            estimator__weekly_seasonality=[2],
+            estimator__daily_seasonality=[0],
+            # Growth and changepoints
+            estimator__growth_term=["linear"],
+            estimator__changepoints_dict=[{
+                "method": "auto",
+                "resample_freq": "7D",
+                "regularization_strength": 0.590,
+                "potential_changepoint_distance": "7D",
+                "no_changepoint_distance_from_end": "8D",
+                "yearly_seasonality_order": 40,
+                "yearly_seasonality_change_freq": None
+            }],
+            estimator__seasonality_changepoints_dict=[None],
+            # Holidays
+            estimator__holidays_to_model_separately=[SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO],
+            estimator__holiday_lookup_countries=[SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO],
+            estimator__holiday_pre_num_days=[2],
+            estimator__holiday_post_num_days=[2],
+            estimator__holiday_pre_post_num_dict=[None],
+            estimator__daily_event_df_dict=[None],
+            # Feature sets
+            estimator__feature_sets_enabled=["auto"],
+            # Fit algorithm
+            estimator__fit_algorithm_dict=[{
+                "fit_algorithm": "ridge",
+                "fit_algorithm_params": None
+            }],
+            # Other parameters
+            estimator__max_daily_seas_interaction_order=[5],
+            estimator__max_weekly_seas_interaction_order=[2],
+            estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
+            estimator__min_admissible_value=[None],
+            estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
+            estimator__autoreg_dict=["auto"],
+            estimator__simulation_num=[10],
+            estimator__regressor_cols=[[]],
+            estimator__lagged_regressor_dict=[None],
+            estimator__uncertainty_dict=[None],
+            estimator__time_properties=[None],
+            estimator__origin_for_time_vars=[None],
+            estimator__train_test_thresh=[None],
+            estimator__training_fraction=[None]
+        )
+    ]
+
+
 def test_apply_default_model_components_daily_90():
     template = SimpleSilverkiteTemplate()
     template.config = template.apply_forecast_config_defaults()
@@ -988,9 +1458,14 @@ def test_apply_default_model_components_daily_90():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[2],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1031,9 +1506,14 @@ def test_apply_default_model_components_daily_90():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[2],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1082,9 +1562,14 @@ def test_apply_default_model_components_daily_90():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[2],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1133,9 +1618,14 @@ def test_apply_default_model_components_daily_90():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[2],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1185,9 +1675,14 @@ def test_apply_default_model_components_weekly():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[0],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1236,9 +1731,14 @@ def test_apply_default_model_components_weekly():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[0],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1287,9 +1787,14 @@ def test_apply_default_model_components_weekly():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[0],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1338,9 +1843,14 @@ def test_apply_default_model_components_weekly():
             estimator__max_daily_seas_interaction_order=[0],
             estimator__max_weekly_seas_interaction_order=[0],
             estimator__extra_pred_cols=[[]],
+            estimator__drop_pred_cols=[None],
+            estimator__explicit_pred_cols=[None],
+            estimator__regression_weight_col=[None],
             estimator__min_admissible_value=[None],
             estimator__max_admissible_value=[None],
+            estimator__normalize_method=[None],
             estimator__autoreg_dict=[None],
+            estimator__simulation_num=[10],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
             estimator__uncertainty_dict=[None]
@@ -1391,14 +1901,19 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagno
         "estimator__max_daily_seas_interaction_order": [5],
         "estimator__max_weekly_seas_interaction_order": [2],
         "estimator__autoreg_dict": [None],
+        "estimator__simulation_num": [10],
         "estimator__min_admissible_value": [None],
         "estimator__max_admissible_value": [None],
+        "estimator__normalize_method": [None],
         "estimator__uncertainty_dict": [None],
         "estimator__growth_term": ["linear"],
         "estimator__regressor_cols": [[]],
         "estimator__lagged_regressor_dict": [None],
         "estimator__feature_sets_enabled": ["auto"],
-        "estimator__extra_pred_cols": [[]]
+        "estimator__extra_pred_cols": [[]],
+        "estimator__drop_pred_cols": [None],
+        "estimator__explicit_pred_cols": [None],
+        "estimator__regression_weight_col": [None]
     }
     assert_equal(hyperparameter_grid, expected_grid)
 
@@ -1580,6 +2095,7 @@ def test_simple_silverkite_template():
         cv_horizon=None,
         cv_min_train_periods=None,
         cv_expanding_window=True,
+        cv_use_most_recent_splits=None,
         cv_periods_between_splits=None,
         cv_periods_between_train_test=None,
         cv_max_splits=3
@@ -1651,6 +2167,7 @@ def test_simple_silverkite_template_custom():
         cv_horizon=3,
         cv_min_train_periods=4,
         cv_expanding_window=True,
+        cv_use_most_recent_splits=True,
         cv_periods_between_splits=5,
         cv_periods_between_train_test=6,
         cv_max_splits=7
@@ -1765,6 +2282,7 @@ def test_simple_silverkite_template_custom():
         cv_horizon=evaluation_period.cv_horizon,
         cv_min_train_periods=evaluation_period.cv_min_train_periods,
         cv_expanding_window=evaluation_period.cv_expanding_window,
+        cv_use_most_recent_splits=evaluation_period.cv_use_most_recent_splits,
         cv_periods_between_splits=evaluation_period.cv_periods_between_splits,
         cv_periods_between_train_test=evaluation_period.cv_periods_between_train_test,
         cv_max_splits=evaluation_period.cv_max_splits
@@ -2470,6 +2988,85 @@ def test_run_template_9():
             ))
 
 
+def test_run_template_with_ar():
+    """Tests:
+    SILVERKITE_WITH_AR template
+     - coverage
+     - daily data
+     - default `hyperparameter_grid` (all interaction terms enabled)
+    """
+    # sets random state for consistent comparison
+    model_components = ModelComponentsParam(
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "sgd",
+                "fit_algorithm_params": {"random_state": 1234}
+            }
+        }
+    )
+
+    data = generate_df_for_tests(
+        freq="D",
+        periods=90)
+    df = data["train_df"]
+    forecast_horizon = data["test_df"].shape[0]
+    coverage = 0.90
+
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE_WITH_AR.name,
+        forecast_horizon=forecast_horizon,
+        coverage=coverage,
+        model_components_param=model_components,
+    )
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        result = Forecaster().run_forecast_config(
+            df=df,
+            config=config,
+        )
+
+        rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
+        q80 = EvaluationMetricEnum.Quantile80.get_metric_name()
+        assert result.backtest.test_evaluation[rmse] == pytest.approx(2.146, rel=1e-2)
+        assert result.backtest.test_evaluation[q80] == pytest.approx(0.498, rel=1e-2)
+        assert result.forecast.train_evaluation[rmse] == pytest.approx(2.020, rel=1e-2)
+        assert result.forecast.train_evaluation[q80] == pytest.approx(0.831, rel=1e-2)
+        check_forecast_pipeline_result(
+            result,
+            coverage=coverage,
+            strategy=None,
+            score_func=EvaluationMetricEnum.MeanAbsolutePercentError.name,
+            greater_is_better=False)
+
+
+def test_run_template_daily_1():
+    dl = DataLoader()
+    data = dl.load_peyton_manning()
+    evaluation_period = EvaluationPeriodParam(
+        cv_expanding_window=False,  # rolling start date
+        cv_horizon=10,
+        cv_min_train_periods=55,
+        cv_periods_between_train_test=0,
+        test_horizon=30,
+        cv_max_splits=1
+    )
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE_DAILY_1.name,
+        forecast_horizon=10,
+        evaluation_period_param=evaluation_period,
+    )
+    result = Forecaster().run_forecast_config(
+        df=data.iloc[:100],
+        config=config,
+    )
+    check_forecast_pipeline_result(
+        result=result,
+        coverage=None,
+        expected_grid_size=3
+    )
+
+
 def test_run_template_daily_90():
     dl = DataLoader()
     data = dl.load_peyton_manning()
@@ -2623,3 +3220,35 @@ def test_silverkite_ar_lag():
         config=config,
     )
     assert "y_lag1" in result.model[-1].model_dict["pred_cols"]
+
+
+def test_silverkite_simulation_num():
+    dl = DataLoader()
+    data = dl.load_peyton_manning()
+    evaluation_period = EvaluationPeriodParam(
+        cv_expanding_window=False,  # rolling start date
+        cv_horizon=0,
+        cv_min_train_periods=52,
+        cv_periods_between_train_test=0,
+        test_horizon=1,
+        cv_max_splits=1
+    )
+    config = ForecastConfig(
+        model_template="SILVERKITE_EMPTY",
+        forecast_horizon=2,
+        evaluation_period_param=evaluation_period,
+        model_components_param=ModelComponentsParam(
+            autoregression=dict(
+                autoreg_dict={
+                    "lag_dict": {"orders": [1]}},
+                simulation_num=2
+            )
+        )
+    )
+    data["ts"] = pd.to_datetime(data["ts"])
+    new_df = data.iloc[:365]
+    result = Forecaster().run_forecast_config(
+        df=new_df,
+        config=config,
+    )
+    assert result.model[-1].model_dict["simulation_num"] == 2

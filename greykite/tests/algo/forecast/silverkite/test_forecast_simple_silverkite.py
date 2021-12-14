@@ -561,6 +561,8 @@ def test_convert_simple_silverkite_params_hourly(hourly_data):
         value_col=cst.VALUE_COL,
         origin_for_time_vars=origin_for_time_vars,
         # extra_pred_cols=extra_pred_cols,  # checked separately
+        drop_pred_cols=None,
+        explicit_pred_cols=None,
         train_test_thresh=None,
         training_fraction=0.9,
         fit_algorithm="ridge",
@@ -569,17 +571,20 @@ def test_convert_simple_silverkite_params_hourly(hourly_data):
         changepoints_dict=None,
         fs_components_df=expected_fs,
         autoreg_dict=None,
+        past_df=None,
         lagged_regressor_dict=None,
         seasonality_changepoints_dict=None,
         min_admissible_value=None,
         max_admissible_value=None,
         uncertainty_dict=None,
+        normalize_method=None,
         changepoint_detector=None,
         regression_weight_col=None,
         # ``forecast_horizon`` not given, but automatically populated from
         # ``time_properties``, which is the default 24 for hourly data.
         forecast_horizon=24,
-        simulation_based=False
+        simulation_based=False,
+        simulation_num=10
     )
     assert_equal(parameters, expected)
 
@@ -665,7 +670,7 @@ def test_forecast_simple_silverkite_freq():
             result = silverkite.predict_n_no_sim(
                 fut_time_num=forecast_horizon,
                 trained_model=trained_model,
-                freq=freq)
+                freq=freq)["fut_df"]
             assert result.shape[0] == forecast_horizon, f"Wrong size for {iteration}"
 
             expected_cols = {"ts", "y"}

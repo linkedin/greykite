@@ -966,6 +966,7 @@ def test_prophet_template_default():
         cv_horizon=None,
         cv_min_train_periods=None,
         cv_expanding_window=True,
+        cv_use_most_recent_splits=None,
         cv_periods_between_splits=None,
         cv_periods_between_train_test=None,
         cv_max_splits=3
@@ -1036,6 +1037,7 @@ def test_prophet_template_custom():
         cv_horizon=3,
         cv_min_train_periods=4,
         cv_expanding_window=True,
+        cv_use_most_recent_splits=True,
         cv_periods_between_splits=5,
         cv_periods_between_train_test=6,
         cv_max_splits=7
@@ -1158,6 +1160,7 @@ def test_prophet_template_custom():
         cv_horizon=evaluation_period.cv_horizon,
         cv_min_train_periods=evaluation_period.cv_min_train_periods,
         cv_expanding_window=evaluation_period.cv_expanding_window,
+        cv_use_most_recent_splits=evaluation_period.cv_use_most_recent_splits,
         cv_periods_between_splits=evaluation_period.cv_periods_between_splits,
         cv_periods_between_train_test=evaluation_period.cv_periods_between_train_test,
         cv_max_splits=evaluation_period.cv_max_splits

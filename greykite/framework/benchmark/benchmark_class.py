@@ -26,7 +26,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-import plotly.graph_objs as go
+import plotly.graph_objects as go
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 from tqdm.autonotebook import tqdm
 
@@ -245,7 +245,7 @@ class BenchmarkForecastConfig:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             Interactive plotly graph.
             Plots multiple column(s) in ``self.forecasts`` against ``TIME_COL``.
 
@@ -315,7 +315,7 @@ class BenchmarkForecastConfig:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             Interactive plotly graph.
             Plots multiple column(s) in ``self.forecasts`` against ``TIME_COL``.
         """
@@ -514,7 +514,7 @@ class BenchmarkForecastConfig:
 
         Returns
         -------
-         fig : `plotly.graph_objs.Figure`
+         fig : `plotly.graph_objects.Figure`
             Interactive plotly bar plot.
         """
         evaluation_metrics_df = self.get_evaluation_metrics(
@@ -550,6 +550,7 @@ class BenchmarkForecastConfig:
             xaxis=dict(title=xlabel),
             yaxis=dict(title=ylabel),
             title=title,
+            title_x=0.5,
             showlegend=showlegend,
             barmode="group",
         )
@@ -689,7 +690,7 @@ class BenchmarkForecastConfig:
 
         Returns
         -------
-         fig : `plotly.graph_objs.Figure`
+         fig : `plotly.graph_objects.Figure`
             Interactive plotly graph.
         """
         grouped_evaluation_df = self.get_grouping_evaluation_metrics(
@@ -804,7 +805,7 @@ class BenchmarkForecastConfig:
 
         Returns
         -------
-         fig : `plotly.graph_objs.Figure`
+         fig : `plotly.graph_objects.Figure`
             Interactive plotly bar plot.
         """
         runtimes_df = self.get_runtimes(config_names=config_names)
@@ -815,6 +816,7 @@ class BenchmarkForecastConfig:
             xaxis=dict(title=xlabel),
             yaxis=dict(title=ylabel),
             title=title,
+            title_x=0.5,
             showlegend=showlegend,
         )
         fig = go.Figure(data=data, layout=layout)

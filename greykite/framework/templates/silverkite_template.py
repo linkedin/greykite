@@ -163,6 +163,7 @@ def apply_default_model_components(
 
     default_autoregression = {
         "autoreg_dict": [None],
+        "simulation_num": [10]
     }
     model_components.autoregression = update_dictionary(
         default_autoregression,
@@ -203,12 +204,16 @@ def apply_default_model_components(
         # To use first date of each training split, set to `None` in model_components.
         "origin_for_time_vars": [origin_for_time_vars],
         "extra_pred_cols": ["ct1"],  # linear growth
+        "drop_pred_cols": [None],
+        "explicit_pred_cols": [None],
         "fit_algorithm_dict": [{
             "fit_algorithm": "linear",
             "fit_algorithm_params": None,
         }],
         "min_admissible_value": [None],
         "max_admissible_value": [None],
+        "regression_weight_col": [None],
+        "normalize_method": [None]
     }
     model_components.custom = update_dictionary(
         default_custom,
@@ -299,15 +304,20 @@ class SilverkiteTemplate(BaseTemplate):
             autoregression: `dict` [`str`, `any`] or None, optional
                 Specifies the autoregression configuration. Dictionary with the following optional key:
 
-                ``"autoreg_dict"`` : `dict` or None or a list of such values for grid search
-                    A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df`.
+                ``"autoreg_dict"``: `dict` or `str` or None or a list of such values for grid search
+                    If a `dict`: A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df`.
                     That function's parameter ``value_col`` is inferred from the input of
-                    current function ``forecast_silverkite``. Other keys are:
+                    current function ``self.forecast``. Other keys are:
 
-                        * ``"lag_dict"`` : `dict` or None
-                        * ``"agg_lag_dict"`` : `dict` or None
-                        * ``"series_na_fill_func"`` : callable
+                        ``"lag_dict"`` : `dict` or None
+                        ``"agg_lag_dict"`` : `dict` or None
+                        ``"series_na_fill_func"`` : callable
 
+                    If a `str`: The string will represent a method and a dictionary will be
+                    constructed using that `str`.
+                    Currently only implemented method is "auto" which uses
+                    `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_autoreg_dict`
+                    to create a dictionary.
                     See more details for above parameters in
                     `~greykite.common.features.timeseries_lags.build_autoreg_df`.
 
@@ -331,7 +341,7 @@ class SilverkiteTemplate(BaseTemplate):
                         ``"series_na_fill_func"`` : callable
 
                     If `str`, it represents a method and a dictionary will be constructed using that `str`.
-                    Currently the only implemented method is "auto" which uses
+                    Currently the only implemented method is "auto" which uses ``SilverkiteForecast``'s
                     `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_lagged_regressor_dict`
                     to create a dictionary for each lagged regressor.
                     An example::
@@ -356,8 +366,12 @@ class SilverkiteTemplate(BaseTemplate):
                 Custom parameters that don't fit the categories above. A dictionary with keys corresponding to
                 parameters in `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
 
-                Allowed keys: ``"silverkite"``, ``"silverkite_diagnostics"``, ``"origin_for_time_vars"``, ``"extra_pred_cols"``,
-                ``"fit_algorithm_dict"``, ``"min_admissible_value"``, ``"max_admissible_value"``.
+                Allowed keys:
+                    ``"silverkite"``, ``"silverkite_diagnostics"``,
+                    ``"origin_for_time_vars"``, ``"extra_pred_cols"``,
+                    ``"drop_pred_cols"``, ``"explicit_pred_cols"``,
+                    ``"fit_algorithm_dict"``, ``"min_admissible_value"``,
+                    ``"max_admissible_value"``.
 
                 .. note::
 
@@ -575,18 +589,23 @@ class SilverkiteTemplate(BaseTemplate):
             "estimator__silverkite_diagnostics": self.config.model_components_param.custom["silverkite_diagnostics"],
             "estimator__origin_for_time_vars": self.config.model_components_param.custom["origin_for_time_vars"],
             "estimator__extra_pred_cols": self.config.model_components_param.custom["extra_pred_cols"],
+            "estimator__drop_pred_cols": self.config.model_components_param.custom["drop_pred_cols"],
+            "estimator__explicit_pred_cols": self.config.model_components_param.custom["explicit_pred_cols"],
             "estimator__train_test_thresh": [None],
             "estimator__training_fraction": [None],
             "estimator__fit_algorithm_dict": self.config.model_components_param.custom["fit_algorithm_dict"],
             "estimator__daily_event_df_dict": self.config.model_components_param.events["daily_event_df_dict"],
             "estimator__fs_components_df": self.config.model_components_param.seasonality["fs_components_df"],
             "estimator__autoreg_dict": self.config.model_components_param.autoregression["autoreg_dict"],
+            "estimator__simulation_num": self.config.model_components_param.autoregression["simulation_num"],
             "estimator__lagged_regressor_dict": self.config.model_components_param.lagged_regressors["lagged_regressor_dict"],
             "estimator__changepoints_dict": self.config.model_components_param.changepoints["changepoints_dict"],
             "estimator__seasonality_changepoints_dict": self.config.model_components_param.changepoints["seasonality_changepoints_dict"],
             "estimator__changepoint_detector": [None],
             "estimator__min_admissible_value": self.config.model_components_param.custom["min_admissible_value"],
             "estimator__max_admissible_value": self.config.model_components_param.custom["max_admissible_value"],
+            "estimator__normalize_method": self.config.model_components_param.custom["normalize_method"],
+            "estimator__regression_weight_col": self.config.model_components_param.custom["regression_weight_col"],
             "estimator__uncertainty_dict": self.config.model_components_param.uncertainty["uncertainty_dict"],
         }
 

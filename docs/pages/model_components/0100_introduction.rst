@@ -48,6 +48,8 @@ See the rest of this section for how to configure each component.
         events=events,
         changepoints=changepoints,
         regressors=regressors,
+        lagged_regressors=lagged_regressors,
+        autoregression=autoregression,
         uncertainty=uncertainty,
         custom=custom,
         hyperparameter_override=hyperparameter_override

@@ -379,7 +379,7 @@ class ForecastConfig:
     """Number of periods to forecast into the future. Must be > 0.
     If None, default is determined from input data frequency.
     """
-    forecast_one_by_one: Optional[Union[int, List[int]]] = None
+    forecast_one_by_one: Optional[Union[bool, int, List[int]]] = None
     """The options to activate the forecast one-by-one algorithm.
     See :class:`~greykite.sklearn.estimator.one_by_one_estimator.OneByOneEstimator`.
     Can be boolean, int, of list of int.

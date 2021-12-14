@@ -4,7 +4,7 @@
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SOURCEDIR     =
-BUILDDIR      = "build/docs/greykite"
+BUILDDIR      = "../../build/docs/greykite"
 
 ifneq ($(EXAMPLES_PATTERN),)
     EXAMPLES_PATTERN_OPTS := -D sphinx_gallery_conf.filename_pattern="$(EXAMPLES_PATTERN)"

@@ -1,4 +1,5 @@
 import os
+import re
 
 import pandas as pd
 import pytest
@@ -42,6 +43,8 @@ def test_get_data_names():
         "daily_temperature_australia",
         "daily_demand_order",
         "daily_female_births",
+        "daily_hierarchical_actuals",
+        "daily_hierarchical_forecasts",
         "daily_istanbul_stock",
         "daily_peyton_manning"}
 
@@ -105,6 +108,8 @@ def test_get_data_inventory():
         "daily_temperature_australia",
         "daily_demand_order",
         "daily_female_births",
+        "daily_hierarchical_actuals",
+        "daily_hierarchical_forecasts",
         "daily_istanbul_stock",
         "daily_peyton_manning",
         "monthly_shampoo",
@@ -191,15 +196,41 @@ def test_load_hourly_beijing_pm():
     assert df.shape == (60, len(agg_func) + 1)
 
 
+def test_load_hierarchical():
+    dl = DataLoader()
+    actuals = dl.load_hierarchical_actuals()
+    assert list(actuals.columns) == [TIME_COL, "00", "10", "11", "20", "21", "22", "23", "24"]
+    assert actuals.shape == (100, 9)
+    # actuals satisfy hierarchical constraints
+    assert_equal(
+        actuals["00"],
+        actuals["10"] + actuals["11"], check_names=False)
+    assert_equal(
+        actuals["10"],
+        actuals["20"] + actuals["21"] + actuals["22"], check_names=False)
+    assert_equal(
+        actuals["11"],
+        actuals["23"] + actuals["24"], check_names=False)
+
+    forecasts = dl.load_hierarchical_forecasts()
+    assert_equal(actuals.index, forecasts.index)
+    assert_equal(actuals.columns, forecasts.columns)
+
+
 def test_load_data():
     dl = DataLoader()
-    df = dl.load_data(data_name="daily_peyton_manning")
-    expected_df = dl.load_peyton_manning()
-    assert_equal(df, expected_df)
-
     df = dl.load_data(data_name="hourly_parking", system_code_number="Shopping")
     expected_df = dl.load_parking(system_code_number="Shopping")
     assert_equal(df, expected_df)
+
+    data_names = ("daily_peyton_manning", "hourly_bikesharing",
+                  "hourly_beijing_pm", "daily_hierarchical_actuals",
+                  "daily_hierarchical_forecasts")
+    pattern = re.compile(".*?_(.*)")
+    for data_name in data_names:
+        result = pattern.match(data_name)
+        short_name = result.group(1)
+        assert_equal(dl.load_data(data_name=data_name), getattr(dl, f"load_{short_name}")())
 
     # Error due to unavailable data name
     data_name = "dummy"

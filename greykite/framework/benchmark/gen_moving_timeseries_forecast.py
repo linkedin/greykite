@@ -39,7 +39,8 @@ def gen_moving_timeseries_forecast(
         max_forecast_end_point=None,
         max_forecast_end_timestamp=None,
         regressor_cols=None,
-        keep_cols=None,  # extra cols in df which we want to keep
+        keep_cols=None,  # extra cols in df which we want to keep from the raw data
+        forecast_keep_cols=None,  # extra cols we want to keep from the forecast result
         **model_params):
     """Applies a forecast function (`train_forecast_func`) to many derived
     timeseries from `df` which are moving windows of `df`. For each derived
@@ -94,6 +95,8 @@ def gen_moving_timeseries_forecast(
         If regressors are to be used, they are listed here.
     keep_cols : `list` [`str`] or None, default None
         Extra columns in ``df`` which we want to keep
+    forecast_keep_cols : `list` [`str`] or None, default None
+        Extra columns in the forecat result (dataframe) which we want to keep
 
     Return : `dict`
     ----------
@@ -179,7 +182,9 @@ def gen_moving_timeseries_forecast(
                 forecast_horizon=forecast_horizon,
                 **model_params)
 
-        y_hat = obtained_forecast["fut_df"][value_col].values
+        fut_df = obtained_forecast["fut_df"]
+        fut_df = fut_df.reset_index(drop=True)
+        y_hat = fut_df[value_col].values
         y_true = test_df[value_col]
 
         timestamps = test_df[time_col]
@@ -191,6 +196,10 @@ def gen_moving_timeseries_forecast(
         if keep_cols is not None:
             compare_df0 = pd.concat(
                 [compare_df0, test_df[keep_cols]],
+                axis=1)
+        if forecast_keep_cols is not None:
+            compare_df0 = pd.concat(
+                [compare_df0, fut_df[forecast_keep_cols]],
                 axis=1)
         compare_df0["horizon"] = range(1, forecast_horizon + 1)
         compare_df0["training_end_point"] = m

@@ -9,10 +9,9 @@
 import datetime
 import os
 import pathlib
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join("..")))  # adds path to find greykite folder during doc build.
 
 from sphinx_gallery.sorting import FileNameSortKey
+
 from greykite.common.sphinx_plotly import plotly_sg_scraper
 
 # -- Path setup --------------------------------------------------------------
@@ -243,6 +242,7 @@ sphinx_gallery_conf = {
     },
     'image_scrapers': image_scrapers,
     # 'default_thumb_file': default_thumb_file,
+    'capture_repr': ('_repr_html_', '__repr__'),
 }
 
 # Napoleon settings
@@ -261,10 +261,11 @@ napoleon_use_rtype = True
 # -- Options for intersphinx extension ---------------------------------------
 
 intersphinx_mapping = {
-    'python': ('http://docs.python.org/3.7/', None),
     'numpy': ('https://numpy.org/devdocs/', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/version/0.24.2/', None),
+    'plotly': ('https://plotly.com/python-api-reference/', None),
+    'python': ('http://docs.python.org/3.7/', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
     'sklearn': ('https://scikit-learn.org/0.24/', None),
     'stasmodels': ('https://www.statsmodels.org/v0.10.1/', None)
 }

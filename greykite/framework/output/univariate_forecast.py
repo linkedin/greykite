@@ -251,7 +251,7 @@ class UnivariateForecast:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             Plotly figure of forecast against actuals, with prediction
             intervals if available.
 
@@ -385,7 +385,7 @@ class UnivariateForecast:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             plotly graph object showing forecasting error by group.
             x-axis label depends on the grouping method:
             ``groupby_time_feature`` for ``groupby_time_feature``
@@ -704,7 +704,7 @@ class UnivariateForecast:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             Interactive plotly graph showing the evaluation metrics.
 
             See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`
@@ -760,7 +760,7 @@ class UnivariateForecast:
 
         Returns
         -------
-        fig: `plotly.graph_objs.Figure` for ``Silverkite``
+        fig: `plotly.graph_objects.Figure` for ``Silverkite``
              `matplotlib.figure.Figure` for ``Prophet``
              Figure plotting components against appropriate time scale.
         """

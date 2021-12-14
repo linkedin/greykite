@@ -332,8 +332,9 @@ def test_plot_forecast_vs_actual():
     update_layout = dict(
         yaxis=dict(title="new ylabel"),
         title_text="new title",
+        title_x=0.5,
         title_font_size=30)
-    fig.update(layout=update_layout)
+    fig.update_layout(update_layout)
     assert len(fig.to_html(include_plotlyjs=False, full_html=True)) > 0
 
     # checks if lower and upper bound are optional

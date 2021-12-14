@@ -25,7 +25,7 @@ import warnings
 
 import numpy as np
 import pandas as pd
-import plotly.graph_objs as go
+import plotly.graph_objects as go
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 
 from greykite.common import constants as cst
@@ -63,7 +63,7 @@ def plot_multivariate(
             - value : `dict` or None
                 Optional styling options, passed as kwargs to `go.Scatter`.
                 If None, uses the default: line labeled by the column name.
-                See reference page for `plotly.graph_objs.Scatter` for options
+                See reference page for `plotly.graph_objects.Scatter` for options
                 (e.g. color, mode, width/size, opacity).
                 https://plotly.com/python/reference/#scatter.
 
@@ -86,7 +86,7 @@ def plot_multivariate(
 
     Returns
     -------
-    fig : `plotly.graph_objs.Figure`
+    fig : `plotly.graph_objects.Figure`
         Interactive plotly graph of one or more columns
         in ``df`` against ``x_col``.
 
@@ -137,6 +137,7 @@ def plot_multivariate(
         xaxis=dict(title=xlabel),
         yaxis=dict(title=ylabel),
         title=title,
+        title_x=0.5,
         showlegend=showlegend,
         legend={'traceorder': 'reversed'}  # Matches the order of ``y_col_style_dict`` (bottom to top)
     )
@@ -194,7 +195,7 @@ def plot_multivariate_grouped(
             Optional styling options, passed as kwargs to `go.Scatter`.
             If None, uses the default: line labeled by the column name.
             If line color is not given, it is added according to ``colors``.
-            See reference page for `plotly.graph_objs.Scatter` for options
+            See reference page for `plotly.graph_objects.Scatter` for options
             (e.g. color, mode, width/size, opacity).
             https://plotly.com/python/reference/#scatter.
 
@@ -238,7 +239,7 @@ def plot_multivariate_grouped(
             If a name is given, it is augmented with the ``grouping_x_col_values``.
             If line color is not given, it is added according to ``colors``.
             All the lines sharing same ``grouping_x_col_values`` have the same color.
-            See reference page for `plotly.graph_objs.Scatter` for options
+            See reference page for `plotly.graph_objects.Scatter` for options
             (e.g. color, mode, width/size, opacity).
             https://plotly.com/python/reference/#scatter.
 
@@ -288,7 +289,7 @@ def plot_multivariate_grouped(
 
     Returns
     -------
-    fig : `plotly.graph_objs.Figure`
+    fig : `plotly.graph_objects.Figure`
     Interactive plotly graph of one or more columns
     in ``df`` against ``x_col``.
 
@@ -402,7 +403,7 @@ def plot_univariate(
 
     Returns
     -------
-    fig : `plotly.graph_objs.Figure`
+    fig : `plotly.graph_objects.Figure`
         Interactive plotly graph of the value against time.
 
         See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`
@@ -524,19 +525,14 @@ def plot_forecast_vs_actual(
 
     Returns
     -------
-    fig : `plotly.graph_objs.Figure`
+    fig : `plotly.graph_objects.Figure`
         Plotly figure of forecast against actuals, with prediction
         intervals if available.
 
         Can show, convert to HTML, update::
 
-            # show figure (saved to HTML)
-            from plotly.offline import plot
-            plot(fig)
-            # show figure in notebook
-            from plotly.offline import init_notebook_mode, iplot
-            init_notebook_mode(connected=True)
-            iplot(fig)
+            # show figure
+            fig.show()
 
             # get HTML string, write to file
             fig.to_html(include_plotlyjs=False, full_html=True)
@@ -546,8 +542,9 @@ def plot_forecast_vs_actual(
             update_layout = dict(
                 yaxis=dict(title="new ylabel"),
                 title_text="new title",
+                title_x=0.5,
                 title_font_size=30)
-            fig.update(layout=update_layout)
+            fig.update_layout(update_layout)
     """
     if title is None:
         title = "Forecast vs Actual"
@@ -622,6 +619,7 @@ def plot_forecast_vs_actual(
         xaxis=dict(title=xlabel),
         yaxis=dict(title=ylabel),
         title=title,
+        title_x=0.5,
         showlegend=showlegend,
         # legend order from top to bottom: Actual, Forecast, Upper Bound, Lower Bound
         legend={'traceorder': 'reversed'}
@@ -658,7 +656,7 @@ def plot_forecast_vs_actual(
                 ay=0
             )]
         )
-        fig.update(layout=new_layout)
+        fig.update_layout(new_layout)
     return fig
 
 

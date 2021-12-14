@@ -1061,7 +1061,7 @@ def test_get_yearly_seasonality_changepoint_dates_from_freq():
             time_col="ts",
             yearly_seasonality_change_freq="180D"
         )
-        assert ("yearly_seasonality_change_freq is less than a year. It might be too short"
+        assert ("yearly_seasonality_change_freq is less than a year. It might be too short "
                 "to fit accurate yearly seasonality." in record[0].message.args[0])
     with pytest.warns(UserWarning) as record:
         get_yearly_seasonality_changepoint_dates_from_freq(
@@ -1069,7 +1069,7 @@ def test_get_yearly_seasonality_changepoint_dates_from_freq():
             time_col="ts",
             yearly_seasonality_change_freq="10000D"
         )
-        assert ("No yearly seasonality changepoint added. Either data length is too short"
+        assert ("No yearly seasonality changepoint added. Either data length is too short "
                 "or yearly_seasonality_change_freq is too long." in record[0].message.args[0])
 
 

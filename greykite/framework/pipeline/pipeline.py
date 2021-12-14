@@ -172,11 +172,10 @@ def validate_pipeline_input(pipeline_function):
                 min_value=1)
 
         if (cv_horizon == 0 or cv_max_splits == 0) and test_horizon == 0:
-            raise ValueError("Either CV or backtest must be enabled."
-                             " Set cv_horizon and cv_max_splits to nonzero values to enable CV."
-                             " Set test_horizon to nonzero value to enable backtest."
-                             " It's important to check model"
-                             " performance on historical data.")
+            warnings.warn("Both CV and backtest are skipped! Make sure this is intended."
+                          " It's important to check model performance on historical data."
+                          " Set cv_horizon and cv_max_splits to nonzero values to enable CV."
+                          " Set test_horizon to nonzero value to enable backtest.")
 
         if test_horizon == 0:
             warnings.warn("No data selected for test (test_horizon=0). "

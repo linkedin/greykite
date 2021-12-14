@@ -36,6 +36,33 @@ Examples:
         ]
     )
 
+You can specify lagged regressors using ``model_components.lagged_regressors``.
+For each regressor column, provide the list of lags and aggregated lags to include, or
+use the "auto" setting to have Silverkite choose for you.
+
+Lagged regressor examples:
+
+.. code-block:: python
+
+    lagged_regressors=dict(
+        lagged_regressor_dict = {
+            "gdp": {
+                "lag_dict": {"orders": [1, 2, 3]}, # individual lags: lag 1, lag 2, lag 3
+                "agg_lag_dict": {
+                    "orders_list": [(7, 14, 21)],  # average of lags 7, 14, 21
+                    "interval_list": [(8, 14), (15, 21)]},   # average of lags 8 to 14, lags 15 to 21
+            },
+            "weather": "auto",  # automatically chooses lags based on data frequency and forecast horizon
+        }
+    )
+
+``model_components.lagged_regressors`` can be used with or without ``model_components.regressors``.
+For details and more options,
+see `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.
+
+``lag_dict`` and ``agg_lag_dict`` work the same way as for autoregression.
+See :doc:`/pages/model_components/0800_autoregression`.
+
 Prophet
 -------
 
@@ -112,3 +139,6 @@ Examples:
     ``prior_scale`` and ``mode`` work in similar way as for custom
     seasonality (:doc:`/pages/model_components/0300_seasonality`).
     Fit customization can be done for each regressor.
+
+
+We do not support lagged regressors with Prophet.

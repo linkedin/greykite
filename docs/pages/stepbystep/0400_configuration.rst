@@ -22,6 +22,7 @@ data (``df``) and forecast configuration (``config``).
         evaluation_period_param=EvaluationPeriodParam(...),  # how to evaluate (train/test splits)
         model_components_param=ModelComponentsParam(...),    # model template tuning parameters
         computation_param=ComputationParam(...),             # parallelization
+        forecast_one_by_one=forecast_one_by_one,             # allows training multiple models that span the horizon
     )
 
     # creates forecast
@@ -68,7 +69,9 @@ Examples:
     model_template = "SILVERKITE"  # the default
     model_template = "PROPHET"
 
-For information about templates and how to choose one,
+For the full list of options, see `~greykite.framework.templates.model_templates.ModelTemplateEnum`.
+
+For a high level comparison between Silverkite and Prophet template families,
 see :doc:`/pages/stepbystep/0100_choose_model`.
 
 forecast_horizon
@@ -105,8 +108,8 @@ Examples:
     coverage = 0.80  # 80% of actuals should fall within the prediction interval
     coverage = 0.95  # 95% of actuals should fall within the prediction interval
 
-metadata
---------
+metadata_param
+--------------
 Optional. Specifies properties of the input ``df``.
 An instance of :class:`~greykite.framework.templates.autogen.forecast_config.MetadataParam`.
 
@@ -267,8 +270,8 @@ see :doc:`/pages/stepbystep/0300_input`.
 
 .. _evaluation-metric:
 
-evaluation_metric
------------------
+evaluation_metric_param
+-----------------------
 Optional. Defines the metrics used to evaluate the forecast.
 An instance of :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam`.
 
@@ -464,8 +467,8 @@ Examples:
 
 .. _evaluation-period:
 
-evaluation_period
------------------
+evaluation_period_param
+-----------------------
 Optional. Defines how to split the data into train/test sets for evaluation.
 An instance of :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`.
 
@@ -621,8 +624,8 @@ Examples:
     )
 
 
-model_components
-----------------
+model_components_param
+----------------------
 Optional. Tuning parameters for the selected ``model_template``.
 An instance of :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.
 
@@ -633,8 +636,8 @@ evaluation approach, these parameters allow you to tune the forecast model.
 * For details about the ``model_components`` for each model template, see
   :doc:`/pages/model_components/0100_introduction`.
 
-computation
------------
+computation_param
+-----------------
 Optional. Parameters related to grid search computation.
 An instance of :class:`~greykite.framework.templates.autogen.forecast_config.ComputationParam`.
 
@@ -682,3 +685,11 @@ Examples:
         n_jobs=1,
         verbose=2
     )
+
+forecast_one_by_one
+-------------------
+Optional. Whether to multiple models spanning the horizon and combine their predictions.
+This may improve forecast quality when forecast horizon > 1
+and autoregression or lagged regressors are used.
+
+See :doc:`/gallery/quickstart/0600_forecast_one_by_one`.

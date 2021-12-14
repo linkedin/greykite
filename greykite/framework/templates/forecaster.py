@@ -48,7 +48,7 @@ from greykite.sklearn.estimator.one_by_one_estimator import OneByOneEstimator
 
 
 class Forecaster:
-    """The main entry point to creates a forecast.
+    """The main entry point to create a forecast.
 
     Call the :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`
     method to create a forecast. It takes a dataset and forecast configuration parameters.

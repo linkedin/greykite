@@ -33,6 +33,7 @@ Compatible with plotly 3.10.0.
 import inspect
 import os
 import shutil
+import warnings
 from glob import glob
 from pathlib import Path
 
@@ -73,8 +74,12 @@ class SphinxGalleryRenderer(ExternalRenderer):
         else:
             # The thumbnail isn't important, so we use a default image
             # Assumes the default image is one level above the .py file
-            filename_default_image = Path(filename_root).parents[1].joinpath('default_thumb.png')
-            shutil.copyfile(filename_default_image, filename_png)
+            try:
+                filename_default_image = Path(filename_root).parents[1].joinpath('default_thumb.png')
+                shutil.copyfile(filename_default_image, filename_png)
+            except FileNotFoundError:
+                warnings.warn(f"Thumbnail not found! Expected default_thumb.png to be "
+                              f"in the parent folder of filename ({filename}).")
 
 
 # Original code: https://github.com/plotly/plotly.py/issues/1459

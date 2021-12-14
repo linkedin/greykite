@@ -26,7 +26,7 @@ from datetime import timedelta
 
 import numpy as np
 import pandas as pd
-import plotly.graph_objs as go
+import plotly.graph_objects as go
 from pandas.plotting import register_matplotlib_converters
 from pandas.tseries.frequencies import to_offset
 from sklearn.linear_model import Lasso
@@ -43,6 +43,7 @@ from greykite.common.features.timeseries_features import get_changepoint_feature
 from greykite.common.features.timeseries_features import get_changepoint_features_and_values_from_config
 from greykite.common.features.timeseries_features import get_default_origin_for_time_vars
 from greykite.common.python_utils import get_pattern_cols
+from greykite.common.python_utils import unique_elements_in_list
 
 
 np.seterr(divide="ignore")  # np.where evaluates values before selecting by conditions, set this to suppress divide_by_zero error
@@ -226,6 +227,7 @@ def build_seasonality_feature_df_with_changes(
             df=df,
             time_col=time_col
         )
+        changepoint_dates = unique_elements_in_list(changepoint_dates)
         # The following lines truncates the fourier series at each change point
         # For each change point, the values of the fourier series before the change point are
         # set to zero. The column name is simply appending `_%Y_%m_%d_%H` after the original column names.
@@ -392,8 +394,8 @@ def plot_change(
 
     Returns
     -------
-    fig : `plotly.graph_objects`
-        The plotted plotly object, can be shown with `iplot(fig)`.
+    fig : `plotly.graph_objects.Figure`
+        The plotted plotly object, can be shown with `fig.show()`.
     """
     if title is None:
         if trend_change is None and seasonality_change is None:
@@ -582,11 +584,12 @@ def plot_change(
                 opacity=0.6,
                 showlegend=True)
         )
-    fig.layout.update({
-        "xaxis": dict(title=xaxis),
-        "yaxis": dict(title=yaxis),
-        "title": title
-    })
+    fig.update_layout(dict(
+        xaxis=dict(title=xaxis),
+        yaxis=dict(title=yaxis),
+        title=title,
+        title_x=0.5
+    ))
     return fig
 
 
@@ -1335,7 +1338,7 @@ def get_yearly_seasonality_changepoint_dates_from_freq(
     check_freq_unit_at_most_day(yearly_seasonality_change_freq, "yearly_seasonality_change_freq")
     yearly_seasonality_change_freq = to_offset(yearly_seasonality_change_freq)
     if yearly_seasonality_change_freq.delta < timedelta(days=365):
-        warnings.warn("yearly_seasonality_change_freq is less than a year. It might be too short"
+        warnings.warn("yearly_seasonality_change_freq is less than a year. It might be too short "
                       "to fit accurate yearly seasonality.")
     check_freq_unit_at_most_day(min_training_length, "least_training_length")
     if min_training_length is not None:
@@ -1349,7 +1352,7 @@ def get_yearly_seasonality_changepoint_dates_from_freq(
         end=last_day_in_df - min_training_length,
         freq=yearly_seasonality_change_freq))[1:]  # do not include the start date
     if len(yearly_seasonality_changepoint_dates) == 0:
-        warnings.warn("No yearly seasonality changepoint added. Either data length is too short"
+        warnings.warn("No yearly seasonality changepoint added. Either data length is too short "
                       "or yearly_seasonality_change_freq is too long.")
     return yearly_seasonality_changepoint_dates
 

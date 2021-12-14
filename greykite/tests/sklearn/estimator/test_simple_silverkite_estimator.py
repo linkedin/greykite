@@ -404,6 +404,55 @@ def test_uncertainty(daily_data):
     assert round(calc_pred_coverage) == 95, "forecast coverage is incorrect"
 
 
+def test_normalize_method(daily_data):
+    """Runs a basic model with normalize method"""
+    uncertainty_dict = {
+        "uncertainty_method": "simple_conditional_residuals",
+        "params": {
+            "conditional_cols": ["dow_hr"],
+            "quantiles": [0.025, 0.975],
+            "quantile_estimation_method": "normal_fit",
+            "sample_size_thresh": 10,
+            "small_sample_size_method": "std_quantiles",
+            "small_sample_size_quantile": 0.98}}
+    model = SimpleSilverkiteEstimator(
+        uncertainty_dict=uncertainty_dict,
+        normalize_method="statistical",
+        fit_algorithm_dict={
+            "fit_algorithm": "linear"
+        },
+        holidays_to_model_separately=[],
+        yearly_seasonality=5,
+        quarterly_seasonality=False,
+        monthly_seasonality=False,
+        weekly_seasonality=3,
+        feature_sets_enabled=False
+    )
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"]
+
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    assert model.forecast is None
+
+    predictions = model.predict(test_df)
+    expected_forecast_cols = \
+        {"ts", "y", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"}
+    assert expected_forecast_cols.issubset(list(model.forecast.columns))
+
+    actual = daily_data["test_df"][cst.VALUE_COL]
+    forecast_lower = predictions[cst.PREDICTED_LOWER_COL]
+    forecast_upper = predictions[cst.PREDICTED_UPPER_COL]
+    calc_pred_coverage = 100 * (
+            (actual <= forecast_upper)
+            & (actual >= forecast_lower)
+    ).mean()
+    assert round(calc_pred_coverage) == 95, "forecast coverage is incorrect"
+    assert model.model_dict["normalize_method"] == "statistical"
+
+
 def test_summary(daily_data):
     """Checks summary function returns without error"""
     model = SimpleSilverkiteEstimator(
@@ -467,6 +516,7 @@ def test_plot_components():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
         assert f"The following components have not been specified in the model: " \
                f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
 
@@ -484,6 +534,7 @@ def test_plot_components():
     assert fig.layout.yaxis2.title["text"] == "trend"
 
     assert fig.layout.title["text"] == title
+    assert fig.layout.title["x"] == 0.5
 
     # Test plot_seasonalities
     with pytest.warns(Warning):
@@ -504,3 +555,71 @@ def test_plot_components():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
+
+
+def test_past_df(daily_data):
+    """Tests ``past_df`` is passed."""
+    model = SimpleSilverkiteEstimator(past_df=daily_data["df"])
+    assert model.past_df.equals(daily_data["df"])
+
+
+def test_x_mat_in_predict(daily_data):
+    """Tests to check if prediction phase design matrix is returned."""
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"][:20]
+
+    uncertainty_dict = {
+        "uncertainty_method": "simple_conditional_residuals",
+        "params": {
+            "conditional_cols": ["dow_hr"],
+            "quantiles": [0.025, 0.975],
+            "quantile_estimation_method": "normal_fit",
+            "sample_size_thresh": 10,
+            "small_sample_size_method": "std_quantiles",
+            "small_sample_size_quantile": 0.98}}
+
+    model = SimpleSilverkiteEstimator(
+        fit_algorithm_dict={
+            "fit_algorithm": "linear"
+        },
+        yearly_seasonality=False,
+        quarterly_seasonality=False,
+        monthly_seasonality=False,
+        weekly_seasonality=False,
+        daily_seasonality=False,
+        holiday_lookup_countries=None,
+        extra_pred_cols=["C(dow == 1)", "ct1"],
+        uncertainty_dict=uncertainty_dict
+    )
+
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+
+    pred_df = model.predict(test_df)
+    cols = ["ts", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"]
+    assert_equal(model.forecast[cols], pred_df[cols])
+    assert (model.forecast["y"].values == pred_df["forecast"].values).all()
+
+    forecast_x_mat = model.forecast_x_mat
+    assert list(forecast_x_mat.columns) == [
+        "Intercept", "C(dow == 1)[T.True]", "ct1"]
+    assert len(forecast_x_mat) == len(pred_df)
+
+
+def test_uncertainty_with_nonstandard_cols(daily_data):
+    model = SimpleSilverkiteEstimator(coverage=0.95)
+    df = daily_data["df"].rename(columns={
+        cst.TIME_COL: "t",
+        cst.VALUE_COL: "z"
+    })
+    model.fit(
+        df,
+        time_col="t",
+        value_col="z"
+    )
+    pred_df = model.predict(df)
+    assert cst.PREDICTED_LOWER_COL in pred_df
+    assert cst.PREDICTED_UPPER_COL in pred_df

@@ -202,10 +202,11 @@ def test_get_template_class():
     # `model_template` name is wrong
     model_template = "SOME_TEMPLATE"
     with pytest.raises(ValueError, match=f"Model Template '{model_template}' is not recognized! "
-                                         f"Must be one of: SILVERKITE, SILVERKITE_DAILY_90, "
+                                         f"Must be one of: SILVERKITE, SILVERKITE_WITH_AR, "
+                                         f"SILVERKITE_DAILY_1_CONFIG_1, SILVERKITE_DAILY_1_CONFIG_2, SILVERKITE_DAILY_1_CONFIG_3, "
+                                         f"SILVERKITE_DAILY_1, SILVERKITE_DAILY_90, "
                                          f"SILVERKITE_WEEKLY, SILVERKITE_HOURLY_1, SILVERKITE_HOURLY_24, "
-                                         f"SILVERKITE_HOURLY_168, SILVERKITE_HOURLY_336, SILVERKITE_EMPTY, "
-                                         f"SK, PROPHET, AUTO_ARIMA or satisfy the `SimpleSilverkiteTemplate` rules."):
+                                         f"SILVERKITE_HOURLY_168, SILVERKITE_HOURLY_336, SILVERKITE_EMPTY"):
         forecaster = Forecaster()
         forecaster._Forecaster__get_template_class(
             config=ForecastConfig(model_template=model_template))
@@ -303,7 +304,8 @@ def test_get_template_class():
              "'greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate'>]"),
             (LOGGER_NAME,
              'DEBUG',
-             "Using template class <class 'test_forecaster.MySimpleSilverkiteTemplate'> "
+             'Using template class <class '
+             "'test_forecaster.MySimpleSilverkiteTemplate'> "
              'for the model template '
              "SimpleSilverkiteTemplateOptions(freq=<SILVERKITE_FREQ.DAILY: 'DAILY'>, "
              "seas=<SILVERKITE_SEAS.LT: 'LT'>, gr=<SILVERKITE_GR.LINEAR: 'LINEAR'>, "
@@ -683,14 +685,19 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__max_daily_seas_interaction_order": [0],
             "estimator__max_weekly_seas_interaction_order": [2],
             "estimator__autoreg_dict": [None],
+            "estimator__simulation_num": [10],
             "estimator__lagged_regressor_dict": [None],
             "estimator__min_admissible_value": [None],
             "estimator__max_admissible_value": [None],
+            "estimator__normalize_method": [None],
             "estimator__uncertainty_dict": [None],
             "estimator__growth_term": ["linear"],
             "estimator__regressor_cols": [[]],
             "estimator__feature_sets_enabled": [False],
-            "estimator__extra_pred_cols": [[]]
+            "estimator__extra_pred_cols": [[]],
+            "estimator__drop_pred_cols": [None],
+            "estimator__explicit_pred_cols": [None],
+            "estimator__regression_weight_col": [None],
         },
         ignore_keys={"estimator__time_properties": None}
     )

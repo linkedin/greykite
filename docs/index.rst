@@ -56,6 +56,15 @@ Welcome to Greykite! View the contents to get started.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Miscellaneous
+   :hidden:
+   :glob:
+
+   pages/miscellaneous/*
+
+
+.. toctree::
+   :maxdepth: 1
    :caption: Changelog
    :hidden:
    :glob:

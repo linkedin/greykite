@@ -215,7 +215,14 @@ def test_fit_predict(daily_data):
         predicted = model.predict(test_df)
         assert_equal(model.last_predicted_X_, test_df)
         assert_equal(model.cached_predictions_, predicted)
-        log_capture.check()  # no log messages (not using cached predictions)
+        # The following message is from `SilverkiteForecast.predict` function,
+        # which means the `predict` method is called and cached prediction is not used.
+        log_capture.check(
+            (cst.LOGGER_NAME,
+             "DEBUG",
+             "``past_df`` not provided during prediction, use the ``train_df`` from "
+             "training results.")
+        )
 
     # Uses cached predictions
     with LogCapture(cst.LOGGER_NAME) as log_capture:
@@ -229,7 +236,14 @@ def test_fit_predict(daily_data):
         predicted = model.predict(train_df)
         assert_equal(model.last_predicted_X_, train_df)
         assert_equal(model.cached_predictions_, predicted)
-        log_capture.check()  # no log messages (not using cached predictions)
+        # The following message is from `SilverkiteForecast.predict` function,
+        # which means the `predict` method is called and cached prediction is not used.
+        log_capture.check(
+            (cst.LOGGER_NAME,
+             "DEBUG",
+             "``past_df`` not provided during prediction, use the ``train_df`` from "
+             "training results.")
+        )
 
     # .fit() clears the cached result
     model.fit(train_df, time_col=cst.TIME_COL, value_col=cst.VALUE_COL)
@@ -433,6 +447,7 @@ def test_silverkite_with_components_daily_data():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
         assert f"The following components have not been specified in the model: " \
                f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
 
@@ -456,6 +471,7 @@ def test_silverkite_with_components_daily_data():
     assert fig.layout.yaxis2.title["text"] == "trend"
 
     assert fig.layout.title["text"] == title
+    assert fig.layout.title["x"] == 0.5
 
     # Tests plot_seasonalities
     with pytest.warns(Warning):
@@ -476,6 +492,7 @@ def test_silverkite_with_components_daily_data():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
 
     # Component plot error if `fit_algorithm` is "rf" or "gradient_boosting"
     params_daily["fit_algorithm"] = "rf"
@@ -559,6 +576,7 @@ def test_silverkite_with_components_hourly_data():
         assert fig.layout.yaxis3.title["text"] == "daily"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
         assert f"The following components have not been specified in the model: " \
                f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
 
@@ -576,6 +594,7 @@ def test_silverkite_with_components_hourly_data():
     assert fig.layout.yaxis2.title["text"] == "trend"
 
     assert fig.layout.title["text"] == title
+    assert fig.layout.title["x"] == 0.5
 
     # Test plot_seasonalities
     with pytest.warns(Warning):
@@ -598,6 +617,7 @@ def test_silverkite_with_components_hourly_data():
         assert fig.layout.yaxis4.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
 
 
 def test_plot_trend_changepoint_detection(df_pt):
@@ -618,6 +638,7 @@ def test_plot_trend_changepoint_detection(df_pt):
     fig = model.plot_trend_changepoint_detection()
     assert fig is not None
     assert fig.layout.title["text"] == "Timeseries Plot with detected trend change points"
+    assert fig.layout.title["x"] == 0.5
     assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
     assert fig.layout.xaxis.title["text"] == "Dates"
     # tests given parameters
@@ -625,6 +646,7 @@ def test_plot_trend_changepoint_detection(df_pt):
         dict(trend_change=False))
     assert fig is not None
     assert fig.layout.title["text"] == "Timeseries Plot"
+    assert fig.layout.title["x"] == 0.5
     assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
     assert fig.layout.xaxis.title["text"] == "Dates"
 
@@ -709,3 +731,130 @@ def test_pred_category(df_pt):
     assert pred_category["lag_features"] == []
     assert pred_category["regressor_features"] == ["x", "x:ct1"]
     assert pred_category["interaction_features"] == ["x:ct1"]
+
+
+def test_get_max_ar_order():
+    model = BaseSilverkiteEstimator()
+    model.autoreg_dict = "auto"
+    model.freq = "D"
+    model.forecast_horizon = 1
+    assert model.get_max_ar_order() == 21
+
+    model.autoreg_dict = dict(
+        lag_dict=dict(
+            orders=[3, 5]
+        ),
+        agg_lag_dict=dict(
+            interval_list=[(7, 15)]
+        )
+    )
+    assert model.get_max_ar_order() == 15
+
+
+def test_past_df_in_predict(daily_data):
+    """Tests that ``past_df`` can be passed during prediction."""
+    model = BaseSilverkiteEstimator()
+    train_df = daily_data["train_df"]
+    past_df = train_df.iloc[:200]
+    train_df = train_df.iloc[200:].reset_index(drop=True)
+
+    model.fit(
+        X=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+
+    silverkite = SilverkiteForecast()
+    model.model_dict = silverkite.forecast(
+        df=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL,
+        origin_for_time_vars=None,
+        extra_pred_cols=[],
+        train_test_thresh=None,
+        training_fraction=None,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        daily_event_df_dict=None,
+        changepoints_dict=None,
+        fs_components_df=None,
+        autoreg_dict=dict(
+            lag_dict=dict(
+                orders=[1]
+            )
+        ),
+        min_admissible_value=None,
+        max_admissible_value=None,
+        uncertainty_dict=None
+    )
+    model.finish_fit()
+    coef = model.model_dict["ml_model"].coef_
+
+    # Only has intercept and AR_lag1
+    assert len(coef) == 2
+
+    # ``past_df`` was not passed during training.
+    # The ``train_df`` in ``silverkite`` should be ``train_df`` itself.
+    # If we try to calculate fitted values on the past,
+    # imputation will be performed without passing ``past_df``.
+    # However, if we pass ``past_df``, the values in ``past_df``
+    # will be used.
+    model.past_df = past_df.iloc[[-2]]
+    pred = model.predict(
+        X=past_df.iloc[[-1]]
+    )
+    assert pred[cst.PREDICTED_COL].iloc[0] == coef[0] + coef[1] * past_df[cst.VALUE_COL].iloc[-2]
+
+
+def test_x_mat_in_predict(daily_data):
+    """Tests the return of ``predict_x_mat`` during prediction."""
+    model = BaseSilverkiteEstimator()
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"]
+
+    uncertainty_dict = {
+        "uncertainty_method": "simple_conditional_residuals",
+        "params": {
+            "conditional_cols": ["dow_hr"],
+            "quantiles": [0.025, 0.975],
+            "quantile_estimation_method": "normal_fit",
+            "sample_size_thresh": 20,
+            "small_sample_size_method": "std_quantiles",
+            "small_sample_size_quantile": 0.98}}
+
+    model.fit(
+        X=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+
+    silverkite = SilverkiteForecast()
+    model.model_dict = silverkite.forecast(
+        df=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL,
+        origin_for_time_vars=None,
+        extra_pred_cols=["ct1", "C(dow == 1)"],
+        train_test_thresh=None,
+        training_fraction=None,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        daily_event_df_dict=None,
+        changepoints_dict=None,
+        fs_components_df=None,
+        autoreg_dict=None,
+        min_admissible_value=None,
+        max_admissible_value=None,
+        uncertainty_dict=uncertainty_dict
+    )
+    model.finish_fit()
+    coef = model.model_dict["ml_model"].coef_
+    assert len(coef) == 3
+
+    pred_df = model.predict(test_df)
+    cols = ["ts", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"]
+    assert_equal(model.forecast[cols], pred_df[cols])
+    assert (model.forecast["y"].values == pred_df["forecast"].values).all()
+
+    forecast_x_mat = model.forecast_x_mat
+    assert list(forecast_x_mat.columns) == [
+        "Intercept", "C(dow == 1)[T.True]", "ct1"]
+    assert len(forecast_x_mat) == len(pred_df)

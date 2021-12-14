@@ -298,10 +298,12 @@ class ProphetEstimator(BaseForecastEstimator):
         # renames columns to standardized schema
         output_columns = {
             "ds": TIME_COL,
-            "yhat": PREDICTED_COL,
-            "yhat_lower": PREDICTED_LOWER_COL,
-            "yhat_upper": PREDICTED_UPPER_COL
+            "yhat": PREDICTED_COL
         }
+        if "yhat_lower" in pred_df.columns:
+            output_columns["yhat_lower"] = PREDICTED_LOWER_COL
+        if "yhat_upper" in pred_df.columns:
+            output_columns["yhat_upper"] = PREDICTED_UPPER_COL
 
         predictions = (pred_df[output_columns.keys()]
                        .rename(output_columns, axis=1))

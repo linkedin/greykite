@@ -95,3 +95,39 @@ def test_gen_moving_timeseries_forecast_with_regressors():
         regressor_cols=["x"])["compare_df"]
 
     assert list(compare_df.head(5)["y_hat"].round(1).values) == [39.4] * 5
+
+
+def test_gen_moving_timeseries_forecast_extra_columns():
+    """Basic test for `gen_moving_timeseries_forecast` to ensure
+    the function will keep the desired columns in resulting ``compare_df``"""
+    data = generate_df_for_tests(freq="1H", periods=1000)
+    df = data["df"]
+    df["input_dummy"] = np.array(range(df.shape[0]))
+
+    # A simple train-forecast function which always uses last available
+    # value as the forecasted value
+    def train_forecast_func(
+            df,
+            value_col,
+            time_col=None,
+            forecast_horizon=1):
+        # Simply get last observed value and offer as forecast
+        value = df[value_col].values[df.shape[0] - 1]
+        forecasted_values = np.repeat(a=value, repeats=forecast_horizon)
+        fut_df = pd.DataFrame({value_col: forecasted_values})
+        fut_df["forecast_dummy"] = np.array(range(fut_df.shape[0]))
+        return {"fut_df": fut_df}
+
+    compare_df = gen_moving_timeseries_forecast(
+        df=df,
+        time_col="ts",
+        value_col="y",
+        train_forecast_func=train_forecast_func,
+        train_move_ahead=10,
+        forecast_horizon=7,
+        min_training_end_point=100,
+        keep_cols=["input_dummy"],
+        forecast_keep_cols=["forecast_dummy"])["compare_df"]
+
+    assert "forecast_dummy" in list(compare_df.columns)
+    assert "input_dummy" in list(compare_df.columns)

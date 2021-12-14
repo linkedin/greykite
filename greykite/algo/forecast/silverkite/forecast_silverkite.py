@@ -26,6 +26,7 @@ from typing import Type
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+from pandas.tseries.frequencies import to_offset
 
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_changepoints_dict
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_seasonality_changepoints
@@ -57,12 +58,12 @@ from greykite.common.logging import log_message
 from greykite.common.python_utils import get_pattern_cols
 from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.time_properties import describe_timeseries
+from greykite.common.time_properties import fill_missing_dates
 from greykite.common.time_properties import min_gap_in_seconds
 from greykite.common.time_properties_forecast import get_default_horizon_from_period
 
 
 register_matplotlib_converters()
-
 
 """
 Defines a class that provides the silverkite forecast functionality for training and prediction.
@@ -87,6 +88,8 @@ class SilverkiteForecast():
             freq=None,
             origin_for_time_vars=None,
             extra_pred_cols=None,
+            drop_pred_cols=None,
+            explicit_pred_cols=None,
             train_test_thresh=None,
             training_fraction=0.9,  # This is for internal ML models validation. The final returned model will be trained on all data.
             fit_algorithm="linear",
@@ -98,6 +101,7 @@ class SilverkiteForecast():
                 "order": [3, 3, 5],
                 "seas_names": ["daily", "weekly", "yearly"]}),
             autoreg_dict=None,
+            past_df=None,
             lagged_regressor_dict=None,
             changepoints_dict=None,
             seasonality_changepoints_dict=None,
@@ -110,7 +114,8 @@ class SilverkiteForecast():
             impute_dict=None,
             regression_weight_col=None,
             forecast_horizon=None,
-            simulation_based=False):
+            simulation_based=False,
+            simulation_num=10):
         """A function for forecasting.
         It captures growth, seasonality, holidays and other patterns.
         See "Capturing the time-dependence in the precipitation process for
@@ -165,7 +170,15 @@ class SilverkiteForecast():
 
                 ``predict_silverkite``: via ``fut_df`` or ``new_external_regressor_df``
                 ``silverkite.predict_n(_no_sim``: via ``new_external_regressor_df``
-
+        drop_pred_cols : `list` [`str`] or None, default None
+            Names of predictor columns to be dropped from the final model.
+            Ignored if None
+        explicit_pred_cols : `list` [`str`] or None, default None
+            Names of the explicit predictor columns which will be
+            the only variables in the final model. Note that this overwrites
+            the generated predictors in the model and may include new
+            terms not appearing in the predictors (e.g. interaction terms).
+            Ignored if None
         train_test_thresh : `datetime.datetime`, optional
             e.g. datetime.datetime(2019, 6, 30)
             The threshold for training and testing split.
@@ -287,6 +300,22 @@ class SilverkiteForecast():
             to create a dictionary.
             See more details for above parameters in
             `~greykite.common.features.timeseries_lags.build_autoreg_df`.
+        past_df : `pandas.DataFrame` or None, default None
+            The past df used for building autoregression features.
+            This is not necessarily needed since imputation is possible.
+            However, it is recommended to provide ``past_df`` for more accurate
+            autoregression features and faster training (by skipping imputation).
+            The columns are:
+
+                time_col : `pandas.Timestamp` or `str`
+                    The timestamps.
+                value_col : `float`
+                    The past values.
+                addition_regressor_cols : `float`
+                    Any additional regressors.
+
+            Note that this ``past_df`` is assumed to immediately precede ``df`` without gaps,
+            otherwise an error will be raised.
         lagged_regressor_dict : `dict` or None, default None
             A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`.
             The keys of the dictionary are the target lagged regressor column names.
@@ -450,6 +479,9 @@ class SilverkiteForecast():
             used for certain components e.g. autoregression, if automatic methods
             are requested. However, the auto-settings and the prediction settings
             regarding using simulations should match.
+        simulation_num : `int`, default 10
+            The number of simulations for when simulations are used for generating
+            forecasts and prediction intervals.
 
         Returns
         -------
@@ -555,12 +587,27 @@ class SilverkiteForecast():
                     The forecast horizon in timedelta.
                 simulation_based: `bool`
                     Whether to use simulation in prediction with autoregression terms.
+                simulation_num : `int`, default 10
+                    The number of simulations for when simulations are used for generating
+                    forecasts and prediction intervals.
+                train_df : `pandas.DataFrame`
+                    The past dataframe used to generate AR terms.
+                    It includes the concatenation of ``past_df`` and ``df`` if ``past_df`` is provided,
+                    otherwise it is the ``df`` itself.
 
         """
         df = df.copy()
         df[time_col] = pd.to_datetime(df[time_col])
         num_training_points = df.shape[0]
         adjust_anomalous_info = None
+
+        if past_df is not None:
+            if past_df.shape[0] == 0:
+                past_df = None
+            else:
+                past_df = past_df.copy()
+                past_df[time_col] = pd.to_datetime(past_df[time_col])
+                past_df = past_df.sort_values(by=time_col)
 
         # Adjusts anomalies if requested
         if adjust_anomalous_dict is not None:
@@ -707,9 +754,11 @@ class SilverkiteForecast():
         # For example, yearly seasonality with order 4 and quarterly seasonality with order 1, and etc.
         if fit_algorithm in ["linear", "statsmodels_wls", "statsmodels_gls"]:
             # Removes fourier columns with perfect or almost perfect collinearity.
-            fs_cols = self.__remove_fourier_col_with_collinearity(fs_cols)
+            fs_cols = self.__remove_fourier_col_with_collinearity(
+                fs_cols)
             # Also removes these terms from interactions.
-            extra_pred_cols = self.__remove_fourier_col_with_collinearity_and_interaction(extra_pred_cols, fs_cols)
+            extra_pred_cols = self.__remove_fourier_col_with_collinearity_and_interaction(
+                extra_pred_cols, fs_cols)
 
         # Adds seasonality change point features
         seasonality_changepoint_result = None
@@ -775,12 +824,33 @@ class SilverkiteForecast():
             max_lag_order = autoreg_components["max_order"]
 
             if autoreg_func is not None:
+                if past_df is not None:
+                    # Fills in the gaps for imputation.
+                    expected_last_timestamp = df[time_col].min() - to_offset(freq)
+                    if past_df[time_col].iloc[-1] < expected_last_timestamp:  # ``past_df`` is already sorted.
+                        # If ``past_df`` and ``df`` have gap in between, adds the last timestamp before ``df``.
+                        # Then the rest will be filled with NA.
+                        log_message(
+                            message="There is gaps between ``past_df`` and ``df``. "
+                                    "Filling the missing timestamps.",
+                            level=LoggingLevelEnum.DEBUG
+                        )
+                        last_timestamp_df = pd.DataFrame({
+                            col: [np.nan] if col != time_col else [expected_last_timestamp] for col in past_df.columns
+                        })
+                        past_df = past_df.append(last_timestamp_df).reset_index(drop=True)
+                    past_df = fill_missing_dates(
+                        df=past_df,
+                        time_col=time_col,
+                        freq=freq)[0]  # `fill_missing_dates` returns a tuple where the first one is the df.
+                    # Only takes ``past_df`` that are before ``df``.
+                    past_df = past_df[past_df[time_col] <= expected_last_timestamp]
                 autoreg_df = self.__build_autoreg_features(
                     df=df,
                     value_col=value_col,
                     autoreg_func=autoreg_func,
                     phase="fit",
-                    past_df=None)
+                    past_df=past_df)
                 features_df = pd.concat([features_df, autoreg_df], axis=1, sort=False)
 
         # Adds lagged regressor columns to feature matrix
@@ -846,6 +916,14 @@ class SilverkiteForecast():
             pred_cols = pred_cols + lagged_regressor_col_names
 
         pred_cols = unique_elements_in_list(pred_cols)
+        # Drops un-desired predictors
+        if drop_pred_cols is not None:
+            pred_cols = [col for col in pred_cols if col not in drop_pred_cols]
+
+        # Only uses predictors appearing in ``explicit_pred_cols``
+        if explicit_pred_cols is not None:
+            pred_cols = explicit_pred_cols
+
         # Makes sure we don't have an empty regressor string, which will cause patsy formula error.
         if not pred_cols:
             pred_cols = ["1"]
@@ -910,6 +988,10 @@ class SilverkiteForecast():
         trained_model["fs_func"] = fs_func
         trained_model["has_autoreg_structure"] = has_autoreg_structure
         trained_model["autoreg_func"] = autoreg_func
+        # ``past_df`` has been manipulated to have all timestamps (could be with NA) and immediately
+        # precedes ``df``. If ``past_df`` is not None, the stored ``past_df`` will be the concatenation of
+        # ``past_df`` and ``df``. Otherwise it will be ``df``.
+        trained_model["train_df"] = pd.concat([past_df, df], axis=0).reset_index(drop=True)
         trained_model["min_lag_order"] = min_lag_order
         trained_model["max_lag_order"] = max_lag_order
         trained_model["has_lagged_regressor_structure"] = has_lagged_regressor_structure
@@ -931,6 +1013,7 @@ class SilverkiteForecast():
         trained_model["forecast_horizon_in_days"] = forecast_horizon_in_days
         trained_model["forecast_horizon_in_timedelta"] = forecast_horizon_in_timedelta
         trained_model["simulation_based"] = simulation_based
+        trained_model["simulation_num"] = simulation_num
 
         return trained_model
 
@@ -966,11 +1049,17 @@ class SilverkiteForecast():
 
         Return
         --------
-        `pandas.DataFrame`
-            The same as input dataframe with an added column for the response.
-            If value_col already appears in ``fut_df``, it will be over-written.
-            If ``uncertainty_dict`` is provided as input,
-            it will also contain a ``{value_col}_quantile_summary`` column.
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         fut_df = fut_df.copy()
         time_col = trained_model["time_col"]
@@ -1026,13 +1115,26 @@ class SilverkiteForecast():
                     "Autoregression was used but no past_df was passed to "
                     "`predict_no_sim`")
             else:
-                df = pd.DataFrame({value_col: [np.nan]*fut_df.shape[0]})
-                df.index = fut_df.index
+                # If the timestamps in ``fut_df`` are all before ``train_end_timestamp``,
+                # then the phase is to calculate fitted values.
+                # In this case if there are any values in ``fut_df``,
+                # they can be used since the information is known by ``train_end_timestamp``.
+                train_end_timestamp = trained_model["max_timestamp"]
+                fut_df_max_timestamp = pd.to_datetime(fut_df[time_col]).max()
+                phase = "predict" if train_end_timestamp < fut_df_max_timestamp else "fit"
+                if phase == "predict":
+                    # If phase is predict, we do not allow using ``value_col``.
+                    # The AR lags should be enough since otherwise one would use ``predict_via_sim``.
+                    df = pd.DataFrame({value_col: [np.nan]*fut_df.shape[0]})
+                    df.index = fut_df.index
+                else:
+                    # If phase is fit, we keep the values in ``value_col``.
+                    df = fut_df[[value_col]].copy()
                 autoreg_df = self.__build_autoreg_features(
                     df=df,
                     value_col=trained_model["value_col"],
                     autoreg_func=trained_model["autoreg_func"],
-                    phase="predict",
+                    phase=phase,
                     past_df=past_df[[value_col]])
                 features_df_fut = pd.concat(
                     [features_df_fut, autoreg_df],
@@ -1070,25 +1172,36 @@ class SilverkiteForecast():
                     axis=1,
                     sort=False)
 
+        if value_col in features_df_fut.columns:
+            # This is to remove duplicate ``value_col`` generated by building features.
+            # The duplicates happen during calculating extended fitted values
+            # when we intentionally include ``value_col``.
+            del features_df_fut[value_col]
         features_df_fut[value_col] = 0.0
         if trained_model["uncertainty_dict"] is None:
-            # predictions are stored to value_col
-            fut_df = predict_ml(
+            # predictions are stored to ``value_col``
+            pred_res = predict_ml(
                 fut_df=features_df_fut,
                 trained_model=trained_model)
+            fut_df = pred_res["fut_df"]
+            x_mat = pred_res["x_mat"]
         else:
-            # predictions are stored to value_col
-            # quantiles are stored to {value_col}_quantile_summary
-            fut_df = predict_ml_with_uncertainty(
+            # predictions are stored to ``value_col``
+            # quantiles are stored to ``f"{value_col}_quantile_summary"``
+            pred_res = predict_ml_with_uncertainty(
                 fut_df=features_df_fut,
                 trained_model=trained_model)
+            fut_df = pred_res["fut_df"]
+            x_mat = pred_res["x_mat"]
 
         # Makes sure to return only necessary columns
         potential_forecast_cols = [time_col, value_col, f"{value_col}_quantile_summary", ERR_STD_COL]
         existing_forecast_cols = [col for col in potential_forecast_cols if col in fut_df.columns]
         fut_df = fut_df[existing_forecast_cols]
 
-        return fut_df
+        return {
+            "fut_df": fut_df,
+            "x_mat": x_mat}
 
     def predict_n_no_sim(
             self,
@@ -1120,8 +1233,17 @@ class SilverkiteForecast():
 
         Returns
         -------
-        `pandas.DataFrame`
-        A dataframe with predictions given in ``value_col``
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         # creates the future time grid
         dates = pd.date_range(
@@ -1173,9 +1295,26 @@ class SilverkiteForecast():
 
         Returns
         -------
-        fut_df_sim: `pandas.DataFrame`
-            The same as input dataframe with an added column for the response.
-            If ``value_col`` already appears in ``fut_df``, it will be over-written.
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+                Here are the expected columns:
+
+                (1) A time column with the column name being ``trained_model["time_col"]``
+                (2) The predicted response in ``value_col`` column.
+                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                    This column only appears if the model includes uncertainty.
+                (4) Error std in `ERR_STD_COL` column.
+                    This column only appears if the model includes uncertainty.
+
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         n = fut_df.shape[0]
         past_df_sim = None if past_df is None else past_df.copy()
@@ -1208,16 +1347,21 @@ class SilverkiteForecast():
                 axis=1,
                 sort=False)
 
+        x_mat_list = []
         for i in range(n):
             fut_df_sub = fut_df.iloc[[i]].reset_index(drop=True)
 
-            fut_df_sub = self.predict_no_sim(
+            pred_res = self.predict_no_sim(
                 fut_df=fut_df_sub,
                 trained_model=trained_model,
                 past_df=past_df_sim,
                 new_external_regressor_df=None,
                 time_features_ready=True,
                 regressors_ready=True)
+
+            fut_df_sub = pred_res["fut_df"]
+            x_mat = pred_res["x_mat"]
+            x_mat_list.append(x_mat)
 
             fut_df_sim.at[i, value_col] = fut_df_sub[value_col].values[0]
 
@@ -1245,13 +1389,21 @@ class SilverkiteForecast():
                     axis=0,
                     sort=False)
 
-        return fut_df_sim[[time_col, value_col]]
+        x_mat = pd.concat(
+            x_mat_list,
+            axis=0,
+            ignore_index=True,  # The index does not matter as we simply want to stack up the data
+            sort=False)
+
+        return {
+            "sim_df": fut_df_sim[[time_col, value_col]],
+            "x_mat": x_mat}
 
     def simulate_multi(
             self,
             fut_df,
             trained_model,
-            sim_num=10,
+            simulation_num=10,
             past_df=None,
             new_external_regressor_df=None,
             include_err=None):
@@ -1266,7 +1418,7 @@ class SilverkiteForecast():
             for prediction and any regressors.
         trained_model : `dict`
             A fitted silverkite model which is the output of ``self.forecast``.
-        sim_num : `int`
+        simulation_num : `int`
             The number of simulated series,
             (each of which have the same number of rows as ``fut_df``)
             to be stacked up row-wise.
@@ -1282,13 +1434,22 @@ class SilverkiteForecast():
 
         Returns
         -------
-        fut_df_sim : `pandas.DataFrame`
-            Row-wise Concatenation of dataframes each being the same as
-            input dataframe (``fut_df``) with an added column for the response
-            and a new column: "sim_label" to differentiate various simulations.
-            The row number of the returned dataframe is:
-                ``sim_num`` times the row number of ``fut_df``.
-            If ``value_col`` already appears in ``fut_df``, it will be over-written.
+        result: `dict`
+            A dictionary with follwing items
+
+            - "fut_df_sim" : `pandas.DataFrame`
+                Row-wise concatenation of dataframes each being the same as
+                input dataframe (``fut_df``) with an added column for the response
+                and a new column: "sim_label" to differentiate various simulations.
+                The row number of the returned dataframe is:
+                    ``simulation_num`` times the row number of ``fut_df``.
+                If ``value_col`` already appears in ``fut_df``, it will be over-written.
+            - "x_mat": `pandas.DataFrame`
+                ``simulation_num`` copies of design matrix of the predictive machine-learning model
+                concatenated. An extra index column ("original_row_index")  is also added
+                for aggregation when needed.
+                Note that the all copies will be the same except for the case where
+                auto-regression is utilized.
         """
 
         if include_err is None:
@@ -1326,7 +1487,7 @@ class SilverkiteForecast():
             """Creates one simulation and labels it with ``label`` in an added
             column : "sim_label"
             """
-            sim_df = self.simulate(
+            sim_res = self.simulate(
                 fut_df=fut_df,
                 trained_model=trained_model,
                 past_df=past_df,
@@ -1334,11 +1495,22 @@ class SilverkiteForecast():
                 include_err=include_err,
                 time_features_ready=True,
                 regressors_ready=True)
+            sim_df = sim_res["sim_df"]
+            x_mat = sim_res["x_mat"]
             sim_df["sim_label"] = label
+            # ``x_mat`` does not necessarily have an index column
+            # we keet track of the original index, to be able to aggregate
+            # across simulations later
+            x_mat["original_row_index"] = range(len(fut_df))
 
-            return sim_df
+            return {
+                "sim_df": sim_df,
+                "x_mat": x_mat}
 
-        sim_df_list = [one_sim_func(i) for i in range(sim_num)]
+        sim_res_list = [one_sim_func(i) for i in range(simulation_num)]
+        sim_df_list = [sim_res_list[i]["sim_df"] for i in range(simulation_num)]
+        x_mat_list = [sim_res_list[i]["x_mat"] for i in range(simulation_num)]
+
         sim_df = pd.concat(
             sim_df_list,
             axis=0,
@@ -1346,7 +1518,19 @@ class SilverkiteForecast():
             sort=False)
         sim_df[value_col] = sim_df[value_col].astype(float)
 
-        return sim_df
+        x_mat = pd.concat(
+            x_mat_list,
+            axis=0,
+            ignore_index=True,  # The index does not matter as we simply want to stack up the data
+            sort=False)
+        sim_df[value_col] = sim_df[value_col].astype(float)
+
+        assert len(sim_df) == len(fut_df) * simulation_num
+        assert len(x_mat) == len(fut_df) * simulation_num
+
+        return {
+            "sim_df": sim_df,
+            "x_mat": x_mat}
 
     def predict_via_sim(
             self,
@@ -1354,7 +1538,7 @@ class SilverkiteForecast():
             trained_model,
             past_df=None,
             new_external_regressor_df=None,
-            sim_num=10,
+            simulation_num=10,
             include_err=None):
         """Performs predictions and calculate uncertainty using
         multiple simulations.
@@ -1371,7 +1555,7 @@ class SilverkiteForecast():
             via autoreg_dict parameter of ``greykite.algo.forecast.silverkite.SilverkiteForecast.py``
         new_external_regressor_df: `pandas.DataFrame`, optional
             Contains the regressors not already included in ``fut_df``.
-        sim_num : `int`, optional, default 10
+        simulation_num : `int`, optional, default 10
             The number of simulated series to be used in prediction.
         include_err : `bool`, optional, default None
             Boolean to determine if errors are to be incorporated in the simulations.
@@ -1380,14 +1564,26 @@ class SilverkiteForecast():
 
         Returns
         -------
-        `pandas.DataFrame`
-            The same as input dataframe with an added columns for
+        result: `dict`
+            A dictionary with following items
 
-                (1) The predicted response in ``value_col`` column.
-                (2) Quantile summary reponse in ``f"{value_col}_quantile_summary`` column.
-                (3) Error std in `ERR_STD_COL` column.
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+                Here are the expected columns:
 
-            If ``value_col`` already appears in ``fut_df``, it will be over-written.
+                (1) A time column with the column name being ``trained_model["time_col"]``
+                (2) The predicted response in ``value_col`` column.
+                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                    This column only appears if the model includes uncertainty.
+                (4) Error std in `ERR_STD_COL` column.
+                    This column only appears if the model includes uncertainty.
+
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         fut_df = fut_df.copy()
         if include_err is None:
@@ -1399,13 +1595,15 @@ class SilverkiteForecast():
                 "However model does not support uncertainty. "
                 "To support uncertainty pass `uncertainty_dict` to the model.")
 
-        sim_df = self.simulate_multi(
+        sim_res = self.simulate_multi(
             fut_df=fut_df,
             trained_model=trained_model,
-            sim_num=sim_num,
+            simulation_num=simulation_num,
             past_df=past_df,
             new_external_regressor_df=new_external_regressor_df,
             include_err=include_err)
+        sim_df = sim_res["sim_df"]
+        x_mat = sim_res["x_mat"]
 
         try:
             quantiles = trained_model["uncertainty_dict"].get(
@@ -1433,7 +1631,18 @@ class SilverkiteForecast():
         if trained_model["uncertainty_dict"] is None:
             agg_df = agg_df[[time_col, value_col]]
 
-        return agg_df
+        x_mat = x_mat.groupby(
+            ["original_row_index"], as_index=False).agg(np.mean)
+
+        del x_mat["original_row_index"]
+        # Checks to see if ``x_mat`` has the right number of rows
+        assert len(x_mat) == len(agg_df)
+        # Checks to see if predict ``x_mat`` has the same columns as fitted ``x_mat``
+        assert list(trained_model["x_mat"].columns) == list(x_mat.columns)
+
+        return {
+            "fut_df": agg_df,
+            "x_mat": x_mat}
 
     def predict_n_via_sim(
             self,
@@ -1441,7 +1650,7 @@ class SilverkiteForecast():
             trained_model,
             freq,
             new_external_regressor_df=None,
-            sim_num=10,
+            simulation_num=10,
             include_err=None):
         """This is the forecast function which can be used to forecast.
         This function's predictions are constructed using multiple simulations
@@ -1462,7 +1671,7 @@ class SilverkiteForecast():
             Accepts any valid frequency for ``pd.date_range``.
         new_external_regressor_df : `pandas.DataFrame` or None
             Contains the extra regressors if specified.
-        sim_num : `int`, optional, default 10
+        simulation_num : `int`, optional, default 10
             The number of simulated series to be used in prediction.
         include_err : `bool`, optional, default None
             Boolean to determine if errors are to be incorporated in the simulations.
@@ -1470,9 +1679,26 @@ class SilverkiteForecast():
             otherwise will be set to False
 
         Returns
-        -------
-        `pandas.DataFrame`: df
-            A dataframe with predictions given in ``value_col``
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+                Here are the expected columns:
+
+                (1) A time column with the column name being ``trained_model["time_col"]``
+                (2) The predicted response in ``value_col`` column.
+                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                    This column only appears if the model includes uncertainty.
+                (4) Error std in `ERR_STD_COL` column.
+                    This column only appears if the model includes uncertainty.
+
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         if include_err is None:
             include_err = trained_model["uncertainty_dict"] is not None
@@ -1500,7 +1726,7 @@ class SilverkiteForecast():
             trained_model=trained_model,
             past_df=past_df,  # observed data used for training the model
             new_external_regressor_df=new_external_regressor_df,
-            sim_num=sim_num,
+            simulation_num=simulation_num,
             include_err=include_err)
 
     def predict(
@@ -1510,7 +1736,6 @@ class SilverkiteForecast():
             freq=None,
             past_df=None,
             new_external_regressor_df=None,
-            sim_num=10,
             include_err=None,
             force_no_sim=False,
             na_fill_func=lambda s: s.interpolate().bfill().ffill()):
@@ -1550,11 +1775,11 @@ class SilverkiteForecast():
             If None, it is extracted from ``trained_model`` input.
         past_df : `pandas.DataFrame` or None, default None
             A data frame with past values if autoregressive methods are called
-            via autoreg_dict parameter of ``greykite.algo.forecast.silverkite.SilverkiteForecast.py``
+            via autoreg_dict parameter of ``greykite.algo.forecast.silverkite.SilverkiteForecast.py``.
+            Note that this ``past_df`` can be anytime before the training end timestamp, but can not
+            exceed it.
         new_external_regressor_df: `pandas.DataFrame` or None, default None
             Contains the regressors not already included in ``fut_df``.
-        sim_num : `int`, default 10
-            The number of simulated series to be used in prediction.
         include_err : `bool`, optional, default None
             Boolean to determine if errors are to be incorporated in the simulations.
             If None, it will be set to True if uncertainty is passed to the model and
@@ -1581,8 +1806,15 @@ class SilverkiteForecast():
 
         Returns
         -------
-        fut_df: `pandas.DataFrame`
-            A dataframe with the forecasts with following (potential) columns:
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+                Here are the expected columns:
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
@@ -1591,17 +1823,19 @@ class SilverkiteForecast():
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
 
-            If ``value_col`` already appears in ``fut_df``, it will be over-written.
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         fut_df = fut_df.copy()
         time_col = trained_model["time_col"]
         value_col = trained_model["value_col"]
         min_lag_order = trained_model["min_lag_order"]
+        max_lag_order = trained_model["max_lag_order"]
+        simulation_num = trained_model["simulation_num"]
+
         if freq is None:
             freq = trained_model["freq"]
-
-        if past_df is None:
-            past_df = trained_model["df"].copy()
 
         if fut_df.shape[0] <= 0:
             raise ValueError("``fut_df`` must be a dataframe of non-zero size.")
@@ -1610,6 +1844,37 @@ class SilverkiteForecast():
             raise ValueError(
                 f"``fut_df`` must include {time_col} as time column, "
                 "which is what ``trained_model`` considers to be the time column.")
+        fut_df[time_col] = pd.to_datetime(fut_df[time_col])
+
+        # Handles ``past_df``.
+        training_past_df = trained_model["train_df"].copy()
+        if past_df is None or len(past_df) == 0:
+            # In the case that we use ``train_df`` from the ``forecast`` method,
+            # we don't check the quality since it's constructed by the method.
+            log_message(
+                message="``past_df`` not provided during prediction, use the ``train_df`` from training results.",
+                level=LoggingLevelEnum.DEBUG
+            )
+            # The ``past_df`` has been manipulated in the training method to immediately precede the future periods.
+            past_df = training_past_df
+        else:
+            # In the case that ``past_df`` is passed, we combine it with the known dfs.
+            past_df[time_col] = pd.to_datetime(past_df[time_col])
+            if past_df[time_col].max() > training_past_df[time_col].max():
+                raise ValueError("``past_df`` can not have timestamps later than the training end timestamp.")
+            # Combines ``past_df`` with ``training_past_df`` to get all available values.
+            past_df = (past_df
+                       .append(training_past_df)
+                       .dropna(subset=[value_col])
+                       # When there are duplicates, the value passed from ``past_df`` is kept.
+                       .drop_duplicates(subset=time_col)
+                       .reset_index(drop=True)
+                       )
+        # Fills any missing timestamps in ``past_df``. These values will be imputed.
+        past_df = fill_missing_dates(
+            df=past_df,
+            time_col=time_col,
+            freq=freq)[0]  # `fill_missing_dates` returns a tuple where the first one is the df.
 
         # If ``value_col`` appears in user provided ``fut_df``,
         # we remove it to avoid issues in merging
@@ -1646,21 +1911,35 @@ class SilverkiteForecast():
         # ``past_df`` is not needed for autoregression, but may be needed for lagged regression
         # and we do not need to track the overlap.
         if not has_autoreg_structure:
-            fut_df = self.predict_no_sim(
+            pred_res = self.predict_no_sim(
                 fut_df=fut_df,
                 trained_model=trained_model,
                 past_df=past_df,
                 new_external_regressor_df=new_external_regressor_df,
                 time_features_ready=False,
                 regressors_ready=False)
+            fut_df = pred_res["fut_df"]
+            x_mat = pred_res["x_mat"]
+
             return {
                 "fut_df": fut_df,
+                "x_mat": x_mat,
                 "simulations_not_used": None,
                 "fut_df_info": None,
                 "min_lag_order": None}
 
         # From here we assume model has autoregression,
         # because otherwise we would have returned above.
+
+        # Raises a warning if imputation is needed.
+        if (
+                past_df[past_df[time_col] >= fut_df[time_col].min() - to_offset(
+                    freq) * max_lag_order].isna().sum().sum() > 0
+                or past_df[time_col].min() > fut_df[time_col].min() - to_offset(freq) * max_lag_order):
+            log_message(
+                message="``past_df`` is not sufficient, imputation is performed when creating autoregression terms.",
+                level=LoggingLevelEnum.DEBUG)
+
         if new_external_regressor_df is not None:
             fut_df = pd.concat(
                 [fut_df, new_external_regressor_df],
@@ -1681,27 +1960,69 @@ class SilverkiteForecast():
 
         inferred_forecast_horizon = fut_df_info["inferred_forecast_horizon"]
 
-        # With Autoregression, we do not allow hindcasting
+        fut_df_list = []
+        x_mat_list = []
+
+        # We allow calculating extended fitted values on a longer backward
+        # history with imputation if ``past_df`` is not sufficient.
         if fut_df_before_training.shape[0] > 0:
-            raise ValueError(
-                "``fut_df`` cannot have timestamps occurring before the training data "
-                "if autoregression is used.")
+            min_timestamp = fut_df_before_training[time_col].min()
+            past_df_before_min_timestamp = past_df[past_df[time_col] < min_timestamp]
+            # Since ``fut_df_before_training`` does not have ``value_col`` (dropped above),
+            # but we need the actual values for ``fut_df_before_training`` in case the lags
+            # are not enough and we don't have simulation, we try to find the values from
+            # ``past_df``. If some values are still missing, those values will be imputed.
+            fut_df_before_training = fut_df_before_training.merge(
+                past_df[[time_col, value_col]],
+                on=time_col,
+                how="left"
+            )
+            # Imputation will be done during `self.predict_no_sim` if ``past_df_before_min_timestamp``
+            # does not have sufficient AR terms.
+            pred_res = self.predict_no_sim(
+                fut_df=fut_df_before_training,
+                trained_model=trained_model,
+                past_df=past_df_before_min_timestamp,
+                new_external_regressor_df=None,
+                time_features_ready=False,
+                regressors_ready=True)
+            fut_df0 = pred_res["fut_df"]
+            x_mat0 = pred_res["x_mat"]
+            fut_df_list.append(fut_df0.reset_index(drop=True))
+            x_mat_list.append(x_mat0)
 
         fitted_df = trained_model["fitted_df"]
+        fitted_x_mat = trained_model["x_mat"]
         potential_forecast_cols = [time_col, value_col, f"{value_col}_quantile_summary", ERR_STD_COL]
         existing_forecast_cols = [col for col in potential_forecast_cols if col in fitted_df.columns]
         fitted_df = fitted_df[existing_forecast_cols]
 
-        fut_df_list = []
-
         # For within training times, we simply use the fitted data
         if fut_df_within_training.shape[0] > 0:
+            # Creates a dummy index to get the consistent index on ``fitted_x_mat``
             fut_df0 = pd.merge(
                 fut_df_within_training.reset_index(drop=True),
                 fitted_df.reset_index(drop=True),
                 on=[time_col])
+
+            # Finds out where ``fut_df_within_training`` intersects with ``fitted_df``
+            # This is for edge cases where ```fut_df_within_training``` does not have all the
+            # times appearing in ``fitted_df``
+            fut_df_within_training["dummy_bool_index"] = True
+            fut_df_index = pd.merge(
+                fut_df_within_training.reset_index(drop=True)[[time_col, "dummy_bool_index"]],
+                fitted_df.reset_index(drop=True)[[time_col]],
+                on=[time_col],
+                how="right")
+            ind = fut_df_index["dummy_bool_index"].fillna(False)
+            del fut_df_index
+            fitted_x_mat = fitted_x_mat.reset_index(drop=True).loc[ind]
+            del fut_df_within_training["dummy_bool_index"]
+
             assert fut_df0.shape[0] == fut_df_within_training.shape[0]
+
             fut_df_list.append(fut_df0.reset_index(drop=True))
+            x_mat_list.append(fitted_x_mat)
 
         # The future timestamps need to be predicted
         # There are two cases: either simulations are needed or not
@@ -1710,28 +2031,44 @@ class SilverkiteForecast():
 
         # ``new_external_regressor_df`` will be passed as None
         # since it is already included in ``fut_df``.
+        # ``past_df`` doesn't need to change because either (1) it is passed from
+        # this ``predict`` method directly, in which case it should be immediately preceding the
+        # ``fut_df_after_training_expanded``;
+        # or (2) it is from the training model, where the last term is the last training timestamp,
+        # which should also immediately precedes the ``fut_df_after_training_expanded``.
         if fut_df_after_training_expanded is not None and fut_df_after_training_expanded.shape[0] > 0:
             if simulations_not_used:
-                fut_df0 = self.predict_no_sim(
+                pred_res = self.predict_no_sim(
                     fut_df=fut_df_after_training_expanded,
                     trained_model=trained_model,
                     past_df=past_df,
                     new_external_regressor_df=None,
                     time_features_ready=False,
                     regressors_ready=True)
+                fut_df0 = pred_res["fut_df"]
+                x_mat0 = pred_res["x_mat"]
             else:
-                fut_df0 = self.predict_via_sim(
+                pred_res = self.predict_via_sim(
                     fut_df=fut_df_after_training_expanded,
                     trained_model=trained_model,
                     past_df=past_df,
                     new_external_regressor_df=None,
-                    sim_num=sim_num,
+                    simulation_num=simulation_num,
                     include_err=include_err)
+                fut_df0 = pred_res["fut_df"]
+                x_mat0 = pred_res["x_mat"]
             fut_df0 = fut_df0[index_after_training_original]
             fut_df_list.append(fut_df0.reset_index(drop=True))
+            x_mat_list.append(x_mat0)
 
         fut_df_final = pd.concat(
             fut_df_list,
+            axis=0,
+            ignore_index=True,
+            sort=False)
+
+        x_mat_final = pd.concat(
+            x_mat_list,
             axis=0,
             ignore_index=True,
             sort=False)
@@ -1745,6 +2082,7 @@ class SilverkiteForecast():
 
         return {
             "fut_df": fut_df_final,
+            "x_mat": x_mat_final,
             "simulations_not_used": simulations_not_used,
             "fut_df_info": fut_df_info,
             "min_lag_order": min_lag_order}
@@ -1756,7 +2094,6 @@ class SilverkiteForecast():
             freq=None,
             past_df=None,
             new_external_regressor_df=None,
-            sim_num=10,
             include_err=None,
             force_no_sim=False,
             na_fill_func=lambda s: s.interpolate().bfill().ffill()):
@@ -1779,7 +2116,7 @@ class SilverkiteForecast():
             If None, it is extracted from ``trained_model`` input.
         new_external_regressor_df : `pandas.DataFrame` or None
             Contains the extra regressors if specified.
-        sim_num : `int`, optional, default 10
+        simulation_num : `int`, optional, default 10
             The number of simulated series to be used in prediction.
         include_err : `bool` or None, default None
             Boolean to determine if errors are to be incorporated in the simulations.
@@ -1802,8 +2139,26 @@ class SilverkiteForecast():
 
         Returns
         -------
-        fut_df: `pandas.DataFrame`: df
-            A dataframe with predictions given in ``value_col``
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``{value_col}_quantile_summary`` column.
+                Here are the expected columns:
+
+                (1) A time column with the column name being ``trained_model["time_col"]``
+                (2) The predicted response in ``value_col`` column.
+                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                    This column only appears if the model includes uncertainty.
+                (4) Error std in `ERR_STD_COL` column.
+                    This column only appears if the model includes uncertainty.
+
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+
         """
         if freq is None:
             freq = trained_model["freq"]
@@ -1820,7 +2175,6 @@ class SilverkiteForecast():
             trained_model=trained_model,
             past_df=past_df,
             new_external_regressor_df=new_external_regressor_df,
-            sim_num=sim_num,
             include_err=include_err,
             force_no_sim=force_no_sim,
             na_fill_func=na_fill_func)
@@ -2299,6 +2653,7 @@ class SilverkiteForecast():
         autoreg_df : `pandas.DataFrame`
             a data frame with autoregression columns
         """
+        df = df.copy()
         # we raise an exception if we are in the 'predict' phase
         # and `autoreg_func` is not None
         # but either of ``past_df`` or ``value_col`` is not provided
@@ -2382,6 +2737,7 @@ class SilverkiteForecast():
         lagged_regressor_df : `pandas.DataFrame`
             a data frame with lagged regressor columns
         """
+        df = df.copy()
         # we raise an exception if we are in the 'predict' phase
         # and `lagged_regressor_func` is not None
         # but either of ``past_df`` or ``lagged_regressor_cols`` is not provided

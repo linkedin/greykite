@@ -93,17 +93,22 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             max_daily_seas_interaction_order: Optional[int] = None,
             max_weekly_seas_interaction_order: Optional[int] = None,
             autoreg_dict: Optional[Dict] = None,
+            past_df: Optional[pd.DataFrame] = None,
             lagged_regressor_dict: Optional[Dict] = None,
             seasonality_changepoints_dict: Optional[Dict] = None,
             min_admissible_value: Optional[float] = None,
             max_admissible_value: Optional[float] = None,
             uncertainty_dict: Optional[Dict] = None,
+            normalize_method: Optional[str] = None,
             growth_term: Optional[str] = "linear",
             regressor_cols: Optional[List[str]] = None,
             feature_sets_enabled: Optional[Union[bool, str, Dict[str, Optional[Union[bool, str]]]]] = "auto",
             extra_pred_cols: Optional[List[str]] = None,
+            drop_pred_cols: Optional[List[str]] = None,
+            explicit_pred_cols: Optional[List[str]] = None,
             regression_weight_col: Optional[str] = None,
-            simulation_based: Optional[bool] = False):
+            simulation_based: Optional[bool] = False,
+            simulation_num: int = 10):
         """Converts parameters of
         :func:`~greykite.algo.forecast.silverkite.forecast_simple_silverkite` into those
         of :func:`~greykite.algo.forecast.forecast_silverkite.SilverkiteForecast::forecast`.
@@ -388,17 +393,27 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         max_weekly_seas_interaction_order : `int` or None, optional, default `None`
             Max fourier order for interaction terms with weekly seasonality.
             If None, uses all available terms.
-        autoreg_dict : `dict` or None, optional, default `None`
-            A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df`.
+        autoreg_dict : `dict` or `str` or None, optional, default `None`
+            If a `dict`: A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df`.
             That function's parameter ``value_col`` is inferred from the input of
-            current function ``SilverkiteForecast::forecast``. Other keys are:
+            current function ``self.forecast``. Other keys are:
 
                 ``"lag_dict"`` : `dict` or None
                 ``"agg_lag_dict"`` : `dict` or None
                 ``"series_na_fill_func"`` : callable
 
+            If a `str`: The string will represent a method and a dictionary will be
+            constructed using that `str`.
+            Currently only implemented method is "auto" which uses
+            `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_autoreg_dict`
+            to create a dictionary.
             See more details for above parameters in
             `~greykite.common.features.timeseries_lags.build_autoreg_df`.
+        past_df : `pandas.DataFrame` or None, default None
+            The past df used for building autoregression features.
+            This is not necessarily needed since imputation is available,
+            however, if such data is available but not used in training for speed purposes,
+            they can be passed here to build more accurate autoregression features.
         lagged_regressor_dict : `dict` or None, default None
             A dictionary with arguments for `greykite.common.features.timeseries_lags.build_autoreg_df_multi`.
             The keys of the dictionary are the target lagged regressor column names.
@@ -456,6 +471,12 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
                         ``"small_sample_size_quantile"``
 
             If None, no uncertainty intervals are calculated.
+        normalize_method : `str` or None, default None
+            If a string is provided, it will be used as the normalization method
+            in `~greykite.common.features.normalize.normalize_df`, passed via
+            the argument ``method``. Available options are: "min_max", "statistical".
+            If None, no normalization will be performed.
+            See that function for more details.
         growth_term : `str` or None, optional, default "ct1"
             How to model the growth. Valid options are
             {"linear", "quadratic", "sqrt", "cuberoot"}.
@@ -509,6 +530,15 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             parameters of this function (i.e. ``holidays_*``, ``growth_term``,
             ``regressors``, ``feature_sets_enabled``).
             If `None`, treated is the same as [].
+        drop_pred_cols : `list` [`str`] or None, default None
+            Names of predictor columns to be dropped from the final model.
+            Ignored if None.
+        explicit_pred_cols : `list` [`str`] or None, default None
+            Names of the explicit predictor columns which will be
+            the only variables in the final model. Note that this overwrites
+            the generated predictors in the model and may include new
+            terms not appearing in the predictors (e.g. interaction terms).
+            Ignored if None.
         regression_weight_col : `str` or None, default None
             The column name for the weights to be used in weighted regression version
             of applicable machine-learning models.
@@ -519,6 +549,10 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             used for certain components e.g. autoregression, if automatic methods
             are requested. However, the auto-settings and the prediction settings
             regarding using simulations should match.
+        simulation_num : `int`, default 10
+            The number of simulations for when simulations are used for generating
+            forecasts and prediction intervals.
+
 
         Returns
         -------
@@ -658,6 +692,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             value_col=value_col,                                            # pass-through
             origin_for_time_vars=origin_for_time_vars,
             extra_pred_cols=extra_pred_cols,
+            drop_pred_cols=drop_pred_cols,
+            explicit_pred_cols=explicit_pred_cols,
             train_test_thresh=train_test_thresh,                            # pass-through
             training_fraction=training_fraction,                            # pass-through
             fit_algorithm=fit_algorithm,                                    # pass-through
@@ -665,16 +701,19 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             daily_event_df_dict=daily_event_df_dict,
             fs_components_df=fs_components_df,
             autoreg_dict=autoreg_dict,                                      # pass-through
+            past_df=past_df,                                                # pass-through
             lagged_regressor_dict=lagged_regressor_dict,                    # pass-through
             changepoints_dict=changepoints_dict,                            # pass-through
             seasonality_changepoints_dict=seasonality_changepoints_dict,    # pass-through
             changepoint_detector=changepoint_detector,
             min_admissible_value=min_admissible_value,                      # pass-through
             max_admissible_value=max_admissible_value,                      # pass-through
-            uncertainty_dict=uncertainty_dict,                              # pass-through
+            uncertainty_dict=uncertainty_dict,
+            normalize_method=normalize_method,                              # pass-through
             regression_weight_col=regression_weight_col,                    # pass-through
             forecast_horizon=forecast_horizon,                              # pass-through
-            simulation_based=simulation_based                               # pass-through
+            simulation_based=simulation_based,                              # pass-through
+            simulation_num=simulation_num                                   # pass-through
         )
 
         return parameters

@@ -328,6 +328,7 @@ def test_plot_grouping_evaluation(df2):
     assert fig.layout.xaxis.title.text == "dow"
     assert fig.layout.yaxis.title.text == f"train {metric_name}"
     assert fig.layout.title.text == f"train {metric_name} vs dow"
+    assert fig.layout.title.x == 0.5
     assert fig.data[0].x.shape[0] == 5
 
     # MSE, groupby_sliding_window_size, train set
@@ -342,6 +343,7 @@ def test_plot_grouping_evaluation(df2):
     assert fig.layout.xaxis.title.text == f"{cst.TIME_COL}_downsample"
     assert fig.layout.yaxis.title.text == f"train {metric_name}"
     assert fig.layout.title.text == f"train {metric_name} vs {cst.TIME_COL}_downsample"
+    assert fig.layout.title.x == 0.5
     assert fig.data[0].x.shape[0] == 3
 
     # MAE, groupby_custom_column, test set
@@ -359,6 +361,7 @@ def test_plot_grouping_evaluation(df2):
     assert fig.layout.xaxis.title.text == "custom_groups"
     assert fig.layout.yaxis.title.text == f"test {metric_name}"
     assert fig.layout.title.text == f"test {metric_name} vs custom_groups"
+    assert fig.layout.title.x == 0.5
     assert fig.data[0].x.shape[0] == 3
 
     # custom xlabel, ylabel, title
@@ -373,6 +376,7 @@ def test_plot_grouping_evaluation(df2):
     assert fig.layout.xaxis.title.text == "Custom labels"
     assert fig.layout.yaxis.title.text == "Mean Absolute Error of y"
     assert fig.layout.title.text == "Mean Absolute Error of y by Custom labels"
+    assert fig.layout.title.x == 0.5
 
 
 def test_autocomplete_map_func_dict(df2):
@@ -582,6 +586,7 @@ def test_plot_flexible_grouping_evaluation():
     assert fig.layout.xaxis.title.text == "dom"
     assert fig.layout.yaxis.title.text == metric_col
     assert fig.layout.title.text == f"{metric_col} vs dom"
+    assert fig.layout.title.x == 0.5
     assert fig.data[0].x.shape[0] == 31  # 31 unique days in month
     assert fig.data[1].line["color"] == "rgba(0, 145, 202, 1.0)"
     assert fig.data[1].fill == "tonexty"  # from auto-fill
@@ -608,6 +613,7 @@ def test_plot_flexible_grouping_evaluation():
     assert fig.layout.xaxis.title.text == "ts"
     assert fig.layout.yaxis.title.text is None
     assert fig.layout.title.text is None
+    assert fig.layout.title.x == 0.5
     assert fig.data[0].x[0] == datetime.datetime(2020, 1, 1, 0, 0)
     assert fig.data[1].line["color"] == "rgba(145, 0, 202, 1.0)"
     assert fig.data[1].fill is None
@@ -633,6 +639,7 @@ def test_plot_flexible_grouping_evaluation():
     assert fig.layout.xaxis.title.text == "x"
     assert fig.layout.yaxis.title.text == metric_col
     assert fig.layout.title.text == "custom title"
+    assert fig.layout.title.x == 0.5
     assert list(fig.data[0].x) == list("abcde")
     assert fig.data[0].line["color"] is None  # color is up to plotly
     assert fig.data[1].fill is None
@@ -679,6 +686,7 @@ def test_plot_flexible_grouping_evaluation():
         assert fig.layout.xaxis.title.text == "x value"
         assert fig.layout.yaxis.title.text == "y value"
         assert fig.layout.title.text == "error plot"
+        assert fig.layout.title.x == 0.5
         assert len(fig.data[0].x) == 7
         assert fig.data[0].mode == "lines+markers"
         assert fig.data[1].mode == "lines+markers"
@@ -709,6 +717,7 @@ def test_plot_flexible_grouping_evaluation():
     assert fig.layout.xaxis.title.text == "dow"
     assert fig.layout.yaxis.title.text == "y"
     assert fig.layout.title.text == "true vs actual by dow"
+    assert fig.layout.title.x == 0.5
     assert len(fig.data[0].x) == 7
     assert fig.layout.showlegend
 
@@ -757,6 +766,7 @@ def test_plot_components():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
 
         assert f"The following components have not been specified in the model: " \
                f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]

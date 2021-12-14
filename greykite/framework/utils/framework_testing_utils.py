@@ -4,7 +4,6 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-import plotly
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 
@@ -310,9 +309,9 @@ def check_forecast_pipeline_result(
             result.grid_search,
             score_func=score_func,
             score_func_greater_is_better=greater_is_better))
-        plotly.offline.plot(ts.plot())
-        plotly.offline.plot(result.backtest.plot())
-        plotly.offline.plot(result.forecast.plot())
+        ts.plot().write_html("test_ts_plot.html")
+        result.backtest.plot().write_html("test_backtest_plot.html")
+        result.forecast.plot().write_html("test_forecast_plot.html")
 
 
 def assert_basic_pipeline_equal(actual: Pipeline, expected: Pipeline):

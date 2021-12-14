@@ -27,6 +27,7 @@ from typing import Dict
 from typing import Optional
 
 import pandas as pd
+from pandas.tseries.frequencies import to_offset
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import mean_squared_error
 
@@ -35,6 +36,7 @@ from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteFore
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_silverkite_uncertainty_dict
 from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.common import constants as cst
+from greykite.common.features.timeseries_lags import min_max_lag_order
 from greykite.common.time_properties import min_gap_in_seconds
 from greykite.common.time_properties_forecast import get_simple_time_frequency_from_period
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
@@ -114,8 +116,12 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         `~greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator`
         or
         `~greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator`.
+    past_df : `pandas.DataFrame` or None
+        The extra past data before training data used to generate autoregression terms.
     forecast : `pandas.DataFrame` or None
         Output of ``predict_silverkite``, set by ``self.predict``.
+    forecast_x_mat : `pandas.DataFrame` or None
+        The design matrix of the model at the predict time.
     model_summary : `class` or `None`
         The `~greykite.algo.common.model_summary.ModelSummary` class.
 
@@ -178,6 +184,15 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         self.feature_cols = None
         self.df = None
         self.coef_ = None
+
+        # This is the ``past_df`` used during prediction.
+        # Subclasses can set it for prediction use.
+        # This ``past_df`` will be combined with the ``train_df`` from training
+        # to generate necessary autoregression and lagged regressor terms.
+        # If extra history is needed in prediction,
+        # users can set this ``self.past_df`` before calling prediction.
+        self.past_df = None
+
         # Predictor category, lazy initialization as None.
         # Will be updated in property function pred_category when needed.
         self._pred_category = None
@@ -185,6 +200,8 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
 
         # set by the predict method
         self.forecast = None
+        # set by predict method
+        self.forecast_x_mat = None
         # set by the summary method
         self.model_summary = None
 
@@ -341,29 +358,33 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         if self.pred_cols is None:
             raise NotFittedError("Subclass must call `finish_fit` inside the `fit` method.")
 
-        pred_df = self.silverkite.predict(
+        pred_res = self.silverkite.predict(
             fut_df=X,
             trained_model=self.model_dict,
-            past_df=None,
-            new_external_regressor_df=None)["fut_df"]  # regressors are included in X
+            past_df=self.past_df,
+            new_external_regressor_df=None)  # regressors are included in X
 
+        pred_df = pred_res["fut_df"]
         self.forecast = pred_df
+        self.forecast_x_mat = pred_res["x_mat"]
         # renames columns to standardized schema
         output_columns = {
             self.time_col_: cst.TIME_COL,
-            cst.VALUE_COL: cst.PREDICTED_COL}
+            self.value_col_: cst.PREDICTED_COL}
 
         # Checks if uncertainty is also returned.
         # If so, extract the upper and lower limits of the tuples in
         # ``uncertainty_col`` to be lower and upper limits of the prediction interval.
         # Note that the tuple might have more than two elements if more than two
         # ``quantiles`` are passed in ``uncertainty_dict``.
-        uncertainty_col = f"{cst.VALUE_COL}_quantile_summary"
+        uncertainty_col = f"{self.value_col_}_quantile_summary"
         if uncertainty_col in list(pred_df.columns):
             pred_df[cst.PREDICTED_LOWER_COL] = pred_df[uncertainty_col].apply(
                 lambda x: x[0])
             pred_df[cst.PREDICTED_UPPER_COL] = pred_df[uncertainty_col].apply(
                 lambda x: x[-1])
+            # The following entries are to include the columns in the output,
+            # they are not intended to rename the columns.
             output_columns.update({
                 cst.PREDICTED_LOWER_COL: cst.PREDICTED_LOWER_COL,
                 cst.PREDICTED_UPPER_COL: cst.PREDICTED_UPPER_COL,
@@ -424,6 +445,37 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
                 extra_pred_cols=extra_pred_cols + regressor_cols)
         return self._pred_category
 
+    def get_max_ar_order(self):
+        """Gets the maximum autoregression order.
+
+        Returns
+        -------
+        max_ar_order : `int`
+            The maximum autoregression order.
+        """
+        # The Silverkite Family specifies autoregression terms from ``self.autoreg_dict`` parameter.
+        autoreg_dict = getattr(self, "autoreg_dict", None)
+        if autoreg_dict is None:
+            return 0
+        if autoreg_dict == "auto":
+            freq = getattr(self, "freq", None)
+            forecast_horizon = getattr(self, "forecast_horizon", None)
+            if freq is None or forecast_horizon is None:
+                raise ValueError("The ``autoreg_dict`` is set to 'auto'. "
+                                 "To get the default configuration, "
+                                 "you need to set ``freq`` and ``forecast_horizon``. "
+                                 "However, at least one of them is None.")
+            autoreg_dict = SilverkiteForecast()._SilverkiteForecast__get_default_autoreg_dict(
+                freq_in_days=to_offset(freq).delta.total_seconds() / 60 / 60 / 24,
+                forecast_horizon=forecast_horizon,
+                simulation_based=False
+            )["autoreg_dict"]
+        max_order = min_max_lag_order(
+            lag_dict=autoreg_dict.get("lag_dict"),
+            agg_lag_dict=autoreg_dict.get("agg_lag_dict")
+        )["max_order"]
+        return max_order
+
     def summary(self, max_colwidth=20):
         if self.silverkite_diagnostics is None:
             self._set_silverkite_diagnostics_params()
@@ -446,7 +498,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
 
         Returns
         -------
-        fig: `plotly.graph_objs.Figure`
+        fig: `plotly.graph_objects.Figure`
             Figure.
         """
         if title is None:
@@ -463,7 +515,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
 
         Returns
         -------
-        fig: `plotly.graph_objs.Figure`
+        fig: `plotly.graph_objects.Figure`
             Figure.
         """
         if title is None:
@@ -489,7 +541,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             Figure.
         """
         if params is None:

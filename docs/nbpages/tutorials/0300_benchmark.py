@@ -12,15 +12,17 @@ We also demonstrate how to use the class functions to compute and plot errors fo
 from dataclasses import replace
 
 import plotly
-import plotly.graph_objs as go
+import plotly.graph_objects as go
+
 from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.framework.benchmark.benchmark_class import BenchmarkForecastConfig
 from greykite.framework.benchmark.data_loader_ts import DataLoaderTS
-from greykite.framework.templates.autogen.forecast_config import (ComputationParam,
-                                                                           EvaluationMetricParam,
-                                                                           EvaluationPeriodParam,
-                                                                           MetadataParam, ForecastConfig,
-                                                                           ModelComponentsParam)
+from greykite.framework.templates.autogen.forecast_config import ComputationParam
+from greykite.framework.templates.autogen.forecast_config import EvaluationMetricParam
+from greykite.framework.templates.autogen.forecast_config import EvaluationPeriodParam
+from greykite.framework.templates.autogen.forecast_config import MetadataParam
+from greykite.framework.templates.autogen.forecast_config import ForecastConfig
+from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
 from greykite.sklearn.cross_validation import RollingTimeSeriesSplit
 
 # %%
@@ -319,6 +321,7 @@ layout = go.Layout(
     xaxis=dict(title=None),
     yaxis=dict(title="Metric Value"),
     title=title,
+    title_x=0.5,
     showlegend=True,
     barmode="group",
 )

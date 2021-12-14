@@ -18,7 +18,7 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# original author: Albert Chen, Sayan Patra, Rachit Kumar
+# original author: Albert Chen, Sayan Patra, Rachit Kumar, Reza Hosseini
 """Common python utility functions."""
 import copy
 import dataclasses
@@ -787,3 +787,47 @@ def ignore_warnings(category):
                 return fn(*args, **kwargs)
         return fn_ignore
     return decorator_ignore
+
+
+def group_strs_with_regex_patterns(
+        strings,
+        regex_patterns):
+    """Given a list/tuple of strings (``strings``), it partitions it into various groups (sub-lists) as
+    specified in a set of patterns given in ``regex_patterns``. Note that the order
+    of patterns matter as patterns will be consumed sequentially and if two patterns
+    overlap, the one appearing first will get the string assigned to its group.
+    Also note that the result will be a partition (``str_groups``) without overlap
+    and any remaining element not satisfying any pattern will be returned in ``remainder``.
+
+    Parameters
+    ----------
+    strings : `list` [`str`] or `tuple` [`str`]
+        A list/tuple of strings which is to be partitioned into various groups
+    regex_patterns : `list` [`str`]
+        A list of strings each being a regex.
+
+    Returns
+    -------
+    result : `dict`
+        A dictionary with following items:
+
+        - "str_groups": `list` [`list` [`str`]]
+            A list of list of strings each corresponding to the patterns given in
+            ``regex_patterns``. Note that some of these groups might be empty
+            lists if that pattern is not satisfied by any regex pattern, or a
+            regex pattern appearing before has already consumed all such strings.
+        -"remainder": `list` [`str`]
+            The remaining elements in ``strings`` which do not satisfy any of the
+            patterns given in ``regex_patterns``. This list can be empty.
+
+    """
+
+    strings_list = list(strings)
+    str_groups = []
+
+    for regex_pattern in regex_patterns:
+        group = [x for x in strings_list if bool(re.match(regex_pattern, x))]
+        str_groups.append(group)
+        strings_list = [x for x in strings_list if x not in group]
+
+    return {"str_groups": str_groups, "remainder": strings_list}
