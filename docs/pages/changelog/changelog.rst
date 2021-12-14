@@ -1,84 +1,43 @@
 Changelog
 =========
 
-0.0.77
-^^^^^^
+0.3.0 (2021-12-14)
+------------------
 
-Improved short-term forecasts:
+* New tutorials
+  * @Reza Hosseini: Monthly time series forecast.
+  * @Yi Su: Weekly time series forecast.
+  * @Albert Chen: Forecast reconciliation.
+  * @Kaixu Yang: Forecast one-by-one method.
+* New methods
+  * @Yi Su: Lagged regressor (method was released in 0.2.0 but documentation was added in this release).
+  * @Kaixu Yang @Saad Eddin Al Orjany: Model storage (method was released in 0.2.0 but documentation was added in this release).
+  * @Kaixu Yang: Silverkite Multistage method for fast training on small granularity data (with tutorial).
+  * @Albert Chen: Forecast reconciliation with interface and defaults optimized.
+* New model templates
+  * @Yi Su: `SILVERKITE_WITH_AR`: The `SILVERKITE` template with autoregression.
+  * @Yi Su: `SILVERKITE_DAILY_1`: A SimpleSilverkite template designed for daily data with forecast horizon 1.
+  * @Kaixu Yang: `SILVERKITE_TWO_STAGE`: A two stage model using the Silverkite Multistage method that is good for sub-daily data with a long history.
+  * @Kaixu Yang: `SILVERKITE_MULTISTAGE_EMPTY`: A base template for the Silverkite Multistage method.
+* Library enhancements and bug fixes
+  * @Yi Su: Updated plotly to v5.
+  * @Reza Hosseini: Use `explicit_pred_cols`, `drop_pred_cols` to directly specify or exclude model formula terms (see Custom Parameters).
+  * @Reza Hosseini: Use `simulation_num` to specify number of simulations to use for generating forecasts and prediction intervals. Applies only if any of the lags in `autoreg_dict` are smaller than forecast_horizon (see Auto-regression).
+  * @Reza Hosseini: Use `normalize_method` to normalize the design matrix (see Custom Parameters).
+  * @Yi Su: Allow no CV and no backtest in pipeline.
+  * @Albert Chen: Added synthetic hierarchical dataset.
+  * Bug fix: `cv_use_most_recent_splits` in EvaluationPeriodParam was previously ignored.
+  * @Albert Chen @Kaixu Yang @Reza Hosseini @Saad Eddin Al Orjany @Sayan Patra @Yi Su: Other library enhancements and bug fixes.
 
-* Created templates for short-term daily T+1 forecasts: ``SILVERKITE_DAILY_1``, ``SILVERKITE_WITH_AR``.
-  See `~greykite.framework.templates.model_templates.ModelTemplateEnum`.
-* Created "forecast one by one" option. This may improve forecast quality when ``forecast_horizon > 1``
-  and autoregression or lagged regressors are used.
-  See :doc:`/gallery/quickstart/0600_forecast_one_by_one`.
+0.2.0 (2021-06-30)
+------------------
 
-Improved weekly/monthly forecasts:
+* @Kaixu Yang: Removed the dependency on `fbprophet` and change it to optional.
+* @Kaixu Yang @Saad Eddin Al Orjany: Added model dumping and loading for storing (see `Forecaster.dump_forecast_result` and `Forecaster.load_forecast_result`).
+* @Kaixu Yang @Reza Hosseini: Added forecast one-by-one method.
+* @Sayan Patra: Added the support of AutoArima by `pmdarima`, see the `AUTO_ARIMA` template.
 
-* Published tutorials for monthly forecast (:doc:`/gallery/tutorials/0400_monthly_data`),
-  weekly forecast (:doc:`/gallery/tutorials/0500_weekly_data`).
+0.1.1 (2021-05-12)
+------------------
 
-Silverkite model:
-
-* Support lagged regressors (:doc:`/pages/model_components/0700_regressors`)
-* Use ``explicit_pred_cols``, ``drop_pred_cols`` to directly specify or exclude model formula terms
-  (see :doc:`/pages/model_components/0600_custom`).
-* Use ``simulation_num`` to specify number of simulations to use for generating forecasts and prediction intervals.
-  Applies only if any of the lags in ``autoreg_dict`` are smaller than ``forecast_horizon``
-  (see :doc:`/pages/model_components/0800_autoregression`).
-* Use ``normalize_method`` to normalize the design matrix (see :doc:`/pages/model_components/0600_custom`).
-* Removed Silverkite's dependency on fbprophet for fetching holidays.
-* Allow calculating fitted values before train start date (even when autoregression is used).
-
-Hierarchical forecast:
-
-* Published tutorial for reconcile forecasts (:doc:`/gallery/tutorials/0600_reconcile_forecasts`)
-* Improved `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`
-  defaults and diagnostics.
-
-Other:
-
-* Allow no CV and no backtest in pipeline
-* Bug fix: ``cv_use_most_recent_splits`` in
-  `~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`
-  was previously ignored
-* Updated plotly (4.12.0).
-
-Under development:
-
-* Silverkite multistage algorithm
-* Anomaly detection simulation & labeling
-
-0.0.33
-^^^^^^
-
-Models:
-
-* Added AutoArima (``AUTO_ARIMA``) template,
-  see `~greykite.framework.templates.model_templates.ModelTemplateEnum`
-  and `~greykite.framework.templates.auto_arima_template.AutoArimaTemplate`.
-
-Documentation:
-
-* Benchmarking tutorial (:doc:`/gallery/tutorials/0300_benchmark`)
-* Autoregression docs (:doc:`/pages/model_components/0800_autoregression`)
-
-Utilities:
-
-* Functions to dump and load forecast result (:doc:`/pages/miscellaneous/store_model`).
-* Support aggregation in `~greykite.common.data_loader.DataLoader`
-  ``load_data`` function (via ``agg_freq``, ``agg_func``).
-
-Other:
-
-* Updated numpy (1.20), scikit-learn (0.24), matplotlib (3.1.1)
-* Bug fix: allow Prophet forecasts when coverage=None
-
-0.0.6
-^^^^^
-Initial release!
-
-* Removed Brazil, Netherlands, and Australia from the default holiday country list
-
-0.0.0
-^^^^^
-Code from dsar-forecast 1.0.1 was moved into this MP.
+* First release on PyPI.

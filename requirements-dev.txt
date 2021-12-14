@@ -3,6 +3,7 @@ Click==7.0
 Cython==0.29.17
 coverage==4.5.4
 cvxpy==1.1.12
+dill==0.3.3
 fbprophet==0.5
 flake8==3.7.8
 holidays==0.9.10
