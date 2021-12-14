@@ -81,18 +81,77 @@ def test_valid_elements_for_evaluation():
         y_true = [1.0, np.nan, 2.0, np.Inf]
         y_pred = [np.nan, 2.0, 1.0, 2.0]
         y_another = [2.0, 1.0, np.nan, np.Inf]
-        y_true, y_pred, y_another = valid_elements_for_evaluation(y_true, y_pred, y_another)
+        y_true, y_pred, y_another = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred, y_another],
+            reference_array_names="y_true",
+            drop_leading_only=False,
+            keep_inf=False)
         assert "2 value(s) in y_true were NA or infinite and are omitted in error calc." in record[0].message.args[0]
         assert_array_equal(y_true, np.array([1.0, 2.0]))
         assert_array_equal(y_pred, np.array([np.nan, 1.0]))
         assert_array_equal(y_another, np.array([2.0, np.nan]))
+
+    # Leading NAs and keep inf
+    with pytest.warns(Warning) as record:
+        y_true = [np.nan, 2.0, np.nan, np.Inf]
+        y_pred = [np.nan, 2.0, 1.0, 2.0]
+        y_another = [2.0, 1.0, np.nan, np.Inf]
+        y_true, y_pred, y_another = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred, y_another],
+            reference_array_names="y_true",
+            drop_leading_only=True,
+            keep_inf=True)
+        assert "1 value(s) in y_true were NA and are omitted in error calc." in record[0].message.args[0]
+        assert_array_equal(y_true, np.array([2.0, np.nan, np.Inf]))
+        assert_array_equal(y_pred, np.array([2.0, 1.0, 2.0]))
+        assert_array_equal(y_another, np.array([1.0, np.nan, np.Inf]))
+
+    # All NAs and drop inf
+    with pytest.warns(Warning) as record:
+        y_true = [np.nan, np.nan, 2.0, np.Inf]
+        y_pred = [np.nan, 2.0, 1.0, 2.0]
+        y_another = [2.0, 1.0, np.nan, np.Inf]
+        y_true, y_pred, y_another = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred, y_another],
+            reference_array_names="y_true",
+            drop_leading_only=False,
+            keep_inf=False)
+        assert "3 value(s) in y_true were NA or infinite and are omitted in error calc." in record[0].message.args[0]
+        assert_array_equal(y_true, np.array([2.0]))
+        assert_array_equal(y_pred, np.array([1.0]))
+        assert_array_equal(y_another, np.array([np.nan]))
+
+    # All NAs and keep inf
+    with pytest.warns(Warning) as record:
+        y_true = [np.nan, 2.0, np.nan, np.Inf]
+        y_pred = [np.nan, 2.0, 1.0, 2.0]
+        y_another = [2.0, 1.0, np.nan, np.Inf]
+        y_true, y_pred, y_another = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred, y_another],
+            reference_array_names="y_true",
+            drop_leading_only=False,
+            keep_inf=True)
+        assert "2 value(s) in y_true were NA and are omitted in error calc." in record[0].message.args[
+            0]
+        assert_array_equal(y_true, np.array([2.0, np.Inf]))
+        assert_array_equal(y_pred, np.array([2.0, 2.0]))
+        assert_array_equal(y_another, np.array([1.0, np.Inf]))
 
     with pytest.warns(Warning) as record:
         y_true = [1.0, np.nan, 2.0, np.Inf]
         y_pred = [np.nan, 2.0, 1.0, 2.0]
         y_another = 2.0
         y_last = None
-        y_true, y_pred, y_another, y_last = valid_elements_for_evaluation(y_true, y_pred, y_another, y_last)
+        y_true, y_pred, y_another, y_last = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred, y_another, y_last],
+            reference_array_names="y_true",
+            drop_leading_only=False,
+            keep_inf=False)
         assert_array_equal(y_true, np.array([1.0, 2.0]))
         assert_array_equal(y_pred, np.array([np.nan, 1.0]))
         assert y_another == 2.0
@@ -104,7 +163,12 @@ def test_valid_elements_for_evaluation():
         y_pred = [np.nan, 2.0]
         y_another = 2.0
         y_last = None
-        y_true, y_pred, y_another, y_last = valid_elements_for_evaluation(y_true, y_pred, y_another, y_last)
+        y_true, y_pred, y_another, y_last = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred, y_another, y_last],
+            reference_array_names="y_true",
+            drop_leading_only=False,
+            keep_inf=False)
         assert y_another == 2.0
         assert y_last is None
         assert "There are 0 non-null elements for evaluation." in record[0].message.args[0]
@@ -212,6 +276,7 @@ def test_add_finite_filter_to_scorer():
             pytest.raises(ValueError, match="Input contains NaN, infinity or a value too large"):
         y_true = pd.Series([3, 1, 3, np.nan])
         y_pred = pd.Series([1, 4, np.nan, 2])  # this causes an error
+        # ``add_finite_filter_to_scorer`` does not drop NAN which are not heading NANs in ``y_pred``.
         score_func = add_finite_filter_to_scorer(mean_absolute_error)
         assert score_func(y_true, y_pred) is None
         assert "1 value(s) in y_true were NA or infinite and are omitted in error calc." in record[0].message.args[0]

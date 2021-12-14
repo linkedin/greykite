@@ -77,7 +77,10 @@ def df_reg():
     return df
 
 
-def get_dummy_pipeline(include_preprocessing=False, regressor_cols=None, lagged_regressor_cols=None):
+def get_dummy_pipeline(
+        include_preprocessing=False,
+        regressor_cols=None,
+        lagged_regressor_cols=None):
     """Returns a ``pipeline`` argument to ``forecast_pipeline``
     that uses ``DummyEstimator`` to make it easy to unit test
     ``forecast_pipeline``.
@@ -153,19 +156,23 @@ def test_validate_pipeline_input():
             "regressor1": {
                 "prior_scale": 10,
                 "standardize": True,
-                "mode": 'additive'
+                "mode": "additive"
             },
             "regressor2": {
                 "prior_scale": 15,
                 "standardize": False,
-                "mode": 'additive'
+                "mode": "additive"
             },
             "regressor3": {}
         }]
     }
 
     # some parameters can be None
-    result = mock_pipeline(df, hyperparameter_grid=None, coverage=None, relative_error_tolerance=None)
+    result = mock_pipeline(
+        df,
+        hyperparameter_grid=None,
+        coverage=None,
+        relative_error_tolerance=None)
     assert result["hyperparameter_grid"] is None
     assert result["coverage"] is None
     assert result["relative_error_tolerance"] is None
@@ -218,8 +225,9 @@ def test_validate_pipeline_input():
         mock_pipeline(df, forecast_horizon=340, test_horizon=0)
         assert "No data selected for test" in record[0].message.args[0]
 
-    with pytest.raises(ValueError, match="Either CV or backtest must be enabled."):
+    with pytest.warns(Warning) as record:
         mock_pipeline(df, forecast_horizon=340, test_horizon=0, cv_horizon=0)
+        assert "Both CV and backtest are skipped" in record[0].message.args[0]
 
     with pytest.raises(ValueError, match="periods_between_train_test must be >= 0"):
         mock_pipeline(df, periods_between_train_test=-1)
@@ -1122,12 +1130,12 @@ def test_prophet_with_regressor():
             "regressor1": {
                 "prior_scale": 10,
                 "standardize": True,
-                "mode": 'additive'
+                "mode": "additive"
             },
             "regressor2": {
               "prior_scale": 15,
               "standardize": False,
-              "mode": 'additive'
+              "mode": "additive"
             },
             "regressor3": {}
         }]
@@ -1383,14 +1391,14 @@ def test_silverkite_regressor():
         "regressor2",
         "regressor_categ",
         # lagged regressor columns
-        'regressor1_lag1',
-        'regressor1_lag2',
-        'regressor1_lag3',
-        'regressor1_avglag_7_14_21',
-        'regressor1_avglag_8_to_14',
-        'regressor2_lag35',
-        'regressor2_avglag_35_42_49',
-        'regressor2_avglag_30_to_36'
+        "regressor1_lag1",
+        "regressor1_lag2",
+        "regressor1_lag3",
+        "regressor1_avglag_7_14_21",
+        "regressor1_avglag_8_to_14",
+        "regressor2_lag35",
+        "regressor2_avglag_35_42_49",
+        "regressor2_avglag_30_to_36"
     }
     assert expected_feature_cols.issubset(pred_cols)
 
@@ -1469,10 +1477,10 @@ def test_silverkite_regressor_with_missing_values():
 
     # Checks model
     expected_pred_cols = [
-        'regressor1',
-        'regressor2_lag5',
-        'regressor2_avglag_7_14_21',
-        'regressor2_avglag_8_to_14'
+        "regressor1",
+        "regressor2_lag5",
+        "regressor2_avglag_7_14_21",
+        "regressor2_avglag_8_to_14"
     ]
     assert result.model[-1].model_dict["pred_cols"] == expected_pred_cols
 
@@ -1636,3 +1644,106 @@ def test_forecast_pipeline_coverage():
             lower_bound_cv=0.0,
             score_func=EvaluationMetricEnum.MeanSquaredError.name,
             greater_is_better=False)
+
+
+def test_pipeline_end2end_predict():
+    """Tests for `forecast_pipeline` predictions and design matrix validity.
+    """
+    warnings.simplefilter("ignore")
+
+    # Generates data
+    forecast_horizon = 20
+    data = generate_df_for_tests(freq="H", periods=24*10)
+    train_df = data["train_df"][[TIME_COL, VALUE_COL]]
+    test_df = data["test_df"][[TIME_COL, VALUE_COL]][:forecast_horizon]
+
+    # Sets hyperparameter grid
+    hyperparameter_grid = {
+        "estimator__weekly_seasonality": [False],
+        "estimator__daily_seasonality": [False],
+        "estimator__holiday_lookup_countries": [None],
+        "estimator__extra_pred_cols": [["ct1", "ct2"]]
+    }
+
+    # Fits and predicts using pipeline
+    result = forecast_pipeline(
+        df=train_df,
+        score_func=EvaluationMetricEnum.MeanSquaredError.name,
+        estimator=SimpleSilverkiteEstimator(),
+        forecast_horizon=forecast_horizon,
+        coverage=0.95,
+        test_horizon=None,
+        hyperparameter_grid=hyperparameter_grid,
+        cv_horizon=24,
+        cv_min_train_periods=24*30,
+        cv_report_metrics=None,
+        cv_max_splits=1,
+        hyperparameter_budget=1,
+        relative_error_tolerance=0.02,
+        n_jobs=1,
+    )
+
+    # Tests to see if parameters are set from hyperparameter_grid
+    backtest_params = result.grid_search.best_estimator_.get_params()
+    forecast_params = result.model.get_params()
+    for params in [backtest_params, forecast_params]:
+        assert params["estimator__weekly_seasonality"] is False
+        assert params["estimator__daily_seasonality"] is False
+        assert params["estimator__holiday_lookup_countries"] is None
+        assert params["estimator__extra_pred_cols"] == ["ct1", "ct2"]
+
+    # Gets the final estimator
+    trained_estimator = result.model[-1]
+
+    forecast_x_mat = trained_estimator.forecast_x_mat
+    # Regression coefficients
+    model_coef = trained_estimator.coef_
+    # Regression coefficients directly from ML models
+    ml_model_coef = trained_estimator.model_dict["ml_model"].coef_
+    # Extracts original forecasts from the pipeline
+    pipeline_original_forecast = trained_estimator.forecast[-forecast_horizon:].reset_index(drop=True)
+
+    # The returned coefficients from ML model must be the same as final coefficients
+    assert (ml_model_coef == model_coef[0].values).all()
+
+    # Checks to see if multiplying the variables with regression coefficients is possible
+    # and works as expected
+    # Multiplies each row of the design matrix by regression coefficients (element-wise)
+    # and returns a dataframe of same shape as ``forecast_x_mat``
+    forecast_x_mat_weighted = forecast_x_mat * ml_model_coef
+
+    assert list(forecast_x_mat) == ["Intercept", "ct1", "ct2"]
+    assert list(model_coef.index) == ["Intercept", "ct1", "ct2"]
+    # We expect the forecasted data and design matrix having a size equal to
+    # "trained data size" + "forecast horizon"
+    assert len(forecast_x_mat) == len(train_df) + forecast_horizon
+    assert forecast_x_mat_weighted.shape == forecast_x_mat.shape
+    assert len(trained_estimator.forecast) == len(train_df) + forecast_horizon
+
+    # Checks to see if the manually calculated forecast is consistent
+    # with returned forecast in terms of correlation
+    # Note that they will not be the same scale due to (affine) transformations
+    calculated_forecast = forecast_x_mat_weighted.sum(axis=1)
+    forecast_corr = calculated_forecast.corr(trained_estimator.forecast["y"])
+    assert round(forecast_corr, 3) == 1.0
+
+    pred_df = trained_estimator.predict(test_df[:forecast_horizon])
+    pred_df.rename(columns={"forecast": "y"}, inplace=True)
+    cols = ["ts", "y", "forecast_lower", "forecast_upper", "y_quantile_summary", "err_std"]
+
+    # We expect the predictions to be the same as original predictions
+    # since we are passing the same test data
+    assert_equal(pred_df[cols], pipeline_original_forecast[cols])
+
+    # Tries a new forecast horizon (10)
+    new_pred_df = trained_estimator.predict(test_df[:10])
+    new_pred_df.rename(columns={"forecast": "y"}, inplace=True)
+    cols = ["ts", "y", "forecast_lower", "forecast_upper", "y_quantile_summary", "err_std"]
+
+    # Checks to see if forecat and design matrix are updated in the estimator
+    assert len(new_pred_df) == 10
+    assert len(trained_estimator.forecast) == 10
+    assert len(trained_estimator.forecast_x_mat) == 10
+    # We expect the predictions to be the same as the first 10 rows of original predictions,
+    # since we are passing the first 10 rows of the same test data
+    assert_equal(new_pred_df[cols], pipeline_original_forecast[:10][cols])

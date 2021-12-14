@@ -428,6 +428,7 @@ def test_plot_components():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
         assert f"The following components have not been specified in the model: " \
                f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
 
@@ -445,6 +446,7 @@ def test_plot_components():
     assert fig.layout.yaxis2.title["text"] == "trend"
 
     assert fig.layout.title["text"] == title
+    assert fig.layout.title["x"] == 0.5
 
     # Test plot_seasonalities
     with pytest.warns(Warning):
@@ -465,6 +467,7 @@ def test_plot_components():
         assert fig.layout.yaxis3.title["text"] == "yearly"
 
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
 
 
 def test_autoreg(daily_data):
@@ -595,14 +598,14 @@ def test_lagged_regressors(daily_data_with_reg, params):
     assert trained_model["lagged_regressor_dict"] == params["lagged_regressor_dict"]
     pred_cols = trained_model["pred_cols"]
     expected_lagged_regression_terms = {
-        'regressor1_lag1',
-        'regressor1_lag2',
-        'regressor1_lag3',
-        'regressor1_avglag_7_14_21',
-        'regressor1_avglag_8_to_14',
-        'regressor2_lag35',
-        'regressor2_avglag_35_42_49',
-        'regressor2_avglag_30_to_36'
+        "regressor1_lag1",
+        "regressor1_lag2",
+        "regressor1_lag3",
+        "regressor1_avglag_7_14_21",
+        "regressor1_avglag_8_to_14",
+        "regressor2_lag35",
+        "regressor2_avglag_35_42_49",
+        "regressor2_avglag_30_to_36"
     }
     assert expected_lagged_regression_terms.issubset(pred_cols)
 
@@ -624,20 +627,68 @@ def test_lagged_regressors(daily_data_with_reg, params):
     trained_model = model.model_dict
     pred_cols = trained_model["pred_cols"]
     expected_lagged_regression_terms = {
-        'regressor1_lag1',
-        'regressor1_lag2',
-        'regressor1_lag3',
-        'regressor1_avglag_7_14_21',
-        'regressor1_avglag_8_to_14',
-        'regressor2_lag35',
-        'regressor2_avglag_35_42_49',
-        'regressor2_avglag_30_to_36'
+        "regressor1_lag1",
+        "regressor1_lag2",
+        "regressor1_lag3",
+        "regressor1_avglag_7_14_21",
+        "regressor1_avglag_8_to_14",
+        "regressor2_lag35",
+        "regressor2_avglag_35_42_49",
+        "regressor2_avglag_30_to_36"
     }
     assert expected_lagged_regression_terms.issubset(pred_cols)
 
     model.predict(test_df)
-    expected_forecast_cols = {"ts", "y", 'y_quantile_summary', 'err_std',
-                              'forecast_lower', 'forecast_upper'}
+    expected_forecast_cols = {"ts", "y", "y_quantile_summary", "err_std",
+                              "forecast_lower", "forecast_upper"}
+    assert expected_forecast_cols.issubset(list(model.forecast.columns))
+
+
+def test_various_predictor_settings(daily_data_with_reg, params):
+    """Tests a basic model with lagged regressors"""
+    train_df = daily_data_with_reg["train_df"]
+    test_df = daily_data_with_reg["test_df"][:20]
+
+    # fit default model
+    model = SilverkiteEstimator()
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    assert model.forecast is None
+
+    trained_model = model.model_dict
+    assert "ct1" in trained_model["pred_cols"]
+
+    # drop "ct1"
+    model = SilverkiteEstimator(
+        drop_pred_cols="ct1")
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    assert model.forecast is None
+
+    trained_model = model.model_dict
+    assert "ct1" not in trained_model["pred_cols"]
+
+    # fit a model with explicit predictors
+    model = SilverkiteEstimator(
+        explicit_pred_cols=["ct1", "ct2"],
+        uncertainty_dict=params["uncertainty_dict"])
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    assert model.forecast is None
+
+    trained_model = model.model_dict
+    assert set(trained_model["pred_cols"]) == set(["ct1", "ct2"])
+
+    model.predict(test_df)
+    expected_forecast_cols = {
+        "ts", "y", "y_quantile_summary", "err_std", "forecast_lower",
+        "forecast_upper"}
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
 
@@ -670,3 +721,45 @@ def test_validate_fs_components_df():
             "order": [12, 4, 3],
             "seas_names": ["daily", "weekly", "weekly"]})
         model.validate_fs_components_df(fs_components_df)
+
+
+def test_past_df(daily_data):
+    """Tests ``past_df`` is passed."""
+    model = SilverkiteEstimator(past_df=daily_data["df"])
+    assert model.past_df.equals(daily_data["df"])
+
+
+def test_x_mat_in_predict(daily_data):
+    """Tests to check if prediction phase design matrix is returned."""
+    uncertainty_dict = {
+        "uncertainty_method": "simple_conditional_residuals",
+        "params": {
+            "conditional_cols": ["dow_hr"],
+            "quantiles": [0.025, 0.975],
+            "quantile_estimation_method": "normal_fit",
+            "sample_size_thresh": 10,
+            "small_sample_size_method": "std_quantiles",
+            "small_sample_size_quantile": 0.98}}
+
+    model = SilverkiteEstimator(
+        uncertainty_dict=uncertainty_dict,
+        fs_components_df=None,
+        extra_pred_cols=["ct1", "C(dow == 1)"],
+        autoreg_dict=None)
+
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"][:20]
+    model.fit(
+        train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+
+    pred_df = model.predict(test_df)
+    cols = ["ts", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"]
+    assert_equal(model.forecast[cols], pred_df[cols])
+    assert (model.forecast["y"].values == pred_df["forecast"].values).all()
+
+    forecast_x_mat = model.forecast_x_mat
+    assert list(forecast_x_mat.columns) == [
+        "Intercept", "C(dow == 1)[T.True]", "ct1"]
+    assert len(forecast_x_mat) == len(pred_df)

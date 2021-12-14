@@ -107,6 +107,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             null_model_params=None,
             origin_for_time_vars=None,
             extra_pred_cols=None,
+            drop_pred_cols=None,
+            explicit_pred_cols=None,
             train_test_thresh=None,
             training_fraction=None,
             fit_algorithm_dict=None,
@@ -117,6 +119,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
                 "order": [3, 3, 5],
                 "seas_names": ["daily", "weekly", "yearly"]}),
             autoreg_dict=None,
+            past_df=None,
             lagged_regressor_dict=None,
             changepoints_dict=None,
             seasonality_changepoints_dict=None,
@@ -129,7 +132,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             impute_dict=None,
             regression_weight_col=None,
             forecast_horizon=None,
-            simulation_based=False):
+            simulation_based=False,
+            simulation_num=10):
         # every subclass of BaseSilverkiteEstimator must call super().__init__
         super().__init__(
             silverkite=silverkite,
@@ -146,12 +150,15 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.null_model_params = null_model_params
         self.origin_for_time_vars = origin_for_time_vars
         self.extra_pred_cols = extra_pred_cols
+        self.drop_pred_cols = drop_pred_cols
+        self.explicit_pred_cols = explicit_pred_cols
         self.train_test_thresh = train_test_thresh
         self.fit_algorithm_dict = fit_algorithm_dict
         self.training_fraction = training_fraction
         self.daily_event_df_dict = daily_event_df_dict
         self.fs_components_df = fs_components_df
         self.autoreg_dict = autoreg_dict
+        self.past_df = past_df
         self.lagged_regressor_dict = lagged_regressor_dict
         self.changepoints_dict = changepoints_dict
         self.seasonality_changepoints_dict = seasonality_changepoints_dict
@@ -165,6 +172,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.regression_weight_col = regression_weight_col
         self.forecast_horizon = forecast_horizon
         self.simulation_based = simulation_based
+        self.simulation_num = simulation_num
         self.validate_inputs()
 
     def validate_inputs(self):
@@ -224,6 +232,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             value_col=value_col,
             origin_for_time_vars=self.origin_for_time_vars,
             extra_pred_cols=self.extra_pred_cols,
+            drop_pred_cols=self.drop_pred_cols,
+            explicit_pred_cols=self.explicit_pred_cols,
             train_test_thresh=self.train_test_thresh,
             training_fraction=self.training_fraction,
             fit_algorithm=self.fit_algorithm_dict["fit_algorithm"],
@@ -231,6 +241,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             daily_event_df_dict=self.daily_event_df_dict,
             fs_components_df=self.fs_components_df,
             autoreg_dict=self.autoreg_dict,
+            past_df=self.past_df,
             lagged_regressor_dict=self.lagged_regressor_dict,
             changepoints_dict=self.changepoints_dict,
             seasonality_changepoints_dict=self.seasonality_changepoints_dict,
@@ -243,7 +254,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             impute_dict=self.impute_dict,
             regression_weight_col=self.regression_weight_col,
             forecast_horizon=self.forecast_horizon,
-            simulation_based=self.simulation_based)
+            simulation_based=self.simulation_based,
+            simulation_num=self.simulation_num)
         # sets attributes based on ``self.model_dict``
         super().finish_fit()
 
@@ -252,7 +264,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
     @staticmethod
     def validate_fs_components_df(fs_components_df):
         """Validates the inputs of a fourier series components dataframe
-        called by ``SilverkiteEstimator`` to validate the input fs_components_df.
+        called by ``SilverkiteEstimator`` to validate the input ``fs_components_df``.
 
         Parameters
         ----------

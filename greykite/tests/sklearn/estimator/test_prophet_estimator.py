@@ -477,6 +477,30 @@ def test_forecast_via_prophet_freq():
 
 @pytest.mark.skipif("fbprophet" not in sys.modules,
                     reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+def test_forecast_via_prophet_no_uncertainty(
+        daily_data):
+    """Tests fit and predict with no uncertainty interval."""
+    model = ProphetEstimator(
+        score_func=mean_squared_error,
+        null_model_params=None,
+        uncertainty_samples=0,
+        mcmc_samples=0)
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"]
+
+    assert model.uncertainty_samples == 0
+    assert model.mcmc_samples == 0
+
+    model.fit(train_df, time_col=TIME_COL, value_col=VALUE_COL)
+    model.predict(test_df)
+    # The following asserts are temporarily disabled,
+    # since they work under fbprophet >= 0.6 only.
+    # assert PREDICTED_LOWER_COL not in pred.columns
+    # assert PREDICTED_UPPER_COL not in pred.columns
+
+
+@pytest.mark.skipif("fbprophet" not in sys.modules,
+                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_components(daily_data, params):
     """Test plot_components"""
     train_df = daily_data["train_df"]

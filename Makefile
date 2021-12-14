@@ -48,7 +48,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 flake8: ## check style with flake8
-	flake8 greykite --max-line-length=160 --ignore=E121,E123,E126,E226,E24,E704,W503,W504,F541,E402,E741
+	flake8 greykite --exclude=tests --ignore W503,W504,F541,E226,E126,E402,E123,E121,E741
 
 test: ## run tests quickly with the default Python
 	pytest greykite/tests

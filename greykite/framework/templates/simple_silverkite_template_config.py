@@ -39,6 +39,7 @@ from typing import List
 from typing import Type
 from typing import Union
 
+from greykite.algo.forecast.silverkite.constants.silverkite_holiday import SilverkiteHoliday
 from greykite.common.python_utils import mutable_field
 from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
 
@@ -548,10 +549,12 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
     # Autoregression.
     AR=dict(
         AUTO={
-            "autoreg_dict": "auto"
+            "autoreg_dict": "auto",
+            "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
         },
         OFF={
-            "autoreg_dict": None
+            "autoreg_dict": None,
+            "simulation_num": 10  # simulation is not triggered with ``autoreg_dict=None``
         }),
     # Max daily/weekly seasonality interaction orders.
     DSI=dict(
@@ -617,7 +620,8 @@ SILVERKITE = ModelComponentsParam(
         "seasonality_changepoints_dict": None
     },
     autoregression={
-        "autoreg_dict": None
+        "autoreg_dict": None,
+        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict=None``
     },
     regressors={
         "regressor_cols": []
@@ -637,13 +641,76 @@ SILVERKITE = ModelComponentsParam(
         "max_daily_seas_interaction_order": 5,
         "max_weekly_seas_interaction_order": 2,
         "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
         "min_admissible_value": None,
         "max_admissible_value": None,
+        "regression_weight_col": None,
+        "normalize_method": None
     }
 )
 """Defines the ``SILVERKITE`` template. Contains automatic growth,
 seasonality, holidays, and interactions. Does not include autoregression.
 Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.
+"""
+
+# Defines the SILVERKITE_WITH_AR template here.
+SILVERKITE_WITH_AR = ModelComponentsParam(
+    seasonality={
+        "yearly_seasonality": "auto",
+        "quarterly_seasonality": "auto",
+        "monthly_seasonality": "auto",
+        "weekly_seasonality": "auto",
+        "daily_seasonality": "auto",
+    },
+    growth={
+        "growth_term": "linear"
+    },
+    events={
+        "holidays_to_model_separately": "auto",
+        "holiday_lookup_countries": "auto",
+        "holiday_pre_num_days": 2,
+        "holiday_post_num_days": 2,
+        "holiday_pre_post_num_dict": None,
+        "daily_event_df_dict": None,
+    },
+    changepoints={
+        "changepoints_dict": None,
+        "seasonality_changepoints_dict": None
+    },
+    autoregression={
+        "autoreg_dict": "auto",
+        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+    },
+    regressors={
+        "regressor_cols": []
+    },
+    lagged_regressors={
+        "lagged_regressor_dict": None
+    },
+    uncertainty={
+        "uncertainty_dict": None
+    },
+    custom={
+        "fit_algorithm_dict": {
+            "fit_algorithm": "ridge",
+            "fit_algorithm_params": None,
+        },
+        "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+        "max_daily_seas_interaction_order": 5,
+        "max_weekly_seas_interaction_order": 2,
+        "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "min_admissible_value": None,
+        "max_admissible_value": None,
+        "regression_weight_col": None,
+        "normalize_method": None
+    }
+)
+"""Defines the ``SILVERKITE_WITH_AR`` template.
+Has the same config as ``SILVERKITE`` except for adding autoregression.
+Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.
 """
 
 # Defines the `SILVERKITE_EMPTY` template. Everything here is None or off.
@@ -652,6 +719,201 @@ SILVERKITE_EMPTY = "DAILY_SEAS_NONE_GR_NONE_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LIN
 
 
 # Defines pre-tuned multi-templates.
+# The following 3 configs are defined as a single template in order to be used as candidates in the multi-template ``SILVERKITE_DAILY_1``.
+# In these 3 configs, yearly_seasonality, monthly_seasonality, weekly_seasonality, regularization_strength, and no_changepoint_distance_from_end
+# are tuned specifically for 1-day forecast.
+SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
+    seasonality={
+        "yearly_seasonality": 8,
+        "quarterly_seasonality": 0,
+        "monthly_seasonality": 7,
+        "weekly_seasonality": 1,
+        "daily_seasonality": 0,
+    },
+    growth={
+        "growth_term": "linear"
+    },
+    events={
+        "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
+        "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
+        "holiday_pre_num_days": 2,
+        "holiday_post_num_days": 2,
+        "holiday_pre_post_num_dict": None,
+        "daily_event_df_dict": None,
+    },
+    changepoints={
+        "changepoints_dict": {
+            "method": "auto",
+            "resample_freq": "7D",
+            "regularization_strength": 0.809,
+            "potential_changepoint_distance": "7D",
+            "no_changepoint_distance_from_end": "7D",
+            "yearly_seasonality_order": 8,
+            "yearly_seasonality_change_freq": None,
+        },
+        "seasonality_changepoints_dict": None
+    },
+    autoregression={
+        "autoreg_dict": "auto",
+        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+    },
+    regressors={
+        "regressor_cols": []
+    },
+    lagged_regressors={
+        "lagged_regressor_dict": None
+    },
+    uncertainty={
+        "uncertainty_dict": None
+    },
+    custom={
+        "fit_algorithm_dict": {
+            "fit_algorithm": "ridge",
+            "fit_algorithm_params": None,
+        },
+        "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+        "max_daily_seas_interaction_order": 5,
+        "max_weekly_seas_interaction_order": 2,
+        "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "min_admissible_value": None,
+        "max_admissible_value": None,
+        "regression_weight_col": None,
+        "normalize_method": None
+    }
+)
+
+SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
+    seasonality={
+        "yearly_seasonality": 1,
+        "quarterly_seasonality": 0,
+        "monthly_seasonality": 4,
+        "weekly_seasonality": 6,
+        "daily_seasonality": 0,
+    },
+    growth={
+        "growth_term": "linear"
+    },
+    events={
+        "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
+        "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
+        "holiday_pre_num_days": 2,
+        "holiday_post_num_days": 2,
+        "holiday_pre_post_num_dict": None,
+        "daily_event_df_dict": None,
+    },
+    changepoints={
+        "changepoints_dict": {
+            "method": "auto",
+            "resample_freq": "7D",
+            "regularization_strength": 0.624,
+            "potential_changepoint_distance": "7D",
+            "no_changepoint_distance_from_end": "17D",
+            "yearly_seasonality_order": 1,
+            "yearly_seasonality_change_freq": None,
+        },
+        "seasonality_changepoints_dict": None
+    },
+    autoregression={
+        "autoreg_dict": "auto",
+        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+    },
+    regressors={
+        "regressor_cols": []
+    },
+    lagged_regressors={
+        "lagged_regressor_dict": None
+    },
+    uncertainty={
+        "uncertainty_dict": None
+    },
+    custom={
+        "fit_algorithm_dict": {
+            "fit_algorithm": "ridge",
+            "fit_algorithm_params": None,
+        },
+        "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+        "max_daily_seas_interaction_order": 5,
+        "max_weekly_seas_interaction_order": 2,
+        "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "min_admissible_value": None,
+        "max_admissible_value": None,
+        "regression_weight_col": None,
+        "normalize_method": None
+    }
+)
+
+SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
+    seasonality={
+        "yearly_seasonality": 40,
+        "quarterly_seasonality": 0,
+        "monthly_seasonality": 0,
+        "weekly_seasonality": 2,
+        "daily_seasonality": 0,
+    },
+    growth={
+        "growth_term": "linear"
+    },
+    events={
+        "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
+        "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
+        "holiday_pre_num_days": 2,
+        "holiday_post_num_days": 2,
+        "holiday_pre_post_num_dict": None,
+        "daily_event_df_dict": None,
+    },
+    changepoints={
+        "changepoints_dict": {
+            "method": "auto",
+            "resample_freq": "7D",
+            "regularization_strength": 0.590,
+            "potential_changepoint_distance": "7D",
+            "no_changepoint_distance_from_end": "8D",
+            "yearly_seasonality_order": 40,
+            "yearly_seasonality_change_freq": None,
+        },
+        "seasonality_changepoints_dict": None
+    },
+    autoregression={
+        "autoreg_dict": "auto",
+        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+    },
+    regressors={
+        "regressor_cols": []
+    },
+    lagged_regressors={
+        "lagged_regressor_dict": None
+    },
+    uncertainty={
+        "uncertainty_dict": None
+    },
+    custom={
+        "fit_algorithm_dict": {
+            "fit_algorithm": "ridge",
+            "fit_algorithm_params": None,
+        },
+        "feature_sets_enabled": "auto",  # "auto" based on data freq and size
+        "max_daily_seas_interaction_order": 5,
+        "max_weekly_seas_interaction_order": 2,
+        "extra_pred_cols": [],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "min_admissible_value": None,
+        "max_admissible_value": None,
+        "regression_weight_col": None,
+        "normalize_method": None
+    }
+)
+
+SILVERKITE_DAILY_1 = ["SILVERKITE_DAILY_1_CONFIG_1", "SILVERKITE_DAILY_1_CONFIG_2", "SILVERKITE_DAILY_1_CONFIG_3"]
+"""Defines the ``SILVERKITE_DAILY_1`` template, which contains 3 candidate configs for grid search,
+optimized for the seasonality and changepoint parameters.
+Best for 1-day forecast for daily time series. Uses `SimpleSilverkiteEstimator`.
+"""
+
 SILVERKITE_DAILY_90 = [
     # For daily data, light seasonality up to weekly, light trend changepoints,
     # separate holidays +- 2 days, default feature sets and linear fit algorithm.
@@ -666,6 +928,7 @@ SILVERKITE_DAILY_90 = [
     # separate holidays +- 4 days, default feature sets and ridge fit algorithm.
     "DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_OFF_DSI_AUTO_WSI_AUTO"
 ]
+
 SILVERKITE_WEEKLY = [
     # For weekly data, normal seasonality up to yearly, no trend changepoints,
     # no holiday, no feature sets and linear fit algorithm.
@@ -680,6 +943,7 @@ SILVERKITE_WEEKLY = [
     # no holiday, no feature sets and ridge fit algorithm.
     "WEEKLY_SEAS_HV_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_RIDGE_AR_OFF_DSI_AUTO_WSI_AUTO"
 ]
+
 SILVERKITE_HOURLY_1 = [
     # For hourly data, light seasonality up to daily, no trend changepoints,
     # together holiday, default feature sets, automatic autoregression and linear fit algorithm.
@@ -694,6 +958,7 @@ SILVERKITE_HOURLY_1 = [
     # separate holidays +- 1 day, default feature sets, automatic autoregression and ridge fit algorithm.
     "HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP1_FEASET_AUTO_ALGO_RIDGE_AR_AUTO"
 ]
+
 SILVERKITE_HOURLY_24 = [
     # For hourly data, light seasonality up to daily, normal trend changepoints,
     # separate holidays +- 4 days, default feature sets, automatic autoregression and ridge fit algorithm.
@@ -708,6 +973,7 @@ SILVERKITE_HOURLY_24 = [
     # separate holidays +- 4 day, default feature sets, automatic autoregression and ridge fit algorithm.
     "HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_AUTO"
 ]
+
 SILVERKITE_HOURLY_168 = [
     # For hourly data, light seasonality up to daily, light trend changepoints,
     # separate holidays +- 4 days, default feature sets, no autoregression and ridge fit algorithm.
@@ -722,6 +988,7 @@ SILVERKITE_HOURLY_168 = [
     # separate holidays +- 1 day, default feature sets, no autoregression and ridge fit algorithm.
     "HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP1_FEASET_AUTO_ALGO_RIDGE_AR_OFF"
 ]
+
 SILVERKITE_HOURLY_336 = [
     # For hourly data, light seasonality up to daily, light trend changepoints,
     # separate holidays +- 2 days, default feature sets, no autoregression and ridge fit algorithm.
@@ -741,6 +1008,7 @@ SILVERKITE_HOURLY_336 = [
 # Defines pre-defined multi templates.
 
 MULTI_TEMPLATES = {
+    "SILVERKITE_DAILY_1": SILVERKITE_DAILY_1,
     "SILVERKITE_DAILY_90": SILVERKITE_DAILY_90,
     "SILVERKITE_WEEKLY": SILVERKITE_WEEKLY,
     "SILVERKITE_HOURLY_1": SILVERKITE_HOURLY_1,
@@ -792,6 +1060,26 @@ class SimpleSilverkiteTemplateConstants:
     """Defines the ``"SILVERKITE"`` template. Contains automatic growth,
     seasonality, holidays, and interactions. Does not include autoregression.
     Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.
+    """
+    SILVERKITE_WITH_AR: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_WITH_AR
+    """Defines the ``SILVERKITE_WITH_AR`` template.
+    Has the same config as ``SILVERKITE`` except for adding autoregression.
+    Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.
+    """
+    SILVERKITE_DAILY_1_CONFIG_1: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_1
+    """Config 1 in template ``SILVERKITE_DAILY_1``.
+    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    specifically tuned for daily data and 1-day forecast.
+    """
+    SILVERKITE_DAILY_1_CONFIG_2: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_2
+    """Config 2 in template ``SILVERKITE_DAILY_1``.
+    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    specifically tuned for daily data and 1-day forecast.
+    """
+    SILVERKITE_DAILY_1_CONFIG_3: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_3
+    """Config 3 in template ``SILVERKITE_DAILY_1``.
+    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    specifically tuned for daily data and 1-day forecast.
     """
     SILVERKITE_COMPONENT_KEYWORDS: Type[Enum] = SILVERKITE_COMPONENT_KEYWORDS
     """Valid values for simple silverkite template string name keywords.

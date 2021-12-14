@@ -356,6 +356,7 @@ def test_plot_forecasts_by_step(valid_bm):
     assert fig.layout.xaxis.title.text == TIME_COL
     assert fig.layout.yaxis.title.text == VALUE_COL
     assert fig.layout.title.text == "1-step ahead rolling forecasts"
+    assert fig.layout.title.x == 0.5
 
     # len(fig.data) = 1 + len(config_keys)
     assert len(fig.data) == 1 + len(bm.configs)
@@ -376,6 +377,7 @@ def test_plot_forecasts_by_step(valid_bm):
     assert fig.layout.xaxis.title.text == "xlab"
     assert fig.layout.yaxis.title.text == "ylab"
     assert fig.layout.title.text == "title"
+    assert fig.layout.title.x == 0.5
 
     # len(fig.data) = 1 + len(config_names)
     assert len(fig.data) == 1 + 1
@@ -405,6 +407,7 @@ def test_plot_forecasts_by_config(valid_bm):
     assert fig.layout.xaxis.title.text == TIME_COL
     assert fig.layout.yaxis.title.text == VALUE_COL
     assert fig.layout.title.text == "Rolling forecast for valid_prophet"
+    assert fig.layout.title.x == 0.5
     assert len(fig.data) == 1 + bm.tscv.max_splits  # len(fig.data) = 1 + number of splits
 
     assert fig.data[0].name == ACTUAL_COL
@@ -426,6 +429,7 @@ def test_plot_forecasts_by_config(valid_bm):
     assert fig.layout.xaxis.title.text == "xlab"
     assert fig.layout.yaxis.title.text == "ylab"
     assert fig.layout.title.text == "title"
+    assert fig.layout.title.x == 0.5
 
     assert fig.data[0].name == ACTUAL_COL
     assert fig.data[0].line.color == default_color
@@ -508,6 +512,7 @@ def test_plot_evaluation_metrics(valid_bm, metric_dict):
         assert fig.layout.xaxis.title.text is None
         assert fig.layout.yaxis.title.text == "Metric value"
         assert fig.layout.title.text == "Average evaluation metric across rolling windows"
+        assert fig.layout.title.x == 0.5
         assert len(fig.data) == len(bm.configs)
 
         expected_xaxis = set()
@@ -535,6 +540,7 @@ def test_plot_evaluation_metrics(valid_bm, metric_dict):
         assert fig.layout.xaxis.title.text == "xlab"
         assert fig.layout.yaxis.title.text == "ylab"
         assert fig.layout.title.text == "title"
+        assert fig.layout.title.x == 0.5
         assert len(fig.data) == len(config_names)
 
         assert fig.data[0].name == "valid_prophet"
@@ -633,6 +639,7 @@ def test_plot_grouping_evaluation(valid_bm, metric_dict):
     assert fig.layout.xaxis.title.text == "woy"
     assert fig.layout.yaxis.title.text == "Metric value"
     assert fig.layout.title.text == "train performance by woy across rolling windows"
+    assert fig.layout.title.x == 0.5
     assert len(fig.data) == len(bm.configs) * len(metric_dict)
 
     assert fig.data[0].name == "train MSE_valid_prophet"
@@ -655,6 +662,7 @@ def test_plot_grouping_evaluation(valid_bm, metric_dict):
     assert fig.layout.xaxis.title.text == "xlab"
     assert fig.layout.yaxis.title.text == "ylab"
     assert fig.layout.title.text == "title"
+    assert fig.layout.title.x == 0.5
     assert len(fig.data) == len(config_names) * len(metric_dict)
 
     assert fig.data[0].name == "test MSE_valid_prophet"
@@ -674,6 +682,7 @@ def test_plot_grouping_evaluation(valid_bm, metric_dict):
     assert fig.layout.xaxis.title.text == custom_column.name
     assert fig.layout.yaxis.title.text == "Metric value"
     assert fig.layout.title.text == "Error by custom group"
+    assert fig.layout.title.x == 0.5
     assert len(fig.data) == len(bm.configs) * len(metric_dict)
 
     assert fig.data[0].name == "test MSE_valid_prophet"
@@ -721,6 +730,7 @@ def test_plot_runtimes(valid_bm):
     assert fig.layout.xaxis.title.text is None
     assert fig.layout.yaxis.title.text == "Mean runtime in seconds"
     assert fig.layout.title.text == "Average runtime across rolling windows"
+    assert fig.layout.title.x == 0.5
 
     expected_xaxis = set(bm.configs)
     assert fig.data[0].name == "Runtime"
@@ -738,6 +748,7 @@ def test_plot_runtimes(valid_bm):
     assert fig.layout.xaxis.title.text == "xlab"
     assert fig.layout.yaxis.title.text == "ylab"
     assert fig.layout.title.text == "title"
+    assert fig.layout.title.x == 0.5
 
     expected_xaxis = set(config_names)
     assert fig.data[0].name == "Runtime"

@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 from pandas.util.testing import assert_frame_equal
 
+from greykite.algo.common.ml_models import breakdown_regression_based_prediction
 from greykite.algo.common.ml_models import design_mat_from_formula
 from greykite.algo.common.ml_models import fit_ml_model
 from greykite.algo.common.ml_models import fit_ml_model_with_evaluation
@@ -150,15 +151,14 @@ def test_fit_model_via_design_matrix_with_weights(data_with_weights):
     """
     # commented out graphical test
     # we expect to see two trends for y w.r.t x2
-    import plotly
-    from plotly import graph_objs as go
+    from plotly import graph_objects as go
     trace = go.Scatter(
                 x=df['x2'].values,
                 y=df['y'].values,
                 mode='markers')
     data = [trace]
     fig = go.Figure(data)
-    plotly.io.show(fig)
+    fig.show()
     """
     assert np.round(ml_model.intercept_, 0) == 20.0
     assert ml_model.coef_[0].round() == 0.0
@@ -317,7 +317,7 @@ def generate_test_data_for_fitting(
 
 
 def test_fit_ml_model():
-    """Tests fit_ml_model"""
+    """Tests ``fit_ml_model``"""
     data = generate_test_data_for_fitting()
     df = data["df"]
     model_formula_str = data["model_formula_str"]
@@ -331,9 +331,11 @@ def test_fit_ml_model():
         fit_algorithm="sgd",
         fit_algorithm_params={"alpha": 0.1})
 
-    pred_df = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
         trained_model=trained_model)
+
+    pred_df = pred_res["fut_df"]
 
     input_cols = ["x1", "x2", "x3", "x4", "x1_categ"]
     assert_frame_equal(
@@ -352,16 +354,34 @@ def test_fit_ml_model():
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.5
 
-    # Tests if `fitted_df` returned is correct
-    fitted_df_via_predict = predict_ml(
+    # Tests if ``fitted_df`` returned is correct
+    pred_res = predict_ml(
         fut_df=df,
         trained_model=trained_model)
+
+    fitted_df_via_predict = pred_res["fut_df"]
+    x_mat_via_predict = pred_res["x_mat"]
+
     assert trained_model["fitted_df"].equals(fitted_df_via_predict)
+    # Tests if the design matrix in the prediction time is correct
+    # by comparing to the ``x_mat`` from fit phase using training data
+    assert trained_model["x_mat"].reset_index(drop=True).equals(
+        x_mat_via_predict.reset_index(drop=True))
+
+    ml_model = trained_model["ml_model"]
+    ml_model_coef = ml_model.coef_
+    intercept = ml_model.intercept_
+    x_mat_via_predict_weighted = x_mat_via_predict * ml_model_coef
+    # Checks to see if the manually calculated forecast is consistent
+    # Note that intercept from the regression based ML model needs to be aded
+    calculated_pred = x_mat_via_predict_weighted.sum(axis=1) + intercept
+    assert max(abs(calculated_pred - fitted_df_via_predict["y"])) < 1e-5
 
     # Tests actual values for a smaller set
     y_test_pred = predict_ml(
         fut_df=df_test[:10],
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)["fut_df"][y_col]
+
     expected_values = [9.0, 9.0, 7.0, 10.0, 10.0, 10.0, 11.0, 9.0, 8.0, 6.0]
     assert list(y_test_pred.round()) == expected_values
 
@@ -469,10 +489,10 @@ def test_fit_ml_model_with_uncertainty():
                 "small_sample_size_method": "std_quantiles",
                 "small_sample_size_quantile": 0.8}})
 
-    fut_df = predict_ml_with_uncertainty(
+    pred_res = predict_ml_with_uncertainty(
         fut_df=fut_df,
         trained_model=trained_model)
-
+    fut_df = pred_res["fut_df"]
     y_test_pred = fut_df["y"]
 
     err = calc_pred_err(y_test, y_test_pred)
@@ -484,9 +504,11 @@ def test_fit_ml_model_with_uncertainty():
     assert err[enum.get_metric_name()] > 0.5
 
     # Tests if `fitted_df` returned is correct
-    fitted_df_via_predict = predict_ml_with_uncertainty(
+    pred_res = predict_ml_with_uncertainty(
         fut_df=df,
         trained_model=trained_model)
+
+    fitted_df_via_predict = pred_res["fut_df"]
     assert trained_model["fitted_df"].equals(fitted_df_via_predict)
 
     # Tests actual values for a smaller set
@@ -538,9 +560,10 @@ def test_fit_ml_model_with_uncertainty_heteroscedastic():
                     "small_sample_size_method": "std_quantiles",
                     "small_sample_size_quantile": 0.95}})
 
-        fut_df = predict_ml_with_uncertainty(
+        pred_res = predict_ml_with_uncertainty(
             fut_df=fut_df,
             trained_model=trained_model)
+        fut_df = pred_res["fut_df"]
         y_test_pred = fut_df["y"]
 
         # testing actual values for a small set
@@ -614,9 +637,11 @@ def test_fit_ml_model_with_evaluation_with_test_set():
         fit_algorithm="sgd",
         fit_algorithm_params={"alpha": 0.1})
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     assert trained_model["ml_model"].alpha == 0.1
     err = calc_pred_err(y_test, y_test_pred)
@@ -628,9 +653,12 @@ def test_fit_ml_model_with_evaluation_with_test_set():
     assert err[enum.get_metric_name()] > 0.5
 
     # testing actual values for a smaller set
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test[:10],
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
+
     expected_values = [9.0, 9.0, 7.0, 10.0, 10.0, 10.0, 11.0, 9.0, 8.0, 6.0]
     assert list(y_test_pred.round()) == expected_values
 
@@ -653,9 +681,11 @@ def test_fit_ml_model_with_evaluation_with_weights():
 
     assert trained_model["regression_weight_col"] == "weights"
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
@@ -705,9 +735,12 @@ def test_fit_ml_model_with_evaluation_with_uncertainty():
                 "small_sample_size_method": "std_quantiles",
                 "small_sample_size_quantile": 0.8}})
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=fut_df,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
+
     y_test_pred_small = y_test_pred[small_sample_index]
 
     # testing predictions
@@ -777,9 +810,11 @@ def test_fit_ml_model_with_evaluation_with_user_provided_bounds():
         min_admissible_value=-7,
         max_admissible_value=20.00)
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
@@ -790,9 +825,12 @@ def test_fit_ml_model_with_evaluation_with_user_provided_bounds():
     assert err[enum.get_metric_name()] > 0.5
 
     # testing actual values on a smaller set
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test[:10],
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
+
     expected_values = [8.36, 11.19, 1.85, 15.57, 16.84, 14.44, 20.00, 9.02,
                        1.81, -7.00]
     assert list(y_test_pred.round(2)) == expected_values
@@ -818,16 +856,21 @@ def test_fit_ml_model_with_evaluation_skip_test():
     assert trained_model["test_evaluation"] is None
     assert trained_model["plt_compare_test"] is None
 
-    arr1 = predict_ml(
+    pred_res = predict_ml(
         fut_df=df,
-        trained_model=trained_model)[y_col].tolist()
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    arr1 = fut_df[y_col].tolist()
     arr2 = trained_model["y_train_pred"]
 
     assert np.array_equal(arr1, arr2)
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
+
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
     assert err[enum.get_metric_name()] < 3.0
@@ -851,9 +894,11 @@ def test_fit_ml_model_with_evaluation_random_forest():
         model_formula_str=model_formula_str,
         fit_algorithm="rf")
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
@@ -878,9 +923,11 @@ def test_fit_ml_model_with_evaluation_elastic_net():
         model_formula_str=model_formula_str,
         fit_algorithm="elastic_net")
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
@@ -906,9 +953,11 @@ def test_fit_ml_model_with_evaluation_sgd():
         fit_algorithm="sgd",
         fit_algorithm_params={"penalty": "none"})
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
@@ -927,9 +976,11 @@ def test_fit_ml_model_with_evaluation_sgd():
             "alpha": 0.01,
             "l1_ratio": 0.2})
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     err = calc_pred_err(y_test, y_test_pred)
     enum = EvaluationMetricEnum.MeanAbsoluteError
@@ -1005,9 +1056,11 @@ def test_fit_ml_model_with_evaluation_constant_column():
         fit_algorithm=fit_algorithm,
         normalize_method="min_max")
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
 
     # intercept, x1, x2, x3, x4, [constant columns]
     expected_values = [-23.0, 1.0, 4.0, 0.0, 44.0, 0.0, 0.0]
@@ -1024,7 +1077,7 @@ def test_fit_ml_model_with_evaluation_constant_column():
     # testing actual values for a smaller set
     y_test_pred = predict_ml(
         fut_df=df_test[:10],
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)["fut_df"][y_col]
     expected_values = [18.0, 19.0, 16.0, 13.0, 9.0, 1.0, 23.0, 14.0, 12.0, 14.0]
     assert list(y_test_pred.round()) == expected_values
 
@@ -1060,9 +1113,12 @@ def test_fit_ml_model_with_evaluation_constant_column_sgd():
         fit_algorithm=fit_algorithm,
         fit_algorithm_params={"tol": 1e-5, "penalty": "none"})
 
-    y_test_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=df_test,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+    fut_df = pred_res["fut_df"]
+    y_test_pred = fut_df[y_col]
+
     expected_values = [-8.0, 2.0, 3.0, -2.0, 38.0, 0.0, 0.0]
     assert list(pd.Series(trained_model["ml_model"].coef_)[:7].round()) == expected_values
 
@@ -1077,6 +1133,121 @@ def test_fit_ml_model_with_evaluation_constant_column_sgd():
     # testing actual values for a smaller set
     y_test_pred = predict_ml(
         fut_df=df_test[:10],
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)["fut_df"][y_col]
     expected_values = [17.0, 18.0, 16.0, 13.0, 9.0, 2.0, 20.0, 12.0, 12.0, 13.0]
     assert list(y_test_pred.round()) == expected_values
+
+
+def test_breakdown_regression_based_prediction():
+    "Tests ``breakdown_regression_based_prediction``."
+    data = generate_test_data_for_fitting()
+    df = data["df"]
+
+    # Adds a few more columns
+    df["var1"] = df["x1"]**2
+    df["var2"] = df["x2"]**2
+    df["y_lag1"] = df["x1"]**3
+    df["y_lag2"] = df["x2"]**3
+    df["u1"] = (df["x1"] + 3)**2
+    df["u2"] = (df["x2"] - 3)**2
+
+    df_train = df[:800].reset_index(drop=True)
+    df_test = df[800:].reset_index(drop=True)
+
+    trained_model = fit_ml_model(
+        df=df_train,
+        model_formula_str="y~x1+x2+x3+x4+var1+var2+x1_categ+y_lag1+y_lag2+u1+u2",
+        fit_algorithm="sgd",
+        fit_algorithm_params={"alpha": 0.1})
+
+    pred_res = predict_ml(
+        fut_df=df_test,
+        trained_model=trained_model)
+
+    pred_df = pred_res["fut_df"]
+    x_mat = pred_res["x_mat"]
+
+    grouping_regex_patterns_dict = {
+        "A": ".*categ",
+        "B": "var",
+        "C": "x",
+        "D": ".*_lag.*"
+    }
+
+    # Example 1: ``add_intercept_group=True``
+    result = breakdown_regression_based_prediction(
+        ml_model=trained_model["ml_model"],
+        x_mat=x_mat,
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        add_intercept_group=True,
+        remainder_group_name="OTHER")
+
+    column_grouping_result = result["column_grouping_result"]
+    breakdown_df = result["breakdown_df"]
+    assert list(breakdown_df.columns) == ["Intercept", "A", "B", "C", "D", "OTHER"]
+
+    # Note that if a variable/column is already picked in a step,
+    # it will be taken out from the columns list and will not appear
+    # in next groups.
+    assert column_grouping_result == {
+        "str_groups": [
+            [
+                "x1_categ[T.C1]",
+                "x1_categ[T.C2]",
+                "x1_categ[T.C3]",
+                "x1_categ[T.C4]",
+                "x1_categ[T.C5]",
+                "x1_categ[T.C6]",
+                "x1_categ[T.C7]"],
+            ["var1", "var2"],
+            ["x1", "x2", "x3", "x4"],
+            ["y_lag1", "y_lag2"]],
+        "remainder": ["u1", "u2"]}
+
+    ml_model = trained_model["ml_model"]
+    ml_model_coef = ml_model.coef_
+    intercept = ml_model.intercept_
+    x_mat_weighted = x_mat * ml_model_coef
+
+    pred_raw = round(pred_df["y"], 5)
+    pred_raw_sum = round(x_mat_weighted.sum(axis=1) + intercept, 5)
+    pred_from_breakdown = round(breakdown_df.sum(axis=1), 5)
+
+    assert pred_raw_sum.equals(pred_from_breakdown)
+    assert pred_raw.equals(pred_from_breakdown)
+
+    # Example 2: ``add_intercept_group=False``
+    result = breakdown_regression_based_prediction(
+        ml_model=trained_model["ml_model"],
+        x_mat=x_mat,
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        add_intercept_group=False,
+        remainder_group_name="OTHER")
+
+    column_grouping_result = result["column_grouping_result"]
+    breakdown_df = result["breakdown_df"]
+    assert list(breakdown_df.columns) == ["A", "B", "C", "D", "OTHER"]
+
+    assert column_grouping_result == {
+        "str_groups": [
+            [
+                "x1_categ[T.C1]",
+                "x1_categ[T.C2]",
+                "x1_categ[T.C3]",
+                "x1_categ[T.C4]",
+                "x1_categ[T.C5]",
+                "x1_categ[T.C6]",
+                "x1_categ[T.C7]"],
+            ["var1", "var2"],
+            ["x1", "x2", "x3", "x4"],
+            ["y_lag1", "y_lag2"]],
+        "remainder": ["u1", "u2"]}
+
+    del x_mat_weighted["Intercept"]
+
+    # We do not add intercept to the predictions
+    # because the intercept group is not included
+    pred_raw_sum = round(x_mat_weighted.sum(axis=1), 5)
+    pred_from_breakdown = round(breakdown_df.sum(axis=1), 5)
+
+    assert pred_raw_sum.equals(pred_from_breakdown)

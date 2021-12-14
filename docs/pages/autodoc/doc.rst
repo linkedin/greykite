@@ -40,6 +40,11 @@ Prophet Template
 
 .. autoclass:: greykite.sklearn.estimator.prophet_estimator.ProphetEstimator
 
+ARIMA Template
+--------------
+.. autoclass::  greykite.framework.templates.auto_arima_template.AutoArimaTemplate
+.. autoclass::  greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator
+
 Forecast Pipeline
 -----------------
 .. currentmodule:: greykite.framework.pipeline.pipeline
@@ -90,10 +95,10 @@ Transformers
 .. automodule:: greykite.sklearn.transform.null_transformer
 .. automodule:: greykite.sklearn.transform.drop_degenerate_transformer
 
-.. Hierarchical forecast is disabled until cvxpy is supported.
-.. Hierarchical Forecast
-.. ---------------------
-.. .. autoclass:: greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts
+Hierarchical Forecast
+---------------------
+.. autoclass:: greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts
+.. autoclass:: greykite.algo.reconcile.hierarchical_relationship.HierarchicalRelationship
 
 .. the items below are included because they are linked to by the docs
 
@@ -137,9 +142,14 @@ Utility Functions
 .. autofunction:: get_best_index
 .. autofunction:: get_forecast
 
+.. currentmodule:: greykite.framework.templates.pickle_utils
+.. autofunction:: dump_obj
+.. autofunction:: load_obj
+
 .. autoclass:: greykite.common.data_loader.DataLoader
 .. autoclass:: greykite.framework.benchmark.data_loader_ts.DataLoaderTS
 
+.. autoclass:: greykite.algo.reconcile.convex.reconcile_forecasts.TraceInfo
 
 Internal Functions
 ------------------
@@ -155,8 +165,10 @@ Internal Functions
 .. autofunction:: greykite.algo.uncertainty.conditional.conf_interval.conf_interval
 .. autofunction:: greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints
 
-.. autofunction:: greykite.common.features.timeseries_lags.build_autoreg_df
-.. autofunction:: greykite.common.features.timeseries_lags.build_agg_lag_df
+.. currentmodule:::: greykite.common.features.timeseries_lags
+.. autofunction:: build_autoreg_df
+.. autofunction:: build_agg_lag_df
+.. autofunction:: build_autoreg_df_multi
 
 .. currentmodule:: greykite.algo.forecast.silverkite.forecast_silverkite
 .. autoclass:: SilverkiteForecast

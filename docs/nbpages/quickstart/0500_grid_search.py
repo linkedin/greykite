@@ -17,6 +17,7 @@ The mechanism of using grid search in ``PROPHET`` is similar.
 """
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
 from greykite.common.data_loader import DataLoader
@@ -145,6 +146,7 @@ config = ForecastConfig(
 #
 # It's very common that not all of the 729 sets of hyperparameters makes sense to us, so it
 # would be good not to run all of them. There are two ways to do selective grid search:
+#
 #   - Setting ``hyperparameter_budget``.
 #   - Utilizing ``hyperparameter_override``.
 #

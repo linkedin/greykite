@@ -80,6 +80,7 @@ def get_forecast_time_properties(
         time_col=TIME_COL,
         value_col=VALUE_COL,
         freq=None,
+        date_format=None,
         regressor_cols=None,
         lagged_regressor_cols=None,
         train_end_date=None,
@@ -101,6 +102,10 @@ def get_forecast_time_properties(
         for a list of frequency aliases.
         If None, inferred by pd.infer_freq.
         Provide this parameter if ``df`` has missing timepoints.
+    date_format : `str` or None, default None
+        strftime format to parse time column, eg ``%m/%d/%Y``.
+        Note that ``%f`` will parse all the way up to nanoseconds.
+        If None (recommended), inferred by `pandas.to_datetime`.
     regressor_cols : `list` [`str`] or None, optional, default None
         A list of regressor columns used in the training and prediction DataFrames.
         If None, no regressor columns are used.
@@ -155,6 +160,7 @@ def get_forecast_time_properties(
         time_col=time_col,
         value_col=value_col,
         freq=freq,
+        date_format=date_format,
         train_end_date=train_end_date,
         regressor_cols=regressor_cols,
         lagged_regressor_cols=lagged_regressor_cols)

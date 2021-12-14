@@ -52,6 +52,7 @@ from typing import Type
 
 from greykite.framework.templates.auto_arima_template import AutoArimaTemplate
 from greykite.framework.templates.prophet_template import ProphetTemplate
+from greykite.framework.templates.silverkite_multistage_template import SilverkiteMultistageTemplate
 from greykite.framework.templates.silverkite_template import SilverkiteTemplate
 from greykite.framework.templates.simple_silverkite_template import SimpleSilverkiteTemplate
 from greykite.framework.templates.template_interface import TemplateInterface
@@ -110,6 +111,49 @@ class ModelTemplateEnum(Enum):
     """Silverkite model with automatic growth, seasonality, holidays,
     and interactions. Best for hourly and daily frequencies.
     Uses `SimpleSilverkiteEstimator`.
+    """
+    SILVERKITE_WITH_AR = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Has the same config as ``SILVERKITE`` except for adding autoregression. "
+                    "Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.")
+    """Has the same config as ``SILVERKITE`` except for adding autoregression.
+    Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.
+    """
+    SILVERKITE_DAILY_1_CONFIG_1 = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Config 1 in template ``SILVERKITE_DAILY_1``. "
+                    "Compared to ``SILVERKITE``, it adds change points and uses parameters "
+                    "specifically tuned for daily data and 1-day forecast.")
+    """Config 1 in template ``SILVERKITE_DAILY_1``.
+    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    specifically tuned for daily data and 1-day forecast.
+    """
+    SILVERKITE_DAILY_1_CONFIG_2 = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Config 2 in template ``SILVERKITE_DAILY_1``. "
+                    "Compared to ``SILVERKITE``, it adds change points and uses parameters "
+                    "specifically tuned for daily data and 1-day forecast.")
+    """Config 2 in template ``SILVERKITE_DAILY_1``.
+    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    specifically tuned for daily data and 1-day forecast.
+    """
+    SILVERKITE_DAILY_1_CONFIG_3 = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Config 3 in template ``SILVERKITE_DAILY_1``. "
+                    "Compared to ``SILVERKITE``, it adds change points and uses parameters "
+                    "specifically tuned for daily data and 1-day forecast.")
+    """Config 3 in template ``SILVERKITE_DAILY_1``.
+    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    specifically tuned for daily data and 1-day forecast.
+    """
+    SILVERKITE_DAILY_1 = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Silverkite model specifically tuned for daily data and 1-day forecast. "
+                    "Contains 3 candidate configs for grid search, "
+                    "optimized the seasonality and changepoint parameters.")
+    """Silverkite model specifically tuned for daily data and 1-day forecast.
+    Contains 3 candidate configs for grid search,
+    optimized the seasonality and changepoint parameters.
     """
     SILVERKITE_DAILY_90 = ModelTemplate(
         template_class=SimpleSilverkiteTemplate,
@@ -191,3 +235,23 @@ class ModelTemplateEnum(Enum):
         description="Auto ARIMA model with fit and prediction intervals. "
                     "Uses `AutoArimaEstimator`.")
     """ARIMA model with automatic order selection. Uses `AutoArimaEstimator`."""
+    SILVERKITE_TWO_STAGE = ModelTemplate(
+        template_class=SilverkiteMultistageTemplate,
+        description="SilverkiteMultistageTemplate's default model template. A two-stage model. "
+                    "The first step takes a longer history and learns the long-term effects, "
+                    "while the second step takes a shorter history and learns the short-term residuals."
+    )
+    """SilverkiteMultistage model's default model template. A two-stage model. "
+    "The first step takes a longer history and learns the long-term effects, "
+    "while the second step takes a shorter history and learns the short-term residuals.
+    """
+    SILVERKITE_MULTISTAGE_EMPTY = ModelTemplate(
+        template_class=SilverkiteMultistageTemplate,
+        description="Empty configuration for Silverkite Multistage. "
+                    "All parameters will be exactly what user inputs. "
+                    "Not to be used without overriding."""
+    )
+    """Empty configuration for Silverkite Multistage.
+    All parameters will be exactly what user inputs.
+    Not to be used without overriding.
+    """

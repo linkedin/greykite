@@ -23,13 +23,19 @@
 
 import functools
 import logging
+import math
 import sys
 import warnings
+from dataclasses import dataclass
+from typing import Optional
 
 import cvxpy as cp
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import plotly
+import plotly.express as px
+from plotly import graph_objects as go
+from plotly.subplots import make_subplots
 from scipy.linalg import sqrtm
 from sklearn.exceptions import NotFittedError
 
@@ -43,65 +49,77 @@ except ImportError:
     pass  # ipython is an optional dependency, by default only enabled for development
 
 
-def get_weight_matrix(weights, n_forecasts, name, weight_auto=None):
-    """Returns a diagonal weight matrix with shape (``n_forecasts``, ``n_forecasts``).
+DEFAULT_METHOD = "custom"
+"""Default method to use in `fit`."""
+
+
+def get_weight_matrix(weights, n_forecasts, name, default_weights):
+    """Returns a diagonal weight matrix with shape (``n_forecasts``, ``n_forecasts``)
+    and Frobenius norm sqrt(`n_forecasts`).
 
     Parameters
     ----------
-    weights : `list` [`float`] or "auto" or None
+    weights : `list` [`float`] or `str` or None
         What weights to use.
 
             - If a list, returns a diagonal matrix with the list values on the diagonal.
               These values specify the weight for each timeseries.
               In ``ReconcileAdditiveForecasts``, weights are applied to the matrix
               whose rows are reordered to canonical form (transposed output of ``reorder_columns``)
-            - If "auto", determined by ``weight_auto``.
+            - If a string, determined by ``default_weights``.
             - If None, the identity matrix (equal weights).
+
+        The specified weights are normalized in the output.
 
     n_forecasts : `int`
         The number of forecasts (shape of the output).
     name : `str`
         The name of the weight matrix.
-    weight_auto : `numpy.array` or None
-        Weights to use if ``array="auto"``.
-        Should be a square matrix with shape (``n_forecasts``, ``n_forecasts``).
-        None corresponds to the identity matrix.
+    default_weights : `dict` [`str`, `numpy.array`]
+        Default weights to use if ``weights`` is a string.
+        Values should be square matrices with shape (``n_forecasts``, ``n_forecasts``).
 
     Returns
     -------
     weight_matrix : `numpy.array`
-        Weights to apply to the errors before taking the norm.
+        Weights to apply to the errors.
         Diagonal matrix with shape (``n_forecasts``, ``n_forecasts``)
+        and Frobenius norm sqrt(`n_forecasts`).
     """
     if weights is None:
         weight_matrix = np.eye(n_forecasts)
-    elif isinstance(weights, str) and weights == "auto":
-        if weight_auto is None:
-            logging.info(f"'auto' weight for {name} is the identity matrix")
-            weight_matrix = np.eye(n_forecasts)
+    elif isinstance(weights, str):
+        if weights in default_weights:
+            weight_matrix = default_weights[weights]
+            logging.info(f"weight for {name} is {weight_matrix}")
         else:
-            logging.info(f"'auto' weight for {name} is {weight_auto}")
-            weight_matrix = weight_auto
+            raise ValueError(
+                f"The requested weight '{weights}' for `{name}` is not found. "
+                f"Must be one of {list(default_weights.keys())}")
     else:
         weight_matrix = np.diag(weights)
 
-    if weight_matrix.shape != (n_forecasts, n_forecasts):
+    if not isinstance(weight_matrix, np.ndarray) or weight_matrix.shape != (n_forecasts, n_forecasts):
         raise ValueError(
             f"Expected square matrix with size {n_forecasts}, but `{name}` has "
             f"weight matrix with shape {weight_matrix.shape}")
+
+    target_norm = np.linalg.norm(np.eye(n_forecasts))
+    weight_matrix = weight_matrix * target_norm / np.linalg.norm(weight_matrix)
+
     return weight_matrix
 
 
-def get_fit_params(method=None):
+def get_fit_params(method=DEFAULT_METHOD):
     """Returns parameters for
     `greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts.fit`
     corresponding to recognized hierarchical reconciliation method.
 
     Parameters
     ----------
-    method : `str` or None
-        Which reconciliation method to use
-        Valid values are "bottom_up", "ols", "mint_sample".
+    method : `str`, default `~greykite.algo.reconcile.convex.reconcile_forecasts.DEFAULT_METHOD`
+        Which reconciliation method to use.
+        Valid values are "bottom_up", "ols", "mint_sample", "custom":
 
             - "bottom_up"   : Sums leaf nodes. Unbiased transform that uses only the values of the leaf nodes
                               to propagate up the tree. Each node's value is the sum of its
@@ -109,6 +127,7 @@ def get_fit_params(method=None):
                               a leaf node of the subtree with T as its root, i.e. a descendant of T or T itself).
                               See Dangerfield and Morris 1992 "Top-down or bottom-up: Aggregate versus disaggregate
                               extrapolations" for one discussion of this method.
+                              Depends only on the structure of the hierarchy, not on the data itself.
             - "ols"         : OLS estimate proposed by https://robjhyndman.com/papers/Hierarchical6.pdf
                               (Hyndman et al. 2010, "Optimal combination forecasts for hierarchical time series")
                               Also see https://robjhyndman.com/papers/mint.pdf section 2.4.1.
@@ -120,19 +139,28 @@ def get_fit_params(method=None):
                               Depends only on the structure of the hierarchy, not on the data itself.
             - "mint_sample" : Unbiased transform that minimizes variance of adjusted residuals,
                               using "sample" estimate of original residual variance.
+                              Assumes base forecasts are unbiased.
                               See Wickramasuriya et al. 2019 section 2.4.4.
-                              Depends only on the structure of the hierarchy and forecast error covariances,
-                              not on the data itself.
+                              Depends on the structure of the hierarchy and forecast error covariances.
+            - "custom"      : Optimization parameters can be set by the user. See
+                              `greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts.fit`
+                              method for parameters and their default values.
+                              Depends on the structure of the hierarchy, base forecasts, and actuals, if all terms
+                              are included in the objective.
 
-        If None, returns an empty dictionary.
+        If "custom", uses the parameters passed to
+        `greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts.fit`
+        to formulate the convex optimization problem.
+
+        If "bottom_up", "ols", or "mint_sample", the other fit parameters are ignored.
 
     Returns
     -------
     estimator_fit_params : `dict` [`str`, Any]
         Parameters to use when calling ``ReconcileAdditiveForecasts.fit()``.
     """
-    if method is None:
-        estimator_fit_params = {}
+    if method == "custom":
+        estimator_fit_params = {}  # uses default values of ``fit`` and those passed by user
     elif method == "bottom_up":
         logging.info("Using bottom_up estimator")
         estimator_fit_params = {}  # already passed to ``fit`` via ``method``
@@ -144,13 +172,11 @@ def get_fit_params(method=None):
             unbiased=True,          # unbiased
             lam_adj=0.0,
             lam_bias=0.0,
-            lam_coef=0.0,
             lam_train=0.0,
             lam_var=1.0,            # minimizes variance
             covariance="identity",  # assumes equal uncorrelated variance
             weight_adj=None,
             weight_bias=None,
-            weight_coef=None,
             weight_train=None,
             weight_var=None,
         )
@@ -162,19 +188,17 @@ def get_fit_params(method=None):
             unbiased=True,        # unbiased
             lam_adj=0.0,
             lam_bias=0.0,
-            lam_coef=0.0,
             lam_train=0.0,
             lam_var=1.0,          # minimizes variance
             covariance="sample",  # in-sample variance estimate
             weight_adj=None,
             weight_bias=None,
-            weight_coef=None,
             weight_train=None,
             weight_var=None,
         )
     else:
         raise ValueError(f"`method` '{method}' is not recognized. "
-                         f"Must be one of 'bottom_up', 'ols', 'mint_sample' or None")
+                         f"Must be one of 'bottom_up', 'ols', 'mint_sample', 'custom'")
     return estimator_fit_params
 
 
@@ -219,7 +243,7 @@ def apply_method_defaults(fit_func):
         output : Any
             Same as the output of ``fit_func``.
         """
-        method = fit_params.get("method")
+        method = fit_params.get("method", DEFAULT_METHOD)
         method_fit_params = get_fit_params(method)
         params = dict(fit_params, **method_fit_params)
         return fit_func(
@@ -230,6 +254,129 @@ def apply_method_defaults(fit_func):
     return apply_defaults_and_fit
 
 
+@dataclass
+class TraceInfo:
+    """Contains y-values for related lines to plot,
+    such as forecasts or actuals.
+
+    The lines share the same color,
+    name, and legend group.
+    """
+    df: pd.DataFrame
+    """Data to plot. Each column contains the y-values for a line."""
+    color: Optional[str] = None
+    """Line color."""
+    name: Optional[str] = None
+    """String to include in the line name for the legend."""
+    legendgroup: Optional[str] = None
+    """Group name to group lines in the legend."""
+
+
+def evaluation_plot(x, traces, num_cols=3, ylabel=None, title=None, hline=False):
+    """Helper function to create evaluation plots from traces.
+
+    Creates a figure with subplots.
+    Every dataframe in ``traces`` has the same columns.
+    There is one subplot for each column, plotting the values of
+    that column from all the traces against ``x``.
+
+    For example, there can be two traces, forecasts and actuals,
+    each containing timeseries for multiple variables (nodes),
+    represented as columns in ``df``. ``x`` can be the time
+    index of the timeseries. This function returns a figure with
+    a subplot for each variable, plotting forecasts against actuals.
+
+    x : `numpy.array`
+        x-axis values for the lines to plot.
+    traces : `list` [`greykite.algo.reconcile.convex.reconcile_forecasts.TraceInfo`]
+        y-axis values for the lines to plot, along with styling info.
+        The columns for each dataframe in ``traces`` must be identical.
+        The number of rows in each dataframe must match the length of ``x``.
+    num_cols : `int`, default 3
+        Number of columns in the plot.
+        Controls the number of subplots to show in each row,
+        before wrapping to the next row.
+
+        Rows are filled in the order of the columns
+        in the dataframes, from left to right.
+    ylabel : `str` or None, default None
+        y-axis label for each subplot.
+        If None, no y-axis label is shown.
+    title : `str` or None, default None
+        Title for the entire plot.
+        If None, no title is shown.
+    hline : `bool`, default False
+        Whether to show a horizontal line at y=0.
+
+    Returns
+    -------
+    fig : `plotly.graph_objects.Figure`
+        The plot object.
+    """
+    if len(traces) == 0:
+        raise ValueError("There must be at least one trace to plot.")
+    df_col_names = [trace.df.columns for trace in traces]
+    col_names = df_col_names[0]
+    if not all([cols.equals(col_names) for cols in df_col_names]):
+        raise ValueError("Column names must be identical in all traces.")
+    if not all([len(x) == trace.df.shape[0] for trace in traces]):
+        raise ValueError("``x`` length must match ``df`` length for all traces.")
+    if num_cols <= 0 or num_cols > len(col_names):
+        raise ValueError(f"`num_cols` should be between 1 and {len(col_names)} "
+                         f"(the number of columns), found {num_cols}.")
+
+    # The number of rows depends on the number of
+    # subplots and the subplots per row.
+    num_rows = math.ceil(traces[0].df.shape[1] / num_cols)
+
+    fig = make_subplots(
+        rows=num_rows,
+        cols=num_cols,
+        start_cell="top-left",
+        subplot_titles=list(col_names))
+    # Creates a subplot for each column
+    for i, node in enumerate(col_names):
+        # Subplot position (1-indexed)
+        # Fills rows from left to right,
+        # top to bottom.
+        row = i//num_cols + 1
+        col = (i % num_cols) + 1
+        # Adds y=0 line
+        if hline:
+            fig.add_trace(
+                go.Scatter(
+                    x=x,
+                    y=np.zeros_like(x),
+                    name="zero",
+                    line=dict(color="black", width=1),
+                    legendgroup="zero",
+                    showlegend=False
+                ),
+                row=row,
+                col=col)
+        # Adds each trace's column
+        for i, trace in enumerate(traces):
+            name = f"{node}-{trace.name}" if trace.name is not None else node
+            opacity = 1 if i == 0 else 0.8  # adds opacity to traces after the first one
+            fig.add_trace(
+                go.Scatter(
+                    x=x,
+                    y=np.array(trace.df[node]),
+                    name=name,
+                    legendgroup=trace.legendgroup,
+                    line=dict(color=trace.color),
+                    opacity=opacity,
+                ),
+                row=row,
+                col=col)
+        # Adds y-axis titles
+        ytitle = go.layout.yaxis.Title(font={"size": 10}, text=ylabel)
+        fig.update_yaxes(row=row, col=col, title=ytitle)
+    # Adds title for the entire plot
+    fig.update_layout(dict(title_text=title, title_x=0.5, title_font_size=20))
+    return fig
+
+
 class ReconcileAdditiveForecasts:
     """Reconciles forecasts to satisfy additive constraints.
 
@@ -237,7 +384,7 @@ class ReconcileAdditiveForecasts:
     In the tree formulation, a parent's value must be the sum of its children's values.
 
     Or, constraints can be encoded as a matrix via ``constraint_matrix``,
-    specifying additive equations that must sum to 0. The constraints need not have a
+    specifying additive expressions that must equal 0. The constraints need not have a
     tree representation.
 
     Provides standard methods such as bottom up, ols, MinT. Also supports a custom method
@@ -301,10 +448,9 @@ class ReconcileAdditiveForecasts:
 
         If None, no reordering is done.
 
-    method : `str` or None
-        Which method to use.
-        If None, uses the parameters specified to formulate the convex optimization problem.
-        If a string, valid values are "bottom_up", "ols", "mint_sample". The other parameters are ignored.
+    method : `str`
+        Which reconciliation method to use.
+        Valid values are "bottom_up", "ols", "mint_sample", "custom":
 
             - "bottom_up"   : Sums leaf nodes. Unbiased transform that uses only the values of the leaf nodes
                               to propagate up the tree. Each node's value is the sum of its
@@ -312,6 +458,7 @@ class ReconcileAdditiveForecasts:
                               a leaf node of the subtree with T as its root, i.e. a descendant of T or T itself).
                               See Dangerfield and Morris 1992 "Top-down or bottom-up: Aggregate versus disaggregate
                               extrapolations" for one discussion of this method.
+                              Depends only on the structure of the hierarchy, not on the data itself.
             - "ols"         : OLS estimate proposed by https://robjhyndman.com/papers/Hierarchical6.pdf
                               (Hyndman et al. 2010, "Optimal combination forecasts for hierarchical time series")
                               Also see https://robjhyndman.com/papers/mint.pdf section 2.4.1.
@@ -323,9 +470,20 @@ class ReconcileAdditiveForecasts:
                               Depends only on the structure of the hierarchy, not on the data itself.
             - "mint_sample" : Unbiased transform that minimizes variance of adjusted residuals,
                               using "sample" estimate of original residual variance.
+                              Assumes base forecasts are unbiased.
                               See Wickramasuriya et al. 2019 section 2.4.4.
-                              Depends only on the structure of the hierarchy and forecast error covariances,
-                              not on the data itself.
+                              Depends on the structure of the hierarchy and forecast error covariances.
+            - "custom"      : Optimization parameters can be set by the user. See
+                              `greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts.fit`
+                              method for parameters and their default values.
+                              Depends on the structure of the hierarchy, base forecasts, and actuals, if all terms
+                              are included in the objective.
+
+        If "custom", uses the parameters passed to
+        `greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts.fit`
+        to formulate the convex optimization problem.
+
+        If "bottom_up", "ols", or "mint_sample", the other fit parameters are ignored.
 
     lower_bound : `float` or None
         Lower bound on each entry of ``transform_matrix``.
@@ -343,16 +501,8 @@ class ReconcileAdditiveForecasts:
         Weight for the bias penalty.
         The bias penalty is the mean squared difference
         between adjusted actuals and actuals.
-        The value is 0 for an unbiased transformation,
-        actuals satisfy the constraints.
-    lam_coef : `float`
-        Weight for the coefficient penalty.
-        The coefficient penalty measures the deviation of the
-        transformation matrix from the identity matrix.
-        This penalty is more ad-hoc, and its units are not on
-        the same scale as the other. The unweighted penalty tends
-        to be large, so prefer smaller values of ``lam_coef`` relative
-        to other penalties, if desired.
+        For an unbiased transformation (``unbiased=True``),
+        the bias penalty is 0 so this has no effect.
     lam_train : `float`
         Weight for the training MSE penalty.
         The train MSE penalty measures the mean squared difference
@@ -360,7 +510,7 @@ class ReconcileAdditiveForecasts:
     lam_var : `float`
         Weight for the variance penalty.
         The variance penalty measures the variance of
-        adjusted forecast errors an unbiased transformation.
+        adjusted forecast errors for an unbiased transformation.
         It is reported as the average of the variances across timeseries.
         It is based on the variance of the base forecast error
         variance, ``covariance``. For biased transforms,
@@ -372,52 +522,57 @@ class ReconcileAdditiveForecasts:
             - If a `numpy.array`, row/column i corresponds to the
               ith column after reordering by ``order_dict``. Should
               be reported on the original scale of the data.
-            - If "sample", the sample covariance of residuals.
+            - If "sample", the sample covariance of residuals
+              assuming base forecasts are unbiased.
+              Unlike `numpy.cov`, does not mean center the residuals,
+              and divides by ``n`` instead of ``n-1``.
             - If "identity", the identity matrix.
 
-    weight_adj : `list` [`float`] of length m, or "auto" or None
+    weight_adj : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None
         Weight for the adjustment penalty that allows a different
         weight per-timeseries.
 
-            - If a list, values specify the weight for each forecast
+            - If a numpy array/list, values specify the weight for each forecast
               after reordering by ``order_dict``.
-            - If "auto", proportional to the MedAPE of the forecast.
+            - If "MedAPE", proportional to the MedAPE of the forecast.
+            - If "InverseMedAPE", proportional to 1 / MedAPE of the forecast. This can be useful
+              to penalize adjustment to base forecasts that are already accurate.
             - If None, the identity matrix (equal weights).
 
-    weight_bias : `list` [`float`] of length m, or "auto" or None
+    weight_bias : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None
         Weight for the bias penalty that allows a different
         weight per-timeseries.
 
-            - If a list, values specify the weight for each forecast
+            - If a numpy array/list, values specify the weight for each forecast
               after reordering by ``order_dict``.
-            - If "auto", proportional to the MedAPE of the forecast.
+            - If "MedAPE", proportional to the MedAPE of the forecast. This can be useful
+              to focus more on improving the base forecasts with high error.
+            - If "InverseMedAPE", proportional to 1 / MedAPE of the forecast.
             - If None, the identity matrix (equal weights).
 
-    weight_coef : `numpy.array` of shape (m, m), or "auto" or None
-        Weight for the coefficient penalty that allows a different
-        weight per-timeseries.
+        For an unbiased transformation (``unbiased=True``),
+        the bias penalty is 0 so this has no effect.
 
-            - If a `numpy.array`, values specify the weight for each entry in
-              ``transform_matrix - np.eye(m)``.
-              Note that rows/cols in ``transform_matrix``
-              correspond to the forecasts after reordering by ``order_dict``.
-            - If "auto", a matrix of 1s, with 0s on the diagonal.
-            - If None, a matrix of 1s.
-
-    weight_train : `list` [`float`] of length m, or None
+    weight_train : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None
         Weight for the train MSE penalty that allows a different
         weight per-timeseries.
 
-            - If a list, values specify the weight for each forecast
+            - If a numpy array/list, values specify the weight for each forecast
               after reordering by ``order_dict``.
+            - If "MedAPE", proportional to the MedAPE of the forecast. This can be useful
+              to focus more on improving the base forecasts with high error.
+            - If "InverseMedAPE", proportional to 1 / MedAPE of the forecast.
             - If None, the identity matrix (equal weights).
 
-    weight_var : `list` [`float`] of length m, or None
+    weight_var : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None
         Weight for the variance penalty that allows a different
         weight per-timeseries.
 
-            - If a list, values specify the weight for each forecast
+            - If a numpy array/list, values specify the weight for each forecast
               after reordering by ``order_dict``.
+            - If "MedAPE", proportional to the MedAPE of the forecast. This can be useful
+              to focus more on improving the base forecasts with high error.
+            - If "InverseMedAPE", proportional to 1 / MedAPE of the forecast.
             - If None, the identity matrix (equal weights).
 
     names : `pandas.Index`
@@ -452,7 +607,6 @@ class ReconcileAdditiveForecasts:
 
             ``"adj"``    : adjustment size
             ``"bias"``   : bias of estimator
-            ``"coef"``   : penalty on off-diagonal coefficients
             ``"train"``  : train set MSE
             ``"var"``    : variance of unbiased estimator
             ``"total"``  : sum of the above
@@ -464,7 +618,6 @@ class ReconcileAdditiveForecasts:
 
             - weight_adj
             - weight_bias
-            - weight_coef
             - weight_train
             - weight_var
             - covariance
@@ -478,6 +631,11 @@ class ReconcileAdditiveForecasts:
     evaluation_df : `pandas.DataFrame`, shape (m, # metrics)
         DataFrame of evaluation results on training set. Rows are timeseries,
         columns are metrics. See ``evaluate`` in this class.
+    figures : `dict` [`str`, `plotly.graph_objects.Figure`] or None
+        Plotly figures to visualize evaluation results on training set.
+        Keys are: "base_adj" (base vs adjusted forecast),
+        "adj_size" (adjustment size %), "error" (% error).
+        Each figure contains multiple subplots, one for each timeseries.
     forecasts_test : `pandas.DataFrame`, shape (q, m)
         Forecasted values to test the method.
         Long format where each column is a time series
@@ -497,6 +655,11 @@ class ReconcileAdditiveForecasts:
     evaluation_df_test : `pandas.DataFrame`, shape (m, # metrics)
         DataFrame of evaluation results on test set. Rows are timeseries,
         columns are metrics. See ``evaluate()`` in this class.
+    figures_test : `dict` [`str`, `plotly.graph_objects.Figure`] or None
+        Plotly figures to visualize evaluation results on test set.
+        Keys are: "base_adj" (base vs adjusted forecast),
+        "adj_size" (adjustment size %), "error" (% error).
+        Each figure contains multiple subplots, one for each timeseries.
 
     Methods
     -------
@@ -526,13 +689,11 @@ class ReconcileAdditiveForecasts:
         self.unbiased = False
         self.lam_adj = 0.0
         self.lam_bias = 0.0
-        self.lam_coef = 0.0
         self.lam_train = 0.0
         self.lam_var = 0.0
         self.covariance = None
         self.weight_adj = None
         self.weight_bias = None
-        self.weight_coef = None
         self.weight_train = None
         self.weight_var = None
 
@@ -551,12 +712,14 @@ class ReconcileAdditiveForecasts:
         self.adjusted_forecasts = None
         self.constraint_violation = None
         self.evaluation_df = None
+        self.figures = None
         # test data transformed result
         self.forecasts_test = None
         self.actuals_test = None
         self.adjusted_forecasts_test = None
         self.constraint_violation_test = None
         self.evaluation_df_test = None
+        self.figures_test = None
 
     def _form_constraints(
             self,
@@ -638,31 +801,28 @@ class ReconcileAdditiveForecasts:
             covariance=None):
         """Forms the objective for convex optimization.
 
-        The objective is a sum of five types of errors::
+        The objective is a sum of four types of errors::
 
-            obj = adj + bias + coef + train + var
+            obj = adj + bias + train + var
 
         Where
 
             ``"adj"`` : MSE of adjusted forecasts vs base forecasts (adjustment size)
             ``"bias"`` : MSE of adjusted actuals vs actuals (squared bias)
-            ``"coef"`` : deviation of transformation from identity matrix
             ``"train"`` : MSE of adjusted forecasts vs actuals (training error)
             ``"var"`` : estimated variance of adjusted forecast residuals (variance)
 
         Relative importance of these errors is specified by ``lam_*``.
-        Relative importance of forecasts / coefficients is specified by ``weight_*``.
+        Relative importance of forecasts is specified by ``weight_*``.
 
         The following attributes should be set before calling this method:
 
             - lam_adj       (optional)
             - lam_bias      (optional)
-            - lam_coef      (optional)
             - lam_train     (optional)
             - lam_var       (optional)
             - weight_adj    (optional)
             - weight_bias   (optional)
-            - weight_coef   (optional)
             - weight_train  (optional)
             - weight_var    (optional)
 
@@ -694,41 +854,41 @@ class ReconcileAdditiveForecasts:
         matrices used in the objective.
         """
         n_forecasts = Yf.shape[0]
-        if (isinstance(self.weight_adj, str) and self.weight_adj == "auto") or \
-                (isinstance(self.weight_bias, str) and self.weight_bias == "auto"):
-            # Default weight is the Med-APE for each timeseries
-            weight_auto = np.diag(np.nanmedian(np.abs(Ya - Yf) / np.abs(Ya), axis=1))
-            # Rescales the weight so it has the same norm as `m x m` identity matrix
-            weight_auto = weight_auto * np.linalg.norm(np.eye(n_forecasts)) / np.linalg.norm(weight_auto)
-        else:
-            weight_auto = None
-        weight_adj = get_weight_matrix(weights=self.weight_adj, n_forecasts=n_forecasts, name="weight_adj", weight_auto=weight_auto)
-        weight_bias = get_weight_matrix(weights=self.weight_bias, n_forecasts=n_forecasts, name="weight_bias", weight_auto=weight_auto)
-        if self.weight_coef is None:
-            weight_coef = np.ones((n_forecasts, n_forecasts))
-        elif isinstance(self.weight_coef, str) and self.weight_coef == "auto":
-            weight_coef = np.ones((n_forecasts, n_forecasts)) - np.eye(n_forecasts)
-        else:
-            weight_coef = self.weight_coef
-        weight_train = get_weight_matrix(weights=self.weight_train, n_forecasts=n_forecasts, name="weight_train")
-        weight_var = get_weight_matrix(weights=self.weight_var, n_forecasts=n_forecasts, name="weight_var")
+
+        # Computes default weights proportional to MedAPE and inverse MedAPE of the timeseries
+        err = np.nanmedian(np.abs(Ya - Yf) / np.abs(Ya), axis=1)  # MedAPE
+        weight_err = np.diag(err)
+
+        # Inverse of MedAPE
+        inv_err = err.copy()
+        inv_err[np.where(inv_err == 0)] = np.min(inv_err[np.where(inv_err > 0)])  # Sets zeros to minimum value above zero
+        inv_err = 1 / inv_err
+        weight_inverr = np.diag(inv_err)
+
+        default_weights = {
+            "MedAPE": weight_err,
+            "InverseMedAPE": weight_inverr,
+        }
+        weight_adj = get_weight_matrix(weights=self.weight_adj, n_forecasts=n_forecasts, name="weight_adj", default_weights=default_weights)
+        weight_bias = get_weight_matrix(weights=self.weight_bias, n_forecasts=n_forecasts, name="weight_bias", default_weights=default_weights)
+        weight_train = get_weight_matrix(weights=self.weight_train, n_forecasts=n_forecasts, name="weight_train", default_weights=default_weights)
+        weight_var = get_weight_matrix(weights=self.weight_var, n_forecasts=n_forecasts, name="weight_var", default_weights=default_weights)
 
         if isinstance(covariance, str):
             if covariance == "identity":
                 covariance = np.eye(n_forecasts)
             elif covariance == "sample":
                 # The sample covariance matrix estimate of h-step ahead forecast errors.
-                # Assumes the forecast horizon (h) is fixed.
+                # Assumes the base forecasts are unbiased and the forecast horizon (h) is fixed.
                 # Pass `covariance` to `fit` if a better estimate is available.
                 residuals = Ya - Yf
-                covariance = np.cov(residuals)
+                covariance = residuals @ residuals.T / residuals.shape[1]
             else:
                 raise ValueError("`covariance` not recognized. Provide a valid string in ['identity', 'sample'] or a matrix.")
 
         self.objective_weights = {
             "weight_adj": weight_adj,
             "weight_bias": weight_bias,
-            "weight_coef": weight_coef,
             "weight_train": weight_train,
             "weight_var": weight_var,
             "covariance": covariance
@@ -738,8 +898,6 @@ class ReconcileAdditiveForecasts:
         err_adj = cp.sum_squares(cp.norm(weight_adj @ (transform_variable @ Yf - Yf), p="fro")) / np.size(Yf)
         # Mean squared bias (on observed actuals distribution, weighted by ``weight_bias``)
         err_bias = cp.sum_squares(cp.norm(weight_bias @ (transform_variable @ Ya - Ya), p="fro")) / np.size(Ya)
-        # Mean squared deviation from identity matrix
-        err_coef = cp.sum_squares(cp.norm(cp.multiply(weight_coef, transform_variable - np.eye(n_forecasts)), p="fro")) / np.size(weight_coef)
         # Mean squared train error (proxy for bias^2 + variance) (on observed distribution, weighted by ``weight_train``)
         err_train = cp.sum_squares(cp.norm(weight_train @ (transform_variable @ Yf - Ya), p="fro")) / np.size(Yf)
         # Variance of an unbiased estimator.
@@ -755,8 +913,8 @@ class ReconcileAdditiveForecasts:
         #   (the trace is the sum across timeseries).
         err_var = cp.sum_squares(cp.norm(weight_var @ transform_variable @ sqrtm(covariance), p="fro")) / n_forecasts if covariance is not None else 0.0
 
-        lams = [self.lam_adj, self.lam_bias, self.lam_coef, self.lam_train, self.lam_var]
-        errs = [err_adj, err_bias, err_coef, err_train, err_var]
+        lams = [self.lam_adj, self.lam_bias, self.lam_train, self.lam_var]
+        errs = [err_adj, err_bias, err_train, err_var]
         obj = cp.Minimize(cp.scalar_product(lams, errs))
 
         def objective_fn(transform_matrix, forecast_matrix=Yf, actual_matrix=Ya):
@@ -783,7 +941,6 @@ class ReconcileAdditiveForecasts:
 
                     ``"adj"``    : adjustment size
                     ``"bias"``   : bias of estimator
-                    ``"coef"``   : penalty on off-diagonal coefficients
                     ``"train"``  : train set MSE
                     ``"var"``    : variance of unbiased estimator
                     ``"total"``  : sum of the above
@@ -795,14 +952,12 @@ class ReconcileAdditiveForecasts:
             # NB: Frobenius norm is the default norm
             np_err_adj = np.linalg.norm(weight_adj @ (transform_matrix @ forecast_matrix - forecast_matrix))**2 / np.size(forecast_matrix)
             np_err_bias = np.linalg.norm(weight_bias @ (transform_matrix @ actual_matrix - actual_matrix))**2 / np.size(actual_matrix)
-            np_err_coef = np.linalg.norm(np.multiply(weight_coef, transform_matrix - np.eye(n_forecasts)))**2 / np.size(weight_coef)
             np_err_train = np.linalg.norm(weight_train @ (transform_matrix @ forecast_matrix - actual_matrix))**2 / np.size(actual_matrix)
             np_err_var = np.linalg.norm(weight_var @ transform_matrix @ sqrtm(covariance))**2 / n_forecasts if covariance is not None else 0.0
-            np_errs = [np_err_adj, np_err_bias, np_err_coef, np_err_train, np_err_var]
+            np_errs = [np_err_adj, np_err_bias, np_err_train, np_err_var]
             return {
                 "adj": self.lam_adj * np_err_adj,        # adjustment size
                 "bias": self.lam_bias * np_err_bias,     # bias^2 of estimator
-                "coef": self.lam_coef * np_err_coef,     # penalty on off-diagonal coefficients
                 "train": self.lam_train * np_err_train,  # train error (bias^2 + variance)
                 "var": self.lam_var * np_err_var,        # variance of an *unbiased* estimator
                 "total": np.dot(lams, np_errs)           # Sum of the above
@@ -816,28 +971,26 @@ class ReconcileAdditiveForecasts:
             forecasts,
             actuals,
             order_dict=None,
-            method=None,
+            method=DEFAULT_METHOD,
             levels=None,
             constraint_matrix=None,
             lower_bound=None,
             upper_bound=None,
-            unbiased=False,
-            lam_adj=0.0,
-            lam_bias=0.0,
-            lam_coef=0.0,
-            lam_train=0.0,
-            lam_var=0.0,
+            unbiased=True,
+            lam_adj=1.0,
+            lam_bias=1.0,
+            lam_train=1.0,
+            lam_var=1.0,
             covariance="sample",
-            weight_adj="auto",
-            weight_bias="auto",
-            weight_coef="auto",
+            weight_adj=None,
+            weight_bias=None,
             weight_train=None,
             weight_var=None,
             **solver_kwargs):
         """Fits the ``transform_matrix`` based on input data, constraint, and objective function.
 
         Sets the attributes between ``forecasts`` and ``objective_weights`` as noted
-        in the class description, including ``transform_matrix``, ``transform_variable``,
+        in the class description, inclusive, including ``transform_matrix``, ``transform_variable``,
         ``prob``, ``objective_fn_val``.
 
         If method != "bottom_up" and there is no solution, gives a warning and
@@ -852,9 +1005,9 @@ class ReconcileAdditiveForecasts:
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
         order_dict : `dict` [`str`, `float`] or None, default None
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        method : `str` or None, default None
+        method : `str`, default `~greykite.algo.reconcile.convex.reconcile_forecasts.DEFAULT_METHOD`
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-            If provided, the parameters between ``lower_bound`` and ``weight_var`` below are ignored.
+            If provided, the parameters from ``lower_bound`` to ``weight_var`` below are ignored.
         levels : `list` [`list` [`int`]] or None, default None
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
         constraint_matrix : `numpy.array`, shape (c, m) or None, default None
@@ -865,27 +1018,23 @@ class ReconcileAdditiveForecasts:
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
         unbiased : `bool`, default True
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        lam_adj : `float`, default 0.0
+        lam_adj : `float`, default 1.0
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        lam_bias : `float`, default 0.0
+        lam_bias : `float`, default 1.0
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        lam_coef : `float`, default 0.0
+        lam_train : `float`, default 1.0
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        lam_train : `float`, default 0.0
-            See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        lam_var : `float`, default 0.0
+        lam_var : `float`, default 1.0
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
         covariance : `numpy.array` of shape (m, m), or "sample" or "identity", default "sample"
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        weight_adj : `list` [`float`] of length m, or "auto" or None, default "auto"
+        weight_adj : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None, default None
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        weight_bias : `list` [`float`] of length m, or "auto" or None, default "auto"
+        weight_bias : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None, default None
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        weight_coef : `numpy.array` of shape (m, m), or "auto" or None, default "auto"
+        weight_train : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None, default None
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        weight_train : `list` [`float`] of length m, or None, default None
-            See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
-        weight_var : `list` [`float`] of length m, or None, default None
+        weight_var : `numpy.array` or `list` [`float`] of length m or "MedAPE" or "InverseMedAPE" or None, default None
             See attributes of `~greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts`.
         solver_kwargs : dict
             Specify the CVXPY solver and parameters. E.g. dict(verbose=True).
@@ -911,12 +1060,10 @@ class ReconcileAdditiveForecasts:
         self.covariance = covariance
         self.lam_adj = lam_adj
         self.lam_bias = lam_bias
-        self.lam_coef = lam_coef
         self.lam_train = lam_train
         self.lam_var = lam_var
         self.weight_adj = weight_adj
         self.weight_bias = weight_bias
-        self.weight_coef = weight_coef
         self.weight_train = weight_train
         self.weight_var = weight_var
 
@@ -1050,7 +1197,7 @@ class ReconcileAdditiveForecasts:
 
         return adjusted_forecasts
 
-    def evaluate(self, is_train, actuals_test=None, plot=False, ipython_display=False):
+    def evaluate(self, is_train, actuals_test=None, ipython_display=False, plot=False, plot_num_cols=3):
         """Evaluates the adjustment quality. Computes the following metrics for each
         of the `m` timeseries:
 
@@ -1063,6 +1210,8 @@ class ReconcileAdditiveForecasts:
              "RMSE % change"    : (Adjusted RMSE) / (Base RMSE) - 1
              "MAPE pp change"   : (Adjusted MAPE) - (Base MAPE)
              "MedAPE pp change" : (Adjusted MedAPE) - (Base MedAPE)
+
+        "pp change" refers to percentage point change (difference in %).
 
         Must call ``fit`` and ``transform`` before calling this method.
 
@@ -1077,10 +1226,13 @@ class ReconcileAdditiveForecasts:
             Actual values on test set, required if ``is_train==False``.
             Must have the same shape as the forecasts passed to
             ``transform()``, i.e. ``self.forecasts_test.shape``.
-        plot : `bool`, default False
-            Whether to plot the results. Function is basic.
         ipython_display : `bool`, default False
             Whether to display the evaluation statistics.
+        plot : `bool`, default False
+            Whether to display the evaluation plots.
+        plot_num_cols : `int`, default 3
+            Number of columns in the plot.
+            This is the number of timeseries to plot in each row.
 
         Returns
         -------
@@ -1095,6 +1247,11 @@ class ReconcileAdditiveForecasts:
             - ``"evaluation_df"`` : `pandas.DataFrame`, shape (m, # metrics)
                 Evaluation results. DataFrame with one row for each timeseries,
                 and a column for each metric listed above.
+            - ``"figures"`` : `dict` [`str`, `plotly.graph_objects.Figure`]
+                Plotly figures to visualize evaluation results.
+                Keys are: "base_adj" (base vs adjusted forecast),
+                "adj_size" (adjustment size %), "error" (% error).
+                Each figure contains multiple subplots, one for each timeseries.
 
         If ``is_train``, results are stored to ``self.constraint_violation``,  ``self.evaluation_df``.
         Otherwise, they are stored to ``self.constraint_violation_test``, ``self.evaluation_df_test``.
@@ -1139,14 +1296,14 @@ class ReconcileAdditiveForecasts:
         evaluation_df["MAPE pp change"] = evaluation_df["Adjusted MAPE"] - evaluation_df["Base MAPE"]
         evaluation_df["MedAPE pp change"] = evaluation_df["Adjusted MedAPE"] - evaluation_df["Base MedAPE"]
         column_order = [
-            "RMSE % change",
             "MAPE pp change",
             "MedAPE pp change",
+            "RMSE % change",
             "Base MAPE",
-            "Base MedAPE",
-            "Base RMSE",
             "Adjusted MAPE",
+            "Base MedAPE",
             "Adjusted MedAPE",
+            "Base RMSE",
             "Adjusted RMSE",
         ]
         evaluation_df = evaluation_df[column_order]
@@ -1157,64 +1314,74 @@ class ReconcileAdditiveForecasts:
             else:
                 print(evaluation_df.round(1))
 
+        # Diagnostic plots to see the adjustment.
+        figures = {}
+        x = forecasts.index
+        blue = "#007bd2"  # blue for base forecasts
+        orange = "#ff893a"  # orange for adjusted forecasts
+
+        # Plots the adjusted vs base forecasts on original scale
+        traces = [
+            TraceInfo(df=forecasts, color=blue, name="base", legendgroup="base"),
+            TraceInfo(df=adjusted_forecasts, color=orange, name="adjusted", legendgroup="adjusted")
+        ]
+        fig = evaluation_plot(
+            x=x,
+            traces=traces,
+            num_cols=plot_num_cols,
+            ylabel="value",
+            title="Base vs Adjusted Forecast",
+            hline=False)
+        figures["base_adj"] = fig
+
+        # Plots the adjustment size
+        adjustment_size = 100 * (adjusted_forecasts / forecasts - 1)
+        traces = [
+            TraceInfo(df=adjustment_size, color="sandybrown", name=None, legendgroup=None)
+        ]
+        fig = evaluation_plot(
+            x=x,
+            traces=traces,
+            num_cols=plot_num_cols,
+            ylabel="% adj.",
+            title="Adjustment Size (%)",
+            hline=True)  # includes a reference line for 0% adjustment
+        figures["adj_size"] = fig
+
+        # Plots the change in % error
+        error_adj = 100 * (adjusted_forecasts / actuals - 1)
+        error_base = 100 * (forecasts / actuals - 1)
+        traces = [
+            TraceInfo(df=error_base, color=blue, name="base", legendgroup="base"),
+            TraceInfo(df=error_adj, color=orange, name="adjusted", legendgroup="adjusted")
+        ]
+        fig = evaluation_plot(
+            x=x,
+            traces=traces,
+            num_cols=plot_num_cols,
+            ylabel="% error",
+            title="Forecast Error (%)",
+            hline=True)  # includes a reference line for 0% error
+        figures["error"] = fig
+
         if plot:
-            # Basic plots for convenience.
-            num_cols = forecasts.shape[1]
-            height = 6
-            # See the adjustments on original scale
-            plt.figure(figsize=(height * num_cols, height))
-            for i, dim in enumerate(forecasts.columns):
-                plt.subplot(int(f"1{num_cols}{i+1}"))
-                y1 = np.array(forecasts[dim])
-                y2 = np.array(adjusted_forecasts[dim])
-                plt.plot(y1, label="Base forecast")
-                plt.plot(y2, label="Adjusted forecast")
-                plt.xlabel("time index")
-                plt.ylabel("value")
-                plt.title(dim)
-            plt.suptitle("Base vs Adjusted Forecast")
-            plt.legend()
-            plt.show()
-
-            # Relative difference
-            plt.figure(figsize=(height * num_cols, height))
-            for i, dim in enumerate(forecasts.columns):
-                plt.subplot(int(f"1{num_cols}{i+1}"))
-                y1 = np.array(forecasts[dim])
-                y2 = np.array(adjusted_forecasts[dim])
-                plt.plot(100 * (y2/y1 - 1))
-                plt.xlabel("time index")
-                plt.ylabel("% difference")
-                plt.title(dim)
-            plt.suptitle("% difference: Base vs Adjusted Forecast")
-            plt.show()
-
-            # Change in % error
-            plt.figure(figsize=(height * num_cols, height))
-            for i, dim in enumerate(forecasts.columns):
-                plt.subplot(int(f"1{num_cols}{i+1}"))
-                y1 = np.array(actuals[dim])
-                y2 = np.array(forecasts[dim])
-                y3 = np.array(adjusted_forecasts[dim])
-                plt.plot(y2/y1 - 1, label='Base Forecast')
-                plt.plot(y3/y1 - 1, label='Adjusted Forecast')
-                plt.xlabel("time index")
-                plt.ylabel("% error")
-                plt.title(dim)
-            plt.suptitle('Forecast Percent Error (vs actual)')
-            plt.legend()
-            plt.show()
+            plotly.io.show(figures["base_adj"])
+            plotly.io.show(figures["adj_size"])
+            plotly.io.show(figures["error"])
 
         if is_train:
             self.constraint_violation = constraint_violation
             self.evaluation_df = evaluation_df
+            self.figures = figures
         else:
             self.constraint_violation_test = constraint_violation
             self.evaluation_df_test = evaluation_df
+            self.figures_test = figures
 
         return {
             "constraint_violation": constraint_violation,
-            "evaluation_df": evaluation_df
+            "evaluation_df": evaluation_df,
+            "figures": figures
         }
 
     def fit_transform(self, forecasts, actuals, **fit_kwargs):
@@ -1280,9 +1447,53 @@ class ReconcileAdditiveForecasts:
 
         Returns
         -------
-        evaluation_df : `pandas.DataFrame`
+        evaluation_df_test : `pandas.DataFrame`
             Evaluation results on provided ``forecasts_test``.
         """
         self.transform(forecasts_test)
         self.evaluate(is_train=False, actuals_test=actuals_test, **evaluate_kwargs)
-        return self.evaluation_df
+        return self.evaluation_df_test
+
+    def plot_transform_matrix(self, color_continuous_scale="RdBu", zmin=-1.5, zmax=1.5, **kwargs):
+        """Plots the transform matrix visually, as a grid.
+        By default, negative values are red and positive values are blue.
+
+        Parameters
+        ----------
+        color_continuous_scale : `str` or `list` [`str`], default "RdBu"
+            Colormap used to map scalar data to colors. See `plotly.express.imshow`.
+        zmin : scalar or iterable, default -1.5
+            The minimum value covered by the colormap.
+            See `plotly.express.imshow`.
+        zmax : scalar or iterable, default 1.5
+            The maximum value covered by the colormap.
+            See `plotly.express.imshow`.
+        kwargs : keyword arguments
+            Additional keyword arguments for `plotly.express.imshow`.
+
+        Returns
+        -------
+        fig : `plotly.graph_objects.Figure`
+            The transform matrix plot object.
+        """
+        if self.transform_matrix is None:
+            raise NotFittedError("Must call `fit` first.")
+
+        fig = px.imshow(
+            self.transform_matrix,
+            color_continuous_scale=color_continuous_scale,
+            zmin=zmin,
+            zmax=zmax,
+            labels=dict(x="input", y="output", color="value"),
+            x=list(self.forecasts.columns),
+            y=list(self.forecasts.columns),
+            **kwargs
+        )
+        fig.update_layout(
+            title_text="Transform Matrix",
+            title_x=0.5,
+            title_font_size=20,
+            xaxis_type="category",
+            yaxis_type="category",
+        )
+        return fig

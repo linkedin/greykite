@@ -16,6 +16,7 @@ from greykite.common.python_utils import dictionary_values_to_lists
 from greykite.common.python_utils import flatten_list
 from greykite.common.python_utils import get_integer
 from greykite.common.python_utils import get_pattern_cols
+from greykite.common.python_utils import group_strs_with_regex_patterns
 from greykite.common.python_utils import ignore_warnings
 from greykite.common.python_utils import mutable_field
 from greykite.common.python_utils import reorder_columns
@@ -929,3 +930,55 @@ def test_ignore_warnings():
     with pytest.warns(FutureWarning) as record:
         assert func2(a=1, b=2, c=3) == "1 2 3"
         assert "warning message" in record[0].message.args[0]
+
+
+def test_group_strs_with_regex_patterns():
+    """Tests ``group_strs_with_regex_patterns``."""
+    # Example 1
+    strings = ["sd", "sd1", "rr", "urr", "sd2", "uu"]
+    regex_patterns = ["sd2", "sd", "urr", "rr"]
+    result = group_strs_with_regex_patterns(
+        strings=strings,
+        regex_patterns=regex_patterns)
+
+    assert result == {
+        "str_groups": [["sd2"], ["sd", "sd1"], ["urr"], ["rr"]],
+        "remainder": ["uu"]}
+
+    # Example 2
+    strings = ["sd", "sd1", "rr", "urr", "sd2", "uu", "11", "12"]
+    # First pattern extracts strings which only include digits
+    regex_patterns = ["[0-9]+", "sd", "urr", "rr"]
+    result = group_strs_with_regex_patterns(
+        strings=strings,
+        regex_patterns=regex_patterns)
+
+    assert result == {
+        "str_groups": [["11", "12"], ["sd", "sd1", "sd2"], ["urr"], ["rr"]],
+        "remainder": ["uu"]}
+
+    # Example 3
+    strings = ["sd", "sd1", "rr", "urr", "sd2", "uu", "11", "12"]
+    # First regex extracts strings which include digits
+    regex_patterns = [r".*\d", "sd", "urr", "rr"]
+    result = group_strs_with_regex_patterns(
+        strings=strings,
+        regex_patterns=regex_patterns)
+
+    assert result == {
+        "str_groups": [["sd1", "sd2", "11", "12"], ["sd"], ["urr"], ["rr"]],
+        "remainder": ["uu"]}
+
+    # Example 4
+    strings = ["sd", "sd1", "rr", "urr", "sd2", "sd22", "uu", "11", "12"]
+    # First regex looks for an exact match with "sd2", therefore
+    # "sd22" is not going to be in the first group
+    regex_patterns = [r"^sd2$", r"^sd\d+$"]
+
+    result = group_strs_with_regex_patterns(
+        strings=strings,
+        regex_patterns=regex_patterns)
+
+    assert result == {
+        "str_groups": [["sd2"], ["sd1", "sd22"]],
+        "remainder": ["sd", "rr", "urr", "uu", "11", "12"]}

@@ -15,13 +15,12 @@
 # limitations under the License.
 # original author: Sayan Patra
 """Silverkite plotting functions."""
-import sys
 import warnings
 from typing import Type
 
 import numpy as np
 import pandas as pd
-from plotly import graph_objs as go
+from plotly import graph_objects as go
 from plotly.subplots import make_subplots
 
 from greykite.algo.changepoint.adalasso.changepoints_utils import get_trend_changepoint_dates_from_cols
@@ -141,7 +140,7 @@ class SilverkiteDiagnostics:
 
         Returns
         -------
-        fig: `plotly.graph_objs.Figure`
+        fig: `plotly.graph_objects.Figure`
             Figure plotting components against appropriate time scale.
         """
         if model_dict is None:
@@ -324,7 +323,7 @@ class SilverkiteDiagnostics:
 
         Returns
         -------
-        fig: `plotly.graph_objs.Figure`
+        fig: `plotly.graph_objects.Figure`
             Figure plotting components against appropriate time scale.
 
         Notes
@@ -359,21 +358,11 @@ class SilverkiteDiagnostics:
             if names_kept[0] != value_col:
                 names_kept.insert(0, value_col)
 
-        # Currently we use `plotly:3.10`. Need to import `v4_subplots` from `_plotly_future_`
-        # to be able to use `make_subplots` function
-        if 'plotly' in sys.modules:
-            del sys.modules["plotly"]
-            # `v4_subplots` must be imported before `plotly`
-            from _plotly_future_ import v4_subplots  # isort:skip
-            import plotly  # isort:skip
-            assert v4_subplots  # assert statement to pass flake8 check
-            assert plotly  # assert statement to pass flake8 check
-
         num_rows = len(names_kept)
         fig = make_subplots(rows=num_rows, cols=1, vertical_spacing=0.35 / num_rows)
         if title is None:
             title = "Component plots"
-        fig.layout.update(showlegend=True, title=title, height=350 * num_rows)
+        fig.update_layout(dict(showlegend=True, title=title, title_x=0.5, height=350 * num_rows))
 
         for ind, name in enumerate(names_kept):
             df = components[[time_col, name]]

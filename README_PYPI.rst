@@ -51,6 +51,7 @@ Algorithms currently supported within Greykite’s modeling framework:
 
 * Silverkite (Greykite’s flagship algorithm)
 * `Facebook Prophet <https://facebook.github.io/prophet/>`_
+* `Auto Arima <https://alkaline-ml.com/pmdarima/>`_
 
 Notable Components
 ------------------
@@ -62,6 +63,7 @@ libraries or even outside the forecasting context.
 * ChangepointDetector() - changepoint detection based on adaptive lasso, with visualization.
 * SimpleSilverkiteForecast() - Silverkite algorithm with `forecast_simple` and `predict` methods.
 * SilverkiteForecast() - low-level interface to Silverkite algorithm with `forecast` and `predict` methods.
+* ReconcileAdditiveForecasts() - adjust a set of forecasts to satisfy inter-forecast additivity constraints.
 
 Usage Examples
 --------------

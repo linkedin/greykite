@@ -82,6 +82,14 @@ def test_basic_functionality(daily_data):
     predict = model.predict(test_df.iloc[:3])
     assert cst.PREDICTED_LOWER_COL in predict.columns
     assert cst.PREDICTED_UPPER_COL in predict.columns
+    assert model.estimators[0].forecast.shape[0] == 1
+    assert model.estimators[1].forecast.shape[0] == 1
+    assert model.estimators[2].forecast.shape[0] == 1
+    assert model.forecast.shape[0] == 3
+
+    # Prediction on both training and testing.
+    model.predict(pd.concat([train_df, test_df.iloc[:3]], axis=0).reset_index(drop=True))
+    assert model.forecast.shape[0] == train_df.shape[0] + 3
 
 
 def test_no_coverage(daily_data):

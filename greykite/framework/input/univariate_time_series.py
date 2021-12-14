@@ -410,7 +410,7 @@ class UnivariateTimeSeries:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             Interactive plotly graph of the value against time.
 
             See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`
@@ -561,7 +561,7 @@ class UnivariateTimeSeries:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             plotly graph object showing aggregated timeseries by group.
             x-axis label depends on the grouping method:
             ``groupby_time_feature`` for ``groupby_time_feature``
@@ -1086,7 +1086,7 @@ class UnivariateTimeSeries:
 
         mean_style: `dict` or None, default None
             How to style the mean line, passed as keyword arguments to
-            `plotly.graph_objs.Scatter`. If None, the default is::
+            `plotly.graph_objects.Scatter`. If None, the default is::
 
                 mean_style = {
                     "line": dict(
@@ -1096,7 +1096,7 @@ class UnivariateTimeSeries:
 
         quantile_style: `dict` or None, default None
             How to style the quantile lines, passed as keyword arguments to
-            `plotly.graph_objs.Scatter`. If None, the default is::
+            `plotly.graph_objects.Scatter`. If None, the default is::
 
                 quantile_style = {
                     "line": dict(
@@ -1111,7 +1111,7 @@ class UnivariateTimeSeries:
 
         overlay_style: `dict` or None, default None
             How to style the overlay lines, passed as keyword arguments to
-            `plotly.graph_objs.Scatter`. If None, the default is::
+            `plotly.graph_objects.Scatter`. If None, the default is::
 
                 overlay_style = {
                     "opacity": 0.5,  # makes it easier to see density
@@ -1137,7 +1137,7 @@ class UnivariateTimeSeries:
 
         Returns
         -------
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             plotly graph object showing the mean, quantiles, and overlays.
 
         See Also

@@ -218,6 +218,7 @@ def test_plot_silverkite_components():
     assert fig.layout.height == (len(fig.data) - 2) * 350  # changepoints do not create separate subplots
     assert fig.layout.showlegend is True  # legend for changepoints
     assert fig.layout.title["text"] == "Component plots"
+    assert fig.layout.title["x"] == 0.5
 
     assert fig.layout.xaxis.title["text"] == time_col
     assert fig.layout.xaxis2.title["text"] == time_col
@@ -244,6 +245,7 @@ def test_plot_silverkite_components():
         assert fig.layout.height == expected_length*350
         assert fig.layout.showlegend is True
         assert fig.layout.title["text"] == title
+        assert fig.layout.title["x"] == 0.5
 
         assert fig.layout.xaxis.title["text"] == time_col
         assert fig.layout.xaxis2.title["text"] == "Time of year"

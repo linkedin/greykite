@@ -56,7 +56,8 @@ def generate_df_for_tests(
         fs_coefs=[-1, 3, 4],
         growth_coef=3.0,
         growth_pow=1.1,
-        intercept=0.0):
+        intercept=0.0,
+        seed=123):
     """Generates dataset for unit tests.
 
     :param freq: str
@@ -92,12 +93,15 @@ def generate_df_for_tests(
         Power for growth, as function of continuous time
     :param intercept: float
         Constant term added to Y(t)
+    :param seed: int
+        seed for reproducible result
 
     :return: Dict[str, any]
         contains full dataframe, train dataframe, test dataframe,
         and nrows in test dataframe
     """
-    np.random.seed(123)
+    if seed is not None:
+        np.random.seed(seed)
 
     date_list = pd.date_range(
         start=train_start_date,
@@ -205,7 +209,8 @@ def generate_df_with_reg_for_tests(
         conti_year_origin=None,
         noise_std=2.0,
         remove_extra_cols=True,
-        mask_test_actuals=False):
+        mask_test_actuals=False,
+        seed=123):
     """Generates dataset for unit tests that includes regressor columns
     :param freq: str
         pd.date_range freq parameter, e.g. H or D
@@ -226,9 +231,12 @@ def generate_df_with_reg_for_tests(
         whether to remove extra columns besides TIME_COL, VALUE_COL
     :param mask_test_actuals: bool
         whether to set y values to np.NaN in the test set.
+    :param seed: int
+        seed for reproducible result
     :return: Dict with train dataframe, test dataframe, and nrows in test dataframe
     """
-    np.random.seed(123)
+    if seed is not None:
+        np.random.seed(seed)
 
     result_list = generate_df_for_tests(
         freq,
@@ -322,7 +330,8 @@ def generate_test_changepoint_df(
         periods=200,
         n_changepoints=3,
         signal_strength=1/5,
-        err_std=1.0):
+        err_std=1.0,
+        seed=123):
     """Generates df to test change points
 
     The generated df is simple zigzag shaped over time with noise,
@@ -340,6 +349,8 @@ def generate_test_changepoint_df(
         Time series signal strength.
     err_std : `float`
         Standard deviation of error.
+    seed : `int`, default is 123
+        Seed for reporducible result.
 
     Returns
     -------
@@ -348,7 +359,8 @@ def generate_test_changepoint_df(
             `"ts"` : time column.
             `"y"` : value column.
     """
-    np.random.seed(123)
+    if seed is not None:
+        np.random.seed(seed)
     start = "2020-01-01"
     y = np.array([0])
     nochange_period = np.ceil(periods / (n_changepoints + 1))

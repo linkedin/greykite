@@ -29,7 +29,6 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 from pandas.tseries.frequencies import to_offset
-from plotly.offline import iplot
 from sklearn.base import RegressorMixin
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.linear_model import LassoCV
@@ -856,7 +855,7 @@ class ChangepointDetector:
         -------
         None (if ``plot`` == True)
             The function shows a plot.
-        fig : `plotly.graph_objs.Figure`
+        fig : `plotly.graph_objects.Figure`
             The plot object.
         """
         # Adds observation
@@ -942,7 +941,7 @@ class ChangepointDetector:
         )
         if fig is not None and len(fig.data) > 0:
             if plot:
-                iplot(fig)
+                fig.show()
             else:
                 return fig
         else:

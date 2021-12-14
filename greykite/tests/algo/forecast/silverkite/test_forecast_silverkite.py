@@ -5,7 +5,9 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import pytest
+from pandas.tseries.frequencies import to_offset
 from pandas.util.testing import assert_frame_equal
+from testfixtures import LogCapture
 
 from greykite.algo.changepoint.adalasso.changepoint_detector import ChangepointDetector
 from greykite.algo.changepoint.adalasso.changepoints_utils import get_changepoint_dates_from_changepoints_dict
@@ -16,6 +18,7 @@ from greykite.common.constants import ADJUSTMENT_DELTA_COL
 from greykite.common.constants import END_DATE_COL
 from greykite.common.constants import ERR_STD_COL
 from greykite.common.constants import EVENT_DF_LABEL_COL
+from greykite.common.constants import LOGGER_NAME
 from greykite.common.constants import START_DATE_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
@@ -119,8 +122,6 @@ def plt_check_ci(fut_df, test_df):
     """
     # imports are done within the function as the function is not
     # automatically run when tests run
-    import plotly
-
     from greykite.common.constants import ACTUAL_COL
     from greykite.common.constants import PREDICTED_COL
     from greykite.common.constants import PREDICTED_LOWER_COL
@@ -154,7 +155,7 @@ def plt_check_ci(fut_df, test_df):
         ci_boundary_curve_color="rgb(56, 119, 166, 0.95)",  # blue navy color with opacity of 0.95
         ci_boundary_curve_width=0.5)
 
-    plotly.offline.plot(fig)
+    assert fig is not None
 
 
 def test_forecast_silverkite_hourly(hourly_data):
@@ -180,7 +181,7 @@ def test_forecast_silverkite_hourly(hourly_data):
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.3
@@ -212,7 +213,7 @@ def test_forecast_silverkite_hourly(hourly_data):
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.3
@@ -225,6 +226,63 @@ def test_forecast_silverkite_hourly(hourly_data):
         test_df=test_df,
         file_name=None)
     """
+
+
+def test_forecast_silverkite_pred_cols(hourly_data):
+    """Tests silverkite on hourly data with varying predictor set ups.
+    In particular we test ``drop_pred_cols``, ``admitted_pred_cols``"""
+    train_df = hourly_data["train_df"]
+    test_df = hourly_data["test_df"]
+    fut_time_num = hourly_data["fut_time_num"]
+
+    # Tests dropping predictors
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=None,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5]}),
+        extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"],
+        drop_pred_cols=["sin1_tod", "cos1_tod"])
+
+    assert "sin1_tod" not in trained_model["pred_cols"]
+    assert "cos1_tod" not in trained_model["pred_cols"]
+    assert "sin2_tod" in trained_model["pred_cols"]
+    assert "cos2_tod" in trained_model["pred_cols"]
+
+    # Tests admitting selected predictors only
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=None,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5]}),
+        extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"],
+        explicit_pred_cols=["sin1_tod", "cos1_tod", "ct_sqrt"])
+
+    assert set(trained_model["pred_cols"]) == set(["sin1_tod", "cos1_tod", "ct_sqrt"])
+
+    fut_df = silverkite.predict_n_no_sim(
+        fut_time_num=fut_time_num,
+        trained_model=trained_model,
+        freq="H",
+        new_external_regressor_df=None)["fut_df"]
+    err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
+    enum = EvaluationMetricEnum.Correlation
+    assert err[enum.get_metric_name()] > 0.2
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    assert err[enum.get_metric_name()] < 6.5
+    assert trained_model["x_mat"]["sin1_tod"][0] == 0
 
 
 def test_forecast_silverkite_hourly_regressor():
@@ -263,17 +321,19 @@ def test_forecast_silverkite_hourly_regressor():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=test_df[regressor_cols])
+        new_external_regressor_df=test_df[regressor_cols])["fut_df"]
+
     result2 = silverkite.predict_no_sim(
         fut_df=test_df[[TIME_COL, VALUE_COL]],
         trained_model=trained_model,
         past_df=None,
-        new_external_regressor_df=test_df[regressor_cols])
+        new_external_regressor_df=test_df[regressor_cols])["fut_df"]
+
     result3 = silverkite.predict_no_sim(
         fut_df=test_df[[TIME_COL, VALUE_COL] + regressor_cols],
         trained_model=trained_model,
         past_df=None,
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     # checks for equality of contents, ignoring row/column order
     # `df` may contain extra columns not required by `silverkite.predict_n(_no_sim`
     # and VALUE_COL is the last column in `silverkite.predict_n(_no_sim` but the
@@ -294,6 +354,218 @@ def test_forecast_silverkite_hourly_regressor():
         test_df=test_df,
         file_name=None)
     """
+
+
+def test_predict_no_sim_x_mat():
+    """Tests silverkite returned ``x_mat`` at predict phase"""
+    hourly_data = generate_df_with_reg_for_tests(
+        freq="H",
+        periods=24 * 10,
+        train_start_date=datetime.datetime(2018, 7, 1),
+        conti_year_origin=2018)
+    regressor_cols = ["regressor1", "regressor_bool", "regressor_categ"]
+    train_df = hourly_data["train_df"].reset_index(drop=True)
+    test_df = hourly_data["test_df"].reset_index(drop=True)
+
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        training_fraction=None,
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5],
+            "seas_names": None}),
+        extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"] + regressor_cols,
+        fit_algorithm="ridge")
+
+    result = silverkite.predict_no_sim(
+        fut_df=test_df[[TIME_COL, VALUE_COL]],
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=test_df[regressor_cols])
+
+    x_mat_via_predict = result["x_mat"]
+    fut_df = result["fut_df"]
+
+    assert x_mat_via_predict.shape == (47, 190)
+
+    ml_model = trained_model["ml_model"]
+    ml_model_coef = ml_model.coef_
+    intercept = ml_model.intercept_
+    x_mat_via_predict_weighted = x_mat_via_predict * ml_model_coef
+    # Checks to see if the manually calculated forecast is consistent
+    # Note that intercept from the regression based ML model needs to be aded
+    calculated_pred = x_mat_via_predict_weighted.sum(axis=1) + intercept
+    assert max(abs(calculated_pred - fut_df["y"])) < 1e-5
+
+
+def test_predict_via_sim_x_mat():
+    """Tests silverkite returned ``x_mat`` at predict phase using
+    simulations based approach"""
+    hourly_data = generate_df_with_reg_for_tests(
+        freq="H",
+        periods=24 * 50,
+        train_start_date=datetime.datetime(2018, 7, 1),
+        conti_year_origin=2018)
+    regressor_cols = ["regressor1", "regressor_bool", "regressor_categ"]
+    train_df = hourly_data["train_df"].reset_index(drop=True)
+    test_df = hourly_data["test_df"].reset_index(drop=True)
+
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        training_fraction=None,
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5],
+            "seas_names": None}),
+        extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"] + regressor_cols,
+        fit_algorithm="rf",
+        fit_algorithm_params={"min_samples_split": 3})
+
+    assert trained_model["ml_model"].min_samples_split == 3
+
+    # Predicts without simulations
+    result1 = silverkite.predict_no_sim(
+        fut_df=test_df[[TIME_COL, VALUE_COL]][:10],
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=test_df[regressor_cols][:10])
+
+    fut_df1 = result1["fut_df"]
+    x_mat1 = result1["x_mat"]
+    assert x_mat1.shape == (10, 190)
+
+    # Predicts with simulations
+    result2 = silverkite.predict_via_sim(
+        fut_df=test_df[[TIME_COL, VALUE_COL]][:10],
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=test_df[regressor_cols][:10],
+        simulation_num=3,
+        include_err=False)
+
+    fut_df2 = result2["fut_df"]
+    x_mat2 = result2["x_mat"]
+    assert x_mat2.shape == (10, 190)
+
+    assert_frame_equal(x_mat1, x_mat2, check_like=True)
+    assert_frame_equal(fut_df1, fut_df2, check_like=True)
+
+
+def test_predict_x_mat():
+    """Tests silverkite returned ``x_mat`` at predict phase"""
+    hourly_data = generate_df_with_reg_for_tests(
+        freq="H",
+        periods=24 * 50,
+        train_start_date=datetime.datetime(2018, 7, 1),
+        conti_year_origin=2018)
+    regressor_cols = ["regressor1", "regressor_bool", "regressor_categ"]
+    train_df = hourly_data["train_df"].reset_index(drop=True)
+    test_df = hourly_data["test_df"].reset_index(drop=True)
+
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        training_fraction=None,
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5],
+            "seas_names": None}),
+        extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"] + regressor_cols,
+        fit_algorithm="rf",
+        fit_algorithm_params={"min_samples_split": 3})
+
+    assert trained_model["ml_model"].min_samples_split == 3
+
+    result = silverkite.predict(
+        fut_df=test_df[[TIME_COL, VALUE_COL]],
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=test_df[regressor_cols])
+
+    x_mat = result["x_mat"]
+    assert x_mat.shape == (239, 190)
+
+    # predict on training data
+    result = silverkite.predict(
+        fut_df=train_df[[TIME_COL, VALUE_COL]],
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=train_df[regressor_cols])
+
+    x_mat = result["x_mat"]
+    assert x_mat.shape == (len(train_df), 190)
+
+    result = silverkite.predict(
+        fut_df=train_df[[TIME_COL, VALUE_COL]],
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=train_df[regressor_cols])
+
+    x_mat = result["x_mat"]
+    assert x_mat.shape == (len(train_df), 190)
+
+    # Tests for the case that prediction is needed for
+    # a combination of fitted and future data
+    fut_df_large = pd.concat(
+        [train_df[[TIME_COL, VALUE_COL]], test_df[[TIME_COL, VALUE_COL]]],
+        axis=0,
+        ignore_index=True,
+        sort=False)
+
+    new_external_regressor_df = pd.concat(
+        [train_df[regressor_cols], test_df[regressor_cols]],
+        axis=0,
+        ignore_index=True,
+        sort=False)
+
+    result = silverkite.predict(
+        fut_df=fut_df_large,
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=new_external_regressor_df)
+
+    x_mat = result["x_mat"]
+    assert x_mat.shape == (len(train_df) + len(test_df), 190)
+
+    # Tests for the case that prediction is needed for
+    # a combination of a part of fitted and future data
+    fut_df_large = pd.concat(
+        [train_df[[TIME_COL, VALUE_COL]][100:], test_df[[TIME_COL, VALUE_COL]]],
+        axis=0,
+        ignore_index=True,
+        sort=False)
+
+    new_external_regressor_df = pd.concat(
+        [train_df[regressor_cols][100:], test_df[regressor_cols]],
+        axis=0,
+        ignore_index=True,
+        sort=False)
+
+    result = silverkite.predict(
+        fut_df=fut_df_large,
+        trained_model=trained_model,
+        past_df=None,
+        new_external_regressor_df=new_external_regressor_df)
+
+    x_mat = result["x_mat"]
+    assert x_mat.shape == (len(train_df) + len(test_df) - 100, 190)
 
 
 def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
@@ -331,17 +603,19 @@ def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=test_df[lagged_regressor_cols])
+        new_external_regressor_df=test_df[lagged_regressor_cols])["fut_df"]
+
     result2 = silverkite.predict_no_sim(
         fut_df=test_df[[TIME_COL, VALUE_COL]],
         trained_model=trained_model,
         past_df=train_df[lagged_regressor_cols],
-        new_external_regressor_df=test_df[lagged_regressor_cols])
+        new_external_regressor_df=test_df[lagged_regressor_cols])["fut_df"]
+
     result3 = silverkite.predict_no_sim(
         fut_df=test_df[[TIME_COL, VALUE_COL] + lagged_regressor_cols],
         trained_model=trained_model,
         past_df=train_df[lagged_regressor_cols],
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
 
     assert_frame_equal(result1, result2, check_like=True)
     assert_frame_equal(result1, result3, check_like=True)
@@ -363,12 +637,14 @@ def test_forecast_silverkite_hourly_lagged_regressor(lagged_regressor_dict):
         fut_df=test_df[[TIME_COL, VALUE_COL]].head(1),
         trained_model=trained_model,
         past_df=train_df[lagged_regressor_cols],
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
+
     result5 = silverkite.predict_n_no_sim(
         fut_time_num=1,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
+
     assert_frame_equal(result4, result5, check_like=True)
 
     # Otherwise, if `min_lagged_regressor_order` is less than `fut_time_num`
@@ -446,11 +722,12 @@ def test_forecast_silverkite_freq():
             fut_time_num=fut_time_num,
             trained_model=trained_model,
             freq=freq,
-            new_external_regressor_df=None)
+            new_external_regressor_df=None)["fut_df"]
         # checks silverkite.predict_n(_no_sim
         fut_df_via_predict = silverkite.predict_no_sim(
             fut_df=test_df,
-            trained_model=trained_model)
+            trained_model=trained_model)["fut_df"]
+
         assert_frame_equal(
             fut_df[[TIME_COL]],
             fut_df_via_predict[[TIME_COL]],
@@ -572,7 +849,7 @@ def test_forecast_silverkite_seasonality_changepoints():
             "ts": pd.date_range(start=df_pt["ts"].iloc[-1], periods=10, freq="D")
         }),
         trained_model=trained_model
-    )
+    )["fut_df"]
     assert pred.shape[0] == 10
     assert "y" in pred.columns
 
@@ -624,11 +901,11 @@ def test_forecast_silverkite_hourly_changepoint_uniform(hourly_data):
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     # checks predict_n
     fut_df_via_predict = silverkite.predict_no_sim(
         fut_df=test_df,
-        trained_model=trained_model)
+        trained_model=trained_model)["fut_df"]
     assert_frame_equal(
         fut_df[[TIME_COL]],
         fut_df_via_predict[[TIME_COL]],
@@ -704,11 +981,11 @@ def test_forecast_silverkite_hourly_changepoint_custom(hourly_data):
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     # checks `silverkite.predict_n(_no_sim`
     fut_df_via_predict = silverkite.predict_no_sim(
         fut_df=test_df,
-        trained_model=trained_model)
+        trained_model=trained_model)["fut_df"]
     assert_frame_equal(
         fut_df[[TIME_COL]],
         fut_df_via_predict[[TIME_COL]],
@@ -816,7 +1093,7 @@ def test_forecast_silverkite_with_autoreg(hourly_data):
             fut_time_num=fut_time_num,
             trained_model=trained_model,
             freq="H",
-            new_external_regressor_df=None)
+            new_external_regressor_df=None)["fut_df"]
 
         return {
             "fut_df": fut_df,
@@ -944,7 +1221,7 @@ def test_forecast_silverkite_with_lagged_regressor(lagged_regressor_dict):
             fut_time_num=fut_time_num,
             trained_model=trained_model,
             freq="H",
-            new_external_regressor_df=test_df[all_extra_cols])
+            new_external_regressor_df=test_df[all_extra_cols])["fut_df"]
 
         return {
             "fut_df": fut_df,
@@ -1105,7 +1382,7 @@ def test_forecast_silverkite_with_true_lagged_regressor():
             fut_time_num=fut_time_num,
             trained_model=trained_model,
             freq="H",
-            new_external_regressor_df=test_df[all_extra_cols])
+            new_external_regressor_df=test_df[all_extra_cols])["fut_df"]
 
         return {
             "fut_df": fut_df,
@@ -1192,7 +1469,7 @@ def test_forecast_silverkite_2min():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="2min",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.5
@@ -1242,7 +1519,7 @@ def test_forecast_silverkite_with_weighted_col():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="1D",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.RootMeanSquaredError
     assert round(err[enum.get_metric_name()], 2) == 0.21
@@ -1269,7 +1546,7 @@ def test_forecast_silverkite_with_weighted_col():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="1D",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.RootMeanSquaredError
     # The error is slightly smaller than before
@@ -1316,7 +1593,7 @@ def test_forecast_silverkite_2min_with_uncertainty():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="2min",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
 
     fut_df["y_true"] = test_df["y"]
     fut_df["inside_95_ci"] = fut_df.apply(
@@ -1379,7 +1656,7 @@ def test_forecast_silverkite_simulator():
         trained_model=trained_model,
         past_df=past_df,
         new_external_regressor_df=None,
-        include_err=True)
+        include_err=True)["sim_df"]
 
     np.random.seed(123)
     assert sim_df[VALUE_COL].dtype == "float64"
@@ -1395,7 +1672,7 @@ def test_forecast_silverkite_simulator():
         trained_model=trained_model,
         past_df=past_df,
         new_external_regressor_df=None,
-        include_err=False)
+        include_err=False)["sim_df"]
 
     np.random.seed(123)
     assert sim_df[VALUE_COL].dtype == "float64"
@@ -1409,10 +1686,10 @@ def test_forecast_silverkite_simulator():
     sim_df = silverkite.simulate_multi(
         fut_df=fut_df,
         trained_model=trained_model,
-        sim_num=2,
+        simulation_num=2,
         past_df=past_df,
         new_external_regressor_df=None,
-        include_err=False)
+        include_err=False)["sim_df"]
 
     assert sim_df[VALUE_COL].dtype == "float64"
     assert sim_df.shape[0] == fut_df.shape[0] * 2
@@ -1420,8 +1697,8 @@ def test_forecast_silverkite_simulator():
 
     """
     # making a plot of comparison between 10 simulations and observed
-    sim_num = 10
-    sim_labels = [f"sim{i}" for i in range(sim_num)]
+    simulation_num = 10
+    sim_labels = [f"sim{i}" for i in range(simulation_num)]
     colors_dict = {label: "grey" for label in sim_labels}
 
     df_dict = {}
@@ -1546,8 +1823,8 @@ def test_forecast_silverkite_predict_via_sim():
         trained_model=trained_model,
         past_df=past_df,
         new_external_regressor_df=None,
-        sim_num=10,
-        include_err=True)
+        simulation_num=10,
+        include_err=True)["fut_df"]
 
     assert list(fut_df.columns) == [
         TIME_COL,
@@ -1633,7 +1910,8 @@ def test_silverkite_predict():
                 "sample_size_thresh": 20,
                 "small_sample_size_method": "std_quantiles",
                 "small_sample_size_quantile": 0.98}},
-        autoreg_dict=autoreg_dict)
+        autoreg_dict=autoreg_dict,
+        simulation_num=5)
 
     # ``fut_df`` does not include training data
     np.random.seed(123)
@@ -1642,7 +1920,6 @@ def test_silverkite_predict():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1663,7 +1940,6 @@ def test_silverkite_predict():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1686,7 +1962,6 @@ def test_silverkite_predict():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1766,7 +2041,6 @@ def test_predict_silverkite_with_regressors():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1789,7 +2063,6 @@ def test_predict_silverkite_with_regressors():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=fut_df[regressor_cols].copy(),
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1811,7 +2084,6 @@ def test_predict_silverkite_with_regressors():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1833,7 +2105,6 @@ def test_predict_silverkite_with_regressors():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=fut_df_including_training[regressor_cols].copy(),
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1857,7 +2128,6 @@ def test_predict_silverkite_with_regressors():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -1881,7 +2151,6 @@ def test_predict_silverkite_with_regressors():
         trained_model=trained_model,
         past_df=None,
         new_external_regressor_df=fut_df_with_gap[regressor_cols].copy(),
-        sim_num=5,
         include_err=None,
         force_no_sim=False,
         na_fill_func=lambda s: s.interpolate().bfill())  # Simple NA fill is used for easy to track testing
@@ -1906,10 +2175,10 @@ def test_predict_silverkite_with_regressors():
 
     expected_fut_df_gap = pd.DataFrame({
         TIME_COL: expected_time_gaps,
-        "regressor1": [test_df.iloc[len_gap]["regressor1"]]*len_gap,
-        "regressor_bool": [test_df.iloc[len_gap]["regressor_bool"]]*len_gap,
-        "regressor_categ": [test_df.iloc[len_gap]["regressor_categ"]]*len_gap
-        })
+        "regressor1": [test_df.iloc[len_gap]["regressor1"]] * len_gap,
+        "regressor_bool": [test_df.iloc[len_gap]["regressor_bool"]] * len_gap,
+        "regressor_categ": [test_df.iloc[len_gap]["regressor_categ"]] * len_gap
+    })
 
     expected_fut_df_gap[TIME_COL] = pd.to_datetime(expected_fut_df_gap[TIME_COL])
     assert_frame_equal(fut_df_gap, expected_fut_df_gap)
@@ -1935,15 +2204,15 @@ def test_predict_silverkite_with_lagged_regressors():
     autoreg_dict1 = {
         "lag_dict": {"orders": [7]},
         "agg_lag_dict": {
-            "orders_list": [[7, 7*2, 7*3]],
-            "interval_list": [(8, 7*2)]},
+            "orders_list": [[7, 7 * 2, 7 * 3]],
+            "interval_list": [(8, 7 * 2)]},
         "series_na_fill_func": lambda s: s.bfill().ffill()}
 
     autoreg_dict2 = {
         "lag_dict": {"orders": [28]},
         "agg_lag_dict": {
             "orders_list": [],
-            "interval_list": [(7*4 + 1, 7*5)]},
+            "interval_list": [(7 * 4 + 1, 7 * 5)]},
         "series_na_fill_func": lambda s: s.bfill().ffill()}
 
     lagged_regressor_dict = {
@@ -2045,7 +2314,8 @@ def test_predict_silverkite_with_lagged_regressors():
         fs_components_df=fs_components_df,
         extra_pred_cols=regressor_cols,
         autoreg_dict=None,
-        lagged_regressor_dict=lagged_regressor_dict)
+        lagged_regressor_dict=lagged_regressor_dict,
+        simulation_num=5)
 
     np.random.seed(123)
     result3 = silverkite.predict(
@@ -2089,7 +2359,7 @@ def test_predict_silverkite_exceptions():
     fut_df[VALUE_COL] = None
     fut_df_with_before_training = train_df[[TIME_COL]]
     fut_df_with_before_training[TIME_COL] = (
-        fut_df_with_before_training[TIME_COL] - datetime.timedelta(days=1))
+            fut_df_with_before_training[TIME_COL] - datetime.timedelta(days=1))
 
     autoreg_dict = {
         "lag_dict": {"orders": list(range(7, 14))},
@@ -2120,7 +2390,8 @@ def test_predict_silverkite_exceptions():
             "order": [3, 0, 5]}),
         extra_pred_cols=["ct1", "dow_hr"],
         uncertainty_dict=uncertainty_dict,
-        autoreg_dict=autoreg_dict)
+        autoreg_dict=autoreg_dict,
+        simulation_num=5)
 
     # Trains a model with uncertainty
     trained_model_no_uncertainty = silverkite.forecast(
@@ -2136,7 +2407,8 @@ def test_predict_silverkite_exceptions():
             "order": [3, 0, 5]}),
         extra_pred_cols=["ct1", "dow_hr"],
         uncertainty_dict=None,
-        autoreg_dict=autoreg_dict)
+        autoreg_dict=autoreg_dict,
+        simulation_num=5)
 
     # Checks Exception for ``include_err = True`` while no uncertainty in the model
     expected_match = "However model does not support uncertainty. "
@@ -2146,19 +2418,7 @@ def test_predict_silverkite_exceptions():
             trained_model=trained_model_no_uncertainty,
             past_df=None,
             new_external_regressor_df=None,
-            sim_num=5,
             include_err=True,
-            force_no_sim=False)
-
-    expected_match = "cannot have timestamps occurring before the training data"
-    with pytest.raises(ValueError, match=expected_match):
-        silverkite.predict(
-            fut_df=fut_df_with_before_training,
-            trained_model=trained_model,
-            past_df=None,
-            new_external_regressor_df=None,
-            sim_num=5,
-            include_err=None,
             force_no_sim=False)
 
     expected_match = "must be a dataframe of non-zero size"
@@ -2168,7 +2428,6 @@ def test_predict_silverkite_exceptions():
             trained_model=trained_model,
             past_df=None,
             new_external_regressor_df=None,
-            sim_num=5,
             include_err=None,
             force_no_sim=False)
 
@@ -2181,7 +2440,6 @@ def test_predict_silverkite_exceptions():
             trained_model=trained_model,
             past_df=None,
             new_external_regressor_df=None,
-            sim_num=5,
             include_err=None,
             force_no_sim=False)
 
@@ -2243,7 +2501,8 @@ def test_predict_silverkite_compare_various_ways():
                     "sample_size_thresh": 20,
                     "small_sample_size_method": "std_quantiles",
                     "small_sample_size_quantile": 0.98}},
-            autoreg_dict=autoreg_dict)
+            autoreg_dict=autoreg_dict,
+            simulation_num=5)
 
     trained_model_old_lag_only = fit_silverkite(
         autoreg_dict=autoreg_dict_old_lag_only)
@@ -2262,7 +2521,7 @@ def test_predict_silverkite_compare_various_ways():
         fut_time_num=test_df.shape[0],
         trained_model=trained_model_old_lag_only,
         freq="1H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
 
     # Directly using `silverkite.predict_n(` which will use simulations.
     # We expect the same result as above.
@@ -2272,7 +2531,6 @@ def test_predict_silverkite_compare_various_ways():
         trained_model=trained_model_old_lag_only,
         freq="1H",
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -2289,7 +2547,6 @@ def test_predict_silverkite_compare_various_ways():
         trained_model=trained_model_old_lag_only,
         past_df=train_df[[TIME_COL, VALUE_COL]].copy(),
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -2302,13 +2559,12 @@ def test_predict_silverkite_compare_various_ways():
     # Checks the case where `past_df` is not passed
     np.random.seed(123)
     predict_info = silverkite.predict(
-            fut_df=fut_df.copy(),
-            trained_model=trained_model_old_lag_only,
-            past_df=None,
-            new_external_regressor_df=None,
-            sim_num=5,
-            include_err=None,
-            force_no_sim=False)
+        fut_df=fut_df.copy(),
+        trained_model=trained_model_old_lag_only,
+        past_df=None,
+        new_external_regressor_df=None,
+        include_err=None,
+        force_no_sim=False)
 
     assert predict_info["simulations_not_used"]
     assert predict_info["fut_df_info"]["inferred_forecast_horizon"] == 5
@@ -2320,6 +2576,7 @@ def test_predict_silverkite_compare_various_ways():
     assert_frame_equal(
         fut_df_with_ar[[TIME_COL, VALUE_COL]],
         fut_df_with_ar_2[[TIME_COL, VALUE_COL]])
+
     assert_frame_equal(
         fut_df_with_ar[[TIME_COL, VALUE_COL]],
         fut_df_with_ar_3[[TIME_COL, VALUE_COL]])
@@ -2344,8 +2601,8 @@ def test_predict_silverkite_compare_various_ways():
         trained_model=trained_model_with_recent_lag,
         freq="1H",
         new_external_regressor_df=None,
-        sim_num=5,
-        include_err=None)
+        include_err=None,
+        simulation_num=5)["fut_df"]
 
     # Directly uses ``silverkite.predict_n(`` which will use simulations.
     # We expect the same result as above.
@@ -2355,7 +2612,6 @@ def test_predict_silverkite_compare_various_ways():
         trained_model=trained_model_with_recent_lag,
         freq="1H",
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -2371,7 +2627,6 @@ def test_predict_silverkite_compare_various_ways():
         trained_model=trained_model_with_recent_lag,
         past_df=train_df[[TIME_COL, VALUE_COL]].copy(),
         new_external_regressor_df=None,
-        sim_num=5,
         include_err=None,
         force_no_sim=False)
 
@@ -2384,13 +2639,12 @@ def test_predict_silverkite_compare_various_ways():
     # Checks the case when`past_df` is not passed.
     np.random.seed(123)
     predict_info = silverkite.predict(
-            fut_df=fut_df,
-            trained_model=trained_model_with_recent_lag,
-            past_df=None,
-            new_external_regressor_df=None,
-            sim_num=5,
-            include_err=None,
-            force_no_sim=False)
+        fut_df=fut_df,
+        trained_model=trained_model_with_recent_lag,
+        past_df=None,
+        new_external_regressor_df=None,
+        include_err=None,
+        force_no_sim=False)
 
     assert not predict_info["simulations_not_used"]
     assert predict_info["fut_df_info"]["inferred_forecast_horizon"] == 5
@@ -2421,7 +2675,7 @@ def test_predict_silverkite_compare_various_ways():
         fut_time_num=test_df.shape[0],
         trained_model=trained_model_no_autoreg,
         freq="1H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
 
     # Directly calculated via ``silverkite.predict_n(``
     predict_info = silverkite.predict_n(
@@ -2437,7 +2691,6 @@ def test_predict_silverkite_compare_various_ways():
         trained_model=trained_model_no_autoreg,
         past_df=train_df[[TIME_COL, VALUE_COL]].copy(),
         new_external_regressor_df=None,
-        sim_num=10,
         include_err=None,
         force_no_sim=False)
     fut_df_no_ar3 = predict_info["fut_df"]
@@ -2522,7 +2775,8 @@ def test_silverkite_predict_n_include_err_exception():
             "order": [0, 1]}),
         extra_pred_cols=[],
         uncertainty_dict=None,
-        autoreg_dict=None)
+        autoreg_dict=None,
+        simulation_num=5)
 
     expected_match = "However model does not support uncertainty. "
 
@@ -2532,7 +2786,6 @@ def test_silverkite_predict_n_include_err_exception():
             trained_model=trained_model,
             freq="1H",
             new_external_regressor_df=None,
-            sim_num=5,
             include_err=True,
             force_no_sim=False)
 
@@ -2541,7 +2794,6 @@ def test_silverkite_predict_n_include_err_exception():
             fut_df=fut_df,
             trained_model=trained_model,
             new_external_regressor_df=None,
-            sim_num=5,
             include_err=True,
             force_no_sim=False)
 
@@ -2589,7 +2841,7 @@ def test_forecast_silverkite_simulator_regressor():
         trained_model=trained_model,
         past_df=past_df,
         new_external_regressor_df=test_df[regressor_cols],
-        include_err=True)
+        include_err=True)["sim_df"]
 
     assert sim_df[VALUE_COL].dtype == "float64"
     err = calc_pred_err(test_df[VALUE_COL], sim_df[VALUE_COL])
@@ -2605,8 +2857,8 @@ def test_forecast_silverkite_simulator_regressor():
         trained_model=trained_model,
         past_df=past_df,
         new_external_regressor_df=test_df[regressor_cols],
-        sim_num=10,
-        include_err=True)
+        simulation_num=10,
+        include_err=True)["fut_df"]
 
     assert list(fut_df.columns) == [
         TIME_COL,
@@ -2677,7 +2929,7 @@ def test_forecast_silverkite_with_holidays_hourly():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.3
@@ -2749,7 +3001,7 @@ def test_forecast_silverkite_with_holidays_effect():
         fut_time_num=fut_time_num,
         trained_model=trained_model,
         freq="H",
-        new_external_regressor_df=None)
+        new_external_regressor_df=None)["fut_df"]
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.3
@@ -2790,7 +3042,7 @@ def test_forecast_silverkite_with_imputation():
     """Tests ``forecast_silverkite`` with imputations"""
     df = pd.DataFrame({
         "ts": len(pd.date_range(start="1/1/2018", end="3/14/2018")),
-        "y": list(range(70)) + [np.nan]*3})
+        "y": list(range(70)) + [np.nan] * 3})
 
     silverkite = SilverkiteForecast()
     trained_model = silverkite.forecast(
@@ -2812,7 +3064,7 @@ def test_forecast_silverkite_with_imputation():
     imputed_df = impute_info["df"]
 
     assert list(imputed_df["y"].values) == (
-        list(range(70)) + [63, 64, 65])
+            list(range(70)) + [63, 64, 65])
 
 
 def test_forecast_silverkite_with_adjust_anomalous():
@@ -3224,7 +3476,8 @@ def test_predict_silverkite_with_autoreg_horizon_1(hourly_data):
         df=train_df,
         time_col=TIME_COL,
         value_col=VALUE_COL,
-        autoreg_dict="auto"
+        autoreg_dict="auto",
+        simulation_num=5
     )
     # Generates future df with horizon 1.
     freq = "H"
@@ -3381,7 +3634,7 @@ def test_build_autoreg_features(hourly_data):
     silverkite = SilverkiteForecast()
     past_df = hourly_data["train_df"]
     df = hourly_data["test_df"]
-    df.index = pd.RangeIndex(start=10, stop=10+df.shape[0], step=1)  # non-default index
+    df.index = pd.RangeIndex(start=10, stop=10 + df.shape[0], step=1)  # non-default index
 
     autoreg_info = build_autoreg_df(
         value_col="y",
@@ -3457,7 +3710,7 @@ def test_build_lagged_regressor_features(lagged_regressor_dict):
     silverkite = SilverkiteForecast()
     past_df = hourly_data["train_df"]
     df = hourly_data["test_df"]
-    df.index = pd.RangeIndex(start=10, stop=10+df.shape[0], step=1)  # non-default index
+    df.index = pd.RangeIndex(start=10, stop=10 + df.shape[0], step=1)  # non-default index
 
     regressor_cols = ["regressor1", "regressor_bool", "regressor_categ"]
 
@@ -3550,8 +3803,8 @@ def test_get_default_autoreg_dict():
 
     assert proper_order == 7
     assert autoreg_dict["lag_dict"]["orders"] == [1, 2, 3]
-    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 7), (8, 7*2)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7*2, 7*3]]
+    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 7), (8, 7 * 2)]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7 * 2, 7 * 3]]
 
     # Daily, horizon 3 days
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
@@ -3563,7 +3816,7 @@ def test_get_default_autoreg_dict():
     assert proper_order == 7
     assert autoreg_dict["lag_dict"]["orders"] == [3, 4, 5]
     assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(3, 9), (10, 16)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7*2, 7*3]]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7 * 2, 7 * 3]]
 
     # Daily, horizon 7
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
@@ -3575,7 +3828,7 @@ def test_get_default_autoreg_dict():
     assert proper_order == 7
     assert autoreg_dict["lag_dict"]["orders"] == [7, 8, 9]
     assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(7, 13), (14, 20)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7*2, 7*3]]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7 * 2, 7 * 3]]
 
     # Daily, horizon 30
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
@@ -3587,7 +3840,7 @@ def test_get_default_autoreg_dict():
     assert proper_order == 35
     assert autoreg_dict["lag_dict"]["orders"] == [30, 31, 32]
     assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(30, 36), (37, 43)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7*5, 7*6, 7*7]]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7 * 5, 7 * 6, 7 * 7]]
 
     # Daily, horizon 90
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
@@ -3610,57 +3863,57 @@ def test_get_default_autoreg_dict():
     assert proper_order == 7
     assert autoreg_dict["lag_dict"]["orders"] == [1, 2, 3]
     assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 7), (8, 14)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7*2, 7*3]]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[7, 7 * 2, 7 * 3]]
 
     # Hourly, horizon 1 hour
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=1)
     autoreg_dict = autoreg_info["autoreg_dict"]
     proper_order = autoreg_info["proper_order"]
 
-    assert proper_order == 24*7
+    assert proper_order == 24 * 7
     assert autoreg_dict["lag_dict"]["orders"] == [1, 2, 3]
-    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24*7), (24*7+1, 24*7*2)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*7*2, 24*7*3]]
+    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24 * 7), (24 * 7 + 1, 24 * 7 * 2)]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 7 * 2, 24 * 7 * 3]]
 
     # Hourly, horizon 24 hours
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=24)
     autoreg_dict = autoreg_info["autoreg_dict"]
     proper_order = autoreg_info["proper_order"]
 
-    assert proper_order == 24*7
+    assert proper_order == 24 * 7
     assert autoreg_dict["lag_dict"]["orders"] == [24, 25, 26]
-    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(24, 24*8-1), (24*8, 24*15-1)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*7*2, 24*7*3]]
+    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(24, 24 * 8 - 1), (24 * 8, 24 * 15 - 1)]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 7 * 2, 24 * 7 * 3]]
 
     # Hourly, horizon 24 hours, simulation based
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=24,
         simulation_based=True)
     autoreg_dict = autoreg_info["autoreg_dict"]
     proper_order = autoreg_info["proper_order"]
 
-    assert proper_order == 24*7
+    assert proper_order == 24 * 7
     assert autoreg_dict["lag_dict"]["orders"] == [1, 2, 3]
-    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24*7), (24*7+1, 24*7*2)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*7*2, 24*7*3]]
+    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24 * 7), (24 * 7 + 1, 24 * 7 * 2)]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 7 * 2, 24 * 7 * 3]]
 
     # Hourly, horizon 4 hours, simulation based
     autoreg_info = silverkite._SilverkiteForecast__get_default_autoreg_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=4,
         simulation_based=True)
     autoreg_dict = autoreg_info["autoreg_dict"]
     proper_order = autoreg_info["proper_order"]
 
-    assert proper_order == 24*7
+    assert proper_order == 24 * 7
     assert autoreg_dict["lag_dict"]["orders"] == [1, 2, 3]
-    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24*7), (24*7+1, 24*7*2)]
-    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*7*2, 24*7*3]]
+    assert autoreg_dict["agg_lag_dict"]["interval_list"] == [(1, 24 * 7), (24 * 7 + 1, 24 * 7 * 2)]
+    assert autoreg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 7 * 2, 24 * 7 * 3]]
 
 
 def test_get_default_lagged_regressor_dict():
@@ -3669,64 +3922,64 @@ def test_get_default_lagged_regressor_dict():
     # Hourly, horizon 1
     silverkite = SilverkiteForecast()
     lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=1)
     lag_reg_dict = lag_reg_info["lag_reg_dict"]
     proper_order = lag_reg_info["proper_order"]
 
-    assert proper_order == 24*7
+    assert proper_order == 24 * 7
     assert lag_reg_dict["lag_dict"]["orders"] == [1]
-    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(1, 24*7)]
-    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*14, 24*21]]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(1, 24 * 7)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 14, 24 * 21]]
 
     # Hourly, horizon 2
     silverkite = SilverkiteForecast()
     lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=2)
     lag_reg_dict = lag_reg_info["lag_reg_dict"]
     proper_order = lag_reg_info["proper_order"]
 
-    assert proper_order == 24*7
-    assert lag_reg_dict["lag_dict"]["orders"] == [24*7]
-    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(2, 24*7+1)]
-    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*14, 24*21]]
+    assert proper_order == 24 * 7
+    assert lag_reg_dict["lag_dict"]["orders"] == [24 * 7]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(2, 24 * 7 + 1)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 14, 24 * 21]]
 
     # Hourly, horizon 24
     silverkite = SilverkiteForecast()
     lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
-        freq_in_days=1/24,
+        freq_in_days=1 / 24,
         forecast_horizon=24)
     lag_reg_dict = lag_reg_info["lag_reg_dict"]
     proper_order = lag_reg_info["proper_order"]
 
-    assert proper_order == 24*7
-    assert lag_reg_dict["lag_dict"]["orders"] == [24*7]
-    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(24, 24*8-1)]
-    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*7, 24*14, 24*21]]
+    assert proper_order == 24 * 7
+    assert lag_reg_dict["lag_dict"]["orders"] == [24 * 7]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(24, 24 * 8 - 1)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24 * 7, 24 * 14, 24 * 21]]
 
     # Hourly, horizon 24*8
     silverkite = SilverkiteForecast()
     lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
-        freq_in_days=1/24,
-        forecast_horizon=24*8)
+        freq_in_days=1 / 24,
+        forecast_horizon=24 * 8)
     lag_reg_dict = lag_reg_info["lag_reg_dict"]
     proper_order = lag_reg_info["proper_order"]
 
-    assert proper_order == 24*14
-    assert lag_reg_dict["lag_dict"]["orders"] == [24*14]
-    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(24*8, 24*15-1)]
-    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24*14, 24*21, 24*28]]
+    assert proper_order == 24 * 14
+    assert lag_reg_dict["lag_dict"]["orders"] == [24 * 14]
+    assert lag_reg_dict["agg_lag_dict"]["interval_list"] == [(24 * 8, 24 * 15 - 1)]
+    assert lag_reg_dict["agg_lag_dict"]["orders_list"] == [[24 * 14, 24 * 21, 24 * 28]]
 
     # Hourly, horizon 24*31
     silverkite = SilverkiteForecast()
     lag_reg_info = silverkite._SilverkiteForecast__get_default_lagged_regressor_dict(
-        freq_in_days=1/24,
-        forecast_horizon=24*31)
+        freq_in_days=1 / 24,
+        forecast_horizon=24 * 31)
     lag_reg_dict = lag_reg_info["lag_reg_dict"]
     proper_order = lag_reg_info["proper_order"]
 
-    assert proper_order == 24*35
+    assert proper_order == 24 * 35
     assert lag_reg_dict is None
 
     # Daily, horizon 1
@@ -3908,11 +4161,11 @@ def test_remove_fourier_col_with_collinearity():
         "sin3_tow_weekly",
         "cos3_tow_weekly",
         "sin4_tow_weekly",
-        "cos4_tow_weekly",     # to be removed because of weekly order 3 cosine
-        "sin8_tow_weekly",     # to be removed because weekly period is 7
-        "cos8_tow_weekly",     # to be removed because weekly period is 7
-        "sin1_tom_monthly",    # to be removed because of quarterly order 3
-        "cos1_tom_monthly",    # to be removed because of quarterly order 3
+        "cos4_tow_weekly",  # to be removed because of weekly order 3 cosine
+        "sin8_tow_weekly",  # to be removed because weekly period is 7
+        "cos8_tow_weekly",  # to be removed because weekly period is 7
+        "sin1_tom_monthly",  # to be removed because of quarterly order 3
+        "cos1_tom_monthly",  # to be removed because of quarterly order 3
         "sin2_tom_monthly",
         "cos2_tom_monthly",
         "sin1_ct1_quarterly",  # to be removed because of yearly order 4
@@ -3980,13 +4233,14 @@ def test_remove_fourier_col_with_collinearity():
     ]
     with pytest.warns(UserWarning) as record:
         cols = silverkite._SilverkiteForecast__remove_fourier_col_with_collinearity(fourier_cols)
-        assert f"The following Fourier series terms are removed due to collinearity:\n{removed_cols}" in record[0].message.args[0]
+        assert f"The following Fourier series terms are removed due to collinearity:\n{removed_cols}" in \
+               record[0].message.args[0]
     assert cols == expected_cols
 
     # Tests monthly terms removal with yearly seasonality only.
     fourier_cols = [
-        "sin1_tom_monthly",    # to be removed because of yearly order 12
-        "cos1_tom_monthly",    # to be removed because of yearly order 12
+        "sin1_tom_monthly",  # to be removed because of yearly order 12
+        "cos1_tom_monthly",  # to be removed because of yearly order 12
         "sin2_tom_monthly",
         "cos2_tom_monthly",
         "sin1_ct1_yearly",
@@ -4048,7 +4302,8 @@ def test_remove_fourier_col_with_collinearity():
     ]
     with pytest.warns(UserWarning) as record:
         cols = silverkite._SilverkiteForecast__remove_fourier_col_with_collinearity(fourier_cols)
-        assert f"The following Fourier series terms are removed due to collinearity:\n{removed_cols}" in record[0].message.args[0]
+        assert f"The following Fourier series terms are removed due to collinearity:\n{removed_cols}" in \
+               record[0].message.args[0]
     assert cols == expected_cols
 
 
@@ -4084,3 +4339,292 @@ def test_remove_fourier_col_with_collinearity_and_interaction():
         "d:cos3_tow_weekly"
     ]
     assert output == expected_output
+
+
+def test_past_df_training(hourly_data):
+    """Tests forecast_silverkite autoregression with ``past_df`` in the training phase."""
+    # Takes 10 weeks to train, with 3 weeks ``past_df``.
+    train_df = hourly_data["train_df"].iloc[-(24 * 7 * 13):]
+    past_df = train_df.iloc[:(24 * 7 * 3)].reset_index(drop=True)
+    train_df = train_df.iloc[-(24 * 7 * 10):].reset_index(drop=True)
+
+    autoreg_dict = {
+        "lag_dict": {"orders": [168]},
+        "agg_lag_dict": {
+            "orders_list": [[168, 168 * 2, 168 * 3]],
+            "interval_list": [(168, 168 * 2)]},
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    # No gaps between ``past_df`` and ``df``.
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow"],
+            "period": [24.0, 7.0],
+            "order": [1, 1],
+            "seas_names": ["daily", "weekly"]}),
+        autoreg_dict=autoreg_dict,
+        past_df=past_df,
+        simulation_based=False)
+
+    past_df_without_gap = pd.concat([past_df, train_df], axis=0).reset_index(drop=True)
+    assert trained_model["train_df"].equals(past_df_without_gap)
+
+    # Gaps between ``past_df`` and ``df``.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite = SilverkiteForecast()
+        trained_model = silverkite.forecast(
+            df=train_df,
+            time_col=TIME_COL,
+            value_col=VALUE_COL,
+            train_test_thresh=None,
+            origin_for_time_vars=2018,
+            fs_components_df=pd.DataFrame({
+                "name": ["tod", "tow"],
+                "period": [24.0, 7.0],
+                "order": [1, 1],
+                "seas_names": ["daily", "weekly"]}),
+            autoreg_dict=autoreg_dict,
+            past_df=past_df.iloc[:-5],
+            simulation_based=False)
+
+        # ``past_df`` is filled with missing dates up to the immediate timestamp of ``df``.
+        assert len(trained_model["train_df"]) == len(past_df_without_gap[TIME_COL])
+        log_capture.check(
+            (LOGGER_NAME,
+             "DEBUG",
+             "There is gaps between ``past_df`` and ``df``. "
+             "Filling the missing timestamps."),
+            (LOGGER_NAME,
+             "INFO",
+             "Added 4 missing dates. There were 500 values originally.")
+        )
+
+
+def test_past_df_prediction(hourly_data):
+    """Tests forecast_silverkite autoregression with ``past_df`` in the prediction phase."""
+    # Takes 10 weeks to train, with 3 weeks ``past_df``.
+    df = hourly_data["train_df"]
+    past_df = df.iloc[-(24 * 7 * 13): -(24 * 7 * 10)].reset_index(drop=True)
+    train_df = df.iloc[-(24 * 7 * 10):].reset_index(drop=True)
+    test_df = hourly_data["test_df"][:168].reset_index(drop=True)  # one week of data for testing
+
+    autoreg_dict = {
+        "lag_dict": {"orders": [168]},
+        "agg_lag_dict": {
+            "orders_list": [[168, 168 * 2, 168 * 3]],
+            "interval_list": [(168, 168 * 2)]},
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    # No gaps between ``past_df`` and ``df``.
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow"],
+            "period": [24.0, 7.0],
+            "order": [1, 1],
+            "seas_names": ["daily", "weekly"]}),
+        autoreg_dict=autoreg_dict,
+        past_df=past_df,
+        simulation_based=False)
+
+    # Prediction without passing ``past_df``.
+    # This is the intended usage since ``past_df`` will be extracted from ``trained_model``.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite.predict(
+            fut_df=test_df,
+            trained_model=trained_model
+        )
+        log_capture.check(
+            (LOGGER_NAME,
+             "DEBUG",
+             "``past_df`` not provided during prediction, use the ``train_df`` from training results.")
+        )
+
+    # ``past_df`` can not have timestamps greater than the training end timestamp.
+    with pytest.raises(
+            ValueError,
+            match="``past_df`` can not have timestamps later than the training end timestamp."):
+        silverkite.predict(
+            fut_df=test_df,
+            trained_model=trained_model,
+            past_df=test_df
+        )
+
+    # Can do a longer prediction without imputation if ``past_df`` is properly passed.
+    # The training model has ``past_df`` from -(24*7*13) to -(24*7*10).
+    # We now predict ``fut_df`` from -(24*7*11) to -(24*7*10) and pass ``past_df`` from
+    # -(24*7*14) to -(24*7*11) in addition to the past and train df we already have.
+    # This shouldn't trigger imputation since we have all lagged terms.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite.predict(
+            fut_df=df.iloc[-(24 * 7 * 11): -(24 * 7 * 10)].reset_index(drop=True),
+            trained_model=trained_model,
+            past_df=df.iloc[-(24 * 7 * 14): -(24 * 7 * 11)].reset_index(drop=True)
+        )
+        log_capture.check()  # no warnings.
+
+    # When not all values are available, imputation is triggered.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite.predict(
+            fut_df=df.iloc[-(24 * 7 * 11): -(24 * 7 * 10)].reset_index(drop=True),
+            trained_model=trained_model,
+            past_df=df.iloc[-(24 * 7 * 11): -(24 * 7 * 10)].reset_index(drop=True)
+        )
+        log_capture.check(
+            (LOGGER_NAME,
+             "DEBUG",
+             "``past_df`` is not sufficient, imputation is performed when creating autoregression terms.")
+        )
+
+
+def test_use_value_from_past_df(hourly_data):
+    """Tests that the actual values are used to build AR lags when the prediction phase is
+    before the training max timestamp."""
+    df = hourly_data["train_df"]
+    past_df = df.iloc[-(24 * 7 * 10 + 1): -(24 * 7 * 10)].reset_index(drop=True)
+    train_df = df.iloc[-(24 * 7 * 10):].reset_index(drop=True)
+    test_df = hourly_data["test_df"][:168].reset_index(drop=True)  # one week of data for testing
+
+    # We only use lag order 1 for easier tracking.
+    autoreg_dict = {
+        "lag_dict": {"orders": [1]},
+        "agg_lag_dict": None,
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    # The model only contains the intercept and the "y_lag1" term.
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        freq="H",
+        origin_for_time_vars=2018,
+        fs_components_df=None,
+        autoreg_dict=autoreg_dict,
+        past_df=past_df,
+        extra_pred_cols=[],
+        simulation_based=False)
+
+    # When predicting on the future timestamps,
+    # the prediction phase will be recognized as "predict".
+    # In this case, all values in ``value_col`` will be set to NAN
+    # to avoid using future information.
+    # When calling ``predict_no_sim``,
+    # since the lag order is 1 and our prediction length is 2,
+    # imputation will be used and the predictions of the two rows will be exactly the same.
+    pred = silverkite.predict_no_sim(
+        fut_df=test_df.iloc[:2],
+        trained_model=trained_model,
+        past_df=train_df)["fut_df"]
+
+    assert pred[VALUE_COL].iloc[0] == pred[VALUE_COL].iloc[1]
+
+    # When predicting on the timestamps before the max training timestamp,
+    # the prediction phase will be recognized as "fit".
+    # In this case, all values in ``value_col`` remain unchanged.
+    # When calling ``predict_no_sim``,
+    # the values in ``fut_df`` will be used to calculate AR lags
+    # instead of using imputation.
+    # Therefore, the predictions of the two rows will be different.
+    pred = silverkite.predict_no_sim(
+        fut_df=train_df.iloc[-2:],
+        trained_model=trained_model,
+        past_df=train_df.iloc[:-2])["fut_df"]
+
+    assert pred[VALUE_COL].iloc[0] != pred[VALUE_COL].iloc[1]
+
+
+def test_past_df_sufficient_warning_for_monthly_data(hourly_data):
+    """Tests the past df sufficient message works for monthly data."""
+
+    # Gets monthly data
+    df = hourly_data["df"]
+    df = df.resample("MS", on=TIME_COL).mean()
+    df[TIME_COL] = df.index
+    df = df[[TIME_COL, VALUE_COL]].reset_index(drop=True)
+
+    past_df = df.iloc[:2].reset_index(drop=True)
+    train_df = df.iloc[2:-2].reset_index(drop=True)
+
+    # We only use lag order 1 for easier tracking.
+    autoreg_dict = {
+        "lag_dict": {"orders": [1]},
+        "agg_lag_dict": None,
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    # Trains with ``past_df``.
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        freq="MS",
+        origin_for_time_vars=2018,
+        fs_components_df=None,
+        autoreg_dict=autoreg_dict,
+        past_df=past_df,
+        extra_pred_cols=[],
+        simulation_based=False)
+
+    # When the past of ``past_df`` is not given, logging is triggered.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite.predict(
+            fut_df=past_df,
+            trained_model=trained_model,
+            past_df=None
+        )
+        assert (
+            LOGGER_NAME,
+            "DEBUG",
+            "``past_df`` is not sufficient, imputation is performed when creating autoregression terms."
+        ) in log_capture.actual()
+
+    # When the past of ``past_df`` is given but not sufficient, logging is triggered.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite.predict(
+            fut_df=past_df,
+            trained_model=trained_model,
+            past_df=pd.DataFrame({
+                TIME_COL: pd.date_range(
+                    start=past_df[TIME_COL].min() - 2 * to_offset("MS"),
+                    freq="MS",
+                    periods=2),
+                VALUE_COL: [1, np.nan]
+            })
+        )
+        assert (
+            LOGGER_NAME,
+            "DEBUG",
+            "``past_df`` is not sufficient, imputation is performed when creating autoregression terms."
+        ) in log_capture.actual()
+
+    # When the past of ``past_df`` is given and sufficient,
+    # but unnecessary past has NAs, logging is not triggered.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        silverkite.predict(
+            fut_df=past_df,
+            trained_model=trained_model,
+            past_df=pd.DataFrame({
+                TIME_COL: pd.date_range(
+                    start=past_df[TIME_COL].min() - 3 * to_offset("MS"),
+                    freq="MS",
+                    periods=3),
+                VALUE_COL: [1, np.nan, 1]
+            })
+        )
+        assert (
+            LOGGER_NAME,
+            "DEBUG",
+            "``past_df`` is not sufficient, imputation is performed when creating autoregression terms."
+        ) not in log_capture.actual()

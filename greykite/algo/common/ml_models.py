@@ -49,6 +49,7 @@ from greykite.common.constants import R2_null_model_score
 from greykite.common.evaluation import calc_pred_err
 from greykite.common.evaluation import r2_null_model_score
 from greykite.common.features.normalize import normalize_df
+from greykite.common.python_utils import group_strs_with_regex_patterns
 
 
 matplotlib.use("agg")  # noqa: E402
@@ -444,11 +445,11 @@ def fit_ml_model(
     if uncertainty_dict is None:
         fitted_df = predict_ml(
             fut_df=df,
-            trained_model=trained_model)
+            trained_model=trained_model)["fut_df"]
     else:
         fitted_df = predict_ml_with_uncertainty(
             fut_df=df,
-            trained_model=trained_model)
+            trained_model=trained_model)["fut_df"]
 
     trained_model["fitted_df"] = fitted_df
 
@@ -461,14 +462,20 @@ def predict_ml(
     """Returns predictions on new data using the machine-learning (ml) model
     fitted via ``fit_ml_model``.
 
-    :param fut_df: pd.DataFrame
+    :param fut_df: `pd.DataFrame`
         Input data for prediction.
         Must have all columns used for training,
         specified in ``model_formula_str`` or ``pred_cols``
-    :param trained_model: dict
+    :param trained_model: `dict`
         A trained model returned from ``fit_ml_model``
-    :return: pd.DataFrame
-        Input data with ``y_col`` set to the predicted values
+    :return: `dict`
+        A dictionary with following keys
+
+        - "fut_df": `pd.DataFrame`
+            Input data with ``y_col`` set to the predicted values
+        - "x_mat": `patsy.design_info.DesignMatrix`
+            Design matrix of the predictive model
+
     """
     y_col = trained_model["y_col"]
     ml_model = trained_model["ml_model"]
@@ -496,7 +503,10 @@ def predict_ml(
             a_min=min_admissible_value,
             a_max=max_admissible_value)
     fut_df[y_col] = y_pred.tolist()
-    return fut_df
+
+    return {
+        "fut_df": fut_df,
+        "x_mat": x_mat}
 
 
 def predict_ml_with_uncertainty(
@@ -507,22 +517,30 @@ def predict_ml_with_uncertainty(
     fitted via ``fit_ml_model`` and the uncertainty model fitted via
     ``greykite.algo.uncertainty.conditional.conf_interval.conf_interval``
 
-    :param fut_df: pd.DataFrame
+    :param fut_df: `pd.DataFrame`
         Input data for prediction.
         Must have all columns specified by
         ``model_formula_str`` or ``pred_cols``
-    :param trained_model: dict
+    :param trained_model: `dict`
         A trained model returned from ``fit_ml_model``
-    :return: pd.DataFrame
-        Input data with ``y_col`` set to the predicted values
-        and ``f"{y_col}_quantile_summary"`` set to the uncertainty
+    :return: `dict`
+        A dictionary with following keys
+
+        - "fut_df": `pd.DataFrame`
+            Input data with ``y_col`` set to the predicted values
+        - "x_mat": `patsy.design_info.DesignMatrix`
+            Design matrix of the predictive model
     """
     # gets point predictions
     fut_df = fut_df.reset_index(drop=True)
     y_col = trained_model["y_col"]
-    y_pred = predict_ml(
+    pred_res = predict_ml(
         fut_df=fut_df,
-        trained_model=trained_model)[y_col]
+        trained_model=trained_model)
+
+    y_pred = pred_res["fut_df"][y_col]
+    x_mat = pred_res["x_mat"]
+
     fut_df[y_col] = y_pred.tolist()
 
     # apply uncertainty model
@@ -535,7 +553,10 @@ def predict_ml_with_uncertainty(
     fut_df[f"{y_col}_quantile_summary"] = (
         pred_df_with_uncertainty[f"{y_col}_quantile_summary"])
     fut_df[ERR_STD_COL] = pred_df_with_uncertainty[ERR_STD_COL]
-    return fut_df
+
+    return {
+        "fut_df": fut_df,
+        "x_mat": x_mat}
 
 
 def fit_ml_model_with_evaluation(
@@ -720,7 +741,7 @@ def fit_ml_model_with_evaluation(
         y_train_pred = predict_ml(
             fut_df=df,
             trained_model=trained_model,
-            )[y_col_final].tolist()
+            )["fut_df"][y_col_final].tolist()
 
         def plt_pred():
             plt.plot(ind_train, y_train, label="full data", alpha=0.4)
@@ -747,11 +768,11 @@ def fit_ml_model_with_evaluation(
 
         y_train_pred = predict_ml(
             fut_df=df_train,
-            trained_model=trained_model_tr)[y_col_final].tolist()
+            trained_model=trained_model_tr)["fut_df"][y_col_final].tolist()
 
         y_test_pred = predict_ml(
             fut_df=df_test,
-            trained_model=trained_model_tr)[y_col_final].tolist()
+            trained_model=trained_model_tr)["fut_df"][y_col_final].tolist()
 
         test_evaluation = calc_pred_err(
             y_true=y_test,
@@ -800,3 +821,98 @@ def fit_ml_model_with_evaluation(
     trained_model["plt_pred"] = plt_pred
 
     return trained_model
+
+
+def breakdown_regression_based_prediction(
+        ml_model,
+        x_mat,
+        grouping_regex_patterns_dict,
+        add_intercept_group=True,
+        remainder_group_name="OTHER"):
+    """Given a regression based ML model (``ml_model``) and a design matrix
+    (``x_mat``), and a string based grouping rule (``grouping_regex_patterns_dict``)
+    for the design matrix columnns, constructs a dataframe with columns corresponding
+    to the weighted (according to ML model regression coefficient) sum of the columns in each group.
+    Note that if a variable/column is already picked in a step, it will be taken
+    out from the columns list and will not appear in next groups.
+
+    Parameters
+    ----------
+    ml_model : `sklearn.base.BaseEstimator`
+        sklearn ML estimator/model of various form.
+        We require this object to have ``.coef_`` and ``.intercept`` attributes.
+    x_mat :`pandas.DataFrame`
+        Design matrix of the regression model
+    grouping_regex_patterns_dict : `dict` {`str`: `str`}
+        A dictionary with group names as keys and regexes as values.
+        This dictinary is used to partition the columns into various groups
+    add_intercept_group : `bool`, default True
+        Determines if a group  should be created to include the intercept value.
+        This is helpful to be set to be True if we like the breakdown to sum up
+        to the predictions.
+    remainder_group_name : `str`, default "OTHER"
+        In case some columns are left and not assigned to any groups, a group
+        with this name will be added to breakdown dataframe and includes the
+        weighted some of the remaining columns.
+
+    Returns
+    -------
+    result : `dict`
+        A dictionary with the following keys.
+
+        - "breakdown_df" :`pandas.DataFrame`
+            A dataframe which includes the sums for each group
+        - "column_grouping_result" : `dict`
+            A dictionary which includes information for the generated groups.
+            See `~greykite.common.python_utils.group_strs_with_regex_patterns`
+            for more details.
+
+    """
+
+    # The dataframe which includes the group sums
+    breakdown_df = pd.DataFrame()
+    ml_model_coef = ml_model.coef_
+    intercept = ml_model.intercept_
+    x_mat_weighted = x_mat * ml_model_coef
+    data_len = len(x_mat)
+    cols = list(x_mat.columns)
+
+    if add_intercept_group:
+        breakdown_df["Intercept"] = np.repeat(intercept, data_len)
+        if "Intercept" in cols:
+            breakdown_df["Intercept"] += x_mat_weighted["Intercept"]
+
+    # If Intercept appear in the columns, we remove it
+    # Note that this column was utilized and added to intercept,
+    # if ``add_intercept_group`` is true.
+    # And it is not needed anymore in regardless of ``add_intercept_group`` value.
+    if "Intercept" in cols:
+        del x_mat_weighted["Intercept"]
+        cols.remove("Intercept")
+
+    regex_patterns = list(grouping_regex_patterns_dict.values())
+    group_names = list(grouping_regex_patterns_dict.keys())
+
+    column_grouping_result = group_strs_with_regex_patterns(
+        strings=cols,
+        regex_patterns=regex_patterns)
+
+    col_groups = column_grouping_result["str_groups"]
+    remainder = column_grouping_result["remainder"]
+
+    assert len(col_groups) == len(grouping_regex_patterns_dict)
+
+    for i, group_name in enumerate(group_names):
+        group_elements = col_groups[i]
+        if len(group_elements) != 0:
+            breakdown_df[group_name] = x_mat_weighted[group_elements].sum(axis=1)
+        else:
+            breakdown_df[group_name] = 0.0
+
+    if len(remainder) != 0:
+        breakdown_df[remainder_group_name] = x_mat_weighted[remainder].sum(axis=1)
+
+    return {
+        "breakdown_df": breakdown_df,
+        "column_grouping_result": column_grouping_result
+    }

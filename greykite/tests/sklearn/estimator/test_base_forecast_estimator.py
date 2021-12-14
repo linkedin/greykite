@@ -8,10 +8,13 @@ from testfixtures import LogCapture
 
 from greykite.common.constants import LOGGER_NAME
 from greykite.common.constants import PREDICTED_COL
+from greykite.common.constants import PREDICTED_LOWER_COL
+from greykite.common.constants import PREDICTED_UPPER_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.evaluation import r2_null_model_score
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
+from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
 
 
 @pytest.fixture
@@ -45,11 +48,23 @@ def X():
     })
 
 
+@pytest.fixture
+def df():
+    length = 100
+    df = pd.DataFrame({
+        TIME_COL: pd.date_range("2020-01-01", freq="D", periods=length),
+        VALUE_COL: np.arange(length),
+        PREDICTED_COL: np.arange(length) + np.random.randn(length) * length / 10
+    })
+    return df
+
+
 class ConstantBaseForecastEstimator(BaseForecastEstimator):
     """Simple estimator that predicts a constant (the weekday of the first date in
     ``X`` passed to ``predict``).
     Used to test BaseForecastEstimator methods, since abstract classes can't be instantiated.
     """
+
     def __init__(self, score_func=mean_squared_error, coverage=0.95, null_model_params=None):
         super().__init__(score_func=score_func, coverage=coverage, null_model_params=null_model_params)
 
@@ -206,3 +221,185 @@ def test_score_null_custom(X):
     y_pred_null = np.repeat(5.0, X.shape[0])  # mean null model
 
     assert score == r2_null_model_score(y, y_pred, y_pred_null=y_pred_null, loss_func=mean_absolute_error)
+
+
+def test_populate_uncertainty_params():
+    model = ConstantBaseForecastEstimator()
+    model.time_col_ = TIME_COL
+    model.value_col_ = VALUE_COL
+
+    # No ``value_col`` or ``residual_col``.
+    uncertainty_dict = dict(
+        uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+        params=dict()
+    )
+    assert model._populate_uncertainty_params(
+        uncertainty_dict=uncertainty_dict
+    ) == dict(
+        uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+        params=dict(
+            value_col=VALUE_COL,
+            residual_col="residual_col"
+        )
+    )
+
+    # No ``residual_col``.
+    uncertainty_dict = dict(
+        uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+        params=dict(
+            value_col="some_col"
+        )
+    )
+    assert model._populate_uncertainty_params(
+        uncertainty_dict=uncertainty_dict
+    ) == dict(
+        uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+        params=dict(
+            value_col="some_col",
+            residual_col="residual_col"
+        )
+    )
+
+    # No ``value_col``.
+    uncertainty_dict = dict(
+        uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+        params=dict(
+            residual_col="some_col"
+        )
+    )
+    assert model._populate_uncertainty_params(
+        uncertainty_dict=uncertainty_dict
+    ) == dict(
+        uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+        params=dict(
+            value_col=VALUE_COL,
+            residual_col="some_col"
+        )
+    )
+
+
+def test_uncertainty(df):
+    model = ConstantBaseForecastEstimator()
+    model.time_col_ = TIME_COL
+    model.value_col_ = VALUE_COL
+
+    # Only coverage is given.
+    # The default uncertainty method is used.
+    model.fit_uncertainty(
+        df=df,
+        uncertainty_dict={}
+    )
+
+    assert model.uncertainty_model is not None
+    assert model.uncertainty_model.UNCERTAINTY_METHOD == UncertaintyMethodEnum.simple_conditional_residuals.name
+
+    df_pred = model.predict_uncertainty(
+        df=df
+    )
+    assert PREDICTED_LOWER_COL in df_pred.columns
+    assert PREDICTED_UPPER_COL in df_pred.columns
+    assert (df_pred[PREDICTED_LOWER_COL] + df_pred[PREDICTED_UPPER_COL]).round(2).equals(
+        (df_pred[PREDICTED_COL] * 2).round(2))
+
+    # Both coverage and uncertainty dict are given.
+    model.fit_uncertainty(
+        df=df,
+        uncertainty_dict=dict(
+            uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+            params=dict(
+                value_col=VALUE_COL,
+                residual_col="residual_col"
+            )
+        )
+    )
+
+    assert model.uncertainty_model is not None
+    assert model.uncertainty_model.UNCERTAINTY_METHOD == UncertaintyMethodEnum.simple_conditional_residuals.name
+
+    df_pred = model.predict_uncertainty(
+        df=df
+    )
+    assert PREDICTED_LOWER_COL in df_pred.columns
+    assert PREDICTED_UPPER_COL in df_pred.columns
+    assert (df_pred[PREDICTED_LOWER_COL] + df_pred[PREDICTED_UPPER_COL]).round(2).equals(
+        (df_pred[PREDICTED_COL] * 2).round(2))
+
+
+def test_uncertainty_errors(df):
+    # Uncertainty method not recognized.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        model = ConstantBaseForecastEstimator()
+        model.time_col_ = TIME_COL
+        model.value_col_ = VALUE_COL
+
+        # Only coverage is given.
+        # The default uncertainty method is used.
+        res = model.fit_uncertainty(
+            df=df,
+            uncertainty_dict=dict(
+                uncertainty_method="some_method"
+            )
+        )
+        assert (
+                   (LOGGER_NAME,
+                    "WARNING",
+                    f"Uncertainty method some_method is not found in `UncertaintyMethodEnum`, "
+                    f"uncertainty fitting is skipped. Valid methods are "
+                    f"{', '.join(UncertaintyMethodEnum.__dict__['_member_names_'])}.")
+               ) in log_capture.actual()
+        assert res is None
+        assert model.uncertainty_model is None
+
+    # Fit failed.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        model.fit_uncertainty(
+            df=df[[TIME_COL, VALUE_COL]],
+            uncertainty_dict=dict(
+                uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
+                params=dict(
+                    value_col=VALUE_COL,
+                    residual_col="residual_col"
+                )
+            )
+        )
+        assert (
+                   (LOGGER_NAME,
+                    "WARNING",
+                    f"The following errors occurred during fitting the uncertainty model, "
+                    f"the uncertainty model is skipped."
+                    f" `residual_col` residual_col not found in `train_df.columns`.")
+               ) in log_capture.actual()
+
+    # Uncertainty model not trained.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        model = ConstantBaseForecastEstimator()
+        model.time_col_ = TIME_COL
+        model.value_col_ = VALUE_COL
+        model.predict_uncertainty(
+            df=df
+        )
+        assert (
+                   (LOGGER_NAME,
+                    "WARNING",
+                    f"The uncertainty model is not trained.")
+               ) in log_capture.actual()
+
+    # Prediction failed.
+    with LogCapture(LOGGER_NAME) as log_capture:
+        model = ConstantBaseForecastEstimator()
+        model.time_col_ = TIME_COL
+        model.value_col_ = VALUE_COL
+        model.fit_uncertainty(
+            df=df,
+            uncertainty_dict={}
+        )
+        model.predict_uncertainty(
+            df=df[[TIME_COL]]
+        )
+        assert (
+                   (LOGGER_NAME,
+                    "WARNING",
+                    f"The following errors occurred during predicting the uncertainty model, "
+                    f"the uncertainty model is skipped."
+                    f" The value column y is not found in `fut_df`.")
+               ) in log_capture.actual()

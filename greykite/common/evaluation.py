@@ -29,6 +29,9 @@ import warnings
 from collections import namedtuple
 from enum import Enum
 from functools import partial
+from typing import List
+from typing import Optional
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -68,33 +71,93 @@ def all_equal_length(*arrays):
     return True
 
 
-def valid_elements_for_evaluation(reference_array, *arrays):
+def valid_elements_for_evaluation(
+        reference_arrays: List[Union[np.array, pd.Series, List[Union[int, float]]]],
+        arrays: List[Optional[Union[int, float, np.array, pd.Series, List[Union[int, float]]]]],
+        reference_array_names: str,
+        drop_leading_only: bool,
+        keep_inf: bool):
     """Keeps finite elements from reference_array, and corresponding elements in *arrays.
 
-    :param reference_array: np.array, pd.Series, or list
-    :param arrays: additional array-like objects of the same length
-        can be None or numeric, in which case original value is returned
-    :return: list of numpy arrays with valid indices [reference_array, *arrays]
+    Parameters
+    ----------
+    reference_arrays : `list` [`numpy.array`, `pandas.Series` or `list` [`int`, `float`]]
+        The reference arrays where the indices of NA/infs are populated.
+        If length is longer than 1, a logical and will be used to choose valid elements.
+    arrays : `list` [`int`, `float`, `numpy.array`, `pandas.Series` or `list` [`int`, `float`]]
+        The arrays with the indices of NA/infs in ``reference_array`` to be dropped.
+    reference_array_names : `str`
+        The reference array name to be printed in the warning.
+    drop_leading_only : `bool`
+        True means dropping the leading NA/infs only
+        (drop the leading indices whose values are not valid in any reference array).
+        False means dropping all NA/infs regardless of where they are.
+    keep_inf : `bool`
+        True means dropping NA only.
+        False means dropping both NA and INF.
+    Returns
+    -------
+    arrays_valid_elements : `list` [`numpy.array`]
+        List of numpy arrays with valid indices [*reference_arrays, *arrays]
     """
-    if not all_equal_length(reference_array, *arrays):
+    if not all_equal_length(*reference_arrays, *arrays):
         raise Exception("length of arrays do not match")
 
-    reference_array = np.array(reference_array)
+    if len(reference_arrays) == 0:
+        return reference_arrays + arrays
+
+    reference_arrays = [np.array(reference_array) for reference_array in reference_arrays]
+    array_length = reference_arrays[0].shape[0]
+
+    # Defines a function to perform the opposite of `numpy.isnan`.
+    def is_not_nan(x):
+        """Gets the True/False for elements that are not/are NANs.
+
+        Parameters
+        ----------
+        x : array-like
+            The input array.
+
+        Returns
+        -------
+        is_not_nan : `numpy.array`
+            True/False array indicating whethere the elements are not NAN/ are NAN.
+        """
+        return ~np.isnan(x)
+
+    validation_func = is_not_nan if keep_inf else np.isfinite
     # Finds the indices of finite elements in reference array
-    keep = np.isfinite(reference_array)
+    keep = [validation_func(reference_array) for reference_array in reference_arrays]
+    if drop_leading_only:
+        # Gets the index where the first True is.
+        # All the False after this True will not be heading False
+        # and shouldn't be dropped.
+        # If multiple arrays in ``reference_arrays``,
+        # this will be the minimum.
+        valid_indices = [np.where(array)[0] for array in keep]
+        heading_lengths = [
+            length[0] if length.shape[0] > 0 else array_length for length in valid_indices]
+        heading_length = min(heading_lengths)
+        # Generates arrays with the is_heading flag.
+        is_not_heading = np.repeat([False, True], [heading_length, array_length - heading_length])
+    else:
+        is_not_heading = np.repeat([False, True], [array_length, 0])
+    keep = np.logical_and.reduce(keep, axis=0)
+    keep = np.logical_or(keep, is_not_heading)
     num_remaining = keep.sum()
-    num_removed = reference_array.shape[0] - num_remaining
+    num_removed = array_length - num_remaining
+    removed_elements = "NA" if keep_inf else "NA or infinite"
     if num_remaining == 0:
         warnings.warn(f"There are 0 non-null elements for evaluation.")
     if num_removed > 0:
-        warnings.warn(f"{num_removed} value(s) in y_true were NA or infinite and are omitted in error calc.")
+        warnings.warn(
+            f"{num_removed} value(s) in {reference_array_names} were {removed_elements} and are omitted in error calc.")
 
     # Keeps these indices in all arrays. Leaves float, int, and None as-is
-    return [reference_array[keep]] + [np.array(array)[keep] if (array is not None
-                                                                and not isinstance(array, float)
-                                                                and not isinstance(array, int))
-                                      else array
-                                      for array in arrays]
+    return [array[keep] for array in reference_arrays] + [np.array(array)[keep] if (
+            array is not None and not isinstance(array, float) and not isinstance(array, int))
+                                                          else array
+                                                          for array in arrays]
 
 
 def aggregate_array(ts_values, agg_periods=7, agg_func=np.sum):
@@ -147,10 +210,12 @@ def add_preaggregation_to_scorer(score_func, agg_periods=7, agg_func=np.sum):
     For example, if have daily data and want to evaluate MSE on weekly totals, the appropriate scorer is:
         add_preaggregation_to_scorer(mean_squared_error, agg_periods=7, agg_func=np.max)
     """
+
     def score_func_preagg(y_true, y_pred, **kwargs):
         y_true_agg = aggregate_array(y_true, agg_periods, agg_func)
         y_pred_agg = aggregate_array(y_pred, agg_periods, agg_func)
         return score_func(y_true_agg, y_pred_agg, **kwargs)
+
     return score_func_preagg
 
 
@@ -162,11 +227,28 @@ def add_finite_filter_to_scorer(score_func):
     :param score_func: function that maps two arrays to a number. E.g. (y_true, y_pred) -> error
     :return: scorer that drops records where y_true is not finite
     """
+
     def score_func_finite(y_true, y_pred, **kwargs):
-        y_true, y_pred = valid_elements_for_evaluation(y_true, y_pred)
+        y_true, y_pred = valid_elements_for_evaluation(
+            reference_arrays=[y_true],
+            arrays=[y_pred],
+            reference_array_names="y_true",
+            drop_leading_only=False,
+            keep_inf=False)
+        # The Silverkite Multistage model has NANs at the beginning
+        # when predicting on the training data.
+        # We only drop the leading NANs/infs from ``y_pred``,
+        # since they are not supposed to appear in the middle.
+        y_pred, y_true = valid_elements_for_evaluation(
+            reference_arrays=[y_pred],
+            arrays=[y_true],
+            reference_array_names="y_pred",
+            drop_leading_only=True,
+            keep_inf=True)
         if len(y_true) == 0:  # returns None if there are no elements
             return None
         return score_func(y_true, y_pred, **kwargs)
+
     return score_func_finite
 
 
@@ -248,7 +330,12 @@ def r2_null_model_score(
 
     For other loss functions, ``r2_null_model_score`` has the same connection to pseudo R2.
     """
-    y_true, y_pred, y_train, y_pred_null = valid_elements_for_evaluation(y_true, y_pred, y_train, y_pred_null)
+    y_true, y_pred, y_train, y_pred_null = valid_elements_for_evaluation(
+        reference_arrays=[y_true],
+        arrays=[y_pred, y_train, y_pred_null],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
     r2_null_model = None
 
     if len(y_true) > 0:
@@ -292,7 +379,22 @@ def calc_pred_err(y_true, y_pred):
         The dictionary is empty is there are no finite elements
         in ``y_true``.
     """
-    y_true, y_pred = valid_elements_for_evaluation(y_true, y_pred)
+    y_true, y_pred = valid_elements_for_evaluation(
+        reference_arrays=[y_true],
+        arrays=[y_pred],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
+    # The Silverkite Multistage model has NANs at the beginning
+    # when predicting on the training data.
+    # We only drop the leading NANs/infs from ``y_pred``,
+    # since they are not supposed to appear in the middle.
+    y_pred, y_true = valid_elements_for_evaluation(
+        reference_arrays=[y_pred],
+        arrays=[y_true],
+        reference_array_names="y_pred",
+        drop_leading_only=True,
+        keep_inf=True)
     error = {}
 
     if len(y_true) > 0:
@@ -418,14 +520,24 @@ def fraction_within_bands(observed, lower, upper):
     :param upper: pd.Series or np.array, numeric, upper bound
     :return: float between 0.0 and 1.0
     """
-    observed, lower, upper = valid_elements_for_evaluation(observed, lower, upper)
+    observed, lower, upper = valid_elements_for_evaluation(
+        reference_arrays=[observed],
+        arrays=[lower, upper],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
+    lower, upper, observed = valid_elements_for_evaluation(
+        reference_arrays=[lower, upper],
+        arrays=[observed],
+        reference_array_names="lower/upper bound",
+        drop_leading_only=True,
+        keep_inf=False)
     num_reversed = np.count_nonzero(upper < lower)
     if num_reversed > 0:
         warnings.warn(f"{num_reversed} of {len(observed)} upper bound values are smaller than the lower bound")
     return np.count_nonzero((observed > lower) & (observed < upper)) / len(observed) if len(observed) > 0 else None
 
 
-@add_finite_filter_to_scorer
 def fraction_outside_tolerance(y_true, y_pred, rtol=0.05):
     """Returns the fraction of predicted values whose relative difference
     from the true value is strictly greater than ``rtol``.
@@ -447,6 +559,18 @@ def fraction_outside_tolerance(y_true, y_pred, rtol=0.05):
         A value is outside tolerance if `numpy.isclose`
         with the specified ``rtol`` and ``atol=0.0`` returns False.
     """
+    y_true, y_pred = valid_elements_for_evaluation(
+        reference_arrays=[y_true],
+        arrays=[y_pred],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
+    y_pred, y_true = valid_elements_for_evaluation(
+        reference_arrays=[y_pred],
+        arrays=[y_true],
+        reference_array_names="y_pred",
+        drop_leading_only=True,
+        keep_inf=True)  # Keeps inf from prediction.
     return np.mean(~np.isclose(y_pred, y_true, rtol=rtol, atol=0.0))
 
 
@@ -459,7 +583,18 @@ def prediction_band_width(observed, lower, upper):
     :param upper: pd.Series or np.array, numeric, upper bound
     :return: float, average percentage width
     """
-    observed, lower, upper = valid_elements_for_evaluation(observed, lower, upper)
+    observed, lower, upper = valid_elements_for_evaluation(
+        reference_arrays=[observed],
+        arrays=[lower, upper],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
+    lower, upper, observed = valid_elements_for_evaluation(
+        reference_arrays=[lower, upper],
+        arrays=[observed],
+        reference_array_names="lower/upper bound",
+        drop_leading_only=True,
+        keep_inf=True)  # Keeps inf from prediction.
     observed = np.abs(observed)
     num_reversed = np.count_nonzero(upper < lower)
     if num_reversed > 0:
@@ -470,7 +605,7 @@ def prediction_band_width(observed, lower, upper):
 
 def calc_pred_coverage(observed, predicted, lower, upper, coverage):
     """Calculates the prediction coverages:
-   prediction band width, prediction band coverage etc.
+    prediction band width, prediction band coverage etc.
 
     :param observed: pd.Series or np.array, numeric, observed values
     :param predicted: pd.Series or np.array, numeric, predicted values
@@ -480,10 +615,17 @@ def calc_pred_coverage(observed, predicted, lower, upper, coverage):
     :return: prediction band width, prediction band coverage etc.
     """
     observed, predicted, lower, upper = valid_elements_for_evaluation(
-        observed,
-        predicted,
-        lower,
-        upper)
+        reference_arrays=[observed],
+        arrays=[predicted, lower, upper],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
+    predicted, lower, upper, observed = valid_elements_for_evaluation(
+        reference_arrays=[predicted, lower, upper],
+        arrays=[observed],
+        reference_array_names="y_pred and lower/upper bounds",
+        drop_leading_only=True,
+        keep_inf=True)
     metrics = {}
 
     if len(observed) > 0:
@@ -556,7 +698,7 @@ def elementwise_squared_error(true_val, pred_val):
     residual : float
         Squared error, (true_val - pred_val)^2
     """
-    return (true_val - pred_val)**2
+    return (true_val - pred_val) ** 2
 
 
 def elementwise_absolute_percent_error(true_val, pred_val):

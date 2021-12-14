@@ -77,7 +77,7 @@ We use the Peyton Manning dataset as a running example.
 #             center_values=True,
 #             # splits overlays by month (try other features too)
 #             overlay_label_time_feature="month",
-#             # optional overlay styling, passed to `plotly.graph_objs.Scatter`
+#             # optional overlay styling, passed to `plotly.graph_objects.Scatter`
 #             overlay_style={"line": {"width": 1}, "opacity": 0.5},
 #             xlabel="day of week",
 #             ylabel=ts.original_value_col,
@@ -184,8 +184,6 @@ We use the Peyton Manning dataset as a running example.
 # ``2007-12-10`` and ``2016-01-20``.
 
 # necessary imports
-from datetime import datetime
-
 import numpy as np
 import plotly
 
@@ -193,7 +191,8 @@ from greykite.framework.input.univariate_time_series import UnivariateTimeSeries
 from greykite.framework.constants import MEAN_COL_GROUP, OVERLAY_COL_GROUP
 from greykite.common.constants import TIME_COL
 from greykite.common.data_loader import DataLoader
-from greykite.common.viz.timeseries_plotting import add_groupby_column, plot_multivariate, plot_univariate
+from greykite.common.viz.timeseries_plotting import add_groupby_column
+from greykite.common.viz.timeseries_plotting import plot_multivariate
 
 # Loads dataset into pandas DataFrame
 dl = DataLoader()
@@ -294,7 +293,7 @@ fig = ts.plot_quantiles_and_overlays(
     show_quantiles=False,
     show_overlays=True,                 # shows overlays, as configured by `overlay_label_time_feature`
     overlay_label_time_feature="year",  # splits by "year"
-    # optional overlay styling, passed to `plotly.graph_objs.Scatter`
+    # optional overlay styling, passed to `plotly.graph_objects.Scatter`
     overlay_style={"line": {"width": 1}, "opacity": 0.5},
     xlabel="day of year",
     ylabel=ts.original_value_col,
