@@ -1,0 +1,775 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Custom Parameters &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Custom Parameters</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="custom-parameters">
+<h1>Custom Parameters<a class="headerlink" href="#custom-parameters" title="Permalink to this headline">¶</a></h1>
+<p>Parameters unique to the Silverkite algorithm are included under <code class="docutils literal notranslate"><span class="pre">model_components.custom</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Refer to this section for customizing Silverkite model.
+<code class="docutils literal notranslate"><span class="pre">model_components.custom</span></code> is currently not supported for Prophet.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fit_algorithm_dict</span><span class="o">=</span><span class="n">fit_algorithm_dict</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="n">feature_sets_enabled</span><span class="p">,</span>
+    <span class="n">max_daily_seas_interaction_order</span><span class="o">=</span><span class="n">max_daily_seas_interaction_order</span><span class="p">,</span>
+    <span class="n">max_weekly_seas_interaction_order</span><span class="o">=</span><span class="n">max_weekly_seas_interaction_order</span><span class="p">,</span>
+    <span class="n">extra_pred_cols</span><span class="o">=</span><span class="n">extra_pred_cols</span><span class="p">,</span>
+    <span class="n">drop_pred_cols</span><span class="o">=</span><span class="n">drop_pred_cols</span><span class="p">,</span>
+    <span class="n">explicit_pred_cols</span><span class="o">=</span><span class="n">explicit_pred_cols</span><span class="p">,</span>
+    <span class="n">min_admissible_value</span><span class="o">=</span><span class="n">min_admissible_value</span><span class="p">,</span>
+    <span class="n">max_admissible_value</span><span class="o">=</span><span class="n">max_admissible_value</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="fit-algorithm">
+<h2>Fit algorithm<a class="headerlink" href="#fit-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Silverkite abstracts feature creation from model fitting. First, Silverkite generates features
+for forecasting, using time-series domain knowledge. Then, any standard algorithm can be applied
+for fitting.</p>
+<p>Silverkite supports the following algorithms from scikit-learn and statsmodels:</p>
+<table class="colwidths-given docutils align-default" id="id1">
+<caption><span class="caption-text">Silverkite fitting algorithms</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>fit_algorithm</p></th>
+<th class="head"><p>class</p></th>
+<th class="head"><p>notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>linear</p></td>
+<td><p><a class="reference external" href="https://www.statsmodels.org/v0.10.1/generated/statsmodels.regression.linear_model.OLS.html#statsmodels.regression.linear_model.OLS" title="(in statsmodels vv0.10.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">statsmodels.regression.linear_model.OLS</span></code></a></p></td>
+<td><p>More stable than <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>elastic_net</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.ElasticNetCV.html#sklearn.linear_model.ElasticNetCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ElasticNetCV</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ridge</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RidgeCV</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>lasso</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LassoCV</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sgd</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SGDRegressor</span></code></a></p></td>
+<td><p>Default penalty = ‘l2’, alpha = 1e-4</p></td>
+</tr>
+<tr class="row-odd"><td><p>lars</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.LarsCV.html#sklearn.linear_model.LarsCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LarsCV</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>lasso_lars</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.linear_model.LassoLarsCV.html#sklearn.linear_model.LassoLarsCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LassoLarsCV</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>rf</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomForestRegressor</span></code></a></p></td>
+<td><p>Tree methods cannot capture growth</p></td>
+</tr>
+<tr class="row-even"><td><p>gradient_boosting</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a></p></td>
+<td><p>Supports quantile loss, tree methods cannot capture growth</p></td>
+</tr>
+</tbody>
+</table>
+<p>You can select the algorithm via <code class="docutils literal notranslate"><span class="pre">fit_algorithm</span></code> and set its initialization parameters
+via <code class="docutils literal notranslate"><span class="pre">fit_algorithm_params</span></code>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>fit_algorithm_dict : `dict` or a list of such values for grid search
+    How to fit the model. A dictionary with the following optional keys.
+
+    ``&quot;fit_algorithm&quot;`` : `str`, default &quot;ridge&quot;
+        The type of model used in fitting
+        (implemented by sklearn and statsmodels).
+
+        Available models are:
+
+            - &quot;statsmodels_ols&quot;   : `statsmodels.regression.linear_model.OLS`
+            - &quot;statsmodels_wls&quot;   : `statsmodels.regression.linear_model.WLS`
+            - &quot;statsmodels_gls&quot;   : `statsmodels.regression.linear_model.GLS`
+            - &quot;statsmodels_glm&quot;   : `statsmodels.genmod.generalized_linear_model.GLM`
+            - &quot;linear&quot;            : `statsmodels.regression.linear_model.OLS`
+            - &quot;elastic_net&quot;       : `sklearn.linear_model.ElasticNetCV`
+            - &quot;ridge&quot;             : `sklearn.linear_model.RidgeCV`
+            - &quot;lasso&quot;             : `sklearn.linear_model.LassoCV`
+            - &quot;sgd&quot;               : `sklearn.linear_model.SGDRegressor`
+            - &quot;lars&quot;              : `sklearn.linear_model.LarsCV`
+            - &quot;lasso_lars&quot;        : `sklearn.linear_model.LassoLarsCV`
+            - &quot;rf&quot;                : `sklearn.ensemble.RandomForestRegressor`
+            - &quot;gradient_boosting&quot; : `sklearn.ensemble.GradientBoostingRegressor`
+
+        See `~greykite.algo.common.ml_models.fit_model_via_design_matrix`
+        for the sklearn and statsmodels classes that implement these methods, and their parameters.
+
+        &quot;linear&quot; is the same as &quot;statsmodels_ols&quot;, because `statsmodels.regression.linear_model.OLS`
+        is more stable than `sklearn.linear_model.LinearRegression`.
+    ``&quot;fit_algorithm_params&quot;`` : `dict` or None, default None (ridge penalty with alpha=1e-4)
+        Parameters passed to the requested fit algorithm.
+        If None, uses the defaults in `~greykite.algo.common.ml_models.fit_model_via_design_matrix`.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fit_algorithm_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fit_algorithm_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+        <span class="n">fit_algorithm_params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;alphas&quot;</span><span class="p">:</span> <span class="mi">20</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fit_algorithm_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;lasso_lars&quot;</span><span class="p">,</span>
+        <span class="n">fit_algorithm_params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;max_n_alphas&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="s2">&quot;eps&quot;</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">,</span>
+            <span class="s2">&quot;cv&quot;</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Example using `sgd`. Note that `sgd` is often unstable.</span>
+<span class="c1"># Consider using `ridge`, `lasso`, `elastic_net` instead.</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fit_algorithm_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;sgd&quot;</span><span class="p">,</span>
+        <span class="n">fit_algorithm_params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;elasticnet&quot;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">l1_ratio</span><span class="o">=</span><span class="mf">0.2</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Grid search is possible</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">fit_algorithm_dict</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span>
+        <span class="p">),</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">fit_algorithm</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="n">fit_algorithm_params</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;alphas&quot;</span><span class="p">:</span> <span class="mi">20</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>“linear” is a good starting point. Sometimes the fit can be numerically unstable
+if you request holidays that don’t appear in your dataset. In that case, try
+“ridge” or “sgd”.</p>
+</div>
+</div>
+<div class="section" id="interactions">
+<h2>Interactions<a class="headerlink" href="#interactions" title="Permalink to this headline">¶</a></h2>
+<p>You can include interactions via the <code class="docutils literal notranslate"><span class="pre">feature_sets_enabled</span></code> parameter. Setting <code class="docutils literal notranslate"><span class="pre">feature_sets_enabled=&quot;auto&quot;</span></code>
+adds interactions appropriate to the data frequency and amount of training history.</p>
+<p>The fourier order of seasonality interaction terms can be capped by
+<code class="docutils literal notranslate"><span class="pre">max_daily_seas_interaction_order</span></code> and <code class="docutils literal notranslate"><span class="pre">max_weekly_seas_interaction_order</span></code>
+for daily and weekly seasonality, respectively.</p>
+<p>Options (defaults shown for <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> template):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>feature_sets_enabled : `dict` [`str`, `bool` or &quot;auto&quot; or None] or `bool` or &quot;auto&quot; or None; or a list of such values for grid search, default &quot;auto&quot;
+    Whether to include interaction terms and categorical variables to increase model flexibility.
+
+    If a `dict`, boolean values indicate whether include various sets of features in the model.
+    The following keys are recognized
+    (from `~greykite.algo.forecast.silverkite.constants.silverkite_column.SilverkiteColumn`):
+
+        ``&quot;COLS_HOUR_OF_WEEK&quot;`` : `str`
+            Constant hour of week effect
+        ``&quot;COLS_WEEKEND_SEAS&quot;`` : `str`
+            Daily seasonality interaction with is_weekend
+        ``&quot;COLS_DAY_OF_WEEK_SEAS&quot;`` : `str`
+            Daily seasonality interaction with day of week
+        ``&quot;COLS_TREND_DAILY_SEAS&quot;`` : `str`
+            Allow daily seasonality to change over time by is_weekend
+        ``&quot;COLS_EVENT_SEAS&quot;`` : `str`
+            Allow sub-daily event effects
+        ``&quot;COLS_EVENT_WEEKEND_SEAS&quot;`` : `str`
+            Allow sub-daily event effect to interact with is_weekend
+        ``&quot;COLS_DAY_OF_WEEK&quot;`` : `str`
+            Constant day of week effect
+        ``&quot;COLS_TREND_WEEKEND&quot;`` : `str`
+            Allow trend (growth, changepoints) to interact with is_weekend
+        ``&quot;COLS_TREND_DAY_OF_WEEK&quot;`` : `str`
+            Allow trend to interact with day of week
+        ``&quot;COLS_TREND_WEEKLY_SEAS&quot;`` : `str`
+            Allow weekly seasonality to change over time
+
+    The following dictionary values are recognized:
+
+        - True: include the feature set in the model
+        - False: do not include the feature set in the model
+        - None: do not include the feature set in the model
+        - &quot;auto&quot; or not provided: use the default setting based on data frequency and size
+
+    If not a `dict`:
+
+        - if a boolean, equivalent to a dictionary with all values set to the boolean.
+        - if None, equivalent to a dictionary with all values set to False.
+        - if &quot;auto&quot;, equivalent to a dictionary with all values set to &quot;auto&quot;.
+
+max_daily_seas_interaction_order : `int` or None or a list of such values for grid search, default 5
+    Max fourier order to use for interactions with daily seasonality
+    (COLS_EVENT_SEAS, COLS_EVENT_WEEKEND_SEAS, COLS_WEEKEND_SEAS, COLS_DAY_OF_WEEK_SEAS, COLS_TREND_DAILY_SEAS).
+
+    Model includes interactions terms specified by ``feature_sets_enabled``
+    up to the order limited by this value and the available order from ``seasonality``.
+
+max_weekly_seas_interaction_order : `int` or None or a list of such values for grid search, default 2
+    Max fourier order to use for interactions with weekly seasonality (COLS_TREND_WEEKLY_SEAS).
+
+    Model includes interactions terms specified by ``feature_sets_enabled``
+    up to the order limited by this value and the available order from ``seasonality``.
+</pre></div>
+</div>
+<table class="colwidths-given docutils align-default" id="id2">
+<caption><span class="caption-text">when to use each feature set</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>feature set</p></th>
+<th class="head"><p>max freq</p></th>
+<th class="head"><p>when to use</p></th>
+<th class="head"><p>(human-readable) formula</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>COLS_HOUR_OF_WEEK</p></td>
+<td><p>hourly</p></td>
+<td><p>hour of week effect to help daily seasonality model</p></td>
+<td><p>hour_of_week</p></td>
+</tr>
+<tr class="row-odd"><td><p>COLS_WEEKEND_SEAS</p></td>
+<td><p>hourly</p></td>
+<td><p>weekend has a different daily seasonality pattern</p></td>
+<td><p>is_weekend:daily_seas</p></td>
+</tr>
+<tr class="row-even"><td><p>COLS_DAY_OF_WEEK_SEAS</p></td>
+<td><p>hourly</p></td>
+<td><p>each day has a different daily seasonality pattern</p></td>
+<td><p>day_of_week:daily_seas</p></td>
+</tr>
+<tr class="row-odd"><td><p>COLS_TREND_DAILY_SEAS</p></td>
+<td><p>hourly</p></td>
+<td><p>daily seasonality pattern changes over time, by is_weekend</p></td>
+<td><p>trend:is_weekend:daily_seas</p></td>
+</tr>
+<tr class="row-even"><td><p>COLS_EVENT_SEAS</p></td>
+<td><p>hourly</p></td>
+<td><p>events have a different daily seasonality pattern</p></td>
+<td><p>event:daily_seas</p></td>
+</tr>
+<tr class="row-odd"><td><p>COLS_EVENT_WEEKEND_SEAS</p></td>
+<td><p>hourly</p></td>
+<td><p>events have a different daily event seasonality pattern, by is_weekend</p></td>
+<td><p>event:is_weekend:daily_seas</p></td>
+</tr>
+<tr class="row-even"><td><p>COLS_DAY_OF_WEEK</p></td>
+<td><p>daily</p></td>
+<td><p>day of week effect to help weekly seasonality model</p></td>
+<td><p>day_of_week</p></td>
+</tr>
+<tr class="row-odd"><td><p>COLS_TREND_WEEKEND</p></td>
+<td><p>daily</p></td>
+<td><p>growth rate differs for weekend/weekday</p></td>
+<td><p>trend:is_weekend</p></td>
+</tr>
+<tr class="row-even"><td><p>COLS_TREND_DAY_OF_WEEK</p></td>
+<td><p>daily</p></td>
+<td><p>growth rate differs by day of week</p></td>
+<td><p>trend:day_of_week</p></td>
+</tr>
+<tr class="row-odd"><td><p>COLS_TREND_WEEKLY_SEAS</p></td>
+<td><p>daily</p></td>
+<td><p>weekly seasonality pattern changes over time</p></td>
+<td><p>trend:weekly_seas</p></td>
+</tr>
+</tbody>
+</table>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_column</span> <span class="kn">import</span> <span class="n">SilverkiteColumn</span>
+
+<span class="c1"># Uses the default for all feature sets based on data frequency and size (training data)</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span>
+<span class="p">)</span>
+<span class="c1"># Turns off all feature sets</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="kc">None</span>  <span class="c1"># same as False (prefer False to be explicit)</span>
+<span class="p">)</span>
+
+<span class="c1"># Turns on all feature sets</span>
+<span class="c1"># (Not recommended. Use &quot;auto&quot; to enable all relevant feature sets, or</span>
+<span class="c1">#  enable specific feature sets as shown below.)</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="c1"># Turns on specific feature sets</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="p">{</span>
+        <span class="c1"># Not included in the model.</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_HOUR_OF_WEEK</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_WEEKEND_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_DAILY_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_EVENT_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># None is the same as False (prefer False to be explicit)</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_EVENT_WEEKEND_SEAS</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># Included in the model.</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_WEEKEND</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Auto uses the default based on data frequency and size.</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_DAY_OF_WEEK</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="c1"># Omitted key is treated the same as &quot;auto&quot;.</span>
+        <span class="c1"># SilverkiteColumn.COLS_TREND_WEEKLY_SEAS: &quot;auto&quot;</span>
+    <span class="p">},</span>
+    <span class="c1"># Allows up to fourier order 2 for weekly seasonality interactions</span>
+    <span class="n">max_weekly_seas_interaction_order</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="c1"># Turns on a few feature sets relevant for hourly data</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_HOUR_OF_WEEK</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_WEEKEND_SEAS</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK_SEAS</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_DAILY_SEAS</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_EVENT_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>  <span class="c1"># unnecessary when COLS_EVENT_WEEKEND_SEAS is used</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_EVENT_WEEKEND_SEAS</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_WEEKEND</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_DAY_OF_WEEK</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">SilverkiteColumn</span><span class="o">.</span><span class="n">COLS_TREND_WEEKLY_SEAS</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">},</span>
+    <span class="c1"># Allows up to fourier order 2 for daily/weekly seasonality interactions</span>
+    <span class="n">max_daily_seas_interaction_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">max_weekly_seas_interaction_order</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>To check which features sets are enabled by default for your dataset, call
+<code class="docutils literal notranslate"><span class="pre">get_feature_sets_enabled</span></code>.</p>
+<ul class="simple">
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">num_days</span></code> is the number of days in your input timeseries
+(historical data for training, without future dates for regressors). It does not need
+to be exact.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_simple_silverkite</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteForecast</span>
+<span class="kn">from</span> <span class="nn">greykite.common.enums</span> <span class="kn">import</span> <span class="n">SimpleTimeFrequencyEnum</span>
+
+<span class="n">silverkite</span> <span class="o">=</span> <span class="n">SimpleSilverkiteForecast</span><span class="p">()</span>
+<span class="c1"># 60 days of hourly data</span>
+<span class="n">silverkite</span><span class="o">.</span><span class="n">_SimpleSilverkiteForecast__get_feature_sets_enabled</span><span class="p">(</span>
+    <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">HOUR</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">num_days</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="c1"># 60 days of daily data</span>
+<span class="n">silverkite</span><span class="o">.</span><span class="n">_SimpleSilverkiteForecast__get_feature_sets_enabled</span><span class="p">(</span>
+    <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">DAY</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">num_days</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="c1"># 30 weeks of weekly data</span>
+<span class="n">silverkite</span><span class="o">.</span><span class="n">_SimpleSilverkiteForecast__get_feature_sets_enabled</span><span class="p">(</span>
+    <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">WEEK</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">num_days</span><span class="o">=</span><span class="mi">7</span><span class="o">*</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="c1"># 30 months of monthly data</span>
+<span class="n">silverkite</span><span class="o">.</span><span class="n">_SimpleSilverkiteForecast__get_feature_sets_enabled</span><span class="p">(</span>
+    <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">MONTH</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">num_days</span><span class="o">=</span><span class="mi">30</span><span class="o">*</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="c1"># 20 quarters of quarterly data</span>
+<span class="n">silverkite</span><span class="o">.</span><span class="n">_SimpleSilverkiteForecast__get_feature_sets_enabled</span><span class="p">(</span>
+    <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">QUARTER</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">num_days</span><span class="o">=</span><span class="mi">90</span><span class="o">*</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="c1"># 12 years of yearly data</span>
+<span class="n">silverkite</span><span class="o">.</span><span class="n">_SimpleSilverkiteForecast__get_feature_sets_enabled</span><span class="p">(</span>
+    <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">YEAR</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">num_days</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="specify-model-terms">
+<h2>Specify model terms<a class="headerlink" href="#specify-model-terms" title="Permalink to this headline">¶</a></h2>
+<p>For even finer control than <code class="docutils literal notranslate"><span class="pre">feature_sets_enabled</span></code>, you can specify additional model terms
+via <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code>. Any valid patsy model formula term is accepted. You need to know how
+columns are internally coded to use this function. Most users will not need this option.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While it’s possible to add many terms in the model, a high degree of complexity may not
+generalize well into the forecast period and should not be necessary for most forecasts.</p>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>extra_pred_cols : `list` [`str`] or None or a list of such values for grid search, default None
+    Names of extra predictor columns to pass to ``forecast_silverkite``.
+    The standard interactions can be controlled via ``feature_sets_enabled`` parameter.
+    Accepts any valid patsy model formula term. Can be used to model complex interactions
+    of time features, events, seasonality, changepoints, regressors. Columns should be
+    generated by ``build_silverkite_features`` or included with input data.
+    These are added to any features already included by ``feature_sets_enabled`` and
+    terms specified by ``model``.
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">greykite.common.constants</span> <span class="k">as</span> <span class="nn">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.utils.result_summary</span> <span class="kn">import</span> <span class="n">patsy_categorical_term</span>
+
+<span class="c1"># Provides all holidays of interest</span>
+<span class="n">holiday_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Christmas Day&quot;</span><span class="p">,</span> <span class="s2">&quot;Thanksgiving&quot;</span><span class="p">,</span> <span class="s2">&quot;Labor Day&quot;</span><span class="p">]</span>
+
+<span class="c1"># Adds day-of-holiday interaction with is_weekend</span>
+<span class="c1"># (does not add the interaction on days offset from the holiday)</span>
+<span class="n">extra_pred_cols</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">event_levels</span> <span class="o">=</span> <span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DEFAULT</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">EVENT_INDICATOR</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">holiday_name</span> <span class="ow">in</span> <span class="n">holiday_names</span><span class="p">:</span>
+    <span class="n">holiday_term</span> <span class="o">=</span> <span class="n">patsy_categorical_term</span><span class="p">(</span>
+        <span class="n">term</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_PREFIX</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">holiday_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># holiday column name</span>
+        <span class="n">levels</span><span class="o">=</span><span class="n">event_levels</span><span class="p">)</span>  <span class="c1"># levels for holiday categorical variable</span>
+    <span class="n">extra_pred_cols</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;is_weekend:</span><span class="si">{</span><span class="n">holiday_term</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+<span class="c1"># Tells the model to include these parameters</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">extra_pred_cols</span><span class="o">=</span><span class="n">extra_pred_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Contact us if you’re using <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code>. If your model terms are useful for others, we can add
+them to <code class="docutils literal notranslate"><span class="pre">feature_sets_enabled</span></code>.</p>
+</div>
+<p>Similarly, you may specify terms to exclude via <code class="docutils literal notranslate"><span class="pre">&quot;drop_pred_cols&quot;</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>drop_pred_cols : `list` [`str`] or None, default None
+    Names of predictor columns to be dropped from the final model.
+    Ignored if None.
+</pre></div>
+</div>
+<p>To directly specify all the terms used in the final model, use <code class="docutils literal notranslate"><span class="pre">&quot;explicit_pred_cols&quot;</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>explicit_pred_cols : `list` [`str`] or None, default None
+    Names of the explicit predictor columns which will be
+    the only variables in the final model. Note that this overwrites
+    the generated predictors in the model and may include new
+    terms not appearing in the predictors (e.g. interaction terms).
+    Ignored if None.
+</pre></div>
+</div>
+</div>
+<div class="section" id="forecast-limits">
+<h2>Forecast limits<a class="headerlink" href="#forecast-limits" title="Permalink to this headline">¶</a></h2>
+<p>You may prevent the forecast from going above or below pre-set values
+via <code class="docutils literal notranslate"><span class="pre">min_admissible_value</span></code> and <code class="docutils literal notranslate"><span class="pre">max_admissible_value</span></code>.</p>
+<p>This can be useful, for example, if you are forecasting a non-negative
+metric.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>min_admissible_value : `float` or `double` or `int` or None, default None
+    The lowest admissible value for the forecasts and prediction
+    intervals. Any value below this will be mapped back to this value.
+    If None, there is no lower bound.
+max_admissible_value : `float` or `double` or `int`, default None
+    The highest admissible value for the forecasts and prediction
+    intervals. Any value above this will be mapped back to this value.
+    If None, there is no upper bound.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># enforce non-negative forecast</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">min_admissible_value</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="c1"># specifies an acceptable range</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">min_admissible_value</span><span class="o">=</span><span class="mf">1e3</span>
+    <span class="n">max_admissible_value</span><span class="o">=</span><span class="mf">1e6</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="normalization">
+<h2>Normalization<a class="headerlink" href="#normalization" title="Permalink to this headline">¶</a></h2>
+<p>It can be helpful to normalize features, especially when features have different magnitudes
+and regularization is used.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>normalize_method : `str` or None, default None
+    The normalization method for the feature matrix.
+    Available values are &quot;statistical&quot; and &quot;min_max&quot;.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">normalize_method</span><span class="o">=</span><span class="s2">&quot;statistical&quot;</span>
+<span class="p">)</span>
+<span class="n">custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">normalize_method</span><span class="o">=</span><span class="s2">&quot;min_max&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">statistical</span></code> method removes the “mean” and divides by “std” for each column.
+The <code class="docutils literal notranslate"><span class="pre">min_max</span></code> method removes the “min” and divides by the “max - min”
+for each column. For details, see <code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize_df</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Changepoints &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Changepoints</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="changepoints">
+<h1>Changepoints<a class="headerlink" href="#changepoints" title="Permalink to this headline">¶</a></h1>
+<p>Use <code class="docutils literal notranslate"><span class="pre">model_components.changepoints</span></code> to specify the changepoints.</p>
+<div class="section" id="silverkite">
+<h2>Silverkite<a class="headerlink" href="#silverkite" title="Permalink to this headline">¶</a></h2>
+<p>There are two type of changepoints that are allowed
+in Silverkite: (trend) changepoints and seasonality changepoints.
+Changepoints allow you to specify changes in the growth rate.
+Together, growth and changepoints define the overall trend.
+Seasonality changepoints allow you to specify changes in the seasonality shapes.</p>
+<p>A quickstart example for automatic trend changepoint detection in Silverkite can be
+found at <a class="reference internal" href="../../../gallery/quickstart/0200_changepoint_detection.html"><span class="doc">Changepoint Detection</span></a></p>
+<p>By default, there are no changepoints.</p>
+<p>Trend changepoint options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>changepoints : `dict` [`str`, `dict`] or None
+    Specifies the changepoint configuration. Dictionary with the following
+    optional key:
+
+    ``&quot;changepoints_dict&quot;`` : `dict` or None or a list of such values for grid search
+            changepoints dictionary passed to ``forecast_simple_silverkite``. A dictionary
+            with the following optional keys:
+
+            ``&quot;method&quot;`` : `str`
+                The method to locate changepoints. Valid options:
+                    &quot;uniform&quot;. Places n_changepoints evenly spaced changepoints to allow growth to change.
+                    &quot;custom&quot;. Places changepoints at the specified dates.
+                    &quot;auto&quot;. Automatically detects change points.
+                Additional keys to provide parameters for each particular method are described below.
+            ``&quot;continuous_time_col&quot;`` : `str` or None
+                Column to apply `growth_func` to, to generate changepoint features
+                Typically, this should match the growth term in the model
+            ``&quot;growth_func&quot;`` : callable or None
+                Growth function (`numeric` -&gt; `numeric`). Changepoint features are created
+                by applying `growth_func` to &quot;continuous_time_col&quot; with offsets.
+                If None, uses identity function to use `continuous_time_col` directly
+                as growth term
+
+        If changepoints_dict[&quot;method&quot;] == &quot;uniform&quot;, this other key is required:
+
+            ``&quot;n_changepoints&quot;`` : `int`
+                number of changepoints to evenly space across training period
+
+        If changepoints_dict[&quot;method&quot;] == &quot;custom&quot;, this other key is required:
+
+            ``&quot;dates&quot;`` : `list` [`int` or `float` or `str` or `datetime`]
+                Changepoint dates. Must be parsable by pd.to_datetime.
+                Changepoints are set at the closest time on or after these dates
+                in the dataset.
+
+        If changepoints_dict[&quot;method&quot;] == &quot;auto&quot;, optional keys can be passed that match the parameters in
+        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_trend_changepoints`
+        (except ``df``, ``time_col`` and ``value_col``, which are already known).
+        To add manually specified changepoints to the automatically detected ones, the keys ``dates``,
+        ``combine_changepoint_min_distance`` and ``keep_detected`` can be specified, which correspond to the
+        three parameters ``custom_changepoint_dates``, ``min_distance`` and ``keep_detected`` in
+        `~greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints`.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Places three changepoints uniformly within each training set.</span>
+<span class="c1"># Piecewise linear growth is defined by `continuous_time_col` and `growth_func`</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;uniform&quot;</span><span class="p">,</span>
+        <span class="n">n_changepoints</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">,</span>  <span class="c1"># the default, no need to specify</span>
+        <span class="n">growth_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>  <span class="c1"># the default, no need to specify</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Piecewise linear growth, two changepoints at specific dates</span>
+<span class="c1"># If a date is not contained in one of the training splits,</span>
+<span class="c1"># it is ignored for that split.</span>
+<span class="c1"># `dates`: Iterable[Union[int, float, str, datetime]], interpreted by pd.to_datetime</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+        <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2018-08-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2019-08-03&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Grid search is possible</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+            <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2018-08-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2019-08-03&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+            <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2019-08-03&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Automatic change point detection</span>
+<span class="n">changepoints</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+      <span class="n">method</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+      <span class="n">regularization_strength</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+      <span class="n">resample_freq</span><span class="o">=</span><span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+      <span class="n">actual_changepoint_min_distance</span><span class="o">=</span><span class="s2">&quot;100D&quot;</span><span class="p">,</span>
+      <span class="n">potential_changepoint_distance</span><span class="o">=</span><span class="s2">&quot;50D&quot;</span><span class="p">,</span>
+      <span class="n">no_changepoint_proportion_from_end</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+      <span class="n">yearly_seasonality_order</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+      <span class="c1"># Manually specifies two changepoints to add</span>
+      <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2007-12-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2009-06-01&quot;</span><span class="p">],</span>
+      <span class="n">combine_changepoint_min_distance</span><span class="o">=</span><span class="s2">&quot;100D&quot;</span><span class="p">,</span>  <span class="c1"># Default is `actual_changepoint_min_distance` if not specified</span>
+      <span class="n">keep_detected</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Prefers manual changepoints over detected ones in case of overlap</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>To place changepoints, plot the overall trend over time, and see if you can identify
+places where the trend changes noticeably. If so, use <code class="docutils literal notranslate"><span class="pre">method=&quot;custom&quot;</span></code> and
+add a changepoint at those dates. If not, try a few uniform changepoints, and
+see if your backtest error improves.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not place a changepoint too close to the end of your dataset, because it may not
+have enough data points to learn the new trend.</p>
+<p>As a rule of thumb, the last changepoint should have enough training data following it
+to validate the forecast accuracy in a backtest. For example, for daily data and a
+a forecast horizon of a few months, reserve 2 months after the last changepoint.</p>
+<p>In automatic change point detection, this can be avoided by specifying
+<code class="docutils literal notranslate"><span class="pre">no_changepoint_proportion_from_end</span></code> or <code class="docutils literal notranslate"><span class="pre">no_changepoint_distance_from_end</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Changepoints add flexibility to your model. As a rule of thumb, if you do not use the
+“auto” option for “method”, use at most 3 changepoints, fewer if you include interactions
+with changepoints.</p>
+<p>If you have yearly seasonality in your model and just one year of training data, a
+very flexible trend can become conflated with the yearly seasonality.</p>
+<p>Unlike Prophet, the current implementation of Silverkite does not explicitly encourage
+smoothness how changepoints affect the growth rate. So it’s best not to have too many.</p>
+</div>
+<div class="section" id="custom-growth">
+<span id="id1"></span><h3>Custom growth<a class="headerlink" href="#custom-growth" title="Permalink to this headline">¶</a></h3>
+<p>Changepoints also allow you to customize the growth rate as a function of time.</p>
+<div class="section" id="how-it-works">
+<h4>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h4>
+<p>Each changepoint as introduces a regressor whose value is 0 before the changepoint, and
+whose value after the changepoint is defined by <code class="docutils literal notranslate"><span class="pre">continuous_time_col</span></code> and <code class="docutils literal notranslate"><span class="pre">growth_func</span></code>.</p>
+<p>Let <span class="math notranslate nohighlight">\(g(t)\)</span> be the value of continuous_time_col at <span class="math notranslate nohighlight">\(t\)</span>.
+A changepoint at date <span class="math notranslate nohighlight">\(t_0\)</span> adds a regressor defined by:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{growth_func}(g(t)-g(t_0))\)</span> if <span class="math notranslate nohighlight">\(t &gt;= t_0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(0\)</span> otherwise.</p></li>
+</ul>
+<p>For linear growth (<code class="docutils literal notranslate"><span class="pre">continuous_time_col=&quot;ct1&quot;</span></code>), this is simply:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{growth_func}(t-t_0)\)</span> if <span class="math notranslate nohighlight">\(t &gt;= t_0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(0\)</span> otherwise.</p></li>
+</ul>
+<p>(<span class="math notranslate nohighlight">\(t-t_0\)</span> is the fractional years since <span class="math notranslate nohighlight">\(t_0\)</span>.)</p>
+<p>For most applications, you can set <code class="docutils literal notranslate"><span class="pre">continuous_time_col=&quot;ct1&quot;</span></code> and define
+<code class="docutils literal notranslate"><span class="pre">growth_func</span></code> to model type of curve you want with time.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Every changepoint date must be a date in your dataset.
+(The changepoint dates are mapped to the first date on or after the requested date
+within each training split, and deduped).</p>
+</div>
+</div>
+<div class="section" id="growth-func">
+<h4>growth_func<a class="headerlink" href="#growth-func" title="Permalink to this headline">¶</a></h4>
+<p>By leveraging <code class="docutils literal notranslate"><span class="pre">growth_func</span></code>, you can specify the growth as any function of time.
+For example, if you believe the growth rate should be logistic
+(<a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function">wikipedia</a>), and have some domain
+knowledge about the growth rate, capacity, and inflection point:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_logistic_func</span>
+
+<span class="c1">#  Defines f(continuous_time_col) =</span>
+<span class="c1">#    floor + capacity / (1 + exp(-growth_rate * (continuous_time_col - inflection_point)))</span>
+<span class="n">logistic_func</span> <span class="o">=</span> <span class="n">get_logistic_func</span><span class="p">(</span>
+    <span class="n">growth_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>        <span class="c1"># how fast the values go from floor to capacity</span>
+    <span class="n">capacity</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span>        <span class="c1"># in units of the timeseries value</span>
+    <span class="n">floor</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>              <span class="c1"># in units of the timeseries value</span>
+    <span class="n">inflection_point</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>   <span class="c1"># in units of continuous_time_col. How far after the changepoint to place the inflection point</span>
+<span class="n">changepoints</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+        <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2018-09-01&quot;</span><span class="p">],</span>  <span class="c1"># The dates where continuous_time_col=0 for each logistic curve.</span>
+                               <span class="c1"># Placing multiple dates results in multiple logistic curves.</span>
+        <span class="n">continuous_time_col</span><span class="o">=</span><span class="s2">&quot;ct1&quot;</span><span class="p">,</span>
+        <span class="n">growth_func</span><span class="o">=</span><span class="n">logistic_func</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you place a changepoint at your train start date, you can define a custom growth term beyond
+those available in <a class="reference internal" href="../../../pages/model_components/0200_growth.html"><span class="doc">Growth</span></a>.</p>
+<p>Make sure to set <code class="docutils literal notranslate"><span class="pre">growth=dict(growth_term=None)</span></code> for <a class="reference internal" href="../../../pages/model_components/0200_growth.html"><span class="doc">Growth</span></a> so you have a single
+growth term.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It’s best to have <code class="docutils literal notranslate"><span class="pre">growth_func(0.0)</span> <span class="pre">=</span> <span class="pre">0.0</span></code> for continuity at the changepoints.</p>
+<p>For logistic growth, this means <code class="docutils literal notranslate"><span class="pre">floor</span></code> should be 0.0 and <code class="docutils literal notranslate"><span class="pre">inflection_point</span></code> should be large.</p>
+</div>
+</div>
+<div class="section" id="continuous-time-col">
+<h4>continuous_time_col<a class="headerlink" href="#continuous-time-col" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">continuous_time_col</span></code> is a numeric representation of time. You can use this parameter to specify
+non-linear growth rate without writing your own <code class="docutils literal notranslate"><span class="pre">growth_func</span></code>.</p>
+<p>If you specify <code class="docutils literal notranslate"><span class="pre">growth_func</span></code>, you will most likely leave this as the
+default (linear time <code class="docutils literal notranslate"><span class="pre">&quot;ct1&quot;</span></code>).</p>
+<p>Here are the options:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>continuous_time_col</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ct1</p></td>
+<td><p>linear growth, -infinity to infinity</p></td>
+</tr>
+<tr class="row-odd"><td><p>ct2</p></td>
+<td><p>signed quadratic growth, -infinity to infinity</p></td>
+</tr>
+<tr class="row-even"><td><p>ct3</p></td>
+<td><p>signed cubic growth, -infinity to infinity</p></td>
+</tr>
+<tr class="row-odd"><td><p>ct_sqrt</p></td>
+<td><p>signed square root growth, -infinity to infinity</p></td>
+</tr>
+<tr class="row-even"><td><p>ct_root3</p></td>
+<td><p>signed cubic root growth, -infinity to infinity</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>What is signed growth?</p>
+<ul class="simple">
+<li><p>signed growth at <code class="docutils literal notranslate"><span class="pre">x</span></code> is defined by: <code class="docutils literal notranslate"><span class="pre">np.sign(x)</span> <span class="pre">*</span> <span class="pre">np.power(np.abs(x),</span> <span class="pre">pow)</span></code>.</p></li>
+<li><p>For example, signed square root is this function with <code class="docutils literal notranslate"><span class="pre">pow=0.5</span></code>.</p></li>
+<li><p>These functions are monotonically increasing with time, making them useful to model growth</p></li>
+</ul>
+</div>
+<p>For each changepoint, signed growth is calculated on the fractional years
+since the changepoint date.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">growth_term</span></code> specified at <a class="reference internal" href="../../../pages/model_components/0200_growth.html"><span class="doc">Growth</span></a>
+maps to <code class="docutils literal notranslate"><span class="pre">continuous_time_col</span></code> as follows:</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>growth_term</p></th>
+<th class="head"><p>continuous_time_col</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>linear</p></td>
+<td><p>ct1</p></td>
+</tr>
+<tr class="row-odd"><td><p>quadratic</p></td>
+<td><p>ct2</p></td>
+</tr>
+<tr class="row-even"><td><p>sqrt</p></td>
+<td><p>ct_sqrt</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="other-usage">
+<h4>Other usage<a class="headerlink" href="#other-usage" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By interacting trend and seasonality, you can use changepoints to
+specify changes in seasonality (e.g increasing over time).</p>
+</div>
+</div>
+</div>
+<div class="section" id="seasonality-changepoints">
+<span id="id2"></span><h3>Seasonality changepoints<a class="headerlink" href="#seasonality-changepoints" title="Permalink to this headline">¶</a></h3>
+<p>Seasonality changepoints allow seasonality shapes to change at every component level. For example,
+the shape of yearly seasonality may change at a seasonality changepoint for yearly component, but
+the shape of seasonality for other components such as weekly or daily will not change at that point.
+These changepoints can be automatically detected.</p>
+<p>You may specify <code class="docutils literal notranslate"><span class="pre">seasonality_changepoints_dict</span></code> by itself or along with <code class="docutils literal notranslate"><span class="pre">changepoints_dict</span></code> in
+<code class="docutils literal notranslate"><span class="pre">model_components.changepoints</span></code>. Optional keys of <code class="docutils literal notranslate"><span class="pre">seasonality_changepoints_dict</span></code> include keys
+in <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints" title="greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_seasonality_changepoints</span></code></a>,
+except <code class="docutils literal notranslate"><span class="pre">df</span></code>, <code class="docutils literal notranslate"><span class="pre">time_col</span></code>, <code class="docutils literal notranslate"><span class="pre">value_col</span></code> and <code class="docutils literal notranslate"><span class="pre">trend_changepoints</span></code>, which will be automatically passed
+within the algorithm.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Includes seasonality changepoints with trend changepoints.</span>
+<span class="c1"># The detected trend changepoints will be used as partial information</span>
+<span class="c1"># when detecting seasonality changepoints.</span>
+<span class="c1"># Both are used in the forecast model.</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">no_changepoint_distance_from_end</span><span class="o">=</span><span class="s2">&quot;180D&quot;</span>
+    <span class="p">),</span>
+    <span class="n">seasonality_changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">no_changepoint_distance_from_end</span><span class="o">=</span><span class="s2">&quot;180D&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Includes seasonality changepoints only.</span>
+<span class="c1"># Trend changepoints detection will be triggered and used as partial information</span>
+<span class="c1"># when detecting seasonality changepoints, but will not be used in the forecast model.</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">seasonality_changepoints_dict</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">potential_changepoint_distance</span><span class="o">=</span><span class="s2">&quot;30D&quot;</span><span class="p">,</span>
+        <span class="n">seasonality_components_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tow&quot;</span><span class="p">,</span> <span class="s2">&quot;conti_year&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">7.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+        <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+        <span class="s2">&quot;seas_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;weekly&quot;</span><span class="p">,</span> <span class="s2">&quot;yearly&quot;</span><span class="p">]})</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Grid search is possible</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints_dict</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+            <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2018-08-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2019-08-03&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+            <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2019-08-03&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">seasonality_changepoints_dict</span><span class="o">=</span><span class="p">[</span>
+        <span class="nb">dict</span><span class="p">(),</span>  <span class="c1"># an empty dictionary triggers seasonality changepoints detection with default parameters</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">regularization_strength</span><span class="o">=</span><span class="mf">0.4</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Similar to (trend) changepoints, placing seasonality changepoints too close to the end of data is not
+recommended. It’s important to specify the parameter <code class="docutils literal notranslate"><span class="pre">no_changepoint_distance_from_end</span></code> or
+<code class="docutils literal notranslate"><span class="pre">no_changepoint_proportion_from_end</span></code>, where the former overrides the latter.</p>
+</div>
+</div>
+</div>
+<div class="section" id="prophet">
+<h2>Prophet<a class="headerlink" href="#prophet" title="Permalink to this headline">¶</a></h2>
+<p>By default, there are 25 uniformly spaced changepoints.</p>
+<p>Options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>changepoints : `dict` [`str`, `any`] or None
+    Specifies the changepoint configuration. Dictionary with the following optional keys:
+
+    changepoint_prior_scale : `float` or None or list of such values for grid search, default 0.05
+        Parameter modulating the flexibility of the automatic changepoint selection.
+        0.05 by default.
+        Large values will allow many changepoints, small values will allow few changepoints.
+    changepoints : `list` [`datetime.datetime`] or None or list of such values for grid search, default None
+        List of dates at which to include potential changepoints. None by default, if not specified,
+        potential changepoints are selected automatically.
+    n_changepoints : `int` or None or list of such values for grid search, default 25
+        Number of potential changepoints to include. Not used if input `changepoints` is supplied.
+        If `changepoints` is not supplied, then n_changepoints potential changepoints are selected uniformly from
+        the first `changepoint_range` proportion of the history.
+    changepoint_range : `float` or None or list of such values for grid search, default 0.8
+        Proportion of history in which trend changepoints will be estimated. Permitted values: (0,1]
+        Not used if input `changepoints` is supplied.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Places specific changepoints to model piecewise linear growth.</span>
+<span class="c1"># If a date is not contained in one of the training splits, it is ignored for that split.</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;2019-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-05-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2019-07-01&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Specifies number of changepoints and % of training data used to place these points.</span>
+<span class="c1"># Grid search example.</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">n_changepoints</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="n">changepoint_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Modulates flexibility of trend fit</span>
+<span class="n">changepoints</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">changepoint_prior_scale</span><span class="o">=</span><span class="p">[</span><span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="n">n_changepoints</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="n">changepoint_range</span><span class="o">=</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Follow the same guidance as Silverkite for changepoints, with one key difference: n_changepoints
+can be higher for Prophet than for Silverkite.
+As a Bayesian model, Prophet uses <code class="docutils literal notranslate"><span class="pre">changepoint_prior_scale</span></code> to limit flexibility,
+even if the number of changepoints is high.</p>
+<p>To further improve model fit, you may try different <code class="docutils literal notranslate"><span class="pre">n_changepoints</span></code> and
+increasing <code class="docutils literal notranslate"><span class="pre">changepoint_range</span></code>. However, make sure to reserve enough data after the
+last changepoint to learn the new trend and validate the forecast accuracy,
+as explained for Silverkite above.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">changepoint_range</span></code> is too high, seasonality effects can be mistaken for trend,
+and the forecast will not be accurate. On the other hand, because <code class="docutils literal notranslate"><span class="pre">changepoint_range</span></code>
+is determined as a fraction of the input dataset,
+it can be safe to increase if you have many training points.
+For example, for 3 years of daily data, <code class="docutils literal notranslate"><span class="pre">changepoint_range=0.8</span></code> reserves 7.2 months after the
+last changepoint. If you believe the trend changed in those last 7.2 months,
+then you can try increasing <code class="docutils literal notranslate"><span class="pre">changepoint_range</span></code> while reserving data for validation.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is possible to fine tune changepoint fit using <code class="docutils literal notranslate"><span class="pre">changepoint_prior_scale</span></code>.
+You can fix overfit (too much flexibility) or underfit (not enough flexibility) using this parameter.
+There is no standard threshold. Optimum value depends on underlying data.</p>
+<p>Try different values in grid search to find a good fit via cross validation.
+As a general rule, choose final model which has lower test MAPE
+than other models to eliminate overfitting risk.
+e.g. you may try [0.01, 0.05, 0.25].</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

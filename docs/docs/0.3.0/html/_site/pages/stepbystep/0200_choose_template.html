@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Choose a Model Template &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Choose a Model Template</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="choose-a-model-template">
+<h1>Choose a Model Template<a class="headerlink" href="#choose-a-model-template" title="Permalink to this headline">¶</a></h1>
+<p>Model templates provide default model parameters
+and allow you to customize them in a more organized way.
+Greykite offers various templates for the two forecasting
+models: Silverkite and Prophet.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If possible, try all the templates with default parameters. Tune a few of the main parameters,
+then focus on the one that looks most promising for your dataset.</p>
+<p>You can use the same forecaster
+(<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster" title="greykite.framework.templates.forecaster.Forecaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Forecaster</span></code></a>)
+to run different templates and compare the results.</p>
+<p>That said, there are some clear differences between templates, and this cheatsheet
+can help you find the right one for your problem.</p>
+</div>
+<p>See valid <code class="docutils literal notranslate"><span class="pre">model_template</span></code> names in
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.model_templates.ModelTemplateEnum" title="greykite.framework.templates.model_templates.ModelTemplateEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelTemplateEnum</span></code></a>.
+The model templates can be classified into three categories:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> category of model templates provides a high-level interface to the
+Silverkite model. This category of templates includes configurations that are
+tailored to various forecast horizons, data frequencies, and data characteristics.
+It is easy to customize these configurations to try different options.
+The model template names are strings starting with <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> or instances of
+<a class="reference internal" href="../../../pages/autodoc/doc.html#id0" title="greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteTemplateOptions</span></code></a>.
+The class that applies these templates is
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate" title="greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteTemplate</span></code></a>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> model template is a low-level interface to the Silverkite model.
+This model template allows you to change lower-level parameters in Silverkite
+and is intended for more advanced users.
+The class that applies this template is
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.silverkite_template.SilverkiteTemplate" title="greykite.framework.templates.silverkite_template.SilverkiteTemplate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteTemplate</span></code></a>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> model template is used for the Prophet model.
+The class that applies this template is
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate" title="greykite.framework.templates.prophet_template.ProphetTemplate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProphetTemplate</span></code></a>.</p></li>
+</ul>
+<p>A detailed tutorial and listing of available model templates can be found at
+<a class="reference internal" href="../../../gallery/tutorials/0200_templates.html"><span class="doc">Templates</span></a>.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

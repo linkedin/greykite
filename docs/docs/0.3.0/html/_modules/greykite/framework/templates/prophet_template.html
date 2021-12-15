@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.templates.prophet_template &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.templates.prophet_template</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.templates.prophet_template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Rachit Kumar, Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Template for `greykite.sklearn.estimator.prophet_estimator`.</span>
+<span class="sd">Takes input data and forecast config,</span>
+<span class="sd">and returns parameters to call</span>
+<span class="sd">:func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">dictionaries_values_to_lists</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionaries</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionary</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.base_template</span> <span class="kn">import</span> <span class="n">BaseTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.prophet_estimator</span> <span class="kn">import</span> <span class="n">ProphetEstimator</span>
+
+
+<div class="viewcode-block" id="ProphetTemplate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate">[docs]</a><span class="k">class</span> <span class="nc">ProphetTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A template for :class:`~greykite.sklearn.estimator.prophet_estimator.ProphetEstimator`.</span>
+
+<span class="sd">    Takes input data and optional configuration parameters</span>
+<span class="sd">    to customize the model. Returns a set of parameters to call</span>
+<span class="sd">    :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The attributes of a `~greykite.framework.templates.autogen.forecast_config.ForecastConfig` for</span>
+<span class="sd">    :class:`~greykite.sklearn.estimator.prophet_estimator.ProphetEstimator` are:</span>
+
+<span class="sd">        computation_param: `ComputationParam` or None, default None</span>
+<span class="sd">            How to compute the result. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ComputationParam`.</span>
+<span class="sd">        coverage: `float` or None, default None</span>
+<span class="sd">            Intended coverage of the prediction bands (0.0 to 1.0)</span>
+<span class="sd">            If None, the upper/lower predictions are not returned</span>
+<span class="sd">            Same as coverage in ``forecast_pipeline``</span>
+<span class="sd">        evaluation_metric_param: `EvaluationMetricParam` or None, default None</span>
+<span class="sd">            What metrics to evaluate. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam`.</span>
+<span class="sd">        evaluation_period_param: `EvaluationPeriodParam` or None, default None</span>
+<span class="sd">            How to split data for evaluation. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`.</span>
+<span class="sd">        forecast_horizon: `int` or None, default None</span>
+<span class="sd">            Number of periods to forecast into the future. Must be &gt; 0</span>
+<span class="sd">            If None, default is determined from input data frequency</span>
+<span class="sd">            Same as forecast_horizon in `forecast_pipeline`</span>
+<span class="sd">        metadata_param: `MetadataParam` or None, default None</span>
+<span class="sd">            Information about the input data. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.MetadataParam`.</span>
+<span class="sd">        model_components_param: `ModelComponentsParam` or None, default None</span>
+<span class="sd">            Parameters to tune the model. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">            The fields are dictionaries with the following items.</span>
+
+<span class="sd">            seasonality: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Seasonality config dictionary, with the following optional keys.</span>
+
+<span class="sd">                ``&quot;seasonality_mode&quot;``: `str` or None or list of such values for grid search</span>
+<span class="sd">                    Can be &#39;additive&#39; (default) or &#39;multiplicative&#39;.</span>
+<span class="sd">                ``&quot;seasonality_prior_scale&quot;``: `float` or None or list of such values for grid search</span>
+<span class="sd">                    Parameter modulating the strength of the seasonality model.</span>
+<span class="sd">                    Larger values allow the model to fit larger seasonal fluctuations, smaller values dampen the seasonality.</span>
+<span class="sd">                    Specify for individual seasonalities using add_seasonality_dict.</span>
+<span class="sd">                ``&quot;yearly_seasonality&quot;``: `str` or `bool` or `int` or list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the yearly seasonality</span>
+<span class="sd">                    Can be &#39;auto&#39;, True, False, or a number of Fourier terms to generate.</span>
+<span class="sd">                ``&quot;weekly_seasonality&quot;``: `str` or `bool` or `int` or list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the weekly seasonality</span>
+<span class="sd">                    Can be &#39;auto&#39;, True, False, or a number of Fourier terms to generate.</span>
+<span class="sd">                ``&quot;daily_seasonality&quot;``: `str` or `bool` or `int` or list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the daily seasonality</span>
+<span class="sd">                    Can be &#39;auto&#39;, True, False, or a number of Fourier terms to generate.</span>
+<span class="sd">                ``&quot;add_seasonality_dict&quot;``: `dict` or None or list of such values for grid search</span>
+<span class="sd">                    dict of custom seasonality parameters to be added to the model, default=None</span>
+<span class="sd">                    Key is the seasonality component name e.g. &#39;monthly&#39;; parameters are specified via dict.</span>
+<span class="sd">                    See :class:`~greykite.sklearn.estimator.prophet_estimator` for details.</span>
+
+<span class="sd">            growth: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Specifies the growth parameter configuration.</span>
+<span class="sd">                Dictionary with the following optional key:</span>
+
+<span class="sd">                ``&quot;growth_term&quot;``: `str` or None or list of such values for grid search</span>
+<span class="sd">                    How to model the growth. Valid options are &quot;linear&quot; and &quot;logistic&quot;</span>
+<span class="sd">                    Specify a linear or logistic trend, these terms have their origin at the train start date.</span>
+
+<span class="sd">            events: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Holiday/events configuration dictionary with the following optional keys:</span>
+
+<span class="sd">                ``&quot;holiday_lookup_countries&quot;``: `list` [`str`] or &quot;auto&quot; or None</span>
+<span class="sd">                    Which countries&#39; holidays to include. Must contain all the holidays you intend to model.</span>
+<span class="sd">                    If &quot;auto&quot;, uses default list of countries with large contribution to Internet traffic.</span>
+<span class="sd">                    If None or an empty list, no holidays are modeled.</span>
+<span class="sd">                ``&quot;holidays_prior_scale&quot;``: `float` or None or list of such values for grid search, default 10.0</span>
+<span class="sd">                    Modulates the strength of the holiday effect.</span>
+<span class="sd">                ``&quot;holiday_pre_num_days&quot;``: `list` [`int`] or None, default 2</span>
+<span class="sd">                    Model holiday effects for holiday_pre_num_days days before the holiday.</span>
+<span class="sd">                    Grid search is not supported. Must be a list with one element or None.</span>
+<span class="sd">                ``&quot;holiday_post_num_days&quot;``: `list` [`int`] or None, default 2</span>
+<span class="sd">                    Model holiday effects for holiday_post_num_days days after the holiday</span>
+<span class="sd">                    Grid search is not supported. Must be a list with one element or None.</span>
+
+<span class="sd">            changepoints: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Specifies the changepoint configuration. Dictionary with the following</span>
+<span class="sd">                optional keys:</span>
+
+<span class="sd">                ``&quot;changepoint_prior_scale&quot;`` : `float` or None or list of such values for grid search, default 0.05</span>
+<span class="sd">                    Parameter modulating the flexibility of the automatic changepoint selection. Large values will allow many</span>
+<span class="sd">                    changepoints, small values will allow few changepoints.</span>
+<span class="sd">                ``&quot;changepoints&quot;`` : `list` [`datetime.datetime`] or None or list of such values for grid search, default None</span>
+<span class="sd">                    List of dates at which to include potential changepoints. If not specified,</span>
+<span class="sd">                    potential changepoints are selected automatically.</span>
+<span class="sd">                ``&quot;n_changepoints&quot;`` : `int` or None or list of such values for grid search, default 25</span>
+<span class="sd">                    Number of potential changepoints to include. Not used if input `changepoints` is supplied.</span>
+<span class="sd">                    If `changepoints` is not supplied, then n_changepoints potential changepoints are selected uniformly from</span>
+<span class="sd">                    the first `changepoint_range` proportion of the history.</span>
+<span class="sd">                ``&quot;changepoint_range&quot;`` : `float` or None or list of such values for grid search, default 0.8</span>
+<span class="sd">                    Proportion of history in which trend changepoints will be estimated. Permitted values: (0,1]</span>
+<span class="sd">                    Not used if input `changepoints` is supplied.</span>
+
+<span class="sd">            regressors: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Specifies the regressors to include in the model (e.g. macro-economic factors).</span>
+<span class="sd">                Dictionary with the following optional keys:</span>
+
+<span class="sd">                ``&quot;add_regressor_dict&quot;`` : `dict` or None or list of such values for grid search, default None</span>
+<span class="sd">                    Dictionary of extra regressors to be modeled.</span>
+<span class="sd">                    See `~greykite.sklearn.estimator.prophet_estimator.ProphetEstimator` for details.</span>
+
+<span class="sd">            uncertainty: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Specifies the uncertainty configuration. A dictionary with the following optional keys:</span>
+
+<span class="sd">                ``&quot;mcmc_samples&quot;`` : `int` or None or list of such values for grid search, default 0</span>
+<span class="sd">                    if greater than 0, will do full Bayesian inference with the specified number of MCMC samples.</span>
+<span class="sd">                    If 0, will do MAP estimation.</span>
+<span class="sd">                ``&quot;uncertainty_samples&quot;`` : `int` or None or list of such values for grid search, default 1000</span>
+<span class="sd">                    Number of simulated draws used to estimate</span>
+<span class="sd">                    uncertainty intervals. Setting this value to 0 or False will disable</span>
+<span class="sd">                    uncertainty estimation and speed up the calculation.</span>
+
+<span class="sd">            hyperparameter_override: `dict` [`str`, `any`] or None or `list` [`dict` [`str`, `any`] or None]</span>
+<span class="sd">                After the above model components are used to create a hyperparameter grid, the result is</span>
+<span class="sd">                updated by this dictionary, to create new keys or override existing ones.</span>
+<span class="sd">                Allows for complete customization of the grid search.</span>
+
+<span class="sd">                Keys should have format ``{named_step}__{parameter_name}`` for the named steps of the</span>
+<span class="sd">                `sklearn.pipeline.Pipeline` returned by this function. See `sklearn.pipeline.Pipeline`.</span>
+
+<span class="sd">                For example::</span>
+
+<span class="sd">                    hyperparameter_override={</span>
+<span class="sd">                        &quot;estimator__yearly_seasonality&quot;: [True, False],</span>
+<span class="sd">                        &quot;estimator__seasonality_prior_scale&quot;: [5.0, 15.0],</span>
+<span class="sd">                        &quot;input__response__null__impute_algorithm&quot;: &quot;ts_interpolate&quot;,</span>
+<span class="sd">                        &quot;input__response__null__impute_params&quot;: {&quot;orders&quot;: [7, 14]},</span>
+<span class="sd">                        &quot;input__regressors_numeric__normalize__normalize_algorithm&quot;: &quot;RobustScaler&quot;,</span>
+<span class="sd">                    }</span>
+
+<span class="sd">                If a list of dictionaries, grid search will be done for each dictionary in the list.</span>
+<span class="sd">                Each dictionary in the list override the defaults. This enables grid search</span>
+<span class="sd">                over specific combinations of parameters to reduce the search space.</span>
+
+<span class="sd">                    * For example, the first dictionary could define combinations of parameters for a</span>
+<span class="sd">                      &quot;complex&quot; model, and the second dictionary could define combinations of parameters</span>
+<span class="sd">                      for a &quot;simple&quot; model, to prevent mixed combinations of simple and complex.</span>
+<span class="sd">                    * Or the first dictionary could grid search over fit algorithm, and the second dictionary</span>
+<span class="sd">                      could use a single fit algorithm and grid search over seasonality.</span>
+
+<span class="sd">                The result is passed as the ``param_distributions`` parameter</span>
+<span class="sd">                to `sklearn.model_selection.RandomizedSearchCV`.</span>
+<span class="sd">            autoregression: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Prophet template does not support autoregression.</span>
+<span class="sd">            lagged_regressors: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Prophet template does not support lagged regressors.</span>
+<span class="sd">            custom: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. There are no custom options.</span>
+<span class="sd">        model_template: `str`</span>
+<span class="sd">            This class only accepts &quot;PROPHET&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;PROPHET&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The default model template. See `~greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+<span class="sd">    Uses a string to avoid circular imports.</span>
+<span class="sd">    Overrides the value from `~greykite.framework.templates.forecast_config_defaults.ForecastConfigDefaults`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HOLIDAY_LOOKUP_COUNTRIES_AUTO</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;UnitedStates&quot;</span><span class="p">,</span> <span class="s2">&quot;UnitedKingdom&quot;</span><span class="p">,</span> <span class="s2">&quot;India&quot;</span><span class="p">,</span> <span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="s2">&quot;China&quot;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Default holiday countries to use if countries=&#39;auto&#39;&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseForecastEstimator</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">global</span> <span class="n">make_holidays_df</span>
+            <span class="kn">from</span> <span class="nn">fbprophet.make_holidays</span> <span class="kn">import</span> <span class="n">make_holidays_df</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Module &#39;fbprophet&#39; is not installed. Please install it manually.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">estimator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">estimator</span> <span class="o">=</span> <span class="n">ProphetEstimator</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_template_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ProphetTemplate does not allow `config.model_template` to be a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_components_param_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ProphetTemplate does not allow `config.model_components_param` to be a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="ProphetTemplate.get_prophet_holidays"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate.get_prophet_holidays">[docs]</a>    <span class="k">def</span> <span class="nf">get_prophet_holidays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">year_list</span><span class="p">,</span>
+            <span class="n">countries</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">lower_window</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">upper_window</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generates holidays for Prophet model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        year_list : `list` [`int`]</span>
+<span class="sd">            List of years for selecting the holidays across given countries.</span>
+<span class="sd">        countries : `list` [`str`] or &quot;auto&quot; or None, default &quot;auto&quot;</span>
+<span class="sd">            Countries for selecting holidays.</span>
+
+<span class="sd">            * If &quot;auto&quot;, uses Top Countries for internet traffic.</span>
+<span class="sd">            * If a list, a list of country names.</span>
+<span class="sd">            * If None, the function returns None.</span>
+
+<span class="sd">        lower_window : `int` or None, default -2</span>
+<span class="sd">            Negative integer. Model holiday effects for given number of days before the holiday.</span>
+<span class="sd">        upper_window : `int` or None, default 2</span>
+<span class="sd">            Positive integer. Model holiday effects for given number of days after the holiday.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        holidays : `pandas.DataFrame`</span>
+<span class="sd">            holidays dataframe to pass to Prophet&#39;s `holidays` argument.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.get_available_holiday_lookup_countries`</span>
+<span class="sd">        to list available countries for modeling.</span>
+
+<span class="sd">        `~greykite.sklearn.estimator.prophet_estimator.ProphetEstimator`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">holidays</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">countries</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">countries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="n">countries</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="c1"># countries with large contribution to internet traffic</span>
+            <span class="n">countries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HOLIDAY_LOOKUP_COUNTRIES_AUTO</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">countries</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`countries` should be a list, found </span><span class="si">{</span><span class="n">countries</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Suppresses the warnings such as &quot;We only support Diwali and Holi holidays from 2010 to 2025&quot;</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="n">countries</span><span class="p">:</span>
+                <span class="n">country_holidays</span> <span class="o">=</span> <span class="n">make_holidays_df</span><span class="p">(</span><span class="n">year_list</span><span class="o">=</span><span class="n">year_list</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">)</span>
+                <span class="n">country_holidays</span><span class="p">[</span><span class="s2">&quot;lower_window&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lower_window</span>
+                <span class="n">country_holidays</span><span class="p">[</span><span class="s2">&quot;upper_window&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upper_window</span>
+                <span class="k">if</span> <span class="n">holidays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">holidays</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">holidays</span><span class="p">,</span> <span class="n">country_holidays</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">holidays</span> <span class="o">=</span> <span class="n">country_holidays</span>
+        <span class="k">if</span> <span class="n">holidays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">holidays</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">holidays</span></div>
+
+<div class="viewcode-block" id="ProphetTemplate.get_regressor_cols"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate.get_regressor_cols">[docs]</a>    <span class="k">def</span> <span class="nf">get_regressor_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns regressor column names.</span>
+
+<span class="sd">        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        regressor_cols : `list` [`str`] or None</span>
+<span class="sd">            The names of regressor columns used in any hyperparameter set</span>
+<span class="sd">            requested by ``model_components``.</span>
+<span class="sd">            None if there are no regressors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># ``add_regressor_dict`` is a list of dictionaries to initialize</span>
+        <span class="c1"># ProphetEstimator.add_seasonality_dict. Each dictionary&#39;s keys are</span>
+        <span class="c1"># the regressors used in that model</span>
+        <span class="n">reg_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">regressors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">add_regressor_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">regressors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;add_regressor_dict&quot;</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">add_regressor_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">add_regressor_dict</span> <span class="o">=</span> <span class="p">[</span><span class="n">add_regressor_dict</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">reg_dict</span> <span class="ow">in</span> <span class="n">add_regressor_dict</span><span class="p">:</span>
+                <span class="c1"># None indicates no regressors</span>
+                <span class="k">if</span> <span class="n">reg_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">reg_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reg_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">regressor_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reg_names</span><span class="p">)</span> <span class="k">if</span> <span class="n">reg_names</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">regressor_cols</span></div>
+
+<div class="viewcode-block" id="ProphetTemplate.apply_prophet_model_components_defaults"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate.apply_prophet_model_components_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">apply_prophet_model_components_defaults</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">time_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets default values for ``model_components``.</span>
+
+<span class="sd">        Called by ``get_hyperparameter_grid`` after ``time_properties` is defined.</span>
+<span class="sd">        Requires ``time_properties`` as well as ``model_components``</span>
+<span class="sd">        so we do not simply override</span>
+<span class="sd">        `~greykite.framework.templates.forecast_config_defaults.ForecastConfigDefaults.apply_model_components_defaults`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_components : :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam` or None, default None</span>
+<span class="sd">            Configuration of model growth, seasonality, events, etc.</span>
+<span class="sd">            See the docstring of this class for details.</span>
+<span class="sd">        time_properties : `dict` [`str`, `any`] or None, default None</span>
+<span class="sd">            Time properties dictionary (likely produced by</span>
+<span class="sd">            `~greykite.common.time_properties_forecast.get_forecast_time_properties`)</span>
+<span class="sd">            with keys:</span>
+
+<span class="sd">                ``&quot;period&quot;`` : `int`</span>
+<span class="sd">                    Period of each observation (i.e. minimum time between observations, in seconds).</span>
+<span class="sd">                ``&quot;simple_freq&quot;`` : `SimpleTimeFrequencyEnum`</span>
+<span class="sd">                    ``SimpleTimeFrequencyEnum`` member corresponding to data frequency.</span>
+<span class="sd">                ``&quot;num_training_points&quot;`` : `int`</span>
+<span class="sd">                    Number of observations for training.</span>
+<span class="sd">                ``&quot;num_training_days&quot;`` : `int`</span>
+<span class="sd">                    Number of days for training.</span>
+<span class="sd">                ``&quot;start_year&quot;`` : `int`</span>
+<span class="sd">                    Start year of the training period.</span>
+<span class="sd">                ``&quot;end_year&quot;`` : `int`</span>
+<span class="sd">                    End year of the forecast period.</span>
+<span class="sd">                ``&quot;origin_for_time_vars&quot;`` : `float`</span>
+<span class="sd">                    Continuous time representation of the first date in ``df``.</span>
+
+<span class="sd">            If None, start_year is set to 2015 and end_year to 2030.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_components : :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`</span>
+<span class="sd">            The provided ``model_components`` with default values set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">model_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># makes a copy to avoid mutating input</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">model_components</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">time_properties</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">time_properties</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;start_year&quot;</span><span class="p">:</span> <span class="mi">2015</span><span class="p">,</span>
+                <span class="s2">&quot;end_year&quot;</span><span class="p">:</span> <span class="mi">2030</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="c1"># seasonality</span>
+        <span class="n">default_seasonality</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;seasonality_mode&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;additive&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;seasonality_prior_scale&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">],</span>
+            <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">],</span>
+            <span class="s2">&quot;add_seasonality_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="c1"># If seasonality params are not provided, uses default params. Otherwise, prefers provided params.</span>
+        <span class="c1"># `allow_unknown_keys=False` requires `model_components.seasonality` keys to be a subset of</span>
+        <span class="c1"># `default_seasonality` keys.</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_seasonality</span><span class="p">,</span>
+            <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># growth</span>
+        <span class="n">default_growth</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">growth</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_growth</span><span class="p">,</span>
+            <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">growth</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># events</span>
+        <span class="n">default_events</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># see `get_prophet_holidays` for defaults</span>
+            <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s2">&quot;start_year&quot;</span><span class="p">:</span> <span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;start_year&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;end_year&quot;</span><span class="p">:</span> <span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;end_year&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;holidays_prior_scale&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_events</span><span class="p">,</span>
+            <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Creates events dictionary for prophet estimator</span>
+        <span class="c1"># Expands the range of holiday years by 1 year on each end, to ensure we have coverage of most relevant holidays.</span>
+        <span class="n">year_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span>
+            <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;start_year&quot;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;end_year&quot;</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># Currently we support only one set of holiday_lookup_countries, holiday_pre_num_days and holiday_post_num_days.</span>
+        <span class="c1"># Shows a warning if user supplies &gt;1 set.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`events[&#39;holiday_pre_num_days&#39;]` list has more than 1 element. We currently support only 1 element. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Using </span><span class="si">{</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;holiday_pre_num_days&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`events[&#39;holiday_post_num_days&#39;]` list has more than 1 element. We currently support only 1 element. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Using </span><span class="si">{</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;holiday_post_num_days&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="c1"># If events[&quot;holiday_lookup_countries&quot;] has multiple options, picks the first option</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># There are multiple elements</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">])</span>
+                        <span class="ow">or</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">]</span>
+                        <span class="ow">or</span> <span class="s2">&quot;auto&quot;</span> <span class="ow">in</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">]):</span>
+                    <span class="c1"># Not a flat list of country names</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;`events[&#39;holiday_lookup_countries&#39;]` contains multiple options. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;We currently support only 1 option. Using </span><span class="si">{</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s1">&#39;holiday_lookup_countries&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="c1"># There&#39;s only one element, and it&#39;s a list of countries</span>
+                <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">model_components</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;holidays_df&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prophet_holidays</span><span class="p">(</span>
+                <span class="n">year_list</span><span class="o">=</span><span class="n">year_list</span><span class="p">,</span>
+                <span class="n">countries</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">],</span>
+                <span class="c1"># holiday effect is modeled from &quot;holiday_pre_num_days&quot; days before</span>
+                <span class="c1"># to &quot;holiday_post_num_days&quot; days after the holiday</span>
+                <span class="n">lower_window</span><span class="o">=-</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># Prophet expects a negative value for `lower_window`</span>
+                <span class="n">upper_window</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;holidays_prior_scale&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holidays_prior_scale&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="c1"># changepoints_dict</span>
+        <span class="n">default_changepoints</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;changepoint_prior_scale&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">],</span>
+            <span class="s2">&quot;changepoints&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+            <span class="s2">&quot;n_changepoints&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">],</span>
+            <span class="s2">&quot;changepoint_range&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">changepoints</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_changepoints</span><span class="p">,</span>
+            <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">changepoints</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># uncertainty</span>
+        <span class="n">default_uncertainty</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mcmc_samples&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;uncertainty_samples&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1000</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">uncertainty</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_uncertainty</span><span class="p">,</span>
+            <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># regressors</span>
+        <span class="n">default_regressors</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;add_regressor_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">regressors</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_regressors</span><span class="p">,</span>
+            <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">regressors</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># there are no custom parameters for Prophet</span>
+
+        <span class="c1"># sets to {} if None, for each item if</span>
+        <span class="c1"># `model_components.hyperparameter_override` is a list of dictionaries</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+            <span class="p">{},</span>
+            <span class="n">overwrite_dicts</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model_components</span></div>
+
+<div class="viewcode-block" id="ProphetTemplate.get_hyperparameter_grid"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate.get_hyperparameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns hyperparameter grid.</span>
+
+<span class="sd">        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Uses ``self.time_properties`` and ``self.config`` to generate the hyperparameter grid.</span>
+
+<span class="sd">        Converts model components and time properties into</span>
+<span class="sd">        :class:`~greykite.sklearn.estimator.prophet_estimator.ProphetEstimator`</span>
+<span class="sd">        hyperparameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hyperparameter_grid : `dict` [`str`, `list` [`any`]] or None</span>
+<span class="sd">            :class:`~greykite.sklearn.estimator.prophet_estimator.ProphetEstimator`</span>
+<span class="sd">            hyperparameters.</span>
+
+<span class="sd">            See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">            The output dictionary values are lists, combined in grid search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_prophet_model_components_defaults</span><span class="p">(</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">,</span>
+            <span class="n">time_properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_properties</span><span class="p">)</span>
+        <span class="c1"># Returns a set of parameters for grid search</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;estimator__growth&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">growth</span><span class="p">[</span><span class="s2">&quot;growth_term&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__seasonality_mode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;seasonality_mode&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__seasonality_prior_scale&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;seasonality_prior_scale&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__yearly_seasonality&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__weekly_seasonality&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__daily_seasonality&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;daily_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__add_seasonality_dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;add_seasonality_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__holidays&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holidays_df&quot;</span><span class="p">]],</span>
+            <span class="s2">&quot;estimator__holidays_prior_scale&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holidays_prior_scale&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__changepoint_prior_scale&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoint_prior_scale&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__changepoints&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoints&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__n_changepoints&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;n_changepoints&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__changepoint_range&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoint_range&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__mcmc_samples&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">[</span><span class="s2">&quot;mcmc_samples&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__uncertainty_samples&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">[</span><span class="s2">&quot;uncertainty_samples&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__add_regressor_dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">regressors</span><span class="p">[</span><span class="s2">&quot;add_regressor_dict&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Overwrites values by `model_components.hyperparameter_override`</span>
+        <span class="c1"># This may produce a list of dictionaries for grid search.</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">overwrite_dicts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">hyperparameter_override</span><span class="p">)</span>
+
+        <span class="c1"># Ensures all items have the proper type for</span>
+        <span class="c1"># `sklearn.model_selection.RandomizedSearchCV`.</span>
+        <span class="c1"># List-type hyperparameters are specified below</span>
+        <span class="c1"># with their accepted non-list type values.</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">dictionaries_values_to_lists</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">hyperparameters_list_type</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;estimator__changepoints&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">hyperparameter_grid</span></div>
+
+<div class="viewcode-block" id="ProphetTemplate.apply_template_decorator"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate.apply_template_decorator">[docs]</a>    <span class="k">def</span> <span class="nf">apply_template_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decorator for ``apply_template_for_pipeline_params`` function.</span>
+
+<span class="sd">        Overrides the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError if config.model_template != &quot;PROPHET&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">process_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># sets defaults</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_forecast_config_defaults</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+            <span class="c1"># input validation</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">!=</span> <span class="s2">&quot;PROPHET&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">!=</span> <span class="s2">&quot;PROPHET&quot;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ProphetTemplate only supports config.model_template=&#39;PROPHET&#39;, &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;found &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="n">pipeline_params</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">pipeline_params</span>
+        <span class="k">return</span> <span class="n">process_wrapper</span></div>
+
+<div class="viewcode-block" id="ProphetTemplate.apply_template_for_pipeline_params"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.prophet_template.ProphetTemplate.apply_template_for_pipeline_params">[docs]</a>    <span class="nd">@apply_template_decorator</span>
+    <span class="k">def</span> <span class="nf">apply_template_for_pipeline_params</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Explicitly calls the method in</span>
+<span class="sd">        `~greykite.framework.templates.base_template.BaseTemplate`</span>
+<span class="sd">        to make use of the decorator in this class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The time series dataframe with ``time_col`` and ``value_col`` and optional regressor columns.</span>
+<span class="sd">        config : `~greykite.framework.templates.autogen.forecast_config.ForecastConfig`.</span>
+<span class="sd">            The `ForecastConfig` class that includes model training parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pipeline_parameters : `dict`</span>
+<span class="sd">            The pipeline parameters consumable by</span>
+<span class="sd">            `~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">apply_template_for_pipeline_params</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
+
+    <span class="n">apply_template_decorator</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">apply_template_decorator</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

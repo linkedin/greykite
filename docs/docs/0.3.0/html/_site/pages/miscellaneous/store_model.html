@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Model store and load &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Model store and load</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="model-store-and-load">
+<h1>Model store and load<a class="headerlink" href="#model-store-and-load" title="Permalink to this headline">¶</a></h1>
+<p>It’s common that people would like to store a trained model to use in the future.
+Usually the class instances are not easy to dump directly, due to the
+complexity of the instance structure.
+However, Greykite has utility functions to store and load trained models as well as other
+objects in a recursive way.
+Simply speaking, Greykite tries to dump a class instance directly.
+If it fails, Greykite will store the class type and every single attribute it has, recursively.
+When the stored class instance is being loaded,
+these information are used to reconstruct the class instances.</p>
+<div class="section" id="storing-and-loading-the-forecaster-class">
+<h2>Storing and loading the Forecaster class<a class="headerlink" href="#storing-and-loading-the-forecaster-class" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster" title="greykite.framework.templates.forecaster.Forecaster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Forecaster</span></code></a> class is the API for
+all Greykite algorithms. A typical training flow is as below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+<span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After training, all training information will be accessible via <code class="docutils literal notranslate"><span class="pre">forecaster.forecast_result</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">Forecaster</span></code> class has natively built-in dump and load functions,
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.dump_forecast_result" title="greykite.framework.templates.forecaster.Forecaster.dump_forecast_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_forecast_result</span></code></a> and
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.load_forecast_result" title="greykite.framework.templates.forecaster.Forecaster.load_forecast_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_forecast_result</span></code></a>.</p>
+<div class="section" id="dump-the-results">
+<h3>Dump the results<a class="headerlink" href="#dump-the-results" title="Permalink to this headline">¶</a></h3>
+<p>To store the trained model, we can directly use</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forecaster</span><span class="o">.</span><span class="n">dump_forecast_result</span><span class="p">(</span>
+    <span class="n">destination_dir</span><span class="p">,</span>
+    <span class="n">object_name</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+    <span class="n">dump_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite_exist_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">destination_dir</span></code> is a string of the saving location.
+The <code class="docutils literal notranslate"><span class="pre">object_name</span></code> is the name of the stored folder.
+The <code class="docutils literal notranslate"><span class="pre">dump_design_info</span></code> is specifically for the Silverkite model family.
+Setting it to <code class="docutils literal notranslate"><span class="pre">False</span></code> to avoid dumping the design info of the design matrix.
+The design info is not useful in general (to reproduce results, make predictions),
+and not dumping it will save a lot of time.
+Specify <code class="docutils literal notranslate"><span class="pre">overwrite_exist_dir=True</span></code> to force overwriting when a file to be
+written already exists.</p>
+<p>This <code class="docutils literal notranslate"><span class="pre">dump_forecast_result</span></code> function will save the entire <code class="docutils literal notranslate"><span class="pre">forecaster.forecast_result</span></code> object
+as a folder at the specified directory. Typically a saved model takes 50+ MB, so please make
+sure you have enough storage space.</p>
+</div>
+<div class="section" id="load-the-results">
+<h3>Load the results<a class="headerlink" href="#load-the-results" title="Permalink to this headline">¶</a></h3>
+<p>Assume you have the dumped results in a specified directory named <code class="docutils literal notranslate"><span class="pre">source_dir</span></code>,
+you can reconstruct the <code class="docutils literal notranslate"><span class="pre">Forecaster</span></code> class by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+<span class="n">forecaster</span><span class="o">.</span><span class="n">load_forecast_result</span><span class="p">(</span>
+    <span class="n">source_dir</span><span class="p">,</span>
+    <span class="n">load_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">source_dir</span></code> is a string of the loading location.
+The <code class="docutils literal notranslate"><span class="pre">load_design_info</span></code> is specifically for the Silverkite model family.
+Setting it to <code class="docutils literal notranslate"><span class="pre">False</span></code> to avoid loading the design info of the design matrix.
+The design info is not useful in general (to reproduce results, make predictions),
+and not dumping it will save a lot of time.
+However, if the design info was not dumped, this parameter will have no effect.</p>
+<p>This <code class="docutils literal notranslate"><span class="pre">load_forecast_result</span></code> function will reconstruct your trained <code class="docutils literal notranslate"><span class="pre">Forecaster</span></code> class.</p>
+</div>
+</div>
+<div class="section" id="storing-and-loading-a-general-object">
+<h2>Storing and loading a general object<a class="headerlink" href="#storing-and-loading-a-general-object" title="Permalink to this headline">¶</a></h2>
+<p>If you want to store or load a general object, you can try the
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.pickle_utils.dump_obj" title="greykite.framework.templates.pickle_utils.dump_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_obj</span></code></a> and
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.pickle_utils.load_obj" title="greykite.framework.templates.pickle_utils.load_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_obj</span></code></a> functions.
+These function are the utility function used by the <code class="docutils literal notranslate"><span class="pre">Forecaster</span></code> class
+to dump and load the <code class="docutils literal notranslate"><span class="pre">forecast_result</span></code> objects,
+however, they can be potentially used for other objects as well.</p>
+<p>Assume we have a class instance named <code class="docutils literal notranslate"><span class="pre">model</span></code>, then we can dump it to <code class="docutils literal notranslate"><span class="pre">dir_name</span></code> with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dump_obj</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">dir_name</span><span class="p">,</span>
+    <span class="n">obj_name</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span>
+    <span class="n">dump_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">overwrite_exist_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that if the model has nothing to do with the Silverkite model family,
+the <code class="docutils literal notranslate"><span class="pre">dump_design_info</span></code> parameter is ignored.</p>
+<p>Similarly, we can load the object from <code class="docutils literal notranslate"><span class="pre">source_dir</span></code> with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+    <span class="n">source_dir</span><span class="p">,</span>
+    <span class="n">load_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

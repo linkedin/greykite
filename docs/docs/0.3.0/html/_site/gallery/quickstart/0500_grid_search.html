@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Grid Search &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Grid Search</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="../../../gallery/quickstart/0500_grid_search.html#sphx-glr-download-gallery-quickstart-0500-grid-search-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="grid-search">
+<span id="sphx-glr-gallery-quickstart-0500-grid-search-py"></span><h1>Grid Search<a class="headerlink" href="#grid-search" title="Permalink to this headline">¶</a></h1>
+<p>Forecast models have many hyperparameters that could significantly affect
+the accuracy. These hyperparameters control different components
+in the model including trend, seasonality, events, etc.
+You can learn more about how to configure the components or hyperparameters in
+<a class="reference external" href="../tutorials/0100_forecast_tutorial.html">model tuning tutorial</a>. Here we
+will see a step-by-step example of how to utilize the “grid search” functionality
+to choose the best set of hyperparameters.</p>
+<p>All model templates support grid search.
+Here we continue the <a class="reference external" href="../tutorials/0100_forecast_tutorial.html">model tuning tutorial</a>
+example to use the <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> model on the Peyton Manning data set.
+The mechanism of using grid search in <code class="docutils literal notranslate"><span class="pre">PROPHET</span></code> is similar.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">warnings</span>
+
+ <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+ <span class="kn">from</span> <span class="nn">greykite.common.data_loader</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+ <span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ComputationParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationMetricParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationPeriodParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.utils.result_summary</span> <span class="kn">import</span> <span class="n">summarize_grid_search_results</span>
+
+ <span class="c1"># Loads dataset into pandas DataFrame</span>
+ <span class="n">dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
+ <span class="n">df</span> <span class="o">=</span> <span class="n">dl</span><span class="o">.</span><span class="n">load_peyton_manning</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<div class="section" id="grid-search-hyperparameters">
+<h2>Grid search hyperparameters<a class="headerlink" href="#grid-search-hyperparameters" title="Permalink to this headline">¶</a></h2>
+<p>In <a class="reference external" href="../tutorials/0100_forecast_tutorial.html">model tuning tutorial</a>
+we learned how the components affect the prediction and how to choose the potential
+candidate components. We also learned how to interpret the cross-validation results
+for one set of hyperparameters. In this section, we will go over the <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>
+functionality that allows us to compare different sets of hyperparameters by running
+cross-validation on them automatically.</p>
+<p>In the <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> class,
+each attribute contains a dictionary mapping parameter names to parameter values. You may
+specify either a specific parameter value to use, or a list of values to explore via grid search.
+Grid search is done over every possible combination of hyperparameters across the lists.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may only provide lists for these attributes’ parameter values, not for the parameter values
+of these attributes’ parameter values if they are dictionaries.
+For example, <code class="docutils literal notranslate"><span class="pre">seasonality</span></code> is an attribute in <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code>,
+which has parameter names <code class="docutils literal notranslate"><span class="pre">yearly_seasonality</span></code>, <code class="docutils literal notranslate"><span class="pre">quarterly_seasonality</span></code>, etc.
+We can provide lists for the parameter values of these names.
+On the other hand, <code class="docutils literal notranslate"><span class="pre">changepoints</span></code> is an attribute, too,
+which has parameter names <code class="docutils literal notranslate"><span class="pre">changepoints_dict</span></code> and <code class="docutils literal notranslate"><span class="pre">seasonality_changepoints_dict</span></code>.
+Both names take dictionaries as their parameter values.
+We can provide lists of dictionaries as the values, however, within each dictionary,
+we are not allowed to further wrap parameters in lists.</p>
+</div>
+<p>Cross-validation will be performed over these sets of hyperparameters, and the best set of hyperparameters
+will be selected based on the metric you pick, specified by <code class="docutils literal notranslate"><span class="pre">cv_selection_metric</span></code> in
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam" title="greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EvaluationMetricParam</span></code></a>.</p>
+<p>Now consider that we want to compare different yearly seasonalities (10 or 20), trend changepoints (None or “auto”)
+and fit algorithms (linear or ridge), while keeping all other model components the same. We could specify:</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">seasonality</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>  <span class="c1"># yearly seasonality could be 10 or 20</span>
+     <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+     <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+     <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+     <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span>
+ <span class="p">}</span>
+
+ <span class="n">changepoints</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="c1"># Changepoints could be None or auto.</span>
+     <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">[</span>
+         <span class="kc">None</span><span class="p">,</span>
+         <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">}</span>
+     <span class="p">]</span>
+ <span class="p">}</span>
+
+ <span class="c1"># Specifies custom parameters</span>
+ <span class="n">custom</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">[</span>
+         <span class="p">{</span><span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">},</span>
+         <span class="p">{</span><span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">missing</span><span class="o">=</span><span class="s2">&quot;drop&quot;</span><span class="p">)}</span>
+     <span class="p">]</span>
+ <span class="p">}</span>
+
+ <span class="c1"># Specifies the model components</span>
+ <span class="c1"># Could leave the other components as default,</span>
+ <span class="c1"># or specify them in the normal way.</span>
+ <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+     <span class="n">seasonality</span><span class="o">=</span><span class="n">seasonality</span><span class="p">,</span>
+     <span class="n">changepoints</span><span class="o">=</span><span class="n">changepoints</span><span class="p">,</span>
+     <span class="n">custom</span><span class="o">=</span><span class="n">custom</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Specifies the metrics</span>
+ <span class="n">evaluation_metric</span> <span class="o">=</span> <span class="n">EvaluationMetricParam</span><span class="p">(</span>
+     <span class="c1"># The metrics in ``cv_report_metrics`` will be calculated and reported.</span>
+     <span class="n">cv_report_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+     <span class="c1"># The ``cv_selection_metric`` will be used to select the best set of hyperparameters.</span>
+     <span class="c1"># It will be added to ``cv_report_metrics`` if it&#39;s not there.</span>
+     <span class="n">cv_selection_metric</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Specifies the forecast configuration.</span>
+ <span class="c1"># You could also specify ``forecast_horizon``, ``metadata_param``, etc.</span>
+ <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components</span><span class="p">,</span>
+     <span class="n">evaluation_metric_param</span><span class="o">=</span><span class="n">evaluation_metric</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>For the configuration above, all other model components parameters are the same but yearly seasonality,
+changepoints and fit algorithm have 2 options each. The model will automatically run
+cross-validation over the 8 cases:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>yearly seasonality = 10, no changepoints, fit algorithm = “linear”.</p></li>
+<li><p>yearly seasonality = 20, no changepoints, fit algorithm = “linear”.</p></li>
+<li><p>yearly seasonality = 10, automatic changepoints, fit algorithm = “linear”.</p></li>
+<li><p>yearly seasonality = 20, automatic changepoints, fit algorithm = “linear”.</p></li>
+<li><p>yearly seasonality = 10, no changepoints, fit algorithm = “ridge”.</p></li>
+<li><p>yearly seasonality = 20, no changepoints, fit algorithm = “ridge”.</p></li>
+<li><p>yearly seasonality = 10, automatic changepoints, fit algorithm = “ridge”.</p></li>
+<li><p>yearly seasonality = 20, automatic changepoints, fit algorithm = “ridge”.</p></li>
+</ul>
+</div></blockquote>
+<p>The CV test scores will be reported for all 8 cases using the metrics in <code class="docutils literal notranslate"><span class="pre">cv_report_metrics</span></code>,
+and the final model will be trained on the best set of hyperparameters according to the
+<code class="docutils literal notranslate"><span class="pre">cv_selection_metric</span></code>.</p>
+</div>
+<div class="section" id="selective-grid-search">
+<h2>Selective grid search<a class="headerlink" href="#selective-grid-search" title="Permalink to this headline">¶</a></h2>
+<p>Consider the case when you have 6 model components to tune, each with 3 different candidates.
+In this case, there will be 3^6=729 different sets of hyperparameters to grid search from.
+The results might be convincing because of the exhaustive grid search, however, the running
+time is going to pile up.</p>
+<p>It’s very common that not all of the 729 sets of hyperparameters makes sense to us, so it
+would be good not to run all of them. There are two ways to do selective grid search:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Setting <code class="docutils literal notranslate"><span class="pre">hyperparameter_budget</span></code>.</p></li>
+<li><p>Utilizing <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="setting-hyperparameter-budget">
+<h3>Setting <code class="docutils literal notranslate"><span class="pre">hyperparameter_budget</span></code><a class="headerlink" href="#setting-hyperparameter-budget" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">hyperparameter_budget</span></code> parameter directly controls how many sets of hyperparameters
+will be used in grid search. If this number is less than the number of all possible sets
+of hyperparameters, the algorithm will randomly pick <code class="docutils literal notranslate"><span class="pre">hyperparameter_budget</span></code> number of
+hyperparameter sets. Set <code class="docutils literal notranslate"><span class="pre">hyperparameter_budget</span></code> to <code class="docutils literal notranslate"><span class="pre">-1</span></code> to search all possible sets.
+You may set the budget in the <code class="docutils literal notranslate"><span class="pre">ComputationParam</span></code> class. This is a simple way to search a
+large space of hyperparameters if you are not sure which are likely to succeed. After you
+identify parameter values with better performance, you may run a more precise grid search
+to fine tune around these values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have a small number of timeseries to forecast, we recommend using the
+<a class="reference external" href="../tutorials/0100_forecast_tutorial.html">model tuning tutorial</a>
+to help identify good parameters candidates. This is likely more effective than
+random grid search over a large grid.</p>
+</div>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Specifies the hyperparameter_budget.</span>
+ <span class="c1"># Randomly picks 3 sets of hyperparameters.</span>
+ <span class="n">computation</span> <span class="o">=</span> <span class="n">ComputationParam</span><span class="p">(</span>
+     <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="mi">3</span>
+ <span class="p">)</span>
+ <span class="c1"># Specifies the forecast configuration.</span>
+ <span class="c1"># You could also specify ``forecast_horizon``, ``metadata_param``, etc.</span>
+ <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components</span><span class="p">,</span>
+     <span class="n">evaluation_metric_param</span><span class="o">=</span><span class="n">evaluation_metric</span><span class="p">,</span>
+     <span class="n">computation_param</span><span class="o">=</span><span class="n">computation</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="utilizing-hyperparameter-override">
+<h3>Utilizing <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code><a class="headerlink" href="#utilizing-hyperparameter-override" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code> functionality allows us to customize the sets of hyperparameters
+to search within. The way is to specify the <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code> parameter in the
+<code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> class.
+First, model components are translated to the parameters in the corresponding sklearn Estimator
+for the template (<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a>
+and <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator" title="greykite.sklearn.estimator.prophet_estimator.ProphetEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProphetEstimator</span></code></a>). The name is usually the same as the
+key, for example, “estimator__yearly_seasonality” and “estimator__fit_algorithm_dict” (the <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code>
+attribute is ignored). This creates a default hyperparameter_grid dictionary. Then for each dict in
+<code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code>, the default grid’s values are replaced by the override values, producing a
+list of customized grids to search over. Grid search done across all the grids in the list.
+For more details, see
+<a class="reference external" href="../../pages/model_components/1000_override.html#selective-grid-search">hyperparameter override</a>.
+Now assume we have the following parameter options, as above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>yearly seasonality orders: 10 and 20.</p></li>
+<li><p>trend changepoints: None and “auto”.</p></li>
+<li><p>fit algorithm: linear and ridge.</p></li>
+</ul>
+</div></blockquote>
+<p>We do not want to run all 8 sets of hyperparameters. For example, we think that
+ridge is not needed for the model without changepoints because the model is simple, while linear should
+not be used when there are changepoints because the model is complex. So we want:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>for no changepoints we use linear regression only.</p></li>
+<li><p>for automatic changepoints we use ridge regression only.</p></li>
+</ul>
+</div></blockquote>
+<p>Then we can specify:</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">seasonality</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+     <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+     <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+     <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+     <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span>
+ <span class="p">}</span>
+
+ <span class="n">changepoints</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+ <span class="p">}</span>
+
+ <span class="c1"># Specifies custom parameters</span>
+ <span class="n">custom</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">}</span>
+ <span class="p">}</span>
+
+ <span class="c1"># Hyperparameter override can be a list of dictionaries.</span>
+ <span class="c1"># Each dictionary will be one set of hyperparameters.</span>
+ <span class="n">override</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="p">{},</span>
+     <span class="p">{</span>
+         <span class="s2">&quot;estimator__changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">},</span>
+         <span class="s2">&quot;estimator__fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">]</span>
+
+ <span class="c1"># Specifies the model components</span>
+ <span class="c1"># Could leave the other components as default,</span>
+ <span class="c1"># or specify them in the normal way.</span>
+ <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+     <span class="n">seasonality</span><span class="o">=</span><span class="n">seasonality</span><span class="p">,</span>
+     <span class="n">changepoints</span><span class="o">=</span><span class="n">changepoints</span><span class="p">,</span>
+     <span class="n">custom</span><span class="o">=</span><span class="n">custom</span><span class="p">,</span>
+     <span class="n">hyperparameter_override</span><span class="o">=</span><span class="n">override</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Specifies the evaluation period</span>
+ <span class="n">evaluation_period</span> <span class="o">=</span> <span class="n">EvaluationPeriodParam</span><span class="p">(</span>
+     <span class="n">test_horizon</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span>             <span class="c1"># leaves 365 days as testing data</span>
+     <span class="n">cv_horizon</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span>               <span class="c1"># each CV test size is 365 days (same as forecast horizon)</span>
+     <span class="n">cv_max_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>              <span class="c1"># 3 folds CV</span>
+     <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">4</span>  <span class="c1"># uses at least 4 years for training because we have 8 years data</span>
+ <span class="p">)</span>
+
+ <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span>
+     <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components</span><span class="p">,</span>
+     <span class="n">evaluation_metric_param</span><span class="o">=</span><span class="n">evaluation_metric</span><span class="p">,</span>
+     <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">evaluation_period</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>The forecast configuration above specifies the yearly seasonality orders in
+a list, therefore, both 10 and 20 will be searched. For the hyperparameter override
+list, there are two elements. The first one is an empty dictionary, which corresponds
+to the original changepoint and fit algorithm in the configuration. The second dictionary
+overrides changepoint method with automatic changepoint detection and fit algorithm with ridge.
+In total, the model will run 4 different configurations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>yearly seasonality 10, no changepoint, fit algorithm linear.</p></li>
+<li><p>yearly seasonality 20, no changepoint, fit algorithm linear.</p></li>
+<li><p>yearly seasonality 10, automatic changepoints, fit algorithm ridge.</p></li>
+<li><p>yearly seasonality 20, automatic changepoints, fit algorithm ridge.</p></li>
+</ul>
+</div></blockquote>
+<p>In this way, we could only search the sets of hyperparameters we need and save a lot of time.
+Also note that the above configuration also configures the CV splits using
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam" title="greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EvaluationPeriodParam</span></code></a>.
+We can see the configs and evaluations with <code class="docutils literal notranslate"><span class="pre">summarize_grid_search_results</span></code>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Runs the forecast</span>
+ <span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+     <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+     <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Summarizes the CV results</span>
+ <span class="n">cv_results</span> <span class="o">=</span> <span class="n">summarize_grid_search_results</span><span class="p">(</span>
+     <span class="n">grid_search</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">grid_search</span><span class="p">,</span>
+     <span class="n">decimals</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+     <span class="c1"># The below saves space in the printed output. Remove to show all available metrics and columns.</span>
+     <span class="n">cv_report_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+     <span class="n">column_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rank&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_test&quot;</span><span class="p">,</span> <span class="s2">&quot;split_test&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_train&quot;</span><span class="p">,</span> <span class="s2">&quot;split_train&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_fit_time&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_score_time&quot;</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">])</span>
+ <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+ <span class="n">cv_results</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+ <span class="n">cv_results</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 3 folds for each of 4 candidates, totalling 12 fits
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rank_test_MAPE</th>
+      <th>mean_test_MAPE</th>
+      <th>split_test_MAPE</th>
+      <th>mean_train_MAPE</th>
+      <th>split_train_MAPE</th>
+      <th>mean_fit_time</th>
+      <th>mean_score_time</th>
+    </tr>
+    <tr>
+      <th>params</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>[('estimator__yearly_seasonality', 10), ('estimator__fit_algorithm_dict', {'fit_algorithm': 'linear'}), ('estimator__changepoints_dict', None)]</th>
+      <td>1</td>
+      <td>7.3</td>
+      <td>(5.1, 8.5, 8.3)</td>
+      <td>4.3</td>
+      <td>(4.0, 4.3, 4.5)</td>
+      <td>2.2</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <th>[('estimator__yearly_seasonality', 20), ('estimator__fit_algorithm_dict', {'fit_algorithm': 'linear'}), ('estimator__changepoints_dict', None)]</th>
+      <td>2</td>
+      <td>7.3</td>
+      <td>(5.1, 8.5, 8.3)</td>
+      <td>4.2</td>
+      <td>(3.9, 4.2, 4.5)</td>
+      <td>2.3</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <th>[('estimator__yearly_seasonality', 10), ('estimator__fit_algorithm_dict', {'fit_algorithm': 'ridge'}), ('estimator__changepoints_dict', {'method': 'auto'})]</th>
+      <td>3</td>
+      <td>7.4</td>
+      <td>(5.0, 8.5, 8.5)</td>
+      <td>4.1</td>
+      <td>(3.9, 4.3, 4.0)</td>
+      <td>13.2</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <th>[('estimator__yearly_seasonality', 20), ('estimator__fit_algorithm_dict', {'fit_algorithm': 'ridge'}), ('estimator__changepoints_dict', {'method': 'auto'})]</th>
+      <td>4</td>
+      <td>7.5</td>
+      <td>(5.0, 8.5, 8.9)</td>
+      <td>4.0</td>
+      <td>(3.9, 4.2, 3.9)</td>
+      <td>14.4</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The simple silverkite templates that use
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a>
+are the easiest templates to do grid search, because they support a list of model templates
+and a list of <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code>. For more information, see
+<a class="reference internal" href="../../../gallery/tutorials/0200_templates.html"><span class="doc">Templates</span></a>.</p>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 2 minutes  13.357 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-quickstart-0500-grid-search-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/873691a1fc125485f661c01288d932ab/0500_grid_search.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">0500_grid_search.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/da184d3e116aad45be92f1f2e3077dcf/0500_grid_search.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">0500_grid_search.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

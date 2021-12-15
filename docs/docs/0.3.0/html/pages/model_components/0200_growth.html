@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Growth &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Seasonality" href="0300_seasonality.html" />
+    <link rel="prev" title="Greykite models and components" href="0100_introduction.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Growth</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#silverkite">Silverkite</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#custom-growth-term">Custom growth term</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prophet">Prophet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Growth</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="growth">
+<h1>Growth<a class="headerlink" href="#growth" title="Permalink to this headline">¶</a></h1>
+<p>Use <code class="docutils literal notranslate"><span class="pre">model_components.growth</span></code> to specify the growth.</p>
+<p>Growth is used to model the overall trend of your data over time.</p>
+<p>To understand the growth characteristics of your dataset, plot your input training data over time,
+smoothing out local variation as necessary. For example, aggregate hourly data to the weekly total,
+and plot the overall trend. See <a class="reference internal" href="../stepbystep/0300_input.html"><span class="doc">Examine Input Data</span></a> for details.</p>
+<p>By default, silverkite and prophet use <code class="docutils literal notranslate"><span class="pre">linear</span></code> growth. Linear growth is commonly seen, which
+implies a constant growth rate over time (e.e. constant y/y growth).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In some cases, a metric exhibits <code class="docutils literal notranslate"><span class="pre">linear</span></code> growth, but the slope changes at certain points.
+For example, a ramp or external event accelerates the rate of growth.</p>
+<p>In this case, choose <code class="docutils literal notranslate"><span class="pre">linear</span></code> growth, and add changepoints to allow the slope to change.
+This fits a piecewise linear trend.
+For more information, see <a class="reference internal" href="0500_changepoints.html"><span class="doc">Changepoints</span></a>.</p>
+</div>
+<div class="section" id="silverkite">
+<h2>Silverkite<a class="headerlink" href="#silverkite" title="Permalink to this headline">¶</a></h2>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>     <span class="c1"># constant growth rate (default)</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="s2">&quot;quadratic&quot;</span><span class="p">)</span>  <span class="c1"># growth rate increases over time</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="s2">&quot;sqrt&quot;</span><span class="p">)</span>       <span class="c1"># growth rate decreases over time</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>         <span class="c1"># no growth term</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="kc">None</span>                           <span class="c1"># same as &quot;linear&quot;</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;quadratic&quot;</span><span class="p">])</span>  <span class="c1"># grid search over each option</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">quadratic</span></code> and <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> may apply to some datasets, but tend not to extrapolate
+well very far into future. If you use these, make sure it is reasonable to expect
+future growth rate to increase/diminish accordingly for the full training period
+and <code class="docutils literal notranslate"><span class="pre">forecast_horizon</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may need to set the pipeline parameter <code class="docutils literal notranslate"><span class="pre">estimator__origin_for_time_vars</span></code> for proper
+historical backtesting. See <a class="reference internal" href="0600_custom.html"><span class="doc">Custom Parameters</span></a>.</p>
+</div>
+<div class="section" id="custom-growth-term">
+<h3>Custom growth term<a class="headerlink" href="#custom-growth-term" title="Permalink to this headline">¶</a></h3>
+<p>You can use any parametric function of time to specify growth by leveraging the changepoints specification.
+See <a class="reference internal" href="0500_changepoints.html#custom-growth"><span class="std std-ref">Custom Growth</span></a>.</p>
+<p>While it’s possible to provide any custom growth curve as a regressor (<a class="reference internal" href="0700_regressors.html"><span class="doc">Regressors</span></a>),
+use changepoints when possible:</p>
+<ul class="simple">
+<li><p>Silverkite does not know if regressors should be considered part of the trend.</p></li>
+<li><p>Thus, by default, interactions with trend would not include your regressor. See
+<code class="docutils literal notranslate"><span class="pre">feature_sets_enabled</span></code> at <a class="reference internal" href="0600_custom.html"><span class="doc">Custom Parameters</span></a>.</p></li>
+<li><p>You can add those interactions yourself via <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code>. See
+<a class="reference internal" href="0600_custom.html"><span class="doc">Custom Parameters</span></a>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="prophet">
+<h2>Prophet<a class="headerlink" href="#prophet" title="Permalink to this headline">¶</a></h2>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">])</span>     <span class="c1"># linear, unbounded growth (default)</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;logistic&quot;</span><span class="p">])</span>   <span class="c1"># saturating maximum or minimum growth</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="kc">None</span>                             <span class="c1"># same as &quot;linear&quot;</span>
+<span class="n">growth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">growth_term</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;logistic&quot;</span><span class="p">])</span>  <span class="c1"># grid search over each option</span>
+</pre></div>
+</div>
+<p>Prophet allows forecasts with saturating maximum or minimum using <code class="docutils literal notranslate"><span class="pre">logistic</span></code>
+trend, with specified <code class="docutils literal notranslate"><span class="pre">cap</span></code> and <code class="docutils literal notranslate"><span class="pre">floor</span></code> respectively. For example, user growth
+bounded by total addressable market. More details at
+<a class="reference external" href="https://facebook.github.io/prophet/docs/saturating_forecasts.html#saturating-minimum">Prophet docs</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0300_seasonality.html" class="btn btn-neutral float-right" title="Seasonality" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0100_introduction.html" class="btn btn-neutral" title="Greykite models and components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

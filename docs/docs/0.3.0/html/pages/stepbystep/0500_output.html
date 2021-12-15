@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Check Forecast Result &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Debugging" href="0600_debug.html" />
+    <link rel="prev" title="Configure a Forecast" href="0400_configuration.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Check Forecast Result</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#timeseries">Timeseries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cross-validation">Cross validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backtest">Backtest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#forecast">Forecast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model">Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Check Forecast Result</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="check-forecast-result">
+<h1>Check Forecast Result<a class="headerlink" href="#check-forecast-result" title="Permalink to this headline">¶</a></h1>
+<p>The output of <code class="docutils literal notranslate"><span class="pre">run_forecast_config</span></code> helps you evaluate and interpret the forecast result.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.model_templates</span> <span class="kn">import</span> <span class="n">ModelTemplateEnum</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">(</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;ts&quot;</span><span class="p">,</span>
+    <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span>
+<span class="p">)</span>
+<span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>  <span class="c1"># input data</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">ForecastConfig</span><span class="p">(</span>
+        <span class="n">model_template</span><span class="o">=</span><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># `result` is also stored as `forecaster.forecast_result`</span>
+</pre></div>
+</div>
+<p>The function returns a <a class="reference internal" href="../autodoc/doc.html#greykite.framework.pipeline.pipeline.ForecastResult" title="greykite.framework.pipeline.pipeline.ForecastResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForecastResult</span></code></a> object.
+This is a dataclass with the forecast results. Below, we explain how to check each attribute
+of the class.</p>
+<div class="section" id="timeseries">
+<h2>Timeseries<a class="headerlink" href="#timeseries" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">timeseries</span></code> is your original input data, loaded into
+a <a class="reference internal" href="../autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries" title="greykite.framework.input.univariate_time_series.UnivariateTimeSeries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnivariateTimeSeries</span></code></a> object.
+The time series is represented in a standard format with convenient plotting functions and statistics.
+If <code class="docutils literal notranslate"><span class="pre">MetadataParam.anomaly_info</span></code> is specified, it contains the values before and after
+anomaly adjustment.
+For details, see <a class="reference internal" href="0300_input.html"><span class="doc">Examine Input Data</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">timeseries</span>  <span class="c1"># access the time series</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cross-validation">
+<h2>Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">grid_search</span></code> contains the cross validation results.
+See <a class="reference internal" href="0400_configuration.html#evaluation-period"><span class="std std-ref">Evaluation Period</span></a> for cross validation configuration.</p>
+<p>Use <a class="reference internal" href="../autodoc/doc.html#greykite.framework.utils.result_summary.summarize_grid_search_results" title="greykite.framework.utils.result_summary.summarize_grid_search_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summarize_grid_search_results</span></code></a>
+to summarize the results. While <code class="docutils literal notranslate"><span class="pre">grid_search.cv_results_</span></code> could be converted into
+a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> without this function, the following conveniences
+are provided:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>returns the correct ranks based on each metric’s greater_is_better direction.</p></li>
+<li><p>summarizes the hyperparameter space, only showing the parameters that change</p></li>
+<li><p>combines split scores into a tuple to save table width</p></li>
+<li><p>rounds the values to specified decimals</p></li>
+<li><p>orders columns by type (test score, train score, metric, etc.)</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.utils.result_summary</span> <span class="kn">import</span> <span class="n">summarize_grid_search_results</span>
+
+<span class="n">grid_search</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">grid_search</span>
+<span class="c1"># default parameters</span>
+<span class="n">summarize_grid_search_results</span><span class="p">(</span>
+    <span class="n">grid_search</span><span class="o">=</span><span class="n">grid_search</span><span class="p">,</span>
+    <span class="n">only_changing_params</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">combine_splits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">decimals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">CV_REPORT_METRICS_ALL</span><span class="p">,</span>
+    <span class="n">column_order</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+
+<span class="c1"># some customization</span>
+<span class="n">metric</span> <span class="o">=</span> <span class="n">EvaluationMetricEnum</span><span class="p">[</span><span class="n">evaluation_metric</span><span class="o">.</span><span class="n">cv_selection_metric</span><span class="p">]</span>
+<span class="n">summarize_grid_search_results</span><span class="p">(</span>
+    <span class="n">grid_search</span><span class="o">=</span><span class="n">grid_search</span><span class="p">,</span>
+    <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span>  <span class="c1"># rounds the evaluation metrics</span>
+    <span class="c1"># List of regex to order the columns in the returned dataframe</span>
+    <span class="n">column_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rank&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_test&quot;</span><span class="p">,</span> <span class="s2">&quot;split_test&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_train&quot;</span><span class="p">,</span> <span class="s2">&quot;split_train&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;mean_fit_time&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_score_time&quot;</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;.*&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">grid_search</span></code> is an instance of <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.model_selection.RandomizedSearchCV</span></code></a>, see
+documentation for details on its attributes.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ranks (e.g. “rank_test_MAPE”) in <code class="docutils literal notranslate"><span class="pre">grid_search.cv_results_</span></code> should be ignored.
+They are reversed for metrics where <code class="docutils literal notranslate"><span class="pre">greater_is_better=False</span></code>, because sklearn
+always assumes higher values are better when calculating the ranks, we report
+metrics with their original sign.</p>
+<p>Instead, use <a class="reference internal" href="../autodoc/doc.html#greykite.framework.utils.result_summary.summarize_grid_search_results" title="greykite.framework.utils.result_summary.summarize_grid_search_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summarize_grid_search_results</span></code></a>
+to extract the CV results with proper ranks.</p>
+</div>
+</div>
+<div class="section" id="backtest">
+<h2>Backtest<a class="headerlink" href="#backtest" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">backtest</span></code> checks the forecast accuracy on historical data. It is an instance
+of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast" title="greykite.framework.output.univariate_forecast.UnivariateForecast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnivariateForecast</span></code></a>.</p>
+<p>The forecast is computed on a holdout test set toward the end of the input dataset.
+The length of the holdout test set is configured by <code class="docutils literal notranslate"><span class="pre">test_horizon</span></code> in the template
+configuration. See <a class="reference internal" href="0400_configuration.html#evaluation-period"><span class="std std-ref">Evaluation Period</span></a>.</p>
+<p>You can plot the results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">init_notebook_mode</span><span class="p">,</span> <span class="n">iplot</span>
+<span class="n">init_notebook_mode</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># for generating offline graphs within Jupyter Notebook</span>
+
+<span class="n">backtest</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">backtest</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">backtest</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Show the evaluation metrics:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">backtest</span><span class="o">.</span><span class="n">train_evaluation</span><span class="p">)</span>  <span class="c1"># backtest training set</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">backtest</span><span class="o">.</span><span class="n">test_evaluation</span><span class="p">)</span>   <span class="c1"># hold out test set</span>
+</pre></div>
+</div>
+<p>See the component plot to understand how trend, seasonality,
+and holidays are handled by the forecast:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">init_notebook_mode</span><span class="p">,</span> <span class="n">iplot</span>
+<span class="n">init_notebook_mode</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">backtest</span><span class="o">.</span><span class="n">plot_components</span><span class="p">()</span>
+<span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>  <span class="c1"># fig.show() if you are using &quot;PROPHET&quot; template</span>
+</pre></div>
+</div>
+<p>Access backtest forecasted values and prediction intervals:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backtest</span><span class="o">.</span><span class="n">df</span>
+</pre></div>
+</div>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">backtest.plot_grouping_evaluation()</span></code> to examine the train/test error by
+various dimensions (e.g. over time, by day of week). See
+<a class="reference internal" href="../autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast" title="greykite.framework.output.univariate_forecast.UnivariateForecast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnivariateForecast</span></code></a> for details.</p>
+<p>See <a class="reference internal" href="../autodoc/doc.html#greykite.common.evaluation.EvaluationMetricEnum" title="greykite.common.evaluation.EvaluationMetricEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EvaluationMetricEnum</span></code></a> for the available error metrics
+and their descriptions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="kn">import</span> <span class="n">init_notebook_mode</span><span class="p">,</span> <span class="n">iplot</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+
+<span class="n">init_notebook_mode</span><span class="p">(</span><span class="n">connected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># for generating offline graphs within Jupyter Notebook</span>
+
+<span class="c1"># MAPE by day of week</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">backtest</span><span class="o">.</span><span class="n">plot_grouping_evaluation</span><span class="p">(</span>
+    <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">(),</span>
+    <span class="n">score_func_name</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">(),</span>
+    <span class="n">which</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="c1"># &quot;train&quot; or &quot;test&quot; set</span>
+    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;dow&quot;</span><span class="p">,</span>  <span class="c1"># day of week</span>
+    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+<span class="c1"># RMSE over time</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">backtest</span><span class="o">.</span><span class="n">plot_grouping_evaluation</span><span class="p">(</span>
+    <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">RootMeanSquaredError</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">(),</span>
+    <span class="n">score_func_name</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">RootMeanSquaredError</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">(),</span>
+    <span class="n">which</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="c1"># &quot;train&quot; or &quot;test&quot; set</span>
+    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>  <span class="c1"># weekly aggregation of daily data</span>
+    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast.plot_flexible_grouping_evaluation" title="greykite.framework.output.univariate_forecast.UnivariateForecast.plot_flexible_grouping_evaluation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_flexible_grouping_evaluation</span></code></a>
+for a more powerful plotting function to plot the quantiles of the error along with the mean.</p>
+<p>You can use component plots for a concise visual representation of how the dataset’s trend, seasonality
+and holiday patterns are estimated by the forecast model. Currently, <code class="docutils literal notranslate"><span class="pre">Silverkite</span></code> calculates component
+plots based on dataset passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method, whereas <code class="docutils literal notranslate"><span class="pre">Prophet</span></code> calculates component plots
+based on dataset passed to the <code class="docutils literal notranslate"><span class="pre">predict</span></code>  method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backtest</span><span class="o">.</span><span class="n">plot_components</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forecast">
+<h2>Forecast<a class="headerlink" href="#forecast" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">forecast</span></code> contains the forecasted values and the fit on the input dataset.
+It is an instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast" title="greykite.framework.output.univariate_forecast.UnivariateForecast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnivariateForecast</span></code></a>.</p>
+<p>After creating a forecast, plot it to see
+if it looks reasonable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forecast</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">forecast</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">forecast</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Show the error metrics on the training set.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">forecast</span><span class="o">.</span><span class="n">train_evaluation</span><span class="p">)</span>  <span class="c1"># fit on the entire input dataset</span>
+</pre></div>
+</div>
+<p>Access future forecasted values and prediction intervals:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forecast</span><span class="o">.</span><span class="n">df</span>
+</pre></div>
+</div>
+<p>Just as for backtest, you can use <code class="docutils literal notranslate"><span class="pre">forecast.plot_grouping_evaluation()</span></code> to examine the training error by
+various dimensions (e.g. over time, by day of week), and <code class="docutils literal notranslate"><span class="pre">forecast.plot_components()</span></code> to check the trend,
+seasonality and holiday effects. See
+<a class="reference internal" href="../autodoc/doc.html#greykite.framework.output.univariate_forecast.UnivariateForecast" title="greykite.framework.output.univariate_forecast.UnivariateForecast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnivariateForecast</span></code></a> for details.</p>
+</div>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">model</span></code> is a <a class="reference external" href="https://scikit-learn.org/0.24/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> object. It was
+fit to the full dataset, with the best parameters selected via CV.
+This model was used to generate <code class="docutils literal notranslate"><span class="pre">forecast</span></code>. You can use it to extract
+fitted model information (<a class="reference internal" href="../../gallery/quickstart/0400_model_summary.html"><span class="doc">Model Summary</span></a>)
+or make another forecast (<a class="reference internal" href="../../gallery/quickstart/0100_simple_forecast.html"><span class="doc">Simple Forecast</span></a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span>  <span class="c1"># access the model</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0600_debug.html" class="btn btn-neutral float-right" title="Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0400_configuration.html" class="btn btn-neutral" title="Configure a Forecast" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Uncertainty Intervals &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Pre-processing, Selective Grid Search" href="1000_override.html" />
+    <link rel="prev" title="Auto-regression" href="0800_autoregression.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Uncertainty Intervals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#silverkite">Silverkite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prophet">Prophet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Uncertainty Intervals</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="uncertainty-intervals">
+<h1>Uncertainty Intervals<a class="headerlink" href="#uncertainty-intervals" title="Permalink to this headline">¶</a></h1>
+<p>Silverkite and Prophet support prediction intervals to quantify uncertainty.</p>
+<p>Set <a class="reference internal" href="../stepbystep/0400_configuration.html#coverage"><span class="std std-ref">ForecastConfig.coverage</span></a> to request a prediction interval
+with the desired coverage.</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">model_components.uncertainty</span></code> to configure additional options
+about how these intervals are calculated.</p>
+<div class="section" id="silverkite">
+<h2>Silverkite<a class="headerlink" href="#silverkite" title="Permalink to this headline">¶</a></h2>
+<p>Options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>uncertainty : `dict` [`str`, `dict`] or None, optional
+    Along with ``coverage``, specifies the uncertainty interval configuration. Use ``coverage``
+    to set interval size. Use ``uncertainty`` to tune the calculation.
+
+    ``&quot;uncertainty_dict&quot;`` : `dict` or &quot;auto&quot; or None or a list of such values for grid search
+         If a dictionary, valid keys are:
+
+            ``&quot;uncertainty_method&quot;`` : `str`
+                The title of the method.
+                Only ``&quot;simple_conditional_residuals&quot;`` is implemented
+                in `~greykite.algo.common.ml_models.fit_ml_model`
+                which calculates intervals using residuals.
+
+            ``&quot;params&quot;``: `dict`
+                A dictionary of parameters needed for
+                the requested ``uncertainty_method``. For example, for
+                ``uncertainty_method=&quot;simple_conditional_residuals&quot;``, see
+                parameters of `~greykite.algo.uncertainty.conditional.conf_interval.conf_interval`:
+
+                    * ``&quot;conditional_cols&quot;``
+                    * ``&quot;quantiles&quot;``
+                    * ``&quot;quantile_estimation_method&quot;``
+                    * ``&quot;sample_size_thresh&quot;``
+                    * ``&quot;small_sample_size_method&quot;``
+                    * ``&quot;small_sample_size_quantile&quot;``
+
+                The default value for ``quantiles`` is inferred from coverage.
+
+        If &quot;auto&quot;, see
+        `~greykite.algo.forecast.silverkite.forecast_silverkite_helper.get_silverkite_uncertainty_dict`
+        for the default value. If ``coverage`` is not None and ``uncertainty_dict`` is not provided,
+        then the &quot;auto&quot; setting is used.
+
+        If ``coverage`` is None and ``uncertainty_dict`` is None, then no intervals are returned.
+</pre></div>
+</div>
+<p>Examples:</p>
+<p>The only values that should be adjusted are <code class="docutils literal notranslate"><span class="pre">conditional_cols</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sample_size_thresh</span></code>, and <code class="docutils literal notranslate"><span class="pre">small_sample_size_quantile</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;uncertainty_method&quot;</span><span class="p">:</span> <span class="s2">&quot;simple_conditional_residuals&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;conditional_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;quantile_estimation_method&quot;</span><span class="p">:</span> <span class="s2">&quot;normal_fit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sample_size_thresh&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;small_sample_size_method&quot;</span><span class="p">:</span> <span class="s2">&quot;std_quantiles&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;small_sample_size_quantile&quot;</span><span class="p">:</span> <span class="mf">0.98</span><span class="p">}}</span>
+
+<span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;uncertainty_method&quot;</span><span class="p">:</span> <span class="s2">&quot;simple_conditional_residuals&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;conditional_cols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;dow_hr&quot;</span><span class="p">],</span>  <span class="c1"># interval size depends on hour of week</span>
+        <span class="s2">&quot;quantile_estimation_method&quot;</span><span class="p">:</span> <span class="s2">&quot;normal_fit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sample_size_thresh&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;small_sample_size_method&quot;</span><span class="p">:</span> <span class="s2">&quot;std_quantiles&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;small_sample_size_quantile&quot;</span><span class="p">:</span> <span class="mf">0.98</span><span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prophet">
+<h2>Prophet<a class="headerlink" href="#prophet" title="Permalink to this headline">¶</a></h2>
+<p>Options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>uncertainty : `dict` [`str`, `any`] or None
+    Specifies the uncertainty configuration. A dictionary with the following optional keys:
+
+    mcmc_samples: `int` or None or list of such values for grid search, default 0
+        if greater than 0, will do full Bayesian inference with the specified number of MCMC samples.
+        If 0, will do MAP estimation.
+    uncertainty_samples: `int` or None or list of such values for grid search, default 1000
+        Number of simulated draws used to estimate.
+        uncertainty intervals. Setting this value to 0 or False will disable
+        uncertainty estimation and speed up the calculation.
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="1000_override.html" class="btn btn-neutral float-right" title="Pre-processing, Selective Grid Search" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0800_autoregression.html" class="btn btn-neutral" title="Auto-regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

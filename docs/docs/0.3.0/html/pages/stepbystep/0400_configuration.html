@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configure a Forecast &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Check Forecast Result" href="0500_output.html" />
+    <link rel="prev" title="Examine Input Data" href="0300_input.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configure a Forecast</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#df">df</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#config">config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-template">model_template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#forecast-horizon">forecast_horizon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coverage">coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metadata-param">metadata_param</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#anomaly-info">anomaly_info</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation-metric-param">evaluation_metric_param</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation-period-param">evaluation_period_param</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-components-param">model_components_param</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computation-param">computation_param</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#forecast-one-by-one">forecast_one_by_one</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Configure a Forecast</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configure-a-forecast">
+<h1>Configure a Forecast<a class="headerlink" href="#configure-a-forecast" title="Permalink to this headline">¶</a></h1>
+<p>Use the class <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster" title="greykite.framework.templates.forecaster.Forecaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Forecaster</span></code></a>
+to create a forecast. It has a method, <code class="docutils literal notranslate"><span class="pre">run_forecast_config</span></code> that accepts the input
+data (<code class="docutils literal notranslate"><span class="pre">df</span></code>) and forecast configuration (<code class="docutils literal notranslate"><span class="pre">config</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ComputationParam</span><span class="p">,</span> <span class="n">EvaluationMetricParam</span><span class="p">,</span> <span class="n">EvaluationPeriodParam</span><span class="p">,</span>
+    <span class="n">ForecastConfig</span><span class="p">,</span> <span class="n">MetadataParam</span><span class="p">,</span> <span class="n">ModelComponentsParam</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+
+<span class="c1"># defines forecast configuration</span>
+<span class="n">config</span><span class="o">=</span><span class="n">ForecastConfig</span><span class="p">(</span>
+    <span class="n">model_template</span><span class="o">=</span><span class="n">model_template</span><span class="p">,</span>                       <span class="c1"># which model template to use</span>
+    <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>                   <span class="c1"># how many steps ahead to forecast</span>
+    <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>                                   <span class="c1"># intended coverage of the prediction bands</span>
+    <span class="n">metadata_param</span><span class="o">=</span><span class="n">MetadataParam</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>                   <span class="c1"># input data description</span>
+    <span class="n">evaluation_metric_param</span><span class="o">=</span><span class="n">EvaluationMetricParam</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>  <span class="c1"># what metric to evaluate</span>
+    <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">EvaluationPeriodParam</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>  <span class="c1"># how to evaluate (train/test splits)</span>
+    <span class="n">model_components_param</span><span class="o">=</span><span class="n">ModelComponentsParam</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>    <span class="c1"># model template tuning parameters</span>
+    <span class="n">computation_param</span><span class="o">=</span><span class="n">ComputationParam</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>             <span class="c1"># parallelization</span>
+    <span class="n">forecast_one_by_one</span><span class="o">=</span><span class="n">forecast_one_by_one</span><span class="p">,</span>             <span class="c1"># allows training multiple models that span the horizon</span>
+<span class="p">)</span>
+
+<span class="c1"># creates forecast</span>
+<span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>         <span class="c1"># input data</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span>  <span class="c1"># forecast configuration</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For basic usage, provide <code class="docutils literal notranslate"><span class="pre">df</span></code> and specify a <code class="docutils literal notranslate"><span class="pre">config</span></code> containing</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model_template</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">forecast_horizon</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coverage</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata_param</span></code>.</p></li>
+</ul>
+<p>The function will parse your input data according to <code class="docutils literal notranslate"><span class="pre">metadata_param</span></code>.
+The output contains a forecast for the specified forecast
+horizon and coverage using the model template’s defaults.</p>
+<p>The other parameters can be used to tune the model and define evaluation criteria.
+See the sections below for explanations.</p>
+<div class="section" id="df">
+<h2>df<a class="headerlink" href="#df" title="Permalink to this headline">¶</a></h2>
+<p>Required. Your input data. See <a class="reference internal" href="0300_input.html"><span class="doc">Examine Input Data</span></a> for details on data format.</p>
+</div>
+<div class="section" id="config">
+<h2>config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
+<p>Optional. The forecast configuration.
+An instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig" title="greykite.framework.templates.autogen.forecast_config.ForecastConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForecastConfig</span></code></a>.</p>
+<p>The following sections explain each optional attribute.</p>
+</div>
+<div class="section" id="model-template">
+<h2>model_template<a class="headerlink" href="#model-template" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Name of the model template. A model template is a pre-packaged forecasting configuration. You
+can tune the template using the other parameters in the <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model_template</span> <span class="o">=</span> <span class="s2">&quot;SILVERKITE&quot;</span>  <span class="c1"># the default</span>
+<span class="n">model_template</span> <span class="o">=</span> <span class="s2">&quot;PROPHET&quot;</span>
+</pre></div>
+</div>
+<p>For the full list of options, see <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.model_templates.ModelTemplateEnum" title="greykite.framework.templates.model_templates.ModelTemplateEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelTemplateEnum</span></code></a>.</p>
+<p>For a high level comparison between Silverkite and Prophet template families,
+see <a class="reference internal" href="0100_choose_model.html"><span class="doc">Choose a Model</span></a>.</p>
+</div>
+<div class="section" id="forecast-horizon">
+<h2>forecast_horizon<a class="headerlink" href="#forecast-horizon" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Number of periods to forecast into the future. Must be &gt; 0.</p>
+<p>If not provided, default is determined from input data frequency.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forecast_horizon</span> <span class="o">=</span> <span class="mi">30</span>      <span class="c1"># one month ahead, for daily data</span>
+<span class="n">forecast_horizon</span> <span class="o">=</span> <span class="mi">365</span><span class="o">*</span><span class="mi">24</span>  <span class="c1"># one year ahead, for hourly data</span>
+<span class="n">forecast_horizon</span> <span class="o">=</span> <span class="mi">52</span>      <span class="c1"># one year ahead, for weekly data</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="coverage">
+<span id="id1"></span><h2>coverage<a class="headerlink" href="#coverage" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Intended coverage of the prediction interval. Must be between 0.0 and 1.0.</p>
+<p>Prediction intervals quantify the uncertainty of the forecast. They create a band that
+goes above/below the forecasted value, to provide an upper/lower prediction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">coverage</span></code> specifies what % of points you want to fall within the bands.
+Larger coverage results in wider bands.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">coverage</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># no prediction interval</span>
+<span class="n">coverage</span> <span class="o">=</span> <span class="mf">0.80</span>  <span class="c1"># 80% of actuals should fall within the prediction interval</span>
+<span class="n">coverage</span> <span class="o">=</span> <span class="mf">0.95</span>  <span class="c1"># 95% of actuals should fall within the prediction interval</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="metadata-param">
+<h2>metadata_param<a class="headerlink" href="#metadata-param" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Specifies properties of the input <code class="docutils literal notranslate"><span class="pre">df</span></code>.
+An instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.MetadataParam" title="greykite.framework.templates.autogen.forecast_config.MetadataParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataParam</span></code></a>.</p>
+<p>The attributes are:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>time_col : str, default &quot;ts&quot;
+    name of timestamp column in df
+
+value_col : str, default &quot;y&quot;
+    name of value column in df (containing values to forecast)
+
+freq : str or None, default None
+    Frequency of input data. Used to generate future dates for prediction.
+    Frequency strings can have multiples, e.g. &#39;5H&#39;.
+    See https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
+    for a list of frequency aliases.
+    If None, inferred by pd.infer_freq.
+    Provide this parameter if df has missing timepoints.
+
+    Examples:
+    &quot;BH&quot; business hour frequency
+    &quot;H&quot; hourly frequency
+    &quot;B&quot;, business day frequency
+    &quot;D&quot;, calendar day frequency
+    &quot;W&quot;, weekly frequency
+
+    &quot;M&quot;, month end frequency
+    &quot;SM&quot;, semi-month end frequency (15th and end of month)
+    &quot;BM&quot;, business month end frequency
+    &quot;MS&quot;, month start frequency
+    &quot;SMS&quot;, semi-month start frequency (1st and 15th)
+    &quot;BMS&quot;, business month start frequency
+
+    &quot;Q&quot;, quarter end frequency
+    &quot;BQ&quot;, business quarter end frequency
+    &quot;QS&quot;, quarter start frequency
+    &quot;BQS&quot;, business quarter start frequency
+
+    &quot;A&quot; or &quot;Y&quot; year end frequency
+    &quot;BA&quot; or &quot;BY&quot; business year end frequency
+    &quot;AS&quot; or &quot;YS&quot; year start frequency
+    &quot;BAS&quot; or  &quot;BYS&quot; business year start frequency
+
+date_format : str or None, default None
+    strftime format to parse time column, eg ``%m/%d/%Y``.
+    Note that ``%f`` will parse all the way up to nanoseconds.
+    If None (recommended), inferred by `pandas.to_datetime`.
+
+train_end_date : datetime.datetime or None, default None
+    Last date to use for fitting the model. Forecasts are generated after this date.
+    If None, it is set to the last date with a non-null value in
+    ``value_col`` of ``df``.
+
+anomaly_info : `dict` or `list` [`dict`] or None, default None
+    Anomaly adjustment info. Anomalies in ``df``
+    are corrected before any forecasting is done.
+
+    If None, no adjustments are made.
+
+    A dictionary containing the parameters to
+    `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`.
+    See that function for details.
+    The possible keys are:
+
+        ``&quot;value_col&quot;`` : `str`
+            The name of the column in ``df`` to adjust. You may adjust the value
+            to forecast as well as any numeric regressors.
+        ``&quot;anomaly_df&quot;`` : `pandas.DataFrame`
+            Adjustments to correct the anomalies.
+        ``&quot;start_date_col&quot;``: `str`, default START_DATE_COL
+            Start date column in ``anomaly_df``.
+        ``&quot;end_date_col&quot;``: `str`, default END_DATE_COL
+            End date column in ``anomaly_df``.
+        ``&quot;adjustment_delta_col&quot;``: `str` or None, default None
+            Impact column in ``anomaly_df``.
+        ``&quot;filter_by_dict&quot;``: `dict` or None, default None
+            Used to filter ``anomaly_df`` to the relevant anomalies for
+            the ``value_col`` in this dictionary.
+            Key specifies the column name, value specifies the filter value.
+        ``&quot;filter_by_value_col&quot;&quot;``: `str` or None, default None
+            Adds ``{filter_by_value_col: value_col}`` to ``filter_by_dict``
+            if not None, for the ``value_col`` in this dictionary.
+        ``&quot;adjustment_method&quot;`` : `str` (&quot;add&quot; or &quot;subtract&quot;), default &quot;add&quot;
+            How to make the adjustment, if ``adjustment_delta_col`` is provided.
+
+    Accepts a list of such dictionaries to adjust multiple columns in ``df``.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">(</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;ts&quot;</span><span class="p">,</span>       <span class="c1"># this is the default (TIME_COL constant)</span>
+    <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>       <span class="c1"># this is the default (VALUE_COL constant)</span>
+    <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>           <span class="c1"># infer</span>
+    <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>    <span class="c1"># infer</span>
+    <span class="n">anomaly_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>   <span class="c1"># no adjustments</span>
+<span class="p">)</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">(</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;sessions&quot;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;W&quot;</span><span class="p">,</span>
+    <span class="n">date_format</span><span class="o">=</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">-%H&quot;</span><span class="p">,</span>
+    <span class="n">train_end_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">anomaly_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="anomaly-info">
+<span id="id2"></span><h3>anomaly_info<a class="headerlink" href="#anomaly-info" title="Permalink to this headline">¶</a></h3>
+<p>An anomaly is a deviation in the metric that is not expected to occur again
+in the future. <code class="docutils literal notranslate"><span class="pre">anomaly_info</span></code> can be used to adjust your input data if there
+are known anomalies. For example, you can choose to mask anomalies or correct
+the value to their hypothetical value, had the anomaly not occurred.
+This way, the forecast model will not project the anomalous pattern into the future.
+In most cases, you do not know the hypothetical value, so masking is sufficient.</p>
+<p>You can correct anomalies in <code class="docutils literal notranslate"><span class="pre">df</span></code> using <code class="docutils literal notranslate"><span class="pre">anomaly_info</span></code>.
+For parameter details, see
+<a class="reference internal" href="../autodoc/doc.html#greykite.common.features.adjust_anomalous_data.adjust_anomalous_data" title="greykite.common.features.adjust_anomalous_data.adjust_anomalous_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjust_anomalous_data</span></code></a>. For an example,
+see <a class="reference internal" href="0300_input.html"><span class="doc">Examine Input Data</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Measurement errors are different from anomalies.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Measurement</span> <span class="pre">error</span></code>: the actual value is misreported. Correct the values in <code class="docutils literal notranslate"><span class="pre">df</span></code>
+before calling <code class="docutils literal notranslate"><span class="pre">run_forecast_config</span></code>.
+For example, the database is corrupted, or a tracking error causes the actual value
+to be underreported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Anomaly</span></code>: the measurements are accurate, but the typical pattern is disrupted in a
+one-time event. Correct these via <code class="docutils literal notranslate"><span class="pre">anomaly_info</span></code>. For example, a site issue causes
+the actual value to drop by 20% for 1 hour.</p></li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It’s important to provide <code class="docutils literal notranslate"><span class="pre">freq</span></code> if the input data has missing timepoints.
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.infer_freq.html#pandas.infer_freq" title="(in pandas v0.24.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.infer_freq</span></code></a> has trouble with missing values.</p>
+</div>
+</div>
+</div>
+<div class="section" id="evaluation-metric-param">
+<span id="evaluation-metric"></span><h2>evaluation_metric_param<a class="headerlink" href="#evaluation-metric-param" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Defines the metrics used to evaluate the forecast.
+An instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam" title="greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">EvaluationMetricParam</span></code></a>.</p>
+<p>The attributes are:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cv_selection_metric : str or None, default &quot;MeanAbsolutePercentError&quot;
+    EvaluationMetricEnum name, e.g. &quot;MeanAbsolutePercentError&quot;
+    Used to select the optimal model during cross-validation.
+    Defines ``score_func``, ``score_func_greater_is_better`` in ``forecast_pipeline``.
+
+cv_report_metrics : str, or list [str], or None, default CV_REPORT_METRICS_ALL
+    Additional metrics to compute during CV, besides the one specified by ``cv_selection_metric``.
+
+        - If the string constant `greykite.common.constants.CV_REPORT_METRICS_ALL`,
+          computes all metrics in ``EvaluationMetricEnum``. Also computes
+          ``FRACTION_OUTSIDE_TOLERANCE`` if ``relative_error_tolerance`` is not None.
+          The results are reported by the short name (``.get_metric_name()``) for ``EvaluationMetricEnum``
+          members and ``FRACTION_OUTSIDE_TOLERANCE_NAME`` for ``FRACTION_OUTSIDE_TOLERANCE``.
+          These names appear in the keys of ``forecast_result.grid_search.cv_results_``
+          returned by this function.
+        - If a list of strings, each of the listed metrics is computed. Valid strings are
+          `greykite.common.evaluation.EvaluationMetricEnum` member names
+          and `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.
+
+          For example::
+
+            [&quot;MeanSquaredError&quot;, &quot;MeanAbsoluteError&quot;, &quot;MeanAbsolutePercentError&quot;, &quot;MedianAbsolutePercentError&quot;, &quot;FractionOutsideTolerance2&quot;]
+
+        - If None, no additional metrics are computed.
+
+agg_periods : int or None, default None
+    Number of periods to aggregate before evaluation.
+
+    Model is fit and forecasted on the dataset&#39;s original frequency.
+
+    Before evaluation, the actual and forecasted values are aggregated,
+    using rolling windows of size ``agg_periods`` and the function
+    ``agg_func``. (e.g. if the dataset is hourly, use ``agg_periods=24, agg_func=np.sum``,
+    to evaluate performance on the daily totals).
+
+    If None, does not aggregate before evaluation.
+
+    Currently, this is only used when calculating CV metrics and
+    the R2_null_model_score metric in backtest/forecast. No pre-aggregation
+    is applied for the other backtest/forecast evaluation metrics.
+
+agg_func : callable or None, default None
+    Takes an array and returns a number, e.g. np.max, np.sum.
+
+    Defines how to aggregate rolling windows of actual and predicted values
+    before evaluation.
+
+    Ignored if ``agg_periods`` is None.
+
+    Currently, this is only used when calculating CV metrics and
+    the R2_null_model_score metric in backtest/forecast. No pre-aggregation
+    is applied for the other backtest/forecast evaluation metrics.
+
+null_model_params : dict or None, default None
+    Defines baseline model to compute ``R2_null_model_score`` evaluation metric.
+    ``R2_null_model_score`` is the improvement in the loss function relative
+    to a null model. It can be used to evaluate model quality with respect to
+    a simple baseline. For details, see
+    `~greykite.common.evaluation.r2_null_model_score`.
+
+    The null model is a `~sklearn.dummy.DummyRegressor`,
+    which returns constant predictions.
+
+    Valid keys are &quot;strategy&quot;, &quot;constant&quot;, &quot;quantile&quot;.
+    See https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyRegressor.html
+
+    For example::
+
+        null_model_params = {
+            &quot;strategy&quot;: &quot;mean&quot;,
+        }
+        null_model_params = {
+            &quot;strategy&quot;: &quot;median&quot;,
+        }
+        null_model_params = {
+            &quot;strategy&quot;: &quot;quantile&quot;,
+            &quot;quantile&quot;: 0.8,
+        }
+        null_model_params = {
+            &quot;strategy&quot;: &quot;constant&quot;,
+            &quot;constant&quot;: 2.0,
+        }
+
+    If None, ``R2_null_model_score`` is not calculated.
+
+    Note: CV model selection always optimizes ``score_func`, not
+    the ``R2_null_model_score``.
+
+relative_error_tolerance : float or None, default None
+    Threshold to compute the ``Outside Tolerance`` metric,
+    defined as the fraction of forecasted values whose relative
+    error is strictly greater than ``relative_error_tolerance``.
+    If `None`, the metric is not computed.
+</pre></div>
+</div>
+<p>EvaluationMetricEnum names (valid for <code class="docutils literal notranslate"><span class="pre">cv_selection_metric</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cv_report_metrics</span></code>) are listed below. See their descriptions at:
+<a class="reference internal" href="../autodoc/doc.html#greykite.common.evaluation.EvaluationMetricEnum" title="greykite.common.evaluation.EvaluationMetricEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">EvaluationMetricEnum</span></code></a>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;MeanSquaredError&quot;
+&quot;RootMeanSquaredError&quot;
+&quot;MeanAbsoluteError&quot;
+&quot;MedianAbsoluteError&quot;
+&quot;MeanAbsolutePercentError&quot;
+&quot;MedianAbsolutePercentError&quot;
+&quot;SymmetricMeanAbsolutePercentError&quot;
+&quot;Quantile80&quot;  # quantile loss, 80th quantile
+&quot;Quantile95&quot;  # quantile loss, 95th quantile
+&quot;Quantile99&quot;  # quantile loss, 99th quantile
+
+# auxiliary metrics (typically not optimized directly)
+&quot;CoefficientOfDetermination&quot;  # also known as &quot;R2&quot;, `1.0 - MeanSquaredError / variance(actuals)`
+&quot;FractionOutsideTolerance1&quot;   # fraction of errors &gt; 1%
+&quot;FractionOutsideTolerance2&quot;   # fraction of errors &gt; 2%
+&quot;FractionOutsideTolerance3&quot;   # fraction of errors &gt; 3%
+&quot;FractionOutsideTolerance4&quot;   # fraction of errors &gt; 4%
+&quot;FractionOutsideTolerance5&quot;   # fraction of errors &gt; 5%
+&quot;Correlation&quot;                 # correlation between forecast and actuals
+</pre></div>
+</div>
+<p>In most cases, use “MeanAbsolutePercentError” as the selection metric.
+Because it is a relative metric, it is comparable across forecasts.</p>
+<p>See <a class="reference internal" href="../autodoc/doc.html#greykite.common.evaluation.r2_null_model_score" title="greykite.common.evaluation.r2_null_model_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r2_null_model_score</span></code></a> for the relationship
+between “CoefficientOfDetermination” (“R2”) and “R2_null_model_score”.</p>
+<p>To assess model quality, “CoefficientOfDetermination” (“R2”) is preferred over
+“Correlation”. (They are equivalent for linear regression.)
+“CoefficientOfDetermination” accounts for bias whereas “Correlation” does not.</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">CV_REPORT_METRICS_ALL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationMetricParam</span>
+
+<span class="c1"># Evaluates without aggregating.</span>
+<span class="c1"># Calculates R2_null_model_score against null model that predicts 80th quantile.</span>
+<span class="c1"># Note that the null model predicts the 0.8 quantile of the</span>
+<span class="c1">#   training set, which matches `cv_selection_metric`.</span>
+<span class="c1"># Reports all available metrics on each CV split.</span>
+<span class="c1"># 5% tolerance level to compute &quot;Outside Tolerance&quot; metric.</span>
+<span class="n">evaluation_metric</span> <span class="o">=</span> <span class="n">EvaluationMetricParam</span><span class="p">(</span>
+    <span class="n">cv_selection_metric</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">Quantile80</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">CV_REPORT_METRICS_ALL</span><span class="p">,</span>  <span class="c1"># the default, recommended</span>
+    <span class="n">agg_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">agg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">null_model_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;strategy&quot;</span><span class="p">:</span> <span class="s2">&quot;quantile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;constant&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;quantile&quot;</span><span class="p">:</span> <span class="mf">0.8</span>
+    <span class="p">},</span>
+    <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="mf">0.05</span>
+<span class="p">)</span>
+
+<span class="c1"># Creates forecast using daily data, evaluates accuracy of weekly totals.</span>
+<span class="c1"># Null model predicts mean of training set.</span>
+<span class="c1"># Reports a few extra metrics on each CV split.</span>
+<span class="c1"># 1% tolerance level to compute &quot;Outside Tolerance&quot; metric.</span>
+<span class="n">evaluation_metric</span> <span class="o">=</span> <span class="n">EvaluationMetricParam</span><span class="p">(</span>
+    <span class="n">cv_selection_metric</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">cv_report_metrics</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanSquaredError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsoluteError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MedianAbsoluteError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MedianAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">agg_periods</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+    <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
+    <span class="n">null_model_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;strategy&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span>
+    <span class="p">},</span>
+    <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="mf">0.01</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you specify <code class="docutils literal notranslate"><span class="pre">agg_periods</span></code>, <code class="docutils literal notranslate"><span class="pre">agg_func</span></code>, we calculate all evaluation metrics
+after aggregation, but the forecast is returned at the same frequency as the input <code class="docutils literal notranslate"><span class="pre">df</span></code>.</p>
+<p>Currently, these are only used when calculating CV metrics and
+the R2_null_model_score metric in backtest/forecast. No pre-aggregation is applied
+for the other backtest/forecast evaluation metrics.</p>
+</div>
+</div>
+<div class="section" id="evaluation-period-param">
+<span id="evaluation-period"></span><h2>evaluation_period_param<a class="headerlink" href="#evaluation-period-param" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Defines how to split the data into train/test sets for evaluation.
+An instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam" title="greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">EvaluationPeriodParam</span></code></a>.</p>
+<p>Greykite runs the following steps for evaluation:</p>
+<ol class="arabic simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">time-series</span> <span class="pre">cross</span> <span class="pre">validation</span></code> (CV) to select the best hyperparameters, via grid search</p></li>
+<li><p>Retrain and predict on holdout <code class="docutils literal notranslate"><span class="pre">backtest</span></code> period using best model</p></li>
+<li><p>Retrain and predict on <code class="docutils literal notranslate"><span class="pre">forecast</span></code> period using best model</p></li>
+</ol>
+<p>To do this, Greykite separates the data into three segments (training, backtest, forecast) as shown
+below. Each row corresponds to a train/test split. We record train and test error for each split
+(the average and std. are reported for CV).</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>x = train period
+- = forecast period
+  = not used
+
+| TRAINING                     | BACKTEST    | FORECAST    |
+
+xxxxxxxxxxxxx----                                              (cross-validation)
+xxxxxxxxxxxxxxxxx----                                          (cross-validation)
+xxxxxxxxxxxxxxxxxxxxx----                                      (cross-validation)
+xxxxxxxxxxxxxxxxxxxxxxxxx----                                  (cross-validation)
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--------------                 (backtest)
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--------------   (forecast)
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">evaluation_period</span></code> has these attributes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>test_horizon : int or None, default None
+    Numbers of periods held back from end of df for test.
+    The rest is used for cross validation.
+    If None, default is forecast_horizon. Set to 0 to skip backtest.
+
+periods_between_train_test : int or None, default None
+    Number of periods for the gap between train and test data.
+    Applies to both backtest and forecast, however the behaviour is slightly different.
+    Check the illustration of test parameters for a visual explanation.
+    If None, default is 0.
+
+cv_horizon : int or None, default None
+    Number of periods in each CV test set
+    If None, default is forecast_horizon. Set to 0 to skip CV.
+
+cv_min_train_periods : int or None, default None
+    Minimum number of periods for training each CV fold.
+    If cv_expanding_window is False, every training period is this size
+    If None, default is 2 * cv_horizon
+
+cv_expanding_window : bool, default determined by template
+    If True, training window for each CV split is fixed to the first available date.
+    Otherwise, train start date is sliding, determined by cv_min_train_periods
+
+cv_use_most_recent_splits: `bool`, optional, default False
+    If True, splits from the end of the dataset are used.
+    Else a sampling strategy is applied. Check
+    `~greykite.sklearn.cross_validation.RollingTimeSeriesSplit._sample_splits` for details.
+
+cv_periods_between_splits : int or None, default None
+    Number of periods to slide the test window between CV splits. Has to be greater than or equal to 1.
+    If None, default is cv_horizon.
+
+cv_periods_between_train_test : int, default 0
+    Number of periods for the gap between train and test in a CV split.
+    If None, default is periods_between_train_test.
+
+cv_max_splits : int or None, default 3
+    Maximum number of CV splits.
+    Given the above configuration, samples up to max_splits train/test splits,
+    preferring splits toward the end of available data. If None, uses all splits.
+</pre></div>
+</div>
+<p>To illustrate the test parameters:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(x) = train period
+(-) = forecast period
+(|) = train_end_date
+
+backtest
+(train_data)(periods_between_train_test)(test_horizon) |
+xxxxxxxxxxxx                             ------------- |
+                                                       |
+forecast                                               |
+(train_data)                                           | (periods_between_train_test)(forecast_horizon)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx|                              -----------------
+
+etc.
+</pre></div>
+</div>
+<p>To illustrate the CV parameters:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(x) = train period
+(-) = forecast period
+
+SPLIT 1
+(cv_min_train_periods)(cv_periods_between_train_test)(cv_horizon)
+xxxxxxxxxxxxxxxxxxxxxx                               ------------
+
+SPLIT 2: If cv_expanding_window = False
+(cv_period_between_splits)(cv_min_train_periods)(cv_periods_between_train_test)(cv_horizon)
+                          xxxxxxxxxxxxxxxxxxxxxx                               ------------
+
+SPLIT 2: If cv_expanding_window = True
+(cv_period_between_splits)(cv_min_train_periods)(cv_periods_between_train_test)(cv_horizon)
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                               ------------
+
+etc.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The defaults are designed for proper evaluation based on your <code class="docutils literal notranslate"><span class="pre">forecast_horizon</span></code> and
+<code class="docutils literal notranslate"><span class="pre">periods_between_train_test</span></code>, by matching <code class="docutils literal notranslate"><span class="pre">forecast_horizon=test_horizon=cv_horizon</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">periods_between_train_test=cv_periods_between_train_test</span></code>.</p>
+<p>You can reduce the values if you don’t have sufficient data to evaluate.</p>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationPeriodParam</span>
+
+<span class="c1"># daily data, 3mo evaluation</span>
+<span class="n">evaluation_period</span> <span class="o">=</span> <span class="n">EvaluationPeriodParam</span><span class="p">(</span>
+    <span class="n">test_horizon</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">cv_horizon</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cv_expanding_window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">cv_max_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Use CV to check 3 step-ahead error (cv_periods_between_train_test + cv_horizon)</span>
+<span class="n">evaluation_period</span> <span class="o">=</span> <span class="n">EvaluationPeriodParam</span><span class="p">(</span>
+    <span class="n">test_horizon</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">periods_between_train_test</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">cv_horizon</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">cv_expanding_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">cv_max_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-components-param">
+<h2>model_components_param<a class="headerlink" href="#model-components-param" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Tuning parameters for the selected <code class="docutils literal notranslate"><span class="pre">model_template</span></code>.
+An instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a>.</p>
+<p>While the other parameters define input data and
+evaluation approach, these parameters allow you to tune the forecast model.</p>
+<ul class="simple">
+<li><p>On how to choose a template, see <a class="reference internal" href="0200_choose_template.html"><span class="doc">Choose a Model Template</span></a>.</p></li>
+<li><p>For details about the <code class="docutils literal notranslate"><span class="pre">model_components</span></code> for each model template, see
+<a class="reference internal" href="../model_components/0100_introduction.html"><span class="doc">Greykite models and components</span></a>.</p></li>
+</ul>
+</div>
+<div class="section" id="computation-param">
+<h2>computation_param<a class="headerlink" href="#computation-param" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Parameters related to grid search computation.
+An instance of <a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ComputationParam" title="greykite.framework.templates.autogen.forecast_config.ComputationParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComputationParam</span></code></a>.</p>
+<p>The attributes are:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>hyperparameter_budget : int or None, default None
+    max number of hyperparameter sets to try within the hyperparameter_grid search space
+
+    Runs a full grid search if hyperparameter_budget is sufficient to exhaust full
+    hyperparameter_grid, otherwise samples uniformly at random from the space
+
+    If None, uses defaults:
+        full grid search if all values are constant
+        20 if any value is a distribution to sample from
+
+n_jobs : int or None, default=-1
+    Number of jobs to run in parallel during grid search
+    ``None`` is treated as 1. ``-1`` uses all processors
+
+verbose : int, default 1
+    Verbosity level during CV.
+    if &gt; 0, prints number of fits
+    if &gt; 1, prints fit parameters, total score + fit time
+    if &gt; 2, prints train/test scores
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ComputationParam</span>
+
+<span class="n">computation</span> <span class="o">=</span> <span class="n">ComputationParam</span><span class="p">(</span>
+    <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="c1"># for error messages/debugging, do not</span>
+<span class="c1"># run in parallel, and increase verbosity</span>
+<span class="n">computation</span> <span class="o">=</span> <span class="n">ComputationParam</span><span class="p">(</span>
+    <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forecast-one-by-one">
+<h2>forecast_one_by_one<a class="headerlink" href="#forecast-one-by-one" title="Permalink to this headline">¶</a></h2>
+<p>Optional. Whether to multiple models spanning the horizon and combine their predictions.
+This may improve forecast quality when forecast horizon &gt; 1
+and autoregression or lagged regressors are used.</p>
+<p>See <a class="reference internal" href="../../gallery/quickstart/0600_forecast_one_by_one.html"><span class="doc">Forecast One By One</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0500_output.html" class="btn btn-neutral float-right" title="Check Forecast Result" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0300_input.html" class="btn btn-neutral" title="Examine Input Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

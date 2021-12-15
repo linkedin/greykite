@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.pipeline.pipeline &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.pipeline.pipeline</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.pipeline.pipeline</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Computation pipeline for end-to-end forecasting</span>
+<span class="sd">using any ``BaseForecastEstimator``.</span>
+<span class="sd">Runs cross validation, backtest, and forecast.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ParameterGrid</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RandomizedSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">get_integer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">min_gap_in_seconds</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">COMPUTATION_N_JOBS</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">CV_REPORT_METRICS_ALL</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.input.univariate_time_series</span> <span class="kn">import</span> <span class="n">UnivariateTimeSeries</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.output.univariate_forecast</span> <span class="kn">import</span> <span class="n">UnivariateForecast</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_basic_pipeline</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_default_time_parameters</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_forecast</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_hyperparameter_searcher</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">RollingTimeSeriesSplit</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.simple_silverkite_estimator</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteEstimator</span>
+
+
+<div class="viewcode-block" id="ForecastResult"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.pipeline.ForecastResult">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ForecastResult</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Forecast results. Contains results from cross-validation, backtest, and forecast,</span>
+<span class="sd">    the trained model, and the original input data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timeseries</span><span class="p">:</span> <span class="n">UnivariateTimeSeries</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Input time series in standard format with stats and convenient plot functions.&quot;&quot;&quot;</span>
+    <span class="n">grid_search</span><span class="p">:</span> <span class="n">RandomizedSearchCV</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Result of cross-validation grid search on training dataset. The relevant attributes are:</span>
+
+<span class="sd">        * ``cv_results_`` cross-validation scores</span>
+<span class="sd">        * ``best_estimator_`` the model used for backtesting</span>
+<span class="sd">        * ``best_params_`` the optimal parameters used for backtesting.</span>
+
+<span class="sd">    Also see `~greykite.framework.utils.result_summary.summarize_grid_search_results`.</span>
+<span class="sd">    We recommend using this function to extract results, rather than accessing ``cv_results_`` directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">Pipeline</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Model fitted on full dataset, using the best parameters selected via cross-validation.</span>
+<span class="sd">    Has ``.fit()``, ``.predict()``, and diagnostic functions depending on the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">backtest</span><span class="p">:</span> <span class="n">UnivariateForecast</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Forecast on backtest period.</span>
+<span class="sd">    Backtest period is a holdout test set to check forecast quality against</span>
+<span class="sd">    the most recent actual values available.</span>
+<span class="sd">    The best model from cross validation is refit on data prior to this period.</span>
+<span class="sd">    The timestamps in ``backtest.df`` are sorted in ascending order.</span>
+<span class="sd">    Has a ``.plot()`` method and attributes to get</span>
+<span class="sd">    forecast vs actuals, evaluation results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">forecast</span><span class="p">:</span> <span class="n">UnivariateForecast</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Forecast on future period.</span>
+<span class="sd">    Future dates are after the train end date, following the holdout test set.</span>
+<span class="sd">    The best model from cross validation is refit on data prior to this period.</span>
+<span class="sd">    The timestamps in ``forecast.df`` are sorted in ascending order.</span>
+<span class="sd">    Has a ``.plot()`` method and attributes to get</span>
+<span class="sd">    forecast vs actuals, evaluation results.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="k">def</span> <span class="nf">validate_pipeline_input</span><span class="p">(</span><span class="n">pipeline_function</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator that validates inputs to forecast_pipeline function and sets defaults&quot;&quot;&quot;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">pipeline_function</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">pipeline_wrapper</span><span class="p">(</span>
+            <span class="c1"># The arguments to this wrapper must be identical to forecast_pipeline() function.</span>
+            <span class="c1"># We don&#39;t use **kwargs</span>
+            <span class="c1"># because it&#39;s easier to check parameters directly.</span>
+            <span class="c1"># input</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">anomaly_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="c1"># model</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">SimpleSilverkiteEstimator</span><span class="p">(),</span>
+            <span class="n">hyperparameter_grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">COMPUTATION_N_JOBS</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="c1"># forecast</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+            <span class="n">test_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="c1"># evaluation</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">cv_report_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="c1"># CV</span>
+            <span class="n">cv_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cv_expanding_window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">cv_max_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">coverage</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">coverage</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;coverage must be between 0 and 1, found </span><span class="si">{</span><span class="n">coverage</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">relative_error_tolerance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">relative_error_tolerance</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;relative_error_tolerance must non-negative, found </span><span class="si">{</span><span class="n">relative_error_tolerance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># default values for forecast horizon, test, and cross-validation parameters</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="n">min_gap_in_seconds</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">)</span>
+        <span class="n">num_observations</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">default_time_params</span> <span class="o">=</span> <span class="n">get_default_time_parameters</span><span class="p">(</span>
+            <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span>
+            <span class="n">num_observations</span><span class="o">=</span><span class="n">num_observations</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>
+            <span class="n">test_horizon</span><span class="o">=</span><span class="n">test_horizon</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="n">periods_between_train_test</span><span class="p">,</span>
+            <span class="n">cv_horizon</span><span class="o">=</span><span class="n">cv_horizon</span><span class="p">,</span>
+            <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="n">cv_min_train_periods</span><span class="p">,</span>
+            <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="n">cv_periods_between_train_test</span><span class="p">)</span>
+        <span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">default_time_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">)</span>
+        <span class="n">test_horizon</span> <span class="o">=</span> <span class="n">default_time_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_horizon&quot;</span><span class="p">)</span>
+        <span class="n">periods_between_train_test</span> <span class="o">=</span> <span class="n">default_time_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">)</span>
+        <span class="n">cv_horizon</span> <span class="o">=</span> <span class="n">default_time_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_horizon&quot;</span><span class="p">)</span>
+        <span class="n">cv_min_train_periods</span> <span class="o">=</span> <span class="n">default_time_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_min_train_periods&quot;</span><span class="p">)</span>
+        <span class="n">cv_periods_between_train_test</span> <span class="o">=</span> <span class="n">default_time_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_periods_between_train_test&quot;</span><span class="p">)</span>
+
+        <span class="c1"># ensures the values are integers in the proper domain</span>
+        <span class="k">if</span> <span class="n">hyperparameter_budget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hyperparameter_budget</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span>
+                <span class="n">hyperparameter_budget</span><span class="p">,</span>
+                <span class="s2">&quot;hyperparameter_budget&quot;</span><span class="p">,</span>
+                <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">cv_horizon</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">cv_max_splits</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">test_horizon</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Both CV and backtest are skipped! Make sure this is intended.&quot;</span>
+                          <span class="s2">&quot; It&#39;s important to check model performance on historical data.&quot;</span>
+                          <span class="s2">&quot; Set cv_horizon and cv_max_splits to nonzero values to enable CV.&quot;</span>
+                          <span class="s2">&quot; Set test_horizon to nonzero value to enable backtest.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No data selected for test (test_horizon=0). &quot;</span>
+                          <span class="s2">&quot;It is important to check out of sample performance&quot;</span><span class="p">)</span>
+
+        <span class="c1"># checks horizon against data size</span>
+        <span class="k">if</span> <span class="n">num_observations</span> <span class="o">&lt;</span> <span class="n">forecast_horizon</span> <span class="o">*</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not enough training data to forecast the full forecast_horizon.&quot;</span>
+                          <span class="s2">&quot; Exercise extra caution with&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; forecasted values after </span><span class="si">{</span><span class="n">num_observations</span> <span class="o">//</span> <span class="mi">2</span><span class="si">}</span><span class="s2"> periods.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">&gt;</span> <span class="n">num_observations</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;test_horizon (</span><span class="si">{</span><span class="n">test_horizon</span><span class="si">}</span><span class="s2">) is too large.&quot;</span>
+                             <span class="s2">&quot; Must be less than the number &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;of input data points: </span><span class="si">{</span><span class="n">num_observations</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">&gt;</span> <span class="n">forecast_horizon</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;test_horizon should never be larger than forecast_horizon.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">&gt;</span> <span class="n">num_observations</span> <span class="o">//</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;test_horizon should be &lt;= than 1/3 of the data set size to allow enough data to train&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; a backtest model. Consider reducing to </span><span class="si">{</span><span class="n">num_observations</span> <span class="o">//</span> <span class="mi">3</span><span class="si">}</span><span class="s2">. If this is smaller&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; than the forecast_horizon, you will need to make a trade-off between setting&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; test_horizon=forecast_horizon and having enough data left over to properly&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; train a realistic backtest model.&quot;</span><span class="p">)</span>
+
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;forecast_horizon: </span><span class="si">{</span><span class="n">forecast_horizon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;test_horizon: </span><span class="si">{</span><span class="n">test_horizon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cv_horizon: </span><span class="si">{</span><span class="n">cv_horizon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pipeline_function</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+            <span class="n">tz</span><span class="o">=</span><span class="n">tz</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="n">train_end_date</span><span class="p">,</span>
+            <span class="n">anomaly_info</span><span class="o">=</span><span class="n">anomaly_info</span><span class="p">,</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="n">lagged_regressor_cols</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span>
+            <span class="n">hyperparameter_grid</span><span class="o">=</span><span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="n">hyperparameter_budget</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">test_horizon</span><span class="o">=</span><span class="n">test_horizon</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="n">periods_between_train_test</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+            <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">cv_report_metrics</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">,</span>
+            <span class="n">cv_horizon</span><span class="o">=</span><span class="n">cv_horizon</span><span class="p">,</span>
+            <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="n">cv_min_train_periods</span><span class="p">,</span>
+            <span class="n">cv_expanding_window</span><span class="o">=</span><span class="n">cv_expanding_window</span><span class="p">,</span>
+            <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="n">cv_use_most_recent_splits</span><span class="p">,</span>
+            <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="n">cv_periods_between_splits</span><span class="p">,</span>
+            <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="n">cv_periods_between_train_test</span><span class="p">,</span>
+            <span class="n">cv_max_splits</span><span class="o">=</span><span class="n">cv_max_splits</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">pipeline_wrapper</span>
+
+
+<div class="viewcode-block" id="forecast_pipeline"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.pipeline.forecast_pipeline">[docs]</a><span class="nd">@validate_pipeline_input</span>
+<span class="k">def</span> <span class="nf">forecast_pipeline</span><span class="p">(</span>
+        <span class="c1"># input</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span><span class="p">,</span>
+        <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anomaly_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># model</span>
+        <span class="n">pipeline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">regressor_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="n">SimpleSilverkiteEstimator</span><span class="p">(),</span>
+        <span class="n">hyperparameter_grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="n">COMPUTATION_N_JOBS</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># forecast</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">test_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">periods_between_train_test</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># evaluation</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">CV_REPORT_METRICS_ALL</span><span class="p">,</span>
+        <span class="n">null_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># CV</span>
+        <span class="n">cv_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_expanding_window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_max_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computation pipeline for end-to-end forecasting.</span>
+
+<span class="sd">    Trains a forecast model end-to-end:</span>
+
+<span class="sd">        1. checks input data</span>
+<span class="sd">        2. runs cross-validation to select optimal hyperparameters e.g. best model</span>
+<span class="sd">        3. evaluates best model on test set</span>
+<span class="sd">        4. provides forecast of best model (re-trained on all data) into the future</span>
+
+<span class="sd">    Returns forecasts with methods to plot and see diagnostics.</span>
+<span class="sd">    Also returns the fitted pipeline and CV results.</span>
+
+<span class="sd">    Provides a high degree of customization over training and evaluation parameters:</span>
+
+<span class="sd">        1. model</span>
+<span class="sd">        2. cross validation</span>
+<span class="sd">        3. evaluation</span>
+<span class="sd">        4. forecast horizon</span>
+
+<span class="sd">    See test cases for examples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Timeseries data to forecast.</span>
+<span class="sd">        Contains columns [`time_col`, `value_col`], and optional regressor columns</span>
+<span class="sd">        Regressor columns should include future values for prediction</span>
+
+<span class="sd">    time_col : `str`, default TIME_COL in constants.py</span>
+<span class="sd">        name of timestamp column in df</span>
+
+<span class="sd">    value_col : `str`, default VALUE_COL in constants.py</span>
+<span class="sd">        name of value column in df (the values to forecast)</span>
+
+<span class="sd">    date_format : `str` or None, default None</span>
+<span class="sd">        strftime format to parse time column, eg ``%m/%d/%Y``.</span>
+<span class="sd">        Note that ``%f`` will parse all the way up to nanoseconds.</span>
+<span class="sd">        If None (recommended), inferred by `pandas.to_datetime`.</span>
+
+<span class="sd">    tz : `str` or None, default None</span>
+<span class="sd">        Passed to `pandas.tz_localize` to localize the timestamp</span>
+
+<span class="sd">    freq : `str` or None, default None</span>
+<span class="sd">        Frequency of input data. Used to generate future dates for prediction.</span>
+<span class="sd">        Frequency strings can have multiples, e.g. &#39;5H&#39;.</span>
+<span class="sd">        See https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases</span>
+<span class="sd">        for a list of frequency aliases.</span>
+<span class="sd">        If None, inferred by `pandas.infer_freq`.</span>
+<span class="sd">        Provide this parameter if ``df`` has missing timepoints.</span>
+
+<span class="sd">    train_end_date : `datetime.datetime`, optional, default None</span>
+<span class="sd">        Last date to use for fitting the model. Forecasts are generated after this date.</span>
+<span class="sd">        If None, it is set to the last date with a non-null value in</span>
+<span class="sd">        ``value_col`` of ``df``.</span>
+
+<span class="sd">    anomaly_info : `dict` or `list` [`dict`] or None, default None</span>
+<span class="sd">        Anomaly adjustment info. Anomalies in ``df``</span>
+<span class="sd">        are corrected before any forecasting is done.</span>
+
+<span class="sd">        If None, no adjustments are made.</span>
+
+<span class="sd">        A dictionary containing the parameters to</span>
+<span class="sd">        `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`.</span>
+<span class="sd">        See that function for details.</span>
+<span class="sd">        The possible keys are:</span>
+
+<span class="sd">            ``&quot;value_col&quot;`` : `str`</span>
+<span class="sd">                The name of the column in ``df`` to adjust. You may adjust the value</span>
+<span class="sd">                to forecast as well as any numeric regressors.</span>
+<span class="sd">            ``&quot;anomaly_df&quot;`` : `pandas.DataFrame`</span>
+<span class="sd">                Adjustments to correct the anomalies.</span>
+<span class="sd">            ``&quot;start_date_col&quot;``: `str`, default START_DATE_COL</span>
+<span class="sd">                Start date column in ``anomaly_df``.</span>
+<span class="sd">            ``&quot;end_date_col&quot;``: `str`, default END_DATE_COL</span>
+<span class="sd">                End date column in ``anomaly_df``.</span>
+<span class="sd">            ``&quot;adjustment_delta_col&quot;``: `str` or None, default None</span>
+<span class="sd">                Impact column in ``anomaly_df``.</span>
+<span class="sd">            ``&quot;filter_by_dict&quot;``: `dict` or None, default None</span>
+<span class="sd">                Used to filter ``anomaly_df`` to the relevant anomalies for</span>
+<span class="sd">                the ``value_col`` in this dictionary.</span>
+<span class="sd">                Key specifies the column name, value specifies the filter value.</span>
+<span class="sd">            ``&quot;filter_by_value_col&quot;&quot;``: `str` or None, default None</span>
+<span class="sd">                Adds ``{filter_by_value_col: value_col}`` to ``filter_by_dict``</span>
+<span class="sd">                if not None, for the ``value_col`` in this dictionary.</span>
+<span class="sd">            ``&quot;adjustment_method&quot;`` : `str` (&quot;add&quot; or &quot;subtract&quot;), default &quot;add&quot;</span>
+<span class="sd">                How to make the adjustment, if ``adjustment_delta_col`` is provided.</span>
+
+<span class="sd">        Accepts a list of such dictionaries to adjust multiple columns in ``df``.</span>
+
+<span class="sd">    pipeline : `sklearn.pipeline.Pipeline` or None, default None</span>
+<span class="sd">        Pipeline to fit. The final named step must be called &quot;estimator&quot;.</span>
+<span class="sd">        If None, will use the default Pipeline from</span>
+<span class="sd">        `~greykite.framework.pipeline.utils.get_basic_pipeline`.</span>
+
+<span class="sd">    regressor_cols : `list` [`str`] or None, default None</span>
+<span class="sd">        A list of regressor columns used in the training and prediction DataFrames.</span>
+<span class="sd">        It should contain only the regressors that are being used in the grid search.</span>
+<span class="sd">        If None, no regressor columns are used.</span>
+<span class="sd">        Regressor columns that are unavailable in ``df`` are dropped.</span>
+
+<span class="sd">    lagged_regressor_cols : `list` [`str`] or None, default None</span>
+<span class="sd">        A list of additional columns needed for lagged regressors in the training and prediction DataFrames.</span>
+<span class="sd">        This list can have overlap with ``regressor_cols``.</span>
+<span class="sd">        If None, no additional columns are added to the DataFrame.</span>
+<span class="sd">        Lagged regressor columns that are unavailable in ``df`` are dropped.</span>
+
+<span class="sd">    estimator : instance of an estimator that implements `greykite.algo.models.base_forecast_estimator.BaseForecastEstimator`</span>
+<span class="sd">        Estimator to use as the final step in the pipeline.</span>
+<span class="sd">        Ignored if ``pipeline`` is provided.</span>
+
+<span class="sd">    forecast_horizon : `int` or None, default None</span>
+<span class="sd">        Number of periods to forecast into the future. Must be &gt; 0.</span>
+<span class="sd">        If None, default is determined from input data frequency</span>
+
+<span class="sd">    coverage : `float` or None, default=0.95</span>
+<span class="sd">        Intended coverage of the prediction bands (0.0 to 1.0)</span>
+<span class="sd">        If None, the upper/lower predictions are not returned</span>
+<span class="sd">        Ignored if `pipeline` is provided. Uses coverage of the ``pipeline`` estimator instead.</span>
+
+<span class="sd">    test_horizon : `int` or None, default None</span>
+<span class="sd">        Numbers of periods held back from end of df for test.</span>
+<span class="sd">        The rest is used for cross validation.</span>
+<span class="sd">        If None, default is forecast_horizon. Set to 0 to skip backtest.</span>
+
+<span class="sd">    periods_between_train_test : `int` or None, default None</span>
+<span class="sd">        Number of periods for the gap between train and test data.</span>
+<span class="sd">        If None, default is 0.</span>
+
+<span class="sd">    agg_periods : `int` or None, default None</span>
+<span class="sd">        Number of periods to aggregate before evaluation.</span>
+
+<span class="sd">        Model is fit and forecasted on the dataset&#39;s original frequency.</span>
+
+<span class="sd">        Before evaluation, the actual and forecasted values are aggregated,</span>
+<span class="sd">        using rolling windows of size ``agg_periods`` and the function</span>
+<span class="sd">        ``agg_func``. (e.g. if the dataset is hourly, use ``agg_periods=24, agg_func=np.sum``,</span>
+<span class="sd">        to evaluate performance on the daily totals).</span>
+
+<span class="sd">        If None, does not aggregate before evaluation.</span>
+
+<span class="sd">        Currently, this is only used when calculating CV metrics and</span>
+<span class="sd">        the R2_null_model_score metric in backtest/forecast. No pre-aggregation</span>
+<span class="sd">        is applied for the other backtest/forecast evaluation metrics.</span>
+
+<span class="sd">    agg_func : callable or None, default None</span>
+<span class="sd">        Takes an array and returns a number, e.g. np.max, np.sum.</span>
+
+<span class="sd">        Defines how to aggregate rolling windows of actual and predicted values</span>
+<span class="sd">        before evaluation.</span>
+
+<span class="sd">        Ignored if ``agg_periods`` is None.</span>
+
+<span class="sd">        Currently, this is only used when calculating CV metrics and</span>
+<span class="sd">        the R2_null_model_score metric in backtest/forecast. No pre-aggregation</span>
+<span class="sd">        is applied for the other backtest/forecast evaluation metrics.</span>
+
+<span class="sd">    score_func : `str` or callable, default ``EvaluationMetricEnum.MeanAbsolutePercentError.name``</span>
+<span class="sd">        Score function used to select optimal model in CV.</span>
+<span class="sd">        If a callable, takes arrays ``y_true``, ``y_pred`` and returns a float.</span>
+<span class="sd">        If a string, must be either a</span>
+<span class="sd">        `~greykite.common.evaluation.EvaluationMetricEnum` member name</span>
+<span class="sd">        or `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+
+<span class="sd">    score_func_greater_is_better : `bool`, default False</span>
+<span class="sd">        True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        Must be provided if ``score_func`` is a callable (custom function).</span>
+<span class="sd">        Ignored if ``score_func`` is a string, because the direction is known.</span>
+
+<span class="sd">    cv_report_metrics : `str`, or `list` [`str`], or None, default `~greykite.common.constants.CV_REPORT_METRICS_ALL`</span>
+<span class="sd">        Additional metrics to compute during CV, besides the one specified by ``score_func``.</span>
+
+<span class="sd">            - If the string constant `greykite.framework.constants.CV_REPORT_METRICS_ALL`,</span>
+<span class="sd">              computes all metrics in ``EvaluationMetricEnum``. Also computes</span>
+<span class="sd">              ``FRACTION_OUTSIDE_TOLERANCE`` if ``relative_error_tolerance`` is not None.</span>
+<span class="sd">              The results are reported by the short name (``.get_metric_name()``) for ``EvaluationMetricEnum``</span>
+<span class="sd">              members and ``FRACTION_OUTSIDE_TOLERANCE_NAME`` for ``FRACTION_OUTSIDE_TOLERANCE``.</span>
+<span class="sd">              These names appear in the keys of ``forecast_result.grid_search.cv_results_``</span>
+<span class="sd">              returned by this function.</span>
+<span class="sd">            - If a list of strings, each of the listed metrics is computed. Valid strings are</span>
+<span class="sd">              `~greykite.common.evaluation.EvaluationMetricEnum` member names</span>
+<span class="sd">              and `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+
+<span class="sd">              For example::</span>
+
+<span class="sd">                [&quot;MeanSquaredError&quot;, &quot;MeanAbsoluteError&quot;, &quot;MeanAbsolutePercentError&quot;, &quot;MedianAbsolutePercentError&quot;, &quot;FractionOutsideTolerance2&quot;]</span>
+
+<span class="sd">            - If None, no additional metrics are computed.</span>
+
+<span class="sd">    null_model_params : `dict` or None, default None</span>
+<span class="sd">        Defines baseline model to compute ``R2_null_model_score`` evaluation metric.</span>
+<span class="sd">        ``R2_null_model_score`` is the improvement in the loss function relative</span>
+<span class="sd">        to a null model. It can be used to evaluate model quality with respect to</span>
+<span class="sd">        a simple baseline. For details, see</span>
+<span class="sd">        `~greykite.common.evaluation.r2_null_model_score`.</span>
+
+<span class="sd">        The null model is a `~sklearn.dummy.DummyRegressor`,</span>
+<span class="sd">        which returns constant predictions.</span>
+
+<span class="sd">        Valid keys are &quot;strategy&quot;, &quot;constant&quot;, &quot;quantile&quot;.</span>
+<span class="sd">        See `~sklearn.dummy.DummyRegressor`. For example::</span>
+
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;mean&quot;,</span>
+<span class="sd">            }</span>
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;median&quot;,</span>
+<span class="sd">            }</span>
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;quantile&quot;,</span>
+<span class="sd">                &quot;quantile&quot;: 0.8,</span>
+<span class="sd">            }</span>
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;constant&quot;,</span>
+<span class="sd">                &quot;constant&quot;: 2.0,</span>
+<span class="sd">            }</span>
+
+<span class="sd">        If None, ``R2_null_model_score`` is not calculated.</span>
+
+<span class="sd">        Note: CV model selection always optimizes ``score_func`, not</span>
+<span class="sd">        the ``R2_null_model_score``.</span>
+
+<span class="sd">    relative_error_tolerance : `float` or None, default None</span>
+<span class="sd">        Threshold to compute the ``Outside Tolerance`` metric,</span>
+<span class="sd">        defined as the fraction of forecasted values whose relative</span>
+<span class="sd">        error is strictly greater than ``relative_error_tolerance``.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+<span class="sd">        If `None`, the metric is not computed.</span>
+
+<span class="sd">    hyperparameter_grid : `dict`, `list` [`dict`] or None, default None</span>
+<span class="sd">        Sets properties of the steps in the pipeline,</span>
+<span class="sd">        and specifies combinations to search over.</span>
+<span class="sd">        Should be valid input to `sklearn.model_selection.GridSearchCV` (param_grid)</span>
+<span class="sd">        or `sklearn.model_selection.RandomizedSearchCV` (param_distributions).</span>
+
+<span class="sd">        Prefix transform/estimator attributes by the name of the step in the pipeline.</span>
+<span class="sd">        See details at: https://scikit-learn.org/stable/modules/compose.html#nested-parameters</span>
+
+<span class="sd">        If None, uses the default pipeline parameters.</span>
+
+<span class="sd">    hyperparameter_budget : `int` or None, default None</span>
+<span class="sd">        Max number of hyperparameter sets to try within the ``hyperparameter_grid`` search space</span>
+
+<span class="sd">        Runs a full grid search if ``hyperparameter_budget`` is sufficient to exhaust full</span>
+<span class="sd">        ``hyperparameter_grid``, otherwise samples uniformly at random from the space.</span>
+
+<span class="sd">        If None, uses defaults:</span>
+
+<span class="sd">            * full grid search if all values are constant</span>
+<span class="sd">            * 10 if any value is a distribution to sample from</span>
+
+<span class="sd">    n_jobs : `int` or None, default `~greykite.framework.constants.COMPUTATION_N_JOBS`</span>
+<span class="sd">        Number of jobs to run in parallel</span>
+<span class="sd">        (the maximum number of concurrently running workers).</span>
+<span class="sd">        ``-1`` uses all CPUs. ``-2`` uses all CPUs but one.</span>
+<span class="sd">        ``None`` is treated as 1 unless in a `joblib.Parallel` backend context</span>
+<span class="sd">        that specifies otherwise.</span>
+
+<span class="sd">    verbose : `int`, default 1</span>
+<span class="sd">        Verbosity level during CV.</span>
+<span class="sd">        if &gt; 0, prints number of fits</span>
+<span class="sd">        if &gt; 1, prints fit parameters, total score + fit time</span>
+<span class="sd">        if &gt; 2, prints train/test scores</span>
+
+<span class="sd">    cv_horizon : `int` or None, default None</span>
+<span class="sd">        Number of periods in each CV test set</span>
+<span class="sd">        If None, default is ``forecast_horizon``.</span>
+<span class="sd">        Set either ``cv_horizon`` or ``cv_max_splits`` to 0 to skip CV.</span>
+
+<span class="sd">    cv_min_train_periods : `int` or None, default None</span>
+<span class="sd">        Minimum number of periods for training each CV fold.</span>
+<span class="sd">        If cv_expanding_window is False, every training period is this size</span>
+<span class="sd">        If None, default is 2 * ``cv_horizon``</span>
+
+<span class="sd">    cv_expanding_window : `bool`, default False</span>
+<span class="sd">        If True, training window for each CV split is fixed to the first available date.</span>
+<span class="sd">        Otherwise, train start date is sliding, determined by ``cv_min_train_periods``.</span>
+
+<span class="sd">    cv_use_most_recent_splits: `bool`, default False</span>
+<span class="sd">        If True, splits from the end of the dataset are used.</span>
+<span class="sd">        Else a sampling strategy is applied. Check</span>
+<span class="sd">        `~greykite.sklearn.cross_validation.RollingTimeSeriesSplit._sample_splits`</span>
+<span class="sd">        for details.</span>
+
+<span class="sd">    cv_periods_between_splits : `int` or None, default None</span>
+<span class="sd">        Number of periods to slide the test window between CV splits</span>
+<span class="sd">        If None, default is ``cv_horizon``</span>
+
+<span class="sd">    cv_periods_between_train_test : `int` or None, default None</span>
+<span class="sd">        Number of periods for the gap between train and test in a CV split.</span>
+<span class="sd">        If None, default is ``periods_between_train_test``.</span>
+
+<span class="sd">    cv_max_splits : `int` or None, default 3</span>
+<span class="sd">        Maximum number of CV splits.</span>
+<span class="sd">        Given the above configuration, samples up to max_splits train/test splits,</span>
+<span class="sd">        preferring splits toward the end of available data. If None, uses all splits.</span>
+<span class="sd">        Set either ``cv_horizon`` or ``cv_max_splits`` to 0 to skip CV.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    forecast_result : :class:`~greykite.framework.pipeline.pipeline.ForecastResult`</span>
+<span class="sd">        Forecast result. See :class:`~greykite.framework.pipeline.pipeline.ForecastResult`</span>
+<span class="sd">        for details.</span>
+
+<span class="sd">            * If ``cv_horizon=0``, ``forecast_result.grid_search.best_estimator_``</span>
+<span class="sd">              and ``forecast_result.grid_search.best_params_`` attributes are defined</span>
+<span class="sd">              according to the provided single set of parameters. There must be a single</span>
+<span class="sd">              set of parameters to skip cross-validation.</span>
+<span class="sd">            * If ``test_horizon=0``, ``forecast_result.backtest`` is None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">hyperparameter_grid</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">hyperparameter_grid</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># When hyperparameter_grid is a singleton list, unlist it</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hyperparameter_grid</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">hyperparameter_grid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">hyperparameter_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Loads full dataset</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">UnivariateTimeSeries</span><span class="p">()</span>
+    <span class="n">ts</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
+        <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+        <span class="n">tz</span><span class="o">=</span><span class="n">tz</span><span class="p">,</span>
+        <span class="n">train_end_date</span><span class="o">=</span><span class="n">train_end_date</span><span class="p">,</span>
+        <span class="n">regressor_cols</span><span class="o">=</span><span class="n">regressor_cols</span><span class="p">,</span>
+        <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="n">lagged_regressor_cols</span><span class="p">,</span>
+        <span class="n">anomaly_info</span><span class="o">=</span><span class="n">anomaly_info</span><span class="p">)</span>
+
+    <span class="c1"># Splits data into training and test sets. ts.df uses standardized column names</span>
+    <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">train_df</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">fit_df</span>
+        <span class="n">train_y</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">fit_y</span>
+        <span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Make sure to refit best_pipeline appropriately</span>
+        <span class="n">train_df</span><span class="p">,</span> <span class="n">test_df</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+            <span class="n">ts</span><span class="o">.</span><span class="n">fit_df</span><span class="p">,</span>
+            <span class="n">ts</span><span class="o">.</span><span class="n">fit_y</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">fit_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">test_horizon</span> <span class="o">-</span> <span class="n">periods_between_train_test</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="n">test_horizon</span> <span class="o">+</span> <span class="n">periods_between_train_test</span><span class="p">,</span>
+            <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># this is important since this is timeseries forecasting!</span>
+    <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train size: </span><span class="si">{</span><span class="n">train_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">. Test size: </span><span class="si">{</span><span class="n">test_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="c1"># Defines default training pipeline</span>
+    <span class="k">if</span> <span class="n">pipeline</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">get_basic_pipeline</span><span class="p">(</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">lagged_regressor_cols</span><span class="p">)</span>
+
+    <span class="c1"># Searches for the best parameters, and refits model with selected parameters on the entire training set</span>
+    <span class="k">if</span> <span class="n">cv_horizon</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">cv_max_splits</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># No cross-validation. Only one set of hyperparameters is allowed.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="n">hyperparameter_grid</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;CV is required to identify the best model because there are multiple options &quot;</span>
+                    <span class="s2">&quot;in `hyperparameter_grid`. Either provide a single option or set `cv_horizon` and `cv_max_splits` &quot;</span>
+                    <span class="s2">&quot;to nonzero values.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># Parameter value is not iterable</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;CV is required to identify the best model because `hyperparameter_grid` contains &quot;</span>
+                <span class="s2">&quot;a distribution. Either remove the distribution or set `cv_horizon` and `cv_max_splits` &quot;</span>
+                <span class="s2">&quot;to nonzero values.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Fits model to entire train set. Params must be set manually since it&#39;s not done by grid search</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">hyperparameter_grid</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>  <span class="c1"># unpack lists, `v` is a singleton list with the parameter value</span>
+        <span class="n">best_estimator</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_df</span><span class="p">,</span> <span class="n">train_y</span><span class="p">)</span>
+
+        <span class="c1"># Wraps this model in a dummy RandomizedSearchCV object to return the backtest model</span>
+        <span class="n">grid_search</span> <span class="o">=</span> <span class="n">get_hyperparameter_searcher</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid</span><span class="o">=</span><span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># no cross-validation</span>
+            <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="n">hyperparameter_budget</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+            <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">cv_report_metrics</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+        <span class="c1"># Sets relevant attributes. Others are undefined (cv_results_, best_score_, best_index_, scorer_, refit_time_)</span>
+        <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span> <span class="o">=</span> <span class="n">best_estimator</span>
+        <span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="n">grid_search</span><span class="o">.</span><span class="n">n_splits_</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Defines cross-validation splitter</span>
+        <span class="n">cv</span> <span class="o">=</span> <span class="n">RollingTimeSeriesSplit</span><span class="p">(</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">cv_horizon</span><span class="p">,</span>
+            <span class="n">min_train_periods</span><span class="o">=</span><span class="n">cv_min_train_periods</span><span class="p">,</span>
+            <span class="n">expanding_window</span><span class="o">=</span><span class="n">cv_expanding_window</span><span class="p">,</span>
+            <span class="n">use_most_recent_splits</span><span class="o">=</span><span class="n">cv_use_most_recent_splits</span><span class="p">,</span>
+            <span class="n">periods_between_splits</span><span class="o">=</span><span class="n">cv_periods_between_splits</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="n">cv_periods_between_train_test</span><span class="p">,</span>
+            <span class="n">max_splits</span><span class="o">=</span><span class="n">cv_max_splits</span><span class="p">)</span>
+
+        <span class="c1"># Defines grid search approach for CV</span>
+        <span class="n">grid_search</span> <span class="o">=</span> <span class="n">get_hyperparameter_searcher</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid</span><span class="o">=</span><span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span>
+            <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="n">hyperparameter_budget</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+            <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">cv_report_metrics</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+        <span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_df</span><span class="p">,</span> <span class="n">train_y</span><span class="p">)</span>
+        <span class="n">best_estimator</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
+
+    <span class="c1"># Evaluates historical performance, fits model to all data (train+test)</span>
+    <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">backtest_train_end_date</span> <span class="o">=</span> <span class="n">train_df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="c1"># Uses pd.date_range because pd.Timedelta does not work for complicated frequencies e.g. &quot;W-MON&quot;</span>
+        <span class="n">backtest_test_start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">backtest_train_end_date</span><span class="p">,</span>
+            <span class="n">periods</span><span class="o">=</span><span class="n">periods_between_train_test</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># Adds 2 as start parameter is inclusive</span>
+            <span class="n">freq</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">freq</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">backtest</span> <span class="o">=</span> <span class="n">get_forecast</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">fit_df</span><span class="p">,</span>  <span class="c1"># Backtest needs to happen on fit_df, not on the entire df</span>
+            <span class="n">trained_model</span><span class="o">=</span><span class="n">best_estimator</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="n">backtest_train_end_date</span><span class="p">,</span>
+            <span class="n">test_start_date</span><span class="o">=</span><span class="n">backtest_test_start_date</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">test_horizon</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+        <span class="n">best_pipeline</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">best_estimator</span><span class="p">)</span>  <span class="c1"># Copies optimal parameters</span>
+        <span class="n">best_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">fit_df</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># Refits this model on entire training dataset</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">backtest</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Backtest training metrics are the same as forecast training metrics</span>
+        <span class="n">best_pipeline</span> <span class="o">=</span> <span class="n">best_estimator</span>  <span class="c1"># best_model is already fit to all data</span>
+
+    <span class="c1"># Makes future predictions</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="n">forecast_horizon</span> <span class="o">+</span> <span class="n">periods_between_train_test</span>
+    <span class="n">future_df</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">make_future_dataframe</span><span class="p">(</span>
+        <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span>
+        <span class="n">include_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">forecast_train_end_date</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">train_end_date</span>
+    <span class="c1"># Uses pd.date_range because pd.Timedelta does not work for complicated frequencies e.g. &quot;W-MON&quot;</span>
+    <span class="n">forecast_test_start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">forecast_train_end_date</span><span class="p">,</span>
+        <span class="n">periods</span><span class="o">=</span><span class="n">periods_between_train_test</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># Adds 2 as start parameter is inclusive</span>
+        <span class="n">freq</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">freq</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">forecast</span> <span class="o">=</span> <span class="n">get_forecast</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">future_df</span><span class="p">,</span>
+        <span class="n">trained_model</span><span class="o">=</span><span class="n">best_pipeline</span><span class="p">,</span>
+        <span class="n">train_end_date</span><span class="o">=</span><span class="n">forecast_train_end_date</span><span class="p">,</span>
+        <span class="n">test_start_date</span><span class="o">=</span><span class="n">forecast_test_start_date</span><span class="p">,</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">ForecastResult</span><span class="p">(</span>
+        <span class="n">timeseries</span><span class="o">=</span><span class="n">ts</span><span class="p">,</span>
+        <span class="n">grid_search</span><span class="o">=</span><span class="n">grid_search</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">best_pipeline</span><span class="p">,</span>
+        <span class="n">backtest</span><span class="o">=</span><span class="n">backtest</span><span class="p">,</span>
+        <span class="n">forecast</span><span class="o">=</span><span class="n">forecast</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

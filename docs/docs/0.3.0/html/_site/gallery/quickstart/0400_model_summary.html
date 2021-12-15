@@ -1,0 +1,1083 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Model Summary &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Model Summary</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="../../../gallery/quickstart/0400_model_summary.html#sphx-glr-download-gallery-quickstart-0400-model-summary-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="model-summary">
+<span id="sphx-glr-gallery-quickstart-0400-model-summary-py"></span><h1>Model Summary<a class="headerlink" href="#model-summary" title="Permalink to this headline">¶</a></h1>
+<p>For every forecast model trained with the <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> algorithm,
+you can print the model summary with only a few lines of code.
+The model summary gives you insight into model performance,
+parameter significance and etc.</p>
+<p>In this example, we will discuss how to utilize the
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary" title="greykite.algo.common.model_summary.ModelSummary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelSummary</span></code></a>
+module to output model summary.</p>
+<p>First we’ll load a dataset representing <code class="docutils literal notranslate"><span class="pre">log(daily</span> <span class="pre">page</span> <span class="pre">views)</span></code>
+on the Wikipedia page for Peyton Manning.
+It contains values from 2007-12-10 to 2016-01-20. More dataset info
+<a class="reference external" href="https://facebook.github.io/prophet/docs/quick_start.html">here</a>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">warnings</span>
+
+ <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+ <span class="kn">from</span> <span class="nn">greykite.common.data_loader</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.model_templates</span> <span class="kn">import</span> <span class="n">ModelTemplateEnum</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+
+ <span class="c1"># Loads dataset into pandas DataFrame</span>
+ <span class="n">dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
+ <span class="n">df</span> <span class="o">=</span> <span class="n">dl</span><span class="o">.</span><span class="n">load_peyton_manning</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>Then we create a forecast model with <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> template.
+For a simple example of creating a forecast model, see
+<a class="reference external" href="./0100_simple_forecast.html">Simple Forecast</a>.
+For a detailed tuning tutorial, see
+<a class="reference external" href="../tutorials/0100_forecast_tutorial.html">Forecast Model Tuning</a>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Specifies dataset information</span>
+ <span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">(</span>
+     <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;ts&quot;</span><span class="p">,</span>  <span class="c1"># name of the time column</span>
+     <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>  <span class="c1"># name of the value column</span>
+     <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span>  <span class="c1"># &quot;H&quot; for hourly, &quot;D&quot; for daily, &quot;W&quot; for weekly, etc.</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Specifies model parameters</span>
+ <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+     <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+         <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;potential_changepoint_n&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+             <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+             <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span><span class="p">}</span>
+     <span class="p">},</span>
+     <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+         <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+     <span class="p">},</span>
+     <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+         <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+         <span class="p">},</span>
+     <span class="p">}</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Runs the forecast</span>
+ <span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+     <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+     <span class="n">config</span><span class="o">=</span><span class="n">ForecastConfig</span><span class="p">(</span>
+         <span class="n">model_template</span><span class="o">=</span><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+         <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span>  <span class="c1"># forecasts 365 steps ahead</span>
+         <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>  <span class="c1"># 95% prediction intervals</span>
+         <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+         <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components</span>
+     <span class="p">)</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 3 folds for each of 1 candidates, totalling 3 fits
+</pre></div>
+</div>
+<div class="section" id="creating-model-summary">
+<h2>Creating model summary<a class="headerlink" href="#creating-model-summary" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have the output from <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.run_forecast_config" title="greykite.framework.templates.forecaster.Forecaster.run_forecast_config"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_forecast_config</span></code></a>,
+we are able to access the model summary.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Initializes the model summary class.</span>
+ <span class="c1"># ``max_colwidth`` is the maximum length of predictor names that can be displayed.</span>
+ <span class="n">summary</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">max_colwidth</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>The above command creates a model summary class and derives extra information
+that summarizes the model. Generally the summarized information includes
+the following sections:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><strong>Model parameter section:</strong> includes basic model parameter information such
+as number of observations, number of features, model name and etc.</p></li>
+<li><p><strong>Model residual section:</strong> includes the five number summary of training residuals.</p></li>
+<li><p><strong>Model coefficients section (for regression model):</strong> the estimated coefficients
+and their p-values/confidence intervals. For linear regression, these are the
+conventional results; for ridge regression, these are calculated from bootstrap <a class="footnote-reference brackets" href="#id5" id="id1">1</a>;
+for lasso regression, these are calculated by multi-sample-splitting <a class="footnote-reference brackets" href="#id6" id="id2">2</a>.</p></li>
+<li><p><strong>Model coefficients section (for tree model):</strong> the feature significance.</p></li>
+<li><p><strong>Model significance section (for regression model only):</strong> the overall significance
+of the regression model, including the coefficient of determination, the
+F-ratio and its p-value, and model AIC/BIC. The results are based on classical
+statistical inference and may not be reliable for regularized methods (ridge, lasso, etc.).</p></li>
+<li><p><strong>Warning section:</strong> any warnings for the model summary such as high multicollinearity
+are displayed in this section.</p></li>
+</ol>
+</div></blockquote>
+<p>To see the summary, you can either type <code class="docutils literal notranslate"><span class="pre">summary</span></code> or <code class="docutils literal notranslate"><span class="pre">print(summary)</span></code>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">113</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Prints the summary</span>
+ <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>================================ Model Summary =================================
+
+Number of observations: 2964,   Number of features: 295
+Method: Ordinary least squares
+Number of nonzero features: 295
+
+Residuals:
+         Min           1Q       Median           3Q          Max
+      -1.906      -0.2626     -0.04811       0.1786        3.423
+
+                      Pred_col    Estimate Std. Err     t value  Pr(&gt;|t|) sig. code                  95%CI
+                     Intercept       7.067  0.07817        90.4    &lt;2e-16       ***          (6.913, 7.22)
+       events_Chinese New Year     0.08181   0.1682      0.4864     0.627                 (-0.248, 0.4116)
+     events_Chinese New Year-1     -0.1791   0.1836     -0.9753     0.330                 (-0.5392, 0.181)
+     events_Chinese New Year-2      0.0903   0.1473      0.6128     0.540                (-0.1986, 0.3792)
+     events_Chinese New Year+1     0.06637   0.1836      0.3615     0.718                (-0.2936, 0.4264)
+     events_Chinese New Year+2      0.1457   0.1473       0.989     0.323                (-0.1431, 0.4345)
+          events_Christmas Day     -0.5949   0.1808       -3.29     0.001        **     (-0.9494, -0.2403)
+        events_Christmas Day-1     -0.3356   0.1788      -1.877     0.061         .     (-0.6862, 0.01501)
+        events_Christmas Day-2     -0.1262   0.1759     -0.7177     0.473                (-0.4711, 0.2187)
+        events_Christmas Day+1     -0.4613    0.182      -2.535     0.011         *     (-0.8182, -0.1044)
+        events_Christmas Day+2     0.08725   0.1813      0.4813     0.630                (-0.2682, 0.4427)
+ events_Easter...hern Ireland]     -0.2407   0.1736      -1.387     0.166               (-0.5811, 0.09965)
+ events_Easter...rn Ireland]-1      -0.116  0.08679      -1.337     0.181               (-0.2862, 0.05417)
+ events_Easter...rn Ireland]-2    -0.06225  0.08805      -0.707     0.480                (-0.2349, 0.1104)
+ events_Easter...rn Ireland]+1    -0.09453   0.1736     -0.5447     0.586                (-0.4348, 0.2458)
+ events_Easter...rn Ireland]+2  -7.999e-06   0.1719  -4.653e-05     1.000                (-0.3371, 0.3371)
+            events_Good Friday     -0.1886   0.1744      -1.082     0.280                (-0.5305, 0.1533)
+          events_Good Friday-1     -0.1271   0.1721     -0.7389     0.460                (-0.4646, 0.2103)
+          events_Good Friday-2    -0.02644   0.1723     -0.1534     0.878                (-0.3644, 0.3115)
+          events_Good Friday+1    -0.06225  0.08805      -0.707     0.480                (-0.2349, 0.1104)
+          events_Good Friday+2      -0.116  0.08679      -1.337     0.181               (-0.2862, 0.05417)
+       events_Independence Day     0.04463   0.1295      0.3447     0.730                (-0.2093, 0.2985)
+     events_Independence Day-1    -0.01802   0.1294     -0.1392     0.889                (-0.2718, 0.2358)
+     events_Independence Day-2    -0.07622   0.1291     -0.5904     0.555                (-0.3293, 0.1769)
+     events_Independence Day+1    -0.03397   0.1294     -0.2625     0.793                (-0.2877, 0.2197)
+     events_Independence Day+2    -0.03063    0.129     -0.2374     0.812                (-0.2836, 0.2223)
+              events_Labor Day     -0.4163   0.1271      -3.274     0.001        **      (-0.6656, -0.167)
+            events_Labor Day-1     -0.1837   0.1271      -1.445     0.149               (-0.4329, 0.06562)
+            events_Labor Day-2    -0.07267   0.1269     -0.5724     0.567                (-0.3216, 0.1763)
+            events_Labor Day+1      -0.277   0.1271       -2.18     0.029         *    (-0.5262, -0.02779)
+            events_Labor Day+2      -0.235   0.1267      -1.855     0.064         .     (-0.4833, 0.01337)
+           events_Memorial Day     -0.4612   0.1796      -2.568     0.010         *     (-0.8132, -0.1091)
+         events_Memorial Day-1      -0.301   0.1796      -1.676     0.094         .     (-0.6532, 0.05121)
+         events_Memorial Day-2      -0.148   0.1792     -0.8256     0.409                (-0.4994, 0.2034)
+         events_Memorial Day+1     -0.1603   0.1797      -0.892     0.372                (-0.5127, 0.1921)
+         events_Memorial Day+2      0.1395   0.1796      0.7766     0.437                (-0.2126, 0.4916)
+          events_New Years Day     -0.2591   0.1816      -1.427     0.154               (-0.6153, 0.09702)
+        events_New Years Day-1    -0.03097   0.1838     -0.1685     0.866                (-0.3913, 0.3294)
+        events_New Years Day-2       0.167   0.1832      0.9118     0.362                (-0.1922, 0.5262)
+        events_New Years Day+1       0.136   0.1799      0.7562     0.450                (-0.2167, 0.4888)
+        events_New Years Day+2      0.2755   0.1765       1.561     0.119               (-0.07063, 0.6215)
+                  events_Other     0.02386  0.03079      0.7749     0.438              (-0.03651, 0.08422)
+                events_Other-1     0.01416  0.03051      0.4639     0.643              (-0.04567, 0.07398)
+                events_Other-2     0.02948  0.03013      0.9783     0.328               (-0.0296, 0.08856)
+                events_Other+1     0.01943  0.03087      0.6294     0.529               (-0.0411, 0.07996)
+                events_Other+2     0.01132  0.03051      0.3709     0.711               (-0.0485, 0.07114)
+           events_Thanksgiving     -0.3773   0.1792      -2.106     0.035         *    (-0.7286, -0.02604)
+         events_Thanksgiving-1     -0.5793   0.1789      -3.238     0.001        **     (-0.9301, -0.2284)
+         events_Thanksgiving-2     -0.4208   0.1784      -2.358     0.018         *    (-0.7707, -0.07092)
+         events_Thanksgiving+1     -0.2711   0.1791      -1.513     0.130               (-0.6223, 0.08022)
+         events_Thanksgiving+2     -0.3666   0.1788       -2.05     0.040         *    (-0.7171, -0.01603)
+           events_Veterans Day      0.1038   0.1845      0.5625     0.574                 (-0.258, 0.4656)
+         events_Veterans Day-1   -0.001774   0.1842   -0.009632     0.992                 (-0.363, 0.3595)
+         events_Veterans Day-2    -0.01661   0.1836    -0.09047     0.928                (-0.3767, 0.3435)
+         events_Veterans Day+1     0.09016   0.1842      0.4895     0.625                 (-0.271, 0.4514)
+         events_Veterans Day+2     0.01071   0.1832     0.05844     0.953                  (-0.3486, 0.37)
+                 str_dow_2-Tue       1.002  0.04408       22.74    &lt;2e-16       ***        (0.9158, 1.089)
+                 str_dow_3-Wed      0.9049  0.04261       21.24    &lt;2e-16       ***       (0.8213, 0.9884)
+                 str_dow_4-Thu      0.8686  0.04135       21.01    &lt;2e-16       ***       (0.7875, 0.9497)
+                 str_dow_5-Fri      0.8286  0.04163        19.9    &lt;2e-16       ***       (0.7469, 0.9102)
+                 str_dow_6-Sat      0.8214  0.04411       18.62    &lt;2e-16       ***       (0.7349, 0.9079)
+                 str_dow_7-Sun       1.094  0.04764       22.97    &lt;2e-16       ***         (1.001, 1.188)
+                           ct1      0.1554   0.3891      0.3994     0.690                (-0.6076, 0.9184)
+                is_weekend:ct1    -0.01336   0.2944    -0.04538     0.964                (-0.5906, 0.5639)
+             str_dow_2-Tue:ct1      0.3689   0.7287      0.5062     0.613                   (-1.06, 1.798)
+             str_dow_3-Wed:ct1     -0.1668   0.6143     -0.2715     0.786                  (-1.371, 1.038)
+             str_dow_4-Thu:ct1      0.9509   0.5809       1.637     0.102                  (-0.1882, 2.09)
+             str_dow_5-Fri:ct1      0.1706    0.591      0.2887     0.773                  (-0.9883, 1.33)
+             str_dow_6-Sat:ct1       0.495   0.6581      0.7521     0.452                 (-0.7955, 1.785)
+             str_dow_7-Sun:ct1     -0.5083   0.7318     -0.6946     0.487                 (-1.943, 0.9266)
+             cp0_2008_03_31_00      -0.333   0.6342      -0.525     0.600                 (-1.577, 0.9107)
+  is_weekend:cp0_2008_03_31_00      0.1576   0.4746       0.332     0.740                 (-0.7729, 1.088)
+ str_dow_2-Tue...2008_03_31_00     -0.2966    1.187     -0.2499     0.803                  (-2.624, 2.031)
+ str_dow_3-Wed...2008_03_31_00      0.0642      1.0      0.0642     0.949                  (-1.897, 2.025)
+ str_dow_4-Thu...2008_03_31_00      -1.005    0.942      -1.066     0.286                 (-2.852, 0.8425)
+ str_dow_5-Fri...2008_03_31_00     -0.2415   0.9556     -0.2527     0.800                  (-2.115, 1.632)
+ str_dow_6-Sat...2008_03_31_00     -0.4206    1.061     -0.3963     0.692                  (-2.502, 1.661)
+ str_dow_7-Sun...2008_03_31_00      0.5782    1.179      0.4903     0.624                  (-1.734, 2.891)
+             cp1_2008_07_21_00      -1.591    0.568      -2.801     0.005        **      (-2.705, -0.4774)
+  is_weekend:cp1_2008_07_21_00     -0.5196   0.4148      -1.253     0.210                 (-1.333, 0.2936)
+ str_dow_2-Tue...2008_07_21_00     -0.2746    1.054     -0.2607     0.794                  (-2.341, 1.791)
+ str_dow_3-Wed...2008_07_21_00     -0.2399   0.8864     -0.2706     0.787                  (-1.978, 1.498)
+ str_dow_4-Thu...2008_07_21_00     -0.7269   0.8315     -0.8743     0.382                 (-2.357, 0.9034)
+ str_dow_5-Fri...2008_07_21_00    -0.09668   0.8389     -0.1152     0.908                  (-1.742, 1.548)
+ str_dow_6-Sat...2008_07_21_00      -0.848   0.9286     -0.9132     0.361                 (-2.669, 0.9729)
+ str_dow_7-Sun...2008_07_21_00      0.3284    1.031      0.3184     0.750                  (-1.694, 2.351)
+             cp2_2008_11_10_00       2.579   0.5388       4.787  1.78e-06       ***         (1.523, 3.636)
+  is_weekend:cp2_2008_11_10_00      0.5237   0.3953       1.325     0.185                 (-0.2514, 1.299)
+ str_dow_2-Tue...2008_11_10_00      0.2098     1.01      0.2078     0.835                   (-1.77, 2.189)
+ str_dow_3-Wed...2008_11_10_00      0.5668   0.8478      0.6685     0.504                  (-1.096, 2.229)
+ str_dow_4-Thu...2008_11_10_00       1.303   0.7943       1.641     0.101                  (-0.254, 2.861)
+ str_dow_5-Fri...2008_11_10_00      0.3521   0.7996      0.4404     0.660                   (-1.216, 1.92)
+ str_dow_6-Sat...2008_11_10_00       1.189   0.8853       1.343     0.179                 (-0.5467, 2.925)
+ str_dow_7-Sun...2008_11_10_00     -0.6655   0.9845      -0.676     0.499                  (-2.596, 1.265)
+             cp3_2009_03_09_00      0.6437   0.5423       1.187     0.235                 (-0.4196, 1.707)
+  is_weekend:cp3_2009_03_09_00     0.08232   0.3941      0.2089     0.835                (-0.6905, 0.8551)
+ str_dow_2-Tue...2009_03_09_00      0.2911    1.005      0.2897     0.772                  (-1.679, 2.261)
+ str_dow_3-Wed...2009_03_09_00     0.09328   0.8426      0.1107     0.912                  (-1.559, 1.746)
+ str_dow_4-Thu...2009_03_09_00     -0.2645   0.7897     -0.3349     0.738                  (-1.813, 1.284)
+ str_dow_5-Fri...2009_03_09_00     0.02111   0.7965     0.02651     0.979                  (-1.541, 1.583)
+ str_dow_6-Sat...2009_03_09_00     -0.1478   0.8821     -0.1675     0.867                  (-1.877, 1.582)
+ str_dow_7-Sun...2009_03_09_00      0.2301    0.981      0.2346     0.815                  (-1.693, 2.154)
+             cp4_2009_06_29_00      -1.325   0.5572      -2.378     0.017         *      (-2.418, -0.2326)
+  is_weekend:cp4_2009_06_29_00     -0.1924   0.4069     -0.4728     0.636                (-0.9902, 0.6054)
+ str_dow_2-Tue...2009_06_29_00     -0.5152    1.037     -0.4968     0.619                  (-2.549, 1.518)
+ str_dow_3-Wed...2009_06_29_00     -0.3763    0.869      -0.433     0.665                   (-2.08, 1.328)
+ str_dow_4-Thu...2009_06_29_00     -0.7946   0.8153     -0.9747     0.330                 (-2.393, 0.8039)
+ str_dow_5-Fri...2009_06_29_00     -0.3814   0.8233     -0.4632     0.643                  (-1.996, 1.233)
+ str_dow_6-Sat...2009_06_29_00     -0.4522   0.9118     -0.4959     0.620                   (-2.24, 1.336)
+ str_dow_7-Sun...2009_06_29_00      0.2598    1.014      0.2563     0.798                  (-1.728, 2.247)
+             cp5_2009_10_19_00      0.6683   0.5376       1.243     0.214                 (-0.3858, 1.722)
+  is_weekend:cp5_2009_10_19_00      0.2577   0.3937      0.6547     0.513                  (-0.5142, 1.03)
+ str_dow_2-Tue...2009_10_19_00      0.2515    1.005      0.2502     0.802                   (-1.72, 2.223)
+ str_dow_3-Wed...2009_10_19_00      0.2739   0.8426       0.325     0.745                  (-1.378, 1.926)
+ str_dow_4-Thu...2009_10_19_00      0.7569   0.7895      0.9586     0.338                 (-0.7913, 2.305)
+ str_dow_5-Fri...2009_10_19_00      0.4952   0.7972      0.6212     0.535                  (-1.068, 2.058)
+ str_dow_6-Sat...2009_10_19_00      0.3811   0.8823       0.432     0.666                  (-1.349, 2.111)
+ str_dow_7-Sun...2009_10_19_00     -0.1234   0.9808     -0.1258     0.900                    (-2.046, 1.8)
+             cp6_2010_02_15_00      -2.492   0.5437      -4.583  4.78e-06       ***       (-3.558, -1.426)
+  is_weekend:cp6_2010_02_15_00     -0.7808   0.3941      -1.981     0.048         *    (-1.554, -0.008086)
+ str_dow_2-Tue...2010_02_15_00      0.2566    1.005      0.2554     0.798                  (-1.713, 2.226)
+ str_dow_3-Wed...2010_02_15_00     -0.7126   0.8419     -0.8464     0.397                 (-2.363, 0.9383)
+ str_dow_4-Thu...2010_02_15_00      0.2321   0.7887      0.2943     0.769                  (-1.314, 1.779)
+ str_dow_5-Fri...2010_02_15_00     -0.5189    0.797      -0.651     0.515                  (-2.082, 1.044)
+ str_dow_6-Sat...2010_02_15_00     -0.2342   0.8829     -0.2653     0.791                  (-1.966, 1.497)
+ str_dow_7-Sun...2010_02_15_00     -0.5466   0.9816     -0.5568     0.578                  (-2.471, 1.378)
+             cp7_2010_06_07_00       3.475   0.5579        6.23  5.38e-10       ***         (2.382, 4.569)
+  is_weekend:cp7_2010_06_07_00      0.9238   0.4056       2.278     0.023         *        (0.1285, 1.719)
+ str_dow_2-Tue...2010_06_07_00     -0.2091    1.034     -0.2023     0.840                  (-2.236, 1.818)
+ str_dow_3-Wed...2010_06_07_00      0.7359   0.8661      0.8497     0.396                 (-0.9623, 2.434)
+ str_dow_4-Thu...2010_06_07_00     -0.9714   0.8102      -1.199     0.231                  (-2.56, 0.6172)
+ str_dow_5-Fri...2010_06_07_00      0.2832   0.8188      0.3459     0.729                  (-1.322, 1.889)
+ str_dow_6-Sat...2010_06_07_00     -0.1768   0.9085     -0.1946     0.846                  (-1.958, 1.605)
+ str_dow_7-Sun...2010_06_07_00       1.101     1.01        1.09     0.276                 (-0.8794, 3.081)
+             cp8_2010_09_27_00      -2.983   0.5291      -5.637  1.91e-08       ***        (-4.02, -1.945)
+  is_weekend:cp8_2010_09_27_00     -0.7492   0.3755      -1.995     0.046         *     (-1.486, -0.01287)
+ str_dow_2-Tue...2010_09_27_00     -0.5475   0.9551     -0.5732     0.567                   (-2.42, 1.325)
+ str_dow_3-Wed...2010_09_27_00     -0.1521   0.8012     -0.1899     0.849                  (-1.723, 1.419)
+ str_dow_4-Thu...2010_09_27_00      0.6158    0.749      0.8221     0.411                 (-0.8529, 2.084)
+ str_dow_5-Fri...2010_09_27_00     -0.1949   0.7561     -0.2577     0.797                  (-1.678, 1.288)
+ str_dow_6-Sat...2010_09_27_00      0.3513   0.8384      0.4191     0.675                  (-1.293, 1.995)
+ str_dow_7-Sun...2010_09_27_00      -1.101   0.9316      -1.181     0.238                  (-2.927, 0.726)
+             cp9_2011_01_24_00       1.761   0.3795       4.641  3.63e-06       ***         (1.017, 2.505)
+  is_weekend:cp9_2011_01_24_00      0.5123   0.2603       1.968     0.049         *      (0.001859, 1.023)
+ str_dow_2-Tue...2011_01_24_00      0.6883     0.66       1.043     0.297                 (-0.6058, 1.982)
+ str_dow_3-Wed...2011_01_24_00      -0.151   0.5533      -0.273     0.785                 (-1.236, 0.9339)
+ str_dow_4-Thu...2011_01_24_00      0.0611   0.5175      0.1181     0.906                 (-0.9535, 1.076)
+ str_dow_5-Fri...2011_01_24_00      0.1576   0.5228      0.3014     0.763                 (-0.8675, 1.183)
+ str_dow_6-Sat...2011_01_24_00    -0.02638   0.5798    -0.04551     0.964                   (-1.163, 1.11)
+ str_dow_7-Sun...2011_01_24_00      0.5387   0.6444      0.8359     0.403                  (-0.725, 1.802)
+            cp10_2011_09_05_00     0.06712   0.3807      0.1763     0.860                (-0.6794, 0.8137)
+ is_weekend:cp10_2011_09_05_00     -0.4102   0.2593      -1.582     0.114               (-0.9186, 0.09819)
+ str_dow_2-Tue...2011_09_05_00     -0.5147   0.6567     -0.7838     0.433                 (-1.802, 0.7729)
+ str_dow_3-Wed...2011_09_05_00      0.5384   0.5501      0.9787     0.328                 (-0.5403, 1.617)
+ str_dow_4-Thu...2011_09_05_00     -0.3721   0.5131     -0.7251     0.468                  (-1.378, 0.634)
+ str_dow_5-Fri...2011_09_05_00     -0.2661   0.5188     -0.5129     0.608                 (-1.283, 0.7511)
+ str_dow_6-Sat...2011_09_05_00     -0.2636   0.5764     -0.4574     0.647                 (-1.394, 0.8665)
+ str_dow_7-Sun...2011_09_05_00     -0.1466   0.6407     -0.2287     0.819                   (-1.403, 1.11)
+            cp11_2012_01_02_00      0.2609   0.4943      0.5279     0.598                  (-0.7083, 1.23)
+ is_weekend:cp11_2012_01_02_00      0.5926   0.3457       1.714     0.087         .       (-0.08524, 1.27)
+ str_dow_2-Tue...2012_01_02_00      0.5446   0.8775      0.6206     0.535                  (-1.176, 2.265)
+ str_dow_3-Wed...2012_01_02_00     -0.4578   0.7337     -0.6239     0.533                 (-1.896, 0.9809)
+ str_dow_4-Thu...2012_01_02_00      0.4562   0.6852      0.6657     0.506                   (-0.8874, 1.8)
+ str_dow_5-Fri...2012_01_02_00      0.8303    0.694       1.196     0.232                 (-0.5305, 2.191)
+ str_dow_6-Sat...2012_01_02_00      0.4137     0.77      0.5373     0.591                  (-1.096, 1.924)
+ str_dow_7-Sun...2012_01_02_00      0.1788   0.8558       0.209     0.834                  (-1.499, 1.857)
+            cp12_2012_04_23_00      -1.739   0.3024      -5.749  9.96e-09       ***       (-2.332, -1.146)
+ is_weekend:cp12_2012_04_23_00     -0.5253   0.2196      -2.392     0.017         *    (-0.9559, -0.09478)
+ str_dow_2-Tue...2012_04_23_00     -0.3272   0.5596     -0.5847     0.559                   (-1.424, 0.77)
+ str_dow_3-Wed...2012_04_23_00      -0.208   0.4682     -0.4443     0.657                   (-1.126, 0.71)
+ str_dow_4-Thu...2012_04_23_00     -0.3363   0.4381     -0.7675     0.443                 (-1.195, 0.5228)
+ str_dow_5-Fri...2012_04_23_00     -0.7735    0.443      -1.746     0.081         .      (-1.642, 0.09508)
+ str_dow_6-Sat...2012_04_23_00     -0.3818   0.4905     -0.7783     0.436                   (-1.344, 0.58)
+ str_dow_7-Sun...2012_04_23_00     -0.1435   0.5454     -0.2632     0.792                 (-1.213, 0.9259)
+            cp13_2013_04_01_00       1.435   0.1341        10.7    &lt;2e-16       ***         (1.172, 1.698)
+ is_weekend:cp13_2013_04_01_00      0.1524   0.1027       1.483     0.138               (-0.04908, 0.3538)
+ str_dow_2-Tue...2013_04_01_00      0.0144   0.2633      0.0547     0.956                (-0.5019, 0.5308)
+ str_dow_3-Wed...2013_04_01_00      0.3933   0.2206       1.783     0.075         .     (-0.03926, 0.8259)
+ str_dow_4-Thu...2013_04_01_00      0.1325   0.2067      0.6407     0.522                (-0.2729, 0.5379)
+ str_dow_5-Fri...2013_04_01_00      0.2073   0.2083      0.9951     0.320                (-0.2012, 0.6157)
+ str_dow_6-Sat...2013_04_01_00      0.2494   0.2304       1.082     0.279                (-0.2024, 0.7011)
+ str_dow_7-Sun...2013_04_01_00      -0.097   0.2565     -0.3782     0.705                    (-0.6, 0.406)
+            cp14_2013_11_11_00     -0.9381  0.09501      -9.873    &lt;2e-16       ***      (-1.124, -0.7518)
+ is_weekend:cp14_2013_11_11_00    -0.09984  0.07313      -1.365     0.172               (-0.2432, 0.04356)
+ str_dow_2-Tue...2013_11_11_00     0.06623   0.1872      0.3538     0.723                (-0.3008, 0.4333)
+ str_dow_3-Wed...2013_11_11_00     -0.2766   0.1567      -1.765     0.078         .      (-0.584, 0.03072)
+ str_dow_4-Thu...2013_11_11_00    -0.07421    0.147     -0.5048     0.614                 (-0.3625, 0.214)
+ str_dow_5-Fri...2013_11_11_00    -0.07512   0.1482     -0.5067     0.612                (-0.3658, 0.2156)
+ str_dow_6-Sat...2013_11_11_00      -0.208    0.164      -1.268     0.205                (-0.5296, 0.1137)
+ str_dow_7-Sun...2013_11_11_00      0.1081   0.1826      0.5923     0.554                (-0.2499, 0.4662)
+           ct1:sin1_tow_weekly      0.3792   0.3816      0.9937     0.320                 (-0.3691, 1.127)
+           ct1:cos1_tow_weekly      -2.325   0.5154      -4.512  6.69e-06       ***       (-3.336, -1.315)
+           ct1:sin2_tow_weekly      0.5323   0.4243       1.254     0.210                 (-0.2997, 1.364)
+           ct1:cos2_tow_weekly     -0.7202   0.4713      -1.528     0.127                 (-1.644, 0.2039)
+ cp0_2008_03_3...n1_tow_weekly     -0.5424   0.6183     -0.8772     0.380                   (-1.755, 0.67)
+ cp0_2008_03_3...s1_tow_weekly       2.366   0.8402       2.816     0.005        **        (0.7182, 4.013)
+ cp0_2008_03_3...n2_tow_weekly     -0.4666   0.6858     -0.6803     0.496                 (-1.811, 0.8781)
+ cp0_2008_03_3...s2_tow_weekly      0.4695   0.7686      0.6109     0.541                  (-1.038, 1.977)
+ cp1_2008_07_2...n1_tow_weekly     -0.1521   0.5436     -0.2797     0.780                 (-1.218, 0.9139)
+ cp1_2008_07_2...s1_tow_weekly       1.284    0.746       1.722     0.085         .       (-0.1784, 2.747)
+ cp1_2008_07_2...n2_tow_weekly      -0.359   0.6021     -0.5962     0.551                  (-1.54, 0.8216)
+ cp1_2008_07_2...s2_tow_weekly      0.7213   0.6832       1.056     0.291                 (-0.6184, 2.061)
+ cp2_2008_11_1...n1_tow_weekly      0.4902   0.5185      0.9455     0.345                 (-0.5265, 1.507)
+ cp2_2008_11_1...s1_tow_weekly      -2.543   0.7128      -3.567  3.67e-04       ***        (-3.94, -1.145)
+ cp2_2008_11_1...n2_tow_weekly      0.3797   0.5745      0.6609     0.509                 (-0.7468, 1.506)
+ cp2_2008_11_1...s2_tow_weekly     -0.8249   0.6535      -1.262     0.207                 (-2.106, 0.4565)
+ cp3_2009_03_0...n1_tow_weekly      0.1588   0.5154       0.308     0.758                 (-0.8519, 1.169)
+ cp3_2009_03_0...s1_tow_weekly      0.9767   0.7099       1.376     0.169                 (-0.4154, 2.369)
+ cp3_2009_03_0...n2_tow_weekly      0.1781   0.5702      0.3124     0.755                 (-0.9399, 1.296)
+ cp3_2009_03_0...s2_tow_weekly      0.2018     0.65      0.3104     0.756                  (-1.073, 1.476)
+ cp4_2009_06_2...n1_tow_weekly     -0.7113    0.532      -1.337     0.181                 (-1.754, 0.3318)
+ cp4_2009_06_2...s1_tow_weekly       2.019   0.7333       2.754     0.006        **        (0.5815, 3.457)
+ cp4_2009_06_2...n2_tow_weekly     -0.4653   0.5883     -0.7909     0.429                 (-1.619, 0.6883)
+ cp4_2009_06_2...s2_tow_weekly       1.005   0.6711       1.497     0.134                 (-0.3111, 2.321)
+ cp5_2009_10_1...n1_tow_weekly      0.3021   0.5156      0.5858     0.558                  (-0.709, 1.313)
+ cp5_2009_10_1...s1_tow_weekly      -2.561     0.71      -3.606  3.16e-04       ***       (-3.953, -1.168)
+ cp5_2009_10_1...n2_tow_weekly      0.2074   0.5699      0.3639     0.716                 (-0.9101, 1.325)
+ cp5_2009_10_1...s2_tow_weekly      -1.205   0.6496      -1.855     0.064         .      (-2.478, 0.06889)
+ cp6_2010_02_1...n1_tow_weekly      0.4875   0.5163      0.9441     0.345                    (-0.525, 1.5)
+ cp6_2010_02_1...s1_tow_weekly     -0.6803   0.7108     -0.9571     0.339                 (-2.074, 0.7134)
+ cp6_2010_02_1...n2_tow_weekly      0.4034   0.5695      0.7083     0.479                  (-0.7133, 1.52)
+ cp6_2010_02_1...s2_tow_weekly     -0.2296   0.6484     -0.3542     0.723                  (-1.501, 1.042)
+ cp7_2010_06_0...n1_tow_weekly     -0.6785   0.5317      -1.276     0.202                  (-1.721, 0.364)
+ cp7_2010_06_0...s1_tow_weekly       3.765   0.7312       5.148  2.81e-07       ***         (2.331, 5.198)
+ cp7_2010_06_0...n2_tow_weekly      -0.692    0.587      -1.179     0.239                 (-1.843, 0.4591)
+ cp7_2010_06_0...s2_tow_weekly       1.582   0.6689       2.365     0.018         *        (0.2703, 2.894)
+ cp8_2010_09_2...n1_tow_weekly      0.2933   0.4914      0.5969     0.551                 (-0.6703, 1.257)
+ cp8_2010_09_2...s1_tow_weekly      -3.406   0.6756      -5.041  4.93e-07       ***       (-4.731, -2.081)
+ cp8_2010_09_2...n2_tow_weekly      0.1239   0.5433      0.2281     0.820                 (-0.9413, 1.189)
+ cp8_2010_09_2...s2_tow_weekly      -1.505   0.6199      -2.428     0.015         *      (-2.721, -0.2896)
+ cp9_2011_01_2...n1_tow_weekly    -0.04636   0.3398     -0.1364     0.891                (-0.7126, 0.6199)
+ cp9_2011_01_2...s1_tow_weekly         1.1   0.4675       2.354     0.019         *        (0.1837, 2.017)
+ cp9_2011_01_2...n2_tow_weekly      0.2755   0.3751      0.7343     0.463                 (-0.4601, 1.011)
+ cp9_2011_01_2...s2_tow_weekly       0.516   0.4289       1.203     0.229                 (-0.3249, 1.357)
+ cp10_2011_09_...n1_tow_weekly      0.4481   0.3389       1.322     0.186                 (-0.2163, 1.113)
+ cp10_2011_09_...s1_tow_weekly       1.193   0.4659       2.561     0.010         *        (0.2797, 2.107)
+ cp10_2011_09_...n2_tow_weekly      -0.624   0.3739      -1.669     0.095         .       (-1.357, 0.1091)
+ cp10_2011_09_...s2_tow_weekly      0.5935   0.4272       1.389     0.165                 (-0.2441, 1.431)
+ cp11_2012_01_...n1_tow_weekly      -0.726    0.453      -1.603     0.109                 (-1.614, 0.1623)
+ cp11_2012_01_...s1_tow_weekly      -2.403   0.6225       -3.86  1.16e-04       ***       (-3.624, -1.182)
+ cp11_2012_01_...n2_tow_weekly       1.027   0.4987        2.06     0.040         *       (0.04933, 2.005)
+ cp11_2012_01_...s2_tow_weekly      -1.024   0.5684      -1.802     0.072         .      (-2.139, 0.09052)
+ cp12_2012_04_...n1_tow_weekly      0.2155   0.2882      0.7477     0.455                (-0.3496, 0.7806)
+ cp12_2012_04_...s1_tow_weekly       1.269   0.3965       3.201     0.001        **        (0.4919, 2.047)
+ cp12_2012_04_...n2_tow_weekly     -0.5963   0.3174      -1.878     0.060         .      (-1.219, 0.02614)
+ cp12_2012_04_...s2_tow_weekly       0.376   0.3618       1.039     0.299                 (-0.3335, 1.085)
+ cp13_2013_04_...n1_tow_weekly       0.195   0.1346       1.449     0.147               (-0.06884, 0.4589)
+ cp13_2013_04_...s1_tow_weekly     0.03445   0.1856      0.1856     0.853                (-0.3295, 0.3984)
+ cp13_2013_04_...n2_tow_weekly      0.1046   0.1493      0.7008     0.483                (-0.1881, 0.3973)
+ cp13_2013_04_...s2_tow_weekly      0.1862   0.1701       1.094     0.274                (-0.1474, 0.5198)
+ cp14_2013_11_...n1_tow_weekly     -0.0993   0.0958      -1.037     0.300               (-0.2871, 0.08854)
+ cp14_2013_11_...s1_tow_weekly     -0.1274   0.1322     -0.9637     0.335                (-0.3866, 0.1318)
+ cp14_2013_11_...n2_tow_weekly     -0.0118   0.1068     -0.1104     0.912                (-0.2212, 0.1976)
+ cp14_2013_11_...s2_tow_weekly     -0.1738   0.1216      -1.429     0.153               (-0.4122, 0.06462)
+               sin1_tow_weekly     0.02686  0.09169      0.2929     0.770                (-0.1529, 0.2066)
+               cos1_tow_weekly      0.9407   0.0975       9.648    &lt;2e-16       ***        (0.7495, 1.132)
+               sin2_tow_weekly     -0.1572  0.09151      -1.717     0.086         .     (-0.3366, 0.02229)
+               cos2_tow_weekly      0.5831  0.09699       6.012  2.08e-09       ***       (0.3929, 0.7733)
+               sin3_tow_weekly    -0.06616  0.05121      -1.292     0.197               (-0.1666, 0.03426)
+               cos3_tow_weekly      0.3565  0.09752       3.655  2.62e-04       ***       (0.1653, 0.5477)
+               sin4_tow_weekly     0.06616  0.05121       1.292     0.197               (-0.03426, 0.1666)
+            sin4_toq_quarterly   -0.001364  0.01278     -0.1067     0.915               (-0.02643, 0.0237)
+            cos4_toq_quarterly    -0.03956  0.01317      -3.003     0.003        **   (-0.06538, -0.01373)
+            sin5_toq_quarterly    -0.03847  0.01308       -2.94     0.003        **   (-0.06413, -0.01281)
+            cos5_toq_quarterly     0.01843    0.013       1.418     0.156             (-0.007061, 0.04392)
+               sin1_ct1_yearly     -0.1039  0.01785       -5.82  6.55e-09       ***    (-0.1389, -0.06891)
+               cos1_ct1_yearly      0.7448  0.01786       41.71    &lt;2e-16       ***       (0.7098, 0.7798)
+               sin2_ct1_yearly     0.05778  0.01407       4.107  4.13e-05       ***     (0.03019, 0.08536)
+               cos2_ct1_yearly    -0.09103  0.01374      -6.624  4.19e-11       ***     (-0.118, -0.06408)
+               sin3_ct1_yearly      0.2557  0.01404       18.21    &lt;2e-16       ***       (0.2281, 0.2832)
+               cos3_ct1_yearly    -0.04562  0.01329      -3.434  6.04e-04       ***   (-0.07167, -0.01957)
+               sin4_ct1_yearly    0.002281  0.01382       0.165     0.869              (-0.02481, 0.02938)
+               cos4_ct1_yearly     -0.1079  0.01257      -8.586    &lt;2e-16       ***    (-0.1326, -0.08328)
+               sin5_ct1_yearly     -0.0986  0.01384      -7.124  1.33e-12       ***    (-0.1257, -0.07146)
+               cos5_ct1_yearly    -0.01683  0.01258      -1.338     0.181               (-0.0415, 0.00784)
+               sin6_ct1_yearly     -0.1224  0.01374      -8.915    &lt;2e-16       ***    (-0.1494, -0.09551)
+               cos6_ct1_yearly     -0.0284  0.01307      -2.173     0.030         *   (-0.05404, -0.00277)
+               sin7_ct1_yearly    -0.05325   0.0134      -3.973  7.28e-05       ***   (-0.07954, -0.02697)
+               cos7_ct1_yearly      0.0443  0.01292        3.43  6.13e-04       ***     (0.01897, 0.06963)
+               sin8_ct1_yearly     0.03441  0.01306       2.635     0.008        **    (0.008801, 0.06003)
+               cos8_ct1_yearly       0.109  0.01368        7.97  2.30e-15       ***      (0.08218, 0.1358)
+               sin9_ct1_yearly     0.00404  0.01309      0.3086     0.758              (-0.02163, 0.02971)
+               cos9_ct1_yearly    -0.03015   0.0138      -2.184     0.029         *  (-0.05721, -0.003087)
+              sin10_ct1_yearly    -0.07483  0.01313      -5.697  1.34e-08       ***    (-0.1006, -0.04908)
+              cos10_ct1_yearly    -0.06755  0.01321      -5.113  3.38e-07       ***   (-0.09346, -0.04165)
+              sin11_ct1_yearly    -0.01947  0.01295      -1.503     0.133             (-0.04486, 0.005923)
+              cos11_ct1_yearly    -0.01627   0.0133      -1.223     0.221             (-0.04235, 0.009815)
+              sin12_ct1_yearly    -0.01882  0.01326      -1.419     0.156             (-0.04482, 0.007181)
+              cos12_ct1_yearly     0.01106  0.01332      0.8307     0.406              (-0.01505, 0.03718)
+              sin13_ct1_yearly   -0.009467   0.0127     -0.7456     0.456              (-0.03437, 0.01543)
+              cos13_ct1_yearly     0.04859   0.0136       3.572  3.60e-04       ***     (0.02192, 0.07526)
+              sin14_ct1_yearly      0.0374    0.013       2.877     0.004        **     (0.01191, 0.06289)
+              cos14_ct1_yearly    -0.01769  0.01355      -1.305     0.192             (-0.04426, 0.008881)
+              sin15_ct1_yearly     0.02422  0.01319       1.837     0.066         .   (-0.001634, 0.05008)
+              cos15_ct1_yearly    -0.03025  0.01316      -2.299     0.022         *  (-0.05605, -0.004455)
+Signif. Code: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Multiple R-squared: 0.7215,   Adjusted R-squared: 0.7008
+F-statistic: 34.856 on 205 and 2757 DF,   p-value: 1.110e-16
+Model AIC: 19344.0,   model BIC: 20579.0
+
+WARNING: the condition number is large, 2.04e+19. This might indicate that there are strong multicollinearity or other numerical problems.
+</pre></div>
+</div>
+<p>The model summary provides useful insights:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>We can check the <code class="docutils literal notranslate"><span class="pre">sig.</span> <span class="pre">code</span></code> column to see which features are not significant.
+For example, the “Independence Day” events are not significant,
+therefore we could consider removing them from the model.</p></li>
+<li><p>We can check the effect of each feature by examing the confidence interval.
+For example, the Christmas day has a negative effect of -0.57, with a confidence interval
+of -0.93 to -0.22. The changepoint at 2010-02-15 changes the slope by -2.52, with a
+confidence interval of -3.60 to -1.44.</p></li>
+</ol>
+</div></blockquote>
+<p>For linear regression, the results are the
+same as the regular regression summary in R (the <code class="docutils literal notranslate"><span class="pre">lm</span></code> function).
+The usual considerations apply when interpreting the results:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>High feature correlation can increase the coefficient variance.
+This is common in forecasting problems, so we recommend regularized models.</p></li>
+<li><p>There is no standard way to calculate confidence intervals and p-values for regularized
+linear models (ridge, lasso, elastic_net). We follow the approach in <a class="footnote-reference brackets" href="#id5" id="id3">1</a> for ridge
+inference and <a class="footnote-reference brackets" href="#id6" id="id4">2</a> for lasso inference.
+The ideas are to use bootstrap and sample-splitting, respectively.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>For ridge regression, the confidence intervals and p-values are based on biased estimators.
+This is a remedy for multicollinearity to produce better forecast, but could lower the true
+effect of the features.</p></li>
+<li><p>For lasso regression, the confidence intervals and p-values are based on a multi-sample-split
+procedure. While this approach of generating CIs is optimized for accuracy, they are calculated
+independently of the coefficient estimates and are not guaranteed to overlap with the estimates.
+It’s worth noting that the probability of a coefficient being nonzero is also reported in the column <code class="docutils literal notranslate"><span class="pre">Prob_nonzero</span></code>.
+This probability can be used to interpret the significance of the corresponding feature.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+<p>Moreover, if you would like to explore the numbers behind the printed summary,
+they are stored in the <code class="docutils literal notranslate"><span class="pre">info_dict</span></code> attribute, which is a python dictionary.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Prints the keys of the ``info_dict`` dictionary.</span>
+ <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">info_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;x&#39;, &#39;y&#39;, &#39;beta&#39;, &#39;ml_model&#39;, &#39;fit_algorithm&#39;, &#39;pred_cols&#39;, &#39;degenerate_index&#39;, &#39;n_sample&#39;, &#39;n_feature&#39;, &#39;nonzero_index&#39;, &#39;n_feature_nonzero&#39;, &#39;y_pred&#39;, &#39;y_mean&#39;, &#39;residual&#39;, &#39;residual_summary&#39;, &#39;model&#39;, &#39;x_nz&#39;, &#39;condition_number&#39;, &#39;xtwx_alphai_inv&#39;, &#39;reg_df&#39;, &#39;df_sse&#39;, &#39;df_ssr&#39;, &#39;df_sst&#39;, &#39;sse&#39;, &#39;mse&#39;, &#39;ssr&#39;, &#39;msr&#39;, &#39;sst&#39;, &#39;mst&#39;, &#39;beta_var_cov&#39;, &#39;coef_summary_df&#39;, &#39;significance_code_legend&#39;, &#39;f_value&#39;, &#39;f_p_value&#39;, &#39;r2&#39;, &#39;r2_adj&#39;, &#39;aic&#39;, &#39;bic&#39;, &#39;model_type&#39;])
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">155</span>
+<span class="normal">156</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># The above coefficient summary can be accessed as a pandas Dataframe.</span>
+ <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;coef_summary_df&quot;</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                              Pred_col  Estimate  Std. Err    t value  Pr(&gt;|t|) sig. code                                           95%CI
+0                                            Intercept  7.066659  0.078169  90.401751  0.000000       ***         (6.9133824235867865, 7.219935738745769)
+1    C(Q(&#39;events_Chinese New Year&#39;), levels=[&#39;&#39;, &#39;e...  0.081810  0.168197   0.486393  0.626727                (-0.24799503027014608, 0.4116149313408119)
+2    C(Q(&#39;events_Chinese New Year_minus_1&#39;), levels... -0.179094  0.183635  -0.975269  0.329512                (-0.5391702889215602, 0.18098279639290443)
+3    C(Q(&#39;events_Chinese New Year_minus_2&#39;), levels...  0.090297  0.147350   0.612804  0.540056                (-0.19863068851388294, 0.3792240680906452)
+4    C(Q(&#39;events_Chinese New Year_plus_1&#39;), levels=...  0.066370  0.183603   0.361486  0.717764                (-0.29364322940115845, 0.4263831627571038)
+..                                                 ...       ...       ...        ...       ...       ...                                             ...
+290                                   cos13_ct1_yearly  0.048587  0.013601   3.572256  0.000360       ***     (0.021917442256450027, 0.07525666578482627)
+291                                   sin14_ct1_yearly  0.037403  0.012999   2.877416  0.004040        **     (0.011914639733875122, 0.06289160052806296)
+292                                   cos14_ct1_yearly -0.017689  0.013551  -1.305410  0.191862              (-0.04425926911598778, 0.008881224866432638)
+293                                   sin15_ct1_yearly  0.024223  0.013187   1.836923  0.066329         .  (-0.0016338566614734207, 0.050079797527807376)
+294                                   cos15_ct1_yearly -0.030255  0.013158  -2.299410  0.021556         *  (-0.056054593219839285, -0.004454977893753747)
+
+[295 rows x 7 columns]
+</pre></div>
+</div>
+</div>
+<div class="section" id="selected-features-in-a-category">
+<h2>Selected features in a category<a class="headerlink" href="#selected-features-in-a-category" title="Permalink to this headline">¶</a></h2>
+<p>You may have noticed that there are too many features in the forecast model.
+It’s not easy to read all of them in the coefficient summary table.
+The model summary class is able to filter the categories of these features.
+This is done by the
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary.get_coef_summary" title="greykite.algo.common.model_summary.ModelSummary.get_coef_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_coef_summary</span></code></a>
+function.</p>
+<p>A few filters are available, including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_intercept</span></code>: intercept term.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_time_feature</span></code>: features defined in <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.common.features.timeseries_features.build_time_features_df" title="greykite.common.features.timeseries_features.build_time_features_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_time_features_df</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_event</span></code>: holidays and events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_trend</span></code>: trend features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_seasonality</span></code>: seasonality features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_lag</span></code>: autoregressive features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_regressor</span></code>: extra regressors provided by user.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_interaction</span></code>: interaction terms.</p></li>
+</ul>
+</div></blockquote>
+<p>All filters set to <code class="docutils literal notranslate"><span class="pre">True</span></code> will be joined with the logical operator <code class="docutils literal notranslate"><span class="pre">or</span></code>,
+while all filters set to <code class="docutils literal notranslate"><span class="pre">False</span></code> will be joined with the logical operator <code class="docutils literal notranslate"><span class="pre">and</span></code>.
+Simply speaking, set what you want to see to <code class="docutils literal notranslate"><span class="pre">True</span></code> and what you don’t want to see
+to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">is_interaction</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, this means as long as one feature in
+an interaction term belongs to a category set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the interaction term is included
+in the output. However, if one feature in an interaction term belongs to a category set to
+<code class="docutils literal notranslate"><span class="pre">False</span></code>, the interaction is excluded from the output.
+To hide interaction terms, set <code class="docutils literal notranslate"><span class="pre">is_interaction</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Displays intercept, trend features but not seasonality features.</span>
+ <span class="n">summary</span><span class="o">.</span><span class="n">get_coef_summary</span><span class="p">(</span>
+     <span class="n">is_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">is_trend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">is_seasonality</span><span class="o">=</span><span class="kc">False</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>           Pred_col  Estimate Std. Err   t value  Pr(&gt;|t|) sig. code                95%CI
+          Intercept     7.067  0.07817      90.4    &lt;2e-16       ***        (6.913, 7.22)
+                ct1    0.1554   0.3891    0.3994     0.690              (-0.6076, 0.9184)
+     is_weekend:ct1  -0.01336   0.2944  -0.04538     0.964              (-0.5906, 0.5639)
+  str_dow_2-Tue:ct1    0.3689   0.7287    0.5062     0.613                 (-1.06, 1.798)
+  str_dow_3-Wed:ct1   -0.1668   0.6143   -0.2715     0.786                (-1.371, 1.038)
+  str_dow_4-Thu:ct1    0.9509   0.5809     1.637     0.102                (-0.1882, 2.09)
+  str_dow_5-Fri:ct1    0.1706    0.591    0.2887     0.773                (-0.9883, 1.33)
+  str_dow_6-Sat:ct1     0.495   0.6581    0.7521     0.452               (-0.7955, 1.785)
+  str_dow_7-Sun:ct1   -0.5083   0.7318   -0.6946     0.487               (-1.943, 0.9266)
+  cp0_2008_03_31_00    -0.333   0.6342    -0.525     0.600               (-1.577, 0.9107)
+is_weeke...03_31_00    0.1576   0.4746     0.332     0.740               (-0.7729, 1.088)
+str_dow_...03_31_00   -0.2966    1.187   -0.2499     0.803                (-2.624, 2.031)
+str_dow_...03_31_00    0.0642      1.0    0.0642     0.949                (-1.897, 2.025)
+str_dow_...03_31_00    -1.005    0.942    -1.066     0.286               (-2.852, 0.8425)
+str_dow_...03_31_00   -0.2415   0.9556   -0.2527     0.800                (-2.115, 1.632)
+str_dow_...03_31_00   -0.4206    1.061   -0.3963     0.692                (-2.502, 1.661)
+str_dow_...03_31_00    0.5782    1.179    0.4903     0.624                (-1.734, 2.891)
+  cp1_2008_07_21_00    -1.591    0.568    -2.801     0.005        **    (-2.705, -0.4774)
+is_weeke...07_21_00   -0.5196   0.4148    -1.253     0.210               (-1.333, 0.2936)
+str_dow_...07_21_00   -0.2746    1.054   -0.2607     0.794                (-2.341, 1.791)
+str_dow_...07_21_00   -0.2399   0.8864   -0.2706     0.787                (-1.978, 1.498)
+str_dow_...07_21_00   -0.7269   0.8315   -0.8743     0.382               (-2.357, 0.9034)
+str_dow_...07_21_00  -0.09668   0.8389   -0.1152     0.908                (-1.742, 1.548)
+str_dow_...07_21_00    -0.848   0.9286   -0.9132     0.361               (-2.669, 0.9729)
+str_dow_...07_21_00    0.3284    1.031    0.3184     0.750                (-1.694, 2.351)
+  cp2_2008_11_10_00     2.579   0.5388     4.787  1.78e-06       ***       (1.523, 3.636)
+is_weeke...11_10_00    0.5237   0.3953     1.325     0.185               (-0.2514, 1.299)
+str_dow_...11_10_00    0.2098     1.01    0.2078     0.835                 (-1.77, 2.189)
+str_dow_...11_10_00    0.5668   0.8478    0.6685     0.504                (-1.096, 2.229)
+str_dow_...11_10_00     1.303   0.7943     1.641     0.101                (-0.254, 2.861)
+str_dow_...11_10_00    0.3521   0.7996    0.4404     0.660                 (-1.216, 1.92)
+str_dow_...11_10_00     1.189   0.8853     1.343     0.179               (-0.5467, 2.925)
+str_dow_...11_10_00   -0.6655   0.9845    -0.676     0.499                (-2.596, 1.265)
+  cp3_2009_03_09_00    0.6437   0.5423     1.187     0.235               (-0.4196, 1.707)
+is_weeke...03_09_00   0.08232   0.3941    0.2089     0.835              (-0.6905, 0.8551)
+str_dow_...03_09_00    0.2911    1.005    0.2897     0.772                (-1.679, 2.261)
+str_dow_...03_09_00   0.09328   0.8426    0.1107     0.912                (-1.559, 1.746)
+str_dow_...03_09_00   -0.2645   0.7897   -0.3349     0.738                (-1.813, 1.284)
+str_dow_...03_09_00   0.02111   0.7965   0.02651     0.979                (-1.541, 1.583)
+str_dow_...03_09_00   -0.1478   0.8821   -0.1675     0.867                (-1.877, 1.582)
+str_dow_...03_09_00    0.2301    0.981    0.2346     0.815                (-1.693, 2.154)
+  cp4_2009_06_29_00    -1.325   0.5572    -2.378     0.017         *    (-2.418, -0.2326)
+is_weeke...06_29_00   -0.1924   0.4069   -0.4728     0.636              (-0.9902, 0.6054)
+str_dow_...06_29_00   -0.5152    1.037   -0.4968     0.619                (-2.549, 1.518)
+str_dow_...06_29_00   -0.3763    0.869    -0.433     0.665                 (-2.08, 1.328)
+str_dow_...06_29_00   -0.7946   0.8153   -0.9747     0.330               (-2.393, 0.8039)
+str_dow_...06_29_00   -0.3814   0.8233   -0.4632     0.643                (-1.996, 1.233)
+str_dow_...06_29_00   -0.4522   0.9118   -0.4959     0.620                 (-2.24, 1.336)
+str_dow_...06_29_00    0.2598    1.014    0.2563     0.798                (-1.728, 2.247)
+  cp5_2009_10_19_00    0.6683   0.5376     1.243     0.214               (-0.3858, 1.722)
+is_weeke...10_19_00    0.2577   0.3937    0.6547     0.513                (-0.5142, 1.03)
+str_dow_...10_19_00    0.2515    1.005    0.2502     0.802                 (-1.72, 2.223)
+str_dow_...10_19_00    0.2739   0.8426     0.325     0.745                (-1.378, 1.926)
+str_dow_...10_19_00    0.7569   0.7895    0.9586     0.338               (-0.7913, 2.305)
+str_dow_...10_19_00    0.4952   0.7972    0.6212     0.535                (-1.068, 2.058)
+str_dow_...10_19_00    0.3811   0.8823     0.432     0.666                (-1.349, 2.111)
+str_dow_...10_19_00   -0.1234   0.9808   -0.1258     0.900                  (-2.046, 1.8)
+  cp6_2010_02_15_00    -2.492   0.5437    -4.583  4.78e-06       ***     (-3.558, -1.426)
+is_weeke...02_15_00   -0.7808   0.3941    -1.981     0.048         *  (-1.554, -0.008086)
+str_dow_...02_15_00    0.2566    1.005    0.2554     0.798                (-1.713, 2.226)
+str_dow_...02_15_00   -0.7126   0.8419   -0.8464     0.397               (-2.363, 0.9383)
+str_dow_...02_15_00    0.2321   0.7887    0.2943     0.769                (-1.314, 1.779)
+str_dow_...02_15_00   -0.5189    0.797    -0.651     0.515                (-2.082, 1.044)
+str_dow_...02_15_00   -0.2342   0.8829   -0.2653     0.791                (-1.966, 1.497)
+str_dow_...02_15_00   -0.5466   0.9816   -0.5568     0.578                (-2.471, 1.378)
+  cp7_2010_06_07_00     3.475   0.5579      6.23  5.38e-10       ***       (2.382, 4.569)
+is_weeke...06_07_00    0.9238   0.4056     2.278     0.023         *      (0.1285, 1.719)
+str_dow_...06_07_00   -0.2091    1.034   -0.2023     0.840                (-2.236, 1.818)
+str_dow_...06_07_00    0.7359   0.8661    0.8497     0.396               (-0.9623, 2.434)
+str_dow_...06_07_00   -0.9714   0.8102    -1.199     0.231                (-2.56, 0.6172)
+str_dow_...06_07_00    0.2832   0.8188    0.3459     0.729                (-1.322, 1.889)
+str_dow_...06_07_00   -0.1768   0.9085   -0.1946     0.846                (-1.958, 1.605)
+str_dow_...06_07_00     1.101     1.01      1.09     0.276               (-0.8794, 3.081)
+  cp8_2010_09_27_00    -2.983   0.5291    -5.637  1.91e-08       ***      (-4.02, -1.945)
+is_weeke...09_27_00   -0.7492   0.3755    -1.995     0.046         *   (-1.486, -0.01287)
+str_dow_...09_27_00   -0.5475   0.9551   -0.5732     0.567                 (-2.42, 1.325)
+str_dow_...09_27_00   -0.1521   0.8012   -0.1899     0.849                (-1.723, 1.419)
+str_dow_...09_27_00    0.6158    0.749    0.8221     0.411               (-0.8529, 2.084)
+str_dow_...09_27_00   -0.1949   0.7561   -0.2577     0.797                (-1.678, 1.288)
+str_dow_...09_27_00    0.3513   0.8384    0.4191     0.675                (-1.293, 1.995)
+str_dow_...09_27_00    -1.101   0.9316    -1.181     0.238                (-2.927, 0.726)
+  cp9_2011_01_24_00     1.761   0.3795     4.641  3.63e-06       ***       (1.017, 2.505)
+is_weeke...01_24_00    0.5123   0.2603     1.968     0.049         *    (0.001859, 1.023)
+str_dow_...01_24_00    0.6883     0.66     1.043     0.297               (-0.6058, 1.982)
+str_dow_...01_24_00    -0.151   0.5533    -0.273     0.785               (-1.236, 0.9339)
+str_dow_...01_24_00    0.0611   0.5175    0.1181     0.906               (-0.9535, 1.076)
+str_dow_...01_24_00    0.1576   0.5228    0.3014     0.763               (-0.8675, 1.183)
+str_dow_...01_24_00  -0.02638   0.5798  -0.04551     0.964                 (-1.163, 1.11)
+str_dow_...01_24_00    0.5387   0.6444    0.8359     0.403                (-0.725, 1.802)
+ cp10_2011_09_05_00   0.06712   0.3807    0.1763     0.860              (-0.6794, 0.8137)
+is_weeke...09_05_00   -0.4102   0.2593    -1.582     0.114             (-0.9186, 0.09819)
+str_dow_...09_05_00   -0.5147   0.6567   -0.7838     0.433               (-1.802, 0.7729)
+str_dow_...09_05_00    0.5384   0.5501    0.9787     0.328               (-0.5403, 1.617)
+str_dow_...09_05_00   -0.3721   0.5131   -0.7251     0.468                (-1.378, 0.634)
+str_dow_...09_05_00   -0.2661   0.5188   -0.5129     0.608               (-1.283, 0.7511)
+str_dow_...09_05_00   -0.2636   0.5764   -0.4574     0.647               (-1.394, 0.8665)
+str_dow_...09_05_00   -0.1466   0.6407   -0.2287     0.819                 (-1.403, 1.11)
+ cp11_2012_01_02_00    0.2609   0.4943    0.5279     0.598                (-0.7083, 1.23)
+is_weeke...01_02_00    0.5926   0.3457     1.714     0.087         .     (-0.08524, 1.27)
+str_dow_...01_02_00    0.5446   0.8775    0.6206     0.535                (-1.176, 2.265)
+str_dow_...01_02_00   -0.4578   0.7337   -0.6239     0.533               (-1.896, 0.9809)
+str_dow_...01_02_00    0.4562   0.6852    0.6657     0.506                 (-0.8874, 1.8)
+str_dow_...01_02_00    0.8303    0.694     1.196     0.232               (-0.5305, 2.191)
+str_dow_...01_02_00    0.4137     0.77    0.5373     0.591                (-1.096, 1.924)
+str_dow_...01_02_00    0.1788   0.8558     0.209     0.834                (-1.499, 1.857)
+ cp12_2012_04_23_00    -1.739   0.3024    -5.749  9.96e-09       ***     (-2.332, -1.146)
+is_weeke...04_23_00   -0.5253   0.2196    -2.392     0.017         *  (-0.9559, -0.09478)
+str_dow_...04_23_00   -0.3272   0.5596   -0.5847     0.559                 (-1.424, 0.77)
+str_dow_...04_23_00    -0.208   0.4682   -0.4443     0.657                 (-1.126, 0.71)
+str_dow_...04_23_00   -0.3363   0.4381   -0.7675     0.443               (-1.195, 0.5228)
+str_dow_...04_23_00   -0.7735    0.443    -1.746     0.081         .    (-1.642, 0.09508)
+str_dow_...04_23_00   -0.3818   0.4905   -0.7783     0.436                 (-1.344, 0.58)
+str_dow_...04_23_00   -0.1435   0.5454   -0.2632     0.792               (-1.213, 0.9259)
+ cp13_2013_04_01_00     1.435   0.1341      10.7    &lt;2e-16       ***       (1.172, 1.698)
+is_weeke...04_01_00    0.1524   0.1027     1.483     0.138             (-0.04908, 0.3538)
+str_dow_...04_01_00    0.0144   0.2633    0.0547     0.956              (-0.5019, 0.5308)
+str_dow_...04_01_00    0.3933   0.2206     1.783     0.075         .   (-0.03926, 0.8259)
+str_dow_...04_01_00    0.1325   0.2067    0.6407     0.522              (-0.2729, 0.5379)
+str_dow_...04_01_00    0.2073   0.2083    0.9951     0.320              (-0.2012, 0.6157)
+str_dow_...04_01_00    0.2494   0.2304     1.082     0.279              (-0.2024, 0.7011)
+str_dow_...04_01_00    -0.097   0.2565   -0.3782     0.705                  (-0.6, 0.406)
+ cp14_2013_11_11_00   -0.9381  0.09501    -9.873    &lt;2e-16       ***    (-1.124, -0.7518)
+is_weeke...11_11_00  -0.09984  0.07313    -1.365     0.172             (-0.2432, 0.04356)
+str_dow_...11_11_00   0.06623   0.1872    0.3538     0.723              (-0.3008, 0.4333)
+str_dow_...11_11_00   -0.2766   0.1567    -1.765     0.078         .    (-0.584, 0.03072)
+str_dow_...11_11_00  -0.07421    0.147   -0.5048     0.614               (-0.3625, 0.214)
+str_dow_...11_11_00  -0.07512   0.1482   -0.5067     0.612              (-0.3658, 0.2156)
+str_dow_...11_11_00    -0.208    0.164    -1.268     0.205              (-0.5296, 0.1137)
+str_dow_...11_11_00    0.1081   0.1826    0.5923     0.554              (-0.2499, 0.4662)
+</pre></div>
+</div>
+<p>There might be too many featuers for the trend (including interaction terms).
+Let’s hide the interaction terms.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="c1"># Displays intercept, trend features but not seasonality features.</span>
+ <span class="c1"># Hides interaction terms.</span>
+ <span class="n">summary</span><span class="o">.</span><span class="n">get_coef_summary</span><span class="p">(</span>
+     <span class="n">is_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">is_trend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">is_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+     <span class="n">is_interaction</span><span class="o">=</span><span class="kc">False</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>          Pred_col Estimate Std. Err t value  Pr(&gt;|t|) sig. code              95%CI
+         Intercept    7.067  0.07817    90.4    &lt;2e-16       ***      (6.913, 7.22)
+               ct1   0.1554   0.3891  0.3994     0.690            (-0.6076, 0.9184)
+ cp0_2008_03_31_00   -0.333   0.6342  -0.525     0.600             (-1.577, 0.9107)
+ cp1_2008_07_21_00   -1.591    0.568  -2.801     0.005        **  (-2.705, -0.4774)
+ cp2_2008_11_10_00    2.579   0.5388   4.787  1.78e-06       ***     (1.523, 3.636)
+ cp3_2009_03_09_00   0.6437   0.5423   1.187     0.235             (-0.4196, 1.707)
+ cp4_2009_06_29_00   -1.325   0.5572  -2.378     0.017         *  (-2.418, -0.2326)
+ cp5_2009_10_19_00   0.6683   0.5376   1.243     0.214             (-0.3858, 1.722)
+ cp6_2010_02_15_00   -2.492   0.5437  -4.583  4.78e-06       ***   (-3.558, -1.426)
+ cp7_2010_06_07_00    3.475   0.5579    6.23  5.38e-10       ***     (2.382, 4.569)
+ cp8_2010_09_27_00   -2.983   0.5291  -5.637  1.91e-08       ***    (-4.02, -1.945)
+ cp9_2011_01_24_00    1.761   0.3795   4.641  3.63e-06       ***     (1.017, 2.505)
+cp10_2011_09_05_00  0.06712   0.3807  0.1763     0.860            (-0.6794, 0.8137)
+cp11_2012_01_02_00   0.2609   0.4943  0.5279     0.598              (-0.7083, 1.23)
+cp12_2012_04_23_00   -1.739   0.3024  -5.749  9.96e-09       ***   (-2.332, -1.146)
+cp13_2013_04_01_00    1.435   0.1341    10.7    &lt;2e-16       ***     (1.172, 1.698)
+cp14_2013_11_11_00  -0.9381  0.09501  -9.873    &lt;2e-16       ***  (-1.124, -0.7518)
+</pre></div>
+</div>
+<p>Now we can see the pure trend features, including the continuous growth term and trend changepoints.
+Each changepoint’s name starts with “cp” followed by the time point it happens.
+The estimated coefficients are the changes in slope at the corresponding changepoints.
+We can also see the significance of the changepoints by examining their p-values.</p>
+<p>We can also retrieve the filtered dataframe by setting <code class="docutils literal notranslate"><span class="pre">return_df</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+This way you could further explore the coefficients.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">output</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_coef_summary</span><span class="p">(</span>
+     <span class="n">is_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">is_trend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+     <span class="n">is_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+     <span class="n">is_interaction</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+     <span class="n">return_df</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># returns the filtered df</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>          Pred_col Estimate Std. Err t value  Pr(&gt;|t|) sig. code              95%CI
+         Intercept    7.067  0.07817    90.4    &lt;2e-16       ***      (6.913, 7.22)
+               ct1   0.1554   0.3891  0.3994     0.690            (-0.6076, 0.9184)
+ cp0_2008_03_31_00   -0.333   0.6342  -0.525     0.600             (-1.577, 0.9107)
+ cp1_2008_07_21_00   -1.591    0.568  -2.801     0.005        **  (-2.705, -0.4774)
+ cp2_2008_11_10_00    2.579   0.5388   4.787  1.78e-06       ***     (1.523, 3.636)
+ cp3_2009_03_09_00   0.6437   0.5423   1.187     0.235             (-0.4196, 1.707)
+ cp4_2009_06_29_00   -1.325   0.5572  -2.378     0.017         *  (-2.418, -0.2326)
+ cp5_2009_10_19_00   0.6683   0.5376   1.243     0.214             (-0.3858, 1.722)
+ cp6_2010_02_15_00   -2.492   0.5437  -4.583  4.78e-06       ***   (-3.558, -1.426)
+ cp7_2010_06_07_00    3.475   0.5579    6.23  5.38e-10       ***     (2.382, 4.569)
+ cp8_2010_09_27_00   -2.983   0.5291  -5.637  1.91e-08       ***    (-4.02, -1.945)
+ cp9_2011_01_24_00    1.761   0.3795   4.641  3.63e-06       ***     (1.017, 2.505)
+cp10_2011_09_05_00  0.06712   0.3807  0.1763     0.860            (-0.6794, 0.8137)
+cp11_2012_01_02_00   0.2609   0.4943  0.5279     0.598              (-0.7083, 1.23)
+cp12_2012_04_23_00   -1.739   0.3024  -5.749  9.96e-09       ***   (-2.332, -1.146)
+cp13_2013_04_01_00    1.435   0.1341    10.7    &lt;2e-16       ***     (1.172, 1.698)
+cp14_2013_11_11_00  -0.9381  0.09501  -9.873    &lt;2e-16       ***  (-1.124, -0.7518)
+</pre></div>
+</div>
+<dl class="footnote brackets">
+<dt class="label" id="id5"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Reference: “An Introduction to Bootstrap”, Efron 1993.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id4">2</a>)</span></dt>
+<dd><p>Reference: “High-Dimensional Inference: Confidence Intervals, p-Values and R-Software hdi”, Dezeure, Buhlmann, Meier and Meinshausen.</p>
+</dd>
+</dl>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  38.064 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-quickstart-0400-model-summary-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/2f5baa06f970b311b13c2ef0ebf7b6ec/0400_model_summary.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">0400_model_summary.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/18862285275ea8a4b024970e66e0d0bd/0400_model_summary.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">0400_model_summary.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

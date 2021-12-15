@@ -1,0 +1,487 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Benchmarking &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Benchmarking</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="benchmarking">
+<h1>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this headline">¶</a></h1>
+<p>A comprehensive comparison between multiple machine learning (ML) algorithms comprises
+a thorough cross-validation of their predictive performance, this is known as Benchmarking.
+You can quickly benchmark multiple algorithms such as <code class="docutils literal notranslate"><span class="pre">Silverkite</span></code> and <code class="docutils literal notranslate"><span class="pre">Prophet</span></code> using
+the <a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig" title="greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BenchmarkForecastConfig</span></code></a> class.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Benchmark</span></code> class requires 3 inputs.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>df : `pandas.DataFrame`
+    Timeseries data to forecast.
+    Contains columns [`time_col`, `value_col`], and optional regressor columns.
+    Regressor columns should include future values for prediction.
+
+configs : `Dict` [`str`,  `ForecastConfig`]
+    Dictionary of model configurations.
+    A model configuration is a member of the class
+    `~greykite.framework.templates.autogen.forecast_config.ForecastConfig`.
+
+tscv : `~greykite.sklearn.cross_validation.RollingTimeSeriesSplit`
+    Cross-validation object that determines the rolling window evaluation.
+    See :class:`~greykite.sklearn.cross_validation.RollingTimeSeriesSplit` for details.
+</pre></div>
+</div>
+<p>In the sections we below provide guidance on how to design a proper
+cross-validation schema for your use case and discuss the structure of the benchmark output.
+Check the <a class="reference internal" href="../../../gallery/tutorials/0300_benchmark.html"><span class="doc">Benchmarking tutorial</span></a> to learn
+the step-by-step process of defining and running a benchmark.</p>
+<div class="section" id="rolling-window-cross-validation-cv">
+<h2>Rolling Window Cross-Validation (CV)<a class="headerlink" href="#rolling-window-cross-validation-cv" title="Permalink to this headline">¶</a></h2>
+<p>Time-series forecast quality strongly depends on the evaluation time window.
+Thus it is more robust to evaluate over a longer time window when dataset size allows.
+You can easily define the evaluation time window by using
+<a class="reference internal" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit" title="greykite.sklearn.cross_validation.RollingTimeSeriesSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">RollingTimeSeriesSplit</span></code></a> class.
+See how in the <a class="reference external" href="/gallery/tutorials/0300_benchmark#define-the-cross-validation-cv">Define the CV</a>
+section of the tutorial.</p>
+<p>We use a rolling window CV for our benchmarking, which closely resembles the well
+known K-fold CV method. In K-fold CV, the original data is randomly partitioned into
+K equal sized subsamples. A single subsample is held out as the validation data,
+and the model is trained on the remaining (K-1) subsamples. The trained model is
+used to predict on the held-out validation set. This process is repeated K times so
+that each of the K subsamples is used exactly once as the validation set.
+Average testing error across all the K iterations provides an unbiased estimate of
+the true testing error of the machine learning (ML) model on the data.</p>
+<p>Due to the temporal dependency in time-series data the standard K-fold CV is not
+appropriate. Choosing a hold-out set randomly has two fundamental issues in the
+timeseries context:</p>
+<ul class="simple">
+<li><p>Future data is utilized to predict the past.</p></li>
+<li><p>Some timeseries models can not be trained realistically with a random sample,
+e.g. the autoregressive models due to missing lags.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../../_images/rolling_window_cv.jpg"><img alt="Structure for Rolling Window CV" src="../../../_images/rolling_window_cv.jpg" style="width: 600px;" /></a>
+<p>Rolling window CV addresses this by creating a series of K test sets, as illustrated
+in the previous Figure.
+For each test set, the observations prior to the test set are used for training.
+This creates K benchmark (BM)-folds. Within each training set, a series of CV folds is
+created, each containing a validation set. The number of datapoints in every test and
+validation set equals the forecast horizon. Observations that occur prior to that of
+the validation set are used to train the models for the corresponding CV fold. Thus,
+no future observations can be used in constructing the forecast, either in the validation
+or testing phase. The parameters minimizing average error on the validation sets are chosen.
+This model is then retrained on the training data for the corresponding BM-fold.
+The average error across all test sets provides a robust estimate of the model performance
+with this forecast horizon.</p>
+</div>
+<div class="section" id="selecting-cv-parameters">
+<h2>Selecting CV parameters<a class="headerlink" href="#selecting-cv-parameters" title="Permalink to this headline">¶</a></h2>
+<p>We provide a set of defaults for 3 different forecast horizons for hourly,
+daily and weekly datasets. These horizons roughly represent short-term, average-term and
+long-term forecasts for the corresponding frequency (e.g. 1 day, 7 day and 90 day ahead
+forecasts for daily data).
+The datasets must have at least 2 years worth of training data
+for the models to accurately estimate yearly seasonality patterns.
+These defaults provide a consistent benchmarking
+setting suitable for all algorithms, including the slower ones.
+The values are chosen based on the following principles:</p>
+<ul class="simple">
+<li><p>The predictive performance of the models are measured over an year
+to ensure that cumulatively the test sets represent real data across
+time properties e.g. seasonality, holidays etc.
+For daily data, <code class="docutils literal notranslate"><span class="pre">periods</span> <span class="pre">between</span> <span class="pre">splits</span></code> (25) * <code class="docutils literal notranslate"><span class="pre">number</span> <span class="pre">of</span> <span class="pre">splits</span></code> (16) = 400 &gt; 365,
+hence the models are tested over a year.</p></li>
+<li><p>The test sets are completely randomized in terms of time features.
+For daily data, setting <code class="docutils literal notranslate"><span class="pre">periods</span> <span class="pre">between</span> <span class="pre">splits</span></code> to any multiple of 7
+results in the training and test sets always ending on the same day of the week.
+This lack of randomization produce a biased estimate of the prediction performance.
+Similarly setting it to a multiple of 30 has the same problem for day of month.
+A gap of 25 days between test sets ensures that no such confounding factors are present.</p></li>
+<li><p>Minimize total computation time while maintaining the previous points.
+For daily data, setting <code class="docutils literal notranslate"><span class="pre">periods</span> <span class="pre">between</span> <span class="pre">splits</span></code> to 1 and <code class="docutils literal notranslate"><span class="pre">number</span> <span class="pre">of</span> <span class="pre">splits</span></code> to
+365 is a more thorough CV procedure. But it massively increases the total computation
+time and hence is avoided.</p></li>
+</ul>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Default values for Rolling Window CV</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Frequency</p></th>
+<th class="head"><p>Forecast horizon</p></th>
+<th class="head"><p>CV horizon</p></th>
+<th class="head"><p>CV minimum train periods</p></th>
+<th class="head"><p>Periods between splits</p></th>
+<th class="head"><p>Number of splits</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>hourly</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>24 * 365 * 2</p></td>
+<td><p>(24 * 24) + 7</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p>hourly</p></td>
+<td><p>24</p></td>
+<td><p>24</p></td>
+<td><p>24 * 365 * 2</p></td>
+<td><p>(24 * 24) + 7</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>hourly</p></td>
+<td><p>24 * 7</p></td>
+<td><p>24 * 7</p></td>
+<td><p>24 * 365 * 2</p></td>
+<td><p>(24 * 24) + 7</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p>daily</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>365 * 2</p></td>
+<td><p>25</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>daily</p></td>
+<td><p>7</p></td>
+<td><p>7</p></td>
+<td><p>365 * 2</p></td>
+<td><p>25</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p>daily</p></td>
+<td><p>90</p></td>
+<td><p>90</p></td>
+<td><p>365 * 2</p></td>
+<td><p>25</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>weekly</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>52 * 2</p></td>
+<td><p>3</p></td>
+<td><p>18</p></td>
+</tr>
+<tr class="row-odd"><td><p>weekly</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>52 * 2</p></td>
+<td><p>3</p></td>
+<td><p>18</p></td>
+</tr>
+<tr class="row-even"><td><p>weekly</p></td>
+<td><p>4 * 3</p></td>
+<td><p>4 * 3</p></td>
+<td><p>52 * 2</p></td>
+<td><p>3</p></td>
+<td><p>18</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The default parameters in the table provide a guideline for a sound CV procedure. The users are
+encouraged to modify it according to their needs as long as it adheres to the core principle.
+For example, if all the benchmarking models execute quickly, the values of
+<code class="docutils literal notranslate"><span class="pre">periods</span> <span class="pre">between</span> <span class="pre">splits</span></code> and <code class="docutils literal notranslate"><span class="pre">number</span> <span class="pre">of</span> <span class="pre">splits</span></code> can be swapped for a more thorough
+benchmarking.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="monitoring-the-benchmark">
+<h2>Monitoring the Benchmark<a class="headerlink" href="#monitoring-the-benchmark" title="Permalink to this headline">¶</a></h2>
+<p>During benchmarking a couple of color coded progress bars are displayed to inform the user of the
+advancement of the entire process. The first bar displays <code class="docutils literal notranslate"><span class="pre">config</span></code> level information, while
+the second bar displays split level information for the current <code class="docutils literal notranslate"><span class="pre">config</span></code>.</p>
+<a class="reference internal image-reference" href="../../../_images/benchmark_monitor.png"><img alt="Monitoring the Benchmark progress" src="../../../_images/benchmark_monitor.png" style="width: 800px;" /></a>
+<p>On the left side of the progress bar, it shows which <code class="docutils literal notranslate"><span class="pre">config</span></code>/ <code class="docutils literal notranslate"><span class="pre">split</span></code> is currently being
+benchmarked and progress within that level as a percentage.</p>
+<p>On the right side, the user can see how many <code class="docutils literal notranslate"><span class="pre">configs</span></code>/ <code class="docutils literal notranslate"><span class="pre">splits</span></code> have been benchmarked
+and how many are remaining. Additionally, this bar also displays elapsed time and remaining runtime
+for the corresponding level.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">configs</span></code> and different <code class="docutils literal notranslate"><span class="pre">splits</span></code> within a <code class="docutils literal notranslate"><span class="pre">config</span></code> are run sequentially,
+however any cross-validation within a <code class="docutils literal notranslate"><span class="pre">split</span></code> is parallelized. This ensures that the CPU
+cores are not overloaded and we can estimate the runtime accurately.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="output-of-the-benchmark">
+<h2>Output of the Benchmark<a class="headerlink" href="#output-of-the-benchmark" title="Permalink to this headline">¶</a></h2>
+<p>The output of a successful benchmark procedure is stored under the class attribute <code class="docutils literal notranslate"><span class="pre">result</span></code>
+as a nested dictionary. Every node in the tree is a dictionary key.</p>
+<a class="reference internal image-reference" href="../../../_images/benchmark_result_structure.jpg"><img alt="Structure of the output of benchmark" src="../../../_images/benchmark_result_structure.jpg" style="width: 800px;" /></a>
+<p>A compute node (node in blue) is a node that is computed only when the user specifically
+requests for the output.
+Here is a brief overview of the leaf nodes i.e. nodes without any link to the next level.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>bm.forecasts : `pandas.DataFrame`
+    Splitwise forecast output of all ``configs``.
+    Helps in comparing forecasts and prediction accuracy across ``configs``.
+    This node is computed when ``extract_forecasts`` method is run.
+
+pipeline_params : `dict`
+    Inputs to the
+    `~greykite.framework.pipeline.pipeline.ForecastResult.forecast_pipeline`.
+    Useful for debugging errors thrown by the ``validate`` method.
+
+rolling_forecast_df : `pandas.DataFrame`
+    Splitwise forecast output of the corresponding ``config``.
+    Helps in comparing forecasts and prediction accuracy across splits.
+    This node is computed when ``extract_forecasts`` method is run.
+
+runtime_sec : `float`
+    Runtime of the corresponding split of the ``config`` in seconds.
+
+pipeline_result : `~greykite.framework.pipeline.pipeline.ForecastResult`
+    Forecast output of the corresponding split of the ``config``.
+</pre></div>
+</div>
+<p>Using the output you can quickly compute and visualize the prediction errors for multiple metrics.
+For examples check the <a class="reference external" href="../../gallery/tutorials/0300_benchmark.html#benchmark-output">Benchmark output</a>
+section of the tutorial.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
