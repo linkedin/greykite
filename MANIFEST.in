@@ -1,6 +1,6 @@
 include README_PYPI.rst
-recursive-include data *
-recursive-include tests *
+recursive-include greykite/data *
+recursive-include greykite/tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
