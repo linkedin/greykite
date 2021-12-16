@@ -6,7 +6,11 @@ cvxpy==1.1.12
 dill==0.3.3
 fbprophet==0.5
 flake8==3.7.8
-holidays==0.9.10
+google-api-core==1.26.3
+google-auth==1.28.0
+google-cloud-bigquery==2.13.1
+google-cloud-core==1.6.0
+google-cloud-storage==1.37.1holidays==0.9.10
 holidays-ext==0.0.7
 ipykernel==4.8.2
 ipython==7.1.1
