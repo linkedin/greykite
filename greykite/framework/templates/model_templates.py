@@ -51,8 +51,9 @@ from enum import Enum
 from typing import Type
 
 from greykite.framework.templates.auto_arima_template import AutoArimaTemplate
+from greykite.framework.templates.lag_based_template import LagBasedTemplate
+from greykite.framework.templates.multistage_forecast_template import MultistageForecastTemplate
 from greykite.framework.templates.prophet_template import ProphetTemplate
-from greykite.framework.templates.silverkite_multistage_template import SilverkiteMultistageTemplate
 from greykite.framework.templates.silverkite_template import SilverkiteTemplate
 from greykite.framework.templates.simple_silverkite_template import SimpleSilverkiteTemplate
 from greykite.framework.templates.template_interface import TemplateInterface
@@ -106,44 +107,39 @@ class ModelTemplateEnum(Enum):
     SILVERKITE = ModelTemplate(
         template_class=SimpleSilverkiteTemplate,
         description="Silverkite model with automatic growth, seasonality, holidays, "
+                    "automatic autoregression, normalization "
                     "and interactions. Best for hourly and daily frequencies."
                     "Uses `SimpleSilverkiteEstimator`.")
     """Silverkite model with automatic growth, seasonality, holidays,
+    automatic autoregression, normalization
     and interactions. Best for hourly and daily frequencies.
     Uses `SimpleSilverkiteEstimator`.
-    """
-    SILVERKITE_WITH_AR = ModelTemplate(
-        template_class=SimpleSilverkiteTemplate,
-        description="Has the same config as ``SILVERKITE`` except for adding autoregression. "
-                    "Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.")
-    """Has the same config as ``SILVERKITE`` except for adding autoregression.
-    Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.
     """
     SILVERKITE_DAILY_1_CONFIG_1 = ModelTemplate(
         template_class=SimpleSilverkiteTemplate,
         description="Config 1 in template ``SILVERKITE_DAILY_1``. "
-                    "Compared to ``SILVERKITE``, it adds change points and uses parameters "
+                    "Compared to ``SILVERKITE``, it uses parameters "
                     "specifically tuned for daily data and 1-day forecast.")
     """Config 1 in template ``SILVERKITE_DAILY_1``.
-    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    Compared to ``SILVERKITE``, it uses parameters
     specifically tuned for daily data and 1-day forecast.
     """
     SILVERKITE_DAILY_1_CONFIG_2 = ModelTemplate(
         template_class=SimpleSilverkiteTemplate,
         description="Config 2 in template ``SILVERKITE_DAILY_1``. "
-                    "Compared to ``SILVERKITE``, it adds change points and uses parameters "
+                    "Compared to ``SILVERKITE``, it uses parameters "
                     "specifically tuned for daily data and 1-day forecast.")
     """Config 2 in template ``SILVERKITE_DAILY_1``.
-    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    Compared to ``SILVERKITE``, it uses parameters
     specifically tuned for daily data and 1-day forecast.
     """
     SILVERKITE_DAILY_1_CONFIG_3 = ModelTemplate(
         template_class=SimpleSilverkiteTemplate,
         description="Config 3 in template ``SILVERKITE_DAILY_1``. "
-                    "Compared to ``SILVERKITE``, it adds change points and uses parameters "
+                    "Compared to ``SILVERKITE``, it uses parameters "
                     "specifically tuned for daily data and 1-day forecast.")
     """Config 3 in template ``SILVERKITE_DAILY_1``.
-    Compared to ``SILVERKITE``, it adds change points and uses parameters
+    Compared to ``SILVERKITE``, it uses parameters
     specifically tuned for daily data and 1-day forecast.
     """
     SILVERKITE_DAILY_1 = ModelTemplate(
@@ -173,10 +169,17 @@ class ModelTemplateEnum(Enum):
     Contains 4 hyperparameter combinations for grid search.
     Uses `SimpleSilverkiteEstimator`.
     """
+    SILVERKITE_MONTHLY = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Silverkite model specifically tuned for monthly data. "
+                    "Uses `SimpleSilverkiteEstimator`.")
+    """Silverkite model specifically tuned for monthly data.
+    Uses `SimpleSilverkiteEstimator`.
+    """
     SILVERKITE_HOURLY_1 = ModelTemplate(
         template_class=SimpleSilverkiteTemplate,
         description="Silverkite model specifically tuned for hourly data with 1 hour forecast horizon. "
-                    "Contains 4 hyperparameter combinations for grid search. "
+                    "Contains 3 hyperparameter combinations for grid search. "
                     "Uses `SimpleSilverkiteEstimator`.")
     """Silverkite model specifically tuned for hourly data with 1 hour forecast horizon.
     Contains 4 hyperparameter combinations for grid search.
@@ -236,22 +239,51 @@ class ModelTemplateEnum(Enum):
                     "Uses `AutoArimaEstimator`.")
     """ARIMA model with automatic order selection. Uses `AutoArimaEstimator`."""
     SILVERKITE_TWO_STAGE = ModelTemplate(
-        template_class=SilverkiteMultistageTemplate,
-        description="SilverkiteMultistageTemplate's default model template. A two-stage model. "
+        template_class=MultistageForecastTemplate,
+        description="MultistageForecastTemplate's default model template. A two-stage model. "
                     "The first step takes a longer history and learns the long-term effects, "
                     "while the second step takes a shorter history and learns the short-term residuals."
     )
-    """SilverkiteMultistage model's default model template. A two-stage model. "
+    """Multistage forecast model's default model template. A two-stage model. "
     "The first step takes a longer history and learns the long-term effects, "
     "while the second step takes a shorter history and learns the short-term residuals.
     """
-    SILVERKITE_MULTISTAGE_EMPTY = ModelTemplate(
-        template_class=SilverkiteMultistageTemplate,
-        description="Empty configuration for Silverkite Multistage. "
+    MULTISTAGE_EMPTY = ModelTemplate(
+        template_class=MultistageForecastTemplate,
+        description="Empty configuration for Multistage Forecast. "
                     "All parameters will be exactly what user inputs. "
                     "Not to be used without overriding."""
     )
-    """Empty configuration for Silverkite Multistage.
+    """Empty configuration for Multistage Forecast.
     All parameters will be exactly what user inputs.
     Not to be used without overriding.
+    """
+    AUTO = ModelTemplate(
+        template_class=SimpleSilverkiteTemplate,
+        description="Automatically selects the SimpleSilverkite model template that corresponds to the forecast "
+                    "problem. Selection is based on data frequency, forecast horizon, and CV configuration."
+    )
+    """Automatically selects the SimpleSilverkite model template that corresponds to the forecast problem.
+    Selection is based on data frequency, forecast horizon, and CV configuration.
+    """
+    LAG_BASED = ModelTemplate(
+        template_class=LagBasedTemplate,
+        description="Uses aggregated past observations as predictions. Examples are "
+                    "past day, week-over-week, week-over-3-week median, etc."
+    )
+    """Uses aggregated past observations as predictions. Examples are
+    past day, week-over-week, week-over-3-week median, etc.
+    """
+    SILVERKITE_WOW = ModelTemplate(
+        template_class=MultistageForecastTemplate,
+        description="The Silverkite+WOW model uses Silverkite to model yearly/quarterly/monthly seasonality, "
+                    "growth and holiday effects first, then uses week over week to estimate the residuals. "
+                    "The final prediction is the total of the two models. "
+                    "This avoids the normal week over week (WOW) estimation's weakness in capturing "
+                    "growth and holidays."
+    )
+    """The Silverkite+WOW model uses Silverkite to model yearly/quarterly/monthly seasonality,
+    growth and holiday effects first, then uses week over week to estimate the residuals.
+    The final prediction is the total of the two models.
+    This avoids the normal week over week (WOW) estimation's weakness in capturing growth and holidays.
     """

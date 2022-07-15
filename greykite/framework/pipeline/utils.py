@@ -166,7 +166,7 @@ def get_default_time_parameters(
 
     Returns
     -------
-    time_params : `dict` [`str`, `str`]
+    time_params : `dict` [`str`, `int`]
         keys are parameter names, values are their default values.
     """
     if forecast_horizon is None:

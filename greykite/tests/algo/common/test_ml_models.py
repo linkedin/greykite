@@ -12,6 +12,7 @@ from greykite.algo.common.ml_models import predict_ml
 from greykite.algo.common.ml_models import predict_ml_with_uncertainty
 from greykite.algo.uncertainty.conditional.conf_interval import predict_ci
 from greykite.common.constants import ERR_STD_COL
+from greykite.common.constants import QUANTILE_SUMMARY_COL
 from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.common.evaluation import calc_pred_err
 from greykite.common.python_utils import assert_equal
@@ -331,6 +332,26 @@ def test_fit_ml_model():
         fit_algorithm="sgd",
         fit_algorithm_params={"alpha": 0.1})
 
+    assert list(trained_model.keys()) == [
+        "y",
+        "y_mean",
+        "y_std",
+        "x_design_info",
+        "ml_model",
+        "uncertainty_model",
+        "ml_model_summary",
+        "y_col",
+        "x_mat",
+        "min_admissible_value",
+        "max_admissible_value",
+        "normalize_df_func",
+        "regression_weight_col",
+        "fitted_df"]
+
+    assert (trained_model["y"] == df["y"]).all()
+    assert trained_model["y_mean"] == np.mean(df["y"])
+    assert trained_model["y_std"] == np.std(df["y"])
+
     pred_res = predict_ml(
         fut_df=df_test,
         trained_model=trained_model)
@@ -446,7 +467,7 @@ def test_fit_ml_model_normalization():
         df=df,
         model_formula_str=model_formula_str,
         fit_algorithm="linear",
-        normalize_method="min_max")
+        normalize_method="zero_to_one")
 
     ml_model_summary = trained_model["ml_model_summary"].round()
     obtained_coefs = np.array(ml_model_summary["coef"].round())
@@ -521,8 +542,8 @@ def test_fit_ml_model_with_uncertainty():
     fut_df["y_true"] = df_test["y"]
     fut_df["inside_95_ci"] = fut_df.apply(
         lambda row: (
-            (row["y_true"] <= row["y_quantile_summary"][1])
-            and (row["y_true"] >= row["y_quantile_summary"][0])),
+            (row["y_true"] <= row[QUANTILE_SUMMARY_COL][1])
+            and (row["y_true"] >= row[QUANTILE_SUMMARY_COL][0])),
         axis=1)
 
     ci_coverage = 100.0 * fut_df["inside_95_ci"].mean()
@@ -577,17 +598,17 @@ def test_fit_ml_model_with_uncertainty_heteroscedastic():
         fut_df["y_true"] = df_test["y"]
         fut_df["inside_95_ci"] = fut_df.apply(
             lambda row: (
-                (row["y_true"] <= row["y_quantile_summary"][1])
-                and (row["y_true"] >= row["y_quantile_summary"][0])),
+                (row["y_true"] <= row[QUANTILE_SUMMARY_COL][1])
+                and (row["y_true"] >= row[QUANTILE_SUMMARY_COL][0])),
             axis=1)
 
         fut_df["ci_width"] = fut_df.apply(
             lambda row: (
-                (row["y_quantile_summary"][1] - row["y_quantile_summary"][0])),
+                (row[QUANTILE_SUMMARY_COL][1] - row[QUANTILE_SUMMARY_COL][0])),
             axis=1)
         ci_width_avg = fut_df["ci_width"].mean()
 
-        fut_df["y_quantile_summary"] = fut_df["y_quantile_summary"].apply(
+        fut_df[QUANTILE_SUMMARY_COL] = fut_df[QUANTILE_SUMMARY_COL].apply(
             lambda x: tuple(round(e, 2) for e in x))
         ci_coverage = 100.0 * fut_df["inside_95_ci"].mean()
 
@@ -756,25 +777,25 @@ def test_fit_ml_model_with_evaluation_with_uncertainty():
     assert list(y_test_pred_small.round(1)) == [99.7, 201.5, 303.5, 7.3], (
         "predictions are not correct")
 
-    # testing uncertainty
-    # assign the predicted y to the response in fut_df
+    # Testing uncertainty
+    # Assigns the predicted y to the response in fut_df
     fut_df["y"] = y_test_pred
     new_df_with_uncertainty = predict_ci(
         fut_df,
         trained_model["uncertainty_model"])
-    assert list(new_df_with_uncertainty.columns) == ["y_quantile_summary", ERR_STD_COL], (
+    assert list(new_df_with_uncertainty.columns) == list(fut_df.columns) + [QUANTILE_SUMMARY_COL, ERR_STD_COL], (
         "column names are not as expected")
-    fut_df["y_quantile_summary"] = new_df_with_uncertainty["y_quantile_summary"]
+    fut_df[QUANTILE_SUMMARY_COL] = new_df_with_uncertainty[QUANTILE_SUMMARY_COL]
 
-    # calculate coverage of the CI
+    # Calculates coverage of the CI
     fut_df["inside_95_ci"] = fut_df.apply(
         lambda row: (
-            (row["y_true"] <= row["y_quantile_summary"][1])
-            and (row["y_true"] >= row["y_quantile_summary"][0])),
+            (row["y_true"] <= row[QUANTILE_SUMMARY_COL][1])
+            and (row["y_true"] >= row[QUANTILE_SUMMARY_COL][0])),
         axis=1)
 
     ci_coverage = 100.0 * fut_df["inside_95_ci"].mean()
-    assert ci_coverage > 94.0 and ci_coverage < 96.0, (
+    assert 94.0 < ci_coverage < 96.0, (
         "95 percent CI coverage is not between 94 and 96")
 
     # testing uncertainty_method not being implemented but passed
@@ -1054,7 +1075,7 @@ def test_fit_ml_model_with_evaluation_constant_column():
         df=df,
         model_formula_str=model_formula_str,
         fit_algorithm=fit_algorithm,
-        normalize_method="min_max")
+        normalize_method="zero_to_one")
 
     pred_res = predict_ml(
         fut_df=df_test,
@@ -1174,16 +1195,19 @@ def test_breakdown_regression_based_prediction():
         "D": ".*_lag.*"
     }
 
-    # Example 1: ``add_intercept_group=True``
+    # Example 1: ``center_components=False``
     result = breakdown_regression_based_prediction(
-        ml_model=trained_model["ml_model"],
+        trained_model=trained_model,
         x_mat=x_mat,
         grouping_regex_patterns_dict=grouping_regex_patterns_dict,
-        add_intercept_group=True,
-        remainder_group_name="OTHER")
+        remainder_group_name="OTHER",
+        center_components=False)
 
     column_grouping_result = result["column_grouping_result"]
     breakdown_df = result["breakdown_df"]
+    breakdown_fig = result["breakdown_fig"]
+    assert breakdown_fig.layout.title.text == "prediction breakdown"
+    assert len(breakdown_fig.data) == 6
     assert list(breakdown_df.columns) == ["Intercept", "A", "B", "C", "D", "OTHER"]
 
     # Note that if a variable/column is already picked in a step,
@@ -1208,6 +1232,7 @@ def test_breakdown_regression_based_prediction():
     ml_model_coef = ml_model.coef_
     intercept = ml_model.intercept_
     x_mat_weighted = x_mat * ml_model_coef
+    y_mean = trained_model["y_mean"]
 
     pred_raw = round(pred_df["y"], 5)
     pred_raw_sum = round(x_mat_weighted.sum(axis=1) + intercept, 5)
@@ -1216,17 +1241,16 @@ def test_breakdown_regression_based_prediction():
     assert pred_raw_sum.equals(pred_from_breakdown)
     assert pred_raw.equals(pred_from_breakdown)
 
-    # Example 2: ``add_intercept_group=False``
+    # Example 2: ``remainder_group_name="REMAINDER"``
     result = breakdown_regression_based_prediction(
-        ml_model=trained_model["ml_model"],
+        trained_model=trained_model,
         x_mat=x_mat,
         grouping_regex_patterns_dict=grouping_regex_patterns_dict,
-        add_intercept_group=False,
-        remainder_group_name="OTHER")
+        remainder_group_name="REMAINDER")
 
     column_grouping_result = result["column_grouping_result"]
     breakdown_df = result["breakdown_df"]
-    assert list(breakdown_df.columns) == ["A", "B", "C", "D", "OTHER"]
+    assert list(breakdown_df.columns) == ["Intercept", "A", "B", "C", "D", "REMAINDER"]
 
     assert column_grouping_result == {
         "str_groups": [
@@ -1243,11 +1267,89 @@ def test_breakdown_regression_based_prediction():
             ["y_lag1", "y_lag2"]],
         "remainder": ["u1", "u2"]}
 
-    del x_mat_weighted["Intercept"]
+    # Example 3: ``center_components=True``
+    result = breakdown_regression_based_prediction(
+        trained_model=trained_model,
+        x_mat=x_mat,
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        remainder_group_name="OTHER",
+        center_components=True)
 
-    # We do not add intercept to the predictions
-    # because the intercept group is not included
-    pred_raw_sum = round(x_mat_weighted.sum(axis=1), 5)
+    column_grouping_result = result["column_grouping_result"]
+    breakdown_df = result["breakdown_df"]
+    assert list(breakdown_df.columns) == ["Intercept", "A", "B", "C", "D", "OTHER"]
+
+    assert column_grouping_result == {
+        "str_groups": [
+            [
+                "x1_categ[T.C1]",
+                "x1_categ[T.C2]",
+                "x1_categ[T.C3]",
+                "x1_categ[T.C4]",
+                "x1_categ[T.C5]",
+                "x1_categ[T.C6]",
+                "x1_categ[T.C7]"],
+            ["var1", "var2"],
+            ["x1", "x2", "x3", "x4"],
+            ["y_lag1", "y_lag2"]],
+        "remainder": ["u1", "u2"]}
+
     pred_from_breakdown = round(breakdown_df.sum(axis=1), 5)
 
     assert pred_raw_sum.equals(pred_from_breakdown)
+    assert pred_raw.equals(pred_from_breakdown)
+
+    # Checks to see if components are centered
+    for col in ["A", "B", "C", "D", "OTHER"]:
+        assert round(breakdown_df[col].mean(), 5) == 0
+
+    # Example 4: ``center_components=True``
+    result_denom = breakdown_regression_based_prediction(
+        trained_model=trained_model,
+        x_mat=x_mat,
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        remainder_group_name="OTHER",
+        center_components=True,
+        denominator="abs_y_mean")
+
+    column_grouping_result = result_denom["column_grouping_result"]
+    breakdown_df_denom = result_denom["breakdown_df"]
+    assert list(breakdown_df_denom.columns) == ["Intercept", "A", "B", "C", "D", "OTHER"]
+
+    assert column_grouping_result == {
+        "str_groups": [
+            [
+                "x1_categ[T.C1]",
+                "x1_categ[T.C2]",
+                "x1_categ[T.C3]",
+                "x1_categ[T.C4]",
+                "x1_categ[T.C5]",
+                "x1_categ[T.C6]",
+                "x1_categ[T.C7]"],
+            ["var1", "var2"],
+            ["x1", "x2", "x3", "x4"],
+            ["y_lag1", "y_lag2"]],
+        "remainder": ["u1", "u2"]}
+
+    pred_from_breakdown = round(breakdown_df_denom.sum(axis=1) * abs(y_mean), 5)
+    assert pred_raw_sum.equals(pred_from_breakdown)
+    assert pred_raw.equals(pred_from_breakdown)
+
+    # Checks to see if components are centered
+    for col in ["A", "B", "C", "D", "OTHER"]:
+        assert round(breakdown_df_denom[col].mean(), 5) == 0
+
+    # Checks to see if components are divided by absolute mean
+    for col in ["A", "B", "C", "D", "OTHER"]:
+        assert max(abs(breakdown_df_denom[col] * abs(y_mean) - breakdown_df[col])) < 0.0001
+
+    with pytest.raises(
+            NotImplementedError,
+            match=f"quantile is not an admissable denominator"):
+        breakdown_regression_based_prediction(
+            trained_model=trained_model,
+            x_mat=x_mat,
+            grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+            remainder_group_name="OTHER",
+            center_components=True,
+            denominator="quantile")

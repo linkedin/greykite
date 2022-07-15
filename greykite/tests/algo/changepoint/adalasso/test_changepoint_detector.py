@@ -5,11 +5,13 @@ import pandas as pd
 import pytest
 from pandas.tseries.frequencies import to_offset
 from sklearn.base import RegressorMixin
+from testfixtures import LogCapture
 
 from greykite.algo.changepoint.adalasso.changepoint_detector import ChangepointDetector
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_changepoints_dict
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_seasonality_changepoints
 from greykite.common.data_loader import DataLoader
+from greykite.common.logging import LOGGER_NAME
 from greykite.common.testing_utils import generate_df_for_tests
 from greykite.common.testing_utils import generate_test_changepoint_df
 
@@ -309,6 +311,32 @@ def test_find_trend_changepoints(hourly_data):
     assert model.trend_df.shape[1] > 100 + 1 + 8 * 2  # checks extra columns are created for varying yearly seasonality
 
 
+def test_find_trend_changepoints_slow(hourly_data):
+    """Tests the trend changepoint detection when fast trend estimation is turned off."""
+    dl = DataLoader()
+    df_pt = dl.load_peyton_manning()
+
+    model = ChangepointDetector()
+    model.find_trend_changepoints(
+        df=df_pt,
+        time_col="ts",
+        value_col="y",
+        fast_trend_estimation=False
+    )
+    assert isinstance(model.trend_model, RegressorMixin)
+    assert model.trend_model.coef_.shape[0] == 100 + 1 + 8 * 2
+    assert model.trend_coef.shape[0] == 100 + 1 + 8 * 2
+    assert model.trend_intercept is not None
+    assert model.trend_changepoints is not None
+    assert model.trend_potential_changepoint_n == 100
+    assert model.trend_df.shape[1] == 100 + 1 + 8 * 2
+    assert model.original_df.shape == df_pt.shape
+    assert model.time_col is not None
+    assert model.value_col is not None
+    assert model.adaptive_lasso_coef[1].shape[0] == 100 + 1 + 8 * 2
+    assert model.y.index[0] not in model.trend_changepoints
+
+
 def test_find_seasonality_changepoints(hourly_data):
     df = hourly_data["df"]
     dl = DataLoader()
@@ -348,9 +376,9 @@ def test_find_seasonality_changepoints(hourly_data):
         df=df_pt,
         time_col="ts",
         value_col="y",
-        regularization_strength=0.1
+        regularization_strength=0.0
     )
-    # ``regularization_strength`` between 0 and 1 indicates at least one change point
+    # ``regularization_strength`` equals 0 indicates at least one change point
     assert any([model.seasonality_changepoints[key] != [] for key in model.seasonality_changepoints.keys()])
     # test `no_changepoint_distance_from_end` with the Peyton Manning data
     model = ChangepointDetector()
@@ -718,3 +746,27 @@ def test_nan():
         time_col="ts",
         value_col="y"
     )
+
+
+def test_capping_potential_changepoints():
+    df = pd.DataFrame({
+        "ts": pd.date_range(start="2020-01-01", periods=366, freq="D"),
+        "y": np.random.randn(366)
+    })
+    with LogCapture(LOGGER_NAME) as log_capture:
+        cd = ChangepointDetector()
+        cd.find_trend_changepoints(
+            df=df,
+            time_col="ts",
+            value_col="y",
+            resample_freq="D",
+            potential_changepoint_distance="D",
+            potential_changepoint_n_max=100
+        )
+        log_capture.check_present((
+            LOGGER_NAME,
+            "INFO",
+            f"Number of potential changepoints is capped by 'potential_changepoint_n_max' "
+            f"as 100. The 'potential_changepoint_distance' D is ignored. "
+            f"The original number of changepoints was 365."
+        ))

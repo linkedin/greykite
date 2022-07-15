@@ -12,7 +12,7 @@ from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverk
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
@@ -115,8 +115,8 @@ def test_no_coverage(daily_data):
     assert cst.PREDICTED_UPPER_COL not in predict.columns
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet(daily_data):
     """Tests prophet estimator."""
     model = OneByOneEstimator(

@@ -120,23 +120,25 @@ class BenchmarkForecastConfig:
         """
         coverage_list = []
         for config_name, config in self.configs.items():
-            # Checks forecast_horizon
-            if config.forecast_horizon != self.tscv.forecast_horizon:
-                raise ValueError(f"{config_name}'s 'forecast_horizon' ({config.forecast_horizon}) does "
-                                 f"not match that of 'tscv' ({self.tscv.forecast_horizon}).")
-
-            # Checks periods_between_train_test
-            if config.evaluation_period_param.periods_between_train_test != self.tscv.periods_between_train_test:
-                raise ValueError(f"{config_name}'s 'periods_between_train_test' ({config.evaluation_period_param.periods_between_train_test}) "
-                                 f"does not match that of 'tscv' ({self.tscv.periods_between_train_test}).")
-
-            coverage_list.append(config.coverage)
-
             # Computes pipeline parameters
             pipeline_params = self.forecaster.apply_forecast_config(
                 df=self.df,
                 config=config)
+
+            # Checks forecast_horizon
+            if pipeline_params["forecast_horizon"] != self.tscv.forecast_horizon:
+                raise ValueError(f"{config_name}'s 'forecast_horizon' ({config.forecast_horizon}) does "
+                                 f"not match that of 'tscv' ({self.tscv.forecast_horizon}).")
+
+            # Checks periods_between_train_test
+            if pipeline_params["periods_between_train_test"] is None:
+                pipeline_params["periods_between_train_test"] = 0
+            if pipeline_params["periods_between_train_test"] != self.tscv.periods_between_train_test:
+                raise ValueError(f"{config_name}'s 'periods_between_train_test' ({pipeline_params['periods_between_train_test']}) "
+                                 f"does not match that of 'tscv' ({self.tscv.periods_between_train_test}).")
+
             self.result[config_name] = dict(pipeline_params=pipeline_params)
+            coverage_list.append(config.coverage)
 
         # Checks all coverages are same
         if coverage_list[1:] != coverage_list[:-1]:

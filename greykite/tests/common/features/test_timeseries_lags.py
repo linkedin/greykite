@@ -7,6 +7,7 @@ from greykite.common.features.timeseries_lags import build_autoreg_df
 from greykite.common.features.timeseries_lags import build_autoreg_df_multi
 from greykite.common.features.timeseries_lags import build_lag_df
 from greykite.common.features.timeseries_lags import min_max_lag_order
+from greykite.common.python_utils import assert_equal
 
 
 def test_build_lag_df():
@@ -220,6 +221,15 @@ def test_build_agg_lag_df():
         "aggregated lags are not correct")
     assert agg_lag_df["x_avglag_1_to_8"].values[7].round(1) == 2.3, (
         "aggregated lags are not correct")
+
+    # agg_func "mean" produces the same result
+    assert_equal(agg_lag_df, build_agg_lag_df(
+        value_col="x",
+        df=df,
+        orders_list=[[1, 2, 5], [1, 3, 8], [2, 3, 4]],
+        interval_list=[(1, 5), (1, 8)],
+        agg_func="mean",
+        agg_name="avglag")["agg_lag_df"])
 
     # check for Exception being raised for repeated orders
     with pytest.raises(

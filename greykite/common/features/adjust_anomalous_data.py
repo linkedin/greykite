@@ -28,8 +28,9 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from greykite.common.constants import END_DATE_COL
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import ANOMALY_COL
+from greykite.common.constants import END_TIME_COL
+from greykite.common.constants import START_TIME_COL
 
 
 def adjust_anomalous_data(
@@ -37,8 +38,8 @@ def adjust_anomalous_data(
         time_col,
         value_col,
         anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=None,
         filter_by_dict=None,
         filter_by_value_col=None,
@@ -77,8 +78,8 @@ def adjust_anomalous_data(
 
         This dataframe must include these two columns:
 
-            - ``start_date_col``
-            - ``end_date_col``
+            - ``start_time_col``
+            - ``end_time_col``
 
         and include
 
@@ -91,8 +92,8 @@ def adjust_anomalous_data(
         Here is an example::
 
             anomaly_df = pd.DataFrame({
-                "start_date": ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"],
-                "end_date": ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"],
+                "start_time": ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"],
+                "end_time": ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"],
                 "adjustment_delta": [np.nan, 3, -5, np.nan],
                 # extra columns for filtering
                 "metric": ["y", "y", "z", "z"],
@@ -102,8 +103,8 @@ def adjust_anomalous_data(
 
         In the above example,
 
-            - "start_date" is the start date of the anomaly, which is provided using the argument ``start_date_col``.
-            - "end_date" is the end date of the anomaly, which is provided using the argument ``end_date_col``.
+            - "start_time" is the start date of the anomaly, which is provided using the argument ``start_time_col``.
+            - "end_time" is the end date of the anomaly, which is provided using the argument ``end_time_col``.
             - "adjustment_delta" is the column which includes the delta if it is known. The name of this
               column is provided using the argument ``adjustment_delta_col``. Use `numpy.nan` if the
               adjustment size is not known, and the adjusted value will be set to `numpy.nan`.
@@ -112,11 +113,11 @@ def adjust_anomalous_data(
               ``filter_by_dict` is used to filter on these columns to get the relevant
               anomalies for the timeseries represented by ``df[value_col]``.
 
-    start_date_col : `str`, default ``START_DATE_COL``
+    start_time_col : `str`, default ``START_TIME_COL``
         The column name in ``anomaly_df`` representing the start timestamp of
         the anomalous period, inclusive.
         The format can be anything that can be parsed by pandas DatetimeIndex.
-    end_date_col : `str`, default ``END_DATE_COL``
+    end_time_col : `str`, default ``END_TIME_COL``
         The column name in anomaly_df representing the start timestamp of
         the anomalous period, inclusive.
         The format can be anything that can be parsed by pandas DatetimeIndex.
@@ -167,13 +168,18 @@ def adjust_anomalous_data(
             ``value_col`` updated to the adjusted values.
         - "augmented_df": `pandas.DataFrame`
             A dataframe identical to the input dataframe ``df``, with
-            one extra column for the adjusted values: ``f"adjusted_{value_col}"``.
+            two extra columns
+
+            - ANOMALY_COL: Anomaly labels for the time series.
+            1 and 0 indicates anomalous and non-anomalous points, respectively.
+            - ``f"adjusted_{value_col}"``: Adjusted values.
+
             ``value_col`` retains the original values.
             This is useful to inspect which values have changed.
-
     """
     df = df.copy()
     augmented_df = df.copy()
+    augmented_df[ANOMALY_COL] = 0
     anomaly_df = anomaly_df.copy()
     new_value_col = f"adjusted_{value_col}"
 
@@ -215,22 +221,23 @@ def adjust_anomalous_data(
     augmented_df[new_value_col] = augmented_df[value_col]
     try:
         time_values = pd.to_datetime(augmented_df[time_col])
-        anomaly_df[start_date_col] = pd.to_datetime(anomaly_df[start_date_col])
-        anomaly_df[end_date_col] = pd.to_datetime(anomaly_df[end_date_col])
+        anomaly_df[start_time_col] = pd.to_datetime(anomaly_df[start_time_col])
+        anomaly_df[end_time_col] = pd.to_datetime(anomaly_df[end_time_col])
     except Exception as e:
         warnings.warn(f"Dates could not be parsed by `pandas.to_datetime`, using string comparison "
                       f"for dates instead. Error message:\n{e}")
         time_values = augmented_df[time_col].astype(str)
-        anomaly_df[start_date_col] = anomaly_df[start_date_col].astype(str)
-        anomaly_df[end_date_col] = anomaly_df[end_date_col].astype(str)
+        anomaly_df[start_time_col] = anomaly_df[start_time_col].astype(str)
+        anomaly_df[end_time_col] = anomaly_df[end_time_col].astype(str)
     for i in range(anomaly_df.shape[0]):
         row = anomaly_df.iloc[i]
-        t1 = row[start_date_col]
-        t2 = row[end_date_col]
+        t1 = row[start_time_col]
+        t2 = row[end_time_col]
         if t2 < t1:
             raise ValueError(
                 f"End Time: {t2} cannot be before Start Time: {t1}, in ``anomaly_df``.")
         bool_index = (time_values >= t1) & (time_values <= t2)
+        augmented_df.loc[bool_index, ANOMALY_COL] = 1
 
         if adjustment_delta_col is not None:
             delta = row[adjustment_delta_col]

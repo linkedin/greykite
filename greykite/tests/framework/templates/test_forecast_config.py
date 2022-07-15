@@ -48,7 +48,7 @@ def assert_default_forecast_config(config: Optional[ForecastConfig] = None):
     """Asserts for the default ForecastConfig values"""
     try:
         config = ForecastConfigDefaults().apply_forecast_config_defaults(config)
-        assert config.model_template == ModelTemplateEnum.SILVERKITE.name
+        assert config.model_template == ModelTemplateEnum.AUTO.name
         assert config.metadata_param.time_col == TIME_COL
         assert config.metadata_param.value_col == VALUE_COL
         assert config.evaluation_period_param.periods_between_train_test is None

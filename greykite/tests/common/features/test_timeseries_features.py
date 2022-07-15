@@ -100,12 +100,16 @@ def test_build_time_features_df():
     assert time_df["hour"][0] == 0
     assert time_df["minute"][0] == 0
     assert time_df["second"][0] == 0
+    assert time_df["year_quarter"][24*80] == "2019-1"
     assert time_df["year_month"][0] == "2019-01"
     assert time_df["year_woy"][0] == "2019_01"
     assert time_df["month_dom"][0] == "01/01"
     assert time_df["year_woy_dow"][0] == "2019_01_2"
     assert time_df["dow_hr"][0] == "2_00"
     assert time_df["dow_hr_min"][0] == "2_00_00"
+    assert time_df["year_iso"].iloc[-1] == 2020
+    assert time_df["year_woy_iso"].iloc[-1] == "2020_01"
+    assert time_df["year_woy_dow_iso"].iloc[-1] == "2020_01_2"
     assert time_df["tod"][0] == 0.0
     assert time_df["tow"][0] == 1.0
     assert time_df["tom"][0] == 0.0 / 31
@@ -253,7 +257,7 @@ def test_get_holidays():
     assert uk_df.loc[row_index, EVENT_DF_LABEL_COL].values[0] == "Good Friday"
     us_df = res_code["US"]
     row_index = us_df[EVENT_DF_DATE_COL] == "2017-01-16"
-    assert us_df.loc[row_index, EVENT_DF_LABEL_COL].values[0] == "Martin Luther King, Jr. Day"
+    assert us_df.loc[row_index, EVENT_DF_LABEL_COL].values[0] == "Martin Luther King Jr. Day"
     cn_df = res_code["CN"]
     row_index = cn_df[EVENT_DF_DATE_COL] == "2017-01-28"
     assert cn_df.loc[row_index, EVENT_DF_LABEL_COL].values[0] == "Chinese New Year"
@@ -272,6 +276,9 @@ def test_get_holidays():
     for code_name, full_name in names:
         assert res_code[code_name].equals(res_full[full_name])
 
+    for country, holidays in res_full.items():
+        assert holidays[EVENT_DF_LABEL_COL].str.contains("/").sum() == 0, "Holiday names cannot contain '/'!"
+
     with pytest.raises(AttributeError, match="Holidays in unknown country are not currently supported!"):
         get_holidays(["unknown country"], year_start=2017, year_end=2025)
 
@@ -281,7 +288,7 @@ def test_get_available_holiday_lookup_countries():
     valid_countries = get_available_holiday_lookup_countries()
     assert "Croatia" in valid_countries
     assert "datetime" not in valid_countries  # imported classes are excluded
-    assert len(valid_countries) == 112
+    assert len(valid_countries) == 289
 
     countries = ["IN", "India", "US", "UnitedStates", "UK"]
     valid_countries = get_available_holiday_lookup_countries(countries)
@@ -313,8 +320,10 @@ def test_get_available_holidays_in_countries():
         "Columbus Day",
         "Independence Day",
         "Independence Day (Observed)",
+        "Juneteenth National Independence Day",
+        "Juneteenth National Independence Day (Observed)",
         "Labor Day",
-        "Martin Luther King, Jr. Day",
+        "Martin Luther King Jr. Day",
         "Memorial Day",
         "New Year's Day",
         "New Year's Day (Observed)",
@@ -338,8 +347,10 @@ def test_get_available_holidays_across_countries():
         "Dragon Boat Festival",
         "Independence Day",
         "Independence Day (Observed)",
+        "Juneteenth National Independence Day",
+        "Juneteenth National Independence Day (Observed)",
         "Labor Day",
-        "Martin Luther King, Jr. Day",
+        "Martin Luther King Jr. Day",
         "Memorial Day",
         "Mid-Autumn Festival",
         "National Day",

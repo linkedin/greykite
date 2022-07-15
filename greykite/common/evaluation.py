@@ -155,7 +155,7 @@ def valid_elements_for_evaluation(
 
     # Keeps these indices in all arrays. Leaves float, int, and None as-is
     return [array[keep] for array in reference_arrays] + [np.array(array)[keep] if (
-            array is not None and not isinstance(array, float) and not isinstance(array, int))
+            array is not None and not isinstance(array, (float, int, np.float32)))
                                                           else array
                                                           for array in arrays]
 
@@ -344,7 +344,7 @@ def r2_null_model_score(
             y_pred_null = np.repeat(y_train.mean(), len(y_true))
         elif y_pred_null is None:  # from test data
             y_pred_null = np.repeat(y_true.mean(), len(y_true))
-        elif isinstance(y_pred_null, float) or isinstance(y_pred_null, int):  # constant null model
+        elif isinstance(y_pred_null, (float, int, np.float32)):  # constant null model
             y_pred_null = np.repeat(y_pred_null, len(y_true))
         # otherwise, y_pred_null is an array, used directly
 

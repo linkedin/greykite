@@ -40,6 +40,7 @@ from typing import Type
 from typing import Union
 
 from greykite.algo.forecast.silverkite.constants.silverkite_holiday import SilverkiteHoliday
+from greykite.common.constants import GrowthColEnum
 from greykite.common.python_utils import mutable_field
 from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
 
@@ -230,6 +231,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
     SEAS=dict(
         HOURLY=dict(
             LT={
+                "auto_seasonality": False,
                 "yearly_seasonality": 8,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -237,6 +239,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 5
             },
             NM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 15,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -244,6 +247,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 8
             },
             HV={
+                "auto_seasonality": False,
                 "yearly_seasonality": 25,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -251,6 +255,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 12
             },
             LTQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 8,
                 "quarterly_seasonality": 2,
                 "monthly_seasonality": 2,
@@ -258,6 +263,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 5
             },
             NMQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 15,
                 "quarterly_seasonality": 3,
                 "monthly_seasonality": 3,
@@ -265,6 +271,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 8
             },
             HVQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 25,
                 "quarterly_seasonality": 4,
                 "monthly_seasonality": 4,
@@ -272,6 +279,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 12
             },
             NONE={
+                "auto_seasonality": False,
                 "yearly_seasonality": 0,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -281,6 +289,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
         ),
         DAILY=dict(
             LT={
+                "auto_seasonality": False,
                 "yearly_seasonality": 8,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -288,6 +297,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             NM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 15,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -295,6 +305,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             HV={
+                "auto_seasonality": False,
                 "yearly_seasonality": 25,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -302,6 +313,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             LTQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 8,
                 "quarterly_seasonality": 3,
                 "monthly_seasonality": 2,
@@ -309,6 +321,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             NMQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 15,
                 "quarterly_seasonality": 4,
                 "monthly_seasonality": 4,
@@ -316,6 +329,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             HVQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 25,
                 "quarterly_seasonality": 6,
                 "monthly_seasonality": 4,
@@ -323,6 +337,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             NONE={
+                "auto_seasonality": False,
                 "yearly_seasonality": 0,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -332,6 +347,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
         ),
         WEEKLY=dict(
             LT={
+                "auto_seasonality": False,
                 "yearly_seasonality": 8,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -339,6 +355,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             NM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 15,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -346,6 +363,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             HV={
+                "auto_seasonality": False,
                 "yearly_seasonality": 25,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -353,6 +371,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             LTQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 8,
                 "quarterly_seasonality": 2,
                 "monthly_seasonality": 2,
@@ -360,6 +379,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             NMQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 15,
                 "quarterly_seasonality": 3,
                 "monthly_seasonality": 3,
@@ -367,6 +387,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             HVQM={
+                "auto_seasonality": False,
                 "yearly_seasonality": 25,
                 "quarterly_seasonality": 4,
                 "monthly_seasonality": 4,
@@ -374,6 +395,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
                 "daily_seasonality": 0
             },
             NONE={
+                "auto_seasonality": False,
                 "yearly_seasonality": 0,
                 "quarterly_seasonality": 0,
                 "monthly_seasonality": 0,
@@ -384,7 +406,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
     # Growth function.
     GR=dict(
         LINEAR={
-            "growth_term": "linear"
+            "growth_term": GrowthColEnum.linear.name
         },
         NONE={
             "growth_term": None
@@ -484,6 +506,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
     # Holiday effect.
     HOL=dict(
         SP1={
+            "auto_holiday": False,
             "holidays_to_model_separately": "auto",
             "holiday_lookup_countries": "auto",
             "holiday_pre_num_days": 1,
@@ -492,6 +515,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "daily_event_df_dict": None,
         },
         SP2={
+            "auto_holiday": False,
             "holidays_to_model_separately": "auto",
             "holiday_lookup_countries": "auto",
             "holiday_pre_num_days": 2,
@@ -500,6 +524,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "daily_event_df_dict": None,
         },
         SP4={
+            "auto_holiday": False,
             "holidays_to_model_separately": "auto",
             "holiday_lookup_countries": "auto",
             "holiday_pre_num_days": 4,
@@ -508,6 +533,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "daily_event_df_dict": None,
         },
         TG={
+            "auto_holiday": False,
             "holidays_to_model_separately": [],
             "holiday_lookup_countries": "auto",
             "holiday_pre_num_days": 3,
@@ -516,6 +542,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "daily_event_df_dict": None,
         },
         NONE={
+            "auto_holiday": False,
             "holidays_to_model_separately": [],
             "holiday_lookup_countries": [],
             "holiday_pre_num_days": 0,
@@ -550,11 +577,13 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
     AR=dict(
         AUTO={
             "autoreg_dict": "auto",
-            "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+            "simulation_num": 10,  # simulation is not triggered with ``autoreg_dict="auto"``
+            "fast_simulation": False
         },
         OFF={
             "autoreg_dict": None,
-            "simulation_num": 10  # simulation is not triggered with ``autoreg_dict=None``
+            "simulation_num": 10,  # simulation is not triggered with ``autoreg_dict=None``
+            "fast_simulation": False
         }),
     # Max daily/weekly seasonality interaction orders.
     DSI=dict(
@@ -598,6 +627,7 @@ feature sets, autoregression, fit algorithm, etc. These are used when
 # Defines the SILVERKITE template here.
 SILVERKITE = ModelComponentsParam(
     seasonality={
+        "auto_seasonality": False,
         "yearly_seasonality": "auto",
         "quarterly_seasonality": "auto",
         "monthly_seasonality": "auto",
@@ -605,9 +635,10 @@ SILVERKITE = ModelComponentsParam(
         "daily_seasonality": "auto",
     },
     growth={
-        "growth_term": "linear"
+        "growth_term": GrowthColEnum.linear.name
     },
     events={
+        "auto_holiday": False,
         "holidays_to_model_separately": "auto",
         "holiday_lookup_countries": "auto",
         "holiday_pre_num_days": 2,
@@ -616,71 +647,22 @@ SILVERKITE = ModelComponentsParam(
         "daily_event_df_dict": None,
     },
     changepoints={
-        "changepoints_dict": None,
-        "seasonality_changepoints_dict": None
-    },
-    autoregression={
-        "autoreg_dict": None,
-        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict=None``
-    },
-    regressors={
-        "regressor_cols": []
-    },
-    lagged_regressors={
-        "lagged_regressor_dict": None
-    },
-    uncertainty={
-        "uncertainty_dict": None
-    },
-    custom={
-        "fit_algorithm_dict": {
-            "fit_algorithm": "ridge",
-            "fit_algorithm_params": None,
+        "auto_growth": False,
+        "changepoints_dict": {
+            "method": "auto",
+            "yearly_seasonality_order": 15,
+            "resample_freq": "3D",
+            "regularization_strength": 0.6,
+            "actual_changepoint_min_distance": "30D",
+            "potential_changepoint_distance": "15D",
+            "no_changepoint_distance_from_end": "90D"
         },
-        "feature_sets_enabled": "auto",  # "auto" based on data freq and size
-        "max_daily_seas_interaction_order": 5,
-        "max_weekly_seas_interaction_order": 2,
-        "extra_pred_cols": [],
-        "drop_pred_cols": None,
-        "explicit_pred_cols": None,
-        "min_admissible_value": None,
-        "max_admissible_value": None,
-        "regression_weight_col": None,
-        "normalize_method": None
-    }
-)
-"""Defines the ``SILVERKITE`` template. Contains automatic growth,
-seasonality, holidays, and interactions. Does not include autoregression.
-Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.
-"""
-
-# Defines the SILVERKITE_WITH_AR template here.
-SILVERKITE_WITH_AR = ModelComponentsParam(
-    seasonality={
-        "yearly_seasonality": "auto",
-        "quarterly_seasonality": "auto",
-        "monthly_seasonality": "auto",
-        "weekly_seasonality": "auto",
-        "daily_seasonality": "auto",
-    },
-    growth={
-        "growth_term": "linear"
-    },
-    events={
-        "holidays_to_model_separately": "auto",
-        "holiday_lookup_countries": "auto",
-        "holiday_pre_num_days": 2,
-        "holiday_post_num_days": 2,
-        "holiday_pre_post_num_dict": None,
-        "daily_event_df_dict": None,
-    },
-    changepoints={
-        "changepoints_dict": None,
         "seasonality_changepoints_dict": None
     },
     autoregression={
         "autoreg_dict": "auto",
-        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+        "simulation_num": 10,  # simulation is not triggered with ``autoreg_dict="auto"``
+        "fast_simulation": False
     },
     regressors={
         "regressor_cols": []
@@ -705,13 +687,15 @@ SILVERKITE_WITH_AR = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": None
+        "normalize_method": "zero_to_one"
     }
 )
-"""Defines the ``SILVERKITE_WITH_AR`` template.
-Has the same config as ``SILVERKITE`` except for adding autoregression.
-Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.
+"""Defines the ``SILVERKITE`` template. Contains automatic growth,
+seasonality, holidays, autoregression and interactions.
+Uses "zero_to_one" normalization method.
+Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.
 """
+
 
 # Defines the `SILVERKITE_EMPTY` template. Everything here is None or off.
 # The "DAILY" here does not make any difference from "HOURLY" or "WEEKLY" when everything is None or off.
@@ -724,6 +708,7 @@ SILVERKITE_EMPTY = "DAILY_SEAS_NONE_GR_NONE_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LIN
 # are tuned specifically for 1-day forecast.
 SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
     seasonality={
+        "auto_seasonality": False,
         "yearly_seasonality": 8,
         "quarterly_seasonality": 0,
         "monthly_seasonality": 7,
@@ -731,9 +716,10 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
         "daily_seasonality": 0,
     },
     growth={
-        "growth_term": "linear"
+        "growth_term": GrowthColEnum.linear.name
     },
     events={
+        "auto_holiday": False,
         "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
         "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
         "holiday_pre_num_days": 2,
@@ -742,6 +728,7 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
         "daily_event_df_dict": None,
     },
     changepoints={
+        "auto_growth": False,
         "changepoints_dict": {
             "method": "auto",
             "resample_freq": "7D",
@@ -755,7 +742,8 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
     },
     autoregression={
         "autoreg_dict": "auto",
-        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+        "simulation_num": 10,  # simulation is not triggered with ``autoreg_dict="auto"``
+        "fast_simulation": False
     },
     regressors={
         "regressor_cols": []
@@ -780,12 +768,13 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": None
+        "normalize_method": "zero_to_one"
     }
 )
 
 SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
     seasonality={
+        "auto_seasonality": False,
         "yearly_seasonality": 1,
         "quarterly_seasonality": 0,
         "monthly_seasonality": 4,
@@ -793,9 +782,10 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
         "daily_seasonality": 0,
     },
     growth={
-        "growth_term": "linear"
+        "growth_term": GrowthColEnum.linear.name
     },
     events={
+        "auto_holiday": False,
         "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
         "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
         "holiday_pre_num_days": 2,
@@ -804,6 +794,7 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
         "daily_event_df_dict": None,
     },
     changepoints={
+        "auto_growth": False,
         "changepoints_dict": {
             "method": "auto",
             "resample_freq": "7D",
@@ -817,7 +808,8 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
     },
     autoregression={
         "autoreg_dict": "auto",
-        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+        "simulation_num": 10,  # simulation is not triggered with ``autoreg_dict="auto"``
+        "fast_simulation": False
     },
     regressors={
         "regressor_cols": []
@@ -842,12 +834,13 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": None
+        "normalize_method": "zero_to_one"
     }
 )
 
 SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
     seasonality={
+        "auto_seasonality": False,
         "yearly_seasonality": 40,
         "quarterly_seasonality": 0,
         "monthly_seasonality": 0,
@@ -855,9 +848,10 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
         "daily_seasonality": 0,
     },
     growth={
-        "growth_term": "linear"
+        "growth_term": GrowthColEnum.linear.name
     },
     events={
+        "auto_holiday": False,
         "holidays_to_model_separately": SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO,
         "holiday_lookup_countries": SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO,
         "holiday_pre_num_days": 2,
@@ -866,6 +860,7 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
         "daily_event_df_dict": None,
     },
     changepoints={
+        "auto_growth": False,
         "changepoints_dict": {
             "method": "auto",
             "resample_freq": "7D",
@@ -879,7 +874,8 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
     },
     autoregression={
         "autoreg_dict": "auto",
-        "simulation_num": 10  # simulation is not triggered with ``autoreg_dict="auto"``
+        "simulation_num": 10,  # simulation is not triggered with ``autoreg_dict="auto"``
+        "fast_simulation": False
     },
     regressors={
         "regressor_cols": []
@@ -904,9 +900,90 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": None
+        "normalize_method": "zero_to_one"
     }
 )
+
+# Defines the SILVERKITE monthly template here.
+SILVERKITE_MONTHLY = ModelComponentsParam(
+    seasonality={
+        "auto_seasonality": False,
+        "yearly_seasonality": False,
+        "quarterly_seasonality": False,
+        "monthly_seasonality": False,
+        "weekly_seasonality": False,
+        "daily_seasonality": False,
+    },
+    growth={
+        "growth_term": GrowthColEnum.linear.name
+    },
+    events={
+        "auto_holiday": False,
+        "holidays_to_model_separately": [],
+        "holiday_lookup_countries": [],
+        "holiday_pre_num_days": 0,
+        "holiday_post_num_days": 0,
+        "holiday_pre_post_num_dict": None,
+        "daily_event_df_dict": None,
+    },
+    changepoints={
+        "auto_growth": False,
+        "changepoints_dict": {
+            "method": "auto",
+            "regularization_strength": 0.6,
+            "resample_freq": "28D",  # no effect for monthly data if less than or equal to 28 days
+            "potential_changepoint_distance": "180D",
+            "potential_changepoint_n_max": 100,
+            "actual_changepoint_min_distance": "730D",
+            "no_changepoint_distance_from_end": "180D",
+            "yearly_seasonality_order": 6
+        },
+        "seasonality_changepoints_dict": None
+    },
+    autoregression={
+        "autoreg_dict": {
+            "lag_dict": None,
+            "agg_lag_dict": {
+                "orders_list": [[1, 2, 3]]  # uses aggregated lags
+            }
+        },
+        "simulation_num": 50,  # `simulation_num` is not used when `fast_simulation` is True
+        "fast_simulation": True
+    },
+    regressors={
+        "regressor_cols": []
+    },
+    lagged_regressors={
+        "lagged_regressor_dict": None
+    },
+    uncertainty={
+        "uncertainty_dict": None
+    },
+    custom={
+        "fit_algorithm_dict": {
+            "fit_algorithm": "ridge",
+            "fit_algorithm_params": None,
+        },
+        "feature_sets_enabled": False,
+        "max_daily_seas_interaction_order": 0,
+        "max_weekly_seas_interaction_order": 0,
+        "extra_pred_cols": [
+            "y_avglag_1_2_3*C(month, levels=list(range(1, 13)))", "C(month, levels=list(range(1, 13)))"],
+        "drop_pred_cols": None,
+        "explicit_pred_cols": None,
+        "min_admissible_value": None,
+        "max_admissible_value": None,
+        "regression_weight_col": None,
+        "normalize_method": "zero_to_one"
+    }
+)
+"""Defines the ``SILVERKITE_MONTHLY`` template. Contains automatic growth.
+Seasonality is modeled via categorical variable "month".
+Includes aggregated autoregression.
+Simulation is needed when forecast horizon is greater than 1.
+Uses statistical normalization method. Uses `SimpleSilverkiteEstimator`.
+"""
+
 
 SILVERKITE_DAILY_1 = ["SILVERKITE_DAILY_1_CONFIG_1", "SILVERKITE_DAILY_1_CONFIG_2", "SILVERKITE_DAILY_1_CONFIG_3"]
 """Defines the ``SILVERKITE_DAILY_1`` template, which contains 3 candidate configs for grid search,
@@ -945,12 +1022,8 @@ SILVERKITE_WEEKLY = [
 ]
 
 SILVERKITE_HOURLY_1 = [
-    # For hourly data, light seasonality up to daily, no trend changepoints,
-    # together holiday, default feature sets, automatic autoregression and linear fit algorithm.
-    "HOURLY_SEAS_LT_GR_LINEAR_CP_NONE_HOL_TG_FEASET_AUTO_ALGO_LINEAR_AR_AUTO",
-    # For hourly data, normal seasonality up to daily, light trend changepoints,
-    # separate holidays +- 4 days, default feature sets, automatic autoregression and linear fit algorithm.
-    "HOURLY_SEAS_NM_GR_LINEAR_CP_LT_HOL_SP4_FEASET_AUTO_ALGO_LINEAR_AR_AUTO",
+    # For hourly data, the first template is the same as the "SILVERKITE" template defined above.
+    "SILVERKITE",
     # For hourly data, light seasonality up to daily, normal trend changepoints,
     # separate holidays +- 4 days, no feature sets, automatic autoregression and ridge fit algorithm.
     "HOURLY_SEAS_LT_GR_LINEAR_CP_NM_HOL_SP4_FEASET_OFF_ALGO_RIDGE_AR_AUTO",
@@ -1058,13 +1131,13 @@ class SimpleSilverkiteTemplateConstants:
     """
     SILVERKITE: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE
     """Defines the ``"SILVERKITE"`` template. Contains automatic growth,
-    seasonality, holidays, and interactions. Does not include autoregression.
+    seasonality, holidays, autoregression and interactions.
+    Uses "zero_to_one" normalization method.
     Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.
     """
-    SILVERKITE_WITH_AR: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_WITH_AR
-    """Defines the ``SILVERKITE_WITH_AR`` template.
-    Has the same config as ``SILVERKITE`` except for adding autoregression.
-    Best for short-term daily forecasts. Uses `SimpleSilverkiteEstimator`.
+    SILVERKITE_MONTHLY: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_MONTHLY
+    """Defines the ``SILVERKITE_MONTHLY`` template.
+    Best for monthly forecasts. Uses `SimpleSilverkiteEstimator`.
     """
     SILVERKITE_DAILY_1_CONFIG_1: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_1
     """Config 1 in template ``SILVERKITE_DAILY_1``.

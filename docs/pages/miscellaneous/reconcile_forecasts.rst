@@ -17,7 +17,7 @@ takes the latter approach. You can use any algorithm to generate the base foreca
 to reconcile them.
 
 This page explains the method details. For usage and examples,
-see the `tutorial <../../gallery/tutorials/0600_reconcile_forecasts>`_.
+see the tutorial (:doc:`/gallery/quickstart/04_postprocessing/0100_reconcile_forecasts`).
 
 Intuition
 ---------
@@ -212,7 +212,7 @@ can still be used to fine tune the adjustment:
 * Setting :math:`W_{adj}` inversely proportional to the base forecast error for each
   time series puts greater penalty on adjustments to base forecasts that are already accurate.
 
-See the `tutorial <../../gallery/tutorials/0600_reconcile_forecasts>`_
+See the tutorial (:doc:`/gallery/quickstart/04_postprocessing/0100_reconcile_forecasts`)
 for details and suggested settings.
 
 Related methods

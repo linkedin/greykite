@@ -16,7 +16,7 @@ from greykite.common.python_utils import assert_equal
 def test_model_summary():
     # sets up data
     np.random.seed(1)
-    x = np.concatenate([np.ones([100, 2]), np.random.randn(100, 4)], axis=1)
+    x = np.concatenate([np.ones([100, 1]), np.random.randn(100, 5)], axis=1)
     beta = np.array([1, 1, 1, 1, 0, 0])
     y = np.exp(np.matmul(x, beta))
     pred_cols = ["Intercept",
@@ -57,7 +57,7 @@ def test_model_summary():
         "statsmodels_glm": dict(family=sm.families.Gamma()),
         "linear": dict(),
         "elastic_net": dict(cv=5),
-        "ridge": dict(cv=5, alphas=np.logspace(-5, 5, 100)),
+        "ridge": dict(cv=5, alphas=np.logspace(-5, 5, 30)),
         "lasso": dict(cv=5),
         "sgd": dict(),
         "lars": dict(cv=5),

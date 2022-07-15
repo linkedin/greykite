@@ -29,7 +29,7 @@ def impute_with_lags(
         df,
         value_col,
         orders,
-        agg_func=np.mean,
+        agg_func="mean",
         iter_num=1):
     """A function to impute timeseries values (given in ``df``) and in ``value_col``
     with chosen lagged values or an aggregated of those.
@@ -52,9 +52,10 @@ def impute_with_lags(
         The column name in ``df`` representing the values of the timeseries.
     orders : list of `int`
         The lag orders to be used for aggregation.
-    agg_func : callable, default `np.mean`
+    agg_func : "mean" or callable, default: "mean"
         `pandas.Series` -> `float`
         An aggregation function to aggregate the chosen lags.
+        If "mean", uses `pandas.DataFrame.mean`.
     iter_num : `int`, default `1`
         Maximum number of iterations to impute the series.
         Each iteration represent an imputation of the series using the provided
@@ -82,13 +83,18 @@ def impute_with_lags(
 
     def nan_agg_func(x):
         """To avoid warnings due to aggregation performed on sub-series
-        with only NAs, we define an internal modified version of ``agg_func``
+        with only NAs, we define an internal modified version of ``agg_func``.
+
+        Note that `np.mean` passed to `pandas.DataFrame.apply` ignores NAs and
+        already has the same effect as `np.nanmean`.
         """
         x = x.dropna()
         if len(x) == 0:
             return np.nan
         else:
             return agg_func(x)
+
+    safe_agg_func = agg_func if isinstance(agg_func, str) else nan_agg_func
 
     i = 0
     while i < iter_num and missing_num > 0:
@@ -97,7 +103,7 @@ def impute_with_lags(
             df=df,
             orders_list=[orders],
             interval_list=[],
-            agg_func=nan_agg_func,
+            agg_func=safe_agg_func,
             agg_name="avglag")
 
         agg_lag_df = agg_lag_info["agg_lag_df"]

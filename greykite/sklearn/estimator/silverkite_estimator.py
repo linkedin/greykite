@@ -25,10 +25,10 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 
 from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteForecast
-from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.common import constants as cst
 from greykite.common.python_utils import update_dictionary
 from greykite.sklearn.estimator.base_silverkite_estimator import BaseSilverkiteEstimator
+from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 
 
 class SilverkiteEstimator(BaseSilverkiteEstimator):
@@ -105,6 +105,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             score_func=mean_squared_error,
             coverage=None,
             null_model_params=None,
+            freq=None,
             origin_for_time_vars=None,
             extra_pred_cols=None,
             drop_pred_cols=None,
@@ -114,7 +115,10 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             fit_algorithm_dict=None,
             daily_event_df_dict=None,
             fs_components_df=pd.DataFrame({
-                "name": ["tod", "tow", "conti_year"],
+                "name": [
+                    cst.TimeFeaturesEnum.tod.value,
+                    cst.TimeFeaturesEnum.tow.value,
+                    cst.TimeFeaturesEnum.conti_year.value],
                 "period": [24.0, 7.0, 1.0],
                 "order": [3, 3, 5],
                 "seas_names": ["daily", "weekly", "yearly"]}),
@@ -133,7 +137,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             regression_weight_col=None,
             forecast_horizon=None,
             simulation_based=False,
-            simulation_num=10):
+            simulation_num=10,
+            fast_simulation=False):
         # every subclass of BaseSilverkiteEstimator must call super().__init__
         super().__init__(
             silverkite=silverkite,
@@ -148,6 +153,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.score_func = score_func
         self.coverage = coverage
         self.null_model_params = null_model_params
+        self.freq = freq
         self.origin_for_time_vars = origin_for_time_vars
         self.extra_pred_cols = extra_pred_cols
         self.drop_pred_cols = drop_pred_cols
@@ -173,6 +179,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.forecast_horizon = forecast_horizon
         self.simulation_based = simulation_based
         self.simulation_num = simulation_num
+        self.fast_simulation = fast_simulation
         self.validate_inputs()
 
     def validate_inputs(self):
@@ -230,6 +237,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             df=X,
             time_col=time_col,
             value_col=value_col,
+            freq=self.freq,
             origin_for_time_vars=self.origin_for_time_vars,
             extra_pred_cols=self.extra_pred_cols,
             drop_pred_cols=self.drop_pred_cols,
@@ -255,7 +263,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             regression_weight_col=self.regression_weight_col,
             forecast_horizon=self.forecast_horizon,
             simulation_based=self.simulation_based,
-            simulation_num=self.simulation_num)
+            simulation_num=self.simulation_num,
+            fast_simulation=self.fast_simulation)
         # sets attributes based on ``self.model_dict``
         super().finish_fit()
 

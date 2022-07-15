@@ -3,9 +3,7 @@ from copy import deepcopy
 import numpy as np
 import pandas as pd
 import pytest
-from testfixtures import LogCapture
 
-from greykite.common.constants import LOGGER_NAME
 from greykite.common.constants import PREDICTED_COL
 from greykite.common.constants import PREDICTED_LOWER_COL
 from greykite.common.constants import PREDICTED_UPPER_COL
@@ -77,20 +75,6 @@ def test_check_input(df, uncertainty_dict):
         model.train_df = df[[TIME_COL]]
         model._check_input()
 
-    # ``value_col`` is not a string.
-    with pytest.raises(
-            UncertaintyError,
-            match="`value_col` has to be a string, but found "):
-        uncertainty_dict1 = deepcopy(uncertainty_dict)
-        uncertainty_dict1["params"]["value_col"] = 1
-        model = SimpleConditionalResidualsModel(
-            uncertainty_dict=uncertainty_dict1,
-            coverage=0.95,
-            time_col=TIME_COL
-        )
-        model.train_df = df
-        model._check_input()
-
     # ``value_col`` not in ``train_df``.
     with pytest.raises(
             UncertaintyError,
@@ -105,45 +89,13 @@ def test_check_input(df, uncertainty_dict):
         model.train_df = df
         model._check_input()
 
-    # ``residual_col`` is not a string.
-    with pytest.raises(
-            UncertaintyError,
-            match="`residual_col` has to be a string or None, but found "):
-        uncertainty_dict1 = deepcopy(uncertainty_dict)
-        uncertainty_dict1["params"]["residual_col"] = 1
-        model = SimpleConditionalResidualsModel(
-            uncertainty_dict=uncertainty_dict1,
-            coverage=0.95,
-            time_col=TIME_COL
-        )
-        model.train_df = df
-        model._check_input()
-
-    # ``residual_col`` inferred from data.
-    with LogCapture(LOGGER_NAME) as log_capture:
-        uncertainty_dict1 = deepcopy(uncertainty_dict)
-        uncertainty_dict1["params"]["residual_col"] = "residual_col"
-        model = SimpleConditionalResidualsModel(
-            uncertainty_dict=uncertainty_dict1,
-            coverage=0.95,
-            time_col=TIME_COL
-        )
-        model.train_df = df
-        model._check_input()
-        assert (
-                   LOGGER_NAME,
-                   "INFO",
-                   f"`residual_col` {model.residual_col} is given but not found in `train_df.columns`, "
-                   f"however, the prediction column {PREDICTED_COL} is found. "
-                   f"Calculating residuals based on the prediction column."
-               ) in log_capture.actual()
-
     # ``conditional_cols`` not a list of strings.
     with pytest.raises(
             UncertaintyError,
             match="`conditional_cols` \\['a', 1\\] must be a list of strings."):
         uncertainty_dict1 = deepcopy(uncertainty_dict)
         uncertainty_dict1["params"]["conditional_cols"] = ["a", 1]
+        uncertainty_dict1["params"]["value_col"] = "y"
         model = SimpleConditionalResidualsModel(
             uncertainty_dict=uncertainty_dict1,
             coverage=0.95,
@@ -168,10 +120,24 @@ def test_check_input(df, uncertainty_dict):
 
     # ``coverage`` is not in bound.
     with pytest.raises(
-            UncertaintyError,
-            match="Coverage must be between 0 and 1, found 1.95"):
+            ValueError,
+            match="coverage must be between 0 and 1"):
         model = SimpleConditionalResidualsModel(
             uncertainty_dict=uncertainty_dict,
+            coverage=1.95,
+            time_col=TIME_COL
+        )
+        model.train_df = df
+        model._check_input()
+
+    # ``is_residual_based`` is False
+    with pytest.raises(
+            UncertaintyError,
+            match="\\'is_residual_based\\' must be True when the uncertainty method is simple_conditional_residuals."):
+        uncertainty_dict1 = deepcopy(uncertainty_dict)
+        uncertainty_dict1["params"]["is_residual_based"] = False
+        model = SimpleConditionalResidualsModel(
+            uncertainty_dict=uncertainty_dict1,
             coverage=1.95,
             time_col=TIME_COL
         )
@@ -217,5 +183,5 @@ def test_fit_and_predict(df, uncertainty_dict):
     # ``value_col`` not in ``fut_df``.
     with pytest.raises(
             UncertaintyError,
-            match=f"The value column {VALUE_COL} is not found in `fut_df`."):
+            match=f"The offset column forecast is not found in `fut_df`."):
         model.predict(fut_df=df[[TIME_COL]])

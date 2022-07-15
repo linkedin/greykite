@@ -26,33 +26,54 @@ import numpy as np
 
 def estimate_empirical_distribution(
         df,
-        value_col,
+        distribution_col,
         quantile_grid_size=0.05,
-        quantiles=None,
-        conditional_cols=None):
-    """Estimates an empirical distribution for a given variable in the dataframe (df) "value_col" column
+        quantiles=(0.025, 0.975),
+        conditional_cols=None,
+        remove_conditional_mean=True):
+    """Estimates the empirical distribution for a given variable in the ``distribution_col``
+    of ``df``.
     The distribution is an approximated quantile function defined on
-    the quantiles specified in "quantiles" which are values in [0, 1]
-    The function returns, mean, and standard deviation (std) as well.
+    the quantiles specified in ``quantiles`` which are values in [0, 1].
+    The function returns mean, and standard deviation (std) as well.
 
-    :param df: the dataframe which includes the dataframe
-    :param value_col: the column name for the value column of interest
-    :param quantile_grid_size: the grid size for the quantiles.
-        E.g. if grid_size = 0.25 then the quantiles for 0.25, 0.5, 0.75 are calculated
-        If grid_size = 0.05 then then the quantiles for 0.05, 0.1, ..., 0.90, 0.95 are calculated
-    :param quantiles: the probability grid for which quantiles are calculated.
-        If None quantile_grid_size is used to generate a regularly spaced one.
-    :param conditional_cols: the grouping variables used to condition on
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        The dataframe with the following columns:
 
-    :return: The output consists of a dictionary with two dataframes
-        (1) first dataframe ("ecdf_df") with columns being
-            conditional_cols
-            mean, sd
-            quantiles (as many as specified in quantiles)
-            min, max
-            sample_size (count) for each combination
-        (2) second dataframe ("ecdf_df_overall") has only one row and returns
-            the overall mean, sd, quantiles (no conditional_cols), min, max, overall sample size (count)
+            - distribution_col,
+            - conditional_cols (optional)
+
+    distribution_col : `str`
+        The column name for the value column of interest.
+    quantile_grid_size : `float` or None
+        The grid size for the quantiles.
+        E.g. if grid_size = 0.25 then the quantiles for 0.25, 0.5, 0.75 are calculated.
+        If grid_size = 0.05 then then the quantiles for 0.05, 0.1, ..., 0.90, 0.95 are calculated.
+    quantiles : `list` [`float`] or None, default (0.025, 0.975)
+        The probability grid for which quantiles are calculated.
+        If None, ``quantile_grid_size`` is used to generate a regularly spaced quantile grid.
+    conditional_cols : `list` [`str`] or None, default None
+        These columns are used to slice the data first then calculate quantiles
+        for each slice.
+    remove_conditional_mean : `bool`, default True
+        If True, for every slice (defined by ``conditional_cols``), the conditional mean
+        is removed when calculating quantiles.
+
+    Returns
+    -------
+    model_dict : `dict`
+        A dictionary consisting two dataframes
+
+            - "ecdf_df" : `pandas.DataFrame`
+                The dataframe consists of a row for each combination of categories in
+                 ``conditional_cols``. The columns are conditional_cols, {distribution_col}_mean,
+                 {distribution_col}_std, {distribution_col}_ecdf_quantile_summary,
+                 {distribution_col}_min, {distribution_col}_max and {distribution_col}_count (sample size).
+            - "ecdf_df_overall" : `pandas.DataFrame`
+                Has only one row with the overall mean, standard deviation,
+                quantiles (no conditional_cols), min, max, overall sample size (count).
     """
     if quantiles is None:
         num = int(1.0 / quantile_grid_size - 1.0)
@@ -61,26 +82,29 @@ def estimate_empirical_distribution(
             1 - quantile_grid_size,
             num=num)
 
-    def quantile_summary(x):
-        return tuple(np.quantile(a=x, q=quantiles))
+    def ecdf_quantile_summary(x):
+        if remove_conditional_mean:
+            y = x - np.mean(x)
+        else:
+            y = x
+        return tuple(np.quantile(a=y, q=quantiles))
 
     # Aggregates w.r.t. given columns in conditional_cols
-    agg_dict = {value_col: [quantile_summary, "min", "mean", "max", "std", "count"]}
+    agg_dict = {distribution_col: [ecdf_quantile_summary, "min", "mean", "max", "std", "count"]}
     # Creates an overall distribution by simply aggregating every value column globally.
     # This is useful for cases where no matching data is available for a given combination of values in conditional_cols
     ecdf_df_overall = df.groupby([True]*len(df), as_index=False).agg(agg_dict)
     # Flattens multi-index (result of aggregation) to have flat and descriptive column names.
-    ecdf_df_overall.columns = [
-        f"{value_col}_{x}" for x in ["quantile_summary", "min", "mean", "max", "std", "count"]]
-    if conditional_cols is None:
+    ecdf_df_overall.columns = [f"{metric}_{statistics}" if statistics else metric for (metric, statistics) in ecdf_df_overall.columns]
+    if (conditional_cols is None) or (conditional_cols == []):
         ecdf_df = ecdf_df_overall
     else:
         ecdf_df = df.groupby(conditional_cols, as_index=False).agg(agg_dict)
         # Flattens multi-index (result of aggregation) to have flat and descriptive column names.
-        ecdf_df.columns = [f"{a}_{b}" if b else a for (a, b) in ecdf_df.columns]
+        ecdf_df.columns = [f"{metric}_{statistics}" if statistics else metric for (metric, statistics) in ecdf_df.columns]
 
-    model = {
+    model_dict = {
         "ecdf_df": ecdf_df,
         "ecdf_df_overall": ecdf_df_overall}
 
-    return model
+    return model_dict

@@ -11,7 +11,7 @@ def test_normal_quantiles_df():
 
     model_dict = estimate_empirical_distribution(
         df=df,
-        value_col="y",
+        distribution_col="y",
         quantile_grid_size=None,
         quantiles=[0.025, 0.975],
         conditional_cols=["x"])
@@ -39,18 +39,21 @@ def test_normal_quantiles_df():
     assert expected_df.equals(quantiles_df), "quantiles are not calculated correctly"
 
     # check the case with fixed_mean
+    quantile_summary_col = "custom_quantiles"
     quantiles_df = normal_quantiles_df(
         df=ecdf_df,
         mean_col=None,
         std_col="y_std",
         fixed_mean=0,
-        quantiles=(0.025, 0.975))
+        quantiles=(0.025, 0.975),
+        quantile_summary_col=quantile_summary_col
+    )
 
-    quantiles_df = quantiles_df[["x", "normal_quantiles"]].copy()
-    quantiles_df["normal_quantiles"] = quantiles_df["normal_quantiles"].apply(lambda x: tuple(e.round(2) for e in x))
+    quantiles_df = quantiles_df[["x", quantile_summary_col]].copy()
+    quantiles_df[quantile_summary_col] = quantiles_df[quantile_summary_col].apply(lambda x: tuple(e.round(2) for e in x))
     expected_df = pd.DataFrame()
     expected_df["x"] = ["a", "b", "c", "d", "e"]
-    expected_df["normal_quantiles"] = [
+    expected_df[quantile_summary_col] = [
         (-6.04, 6.04),
         (-5.85, 5.85),
         (-5.83, 5.83),

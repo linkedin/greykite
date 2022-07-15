@@ -33,7 +33,7 @@ def normalize_df(
     it generates a function which can be applied to original data as well as
     any future data to normalize using two possible methods.
     The `"statistical"` method removes the "mean" and divides by "std".
-    The `"min_max"` method removes the "minimum" and divides by the
+    The `"zero_to_one"` method removes the "minimum" and divides by the
     "maximum - minimum".
     If desired, the function also drops the columns which have only one
     possible value and can cause issues not only during normalizaton
@@ -46,9 +46,15 @@ def normalize_df(
         Input dataframe which (only) includes numerical values in all columns.
     method : `str`
         The method to be used for normalization.
-        The "statistical" method removes the "mean" and divides by "std" for each column.
-        The "min_max" method removes the "min" and divides by the "max - min"
-        for each column.
+
+        - "statistical" method removes the "mean" and divides by "std" for each column.
+        - "zero_to_one" method removes the "min" and divides by the "max - min"
+            for each column.
+        - "minus_half_to_half" method will remove the "(min + max)/2" and divides by the "max - min"
+            for each column.
+        - "zero_at_origin" method will remove the first data point and divides by the "max - min"
+            for each column.
+
     drop_degenerate_cols : `bool`, default True
         A boolean to determine if columns with only one possible value should be
         dropped in the normalized dataframe.
@@ -79,8 +85,14 @@ def normalize_df(
     if method == "statistical":
         subtracted_series = df.mean()
         denominator_series = df.std()
-    elif method == "min_max":
+    elif method == "zero_to_one":
         subtracted_series = df.min()
+        denominator_series = (df.max() - df.min())
+    elif method == "minus_half_to_half":
+        subtracted_series = (df.min() + df.max()) / 2
+        denominator_series = (df.max() - df.min())
+    elif method == "zero_at_origin":
+        subtracted_series = df.iloc[0]
         denominator_series = (df.max() - df.min())
     else:
         raise NotImplementedError(f"Method {method} is not implemented")

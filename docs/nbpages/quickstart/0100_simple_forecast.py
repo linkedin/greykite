@@ -54,17 +54,18 @@ metadata = MetadataParam(
 # %%
 # Create a forecast
 # -----------------
-# You can pick the ``PROPHET`` or ``SILVERKITE``
-# forecasting model template. (see :doc:`/pages/stepbystep/0100_choose_model`).
+# You can choose from many available
+# models (see :doc:`/pages/stepbystep/0100_choose_model`).
 #
-# In this example, we use ``SILVERKITE``.
-# You may also use ``PROPHET`` to see how a third-party library
-# is leveraged in the same framework.
+# In this example, we choose the "AUTO" model template,
+# which uses the Silverkite algorithm with automatic parameter configuration
+# given the input data frequency, forecast horizon and evaluation configs.
+# We recommend starting with the "AUTO" template for most use cases.
 forecaster = Forecaster()  # Creates forecasts and stores the result
 result = forecaster.run_forecast_config(  # result is also stored as `forecaster.forecast_result`.
     df=df,
     config=ForecastConfig(
-        model_template=ModelTemplateEnum.SILVERKITE.name,
+        model_template=ModelTemplateEnum.AUTO.name,
         forecast_horizon=365,  # forecasts 365 steps ahead
         coverage=0.95,         # 95% prediction intervals
         metadata_param=metadata
@@ -207,10 +208,10 @@ model.predict(future_df)
 #
 # See the following guides:
 #
-# * :doc:`/gallery/quickstart/0200_changepoint_detection`
-# * :doc:`/gallery/quickstart/0300_seasonality`
-# * :doc:`/gallery/quickstart/0400_model_summary`
-# * :doc:`/gallery/quickstart/0500_grid_search`
+# * :doc:`/gallery/quickstart/01_exploration/0100_changepoint_detection`
+# * :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`
+# * :doc:`/gallery/quickstart/02_interpretability/0100_model_summary`
+# * :doc:`/gallery/quickstart/03_benchmark/0100_grid_search`
 #
 # For example, for this dataset, you could add changepoints to
 # handle the change in trend around 2014 and avoid the overprediction
@@ -228,5 +229,5 @@ model.predict(future_df)
 # For details about the model templates and how to set model
 # components, see the following guides:
 #
-# * :doc:`/gallery/tutorials/0200_templates`
+# * :doc:`/gallery/templates/0100_template_overview`
 # * :doc:`/pages/stepbystep/0000_stepbystep`

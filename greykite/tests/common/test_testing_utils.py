@@ -33,7 +33,7 @@ def test_generate_df_for_tests():
         train_frac=0.9,
         remove_extra_cols=False)
 
-    assert data["df"].shape == (24*10, 48)  # Contains time_feature columns
+    assert data["df"].shape == (24*10, 52)  # Contains time_feature columns
     assert not data["train_df"].isna().any().any()
     assert not data["test_df"][TIME_COL].isna().any().any()
 

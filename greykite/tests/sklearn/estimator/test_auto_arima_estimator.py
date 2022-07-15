@@ -79,6 +79,14 @@ def daily_data():
 
 
 @pytest.fixture
+def monthly_data():
+    return generate_df_for_tests(
+        freq="MS",
+        periods=50,
+        conti_year_origin=2018)
+
+
+@pytest.fixture
 def X():
     return pd.DataFrame({
         TIME_COL: pd.date_range("2018-01-01", periods=11, freq="D"),
@@ -204,55 +212,56 @@ def test_summary(daily_data):
     model.summary()
 
 
-def test_fit_predict(daily_data):
+def test_fit_predict(daily_data, monthly_data):
     """Tests fit and predict."""
-    model = AutoArimaEstimator()
-    train_df = daily_data["train_df"]
-    test_df = daily_data["test_df"]
-    assert model.last_predicted_X_ is None
-    assert model.cached_predictions_ is None
+    for data in daily_data, monthly_data:
+        model = AutoArimaEstimator()
+        train_df = daily_data["train_df"]
+        test_df = daily_data["test_df"]
+        assert model.last_predicted_X_ is None
+        assert model.cached_predictions_ is None
 
-    model.fit(train_df, time_col=TIME_COL, value_col=VALUE_COL)
-    assert model.last_predicted_X_ is None
-    assert model.cached_predictions_ is None
-    with LogCapture(LOGGER_NAME) as log_capture:
-        predicted = model.predict(test_df)
-        assert list(predicted.columns) == [TIME_COL, PREDICTED_COL, PREDICTED_LOWER_COL, PREDICTED_UPPER_COL]
-        assert_equal(model.last_predicted_X_, test_df)
-        assert_equal(model.cached_predictions_, predicted)
-        log_capture.check()  # no log messages (not using cached predictions)
+        model.fit(train_df, time_col=TIME_COL, value_col=VALUE_COL)
+        assert model.last_predicted_X_ is None
+        assert model.cached_predictions_ is None
+        with LogCapture(LOGGER_NAME) as log_capture:
+            predicted = model.predict(test_df)
+            assert list(predicted.columns) == [TIME_COL, PREDICTED_COL, PREDICTED_LOWER_COL, PREDICTED_UPPER_COL]
+            assert_equal(model.last_predicted_X_, test_df)
+            assert_equal(model.cached_predictions_, predicted)
+            log_capture.check()  # no log messages (not using cached predictions)
 
-    y_true = test_df[VALUE_COL]
-    y_pred = predicted[PREDICTED_COL]
+        y_true = test_df[VALUE_COL]
+        y_pred = predicted[PREDICTED_COL]
 
-    err = calc_pred_err(y_true, y_pred)
-    enum = EvaluationMetricEnum.Correlation
-    assert err[enum.get_metric_name()] > 0.50
-    enum = EvaluationMetricEnum.MeanAbsoluteError
-    assert err[enum.get_metric_name()] < 2.5
-    enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert err[enum.get_metric_name()] < 3.0
-    enum = EvaluationMetricEnum.MedianAbsoluteError
-    assert err[enum.get_metric_name()] < 3.0
+        err = calc_pred_err(y_true, y_pred)
+        enum = EvaluationMetricEnum.Correlation
+        assert err[enum.get_metric_name()] > 0.50
+        enum = EvaluationMetricEnum.MeanAbsoluteError
+        assert err[enum.get_metric_name()] < 10.0
+        enum = EvaluationMetricEnum.RootMeanSquaredError
+        assert err[enum.get_metric_name()] < 10.0
+        enum = EvaluationMetricEnum.MedianAbsoluteError
+        assert err[enum.get_metric_name()] < 10.0
 
-    # Uses cached predictions
-    with LogCapture(LOGGER_NAME) as log_capture:
-        assert_equal(model.predict(test_df), predicted)
-        log_capture.check(
-            (LOGGER_NAME, LoggingLevelEnum.DEBUG.name, "Returning cached predictions.")
-        )
+        # Uses cached predictions
+        with LogCapture(LOGGER_NAME) as log_capture:
+            assert_equal(model.predict(test_df), predicted)
+            log_capture.check(
+                (LOGGER_NAME, LoggingLevelEnum.DEBUG.name, "Returning cached predictions.")
+            )
 
-    # Predicts on a different dataset
-    with LogCapture(LOGGER_NAME) as log_capture:
-        predicted = model.predict(train_df)
-        assert_equal(model.last_predicted_X_, train_df)
-        assert_equal(model.cached_predictions_, predicted)
-        log_capture.check()  # no log messages (not using cached predictions)
+        # Predicts on a different dataset
+        with LogCapture(LOGGER_NAME) as log_capture:
+            predicted = model.predict(train_df)
+            assert_equal(model.last_predicted_X_, train_df)
+            assert_equal(model.cached_predictions_, predicted)
+            log_capture.check()  # no log messages (not using cached predictions)
 
-    # .fit() clears the cached result
-    model.fit(train_df, time_col=TIME_COL, value_col=VALUE_COL)
-    assert model.last_predicted_X_ is None
-    assert model.cached_predictions_ is None
+        # .fit() clears the cached result
+        model.fit(train_df, time_col=TIME_COL, value_col=VALUE_COL)
+        assert model.last_predicted_X_ is None
+        assert model.cached_predictions_ is None
 
 
 def test_predict_interaction(daily_data):

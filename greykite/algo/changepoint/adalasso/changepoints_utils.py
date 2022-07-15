@@ -35,6 +35,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import RidgeCV
 
 from greykite.common.constants import CHANGEPOINT_COL_PREFIX
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.features.timeseries_features import add_time_features_df
 from greykite.common.features.timeseries_features import build_time_features_df
 from greykite.common.features.timeseries_features import fourier_series_multi_fcn
@@ -142,7 +143,7 @@ def build_trend_feature_df_with_changes(
     changepoint_features_df = get_changepoint_features(
         features_df,
         changepoint_values,
-        continuous_time_col="ct1",
+        continuous_time_col=TimeFeaturesEnum.ct1.value,
         growth_func=growth_func,
         changepoint_dates=changepoint_dates)
     changepoint_features_df.index = pd.to_datetime(df[time_col])
@@ -155,7 +156,10 @@ def build_seasonality_feature_df_with_changes(
         origin_for_time_vars=None,
         changepoints_dict=None,
         fs_components_df=pd.DataFrame({
-            "name": ["tod", "tow", "toy"],
+            "name": [
+                TimeFeaturesEnum.tod.value,
+                TimeFeaturesEnum.tow.value,
+                TimeFeaturesEnum.toy.value],
             "period": [24.0, 7.0, 1.0],
             "order": [3, 3, 5],
             "seas_names": ["daily", "weekly", "yearly"]})):
@@ -1142,7 +1146,7 @@ def estimate_trend_with_detected_changepoints(
             df=df,
             time_col=time_col,
             fs_components_df=pd.DataFrame({
-                "name": ["conti_year"],
+                "name": [TimeFeaturesEnum.conti_year.value],
                 "period": [1.0],
                 "order": [yearly_seasonality_order],
                 "seas_names": ["yearly"]})

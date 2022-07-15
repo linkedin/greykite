@@ -17,7 +17,11 @@ from greykite.algo.forecast.silverkite.constants.silverkite_seasonality import S
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite import SimpleSilverkiteForecast
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import generate_holiday_events
 from greykite.common.constants import CHANGEPOINT_COL_PREFIX
+from greykite.common.constants import EVENT_DF_DATE_COL
+from greykite.common.constants import EVENT_DF_LABEL_COL
 from greykite.common.constants import LOGGER_NAME
+from greykite.common.constants import TIME_COL
+from greykite.common.constants import VALUE_COL
 from greykite.common.data_loader import DataLoader
 from greykite.common.enums import SimpleTimeFrequencyEnum
 from greykite.common.enums import TimeEnum
@@ -389,7 +393,7 @@ def test_extra_pred_cols(hourly_data, daily_data_reg, weekly_data):
         else:
             excluded_cols += example_cols[feature_set_name]
     expected_cols = set(
-        [cst.GROWTH_COL_ALIAS[growth_term]] +
+        [cst.GrowthColEnum[growth_term].value] +
         example_holiday_cols +
         feature_set_cols +
         extra_pred_cols
@@ -436,10 +440,11 @@ def test_extra_pred_cols(hourly_data, daily_data_reg, weekly_data):
         'C(Q(\'events_China\'), levels=[\'\', "New Year\'s Day", \'Chinese New Year\', \'Tomb-Sweeping Day\', '
         '\'Labor Day\', \'Dragon Boat Festival\', \'Mid-Autumn Festival\', \'National Day\', \'National Day, '
         'Mid-Autumn Festival\'])',
-        'C(Q(\'events_UnitedStates\'), levels=[\'\', "New Year\'s Day", \'Martin Luther King, Jr. Day\', '
-        '"Washington\'s Birthday", \'Memorial Day\', \'Independence Day\', \'Labor Day\', \'Columbus Day\', '
-        '\'Veterans Day\', \'Thanksgiving\', \'Christmas Day\', \'Christmas Day (Observed)\', "New Year\'s Day ('
-        'Observed)", \'Veterans Day (Observed)\', \'Independence Day (Observed)\'])']
+        'C(Q(\'events_UnitedStates\'), levels=[\'\', "New Year\'s Day", \'Martin Luther King Jr. Day\', '
+        '"Washington\'s Birthday", \'Memorial Day\', \'Independence Day\', \'Independence Day (Observed)\', '
+        '\'Labor Day\', \'Columbus Day\', \'Veterans Day\', \'Thanksgiving\', \'Christmas Day\', '
+        '\'Christmas Day (Observed)\', "New Year\'s Day (Observed)", \'Veterans Day (Observed)\', '
+        '\'Juneteenth National Independence Day\', \'Juneteenth National Independence Day (Observed)\'])']
 
     parameters = silverkite.convert_params(
         df=daily_data_reg,
@@ -469,7 +474,7 @@ def test_extra_pred_cols(hourly_data, daily_data_reg, weekly_data):
         else:
             excluded_cols += example_cols[feature_set_name]
     expected_cols = set(
-        [cst.GROWTH_COL_ALIAS[growth_term]] +
+        [cst.GrowthColEnum[growth_term].value] +
         regressor_cols +
         example_holiday_cols +
         more_example_holiday_cols +
@@ -513,7 +518,7 @@ def test_extra_pred_cols(hourly_data, daily_data_reg, weekly_data):
         else:
             excluded_cols += example_cols[feature_set_name]
     expected_cols = set(
-        [cst.GROWTH_COL_ALIAS[growth_term]] +
+        [cst.GrowthColEnum[growth_term].value] +
         example_holiday_cols +
         feature_set_cols +
         extra_pred_cols
@@ -584,7 +589,8 @@ def test_convert_simple_silverkite_params_hourly(hourly_data):
         # ``time_properties``, which is the default 24 for hourly data.
         forecast_horizon=24,
         simulation_based=False,
-        simulation_num=10
+        simulation_num=10,
+        fast_simulation=False
     )
     assert_equal(parameters, expected)
 
@@ -1369,3 +1375,140 @@ def test_get_silverkite_holidays():
         pre_num=0,
         post_num=0)
     assert list(holidays.keys()) == ["Other"]
+
+
+def test_auto_config_params(daily_data_reg):
+    """Tests the auto options:
+
+        - auto_growth
+        - auto_holiday
+        - auto_seasonality
+
+    """
+    dl = DataLoader()
+    df = dl.load_peyton_manning()
+    df[TIME_COL] = pd.to_datetime(df[TIME_COL])
+    silverkite = SimpleSilverkiteForecast()
+    params = silverkite.convert_params(
+        df=df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        forecast_horizon=7,
+        auto_holiday=True,
+        holidays_to_model_separately="auto",
+        holiday_lookup_countries="auto",
+        holiday_pre_num_days=2,
+        holiday_post_num_days=2,
+        daily_event_df_dict=dict(
+            custom_event=pd.DataFrame({
+                EVENT_DF_DATE_COL: pd.to_datetime(["2010-03-03", "2011-03-03", "2012-03-03"]),
+                EVENT_DF_LABEL_COL: "threethree"
+            })
+        ),
+        auto_growth=True,
+        growth_term="quadratic",
+        changepoints_dict=dict(
+            method="uniform",
+            n_changepoints=2
+        ),
+        auto_seasonality=True,
+        yearly_seasonality=0,
+        quarterly_seasonality="auto",
+        monthly_seasonality=False,
+        weekly_seasonality=True,
+        daily_seasonality=5
+    )
+
+    # Seasonality is overridden by auto seasonality.
+    # Monthly is forced to be 0 because the value if `False`.
+    assert params["fs_components_df"].equals(pd.DataFrame({
+        "name": ["tow", "toq", "ct1"],
+        "period": [7.0, 1.0, 1.0],
+        "order": [3, 1, 6],
+        "seas_names": ["weekly", "quarterly", "yearly"]
+    }))
+    # Growth is overridden by auto growth.
+    assert "ct1" in params["extra_pred_cols"]
+    assert params["changepoints_dict"]["method"] == "custom"
+    # Holidays is overridden by auto seasonality.
+    assert len(params["daily_event_df_dict"]) == 198
+    assert "custom_event" in params["daily_event_df_dict"]
+    assert "China_Chinese New Year" in params["daily_event_df_dict"]
+
+
+def test_auto_config_run(daily_data_reg):
+    """Tests the auto options:
+
+        - auto_growth
+        - auto_holiday
+        - auto_seasonality
+
+    """
+    dl = DataLoader()
+    df = dl.load_peyton_manning()
+    df[TIME_COL] = pd.to_datetime(df[TIME_COL])
+    silverkite = SimpleSilverkiteForecast()
+    silverkite.forecast_simple(
+        df=df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        forecast_horizon=7,
+        auto_holiday=True,
+        holidays_to_model_separately="auto",
+        holiday_lookup_countries="auto",
+        holiday_pre_num_days=2,
+        holiday_post_num_days=2,
+        daily_event_df_dict=dict(
+            custom_event=pd.DataFrame({
+                EVENT_DF_DATE_COL: pd.to_datetime(["2010-03-03", "2011-03-03", "2012-03-03"]),
+                EVENT_DF_LABEL_COL: "event"
+            })
+        ),
+        auto_growth=True,
+        growth_term="quadratic",
+        changepoints_dict=dict(
+            method="uniform",
+            n_changepoints=2
+        ),
+        auto_seasonality=True,
+        yearly_seasonality=0,
+        quarterly_seasonality="auto",
+        monthly_seasonality=False,
+        weekly_seasonality=True,
+        daily_seasonality=5
+    )
+
+
+def test_quantile_regression():
+    """Tests quantile regression fit algorithm."""
+    dl = DataLoader()
+    df = dl.load_peyton_manning()
+    df[TIME_COL] = pd.to_datetime(df[TIME_COL])
+    silverkite = SimpleSilverkiteForecast()
+    trained_model = silverkite.forecast_simple(
+        df=df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        forecast_horizon=7,
+        holidays_to_model_separately="auto",
+        holiday_lookup_countries="auto",
+        holiday_pre_num_days=2,
+        holiday_post_num_days=2,
+        growth_term="linear",
+        changepoints_dict=dict(
+            method="uniform",
+            n_changepoints=2
+        ),
+        yearly_seasonality=10,
+        quarterly_seasonality=False,
+        monthly_seasonality=False,
+        weekly_seasonality=4,
+        daily_seasonality=False,
+        fit_algorithm="quantile_regression",
+        fit_algorithm_params={
+            "quantile": 0.9,
+            "alpha": 0
+        }
+    )
+    pred = silverkite.predict(df, trained_model=trained_model)["fut_df"]
+    assert round(sum(pred[VALUE_COL] > df[VALUE_COL]) / len(pred), 1) == 0.9

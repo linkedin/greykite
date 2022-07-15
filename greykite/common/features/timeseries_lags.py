@@ -154,7 +154,7 @@ def build_agg_lag_df(
         df=None,
         orders_list=[],
         interval_list=[],
-        agg_func=np.mean,
+        agg_func="mean",
         agg_name=cst.AGG_LAG_INFIX,
         max_order=None):
     """A function which returns a dataframe including aggregated
@@ -202,11 +202,12 @@ def build_agg_lag_df(
         then we construct two "average lagged" variables:
             avg(t) = (Y(t-1) + Y(t-2) + Y(t-3)) / 3 and
             avg(t) = (Y(t-8) + Y(t-9) + Y(t-10) + Y(t-11)) / 4
-    :param agg_func: callable, default: np.mean
+    :param agg_func: "mean" or callable, default: "mean"
         the function used to aggregate the lag orders for each of
         orders specified in either of order_list or interval_list.
         Typically this function is an averaging function such as
         np.mean or np.median but more sophisticated functions are allowed.
+        If "mean", uses `pandas.DataFrame.mean`.
     :param agg_name: str, default: "avglag"
         the aggregate function name used in constructing the column names for
         the output data frame.
@@ -245,9 +246,9 @@ def build_agg_lag_df(
     if orders_list is None and interval_list is None:
         raise ValueError(
             "at least one of 'orders_list' or 'interval_list' must be provided")
-    # find out which lags we need by finding the maximum lag used
-    # note that max_order should be usually passed as None (default)
-    # unless it is pre-calculated before calling this function
+    # Finds out which lags we need by finding the maximum lag used.
+    # Note that `max_order` should be usually passed as None (default)
+    # unless it is pre-calculated before calling this function.
     if max_order is None:
         max_order = min_max_lag_order(
             lag_dict=None,
@@ -255,7 +256,7 @@ def build_agg_lag_df(
                 "orders_list": orders_list,
                 "interval_list": interval_list})["max_order"]
 
-    # intialize the returned items
+    # intializes the returned items
     agg_lag_df = None
     col_names = []
 
@@ -277,8 +278,14 @@ def build_agg_lag_df(
         col_name = f"{value_col}_{agg_name}_{col_suffix}"
         col_names.append(col_name)
         if df is not None:
-            agg_lag_df[col_name] = (
-                lag_df.iloc[:, orders_col_index].apply(agg_func, axis=1))
+            if agg_func == "mean":
+                # uses vectorized mean for speed
+                agg_lag_df[col_name] = (
+                    lag_df.iloc[:, orders_col_index].mean(axis=1))
+            else:
+                # generic aggregation
+                agg_lag_df[col_name] = (
+                    lag_df.iloc[:, orders_col_index].apply(agg_func, axis=1))
 
     for interval in interval_list:
         if len(interval) != 2:
@@ -342,9 +349,10 @@ def build_autoreg_df(
                 A list of tuples each of length 2.
                 Each tuple is used to construct an aggregated lag using all orders within that range
                 See build_agg_lag_df arguments for more details
-            - "agg_func": func (pd.Dataframe -> pd.Dataframe)
+            - "agg_func": "mean" or func (pd.Dataframe -> pd.Dataframe)
                 The function used for aggregation in "build_agg_lag_df"
-                If this key is not passed, the default of "build_agg_lag_df" will be used
+                If this key is not passed, the default of "build_agg_lag_df" will be used.
+                If "mean", uses `pandas.DataFrame.mean`.
 
     :param series_na_fill_func: (pd.Series -> pd.Series)
         default: lambda s: s.bfill.ffill()
@@ -628,6 +636,7 @@ def build_autoreg_df_multi(
         """
 
         autoreg_df = None
+        lag_dfs = []
         for value_col, lag_info in multi_autoreg_info.items():
             build_lags_func = lag_info["build_lags_func"]
             res = build_lags_func(
@@ -635,12 +644,15 @@ def build_autoreg_df_multi(
                 past_df=past_df)
             lag_df = res["lag_df"]
             agg_lag_df = res["agg_lag_df"]
-            if lag_df is not None or agg_lag_df is not None:
-                # concatenating the new generated new columns to the result
-                # dataframe  in column-wise fashion
-                autoreg_df = pd.concat(
-                    [autoreg_df, lag_df, agg_lag_df],
-                    axis=1)
+            lag_dfs.append(lag_df)
+            lag_dfs.append(agg_lag_df)
+
+        try:
+            # Concatenates the columns to the result
+            # dataframe in column-wise fashion
+            autoreg_df = pd.concat(lag_dfs, axis=1)
+        except ValueError:  # All objects passed are None
+            autoreg_df = None
 
         return autoreg_df
 

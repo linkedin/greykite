@@ -31,7 +31,7 @@ from greykite.sklearn.cross_validation import RollingTimeSeriesSplit
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
@@ -221,8 +221,8 @@ def valid_bm(df, valid_configs, custom_tscv):
     return bm
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_benchmark_class_init(df, valid_configs, custom_tscv):
     forecaster = Forecaster()
     bm = BenchmarkForecastConfig(df=df, configs=valid_configs, tscv=custom_tscv, forecaster=forecaster)
@@ -239,8 +239,8 @@ def test_benchmark_class_init(df, valid_configs, custom_tscv):
         BenchmarkForecastConfig(tscv=custom_tscv)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_validate(df, valid_configs, custom_tscv):
     bm = BenchmarkForecastConfig(df=df, configs=valid_configs, tscv=custom_tscv)
     bm.validate()
@@ -284,8 +284,8 @@ def test_validate(df, valid_configs, custom_tscv):
         bm.validate()
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_run(valid_bm, valid_configs):
     bm = valid_bm
 
@@ -307,8 +307,8 @@ def test_run(valid_bm, valid_configs):
             assert pipeline_result.forecast is not None
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_extract_forecasts(valid_bm, df, valid_configs, custom_tscv):
     bm = valid_bm
     bm.extract_forecasts()
@@ -345,8 +345,8 @@ def test_extract_forecasts(valid_bm, df, valid_configs, custom_tscv):
         bm.extract_forecasts()
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_forecasts_by_step(valid_bm):
     bm = valid_bm
 
@@ -396,8 +396,8 @@ def test_plot_forecasts_by_step(valid_bm):
         bm.plot_forecasts_by_step(forecast_step=forecast_step)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_forecasts_by_config(valid_bm):
     bm = valid_bm
 
@@ -443,8 +443,8 @@ def test_plot_forecasts_by_config(valid_bm):
         bm.plot_forecasts_by_config(config_name="missing_config")
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_evaluation_metrics(valid_bm, metric_dict, df, valid_configs, custom_tscv):
     bm = valid_bm
 
@@ -498,8 +498,8 @@ def test_get_evaluation_metrics(valid_bm, metric_dict, df, valid_configs, custom
         bm.get_evaluation_metrics(metric_dict=metric_dict)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_evaluation_metrics(valid_bm, metric_dict):
     bm = valid_bm
 
@@ -547,8 +547,8 @@ def test_plot_evaluation_metrics(valid_bm, metric_dict):
         assert_equal(set(fig.data[0].x), expected_xaxis)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_grouping_evaluation(valid_bm, metric_dict, df, valid_configs, custom_tscv):
     bm = valid_bm
 
@@ -625,8 +625,8 @@ def test_get_grouping_evaluation(valid_bm, metric_dict, df, valid_configs, custo
         bm.get_grouping_evaluation_metrics(metric_dict=metric_dict)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_grouping_evaluation(valid_bm, metric_dict):
     bm = valid_bm
 
@@ -691,8 +691,8 @@ def test_plot_grouping_evaluation(valid_bm, metric_dict):
     assert fig.data[3].name == "test RMSE_valid_silverkite"
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_runtimes(valid_bm, valid_configs, custom_tscv):
     bm = valid_bm
 
@@ -719,8 +719,8 @@ def test_get_runtimes(valid_bm, valid_configs, custom_tscv):
         bm.get_runtimes()
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_runtimes(valid_bm):
     bm = valid_bm
 
@@ -755,8 +755,8 @@ def test_plot_runtimes(valid_bm):
     assert_equal(set(fig.data[0].x), expected_xaxis)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_valid_config_names(valid_bm):
     bm = valid_bm
 
@@ -776,8 +776,8 @@ def test_get_valid_config_names(valid_bm):
         assert f"Input 'config_name' ({missing_config}) is missing." in str(record.value)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_autocomplete_metric_dict(valid_bm, metric_dict):
     bm = valid_bm
     updated_metric_dict = bm.autocomplete_metric_dict(

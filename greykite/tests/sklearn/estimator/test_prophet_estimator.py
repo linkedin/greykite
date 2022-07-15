@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import pandas as pd
 import pytest
+from sklearn.exceptions import NotFittedError
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from testfixtures import LogCapture
@@ -22,13 +23,13 @@ from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def params():
     holidays = pd.DataFrame({
@@ -55,8 +56,8 @@ def params():
     }
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def params_multiple_regressors():
     add_regressor_dict = {
@@ -77,8 +78,8 @@ def params_multiple_regressors():
     }
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def params_add_seasonality():
     add_seasonality_dict = {
@@ -98,8 +99,8 @@ def params_add_seasonality():
     }
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def params_reg(params_add_seasonality, params_multiple_regressors):
     holidays = pd.DataFrame({
@@ -130,8 +131,8 @@ def params_reg(params_add_seasonality, params_multiple_regressors):
     }
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def daily_data():
     return generate_df_for_tests(
@@ -140,8 +141,8 @@ def daily_data():
         conti_year_origin=2018)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def daily_data_reg():
     return generate_df_with_reg_for_tests(
@@ -149,8 +150,8 @@ def daily_data_reg():
         periods=500)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def X():
     return pd.DataFrame({
@@ -159,8 +160,8 @@ def X():
     })
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def X_reg():
     return pd.DataFrame({
@@ -172,8 +173,8 @@ def X_reg():
     })
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_setup(params, X):
     """Checks if parameters are passed to Prophet correctly"""
     coverage = 0.99
@@ -193,7 +194,7 @@ def test_prophet_setup(params, X):
     assert model2.__dict__ == model.__dict__
 
     model.fit(X)
-    direct_model = fbprophet.Prophet(**params)
+    direct_model = prophet.Prophet(**params)
 
     model_params = model.model.__dict__
     direct_model_params = direct_model.__dict__
@@ -220,25 +221,25 @@ def test_prophet_setup(params, X):
 
 
 # test regressor and custom seasonality hyper parameters being passed to ProphetEstimator vs Direct model
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_reg_seas_setup(params_reg, X_reg):
     """Checks if parameters are passed to Prophet correctly"""
     coverage = 0.99
     model = ProphetEstimator(score_func=mean_squared_error, coverage=coverage, null_model_params=None, **params_reg)
     model.fit(X_reg)
 
-    # remove custom seasonalities and regressors before passing params to fbprophet
+    # remove custom seasonalities and regressors before passing params to prophet
     params_no_reg_no_custom_seas = {key: value for (key, value) in params_reg.items()
                                     if key not in ['add_regressor_dict', 'add_seasonality_dict']}
 
-    direct_model = fbprophet.Prophet(**params_no_reg_no_custom_seas)
+    direct_model = prophet.Prophet(**params_no_reg_no_custom_seas)
 
-    # add regressors in direct (fbprophet) model in the usual way (add_regressor method)
+    # add regressors in direct (prophet) model in the usual way (add_regressor method)
     for reg_col, reg_params in params_reg["add_regressor_dict"].items():
         direct_model.add_regressor(name=reg_col, **reg_params)
 
-    # add custom seasonality in direct (fbprophet) model in the usual way (add_seasonality method)
+    # add custom seasonality in direct (prophet) model in the usual way (add_seasonality method)
     for seasonality_type, seasonality_params in params_reg["add_seasonality_dict"].items():
         direct_model.add_seasonality(name=seasonality_type, **seasonality_params)
 
@@ -267,8 +268,8 @@ def test_prophet_reg_seas_setup(params_reg, X_reg):
     assert direct_model_seasonalities == model_seasonalities
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_null_model(X):
     """Checks null model"""
     model = ProphetEstimator(null_model_params={"strategy": "quantile",
@@ -290,8 +291,8 @@ def test_null_model(X):
     assert null_score == mean_absolute_error(y, np.repeat(9.0, X.shape[0]))
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_score_function_null(daily_data):
     """Checks score function accuracy with null model"""
     model = ProphetEstimator(null_model_params={"strategy": "mean"})
@@ -305,8 +306,8 @@ def test_score_function_null(daily_data):
     assert score == pytest.approx(0.42, rel=1e-2)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_score_function(daily_data):
     """Checks score function accuracy without null model"""
     model = ProphetEstimator()
@@ -320,8 +321,8 @@ def test_score_function(daily_data):
     assert score == pytest.approx(5.77, rel=1e-1)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_summary(daily_data):
     """Checks summary function output without error"""
     model = ProphetEstimator()
@@ -335,8 +336,8 @@ def test_summary(daily_data):
     model.summary()
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_fit_predict(daily_data):
     """Tests fit and predict."""
     model = ProphetEstimator()
@@ -388,8 +389,8 @@ def test_fit_predict(daily_data):
     assert model.cached_predictions_ is None
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_forecast_via_prophet_daily_reg(
         daily_data_reg,
         params_add_seasonality,
@@ -421,8 +422,8 @@ def test_forecast_via_prophet_daily_reg(
     assert err[enum.get_metric_name()] < 3.0
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_forecast_via_prophet_freq():
     """Tests prophet model at different frequencies"""
     holidays = pd.DataFrame({
@@ -475,8 +476,8 @@ def test_forecast_via_prophet_freq():
         model.summary()
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_forecast_via_prophet_no_uncertainty(
         daily_data):
     """Tests fit and predict with no uncertainty interval."""
@@ -494,13 +495,13 @@ def test_forecast_via_prophet_no_uncertainty(
     model.fit(train_df, time_col=TIME_COL, value_col=VALUE_COL)
     model.predict(test_df)
     # The following asserts are temporarily disabled,
-    # since they work under fbprophet >= 0.6 only.
+    # since they work under prophet >= 0.6 only.
     # assert PREDICTED_LOWER_COL not in pred.columns
     # assert PREDICTED_UPPER_COL not in pred.columns
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_plot_components(daily_data, params):
     """Test plot_components"""
     train_df = daily_data["train_df"]
@@ -517,26 +518,21 @@ def test_plot_components(daily_data, params):
          "trend_upper", "weekly", "weekly_lower", "weekly_upper"}
     assert expected_forecast_cols.issubset(list(forecast.columns))
 
-    # Prophet 0.5 has issue with component plots and later versions do not
-    with pytest.raises(Exception, match=r"Prophet 0.5 component plots are incompatible with pandas 1\.\*\."):
-        model.plot_components(uncertainty=True, plot_cap=False)
+    fig = model.plot_components(uncertainty=True, plot_cap=False)
+    assert fig
 
-    # Tests are disabled until fbprophet:0.6 upgrade allows Prophet component plots.
-    # fig = model.plot_components(uncertainty=True, plot_cap=False)
-    # assert fig
-    #
-    # direct_model = model.model
-    # direct_fig = direct_model.plot_components(
-    #     fcst=forecast,
-    #     uncertainty=True,
-    #     plot_cap=False)
-    # assert direct_fig
-    #
-    # # Tests plot_components warnings
-    # model = ProphetEstimator()
-    # with pytest.raises(NotFittedError, match="The fit method has not been run yet."):
-    #     model.plot_components()
-    #
-    # with pytest.raises(RuntimeError, match="The predict method has not been run yet."):
-    #     model.fit(train_df)
-    #     model.plot_components()
+    direct_model = model.model
+    direct_fig = direct_model.plot_components(
+        fcst=forecast,
+        uncertainty=True,
+        plot_cap=False)
+    assert direct_fig
+
+    # Tests plot_components warnings
+    model = ProphetEstimator()
+    with pytest.raises(NotFittedError, match="The fit method has not been run yet."):
+        model.plot_components()
+
+    with pytest.raises(RuntimeError, match="The predict method has not been run yet."):
+        model.fit(train_df)
+        model.plot_components()

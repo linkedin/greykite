@@ -23,6 +23,7 @@
 Generates a forecast from input data and config and stores the result.
 """
 import json
+from copy import deepcopy
 from enum import Enum
 from typing import Dict
 from typing import Optional
@@ -36,6 +37,7 @@ from greykite.common.python_utils import unique_elements_in_list
 from greykite.framework.pipeline.pipeline import ForecastResult
 from greykite.framework.pipeline.pipeline import forecast_pipeline
 from greykite.framework.pipeline.utils import get_basic_pipeline
+from greykite.framework.templates.auto_model_template import get_auto_silverkite_model_template
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import forecast_config_from_dict
 from greykite.framework.templates.forecast_config_defaults import ForecastConfigDefaults
@@ -70,7 +72,7 @@ class Forecaster:
     def __init__(
             self,
             model_template_enum: Type[Enum] = ModelTemplateEnum,
-            default_model_template_name: str = ModelTemplateEnum.SILVERKITE.name):
+            default_model_template_name: str = ModelTemplateEnum.AUTO.name):
         # Optional user input
         self.model_template_enum: Type[Enum] = model_template_enum
         """The available template names. An Enum class where names are template names, and values are of type
@@ -78,7 +80,7 @@ class Forecaster:
         """
         self.default_model_template_name: str = default_model_template_name
         """The default template name if not provided by ``config.model_template``.
-        Should be a name in ``model_template_enum``.
+        Should be a name in ``model_template_enum`` or "auto".
         Used by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.__get_template_class`.
         """
         # The following are set by `self.run_forecast_config`.
@@ -136,7 +138,7 @@ class Forecaster:
             If ``config.model_template`` is None, it is set to ``self.default_model_template_name``.
             If ``config.model_components_param`` is None, it is set to ``ModelComponentsParam()``.
         """
-        config = config if config is not None else ForecastConfig()
+        config = deepcopy(config) if config is not None else ForecastConfig()
         # Unpacks list of a single element and sets default value if None.
         # NB: Does not call `apply_forecast_config_defaults`.
         #   Only sets `model_template` and `model_components_param`.
@@ -249,6 +251,55 @@ class Forecaster:
                 self.pipeline_params["hyperparameter_grid"]["estimator__estimator_map"] = [
                     self.config.forecast_one_by_one]
 
+    def __get_model_template(
+            self,
+            df: pd.DataFrame,
+            config: ForecastConfig) -> str:
+        """Gets the default model template when "auto" is given.
+
+        This is called after ``config`` has been filled with the default values
+        and all fields are not None.
+
+        Parameters
+        ----------
+        df : `pandas.DataFrame`
+            Timeseries data to forecast.
+            Contains columns [`time_col`, `value_col`], and optional regressor columns
+            Regressor columns should include future values for prediction
+        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig`
+            Config object for template class to use.
+            Must be an instance with all fields not None.
+            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.
+
+        Returns
+        -------
+        model_template : `str`
+            The corresponding model template.
+        """
+        # Gets the model template from config.
+        # Model template should already be a string when this function is called,
+        # which is handled by `self.__get_config_with_default_model_template_and_components`.
+        model_template = config.model_template
+
+        # Returns the model template if it's not "auto".
+        if not isinstance(model_template, str) or model_template.lower() != "auto":
+            return model_template
+
+        # Handles the "auto" case.
+        # Since `get_auto_silverkite_model_template` resolves "AUTO" to
+        # a specific SILVERKITE template, the fallback template passed to it cannot be "AUTO".
+        # We use SILVERKITE if `self.default_model_template_name` is "AUTO".
+        default_template_for_auto = (self.default_model_template_name
+                                     if self.default_model_template_name.lower() != "auto"
+                                     else ModelTemplateEnum.SILVERKITE.name)
+        model_template = get_auto_silverkite_model_template(
+            df=df,
+            default_model_template_name=default_template_for_auto,
+            config=config
+        )
+
+        return model_template
+
     def apply_forecast_config(
             self,
             df: pd.DataFrame,
@@ -288,6 +339,7 @@ class Forecaster:
             Input to :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.
         """
         self.config = self.__get_config_with_default_model_template_and_components(config)
+        self.config.model_template = self.__get_model_template(df=df, config=self.config)
         self.template_class = self.__get_template_class(self.config)
         self.template = self.template_class()
         self.pipeline_params = self.template.apply_template_for_pipeline_params(df=df, config=self.config)

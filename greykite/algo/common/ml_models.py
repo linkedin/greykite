@@ -42,14 +42,16 @@ from sklearn.linear_model import LassoLarsCV
 from sklearn.linear_model import RidgeCV
 from sklearn.linear_model import SGDRegressor
 
+from greykite.algo.common.l1_quantile_regression import QuantileRegression
 from greykite.algo.uncertainty.conditional.conf_interval import conf_interval
 from greykite.algo.uncertainty.conditional.conf_interval import predict_ci
-from greykite.common.constants import ERR_STD_COL
+from greykite.common.constants import RESIDUAL_COL
 from greykite.common.constants import R2_null_model_score
 from greykite.common.evaluation import calc_pred_err
 from greykite.common.evaluation import r2_null_model_score
 from greykite.common.features.normalize import normalize_df
 from greykite.common.python_utils import group_strs_with_regex_patterns
+from greykite.common.viz.timeseries_plotting import plot_multivariate
 
 
 matplotlib.use("agg")  # noqa: E402
@@ -68,7 +70,7 @@ def design_mat_from_formula(
     and builds the design matrix (x_mat)
 
     :param df: pd.DataFrame
-        A data frame with the response vector (y) and the feature columns (x_mat)
+        A dataframe with the response vector (y) and the feature columns (x_mat)
     :param model_formula_str: str
         A formula string e.g. "y~x1+x2+x3*x4".
         This is similar to R formulas.
@@ -147,6 +149,7 @@ def fit_model_via_design_matrix(
             - ``"lasso_lars"``        : `sklearn.linear_model.LassoLarsCV`
             - ``"rf"``                : `sklearn.ensemble.RandomForestRegressor`
             - ``"gradient_boosting"`` : `sklearn.ensemble.GradientBoostingRegressor`
+            - ``"quantile_regression"`` : `~greykite.algo.common.l1_quantile_regression.QuantileRegression`
 
         See `~greykite.algo.common.ml_models.fit_model_via_design_matrix`
         for the sklearn and statsmodels classes that implement these methods, and their parameters.
@@ -183,7 +186,8 @@ def fit_model_via_design_matrix(
         "lars": LarsCV,
         "lasso_lars": LassoLarsCV,
         "rf": RandomForestRegressor,
-        "gradient_boosting": GradientBoostingRegressor  # only method that supports quantile loss
+        "gradient_boosting": GradientBoostingRegressor,
+        "quantile_regression": QuantileRegression
     }
 
     # for our purposes, we may want different defaults from those provided in the classes
@@ -195,13 +199,14 @@ def fit_model_via_design_matrix(
         "statsmodels_glm": dict(family=sm.families.Gamma()),  # default is gamma distribution
         "linear": dict(),
         "elastic_net": dict(cv=5),
-        "ridge": dict(cv=5, alphas=np.logspace(-5, 5, 100)),  # by default RidgeCV only has 3 candidate alphas, not enough
+        "ridge": dict(cv=5, alphas=np.logspace(-5, 5, 30)),  # by default RidgeCV only has 3 candidate alphas, not enough
         "lasso": dict(cv=5),
         "sgd": dict(),
         "lars": dict(cv=5),
         "lasso_lars": dict(cv=5),
         "rf": dict(n_estimators=100),
-        "gradient_boosting": dict()
+        "gradient_boosting": dict(),
+        "quantile_regression": dict(quantile=0.5, alpha=0)  # unregularized version modeling median
     }
 
     # Re-standardizes the weights so that they sum up to data length
@@ -266,7 +271,7 @@ def fit_ml_model(
         min_admissible_value=None,
         max_admissible_value=None,
         uncertainty_dict=None,
-        normalize_method="min_max",
+        normalize_method="zero_to_one",
         regression_weight_col=None):
     """Fits predictive ML (machine learning) models to continuous
     response vector (given in ``y_col``)
@@ -313,10 +318,11 @@ def fit_ml_model(
                 A dictionary of parameters needed for the ``uncertainty_method``
                 requested
 
-    normalize_method : `str` or None, default "min_max"
+    normalize_method : `str` or None, default "zero_to_one"
         If a string is provided, it will be used as the normalization method
         in `~greykite.common.features.normalize.normalize_df`, passed via
-        the argument ``method``. Available options are: "min_max", "statistical".
+        the argument ``method``.
+        Available options are: "zero_to_one", "statistical", "minus_half_to_half", "zero_at_origin".
         If None, no normalization will be performed.
         See that function for more details.
     regression_weight_col : `str` or None, default None
@@ -328,10 +334,20 @@ def fit_ml_model(
     trained_model : `dict`
         Trained model dictionary with keys:
 
-            ``"ml_model"`` : A trained model with predict method
-            ``"uncertainty_model"`` : `dict`
+            - "y" : response values
+            - "x_design_info" : design matrix information
+            - "ml_model" : A trained model with predict method
+            - "uncertainty_model" : `dict`
                 The returned uncertainty_model dict from
                 `~greykite.algo.uncertainty.conditional.conf_interval.conf_interval`.
+            - "ml_model_summary": model summary
+            - "y_col" : response columns
+            - "x_mat ": design matrix
+            - "min_admissible_value" : minimum acceptable value
+            - "max_admissible_value" : maximum acceptable value
+            - "normalize_df_func" : normalization function
+            - "regression_weight_col" : regression weight column
+
     """
 
     # build model matrices
@@ -342,6 +358,8 @@ def fit_ml_model(
         pred_cols=pred_cols)
 
     y = res["y"]
+    y_mean = np.mean(y)
+    y_std = np.std(y)
     x_mat = res["x_mat"]
     y_col = res["y_col"]
     x_design_info = res["x_design_info"]
@@ -396,7 +414,7 @@ def fit_ml_model(
                 new_x_mat[cols] = normalize_df_func(new_x_mat[cols])
             new_x_mat = new_x_mat.fillna(value=0)
             new_df[f"{y_col}_pred"] = ml_model.predict(new_x_mat)
-            new_df["fit_residual"] = new_df[y_col] - new_df[f"{y_col}_pred"]
+            new_df[RESIDUAL_COL] = new_df[y_col] - new_df[f"{y_col}_pred"]
 
             # re-assign some param defaults for function conf_interval
             # with values best suited to this case
@@ -408,8 +426,8 @@ def fit_ml_model(
                 conf_interval_params.update(uncertainty_dict["params"])
             uncertainty_model = conf_interval(
                 df=new_df,
-                value_col=y_col,
-                residual_col="fit_residual",
+                distribution_col=RESIDUAL_COL,
+                offset_col=y_col,
                 min_admissible_value=min_admissible_value,
                 max_admissible_value=max_admissible_value,
                 **conf_interval_params)
@@ -431,6 +449,9 @@ def fit_ml_model(
             "coef": coefs})
 
     trained_model = {
+        "y": y,
+        "y_mean": y_mean,
+        "y_std": y_std,
         "x_design_info": x_design_info,
         "ml_model": ml_model,
         "uncertainty_model": uncertainty_model,
@@ -547,15 +568,9 @@ def predict_ml_with_uncertainty(
     pred_df_with_uncertainty = predict_ci(
         fut_df,
         trained_model["uncertainty_model"])
-    # add uncertainty column to df
-    pred_df_with_uncertainty.reset_index(drop=True, inplace=True)
-    fut_df.reset_index(drop=True, inplace=True)
-    fut_df[f"{y_col}_quantile_summary"] = (
-        pred_df_with_uncertainty[f"{y_col}_quantile_summary"])
-    fut_df[ERR_STD_COL] = pred_df_with_uncertainty[ERR_STD_COL]
 
     return {
-        "fut_df": fut_df,
+        "fut_df": pred_df_with_uncertainty,
         "x_mat": x_mat}
 
 
@@ -573,7 +588,7 @@ def fit_ml_model_with_evaluation(
         min_admissible_value=None,
         max_admissible_value=None,
         uncertainty_dict=None,
-        normalize_method="min_max",
+        normalize_method="zero_to_one",
         regression_weight_col=None):
     """Fits prediction models to continuous response vector (y)
     and report results.
@@ -630,10 +645,11 @@ def fit_ml_model_with_evaluation(
                 A dictionary of parameters needed for the ``uncertainty_method``
                 requested
 
-    normalize_method : `str` or None, default "min_max"
+    normalize_method : `str` or None, default "zero_to_one"
         If a string is provided, it will be used as the normalization method
         in `~greykite.common.features.normalize.normalize_df`, passed via
-        the argument ``method``. Available options are: "min_max", "statistical".
+        the argument ``method``.
+        Available options are: "zero_to_one", "statistical", "minus_half_to_half", "zero_at_origin".
         If None, no normalization will be performed.
         See that function for more details.
     regression_weight_col : `str` or None, default None
@@ -824,11 +840,15 @@ def fit_ml_model_with_evaluation(
 
 
 def breakdown_regression_based_prediction(
-        ml_model,
+        trained_model,
         x_mat,
         grouping_regex_patterns_dict,
-        add_intercept_group=True,
-        remainder_group_name="OTHER"):
+        remainder_group_name="OTHER",
+        center_components=False,
+        denominator=None,
+        index_values=None,
+        index_col="index_col",
+        plt_title="prediction breakdown"):
     """Given a regression based ML model (``ml_model``) and a design matrix
     (``x_mat``), and a string based grouping rule (``grouping_regex_patterns_dict``)
     for the design matrix columnns, constructs a dataframe with columns corresponding
@@ -838,37 +858,76 @@ def breakdown_regression_based_prediction(
 
     Parameters
     ----------
-    ml_model : `sklearn.base.BaseEstimator`
-        sklearn ML estimator/model of various form.
-        We require this object to have ``.coef_`` and ``.intercept`` attributes.
+    trained_model : `dict`
+        A trained machine-learning model which includes items:
+
+        - ml_model : `sklearn.base.BaseEstimator`
+            sklearn ML estimator/model of various form.
+            We require this object to have ``.coef_`` and ``.intercept`` attributes.
+        - y_mean : `float`
+            Observed mean of the response
+        - y_std : `float`
+            Observed standard deviation of the response
+
     x_mat :`pandas.DataFrame`
         Design matrix of the regression model
     grouping_regex_patterns_dict : `dict` {`str`: `str`}
         A dictionary with group names as keys and regexes as values.
         This dictinary is used to partition the columns into various groups
-    add_intercept_group : `bool`, default True
-        Determines if a group  should be created to include the intercept value.
-        This is helpful to be set to be True if we like the breakdown to sum up
-        to the predictions.
     remainder_group_name : `str`, default "OTHER"
         In case some columns are left and not assigned to any groups, a group
         with this name will be added to breakdown dataframe and includes the
         weighted some of the remaining columns.
+    center_components : `bool`, default False
+        It determines if components should be centered at their mean and the mean
+        be added to the intercept. More concretely, if a componet is "x" then it will
+        be mapped to "x - mean(x)"; and "mean(x)" will be added to the intercept so
+        that the sum of the components remains the same.
+    denominator : `str`, default None
+        If not None, it will specify a way to divide the components. There are
+        two options implemented:
+
+        - "abs_y_mean" : `float`
+            The absolute value of the observed mean of the response
+        - "y_std" : `float`
+            The standard deviation of the observed response
+
+        This will be useful if we want to make the components scale free.
+        Dividing by the absolute mean value of the response, is particularly
+        useful to understand how much impact each component has for an average
+        response.
+
+    index_values : `list`, default None
+        The values added as index which can of any types that can be used for
+        plotting the x axis in plotly eg `int` or `datetime`.
+        This is useful for plotting or if later this data to be joined
+        with other data. For example in forecasting context timestamps can be added.
+    index_col : `str`, default "index_col"
+        The name of the added column to breakdown data to keep track of index
+    plt_title : `str`, default "prediction breakdown"
+        The title of generated plot
 
     Returns
     -------
     result : `dict`
         A dictionary with the following keys.
 
-        - "breakdown_df" :`pandas.DataFrame`
-            A dataframe which includes the sums for each group
+        - "breakdown_df" : `pandas.DataFrame`
+            A dataframe which includes the sums for each group / component
+        - "breakdown_df_with_index_col" : `pandas.DataFrame`
+            Same as ``breakdown_df`` with an added column to keep track of index
+        - "breakdown_fig" : `plotly.graph_objs._figure.Figure`
+            plotly plot overlaying various components
         - "column_grouping_result" : `dict`
             A dictionary which includes information for the generated groups.
             See `~greykite.common.python_utils.group_strs_with_regex_patterns`
             for more details.
 
     """
+    if index_values is not None:
+        assert len(index_values) == len(x_mat), "the number of indices must match the size of data"
 
+    ml_model = trained_model["ml_model"]
     # The dataframe which includes the group sums
     breakdown_df = pd.DataFrame()
     ml_model_coef = ml_model.coef_
@@ -877,15 +936,12 @@ def breakdown_regression_based_prediction(
     data_len = len(x_mat)
     cols = list(x_mat.columns)
 
-    if add_intercept_group:
-        breakdown_df["Intercept"] = np.repeat(intercept, data_len)
-        if "Intercept" in cols:
-            breakdown_df["Intercept"] += x_mat_weighted["Intercept"]
+    breakdown_df["Intercept"] = np.repeat(intercept, data_len)
+    if "Intercept" in cols:
+        breakdown_df["Intercept"] += x_mat_weighted["Intercept"]
 
     # If Intercept appear in the columns, we remove it
-    # Note that this column was utilized and added to intercept,
-    # if ``add_intercept_group`` is true.
-    # And it is not needed anymore in regardless of ``add_intercept_group`` value.
+    # Note that this column was utilized and added to intercept
     if "Intercept" in cols:
         del x_mat_weighted["Intercept"]
         cols.remove("Intercept")
@@ -911,8 +967,41 @@ def breakdown_regression_based_prediction(
 
     if len(remainder) != 0:
         breakdown_df[remainder_group_name] = x_mat_weighted[remainder].sum(axis=1)
+        group_names.append(remainder_group_name)
+
+    if center_components:
+        for col in group_names:
+            col_mean = breakdown_df[col].mean()
+            breakdown_df[col] += -col_mean
+            breakdown_df["Intercept"] += col_mean
+
+    if denominator == "abs_y_mean":
+        d = abs(trained_model["y_mean"])
+    elif denominator == "y_std":
+        d = trained_model["y_std"]
+    elif denominator is None:
+        d = 1.0
+    else:
+        raise NotImplementedError(f"{denominator} is not an admissable denominator")
+
+    for col in group_names + ["Intercept"]:
+        breakdown_df[col] /= d
+
+    if index_values is None:
+        index_values = range(len(breakdown_df))
+
+    breakdown_df_with_index_col = breakdown_df.copy()
+    breakdown_df_with_index_col[index_col] = index_values
+
+    breakdown_fig = plot_multivariate(
+        df=breakdown_df_with_index_col,
+        x_col=index_col,
+        title=plt_title,
+        ylabel="component")
 
     return {
         "breakdown_df": breakdown_df,
+        "breakdown_df_with_index_col": breakdown_df_with_index_col,
+        "breakdown_fig": breakdown_fig,
         "column_grouping_result": column_grouping_result
     }

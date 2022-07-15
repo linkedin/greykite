@@ -191,9 +191,9 @@ class UnivariateTimeSeries:
                     to forecast as well as any numeric regressors.
                 ``"anomaly_df"`` : `pandas.DataFrame`
                     Adjustments to correct the anomalies.
-                ``"start_date_col"``: `str`, default START_DATE_COL
+                ``"start_time_col"``: `str`, default START_TIME_COL
                     Start date column in ``anomaly_df``.
-                ``"end_date_col"``: `str`, default END_DATE_COL
+                ``"end_time_col"``: `str`, default END_TIME_COL
                     End date column in ``anomaly_df``.
                 ``"adjustment_delta_col"``: `str` or None, default None
                     Impact column in ``anomaly_df``.

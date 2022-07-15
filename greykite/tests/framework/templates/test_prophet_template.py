@@ -28,15 +28,15 @@ from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
 
 
 try:
-    import fbprophet
-    from fbprophet.make_holidays import make_holidays_df
-    fbprophet
+    import prophet
+    from prophet.make_holidays import make_holidays_df
+    prophet
 except ModuleNotFoundError:
     pass
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 @pytest.fixture
 def default_holidays():
     """Default holidays by country params"""
@@ -52,8 +52,8 @@ def default_holidays():
     return expected_holidays
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_property():
     """Tests properties"""
     assert ProphetTemplate().allow_model_template_list is False
@@ -70,8 +70,8 @@ def test_property():
     assert template.estimator is estimator
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_prophet_holidays():
     """Tests get_prophet_holidays"""
     year_list = list(range(2014, 2030+2))
@@ -91,7 +91,7 @@ def test_get_prophet_holidays():
                 year_list=year_list,
                 country=ctry)
             # sort df and reset index to ensure assert_frame_equal works well. Without it, assert throws an error.
-            expected_ctry_holidays = expected_ctry_holidays.sort_values(by=["ds"]).reset_index(drop=True)
+            expected_ctry_holidays = expected_ctry_holidays.sort_values(by=["ds", "holiday"]).reset_index(drop=True)
 
             actual = actual_holidays[["ds", "holiday"]]  # All actual holidays
             actual_ctry_holidays = actual.merge(  # Ensure country-level holidays are a subset of actual holidays
@@ -99,7 +99,7 @@ def test_get_prophet_holidays():
                 on=["ds", "holiday"],
                 how="inner",
                 validate="1:1")  # Ensures 1:1 mapping
-            actual_ctry_holidays = actual_ctry_holidays.sort_values(by=["ds"]).reset_index(drop=True)
+            actual_ctry_holidays = actual_ctry_holidays.sort_values(by=["ds", "holiday"]).reset_index(drop=True)
             assert_frame_equal(expected_ctry_holidays, actual_ctry_holidays)
 
     # there are no duplicates at date and holiday level in the final holidays df
@@ -152,8 +152,8 @@ def test_get_prophet_holidays():
             upper_window=upper_window)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_regressor_cols():
     """Tests get_regressor_names"""
     # `add_regressor_dict` is a list of dict
@@ -245,8 +245,8 @@ def test_get_regressor_cols():
     assert template.get_regressor_cols() is None
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_default():
     """Tests get_hyperparameter_grid and apply_prophet_model_components_defaults"""
     template = ProphetTemplate()
@@ -279,8 +279,8 @@ def test_prophet_hyperparameter_grid_default():
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_seasonality_growth(default_holidays):
     """Tests get_hyperparameter_grid for basic seasonality, growth and other default params"""
     seasonality = {"yearly_seasonality": [True], "weekly_seasonality": [False]}
@@ -316,8 +316,8 @@ def test_prophet_hyperparameter_grid_seasonality_growth(default_holidays):
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_events():
     """Tests get_prophet_hyperparameter_grid for selected Countries" holidays"""
     # holiday params
@@ -371,8 +371,8 @@ def test_prophet_hyperparameter_grid_events():
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_exception():
     """Tests prophet_hyperparameter_grid exceptions"""
     # unknown argument
@@ -414,8 +414,8 @@ def test_prophet_hyperparameter_grid_exception():
         template.get_hyperparameter_grid()
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_warn():
     """Tests get_prophet_hyperparameter_grid warnings"""
     # holiday params
@@ -480,8 +480,8 @@ def test_prophet_hyperparameter_grid_warn():
         assert_equal(hyp1, hyp2)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_custom_seasonality(default_holidays):
     """Tests get_prophet_hyperparameter_grid for custom seasonality params, other params being defaults"""
     seasonality = {
@@ -650,8 +650,8 @@ def test_prophet_hyperparameter_grid_custom_seasonality(default_holidays):
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_changepoints_uncertainty_custom(default_holidays):
     """Tests get_prophet_hyperparameter_grid for selected
     changepoints, regressor, and uncertainty"""
@@ -747,8 +747,8 @@ def test_prophet_hyperparameter_grid_changepoints_uncertainty_custom(default_hol
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_hyperparameter_grid_auto_list(default_holidays):
     """Tests `get_prophet_hyperparameter_grid` automatic list conversion
     via `dictionaries_values_to_lists`. Holidays are tested separately
@@ -850,8 +850,8 @@ def test_prophet_hyperparameter_grid_auto_list(default_holidays):
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_hyperparameter_override(default_holidays):
     """Tests the hyperparameter_override functionality.
     Use hyperparameter_override to override parameters and
@@ -899,8 +899,8 @@ def test_hyperparameter_override(default_holidays):
     assert_equal(hyperparameter_grid, [updated_grid, expected_grid])
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_apply_template_decorator():
     data = generate_df_for_tests(freq="D", periods=10)
     df = data["df"]
@@ -914,8 +914,8 @@ def test_apply_template_decorator():
         )
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_template_default():
     """Tests prophet_template with default values, for limited data"""
     # prepares input data
@@ -975,8 +975,8 @@ def test_prophet_template_default():
     assert_equal(params, expected_params)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_template_custom():
     """Tests prophet_template with custom values, with long range input"""
     # prepares input data
@@ -997,16 +997,16 @@ def test_prophet_template_custom():
     # anomaly adjustment adds 10.0 to every record
     adjustment_size = 10.0
     anomaly_df = pd.DataFrame({
-        cst.START_DATE_COL: [df[time_col].min()],
-        cst.END_DATE_COL: [df[time_col].max()],
+        cst.START_TIME_COL: [df[time_col].min()],
+        cst.END_TIME_COL: [df[time_col].max()],
         cst.ADJUSTMENT_DELTA_COL: [adjustment_size],
         cst.METRIC_COL: [value_col]
     })
     anomaly_info = {
         "value_col": cst.VALUE_COL,
         "anomaly_df": anomaly_df,
-        "start_date_col": cst.START_DATE_COL,
-        "end_date_col": cst.END_DATE_COL,
+        "start_time_col": cst.START_TIME_COL,
+        "end_time_col": cst.END_TIME_COL,
         "adjustment_delta_col": cst.ADJUSTMENT_DELTA_COL,
         "filter_by_dict": {cst.METRIC_COL: cst.VALUE_COL},
         "adjustment_method": "add"
@@ -1169,8 +1169,8 @@ def test_prophet_template_custom():
     assert_equal(params, expected_params)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_run_prophet_template_custom():
     """Tests running prophet template through the pipeline"""
     data = generate_df_with_reg_for_tests(
@@ -1254,17 +1254,17 @@ def test_run_prophet_template_custom():
     assert list(forecast_df.columns) == expected_cols
     assert result.backtest.coverage == 0.95, "coverage is not correct"
     # NB: coverage is poor because of very small dataset size and low uncertainty_samples
-    assert result.backtest.train_evaluation[cst.PREDICTION_BAND_COVERAGE] == pytest.approx(0.677, rel=1e-3), \
+    assert result.backtest.train_evaluation[cst.PREDICTION_BAND_COVERAGE] == pytest.approx(0.742, rel=1e-3), \
         "training coverage is None or less than expected"
     assert result.backtest.test_evaluation[cst.PREDICTION_BAND_COVERAGE] == pytest.approx(0.800, rel=1e-3), \
         "testing coverage is None or less than expected"
-    assert result.backtest.train_evaluation["MSE"] == pytest.approx(3.7849, rel=1e-3), \
+    assert result.backtest.train_evaluation["MSE"] == pytest.approx(3.3942, rel=1e-3), \
         "training MSE is None or more than expected"
-    assert result.backtest.test_evaluation["MSE"] == pytest.approx(2.9609, rel=1e-3), \
+    assert result.backtest.test_evaluation["MSE"] == pytest.approx(1.9477, rel=1e-3), \
         "testing MSE is None or more than expected"
     assert result.forecast.train_evaluation[cst.PREDICTION_BAND_COVERAGE] == pytest.approx(0.7805, rel=1e-3), \
         "forecast coverage is None or less than expected"
-    assert result.forecast.train_evaluation["MSE"] == pytest.approx(4.1806, rel=1e-3), \
+    assert result.forecast.train_evaluation["MSE"] == pytest.approx(3.6025, rel=1e-3), \
         "forecast MSE is None or more than expected"
 
     # ensure regressors were used in the model

@@ -3,17 +3,21 @@ Overview
 
 The Greykite model
 ------------------
-Greykite is a forecast library that allows you to do exploratory data analysis (EDA),
-forecast pipeline, model tuning, benchmarking, etc. It includes the Silverkite model, a forecast model
-developed by Linkedin, which allows feature engineering, automatic changepoint detection,
-holiday effects, various machine learning fitting methods, statitical prediction bands, etc.
-The Silverkite model has many pre-tuned templates (i.e. parameter configs) to fit for different
+Greykite is a forecast library developed by LinkedIn.
+Its flagship algorithm, Silverkite, provides interpretable, fast, and highly flexible
+univariate forecasts that capture effects such as time-varying growth and seasonality,
+autocorrelation, holidays, and regressors.
+The Silverkite model offers pre-tuned templates (i.e. parameter configs) appropriate for different
 forecast frequencies, horizons, and data patterns.
-Besides Silverkite, it also includes an interface for the Prophet model developed by Facebook.
+The library facilitates exploratory data analysis (EDA),
+end-to-end forecasting, model tuning, and benchmarking.
 
-This document is for users of the Greykite python library.
+Greykite also includes an interface for the Prophet model
+developed by Facebook (``prophet``) and Auto-ARIMA (``pmdarima``).
+
 See :doc:`/gallery/quickstart/0100_simple_forecast` to get started.
-For a more complete guide, see the rest of the tutorials in the quick start section.
+Many other examples are provided in the quick start section.
 
-Details about each model template are at :doc:`/pages/model_components/0100_introduction`.
-You can follow those guide for advanced configuration.
+A step-by-step guide into the forecasting process is
+at :doc:`/pages/stepbystep/0000_stepbystep`.
+You can follow that guide for advanced configuration.

@@ -13,8 +13,7 @@ Silverkite is a forecasting algorithm developed by LinkedIn.
 It works by generating basis functions for growth, seasonality, holidays, etc.
 These features, along with any regressors you provide, are used to fit the timeseries.
 
-The features can be combined with interaction terms in a flexible and powerful way. A single model
-is used for fitting.
+The features can be combined with interaction terms in a flexible and powerful way.
 
 This approach has the following advantages.
 
@@ -28,6 +27,12 @@ Prophet
 Prophet is a forecasting algorithm developed by Facebook.
 
 Details on `Prophet <https://facebook.github.io/prophet/docs/quick_start.html>`_.
+
+ARIMA
+-----
+ARIMA is a classic forecasting algorithm. We use the implementation from ``pmdarima``.
+
+Details on `ARIMA <https://alkaline-ml.com/pmdarima/>`_.
 
 model_components
 ----------------

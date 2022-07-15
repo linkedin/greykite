@@ -733,6 +733,92 @@ def test_pred_category(df_pt):
     assert pred_category["interaction_features"] == ["x:ct1"]
 
 
+def test_pred_category_regressor(df_pt):
+    """Tests regressors are classified into the correct category,
+    even their names matches some specific patterns such as "cp" or "lag".
+    """
+    model = BaseSilverkiteEstimator()
+    df_pt = df_pt.copy()
+    model.fit(
+        X=df_pt.iloc[:100],  # speeds up
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+    params = {
+        "fit_algorithm": "linear",
+        "training_fraction": 0.8,
+        "extra_pred_cols": ["ct1", "x", "x:ct1",
+                            "weather_wghtd_avg_cld_cvr_tot_pct_max_mid"],
+        "lagged_regressor_dict": {
+            "media_total_spend_lag4": {
+                "lag_dict": {"orders": [5]},
+                "agg_lag_dict": {
+                    "orders_list": [[7, 7 * 2, 7 * 3]],
+                    "interval_list": [(8, 7 * 2)]},
+                "series_na_fill_func": lambda s: s.bfill().ffill()
+            }
+        }
+    }
+    df_pt["x"] = np.random.randn(df_pt.shape[0])
+    df_pt["weather_wghtd_avg_cld_cvr_tot_pct_max_mid"] = np.random.randn(df_pt.shape[0])
+    df_pt["media_total_spend_lag4"] = np.random.randn(df_pt.shape[0])
+    silverkite = SilverkiteForecast()
+    model.model_dict = silverkite.forecast(
+        df=df_pt.iloc[:100],
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL,
+        **params)
+    model.extra_pred_cols = ["ct1", "x", "x:ct1",
+                             "weather_wghtd_avg_cld_cvr_tot_pct_max_mid",
+                             "media_total_spend_lag4"]  # set in subclass initialization
+    model.lagged_regressor_dict = {
+        "media_total_spend_lag4": {
+            "lag_dict": {"orders": [5]},
+            "agg_lag_dict": {
+                "orders_list": [[7, 7 * 2, 7 * 3]],
+                "interval_list": [(8, 7 * 2)]},
+            "series_na_fill_func": lambda s: s.bfill().ffill()
+        }
+    }  # set in subclass initialization
+
+    # Regressor features are not colluded with other features,
+    # even the regex matches.
+    pred_category = model.pred_category
+    assert pred_category["intercept"] == ["Intercept"]
+    assert pred_category["time_features"] == ["ct1", "x:ct1"]
+    assert pred_category["event_features"] == []
+    assert pred_category["trend_features"] == ["ct1", "x:ct1"]
+    assert pred_category["seasonality_features"] == ["sin1_tod_daily",
+                                                     "cos1_tod_daily",
+                                                     "sin2_tod_daily",
+                                                     "cos2_tod_daily",
+                                                     "sin3_tod_daily",
+                                                     "cos3_tod_daily",
+                                                     "sin1_tow_weekly",
+                                                     "cos1_tow_weekly",
+                                                     "sin2_tow_weekly",
+                                                     "cos2_tow_weekly",
+                                                     "sin3_tow_weekly",
+                                                     "cos3_tow_weekly",
+                                                     "sin1_toy_yearly",
+                                                     "cos1_toy_yearly",
+                                                     "sin2_toy_yearly",
+                                                     "cos2_toy_yearly",
+                                                     "sin3_toy_yearly",
+                                                     "cos3_toy_yearly",
+                                                     "sin4_toy_yearly",
+                                                     "cos4_toy_yearly",
+                                                     "sin5_toy_yearly",
+                                                     "cos5_toy_yearly"]
+    assert pred_category["lag_features"] == [
+        "media_total_spend_lag4_lag5",
+        "media_total_spend_lag4_avglag_7_14_21",
+        "media_total_spend_lag4_avglag_8_to_14"
+    ]
+    assert pred_category["regressor_features"] == ["x", "x:ct1",
+                                                   "weather_wghtd_avg_cld_cvr_tot_pct_max_mid"]
+    assert pred_category["interaction_features"] == ["x:ct1"]
+
+
 def test_get_max_ar_order():
     model = BaseSilverkiteEstimator()
     model.autoreg_dict = "auto"
@@ -850,7 +936,8 @@ def test_x_mat_in_predict(daily_data):
     assert len(coef) == 3
 
     pred_df = model.predict(test_df)
-    cols = ["ts", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"]
+    cols = [cst.TIME_COL, cst.QUANTILE_SUMMARY_COL, cst.ERR_STD_COL,
+            cst.PREDICTED_LOWER_COL, cst.PREDICTED_UPPER_COL]
     assert_equal(model.forecast[cols], pred_df[cols])
     assert (model.forecast["y"].values == pred_df["forecast"].values).all()
 
@@ -858,3 +945,227 @@ def test_x_mat_in_predict(daily_data):
     assert list(forecast_x_mat.columns) == [
         "Intercept", "C(dow == 1)[T.True]", "ct1"]
     assert len(forecast_x_mat) == len(pred_df)
+
+
+def test_forecast_breakdown(daily_data):
+    """Tests ``forecast_breakdown``."""
+    model = BaseSilverkiteEstimator()
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"]
+
+    uncertainty_dict = {
+        "uncertainty_method": "simple_conditional_residuals",
+        "params": {
+            "conditional_cols": ["dow_hr"],
+            "quantiles": [0.025, 0.975],
+            "quantile_estimation_method": "normal_fit",
+            "sample_size_thresh": 20,
+            "small_sample_size_method": "std_quantiles",
+            "small_sample_size_quantile": 0.98}}
+
+    model.fit(
+        X=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+
+    silverkite = SilverkiteForecast()
+    model.model_dict = silverkite.forecast(
+        df=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL,
+        origin_for_time_vars=None,
+        extra_pred_cols=["ct1", "ct2", "month", "dow"],
+        train_test_thresh=None,
+        training_fraction=None,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        daily_event_df_dict=None,
+        changepoints_dict=None,
+        fs_components_df=None,
+        autoreg_dict=None,
+        min_admissible_value=None,
+        max_admissible_value=None,
+        uncertainty_dict=uncertainty_dict
+    )
+    model.finish_fit()
+    coef = model.model_dict["ml_model"].coef_
+    assert len(coef) == 5
+
+    pred_df = model.predict(test_df)
+    cols = [cst.TIME_COL, cst.QUANTILE_SUMMARY_COL, cst.ERR_STD_COL,
+            cst.PREDICTED_LOWER_COL, cst.PREDICTED_UPPER_COL]
+    assert_equal(model.forecast[cols], pred_df[cols])
+    assert (model.forecast["y"].values == pred_df["forecast"].values).all()
+
+    forecast_x_mat = model.forecast_x_mat
+    assert list(forecast_x_mat.columns) == [
+        "Intercept", "ct1", "ct2", "month", "dow"]
+    assert len(forecast_x_mat) == len(pred_df)
+
+    grouping_regex_patterns_dict = {
+        "seasonality": ".*month.*|dow",
+        "growth": "ct1|ct2"}
+
+    # applies to estimator with original forecasts
+    breakdown_result = model.forecast_breakdown(
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict)
+
+    column_grouping_result = breakdown_result["column_grouping_result"]
+    breakdown_df = breakdown_result["breakdown_df"]
+    breakdown_fig = breakdown_result["breakdown_fig"]
+    assert breakdown_df.shape == (len(forecast_x_mat), 3)
+    assert breakdown_fig.layout.title.text == "breakdown of forecasts"
+    assert len(breakdown_fig.data) == 3
+    assert list(breakdown_df.columns) == ["Intercept", "seasonality", "growth"]
+    assert column_grouping_result == {
+        "str_groups": [["month", "dow"], ["ct1", "ct2"]],
+        "remainder": []}
+
+    # Applies to estimator with passed ``forecast_x_mat``
+    # In this case, we do not pass the time values
+    # Therefore a generic index (0 to n) will be used in creating the figure
+    breakdown_result = model.forecast_breakdown(
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        forecast_x_mat=forecast_x_mat.head(10))
+
+    breakdown_df = breakdown_result["breakdown_df"]
+    column_grouping_result = breakdown_result["column_grouping_result"]
+    breakdown_df = breakdown_result["breakdown_df"]
+    breakdown_fig = breakdown_result["breakdown_fig"]
+    assert breakdown_df.shape == (10, 3)
+    assert breakdown_fig.layout.title.text == "breakdown of forecasts"
+    assert len(breakdown_fig.data) == 3
+    assert list(breakdown_df.columns) == ["Intercept", "seasonality", "growth"]
+    assert column_grouping_result == {
+        "str_groups": [["month", "dow"], ["ct1", "ct2"]],
+        "remainder": []}
+
+    # Makes sure ``forecast_x_mat`` is not over-written
+    # as a result of applying ``forecast_breakdown``
+    forecast_x_mat = model.forecast_x_mat
+    assert len(forecast_x_mat) == len(pred_df)
+
+    # Applies to estimator with passed ``forecast_x_mat``
+    # We pass the appropriate timestamps too by extracting from ``pred_df``
+    breakdown_result = model.forecast_breakdown(
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        forecast_x_mat=forecast_x_mat.head(10),
+        time_values=pred_df.head(10)[cst.TIME_COL])
+
+    breakdown_df = breakdown_result["breakdown_df"]
+    column_grouping_result = breakdown_result["column_grouping_result"]
+    breakdown_df = breakdown_result["breakdown_df"]
+    breakdown_fig = breakdown_result["breakdown_fig"]
+    assert breakdown_df.shape == (10, 3)
+    assert breakdown_fig.layout.title.text == "breakdown of forecasts"
+    assert len(breakdown_fig.data) == 3
+    assert list(breakdown_df.columns) == ["Intercept", "seasonality", "growth"]
+    assert column_grouping_result == {
+        "str_groups": [["month", "dow"], ["ct1", "ct2"]],
+        "remainder": []}
+
+
+def test_forecast_breakdown_center_components(daily_data):
+    """Tests ``center_components`` argument of ``forecast_breakdown``."""
+    model = BaseSilverkiteEstimator()
+    train_df = daily_data["train_df"]
+    test_df = daily_data["test_df"]
+
+    uncertainty_dict = {
+        "uncertainty_method": "simple_conditional_residuals",
+        "params": {
+            "conditional_cols": ["dow_hr"],
+            "quantiles": [0.025, 0.975],
+            "quantile_estimation_method": "normal_fit",
+            "sample_size_thresh": 20,
+            "small_sample_size_method": "std_quantiles",
+            "small_sample_size_quantile": 0.98}}
+
+    model.fit(
+        X=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL)
+
+    silverkite = SilverkiteForecast()
+    model.model_dict = silverkite.forecast(
+        df=train_df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL,
+        origin_for_time_vars=None,
+        extra_pred_cols=["ct1", "ct2", "month", "dow"],
+        train_test_thresh=None,
+        training_fraction=None,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        daily_event_df_dict=None,
+        changepoints_dict=None,
+        fs_components_df=None,
+        autoreg_dict=None,
+        min_admissible_value=None,
+        max_admissible_value=None,
+        uncertainty_dict=uncertainty_dict
+    )
+    model.finish_fit()
+    coef = model.model_dict["ml_model"].coef_
+    assert len(coef) == 5
+
+    pred_df = model.predict(test_df)
+    cols = [cst.TIME_COL, cst.QUANTILE_SUMMARY_COL, cst.ERR_STD_COL,
+            cst.PREDICTED_LOWER_COL, cst.PREDICTED_UPPER_COL]
+    assert_equal(model.forecast[cols], pred_df[cols])
+    assert (model.forecast["y"].values == pred_df["forecast"].values).all()
+
+    forecast_x_mat = model.forecast_x_mat
+    assert list(forecast_x_mat.columns) == [
+        "Intercept", "ct1", "ct2", "month", "dow"]
+    assert len(forecast_x_mat) == len(pred_df)
+
+    grouping_regex_patterns_dict = {
+        "seasonality": ".*month.*|dow",
+        "growth": "ct1|ct2"}
+
+    # ``center_components=False``
+    breakdown_result = model.forecast_breakdown(
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        center_components=False)
+
+    column_grouping_result = breakdown_result["column_grouping_result"]
+    breakdown_df = breakdown_result["breakdown_df"]
+    breakdown_fig = breakdown_result["breakdown_fig"]
+    assert breakdown_df.shape == (len(forecast_x_mat), 3)
+    assert breakdown_fig.layout.title.text == "breakdown of forecasts"
+    assert len(breakdown_fig.data) == 3
+    assert list(breakdown_df.columns) == ["Intercept", "seasonality", "growth"]
+    assert column_grouping_result == {
+        "str_groups": [["month", "dow"], ["ct1", "ct2"]],
+        "remainder": []}
+
+    # commented out plot for testing purposes only
+    # import plotly
+    # html_file_name = "breakdown_no_centering.html"
+    # plotly.offline.plot(breakdown_fig, filename=html_file_name)
+
+    # ``center_components=True``
+    breakdown_result = model.forecast_breakdown(
+        grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+        center_components=True)
+
+    column_grouping_result = breakdown_result["column_grouping_result"]
+    breakdown_df = breakdown_result["breakdown_df"]
+    breakdown_fig = breakdown_result["breakdown_fig"]
+    assert breakdown_df.shape == (len(forecast_x_mat), 3)
+    assert breakdown_fig.layout.title.text == "breakdown of forecasts"
+    assert len(breakdown_fig.data) == 3
+    assert list(breakdown_df.columns) == ["Intercept", "seasonality", "growth"]
+    assert column_grouping_result == {
+        "str_groups": [["month", "dow"], ["ct1", "ct2"]],
+        "remainder": []}
+
+    # commented out plot for testing purposes only
+    # import plotly
+    # html_file_name = "breakdown_with_centering.html"
+    # plotly.offline.plot(breakdown_fig, filename=html_file_name)
+
+    # Check to see if components are centered.
+    assert round(breakdown_df["seasonality"].mean(), 5) == 0.0
+    assert round(breakdown_df["growth"].mean(), 5) == 0.0

@@ -26,7 +26,7 @@ The ``Benchmark`` class requires 3 inputs.
 
 In the sections we below provide guidance on how to design a proper
 cross-validation schema for your use case and discuss the structure of the benchmark output.
-Check the :doc:`Benchmarking tutorial </gallery/tutorials/0300_benchmark>` to learn
+Check the :doc:`Benchmarking tutorial </gallery/quickstart/03_benchmark/0200_benchmark>` to learn
 the step-by-step process of defining and running a benchmark.
 
 
@@ -36,7 +36,7 @@ Time-series forecast quality strongly depends on the evaluation time window.
 Thus it is more robust to evaluate over a longer time window when dataset size allows.
 You can easily define the evaluation time window by using
 :class:`~greykite.sklearn.cross_validation.RollingTimeSeriesSplit` class.
-See how in the `Define the CV </gallery/tutorials/0300_benchmark#define-the-cross-validation-cv>`_
+See how in the `Define the CV <../../gallery/quickstart/03_benchmark/0200_benchmark.html#define-the-cross-validation-cv>`_
 section of the tutorial.
 
 We use a rolling window CV for our benchmarking, which closely resembles the well
@@ -182,5 +182,5 @@ Here is a brief overview of the leaf nodes i.e. nodes without any link to the ne
         Forecast output of the corresponding split of the ``config``.
 
 Using the output you can quickly compute and visualize the prediction errors for multiple metrics.
-For examples check the `Benchmark output <../../gallery/tutorials/0300_benchmark.html#benchmark-output>`_
+For examples check the `Benchmark output <../../gallery/quickstart/03_benchmark/0200_benchmark.html#benchmark-output>`_
 section of the tutorial.

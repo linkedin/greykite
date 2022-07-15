@@ -9,12 +9,11 @@ import pytest
 from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteForecast
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import generate_holiday_events
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import get_event_pred_cols
-from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import METRIC_COL
 from greykite.common.constants import PREDICTION_BAND_COVERAGE
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.evaluation import EvaluationMetricEnum
@@ -36,6 +35,7 @@ from greykite.framework.templates.silverkite_template import apply_default_model
 from greykite.framework.templates.silverkite_template import get_extra_pred_cols
 from greykite.framework.utils.framework_testing_utils import assert_basic_pipeline_equal
 from greykite.framework.utils.framework_testing_utils import check_forecast_pipeline_result
+from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
 
 
@@ -134,7 +134,8 @@ def test_apply_default_model_components(model_components_param, silverkite, silv
     }
     assert model_components.autoregression == {
         "autoreg_dict": [None],
-        "simulation_num": [10]
+        "simulation_num": [10],
+        "fast_simulation": [False]
     }
     assert model_components.regressors == {}
     assert model_components.uncertainty == {
@@ -182,7 +183,10 @@ def test_apply_default_model_components(model_components_param, silverkite, silv
         },
         "seasonality_changepoints_dict": [None],
     }
-    assert updated_components.autoregression == {"autoreg_dict": [None], "simulation_num": [10]}
+    assert updated_components.autoregression == {
+        "autoreg_dict": [None],
+        "simulation_num": [10],
+        "fast_simulation": [False]}
     assert updated_components.uncertainty == model_components_param.uncertainty
     assert updated_components.custom == {  # combination of defaults and provided params
         "silverkite": silverkite,  # the same object that was passed in (not a copy)
@@ -350,6 +354,7 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
             "seas_names": ["daily", "weekly", "monthly", "quarterly", "yearly"]})],
         "estimator__autoreg_dict": [None],
         "estimator__simulation_num": [10],
+        "estimator__fast_simulation": [False],
         "estimator__lagged_regressor_dict": [None],
         "estimator__changepoints_dict": [None],
         "estimator__seasonality_changepoints_dict": [None],
@@ -360,7 +365,10 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
         "estimator__regression_weight_col": [None],
         "estimator__uncertainty_dict": [None],
     }
-    assert_equal(hyperparameter_grid, expected_grid, ignore_keys={"estimator__silverkite": None, "estimator__silverkite_diagnostics": None})
+    assert_equal(
+        hyperparameter_grid,
+        expected_grid,
+        ignore_keys={"estimator__silverkite": None, "estimator__silverkite_diagnostics": None})
     assert hyperparameter_grid["estimator__silverkite"][0] != silverkite
     assert hyperparameter_grid["estimator__silverkite_diagnostics"][0] != silverkite_diagnostics
 
@@ -385,6 +393,7 @@ def test_get_silverkite_hyperparameter_grid(model_components_param, silverkite, 
         "estimator__fs_components_df": [None],
         "estimator__autoreg_dict": [None],
         "estimator__simulation_num": [10],
+        "estimator__fast_simulation": [False],
         "estimator__lagged_regressor_dict": [None],
         "estimator__changepoints_dict": [{
             "method": "uniform",
@@ -523,16 +532,16 @@ def test_silverkite_template_custom(model_components_param):
     # anomaly adjustment adds 10.0 to every record
     adjustment_size = 10.0
     anomaly_df = pd.DataFrame({
-        START_DATE_COL: [df[time_col].min()],
-        END_DATE_COL: [df[time_col].max()],
+        START_TIME_COL: [df[time_col].min()],
+        END_TIME_COL: [df[time_col].max()],
         ADJUSTMENT_DELTA_COL: [adjustment_size],
         METRIC_COL: [value_col]
     })
     anomaly_info = {
         "value_col": VALUE_COL,
         "anomaly_df": anomaly_df,
-        "start_date_col": START_DATE_COL,
-        "end_date_col": END_DATE_COL,
+        "start_time_col": START_TIME_COL,
+        "end_time_col": END_TIME_COL,
         "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
         "filter_by_dict": {METRIC_COL: VALUE_COL},
         "adjustment_method": "add"
@@ -843,6 +852,51 @@ def test_run_template_4():
 
 
 def test_run_template_5():
+    """Runs custom template with monthly data and auto-regression with fast simulation"""
+    data = generate_df_with_reg_for_tests(
+        freq="MS",
+        periods=48,
+        remove_extra_cols=True,
+        mask_test_actuals=True)
+    reg_cols = ["regressor1", "regressor2", "regressor_categ"]
+    keep_cols = [TIME_COL, VALUE_COL] + reg_cols
+    df = data["df"][keep_cols]
+    forecast_horizon = data["test_df"].shape[0]
+
+    model_components = ModelComponentsParam(
+        custom=dict(
+            fit_algorithm_dict=dict(fit_algorithm="linear"),
+            extra_pred_cols=["ct2"]),
+        autoregression=dict(
+            autoreg_dict=dict(lag_dict=dict(orders=[1])),
+            fast_simulation=True),
+        uncertainty=dict(uncertainty_dict=None))
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SK.name,
+        forecast_horizon=forecast_horizon,
+        coverage=0.9,
+        model_components_param=model_components,
+    )
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        result = Forecaster().run_forecast_config(
+            df=df,
+            config=config,
+        )
+        rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
+        assert result.backtest.test_evaluation[rmse] == pytest.approx(4.95, rel=1e-1)
+        check_forecast_pipeline_result(
+            result,
+            coverage=0.9,
+            strategy=None,
+            score_func=EvaluationMetricEnum.MeanAbsolutePercentError.name,
+            greater_is_better=False)
+
+    assert result.model._final_estimator.model_dict["fast_simulation"] is True
+
+
+def test_run_template_6():
     """Runs custom template with monthly data, auto-regression and lagged regressors"""
     data = generate_df_with_reg_for_tests(
         freq="MS",
@@ -853,7 +907,8 @@ def test_run_template_5():
     reg_cols = ["regressor1"]
     keep_cols = [TIME_COL, VALUE_COL] + reg_cols_all
     df = data["df"][keep_cols]
-    forecast_horizon = data["test_df"].shape[0]
+    test_df = data["test_df"]
+    forecast_horizon = test_df.shape[0]
 
     model_components = ModelComponentsParam(
         custom=dict(
@@ -891,15 +946,32 @@ def test_run_template_5():
         actual_pred_cols = set(result.model[-1].model_dict["pred_cols"])
         actual_x_mat_cols = set(result.model[-1].model_dict["x_mat"].columns)
         expected_pred_cols = {
-            'regressor1',
-            'y_lag1',
-            'regressor_categ_lag5'
+            "regressor1",
+            "y_lag1",
+            "regressor_categ_lag5"
         }
         expected_x_mat_cols = {
-            'regressor1',
-            'y_lag1',
-            'regressor_categ_lag5[T.c2]',
-            'regressor_categ_lag5[T.c2]'
+            "regressor1",
+            "y_lag1",
+            "regressor_categ_lag5[T.c2]",
+            "regressor_categ_lag5[T.c2]"
         }
         assert expected_pred_cols.issubset(actual_pred_cols)
         assert expected_x_mat_cols.issubset(actual_x_mat_cols)
+
+        trained_estimator = result.model[-1]
+        forecast = trained_estimator.forecast
+        forecast_x_mat = trained_estimator.forecast_x_mat
+        fit_x_mat = trained_estimator.model_dict["x_mat"]
+        assert len(forecast) == len(df)
+        assert len(forecast_x_mat) == len(df)
+        assert len(fit_x_mat) == len(df) - forecast_horizon
+
+        # Does a new prediction and checks if the ``forecast`` and
+        # ``forecast_x_mat`` are updated
+        pred_df = trained_estimator.predict(test_df[:3])
+        forecast_x_mat = trained_estimator.forecast_x_mat
+        forecast = trained_estimator.forecast
+        assert len(pred_df) == 3
+        assert len(forecast) == 3
+        assert len(forecast_x_mat) == 3

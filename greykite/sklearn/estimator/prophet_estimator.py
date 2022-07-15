@@ -19,13 +19,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # original author: Albert Chen, Rachit Kumar, Sayan Patra
-"""sklearn estimator for fbprophet"""
+"""sklearn estimator for prophet"""
 import sys
 
 
 try:
-    import fbprophet
-    from fbprophet.plot import plot_components
+    import prophet
+    from prophet.plot import plot_components
 except ModuleNotFoundError:
     pass
 
@@ -76,7 +76,7 @@ class ProphetEstimator(BaseForecastEstimator):
             }
 
     add_seasonality_dict: dict of custom seasonality parameters to be added to the model, optional, default=None
-        parameter details: https://github.com/facebook/prophet/blob/master/python/fbprophet/forecaster.py - refer to
+        parameter details: https://github.com/facebook/prophet/blob/master/python/prophet/forecaster.py - refer to
         add_seasonality() function.
         Key is the seasonality component name e.g. 'monthly'; parameters are specified via dict.
 
@@ -105,7 +105,7 @@ class ProphetEstimator(BaseForecastEstimator):
 
         Note: If there is a conflict in built-in and custom seasonality e.g. both have "yearly", then custom seasonality
         will be used and Model will throw a warning such as:
-        "INFO:fbprophet:Found custom seasonality named "yearly", disabling built-in yearly seasonality."
+        "INFO:prophet:Found custom seasonality named "yearly", disabling built-in yearly seasonality."
 
     kwargs : additional parameters
         Other parameters are the same as Prophet model, with one exception:
@@ -115,7 +115,7 @@ class ProphetEstimator(BaseForecastEstimator):
         Prophet documentation for a description:
 
             * https://facebook.github.io/prophet/docs/quick_start.html
-            * https://github.com/facebook/prophet/blob/c7a150312ad26db5a8ea81d8cd32dd5fd6ce1eda/python/fbprophet/forecaster.py#L30
+            * https://github.com/facebook/prophet/blob/master/python/prophet/forecaster.py
 
     Attributes
     ----------
@@ -146,8 +146,8 @@ class ProphetEstimator(BaseForecastEstimator):
             uncertainty_samples=1000,
             add_regressor_dict=None,
             add_seasonality_dict=None):
-        if "fbprophet" not in sys.modules:
-            raise ValueError("The module 'fbprophet' is not installed. Please install manually.")
+        if "prophet" not in sys.modules:
+            raise ValueError("The module 'prophet' is not installed. Please install manually.")
 
         # every subclass of BaseForecastEstimator must call super().__init__
         super().__init__(
@@ -183,7 +183,7 @@ class ProphetEstimator(BaseForecastEstimator):
         self.forecast = None
 
     def fit(self, X, y=None, time_col=TIME_COL, value_col=VALUE_COL, **fit_params):
-        """Fits fbprophet model.
+        """Fits prophet model.
 
         Parameters
         ----------
@@ -221,7 +221,7 @@ class ProphetEstimator(BaseForecastEstimator):
         # uses coverage instead of interval_width to set prediction band width. This ensures a common
         # interface for parameters common to every BaseForecastEstimator, usually also needed for forecast evaluation
         # model must be initialized here, not in __init__, to update parameters in grid search
-        self.model = fbprophet.Prophet(
+        self.model = prophet.Prophet(
             growth=self.growth,
             changepoints=self.changepoints,
             n_changepoints=self.n_changepoints,
@@ -378,6 +378,6 @@ class ProphetEstimator(BaseForecastEstimator):
             if "'DatetimeIndex'" in repr(e):
                 # 'DatetimeIndex' object has no attribute 'weekday_name'
                 raise Exception("Prophet 0.5 component plots are incompatible with pandas 1.*. "
-                                "Upgrade to fbprophet:0.6 or higher.")
+                                "Upgrade to prophet:0.6 or higher.")
             else:
                 raise e

@@ -2,6 +2,38 @@
 History
 =======
 
+0.4.0 (2022-07-15)
+------------------
+
+* New features and methods
+    * @Reza Hosseini: Forecast interpretability. Forecasts can now be broken down to grouped components: trend, seasonality, events, autoregression, regressors, intercept, etc.
+    * @Sayan Patra: Enhanced components plot. Now supports autoregression, lagged regressors, residuals; adds support for centering.
+    * @Kaixu Yang: Auto model components. (1) seasonality inferrer (2) holiday inferrer (3) automatic growth.
+    * @Kaixu Yang: Lag-based estimator. Supports lag-based forecasts such as week-over-week.
+    * @Reza Hosseini: Fast simulation option. Provides a better accuracy and speed for mean prediction when simulation is used in autoregression.
+    * @Kaixu Yang: Quantile regression option for Silverkite `fit_algorithm`.
+
+* New model templates
+    * @Kaixu Yang: AUTO. Automatically chooses templates based on the data frequency, forecast horizon and evaluation configs.
+    * @Reza Hosseini, @Kaixu Yang: SILVERKITE_MONTHLY - a SimpleSilverkite template designed for monthly time series.
+    * @Kaixu Yang: SILVERKITE_WOW. Uses Silverkite to model seasonality, growth and holiday effects, and then uses week-over-week to fit the residuals. The final prediction is the total of the two models.
+
+* New datasets
+    * 4 hourly datasets: Solar Power, Wind Power, Electricity, San Francisco Bay Area Traffic.
+    * 1 daily dataset: Bitcoin Transactions.
+    * 2 monthly datasets: Sunspot, FRED House Supply.
+
+* Library enhancements and bug fixes
+    * The SILVERKITE template has been updated to include automatic autoregression and changepoint detection.
+    * Renamed `SilverkiteMultistageEstimator` to `MultistageForecastEstimator`.
+    * Renamed the normalization method "min_max" to "zero_to_one".
+    * @Reza Hosseini: Added normalization methods: "minus_half_to_half", "zero_at_origin".
+    * @Albert Chen: Updated tutorials.
+    * @Yi Su: Upgraded fbprophet 0.5 to prophet 1.0.
+    * @Yi Su: Upgraded holidays to 0.13.
+    * @Albert Chen @Kaixu Yang @Yi Su: Speed optimization for Silverkite algorithms.
+    * @Albert Chen @Reza Hosseini @Kaixu Yang @Sayan Patra @Yi Su: Other library enhancements and bug fixes.
+
 0.3.0 (2021-12-14)
 ------------------
 

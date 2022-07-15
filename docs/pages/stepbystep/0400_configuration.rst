@@ -181,9 +181,9 @@ The attributes are:
                 to forecast as well as any numeric regressors.
             ``"anomaly_df"`` : `pandas.DataFrame`
                 Adjustments to correct the anomalies.
-            ``"start_date_col"``: `str`, default START_DATE_COL
+            ``"start_time_col"``: `str`, default START_TIME_COL
                 Start date column in ``anomaly_df``.
-            ``"end_date_col"``: `str`, default END_DATE_COL
+            ``"end_time_col"``: `str`, default END_TIME_COL
                 End date column in ``anomaly_df``.
             ``"adjustment_delta_col"``: `str` or None, default None
                 Impact column in ``anomaly_df``.
@@ -692,4 +692,4 @@ Optional. Whether to multiple models spanning the horizon and combine their pred
 This may improve forecast quality when forecast horizon > 1
 and autoregression or lagged regressors are used.
 
-See :doc:`/gallery/quickstart/0600_forecast_one_by_one`.
+See :doc:`/gallery/templates/0400_forecast_one_by_one`.

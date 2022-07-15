@@ -21,7 +21,7 @@ from greykite.framework.utils.result_summary import summarize_grid_search_result
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
@@ -192,12 +192,12 @@ def test_forecast_result_silverkite(df, result):
     for key in result.model[-1].model_dict.keys():
         # Functions and classes are not testable.
         if key not in ["x_design_info", "fs_func", "ml_model", "plt_pred",
-                       "autoreg_dict", "changepoint_detector", "autoreg_func"]:
+                       "autoreg_dict", "changepoint_detector", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 result.model[-1].model_dict[key],
                 result_rec.model[-1].model_dict[key])
         # Tests function source code.
-        elif key in ["fs_func", "plt_pred", "autoreg_func"]:
+        elif key in ["fs_func", "plt_pred", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 inspect.getsource(result.model[-1].model_dict[key]),
                 inspect.getsource(result_rec.model[-1].model_dict[key]))
@@ -240,12 +240,12 @@ def test_forecast_result_silverkite(df, result):
     for key in result.forecast.estimator.model_dict.keys():
         # Functions and classes are not testable.
         if key not in ["x_design_info", "fs_func", "ml_model", "plt_pred",
-                       "autoreg_dict", "changepoint_detector", "autoreg_func"]:
+                       "autoreg_dict", "changepoint_detector", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 result.forecast.estimator.model_dict[key],
                 result_rec.forecast.estimator.model_dict[key])
         # Tests function source code.
-        elif key in ["fs_func", "plt_pred", "autoreg_func"]:
+        elif key in ["fs_func", "plt_pred", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 inspect.getsource(result.forecast.estimator.model_dict[key]),
                 inspect.getsource(result_rec.forecast.estimator.model_dict[key]))
@@ -288,12 +288,12 @@ def test_forecast_result_silverkite(df, result):
     for key in result.backtest.estimator.model_dict.keys():
         # Functions and classes are not testable.
         if key not in ["x_design_info", "fs_func", "ml_model", "plt_pred",
-                       "autoreg_dict", "changepoint_detector", "autoreg_func"]:
+                       "autoreg_dict", "changepoint_detector", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 result.backtest.estimator.model_dict[key],
                 result_rec.backtest.estimator.model_dict[key])
         # Tests function source code.
-        elif key in ["fs_func", "plt_pred", "autoreg_func"]:
+        elif key in ["fs_func", "plt_pred", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 inspect.getsource(result.backtest.estimator.model_dict[key]),
                 inspect.getsource(result_rec.backtest.estimator.model_dict[key]))
@@ -314,8 +314,8 @@ def test_forecast_result_silverkite(df, result):
             result_rec.timeseries.__dict__[key])
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_forecast_result_prophet(df):
     forecaster = Forecaster()
     # Run the forecast
@@ -519,12 +519,12 @@ def test_forecast_result_one_by_one(df):
     for key in result.model[-1].estimators[0].model_dict.keys():
         # Functions and classes are not testable.
         if key not in ["x_design_info", "fs_func", "ml_model", "plt_pred",
-                       "autoreg_dict", "changepoint_detector", "autoreg_func"]:
+                       "autoreg_dict", "changepoint_detector", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 result.model[-1].estimators[0].model_dict[key],
                 result_rec.model[-1].estimators[0].model_dict[key])
         # Tests function source code.
-        elif key in ["fs_func", "plt_pred", "autoreg_func"]:
+        elif key in ["fs_func", "plt_pred", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 inspect.getsource(result.model[-1].estimators[0].model_dict[key]),
                 inspect.getsource(result_rec.model[-1].estimators[0].model_dict[key]))
@@ -567,12 +567,12 @@ def test_forecast_result_one_by_one(df):
     for key in result.forecast.estimator.estimators[0].model_dict.keys():
         # Functions and classes are not testable.
         if key not in ["x_design_info", "fs_func", "ml_model", "plt_pred",
-                       "autoreg_dict", "changepoint_detector", "autoreg_func"]:
+                       "autoreg_dict", "changepoint_detector", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 result.forecast.estimator.estimators[0].model_dict[key],
                 result_rec.forecast.estimator.estimators[0].model_dict[key])
         # Tests function source code.
-        elif key in ["fs_func", "plt_pred", "autoreg_func"]:
+        elif key in ["fs_func", "plt_pred", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 inspect.getsource(result.forecast.estimator.estimators[0].model_dict[key]),
                 inspect.getsource(result_rec.forecast.estimator.estimators[0].model_dict[key]))
@@ -615,12 +615,12 @@ def test_forecast_result_one_by_one(df):
     for key in result.backtest.estimator.estimators[0].model_dict.keys():
         # Functions and classes are not testable.
         if key not in ["x_design_info", "fs_func", "ml_model", "plt_pred",
-                       "autoreg_dict", "changepoint_detector", "autoreg_func"]:
+                       "autoreg_dict", "changepoint_detector", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 result.backtest.estimator.estimators[0].model_dict[key],
                 result_rec.backtest.estimator.estimators[0].model_dict[key])
         # Tests function source code.
-        elif key in ["fs_func", "plt_pred", "autoreg_func"]:
+        elif key in ["fs_func", "plt_pred", "autoreg_func", "normalize_df_func"]:
             assert_equal(
                 inspect.getsource(result.backtest.estimator.estimators[0].model_dict[key]),
                 inspect.getsource(result_rec.backtest.estimator.estimators[0].model_dict[key]))

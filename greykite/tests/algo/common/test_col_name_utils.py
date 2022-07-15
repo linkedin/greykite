@@ -119,7 +119,10 @@ def test_create_pred_category():
                  "C(Q('events_Chinese New Year'), levels=['', 'event'])[T.event]",
                  "x"]
     extra_pred_cols = ["x"]
-    pred_category = create_pred_category(pred_cols, extra_pred_cols)
+    pred_category = create_pred_category(
+        pred_cols,
+        extra_pred_cols,
+        df_cols=["ts", "y", "x"])
     expected_pred_category = {
         "intercept": ["Intercept"],
         "time_features": ["ct1", "ct1:sin1_toy_yearly"],
@@ -128,6 +131,37 @@ def test_create_pred_category():
         "seasonality_features": ["sin1_toy_yearly", "ct1:sin1_toy_yearly"],
         "lag_features": ["y_lag7"],
         "regressor_features": ["x"],
+        "interaction_features": ["ct1:sin1_toy_yearly"]
+    }
+    assert pred_category == expected_pred_category
+
+
+def test_create_pred_category_regressor():
+    """Tests regressors are classified into the correct category,
+    even their names matches some specific patterns such as "cp" or "lag".
+    """
+    pred_cols = ["Intercept",
+                 "ct1",
+                 "sin1_toy_yearly",
+                 "y_lag7",
+                 "ct1:sin1_toy_yearly",
+                 "C(Q('events_Chinese New Year'), levels=['', 'event'])[T.event]",
+                 "x",
+                 "weather_wghtd_avg_cld_cvr_tot_pct_max_mid",
+                 "media_total_spend_lag4"]
+    extra_pred_cols = ["x", "weather_wghtd_avg_cld_cvr_tot_pct_max_mid", "media_total_spend_lag4"]
+    pred_category = create_pred_category(
+        pred_cols,
+        extra_pred_cols,
+        df_cols=["ts", "y", "x", "weather_wghtd_avg_cld_cvr_tot_pct_max_mid", "media_total_spend_lag4"])
+    expected_pred_category = {
+        "intercept": ["Intercept"],
+        "time_features": ["ct1", "ct1:sin1_toy_yearly"],
+        "event_features": ["C(Q('events_Chinese New Year'), levels=['', 'event'])[T.event]"],
+        "trend_features": ["ct1", "ct1:sin1_toy_yearly"],
+        "seasonality_features": ["sin1_toy_yearly", "ct1:sin1_toy_yearly"],
+        "lag_features": ["y_lag7"],
+        "regressor_features": ["x", "weather_wghtd_avg_cld_cvr_tot_pct_max_mid", "media_total_spend_lag4"],
         "interaction_features": ["ct1:sin1_toy_yearly"]
     }
     assert pred_category == expected_pred_category
@@ -144,7 +178,7 @@ def test_filter_coef_summary():
             "C(Q('events_Chinese New Year'), levels=['', 'event'])[T.event]",
             "x"
         ]})
-    pred_category = create_pred_category(coef_summary["Pred_col"].tolist(), [])
+    pred_category = create_pred_category(coef_summary["Pred_col"].tolist(), [], ["ts", "y"])
     x = filter_coef_summary(
         coef_summary=coef_summary,
         pred_category=pred_category,

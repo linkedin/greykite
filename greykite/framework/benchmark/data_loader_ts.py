@@ -115,7 +115,7 @@ class DataLoaderTS(DataLoader):
         This dataset contains aggregated hourly count of the number of rented bikes.
         The data also includes weather data: Maximum Daily temperature (tmax);
         Minimum Daily Temperature (tmin); Precipitation (pn)
-        The raw bike-sharing data is provided by Capital Bikeshares.
+        The raw bike-sharing data is provided by Capital Bikeshare.
         Source: https://www.capitalbikeshare.com/system-data
         The raw weather data (Baltimore-Washington INTL Airport)
         https://www.ncdc.noaa.gov/data-access/land-based-station-data

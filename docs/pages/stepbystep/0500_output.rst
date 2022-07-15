@@ -238,7 +238,7 @@ Model
 ``model`` is a `sklearn.pipeline.Pipeline` object. It was
 fit to the full dataset, with the best parameters selected via CV.
 This model was used to generate ``forecast``. You can use it to extract
-fitted model information (:doc:`/gallery/quickstart/0400_model_summary`)
+fitted model information (:doc:`/gallery/quickstart/02_interpretability/0100_model_summary`)
 or make another forecast (:doc:`/gallery/quickstart/0100_simple_forecast`).
 
 .. code-block:: python

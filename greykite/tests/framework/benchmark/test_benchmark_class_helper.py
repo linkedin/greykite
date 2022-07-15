@@ -21,13 +21,13 @@ from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_forecast_pipeline_rolling_evaluation_prophet():
     """Checks the output rolling evaluation with Prophet template"""
     data = generate_df_with_reg_for_tests(

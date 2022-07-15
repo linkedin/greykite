@@ -17,7 +17,7 @@ def test_impute_with_lags():
         df=df,
         value_col="y",
         orders=[7],
-        agg_func=np.mean,
+        agg_func="mean",
         iter_num=1)
 
     assert impute_info["initial_missing_num"] == 3
@@ -33,7 +33,7 @@ def test_impute_with_lags():
         df=df,
         value_col="y",
         orders=[7, 14, 21],
-        agg_func=np.mean,
+        agg_func="mean",
         iter_num=1)
 
     assert impute_info["initial_missing_num"] == 3
@@ -49,7 +49,7 @@ def test_impute_with_lags():
         df=df,
         value_col="y",
         orders=[7, 14, 21],
-        agg_func=np.mean,
+        agg_func="mean",
         iter_num=10)  # large ``iter_num``
 
     assert impute_info["initial_missing_num"] == 3
@@ -59,7 +59,25 @@ def test_impute_with_lags():
     assert list(imputed_df["y"].values) == (
         list(range(70)) + [56, 57, 58])
 
-    # making sure the ``nan_agg_func`` is working
+    # NAs are ignored when a string `agg_func` is passed
+    df = pd.DataFrame({"y": [1, 2, 3, np.nan, 5, 6, np.nan]})
+    impute_info = impute_with_lags(
+        df=df,
+        value_col="y",
+        orders=[2, 3, 4],
+        agg_func="mean",
+        iter_num=1)
+    assert impute_info["initial_missing_num"] == 2
+    assert impute_info["final_missing_num"] == 0
+    imputed_df = impute_info["df"]
+    # since the lag orders are ``[2, 3, 4]``
+    # we expect the last value of the series (which is missing)
+    # to be imputed to the average of ``[3, np.nan, 5]``
+    # after removing the ``np.nan``. That is average of ``[5, 3]`` which is 4.
+    assert list(imputed_df["y"].values) == (
+        [1, 2, 3, 1.5, 5, 6, 4])
+
+    # NAs are ignored when a function `agg_func` is passed
     df = pd.DataFrame({"y": [1, 2, 3, np.nan, 5, 6, np.nan]})
     impute_info = impute_with_lags(
         df=df,
@@ -67,15 +85,9 @@ def test_impute_with_lags():
         orders=[2, 3, 4],
         agg_func=np.mean,
         iter_num=1)
-
     assert impute_info["initial_missing_num"] == 2
     assert impute_info["final_missing_num"] == 0
     imputed_df = impute_info["df"]
-
-    # since the lag orders are ``[2, 3, 4]``
-    # we expect the last value of the series (which is missing)
-    # to be imputed to the average of ``[3, np.nan, 5]``
-    # after removing the ``np.nan``. That is average of ``[5, 3]`` which is 4.
     assert list(imputed_df["y"].values) == (
         [1, 2, 3, 1.5, 5, 6, 4])
 

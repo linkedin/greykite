@@ -66,7 +66,7 @@ def params():
         "min_admissible_value": None,
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict,
-        "normalize_method": "min_max",
+        "normalize_method": "zero_to_one",
         "adjust_anomalous_dict": None,
         "impute_dict": {
             "func": impute_with_lags,
@@ -124,7 +124,7 @@ def params2():
         "min_admissible_value": None,
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict,
-        "normalize_method": "min_max",
+        "normalize_method": "zero_to_one",
         "adjust_anomalous_dict": None,
         "impute_dict": {
             "func": impute_with_lags,
@@ -367,7 +367,7 @@ def test_uncertainty(daily_data):
 
     predictions = model.predict(test_df)
     expected_forecast_cols = \
-        {"ts", "y", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"}
+        {"ts", "y", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower", "forecast_upper"}
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
     actual = daily_data["test_df"][cst.VALUE_COL]
@@ -504,7 +504,7 @@ def test_autoreg(daily_data):
 
     predictions = model.predict(test_df)
     expected_forecast_cols = {
-        "ts", "y", "y_quantile_summary", "err_std", "forecast_lower",
+        "ts", "y", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower",
         "forecast_upper"}
 
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
@@ -639,7 +639,7 @@ def test_lagged_regressors(daily_data_with_reg, params):
     assert expected_lagged_regression_terms.issubset(pred_cols)
 
     model.predict(test_df)
-    expected_forecast_cols = {"ts", "y", "y_quantile_summary", "err_std",
+    expected_forecast_cols = {"ts", "y", cst.QUANTILE_SUMMARY_COL, "err_std",
                               "forecast_lower", "forecast_upper"}
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
@@ -687,7 +687,7 @@ def test_various_predictor_settings(daily_data_with_reg, params):
 
     model.predict(test_df)
     expected_forecast_cols = {
-        "ts", "y", "y_quantile_summary", "err_std", "forecast_lower",
+        "ts", "y", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower",
         "forecast_upper"}
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
@@ -755,7 +755,7 @@ def test_x_mat_in_predict(daily_data):
         value_col=cst.VALUE_COL)
 
     pred_df = model.predict(test_df)
-    cols = ["ts", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"]
+    cols = ["ts", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower", "forecast_upper"]
     assert_equal(model.forecast[cols], pred_df[cols])
     assert (model.forecast["y"].values == pred_df["forecast"].values).all()
 
@@ -763,3 +763,10 @@ def test_x_mat_in_predict(daily_data):
     assert list(forecast_x_mat.columns) == [
         "Intercept", "C(dow == 1)[T.True]", "ct1"]
     assert len(forecast_x_mat) == len(pred_df)
+
+    assert len(model.forecast_x_mat) == 20
+
+    # Predicts with a smaller length
+    pred_df = model.predict(test_df[:5])
+    assert len(model.forecast_x_mat) == 5
+    assert len(pred_df) == 5

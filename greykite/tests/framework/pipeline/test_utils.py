@@ -43,7 +43,7 @@ from greykite.sklearn.transform.column_selector import ColumnSelector
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
@@ -179,8 +179,8 @@ def test_get_default_time_parameters():
         "cv_periods_between_train_test": 5}
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_basic_pipeline():
     """Tests get_basic_pipeline with default parameters"""
     estimator = ProphetEstimator()
@@ -262,8 +262,8 @@ def test_get_basic_pipeline_custom():
         assert_eval_function_equal(pipeline.steps[-1][-1].score_func, expected_score_func)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_basic_pipeline_apply():
     """Tests get_basic_pipeline fit and predict methods on a dataset without regressors"""
     df = generate_df_for_tests("D", 50)
@@ -317,7 +317,7 @@ def test_get_basic_pipeline_apply_reg():
     predictions = pipeline.predict(df["test_df"])
     assert predictions.shape[0] == df["test_df"].shape[0]
 
-    with pytest.raises(ValueError, match="Invalid parameter unknown_param for estimator NormalizeTransformer"):
+    with pytest.raises(ValueError, match="Invalid parameter"):
         pipeline.set_params(
             degenerate__drop_degenerate=True,
             input__regressors_numeric__normalize__unknown_param="PowerTransformer",
@@ -775,8 +775,8 @@ def test_get_forecast():
         assert "denominator contains very small values. sMAPE is likely highly volatile." in record[2].message.args[0]
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_get_forecast_prophet():
     X = pd.DataFrame({
         cst.TIME_COL: pd.date_range("2018-01-01", periods=10, freq="D"),

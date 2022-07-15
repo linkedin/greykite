@@ -60,6 +60,8 @@ class ModelSummary:
     info_dict : `dict`
         The model summary dictionary, output of
         `~greykite.algo.common.model_summary.ModelSummary._get_summary`
+    html_str : `str`
+        An html formatting of the string representation of the model summary.
     """
 
     def __init__(
@@ -85,6 +87,7 @@ class ModelSummary:
         self.ml_model = ml_model
         self.max_colwidth = max_colwidth
         self.info_dict = self._get_summary()
+        self.html_str = f"<pre>{self.__str__()}</pre>"
 
     def __str__(self):
         """print method.
@@ -149,7 +152,7 @@ class ModelSummary:
             Intercept or not.
         is_time_feature : `bool` or `None`, default `None`
             Time features or not.
-            Time features belong to `~greykite.common.constants.TIME_FEATURES`.
+            Time features belong to `~greykite.common.constants.TimeFeaturesEnum`.
         is_event : `bool` or `None`, default `None`
             Event features or not.
             Event features have `~greykite.common.constants.EVENT_PREFIX`.

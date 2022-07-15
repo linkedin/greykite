@@ -31,10 +31,11 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite import SimpleSilverkiteForecast
-from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.common import constants as cst
 from greykite.common.python_utils import update_dictionary
 from greykite.sklearn.estimator.base_silverkite_estimator import BaseSilverkiteEstimator
+from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
+from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
 
 
 class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
@@ -111,13 +112,16 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             train_test_thresh: Optional[datetime] = None,
             training_fraction: Optional[float] = None,
             fit_algorithm_dict: Optional[Dict] = None,
+            auto_holiday: bool = False,
             holidays_to_model_separately: Optional[Union[str, List[str]]] = "auto",
             holiday_lookup_countries: Optional[Union[str, List[str]]] = "auto",
             holiday_pre_num_days: int = 2,
             holiday_post_num_days: int = 2,
             holiday_pre_post_num_dict: Optional[Dict] = None,
             daily_event_df_dict: Optional[Dict] = None,
+            auto_growth: bool = False,
             changepoints_dict: Optional[Dict] = None,
+            auto_seasonality: bool = False,
             yearly_seasonality: Union[bool, str, int] = "auto",
             quarterly_seasonality: Union[bool, str, int] = "auto",
             monthly_seasonality: Union[bool, str, int] = "auto",
@@ -133,7 +137,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             max_admissible_value: Optional[float] = None,
             uncertainty_dict: Optional[Dict] = None,
             normalize_method: Optional[str] = None,
-            growth_term: Optional[str] = "linear",
+            growth_term: Optional[str] = cst.GrowthColEnum.linear.name,
             regressor_cols: Optional[List[str]] = None,
             feature_sets_enabled: Optional[Union[bool, Dict[str, bool]]] = None,
             extra_pred_cols: Optional[List[str]] = None,
@@ -141,7 +145,8 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             explicit_pred_cols: Optional[List[str]] = None,
             regression_weight_col: Optional[str] = None,
             simulation_based: Optional[bool] = False,
-            simulation_num: int = 10):
+            simulation_num: int = 10,
+            fast_simulation: bool = False):
         # every subclass of BaseSilverkiteEstimator must call super().__init__
         super().__init__(
             silverkite=silverkite,
@@ -163,13 +168,16 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.train_test_thresh = train_test_thresh
         self.training_fraction = training_fraction
         self.fit_algorithm_dict = fit_algorithm_dict
+        self.auto_holiday = auto_holiday
         self.holidays_to_model_separately = holidays_to_model_separately
         self.holiday_lookup_countries = holiday_lookup_countries
         self.holiday_pre_num_days = holiday_pre_num_days
         self.holiday_post_num_days = holiday_post_num_days
         self.holiday_pre_post_num_dict = holiday_pre_post_num_dict
         self.daily_event_df_dict = daily_event_df_dict
+        self.auto_growth = auto_growth
         self.changepoints_dict = changepoints_dict
+        self.auto_seasonality = auto_seasonality
         self.yearly_seasonality = yearly_seasonality
         self.quarterly_seasonality = quarterly_seasonality
         self.monthly_seasonality = monthly_seasonality
@@ -194,6 +202,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.regression_weight_col = regression_weight_col
         self.simulation_based = simulation_based
         self.simulation_num = simulation_num
+        self.fast_simulation = fast_simulation
         # ``forecast_simple_silverkite`` generates a ``fs_components_df`` to call
         # ``forecast_silverkite`` that is compatible with ``BaseSilverkiteEstimator``.
         # Unlike ``SilverkiteEstimator``, this does not need to call ``validate_inputs``.
@@ -247,6 +256,18 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             value_col=value_col,
             **fit_params)
 
+        # The uncertainty method has been filled as "simple_conditional_residuals" in ``super().fit`` above if
+        # ``coverage`` is given but ``uncertainty_dict`` is not given.
+        # In the case that the method is "simple_conditional_residuals",
+        # we use SimpleSilverkiteForecast to fit it, because under the situation of AR simulation,
+        # those information are needed in generating the prediction intervals.
+        # In all other cases, we fit the uncertainty model separately.
+        uncertainty_dict = None
+        if self.uncertainty_dict is not None:
+            uncertainty_method = self.uncertainty_dict.get("uncertainty_method", None)
+            if uncertainty_method == UncertaintyMethodEnum.simple_conditional_residuals.name:
+                uncertainty_dict = self.uncertainty_dict
+
         self.model_dict = self.silverkite.forecast_simple(
             df=X,
             time_col=time_col,
@@ -259,13 +280,16 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             training_fraction=self.training_fraction,
             fit_algorithm=self.fit_algorithm_dict["fit_algorithm"],
             fit_algorithm_params=self.fit_algorithm_dict["fit_algorithm_params"],
+            auto_holiday=self.auto_holiday,
             holidays_to_model_separately=self.holidays_to_model_separately,
             holiday_lookup_countries=self.holiday_lookup_countries,
             holiday_pre_num_days=self.holiday_pre_num_days,
             holiday_post_num_days=self.holiday_post_num_days,
             holiday_pre_post_num_dict=self.holiday_pre_post_num_dict,
             daily_event_df_dict=self.daily_event_df_dict,
+            auto_growth=self.auto_growth,
             changepoints_dict=self.changepoints_dict,
+            auto_seasonality=self.auto_seasonality,
             yearly_seasonality=self.yearly_seasonality,
             quarterly_seasonality=self.quarterly_seasonality,
             monthly_seasonality=self.monthly_seasonality,
@@ -279,7 +303,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             seasonality_changepoints_dict=self.seasonality_changepoints_dict,
             min_admissible_value=self.min_admissible_value,
             max_admissible_value=self.max_admissible_value,
-            uncertainty_dict=self.uncertainty_dict,
+            uncertainty_dict=uncertainty_dict,
             normalize_method=self.normalize_method,
             growth_term=self.growth_term,
             regressor_cols=self.regressor_cols,
@@ -289,7 +313,34 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             explicit_pred_cols=self.explicit_pred_cols,
             regression_weight_col=self.regression_weight_col,
             simulation_based=self.simulation_based,
-            simulation_num=self.simulation_num)
+            simulation_num=self.simulation_num,
+            fast_simulation=self.fast_simulation)
+
+        # Fits the uncertainty model if not already fit.
+        if self.uncertainty_dict is not None and uncertainty_dict is None:
+            # The quantile regression model.
+            if uncertainty_method == UncertaintyMethodEnum.quantile_regression.name:
+                fit_df = self.silverkite.predict(
+                    X,
+                    trained_model=self.model_dict
+                )["fut_df"].rename(
+                    columns={self.value_col_: cst.PREDICTED_COL}
+                )[[self.time_col_, cst.PREDICTED_COL]]
+                fit_df[self.value_col_] = X[self.value_col_].values
+                x_mat = self.model_dict["x_mat"]
+
+                default_params = {"is_residual_based": False}
+                params = self.uncertainty_dict.get("params", {})
+                default_params.update(params)
+
+                fit_params = {"x_mat": x_mat}
+
+                self.fit_uncertainty(
+                    df=fit_df,
+                    uncertainty_dict=self.uncertainty_dict,
+                    fit_params=fit_params,
+                    **default_params
+                )
 
         # Sets attributes based on ``self.model_dict``
         super().finish_fit()
