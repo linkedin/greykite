@@ -1,0 +1,267 @@
+:orphan:
+
+
+
+.. _sphx_glr_gallery_quickstart:
+
+Quickstart
+==========
+
+Here are some examples to get you started with core library functionality,
+starting with a simple forecast.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="You can create and evaluate a forecast with just a few lines of code.">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/images/thumb/sphx_glr_0100_simple_forecast_thumb.png
+     :alt: Simple Forecast
+
+     :ref:`sphx_glr_gallery_quickstart_0100_simple_forecast.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/0100_simple_forecast
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_gallery_quickstart_01_exploration:
+
+Data exploration
+----------------
+
+Here are some library features for data exploration.
+
+
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="You can detect trend and seasonality changepoints with just a few lines of code.">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/01_exploration/images/thumb/sphx_glr_0100_changepoint_detection_thumb.png
+     :alt: Changepoint Detection
+
+     :ref:`sphx_glr_gallery_quickstart_01_exploration_0100_changepoint_detection.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/01_exploration/0100_changepoint_detection
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Silverkite model has many hyperparameters to tune. Besides domain knowledge, we also have t...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/01_exploration/images/thumb/sphx_glr_0200_auto_configuration_tools_thumb.png
+     :alt: Auto Configuration Tools
+
+     :ref:`sphx_glr_gallery_quickstart_01_exploration_0200_auto_configuration_tools.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/01_exploration/0200_auto_configuration_tools
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Forecast models learn seasonal (cyclical) patterns and project them into the future. Understand...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/01_exploration/images/thumb/sphx_glr_0300_seasonality_plots_thumb.png
+     :alt: Seasonality Plots
+
+     :ref:`sphx_glr_gallery_quickstart_01_exploration_0300_seasonality_plots.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/01_exploration/0300_seasonality_plots
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_gallery_quickstart_02_interpretability:
+
+Interpretability
+----------------
+
+Here are some library features for forecast interpretation.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="For every forecast model trained with the Silverkite algorithm, you can print the model summary...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/02_interpretability/images/thumb/sphx_glr_0100_model_summary_thumb.png
+     :alt: Model Summary
+
+     :ref:`sphx_glr_gallery_quickstart_02_interpretability_0100_model_summary.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/02_interpretability/0100_model_summary
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Silverkite generates easily interpretable forecasting models when using its default ML algorith...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/02_interpretability/images/thumb/sphx_glr_0200_interpretability_thumb.png
+     :alt: Interpretability
+
+     :ref:`sphx_glr_gallery_quickstart_02_interpretability_0200_interpretability.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/02_interpretability/0200_interpretability
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_gallery_quickstart_03_benchmark:
+
+Grid Search and Benchmarking
+----------------------------
+
+Here are some library features for grid search and benchmarking.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Forecast models have many hyperparameters that could significantly affect the accuracy. These h...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/03_benchmark/images/thumb/sphx_glr_0100_grid_search_thumb.png
+     :alt: Grid Search
+
+     :ref:`sphx_glr_gallery_quickstart_03_benchmark_0100_grid_search.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/03_benchmark/0100_grid_search
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="You can easily compare predictive performance of multiple algorithms such as Silverkite and Pro...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/03_benchmark/images/thumb/sphx_glr_0200_benchmark_thumb.png
+     :alt: Benchmarking
+
+     :ref:`sphx_glr_gallery_quickstart_03_benchmark_0200_benchmark.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/03_benchmark/0200_benchmark
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_gallery_quickstart_04_postprocessing:
+
+Reconciliation
+--------------
+
+Here are some library features for reconciliation of multiple time series forecasts.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This tutorial explains how use the ~greykite.algo.reconcile.convex.reconcile_forecasts.Reconcil...">
+
+.. only:: html
+
+ .. figure:: /gallery/quickstart/04_postprocessing/images/thumb/sphx_glr_0100_reconcile_forecasts_thumb.png
+     :alt: Reconcile Forecasts
+
+     :ref:`sphx_glr_gallery_quickstart_04_postprocessing_0100_reconcile_forecasts.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/quickstart/04_postprocessing/0100_reconcile_forecasts
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

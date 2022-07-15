@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.templates.base_template &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.templates.base_template</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.templates.base_template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Base class for templates.</span>
+<span class="sd">Contains common code used by multiple templates.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties_forecast</span> <span class="kn">import</span> <span class="n">get_forecast_time_properties</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_basic_pipeline</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.forecast_config_defaults</span> <span class="kn">import</span> <span class="n">ForecastConfigDefaults</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.template_interface</span> <span class="kn">import</span> <span class="n">TemplateInterface</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+
+
+<span class="k">class</span> <span class="nc">BaseTemplate</span><span class="p">(</span><span class="n">TemplateInterface</span><span class="p">,</span> <span class="n">ForecastConfigDefaults</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base template with common code used by multiple templates.</span>
+
+<span class="sd">    Provides a particular modular approach to implement</span>
+<span class="sd">    `~greykite.framework.templates.template_interface.TemplateInterface.apply_template_for_pipeline_params`.</span>
+
+<span class="sd">    Includes the config defaults from</span>
+<span class="sd">    `~greykite.framework.templates.forecast_config_defaults.ForecastConfigDefaults`.</span>
+
+<span class="sd">    Subclasses must provide these properties / functions used by ``apply_template_for_pipeline_params``:</span>
+
+<span class="sd">        - estimator (__init__ default value)</span>
+<span class="sd">        - get_regressor_cols</span>
+<span class="sd">        - get_lagged_regressor_info</span>
+<span class="sd">        - get_hyperparameter_grid</span>
+
+<span class="sd">    Subclasses may optionally want to override:</span>
+
+<span class="sd">        - get_pipeline</span>
+<span class="sd">        - get_forecast_time_properties</span>
+<span class="sd">        - apply_metadata_defaults</span>
+<span class="sd">        - apply_evaluation_metric_defaults</span>
+<span class="sd">        - apply_evaluation_period_defaults</span>
+<span class="sd">        - apply_computation_defaults</span>
+<span class="sd">        - apply_model_components_defaults</span>
+<span class="sd">        - apply_forecast_config_defaults</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="p">:</span> <span class="n">BaseForecastEstimator</span><span class="p">):</span>
+        <span class="c1"># See attributes of `TemplateInterface` and `ForecastConfigDefaults`.</span>
+        <span class="c1"># Note that `self.config` includes modifications after applying default values.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estimator</span><span class="p">:</span> <span class="n">BaseForecastEstimator</span> <span class="o">=</span> <span class="n">estimator</span>
+        <span class="sd">&quot;&quot;&quot;The estimator instance to use as the final step in the pipeline.</span>
+<span class="sd">        An instance of `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Attributes used by `~greykite.framework.templates.base_template.apply_template_for_pipeline_params`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_func</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Score function used to select optimal model in CV.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_func_greater_is_better</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;A list of regressor columns used in the training and prediction DataFrames.</span>
+<span class="sd">        If None, no regressor columns are used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;A list of lagged regressor columns used in the training and prediction DataFrames.</span>
+<span class="sd">        If None, no lagged regressor columns are used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Pipeline to fit. The final named step must be called &quot;estimator&quot;.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_properties</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Time properties dictionary (likely produced by</span>
+<span class="sd">        `~greykite.common.time_properties_forecast.get_forecast_time_properties`)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Sets properties of the steps in the pipeline,</span>
+<span class="sd">        and specifies combinations to search over.</span>
+<span class="sd">        Should be valid input to `sklearn.model_selection.GridSearchCV` (param_grid)</span>
+<span class="sd">        or `sklearn.model_selection.RandomizedSearchCV` (param_distributions).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">estimator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The estimator instance to use as the final step in the pipeline.</span>
+<span class="sd">        An instance of `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estimator</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_regressor_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns regressor column names.</span>
+
+<span class="sd">        To be implemented by subclass.</span>
+
+<span class="sd">        Available parameters:</span>
+
+<span class="sd">            - self.df</span>
+<span class="sd">            - self.config</span>
+<span class="sd">            - self.score_func</span>
+<span class="sd">            - self.score_func_greater_is_better</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        regressor_cols : `list` [`str`] or None</span>
+<span class="sd">            See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_lagged_regressor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns lagged regressor column names and minimal/maximal lag order. The lag order</span>
+<span class="sd">        can be used to check potential imputation in the computation of lags.</span>
+
+<span class="sd">        Can be overridden by subclass.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lagged_regressor_info : `dict`</span>
+<span class="sd">            A dictionary that includes the lagged regressor column names and maximal/minimal lag order</span>
+<span class="sd">            The keys are:</span>
+
+<span class="sd">                lagged_regressor_cols : `list` [`str`] or None</span>
+<span class="sd">                    See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">                overall_min_lag_order : `int` or None</span>
+<span class="sd">                overall_max_lag_order : `int` or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lagged_regressor_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">lagged_regressor_info</span>
+
+    <span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns pipeline.</span>
+
+<span class="sd">        Implementation may be overridden by subclass</span>
+<span class="sd">        if a different pipeline is desired.</span>
+
+<span class="sd">        Uses ``self.estimator``, ``self.score_func``,</span>
+<span class="sd">        ``self.score_func_greater_is_better``, ``self.config``,</span>
+<span class="sd">        ``self.regressor_cols``.</span>
+
+<span class="sd">        Available parameters:</span>
+
+<span class="sd">            - self.df</span>
+<span class="sd">            - self.config</span>
+<span class="sd">            - self.score_func</span>
+<span class="sd">            - self.score_func_greater_is_better</span>
+<span class="sd">            - self.regressor_cols</span>
+<span class="sd">            - self.estimator</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pipeline : `sklearn.pipeline.Pipeline`</span>
+<span class="sd">            See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_basic_pipeline</span><span class="p">(</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">relative_error_tolerance</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">null_model_params</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_forecast_time_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns forecast time parameters.</span>
+
+<span class="sd">        Uses ``self.df``, ``self.config``, ``self.regressor_cols``.</span>
+
+<span class="sd">        Available parameters:</span>
+
+<span class="sd">            - self.df</span>
+<span class="sd">            - self.config</span>
+<span class="sd">            - self.score_func</span>
+<span class="sd">            - self.score_func_greater_is_better</span>
+<span class="sd">            - self.regressor_cols</span>
+<span class="sd">            - self.lagged_regressor_cols</span>
+<span class="sd">            - self.estimator</span>
+<span class="sd">            - self.pipeline</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time_properties : `dict` [`str`, `any`] or None, default None</span>
+<span class="sd">            Time properties dictionary (likely produced by</span>
+<span class="sd">            `~greykite.common.time_properties_forecast.get_forecast_time_properties`)</span>
+<span class="sd">            with keys:</span>
+
+<span class="sd">            ``&quot;period&quot;`` : `int`</span>
+<span class="sd">                Period of each observation (i.e. minimum time between observations, in seconds).</span>
+<span class="sd">            ``&quot;simple_freq&quot;`` : `SimpleTimeFrequencyEnum`</span>
+<span class="sd">                ``SimpleTimeFrequencyEnum`` member corresponding to data frequency.</span>
+<span class="sd">            ``&quot;num_training_points&quot;`` : `int`</span>
+<span class="sd">                Number of observations for training.</span>
+<span class="sd">            ``&quot;num_training_days&quot;`` : `int`</span>
+<span class="sd">                Number of days for training.</span>
+<span class="sd">            ``&quot;start_year&quot;`` : `int`</span>
+<span class="sd">                Start year of the training period.</span>
+<span class="sd">            ``&quot;end_year&quot;`` : `int`</span>
+<span class="sd">                End year of the forecast period.</span>
+<span class="sd">            ``&quot;origin_for_time_vars&quot;`` : `float`</span>
+<span class="sd">                Continuous time representation of the first date in ``df``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_forecast_time_properties</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">)</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_hyperparameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns hyperparameter grid.</span>
+
+<span class="sd">        To be implemented by subclass.</span>
+
+<span class="sd">        Available parameters:</span>
+
+<span class="sd">            - self.df</span>
+<span class="sd">            - self.config</span>
+<span class="sd">            - self.score_func</span>
+<span class="sd">            - self.score_func_greater_is_better</span>
+<span class="sd">            - self.regressor_cols</span>
+<span class="sd">            - self.estimator</span>
+<span class="sd">            - self.pipeline</span>
+<span class="sd">            - self.time_properties</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hyperparameter_grid : `dict`, `list` [`dict`] or None</span>
+<span class="sd">            See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">            The output dictionary values are lists, combined in grid search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">apply_template_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decorator for ``apply_template_for_pipeline_params`` function.</span>
+
+<span class="sd">        By default, this applies ``apply_forecast_config_defaults`` to ``config``.</span>
+
+<span class="sd">        Subclass may override this for pre/post processing of</span>
+<span class="sd">        ``apply_template_for_pipeline_params``, such as input validation.</span>
+<span class="sd">        In this case, ``apply_template_for_pipeline_params`` must also be implemented in the subclass.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">process_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Sets defaults and makes a copy of ``config``</span>
+            <span class="c1"># All subclasses should keep this line.</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_forecast_config_defaults</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+            <span class="c1"># &lt;optional processing before calling `func`, if needed&gt;</span>
+            <span class="n">pipeline_params</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+            <span class="c1"># &lt;optional postprocessing after calling `func`, if needed&gt;</span>
+            <span class="k">return</span> <span class="n">pipeline_params</span>
+        <span class="k">return</span> <span class="n">process_wrapper</span>
+
+    <span class="nd">@apply_template_decorator</span>
+    <span class="k">def</span> <span class="nf">apply_template_for_pipeline_params</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Implements template interface method.</span>
+<span class="sd">        Takes input data and optional configuration parameters</span>
+<span class="sd">        to customize the model. Returns a set of parameters to call</span>
+<span class="sd">        :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+
+<span class="sd">        See template interface for parameters and return value.</span>
+
+<span class="sd">        Uses the methods in this class to set:</span>
+
+<span class="sd">            - ``&quot;regressor_cols&quot;`` : get_regressor_cols()</span>
+<span class="sd">            - ``lagged_regressor_cols`` : get_lagged_regressor_info()</span>
+<span class="sd">            - ``&quot;pipeline&quot;`` : get_pipeline()</span>
+<span class="sd">            - ``&quot;time_properties&quot;`` : get_forecast_time_properties()</span>
+<span class="sd">            - ``&quot;hyperparameter_grid&quot;`` : get_hyperparameter_grid()</span>
+
+<span class="sd">        All other parameters are taken directly from ``config``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="c1"># Defines score_func, score_func_greater_is_better</span>
+        <span class="c1"># Sets `score_func` to a string instead of a function, so CV results are</span>
+        <span class="c1"># reported as &quot;mean_test_{short_name}&quot; instead of &quot;mean_test_score&quot;.</span>
+        <span class="n">metric</span> <span class="o">=</span> <span class="n">EvaluationMetricEnum</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">cv_selection_metric</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_func</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_func_greater_is_better</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">get_metric_greater_is_better</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regressor_cols</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lagged_regressor_info</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pipeline</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_forecast_time_properties</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hyperparameter_grid</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="c1"># input</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">date_format</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">,</span>
+            <span class="n">anomaly_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">anomaly_info</span><span class="p">,</span>
+            <span class="c1"># model</span>
+            <span class="n">pipeline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># ignored when `pipeline` is provided</span>
+            <span class="n">hyperparameter_grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">computation_param</span><span class="o">.</span><span class="n">hyperparameter_budget</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">computation_param</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">computation_param</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="c1"># forecast</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">test_horizon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">test_horizon</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">periods_between_train_test</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="c1"># evaluation</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+            <span class="n">cv_report_metrics</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">cv_report_metrics</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">null_model_params</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">relative_error_tolerance</span><span class="p">,</span>
+            <span class="c1"># CV</span>
+            <span class="n">cv_horizon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_horizon</span><span class="p">,</span>
+            <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_min_train_periods</span><span class="p">,</span>
+            <span class="n">cv_expanding_window</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_expanding_window</span><span class="p">,</span>
+            <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_use_most_recent_splits</span><span class="p">,</span>
+            <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_periods_between_splits</span><span class="p">,</span>
+            <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_periods_between_train_test</span><span class="p">,</span>
+            <span class="n">cv_max_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="o">.</span><span class="n">cv_max_splits</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span>
+
+    <span class="c1"># `apply_template_decorator` needs to be a static method and take `func` as the</span>
+    <span class="c1"># only argument (not self). It also needs to be defined in this class to allow</span>
+    <span class="c1"># override. If we use the @staticmethod decorator above, this error appears:</span>
+    <span class="c1">#   `TypeError: &#39;staticmethod&#39; object is not callable`</span>
+    <span class="c1"># However, if we call staticmethod at the bottom of the class, after it is</span>
+    <span class="c1"># applied to `apply_template_for_pipeline_params`, it works.</span>
+    <span class="n">apply_template_decorator</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">apply_template_decorator</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

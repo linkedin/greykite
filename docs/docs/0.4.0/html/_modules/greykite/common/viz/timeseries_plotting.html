@@ -1,0 +1,1279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.common.viz.timeseries_plotting &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.common.viz.timeseries_plotting</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.common.viz.timeseries_plotting</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen, Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;Plotting functions in plotly.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">plotly.colors</span> <span class="kn">import</span> <span class="n">DEFAULT_PLOTLY_COLORS</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">build_time_features_df</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionary</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.colors_utils</span> <span class="kn">import</span> <span class="n">get_color_palette</span>
+
+
+<div class="viewcode-block" id="plot_multivariate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.viz.timeseries_plotting.plot_multivariate">[docs]</a><span class="k">def</span> <span class="nf">plot_multivariate</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">x_col</span><span class="p">,</span>
+        <span class="n">y_col_style_dict</span><span class="o">=</span><span class="s2">&quot;plotly&quot;</span><span class="p">,</span>
+        <span class="n">default_color</span><span class="o">=</span><span class="s2">&quot;rgba(0, 145, 202, 1.0)&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plots one or more lines against the same x-axis values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Data frame with ``x_col`` and columns named by the keys in ``y_col_style_dict``.</span>
+<span class="sd">    x_col: `str`</span>
+<span class="sd">        Which column to plot on the x-axis.</span>
+<span class="sd">    y_col_style_dict: `dict` [`str`, `dict` or None] or &quot;plotly&quot; or &quot;auto&quot; or &quot;auto-fill&quot;, default &quot;plotly&quot;</span>
+<span class="sd">        The column(s) to plot on the y-axis, and how to style them.</span>
+
+<span class="sd">        If a dictionary:</span>
+
+<span class="sd">            - key : `str`</span>
+<span class="sd">                column name in ``df``</span>
+<span class="sd">            - value : `dict` or None</span>
+<span class="sd">                Optional styling options, passed as kwargs to `go.Scatter`.</span>
+<span class="sd">                If None, uses the default: line labeled by the column name.</span>
+<span class="sd">                See reference page for `plotly.graph_objects.Scatter` for options</span>
+<span class="sd">                (e.g. color, mode, width/size, opacity).</span>
+<span class="sd">                https://plotly.com/python/reference/#scatter.</span>
+
+<span class="sd">        If a string, plots all columns in ``df`` besides ``x_col`` against ``x_col``:</span>
+
+<span class="sd">            - &quot;plotly&quot;: plot lines with default plotly styling</span>
+<span class="sd">            - &quot;auto&quot;: plot lines with color ``default_color``, sorted by value (ascending)</span>
+<span class="sd">            - &quot;auto-fill&quot;: plot lines with color ``default_color``, sorted by value (ascending), and fills between lines</span>
+
+<span class="sd">    default_color: `str`, default &quot;rgba(0, 145, 202, 1.0)&quot; (blue)</span>
+<span class="sd">        Default line color when ``y_col_style_dict`` is one of &quot;auto&quot;, &quot;auto-fill&quot;.</span>
+<span class="sd">    xlabel : `str` or None, default None</span>
+<span class="sd">        x-axis label. If None, default is ``x_col``.</span>
+<span class="sd">    ylabel : `str` or None, default ``VALUE_COL``</span>
+<span class="sd">        y-axis label</span>
+<span class="sd">    title : `str` or None, default None</span>
+<span class="sd">        Plot title. If None, default is based on axis labels.</span>
+<span class="sd">    showlegend : `bool`, default True</span>
+<span class="sd">        Whether to show the legend.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">        Interactive plotly graph of one or more columns</span>
+<span class="sd">        in ``df`` against ``x_col``.</span>
+
+<span class="sd">        See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">        return value for how to plot the figure and add customization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">x_col</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ylabel</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">xlabel</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">auto_style</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">default_color</span><span class="p">}}</span>
+    <span class="k">if</span> <span class="n">y_col_style_dict</span> <span class="o">==</span> <span class="s2">&quot;plotly&quot;</span><span class="p">:</span>
+        <span class="c1"># Uses plotly default style</span>
+        <span class="n">y_col_style_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">x_col</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">y_col_style_dict</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;auto-fill&quot;</span><span class="p">]:</span>
+        <span class="c1"># Columns ordered from low to high</span>
+        <span class="n">means</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">x_col</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">column_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">y_col_style_dict</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="c1"># Lines with color `default_color`</span>
+            <span class="n">y_col_style_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="n">auto_style</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_order</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="n">y_col_style_dict</span> <span class="o">==</span> <span class="s2">&quot;auto-fill&quot;</span><span class="p">:</span>
+            <span class="c1"># Lines with color `default_color`, with fill between lines</span>
+            <span class="n">y_col_style_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">column_order</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">auto_style</span><span class="p">}</span>
+            <span class="n">y_col_style_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="n">col</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">default_color</span><span class="p">},</span>
+                    <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;tonexty&quot;</span>
+                <span class="p">}</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="p">})</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">default_style</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">style_dict</span> <span class="ow">in</span> <span class="n">y_col_style_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># By default, column name in ``df`` is used to label the line</span>
+        <span class="n">default_col_style</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span><span class="n">default_style</span><span class="p">,</span> <span class="n">overwrite_dict</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">})</span>
+        <span class="c1"># User can overwrite any of the default values, or remove them by setting key value to None</span>
+        <span class="n">style_dict</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span><span class="n">default_col_style</span><span class="p">,</span> <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">style_dict</span><span class="p">)</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">x_col</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">],</span>
+            <span class="o">**</span><span class="n">style_dict</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">xlabel</span><span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">ylabel</span><span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+        <span class="n">legend</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;traceorder&#39;</span><span class="p">:</span> <span class="s1">&#39;reversed&#39;</span><span class="p">}</span>  <span class="c1"># Matches the order of ``y_col_style_dict`` (bottom to top)</span>
+    <span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+<span class="k">def</span> <span class="nf">plot_multivariate_grouped</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">x_col</span><span class="p">,</span>
+        <span class="n">y_col_style_dict</span><span class="p">,</span>
+        <span class="n">grouping_x_col</span><span class="p">,</span>
+        <span class="n">grouping_x_col_values</span><span class="p">,</span>
+        <span class="n">grouping_y_col_style_dict</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="n">DEFAULT_PLOTLY_COLORS</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plots multiple lines against the same x-axis values. The lines can</span>
+<span class="sd">    partially share the x-axis values.</span>
+
+<span class="sd">    See parameter descriptions for a running example.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Data frame with ``x_col`` and columns named by the keys in ``y_col_style_dict``,</span>
+<span class="sd">        ``grouping_x_col``, ``grouping_y_col_style_dict``.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            df = pd.DataFrame({</span>
+<span class="sd">                time: [dt(2018, 1, 1),</span>
+<span class="sd">                        dt(2018, 1, 2),</span>
+<span class="sd">                        dt(2018, 1, 3)],</span>
+<span class="sd">                &quot;y1&quot;: [8.5, 2.0, 3.0],</span>
+<span class="sd">                &quot;y2&quot;: [1.4, 2.1, 3.4],</span>
+<span class="sd">                &quot;y3&quot;: [4.2, 3.1, 3.0],</span>
+<span class="sd">                &quot;y4&quot;: [0, 1, 2],</span>
+<span class="sd">                &quot;y5&quot;: [10, 9, 8],</span>
+<span class="sd">                &quot;group&quot;: [1, 2, 1],</span>
+<span class="sd">            })</span>
+<span class="sd">        This will be our running example.</span>
+<span class="sd">    x_col: `str`</span>
+<span class="sd">        Which column to plot on the x-axis.</span>
+<span class="sd">        &quot;time&quot; in our example.</span>
+<span class="sd">    y_col_style_dict: `dict` [`str`, `dict` or None]</span>
+<span class="sd">        The column(s) to plot on the y-axis, and how to style them.</span>
+<span class="sd">        These columns are plotted against the complete x-axis.</span>
+
+<span class="sd">        - key : `str`</span>
+<span class="sd">            column name in ``df``</span>
+<span class="sd">        - value : `dict` or None</span>
+<span class="sd">            Optional styling options, passed as kwargs to `go.Scatter`.</span>
+<span class="sd">            If None, uses the default: line labeled by the column name.</span>
+<span class="sd">            If line color is not given, it is added according to ``colors``.</span>
+<span class="sd">            See reference page for `plotly.graph_objects.Scatter` for options</span>
+<span class="sd">            (e.g. color, mode, width/size, opacity).</span>
+<span class="sd">            https://plotly.com/python/reference/#scatter.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            y_col_style_dict={</span>
+<span class="sd">                &quot;y1&quot;: {</span>
+<span class="sd">                    &quot;name&quot;: &quot;y1_name&quot;,</span>
+<span class="sd">                    &quot;legendgroup&quot;: &quot;one&quot;,</span>
+<span class="sd">                    &quot;mode&quot;: &quot;markers&quot;,</span>
+<span class="sd">                    &quot;line&quot;: None  # Remove line params since we use mode=&quot;markers&quot;</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;y2&quot;: None,</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The function will add a line color to &quot;y1&quot; and &quot;y2&quot; based on the ``colors`` parameter.</span>
+<span class="sd">        It will also add a name to &quot;y2&quot;, since none was given. The &quot;name&quot; of &quot;y1&quot; will be preserved.</span>
+
+<span class="sd">        The output ``fig`` will have one line each for each of &quot;y1&quot; and &quot;y2&quot;, each plot against</span>
+<span class="sd">        the entire &quot;time&quot; column.</span>
+<span class="sd">    grouping_x_col: `str`</span>
+<span class="sd">        Which column to use to group columns in ``grouping_y_col_style_dict``.</span>
+<span class="sd">        &quot;group&quot; in our example.</span>
+<span class="sd">    grouping_x_col_values: `list` [`int`] or None</span>
+<span class="sd">        Which values to use for grouping. If None, uses all the unique values in</span>
+<span class="sd">        ``df`` [``grouping_x_col``].</span>
+<span class="sd">        In our example, specifying ``grouping_x_col_values == [1, 2]`` would plot</span>
+<span class="sd">        separate lines corresponding to ``group==1`` and ``group==2``.</span>
+<span class="sd">    grouping_y_col_style_dict: `dict` [`str`, `dict` or None]</span>
+<span class="sd">        The column(s) to plot on the y-axis, and how to style them.</span>
+<span class="sd">        These columns are plotted against partial x-axis.</span>
+<span class="sd">        For each ``grouping_x_col_values`` an element in this dictionary produces</span>
+<span class="sd">        one line.</span>
+
+<span class="sd">        - key : `str`</span>
+<span class="sd">            column name in ``df``</span>
+<span class="sd">        - value : `dict` or None</span>
+<span class="sd">            Optional styling options, passed as kwargs to `go.Scatter`.</span>
+<span class="sd">            If None, uses the default: line labeled by the ``grouping_x_col_values``,</span>
+<span class="sd">            ``grouping_x_col`` and column name.</span>
+<span class="sd">            If a name is given, it is augmented with the ``grouping_x_col_values``.</span>
+<span class="sd">            If line color is not given, it is added according to ``colors``.</span>
+<span class="sd">            All the lines sharing same ``grouping_x_col_values`` have the same color.</span>
+<span class="sd">            See reference page for `plotly.graph_objects.Scatter` for options</span>
+<span class="sd">            (e.g. color, mode, width/size, opacity).</span>
+<span class="sd">            https://plotly.com/python/reference/#scatter.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            grouping_y_col_style_dict={</span>
+<span class="sd">                &quot;y3&quot;: {</span>
+<span class="sd">                    &quot;line&quot;: {</span>
+<span class="sd">                        &quot;color&quot;: &quot;blue&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;y4&quot;: {</span>
+<span class="sd">                    &quot;name&quot;: &quot;y4_name&quot;,</span>
+<span class="sd">                    &quot;line&quot;: {</span>
+<span class="sd">                        &quot;width&quot;: 2,</span>
+<span class="sd">                        &quot;dash&quot;: &quot;dot&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;y5&quot;: None,</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The function will add a line color to &quot;y4&quot; and &quot;y5&quot; based on the ``colors`` parameter.</span>
+<span class="sd">        The line color of &quot;y3&quot; will be &quot;blue&quot; as specified. We also preserve the given line</span>
+<span class="sd">        properties of &quot;y4&quot;.</span>
+
+<span class="sd">    `   The function adds a name to &quot;y3&quot; and &quot;y5&quot;, since none was given. The given &quot;name&quot; of &quot;y4&quot;</span>
+<span class="sd">        will be augmented with ``grouping_x_col_values``.</span>
+
+<span class="sd">        Each element of ``grouping_y_col_style_dict`` gets one line for each ``grouping_x_col_values``.</span>
+<span class="sd">        In our example, there will be 2 lines corresponding to &quot;y3&quot;, named &quot;1_y3&quot; and &quot;2_y3&quot;.</span>
+<span class="sd">        &quot;1_y3&quot; is plotted against &quot;time = [dt(2018, 1, 1), dt(2018, 1, 3)]&quot;, corresponding to ``group==1``.</span>
+<span class="sd">        &quot;2_y3&quot; is plotted against &quot;time = [dt(2018, 1, 2)&quot;, corresponding to ``group==2``.</span>
+<span class="sd">    colors: [`str`, `list` [`str`]], default ``DEFAULT_PLOTLY_COLORS``</span>
+<span class="sd">        Which colors to use to build a color palette for plotting.</span>
+<span class="sd">        This can be a list of RGB colors or a `str` from ``PLOTLY_SCALES``.</span>
+<span class="sd">        Required number of colors equals sum of the length of ``y_col_style_dict``</span>
+<span class="sd">        and length of ``grouping_x_col_values``.</span>
+<span class="sd">        See `~greykite.common.viz.colors_utils.get_color_palette` for details.</span>
+<span class="sd">    xlabel : `str` or None, default None</span>
+<span class="sd">        x-axis label. If None, default is ``x_col``.</span>
+<span class="sd">    ylabel : `str` or None, default ``VALUE_COL``</span>
+<span class="sd">        y-axis label</span>
+<span class="sd">    title : `str` or None, default None</span>
+<span class="sd">        Plot title. If None, default is based on axis labels.</span>
+<span class="sd">    showlegend : `bool`, default True</span>
+<span class="sd">        Whether to show the legend.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">    Interactive plotly graph of one or more columns</span>
+<span class="sd">    in ``df`` against ``x_col``.</span>
+
+<span class="sd">    See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">    return value for how to plot the figure and add customization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">available_grouping_x_col_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">grouping_x_col</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">grouping_x_col_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">grouping_x_col_values</span> <span class="o">=</span> <span class="n">available_grouping_x_col_values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">missing_grouping_x_col_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">grouping_x_col_values</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">available_grouping_x_col_values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_grouping_x_col_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Following &#39;grouping_x_col_values&#39; are missing in &#39;</span><span class="si">{</span><span class="n">grouping_x_col</span><span class="si">}</span><span class="s2">&#39; column: &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">missing_grouping_x_col_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Chooses the color palette</span>
+    <span class="n">n_color</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_col_style_dict</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">grouping_x_col_values</span><span class="p">)</span>
+    <span class="n">color_palette</span> <span class="o">=</span> <span class="n">get_color_palette</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="n">n_color</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+
+    <span class="c1"># Updates colors for y_col_style_dict if it is not specified</span>
+    <span class="k">for</span> <span class="n">color_num</span><span class="p">,</span> <span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">style_dict</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_col_style_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">style_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">style_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">default_color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">color_palette</span><span class="p">[</span><span class="n">color_num</span><span class="p">]}</span>
+        <span class="n">style_dict</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span><span class="n">default_color</span><span class="p">,</span> <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">style_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">))</span>
+        <span class="n">y_col_style_dict</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">style_dict</span>
+
+    <span class="c1"># Standardizes dataset for the next figure</span>
+    <span class="n">df_standardized</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">x_col</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">x_col</span><span class="p">)</span>
+
+    <span class="c1"># This figure plots the whole xaxis vs yaxis values</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df_standardized</span><span class="p">,</span>
+        <span class="n">x_col</span><span class="o">=</span><span class="n">x_col</span><span class="p">,</span>
+        <span class="n">y_col_style_dict</span><span class="o">=</span><span class="n">y_col_style_dict</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">layout</span>
+
+    <span class="c1"># These figures plot the sliced xaxis vs yaxis values</span>
+    <span class="k">for</span> <span class="n">color_num</span><span class="p">,</span> <span class="n">grouping_x_col_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grouping_x_col_values</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_col_style_dict</span><span class="p">)):</span>
+        <span class="n">default_color</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">color_palette</span><span class="p">[</span><span class="n">color_num</span><span class="p">]}</span>
+
+        <span class="n">sliced_y_col_style_dict</span> <span class="o">=</span> <span class="n">grouping_y_col_style_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">style_dict</span> <span class="ow">in</span> <span class="n">sliced_y_col_style_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Updates colors if it is not specified</span>
+            <span class="k">if</span> <span class="n">style_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">style_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">line_dict</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span><span class="n">default_color</span><span class="p">,</span> <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">style_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">))</span>
+
+            <span class="c1"># Augments names with grouping_x_col_value</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">style_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">updated_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">grouping_x_col_value</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">grouping_x_col</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">updated_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">grouping_x_col_value</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="n">overwrite_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">updated_name</span><span class="p">,</span>
+                <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">line_dict</span>
+            <span class="p">}</span>
+            <span class="n">style_dict</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span><span class="n">style_dict</span><span class="p">,</span> <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">overwrite_dict</span><span class="p">)</span>
+            <span class="n">sliced_y_col_style_dict</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">style_dict</span>
+
+        <span class="n">df_sliced</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">grouping_x_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">grouping_x_col_value</span><span class="p">]</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df_sliced</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">x_col</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="n">sliced_y_col_style_dict</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">+</span> <span class="n">fig</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span>
+
+
+<div class="viewcode-block" id="plot_univariate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.viz.timeseries_plotting.plot_univariate">[docs]</a><span class="k">def</span> <span class="nf">plot_univariate</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">x_col</span><span class="p">,</span>
+        <span class="n">y_col</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;rgb(32, 149, 212)&quot;</span><span class="p">,</span>  <span class="c1"># light blue</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple plot of univariate timeseries.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Data frame with ``x_col`` and ``y_col``</span>
+<span class="sd">    x_col: `str`</span>
+<span class="sd">        x-axis column name, usually the time column</span>
+<span class="sd">    y_col: `str`</span>
+<span class="sd">        y-axis column name, the value the plot</span>
+<span class="sd">    xlabel : `str` or None, default None</span>
+<span class="sd">        x-axis label</span>
+<span class="sd">    ylabel : `str` or None, default None</span>
+<span class="sd">        y-axis label</span>
+<span class="sd">    title : `str` or None, default None</span>
+<span class="sd">        Plot title. If None, default is based on axis labels.</span>
+<span class="sd">    color : `str`, default &quot;rgb(32, 149, 212)&quot; (light blue)</span>
+<span class="sd">        Line color</span>
+<span class="sd">    showlegend : `bool`, default True</span>
+<span class="sd">        Whether to show the legend</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">        Interactive plotly graph of the value against time.</span>
+
+<span class="sd">        See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">        return value for how to plot the figure and add customization.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    `~greykite.common.viz.timeseries_plotting.plot_multivariate`</span>
+<span class="sd">        Provides more styling options. Also consider using plotly&#39;s `go.Scatter` and `go.Layout` directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># sets default x and y-axis names based on column names</span>
+    <span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">x_col</span>
+    <span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ylabel</span> <span class="o">=</span> <span class="n">y_col</span>
+
+    <span class="n">y_col_style_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">y_col</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">y_col</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span>
+            <span class="p">),</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">x_col</span><span class="p">,</span>
+        <span class="n">y_col_style_dict</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="plot_forecast_vs_actual"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual">[docs]</a><span class="k">def</span> <span class="nf">plot_forecast_vs_actual</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">actual_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">ACTUAL_COL</span><span class="p">,</span>
+        <span class="n">predicted_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">,</span>
+        <span class="n">predicted_lower_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">,</span>
+        <span class="n">predicted_upper_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+        <span class="n">train_end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">actual_mode</span><span class="o">=</span><span class="s2">&quot;lines+markers&quot;</span><span class="p">,</span>
+        <span class="n">actual_points_color</span><span class="o">=</span><span class="s2">&quot;rgba(250, 43, 20, 0.7)&quot;</span><span class="p">,</span>  <span class="c1"># red</span>
+        <span class="n">actual_points_size</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">actual_color_opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">forecast_curve_color</span><span class="o">=</span><span class="s2">&quot;rgba(0, 90, 181, 0.7)&quot;</span><span class="p">,</span>  <span class="c1"># blue</span>
+        <span class="n">forecast_curve_dash</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">,</span>
+        <span class="n">ci_band_color</span><span class="o">=</span><span class="s2">&quot;rgba(0, 90, 181, 0.15)&quot;</span><span class="p">,</span>  <span class="c1"># light blue</span>
+        <span class="n">ci_boundary_curve_color</span><span class="o">=</span><span class="s2">&quot;rgba(0, 90, 181, 0.5)&quot;</span><span class="p">,</span>  <span class="c1"># light blue</span>
+        <span class="n">ci_boundary_curve_width</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># no line</span>
+        <span class="n">vertical_line_color</span><span class="o">=</span><span class="s2">&quot;rgba(100, 100, 100, 0.9)&quot;</span><span class="p">,</span>  <span class="c1"># black color with opacity of 0.9</span>
+        <span class="n">vertical_line_width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plots forecast with prediction intervals, against actuals</span>
+<span class="sd">    Adapted from plotly user guide:</span>
+<span class="sd">    https://plot.ly/python/v3/continuous-error-bars/#basic-continuous-error-bars</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Timestamp, predicted, and actual values</span>
+<span class="sd">    time_col : `str`, default `~greykite.common.constants.TIME_COL`</span>
+<span class="sd">        Column in df with timestamp (x-axis)</span>
+<span class="sd">    actual_col : `str`, default `~greykite.common.constants.ACTUAL_COL`</span>
+<span class="sd">        Column in df with actual values</span>
+<span class="sd">    predicted_col : `str`, default `~greykite.common.constants.PREDICTED_COL`</span>
+<span class="sd">        Column in df with predicted values</span>
+<span class="sd">    predicted_lower_col : `str` or None, default `~greykite.common.constants.PREDICTED_LOWER_COL`</span>
+<span class="sd">        Column in df with predicted lower bound</span>
+<span class="sd">    predicted_upper_col : `str` or None, default `~greykite.common.constants.PREDICTED_UPPER_COL`</span>
+<span class="sd">        Column in df with predicted upper bound</span>
+<span class="sd">    xlabel : `str`, default `~greykite.common.constants.TIME_COL`</span>
+<span class="sd">        x-axis label.</span>
+<span class="sd">    ylabel : `str`, default `~greykite.common.constants.VALUE_COL`</span>
+<span class="sd">        y-axis label.</span>
+<span class="sd">    train_end_date : `datetime.datetime` or None, default None</span>
+<span class="sd">        Train end date.</span>
+<span class="sd">        Must be a value in ``df[time_col]``.</span>
+<span class="sd">    title : `str` or None, default None</span>
+<span class="sd">        Plot title.</span>
+<span class="sd">    showlegend : `bool`, default True</span>
+<span class="sd">        Whether to show a plot legend.</span>
+<span class="sd">    actual_mode : `str`, default &quot;lines+markers&quot;</span>
+<span class="sd">        How to show the actuals.</span>
+<span class="sd">        Options: ``markers``, ``lines``, ``lines+markers``</span>
+<span class="sd">    actual_points_color : `str`, default &quot;rgba(99, 114, 218, 1.0)&quot;</span>
+<span class="sd">        Color of actual line/marker.</span>
+<span class="sd">    actual_points_size : `float`, default 2.0</span>
+<span class="sd">        Size of actual markers.</span>
+<span class="sd">        Only used if &quot;markers&quot; is in ``actual_mode``.</span>
+<span class="sd">    actual_color_opacity : `float` or None, default 1.0</span>
+<span class="sd">        Opacity of actual values points.</span>
+<span class="sd">    forecast_curve_color : `str`, default &quot;rgba(0, 145, 202, 1.0)&quot;</span>
+<span class="sd">        Color of forecasted values.</span>
+<span class="sd">    forecast_curve_dash : `str`, default &quot;solid&quot;</span>
+<span class="sd">        &#39;dash&#39; property of forecast ``scatter.line``.</span>
+<span class="sd">        One of: ``[&#39;solid&#39;, &#39;dot&#39;, &#39;dash&#39;, &#39;longdash&#39;, &#39;dashdot&#39;, &#39;longdashdot&#39;]``</span>
+<span class="sd">        or a string containing a dash length list in pixels or percentages</span>
+<span class="sd">        (e.g. ``&#39;5px 10px 2px 2px&#39;``, ``&#39;5, 10, 2, 2&#39;``, ``&#39;10% 20% 40%&#39;``)</span>
+<span class="sd">    ci_band_color : `str`, default &quot;rgba(0, 145, 202, 0.15)&quot;</span>
+<span class="sd">        Fill color of the prediction bands.</span>
+<span class="sd">    ci_boundary_curve_color : `str`, default &quot;rgba(0, 145, 202, 0.15)&quot;</span>
+<span class="sd">        Color of the prediction upper/lower lines.</span>
+<span class="sd">    ci_boundary_curve_width : `float`, default 0.0</span>
+<span class="sd">        Width of the prediction upper/lower lines.</span>
+<span class="sd">        default 0.0 (hidden)</span>
+<span class="sd">    vertical_line_color : `str`, default &quot;rgba(100, 100, 100, 0.9)&quot;</span>
+<span class="sd">        Color of the vertical line indicating train end date.</span>
+<span class="sd">        Default is black with opacity of 0.9.</span>
+<span class="sd">    vertical_line_width : `float`, default 1.0</span>
+<span class="sd">        width of the vertical line indicating train end date</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">        Plotly figure of forecast against actuals, with prediction</span>
+<span class="sd">        intervals if available.</span>
+
+<span class="sd">        Can show, convert to HTML, update::</span>
+
+<span class="sd">            # show figure</span>
+<span class="sd">            fig.show()</span>
+
+<span class="sd">            # get HTML string, write to file</span>
+<span class="sd">            fig.to_html(include_plotlyjs=False, full_html=True)</span>
+<span class="sd">            fig.write_html(&quot;figure.html&quot;, include_plotlyjs=False, full_html=True)</span>
+
+<span class="sd">            # customize layout (https://plot.ly/python/v3/user-guide/)</span>
+<span class="sd">            update_layout = dict(</span>
+<span class="sd">                yaxis=dict(title=&quot;new ylabel&quot;),</span>
+<span class="sd">                title_text=&quot;new title&quot;,</span>
+<span class="sd">                title_x=0.5,</span>
+<span class="sd">                title_font_size=30)</span>
+<span class="sd">            fig.update_layout(update_layout)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Forecast vs Actual&quot;</span>
+    <span class="k">if</span> <span class="n">train_end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">train_end_date</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;train_end_date </span><span class="si">{</span><span class="n">train_end_date</span><span class="si">}</span><span class="s2"> is not found in df[&#39;</span><span class="si">{</span><span class="n">time_col</span><span class="si">}</span><span class="s2">&#39;]&quot;</span><span class="p">)</span>
+
+    <span class="n">fill_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fillcolor&quot;</span><span class="p">:</span> <span class="n">ci_band_color</span><span class="p">,</span>
+        <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;tonexty&quot;</span>
+    <span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">predicted_lower_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Lower Bound&quot;</span><span class="p">,</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">predicted_lower_col</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">width</span><span class="o">=</span><span class="n">ci_boundary_curve_width</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">ci_boundary_curve_color</span><span class="p">),</span>
+            <span class="n">legendgroup</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span>  <span class="c1"># show/hide with the upper bound</span>
+        <span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span>
+
+    <span class="c1"># plotly fills between current and previous element in `data`.</span>
+    <span class="c1"># Only fill if lower bound exists.</span>
+    <span class="n">forecast_fill_dict</span> <span class="o">=</span> <span class="n">fill_dict</span> <span class="k">if</span> <span class="n">predicted_lower_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">predicted_upper_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Upper Bound&quot;</span><span class="p">,</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">predicted_upper_col</span><span class="p">],</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">width</span><span class="o">=</span><span class="n">ci_boundary_curve_width</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">ci_boundary_curve_color</span><span class="p">),</span>
+            <span class="n">legendgroup</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>  <span class="c1"># show/hide with the lower bound</span>
+            <span class="o">**</span><span class="n">forecast_fill_dict</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)</span>
+
+    <span class="c1"># If `predicted_lower_col` and `predicted_upper_col`, then the full range</span>
+    <span class="c1"># has been filled in. If only one of them, then fill in between that line</span>
+    <span class="c1"># and forecast.</span>
+    <span class="n">actual_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s2">&quot;lines&quot;</span> <span class="ow">in</span> <span class="n">actual_mode</span><span class="p">:</span>
+        <span class="n">actual_params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">actual_points_color</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s2">&quot;markers&quot;</span> <span class="ow">in</span> <span class="n">actual_mode</span><span class="p">:</span>
+        <span class="n">actual_params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">actual_points_color</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">actual_points_size</span><span class="p">))</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Actual&quot;</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">actual_col</span><span class="p">],</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">actual_mode</span><span class="p">,</span>
+        <span class="n">opacity</span><span class="o">=</span><span class="n">actual_color_opacity</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">actual_params</span>
+    <span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+
+    <span class="n">forecast_fill_dict</span> <span class="o">=</span> <span class="n">fill_dict</span> <span class="k">if</span> <span class="p">(</span><span class="n">predicted_lower_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">predicted_upper_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="n">forecast</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forecast&quot;</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">predicted_col</span><span class="p">],</span>
+        <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">forecast_curve_color</span><span class="p">,</span>
+            <span class="n">dash</span><span class="o">=</span><span class="n">forecast_curve_dash</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">forecast_fill_dict</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">forecast</span><span class="p">)</span>
+
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">xlabel</span><span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">ylabel</span><span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+        <span class="c1"># legend order from top to bottom: Actual, Forecast, Upper Bound, Lower Bound</span>
+        <span class="n">legend</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;traceorder&#39;</span><span class="p">:</span> <span class="s1">&#39;reversed&#39;</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="c1"># adds a vertical line to separate training and testing phases</span>
+    <span class="k">if</span> <span class="n">train_end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">new_layout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="c1"># add vertical line</span>
+            <span class="n">shapes</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
+                <span class="n">xref</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+                <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span>  <span class="c1"># y-reference is assigned to the plot paper [0,1]</span>
+                <span class="n">x0</span><span class="o">=</span><span class="n">train_end_date</span><span class="p">,</span>
+                <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">x1</span><span class="o">=</span><span class="n">train_end_date</span><span class="p">,</span>
+                <span class="n">y1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">vertical_line_color</span><span class="p">,</span>
+                    <span class="n">width</span><span class="o">=</span><span class="n">vertical_line_width</span><span class="p">)</span>
+            <span class="p">)],</span>
+            <span class="c1"># add text annotation</span>
+            <span class="n">annotations</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">xref</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">train_end_date</span><span class="p">,</span>
+                <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;paper&quot;</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=.</span><span class="mi">97</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Train End Date&quot;</span><span class="p">,</span>
+                <span class="n">showarrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">arrowhead</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">ax</span><span class="o">=-</span><span class="mi">60</span><span class="p">,</span>
+                <span class="n">ay</span><span class="o">=</span><span class="mi">0</span>
+            <span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">new_layout</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+<span class="k">def</span> <span class="nf">split_range_into_groups</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span>
+        <span class="n">group_size</span><span class="p">,</span>
+        <span class="n">which_group_complete</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partitions `n` elements into adjacent groups,</span>
+<span class="sd">        each with `group_size` elements</span>
+<span class="sd">        Group number starts from 0 and increments upward</span>
+<span class="sd">        Can be used to generate groups for sliding window aggregation.</span>
+<span class="sd">    :param n: int</span>
+<span class="sd">        number of elemnts to split into groups</span>
+<span class="sd">    :param group_size: int</span>
+<span class="sd">        number of elements per group</span>
+<span class="sd">    :param which_group_complete: str</span>
+<span class="sd">        If n % group_size &gt; 0, one group will have fewer than `group_size` elements</span>
+<span class="sd">        if &quot;first&quot;, the first group is full if possible, and last group may be incomplete</span>
+<span class="sd">        if &quot;last&quot;, (default) the last group is full if possible,</span>
+<span class="sd">        and first group may be incomplete</span>
+<span class="sd">    :return: np.array of length n</span>
+<span class="sd">        values correspond to the element&#39;s group number</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 1, &quot;last&quot;)</span>
+<span class="sd">    array([0., 1., 2., 3., 4., 5., 6., 7., 8., 9.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 2, &quot;last&quot;)</span>
+<span class="sd">    array([0., 0., 1., 1., 2., 2., 3., 3., 4., 4.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 3, &quot;last&quot;)</span>
+<span class="sd">    array([0., 1., 1., 1., 2., 2., 2., 3., 3., 3.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 4, &quot;last&quot;)</span>
+<span class="sd">    array([0., 0., 1., 1., 1., 1., 2., 2., 2., 2.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 4, &quot;first&quot;)</span>
+<span class="sd">    array([0., 0., 0., 0., 1., 1., 1., 1., 2., 2.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 5, &quot;last&quot;)</span>
+<span class="sd">    array([0., 0., 0., 0., 0., 1., 1., 1., 1., 1.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 6, &quot;last&quot;)</span>
+<span class="sd">    array([0., 0., 0., 0., 1., 1., 1., 1., 1., 1.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 10, &quot;last&quot;)</span>
+<span class="sd">    array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])</span>
+<span class="sd">    &gt;&gt;&gt; split_range_into_groups(10, 12, &quot;last&quot;)</span>
+<span class="sd">    array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">which_group_complete</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;first&quot;</span><span class="p">:</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">group_size</span> <span class="o">-</span> <span class="n">n</span> <span class="o">%</span> <span class="n">group_size</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">%</span> <span class="n">group_size</span>  <span class="c1"># sets offset to 0 if n % group_size == 0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span> <span class="o">/</span> <span class="n">group_size</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">add_groupby_column</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts a column to group by from ``df``.</span>
+
+<span class="sd">    Exactly one of ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">    `groupby_custom_column` must be provided.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : &#39;pandas.DataFrame`</span>
+<span class="sd">        Contains the univariate time series / forecast</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The name of the time column of the univariate time series / forecast</span>
+<span class="sd">    groupby_time_feature : `str` or None, optional</span>
+<span class="sd">        If provided, groups by a column generated by</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">        See that function for valid values.</span>
+<span class="sd">    groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">        If provided, sequentially partitions data into groups of size</span>
+<span class="sd">        ``groupby_sliding_window_size``.</span>
+<span class="sd">    groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">        If provided, groups by this column value.</span>
+<span class="sd">        Should be same length as the ``df``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : `dict`</span>
+<span class="sd">        Dictionary with two items:</span>
+
+<span class="sd">        * ``&quot;df&quot;`` : `pandas.DataFrame`</span>
+<span class="sd">            ``df`` with a grouping column added.</span>
+<span class="sd">            The column can be used to group rows together.</span>
+
+<span class="sd">        * ``&quot;groupby_col&quot;`` : `str`</span>
+<span class="sd">            The name of the groupby column added to ``df``.</span>
+<span class="sd">            The column name depends on the grouping method:</span>
+
+<span class="sd">                - ``groupby_time_feature`` for ``groupby_time_feature``</span>
+<span class="sd">                - ``{cst.TIME_COL}_downsample`` for ``groupby_sliding_window_size``</span>
+<span class="sd">                - ``groupby_custom_column.name`` for ``groupby_custom_column``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Resets index to support indexing in groupby_sliding_window_size</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1"># Determines the groups</span>
+    <span class="n">is_groupby_time_feature</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">groupby_time_feature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">is_groupby_sliding_window_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">groupby_sliding_window_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">is_groupby_custom_column</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">groupby_custom_column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">is_groupby_time_feature</span> <span class="o">+</span> <span class="n">is_groupby_sliding_window_size</span> <span class="o">+</span> <span class="n">is_groupby_custom_column</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Exactly one of (groupby_time_feature, groupby_rolling_window_size, groupby_custom_column)&quot;</span>
+            <span class="s2">&quot;must be specified&quot;</span><span class="p">)</span>
+    <span class="n">groups</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">is_groupby_time_feature</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Group by a value derived from the time column</span>
+        <span class="n">time_features</span> <span class="o">=</span> <span class="n">build_time_features_df</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">conti_year_origin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">time_features</span><span class="p">[</span><span class="n">groupby_time_feature</span><span class="p">]</span>
+        <span class="n">groups</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupby_time_feature</span>
+    <span class="k">elif</span> <span class="n">is_groupby_sliding_window_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Group by sliding window for evaluation over time</span>
+        <span class="n">index_dates</span> <span class="o">=</span> <span class="n">split_range_into_groups</span><span class="p">(</span>
+            <span class="n">n</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">group_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">which_group_complete</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>  <span class="c1"># ensures the last group is complete (first group may be partial)</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">dt</span><span class="p">[</span><span class="n">index_dates</span> <span class="o">*</span> <span class="n">groupby_sliding_window_size</span><span class="p">]</span>  <span class="c1"># uses first date in each group as grouping value</span>
+        <span class="n">groups</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_col</span><span class="si">}</span><span class="s2">_downsample&quot;</span>
+    <span class="k">elif</span> <span class="n">is_groupby_custom_column</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Group by custom column</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">groupby_custom_column</span>
+
+    <span class="n">groups_col_name</span> <span class="o">=</span> <span class="n">groups</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">groups</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;groups&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">groups_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">groups</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="c1"># Removes ambiguity in case the index name is the same as the newly added column,</span>
+        <span class="c1"># (or an existing column).</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span>
+        <span class="s2">&quot;groupby_col&quot;</span><span class="p">:</span> <span class="n">groups_col_name</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">grouping_evaluation</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">groupby_col</span><span class="p">,</span>
+        <span class="n">grouping_func</span><span class="p">,</span>
+        <span class="n">grouping_func_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Groups ``df`` and evaluates a function on each group.</span>
+<span class="sd">    The function takes a `pandas.DataFrame` and returns a scalar.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Input data. For example, univariate time series, or forecast result.</span>
+<span class="sd">        Contains ``groupby_col`` and columns to apply ``grouping_func`` on.</span>
+<span class="sd">    groupby_col : `str`</span>
+<span class="sd">        Column name in ``df`` to group by.</span>
+<span class="sd">    grouping_func : `callable`</span>
+<span class="sd">        Function that is applied to each group via `pandas.groupBy.apply`.</span>
+<span class="sd">        Signature (grp: `pandas.DataFrame`) -&gt; aggregated value: `float`.</span>
+<span class="sd">    grouping_func_name : `str`</span>
+<span class="sd">        What to call the output column generated by ``grouping_func``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    grouped_df : `pandas.DataFrame`</span>
+<span class="sd">        Dataframe with ``grouping_func`` evaluated on each level of ``df[groupby_col]``.</span>
+<span class="sd">        Contains two columns:</span>
+
+<span class="sd">            - ``groupby_col``: The groupby value</span>
+<span class="sd">            - ``grouping_func_name``: The output of ``grouping_func`` on the group</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">grouped_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
+                  <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_col</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">grouping_func</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+                  <span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="n">grouping_func_name</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">grouped_df</span>
+
+
+<span class="k">def</span> <span class="nf">flexible_grouping_evaluation</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">map_func_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">groupby_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">extend_col_names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">unpack_list</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">list_names_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Flexible aggregation. Generates additional columns for evaluation via</span>
+<span class="sd">    ``map_func_dict``, groups by ``groupby_col``, then aggregates according</span>
+<span class="sd">    to ``agg_kwargs``.</span>
+
+<span class="sd">    This function calls `pandas.DataFrame.apply` and</span>
+<span class="sd">    `pandas.core.groupby.DataFrameGroupBy.agg` internally.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        DataFrame to transform / aggregate</span>
+<span class="sd">    map_func_dict : `dict` [`str`, `callable`] or None, default None</span>
+<span class="sd">        Row-wise transformation functions to create new columns.</span>
+<span class="sd">        If None, no new columns are added.</span>
+
+<span class="sd">        key: new column name</span>
+<span class="sd">        value: row-wise function to apply to ``df`` to generate the column value.</span>
+<span class="sd">               Signature (row: `pandas.DataFrame`) -&gt; transformed value: `float`.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            map_func_dict = {</span>
+<span class="sd">                &quot;residual&quot;: lambda row: row[&quot;predicted&quot;] - row[&quot;actual&quot;],</span>
+<span class="sd">                &quot;squared_error&quot;: lambda row: (row[&quot;predicted&quot;] - row[&quot;actual&quot;])**2</span>
+<span class="sd">            }</span>
+
+<span class="sd">    groupby_col : `str` or None, default None</span>
+<span class="sd">        Which column to group by.</span>
+<span class="sd">        Can be in ``df`` or generated by ``map_func_dict``.</span>
+<span class="sd">        If None, no grouping or aggregation is done.</span>
+<span class="sd">    agg_kwargs : `dict` or None, default None</span>
+<span class="sd">        Passed as keyword args to `pandas.core.groupby.DataFrameGroupBy.aggregate` after creating</span>
+<span class="sd">        new columns and grouping by ``groupby_col``. Must be provided if ``groupby_col is not None``.</span>
+<span class="sd">        To fully customize output column names, pass a dictionary as shown below.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            # Example 1, named aggregation to explicitly name output columns.</span>
+<span class="sd">            # Assume ``df`` contains ``abs_percent_err``, ``abs_err`` columns.</span>
+<span class="sd">            # Output columns are &quot;MedAPE&quot;, &quot;MAPE&quot;, &quot;MAE&quot;, etc. in a single level index.</span>
+<span class="sd">            from functools import partial</span>
+<span class="sd">            agg_kwargs = {</span>
+<span class="sd">                # output column name: (column to aggregate, aggregation function)</span>
+<span class="sd">                &quot;MedAPE&quot;: pd.NamedAgg(column=&quot;abs_percent_err&quot;, aggfunc=np.nanmedian),</span>
+<span class="sd">                &quot;MAPE&quot;: pd.NamedAgg(column=&quot;abs_percent_err&quot;, aggfunc=np.nanmean),</span>
+<span class="sd">                &quot;MAE&quot;: pd.NamedAgg(column=&quot;abs_err&quot;, aggfunc=np.nanmean),</span>
+<span class="sd">                &quot;q95_abs_err&quot;: pd.NamedAgg(column=&quot;abs_err&quot;, aggfunc=partial(np.nanquantile, q=0.95)),</span>
+<span class="sd">                &quot;q05_abs_err&quot;: pd.NamedAgg(column=&quot;abs_err&quot;, aggfunc=partial(np.nanquantile, q=0.05)),</span>
+<span class="sd">            }</span>
+
+<span class="sd">            # Example 2, multi-level aggregation using `func` parameter</span>
+<span class="sd">            # to `pandas.core.groupby.DataFrameGroupBy.aggregate`.</span>
+<span class="sd">            # Assume ``df`` contains ``y1``, ``y2`` columns.</span>
+<span class="sd">            agg_kwargs = {</span>
+<span class="sd">                &quot;func&quot;: {</span>
+<span class="sd">                    &quot;y1&quot;: [np.nanmedian, np.nanmean],</span>
+<span class="sd">                    &quot;y2&quot;: [np.nanmedian, np.nanmax],</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+<span class="sd">            # `extend_col_names` controls the output column names</span>
+<span class="sd">            extend_col_names = True  # output columns are &quot;y1_nanmean&quot;, &quot;y1_nanmedian&quot;, &quot;y2_nanmean&quot;, &quot;y2_nanmax&quot;</span>
+<span class="sd">            extend_col_names = False  # output columns are &quot;nanmean&quot;, &quot;nanmedian&quot;, &quot;nanmean&quot;, &quot;nanmax&quot;</span>
+
+<span class="sd">    extend_col_names : `bool` or None, default True</span>
+<span class="sd">        How to flatten index after aggregation.</span>
+<span class="sd">        In some cases, the column index after aggregation is a multi-index.</span>
+<span class="sd">        This parameter controls how to flatten an index with 2 levels to 1 level.</span>
+
+<span class="sd">            - If None, the index is not flattened.</span>
+<span class="sd">            - If True, column name is a composite: ``{index0}_{index1}``</span>
+<span class="sd">              Use this option if index1 is not unique.</span>
+<span class="sd">            - If False, column name is simply ``{index1}``</span>
+
+<span class="sd">        Ignored if the ColumnIndex after aggregation has only one level (e.g.</span>
+<span class="sd">        if named aggregation is used in ``agg_kwargs``).</span>
+
+<span class="sd">    unpack_list : `bool`, default True</span>
+<span class="sd">        Whether to unpack (flatten) columns that contain list/tuple after aggregation,</span>
+<span class="sd">        to create one column per element of the list/tuple.</span>
+<span class="sd">        If True, ``list_names_dict`` can be used to rename the unpacked columns.</span>
+
+<span class="sd">    list_names_dict : `dict` [`str`, `list` [`str`]] or None, default None</span>
+<span class="sd">        If ``unpack_list`` is True, this dictionary can optionally be</span>
+<span class="sd">        used to rename the unpacked columns.</span>
+
+<span class="sd">            - Key = column name after aggregation, before upacking.</span>
+<span class="sd">              E.g. ``{index0}_{index1}`` or ``{index1}`` depending on ``extend_col_names``.</span>
+<span class="sd">            - Value = list of names to use for the unpacked columns. Length must match</span>
+<span class="sd">              the length of the lists contained in the column.</span>
+
+<span class="sd">        If a particular list/tuple column is not found in this dictionary, appends</span>
+<span class="sd">        0, 1, 2, ..., n-1 to the original column name, where n = list length.</span>
+
+<span class="sd">        For example, if the column contains a tuple of length 4 corresponding to</span>
+<span class="sd">        quantiles 0.1, 0.25, 0.75, 0.9, then the following would be appropriate::</span>
+
+<span class="sd">            aggfunc = lambda grp: partial(np.nanquantile, q=[0.1, 0.25, 0.75, 0.9])(grp).tolist()</span>
+<span class="sd">            agg_kwargs = {</span>
+<span class="sd">                &quot;value_Q&quot;: pd.NamedAgg(column=&quot;value&quot;, aggfunc=aggfunc)</span>
+<span class="sd">            }</span>
+<span class="sd">            list_names_dict = {</span>
+<span class="sd">                # the key is the name of the unpacked column</span>
+<span class="sd">                &quot;value_Q&quot; : [&quot;Q0.10&quot;, &quot;Q0.25&quot;, &quot;Q0.75&quot;, &quot;Q0.90&quot;]</span>
+<span class="sd">            }</span>
+<span class="sd">            # Output columns are &quot;Q0.10&quot;, &quot;Q0.25&quot;, &quot;Q0.75&quot;, &quot;Q0.90&quot;</span>
+
+<span class="sd">            # In this example, if list_names_dict=None, the default output column names</span>
+<span class="sd">            # would be: &quot;value_Q0&quot;, &quot;value_Q1&quot;, &quot;value_Q2&quot;, &quot;value_Q3&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df_transformed : `pandas.DataFrame`</span>
+<span class="sd">        df after transformation and optional aggregation.</span>
+
+<span class="sd">        If ``groupby_col`` is None, returns ``df`` with additional columns as the keys in ``map_func_dict``.</span>
+<span class="sd">        Otherwise, ``df`` is grouped by ``groupby_col`` and this becomes the index. Columns</span>
+<span class="sd">        are determined by ``agg_kwargs`` and ``extend_col_names``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">groupby_col</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">agg_kwargs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must specify `agg_kwargs` if grouping is requested via `groupby_col`.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">agg_kwargs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">groupby_col</span><span class="p">:</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`agg_kwargs` is ignored because `groupby_col` is None. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Specify `groupby_col` to allow aggregation.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">map_func_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">map_func_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">groupby_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">groupby_col</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="c1"># Ignores pandas FutureWarning. Use NamedAgg in pandas 0.25.+</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+                <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;using a dict with renaming is deprecated&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+            <span class="n">df_transformed</span> <span class="o">=</span> <span class="n">groups</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="o">**</span><span class="n">agg_kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extend_col_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">df_transformed</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">nlevels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Flattens multi-level column index</span>
+            <span class="k">if</span> <span class="n">extend_col_names</span><span class="p">:</span>
+                <span class="c1"># By concatenating names</span>
+                <span class="n">df_transformed</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_transformed</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># By using level 1 names</span>
+                <span class="n">df_transformed</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_transformed</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">df_transformed</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()):</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Column names are not unique. Use `extend_col_names=True` &quot;</span>
+                                  <span class="s2">&quot;to uniquely identify every column.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># No grouping is requested</span>
+        <span class="n">df_transformed</span> <span class="o">=</span> <span class="n">df</span>
+
+    <span class="k">if</span> <span class="n">unpack_list</span> <span class="ow">and</span> <span class="n">df_transformed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Identifies the columns that contain list elements</span>
+        <span class="n">which_list_cols</span> <span class="o">=</span> <span class="n">df_transformed</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span>
+        <span class="n">list_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">which_list_cols</span><span class="p">[</span><span class="n">which_list_cols</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">list_cols</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_transformed</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping list unpacking for `</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">`. There are multiple columns &quot;</span>
+                              <span class="sa">f</span><span class="s2">&quot;with this name. Make sure column names are unique to enable unpacking.&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="c1"># Unpacks the column, creating one column for each list entry</span>
+            <span class="n">list_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_transformed</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+            <span class="n">n_cols</span> <span class="o">=</span> <span class="n">list_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># Adds column names</span>
+            <span class="k">if</span> <span class="n">list_names_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">list_names_dict</span><span class="p">:</span>
+                <span class="n">found_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_names_dict</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">found_length</span> <span class="o">!=</span> <span class="n">n_cols</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;list_names_dict[&#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39;] has length </span><span class="si">{</span><span class="n">found_length</span><span class="si">}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;but there are </span><span class="si">{</span><span class="n">n_cols</span><span class="si">}</span><span class="s2"> columns to name. Example row(s):</span><span class="se">\n</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">list_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">list_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">list_names_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cols</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">list_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cols</span><span class="p">)]</span>
+            <span class="c1"># replaces original column with new ones</span>
+            <span class="n">list_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df_transformed</span><span class="o">.</span><span class="n">index</span>
+            <span class="k">del</span> <span class="n">df_transformed</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+            <span class="n">df_transformed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_transformed</span><span class="p">,</span> <span class="n">list_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">list_names_dict</span><span class="p">:</span>
+            <span class="n">unused_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">list_names_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">list_cols</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unused_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;These names from `list_names_dict` are not used, because the &quot;</span>
+                              <span class="s2">&quot;column (key) is not found in the dataframe after aggregation:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">unused_names</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">Available columns are:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">list_cols</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_transformed</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

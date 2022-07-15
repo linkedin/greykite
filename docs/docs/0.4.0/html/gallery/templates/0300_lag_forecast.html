@@ -1,0 +1,1102 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Enhanced week over week models &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Forecast One By One" href="0400_forecast_one_by_one.html" />
+    <link rel="prev" title="The Multistage Forecast Model" href="0200_multistage_forecast.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Model Templates</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0100_template_overview.html">Template Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0200_multistage_forecast.html">The Multistage Forecast Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Enhanced week over week models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-regular-week-over-week-models">The regular week over week models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-enhanced-week-over-week-model">The enhanced week over week model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="0400_forecast_one_by_one.html">Forecast One By One</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Model Templates</a> &raquo;</li>
+        
+      <li>Enhanced week over week models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-gallery-templates-0300-lag-forecast-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="enhanced-week-over-week-models">
+<span id="sphx-glr-gallery-templates-0300-lag-forecast-py"></span><h1>Enhanced week over week models<a class="headerlink" href="#enhanced-week-over-week-models" title="Permalink to this headline">¶</a></h1>
+<p>Week over week model is a useful tool in business applications,
+where time series exhibits strong weekly seasonality.
+It’s fast and somewhat accurate.
+Typical drawbacks of week over week models include
+not adapting to seasonality (e.g. year-end), fast growth
+and holiday effects.
+Also, week over week model is vulnerable to corrupted data
+such as outliers on last week.</p>
+<p>Using aggregated lags such like week over 3 weeks median is more robust to data corruption,
+but the growth/seasonality/holiday issue is not resolved.</p>
+<p>The enhanced version of week over week model fits a two-step
+model with the <code class="docutils literal notranslate"><span class="pre">MultistageForecast</span></code> method in Greykite.
+It first uses a <code class="docutils literal notranslate"><span class="pre">Silverkite</span></code> model to learn the growth,
+yearly seasonality and holiday effects.
+Then it uses a week over week or other lag-based models to model the residual
+weekly patterns.</p>
+<p>In this example, we will learn how to do the original
+week over week type models and how to use the enhanced versions.</p>
+<div class="section" id="the-regular-week-over-week-models">
+<h2>The regular week over week models<a class="headerlink" href="#the-regular-week-over-week-models" title="Permalink to this headline">¶</a></h2>
+<p>Greykite supports the regular lag-based models through <code class="docutils literal notranslate"><span class="pre">LagBasedTemplate</span></code>.
+To see a general introduction of how to use model templates,
+see <a class="reference external" href="../templates/0100_template_overview">model templates</a>.</p>
+<p>Lag-based methods are invoked by specifying the <code class="docutils literal notranslate"><span class="pre">LAG_BASED</span></code> model template.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">warnings</span>
+
+ <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+ <span class="kn">from</span> <span class="nn">greykite.common.data_loader</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+ <span class="kn">from</span> <span class="nn">greykite.common.aggregation_function_enum</span> <span class="kn">import</span> <span class="n">AggregationFunctionEnum</span>
+ <span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.model_templates</span> <span class="kn">import</span> <span class="n">ModelTemplateEnum</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">EvaluationPeriodParam</span>
+ <span class="kn">from</span> <span class="nn">greykite.framework.templates.multistage_forecast_template</span> <span class="kn">import</span> <span class="n">MultistageForecastTemplateConfig</span>
+ <span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.lag_based_estimator</span> <span class="kn">import</span> <span class="n">LagUnitEnum</span>
+
+ <a href="https://docs.python.org/3.7/library/warnings.html#warnings.filterwarnings" title="warnings.filterwarnings" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-function"><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span></a><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+ <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span><span class="o">.</span><span class="n">load_peyton_manning</span><span class="p">()</span>
+ <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">[</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span></a><span class="p">]</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.to_datetime.html#pandas.to_datetime" title="pandas.to_datetime" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">[</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span></a><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+<p>We specify the data set and evaluation parameters below.
+First, we don’t specify model components.
+In this case, the default behavior for <code class="docutils literal notranslate"><span class="pre">LAG_BASED</span></code> model template
+is the week over week model.
+If the forecast horizon is longer than a week,
+the model will use the forecasted value to generate further forecasts.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">(</span>
+     <span class="n">time_col</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span></a><span class="p">,</span>
+     <span class="n">value_col</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span></a><span class="p">,</span>
+     <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span>
+ <span class="p">)</span>
+
+ <span class="c1"># Turn off cv and test for faster run.</span>
+ <span class="n">evaluation</span> <span class="o">=</span> <span class="n">EvaluationPeriodParam</span><span class="p">(</span>
+     <span class="n">cv_max_splits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+     <span class="n">test_horizon</span><span class="o">=</span><span class="mi">0</span>
+ <span class="p">)</span>
+
+ <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+     <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">LAG_BASED</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+     <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+     <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">evaluation</span>
+ <span class="p">)</span>
+
+ <span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+     <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">,</span>
+     <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>This is the simple week over week estimation.
+If we print the results, we can see that the predictions
+are exactly the same as the last week’s observations.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">95</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.tail.html#pandas.DataFrame.tail" title="pandas.DataFrame.tail" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">result</span><span class="o">.</span><span class="n">forecast</span><span class="o">.</span><span class="n">df_train</span><span class="o">.</span><span class="n">tail</span></a><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ts</th>
+      <th>actual</th>
+      <th>forecast</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2950</th>
+      <td>2016-01-07</td>
+      <td>8.295798</td>
+      <td>8.004700</td>
+    </tr>
+    <tr>
+      <th>2951</th>
+      <td>2016-01-08</td>
+      <td>8.290293</td>
+      <td>7.589336</td>
+    </tr>
+    <tr>
+      <th>2952</th>
+      <td>2016-01-09</td>
+      <td>7.785721</td>
+      <td>7.825245</td>
+    </tr>
+    <tr>
+      <th>2953</th>
+      <td>2016-01-10</td>
+      <td>8.281724</td>
+      <td>8.249314</td>
+    </tr>
+    <tr>
+      <th>2954</th>
+      <td>2016-01-11</td>
+      <td>8.470730</td>
+      <td>9.295141</td>
+    </tr>
+    <tr>
+      <th>2955</th>
+      <td>2016-01-12</td>
+      <td>8.135054</td>
+      <td>8.568266</td>
+    </tr>
+    <tr>
+      <th>2956</th>
+      <td>2016-01-13</td>
+      <td>8.067149</td>
+      <td>8.352554</td>
+    </tr>
+    <tr>
+      <th>2957</th>
+      <td>2016-01-14</td>
+      <td>8.023552</td>
+      <td>8.295798</td>
+    </tr>
+    <tr>
+      <th>2958</th>
+      <td>2016-01-15</td>
+      <td>8.021913</td>
+      <td>8.290293</td>
+    </tr>
+    <tr>
+      <th>2959</th>
+      <td>2016-01-16</td>
+      <td>7.817223</td>
+      <td>7.785721</td>
+    </tr>
+    <tr>
+      <th>2960</th>
+      <td>2016-01-17</td>
+      <td>9.273878</td>
+      <td>8.281724</td>
+    </tr>
+    <tr>
+      <th>2961</th>
+      <td>2016-01-18</td>
+      <td>10.333775</td>
+      <td>8.470730</td>
+    </tr>
+    <tr>
+      <th>2962</th>
+      <td>2016-01-19</td>
+      <td>9.125871</td>
+      <td>8.135054</td>
+    </tr>
+    <tr>
+      <th>2963</th>
+      <td>2016-01-20</td>
+      <td>8.891374</td>
+      <td>8.067149</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>In general, the lag-based method supports any
+aggregation of any lag combinations.
+Now let’s use an example to demonstrate how to do a
+week-over-3-week median estimation.
+We override the parameters in <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam.custom</span></code> dictionary.
+The parameters that can be customized are</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lag_unit</span></code>: the unit of the lags. Options are in
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.lag_based_estimator.LagUnitEnum" title="greykite.sklearn.estimator.lag_based_estimator.LagUnitEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LagUnitEnum</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lags</span></code>: a list of integers indicating the lags in <code class="docutils literal notranslate"><span class="pre">lag_unit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agg_func</span></code>: the aggregation function name. Options are in
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.common.aggregation_function_enum.AggregationFunctionEnum" title="greykite.common.aggregation_function_enum.AggregationFunctionEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AggregationFunctionEnum</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agg_func_params</span></code>: a dictionary of parameters to be passed to the aggregation function.</p></li>
+</ul>
+</div></blockquote>
+<p>Specifying the following, the forecasts will become week-over-3-week median.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+     <span class="n">custom</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+         <span class="n">lag_unit</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LagUnitEnum</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>                 <span class="c1"># unit is &quot;week&quot;</span>
+         <span class="n">lags</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>                                 <span class="c1"># lags are 1 week, 2 weeks and 3 weeks</span>
+         <span class="n">agg_func</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">AggregationFunctionEnum</span><span class="o">.</span><span class="n">median</span><span class="o">.</span><span class="n">name</span></a>    <span class="c1"># aggregation function is &quot;median&quot;</span>
+     <span class="p">)</span>
+ <span class="p">)</span>
+
+ <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+     <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">LAG_BASED</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+     <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+     <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">evaluation</span><span class="p">,</span>
+     <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components</span>
+ <span class="p">)</span>
+
+ <span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+     <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">,</span>
+     <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+ <span class="p">)</span>
+
+ <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.tail.html#pandas.DataFrame.tail" title="pandas.DataFrame.tail" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">result</span><span class="o">.</span><span class="n">forecast</span><span class="o">.</span><span class="n">df_train</span><span class="o">.</span><span class="n">tail</span></a><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ts</th>
+      <th>actual</th>
+      <th>forecast</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2950</th>
+      <td>2016-01-07</td>
+      <td>8.295798</td>
+      <td>7.591862</td>
+    </tr>
+    <tr>
+      <th>2951</th>
+      <td>2016-01-08</td>
+      <td>8.290293</td>
+      <td>7.528869</td>
+    </tr>
+    <tr>
+      <th>2952</th>
+      <td>2016-01-09</td>
+      <td>7.785721</td>
+      <td>7.171657</td>
+    </tr>
+    <tr>
+      <th>2953</th>
+      <td>2016-01-10</td>
+      <td>8.281724</td>
+      <td>8.249314</td>
+    </tr>
+    <tr>
+      <th>2954</th>
+      <td>2016-01-11</td>
+      <td>8.470730</td>
+      <td>9.250618</td>
+    </tr>
+    <tr>
+      <th>2955</th>
+      <td>2016-01-12</td>
+      <td>8.135054</td>
+      <td>8.568266</td>
+    </tr>
+    <tr>
+      <th>2956</th>
+      <td>2016-01-13</td>
+      <td>8.067149</td>
+      <td>8.352554</td>
+    </tr>
+    <tr>
+      <th>2957</th>
+      <td>2016-01-14</td>
+      <td>8.023552</td>
+      <td>8.004700</td>
+    </tr>
+    <tr>
+      <th>2958</th>
+      <td>2016-01-15</td>
+      <td>8.021913</td>
+      <td>7.589336</td>
+    </tr>
+    <tr>
+      <th>2959</th>
+      <td>2016-01-16</td>
+      <td>7.817223</td>
+      <td>7.785721</td>
+    </tr>
+    <tr>
+      <th>2960</th>
+      <td>2016-01-17</td>
+      <td>9.273878</td>
+      <td>8.281724</td>
+    </tr>
+    <tr>
+      <th>2961</th>
+      <td>2016-01-18</td>
+      <td>10.333775</td>
+      <td>9.250618</td>
+    </tr>
+    <tr>
+      <th>2962</th>
+      <td>2016-01-19</td>
+      <td>9.125871</td>
+      <td>8.568266</td>
+    </tr>
+    <tr>
+      <th>2963</th>
+      <td>2016-01-20</td>
+      <td>8.891374</td>
+      <td>8.352554</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /></div>
+<div class="section" id="the-enhanced-week-over-week-model">
+<h2>The enhanced week over week model<a class="headerlink" href="#the-enhanced-week-over-week-model" title="Permalink to this headline">¶</a></h2>
+<p>The enhanced week over week model consists of a two-stage model:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Silverkite</span> <span class="pre">model&quot;</span></code>: the first stage uses a Silverkite model to learn the
+yearly seasonality, growth and holiday effects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Lag-based</span> <span class="pre">model&quot;</span></code>: the second stage uses a lag-based model to learn the
+residual effects including weekly seasonality.</p></li>
+</ul>
+</div></blockquote>
+<p>The model is available through the <code class="docutils literal notranslate"><span class="pre">MultistageForecastTemplate</span></code>.
+For details about the multistage forecast model, see
+<a class="reference external" href="../tutorials/0200_multistage_forecast">multistage forecast</a>.</p>
+<p>To use this two-stage enhanced lag model,
+specify the model template as <code class="docutils literal notranslate"><span class="pre">SILVERKITE_WOW</span></code>.
+The default behavior is to model growth, yearly seasonality and holidays
+with the automatically inferred parameters from the time series.
+Then it models the residual with a week over week model.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+     <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE_WOW</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+     <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+     <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">evaluation</span>
+ <span class="p">)</span>
+
+ <span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+     <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">,</span>
+     <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+ <span class="p">)</span>
+
+ <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.tail.html#pandas.DataFrame.tail" title="pandas.DataFrame.tail" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">result</span><span class="o">.</span><span class="n">forecast</span><span class="o">.</span><span class="n">df_train</span><span class="o">.</span><span class="n">tail</span></a><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ts</th>
+      <th>actual</th>
+      <th>forecast</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2950</th>
+      <td>2016-01-07</td>
+      <td>8.295798</td>
+      <td>8.217895</td>
+    </tr>
+    <tr>
+      <th>2951</th>
+      <td>2016-01-08</td>
+      <td>8.290293</td>
+      <td>8.348070</td>
+    </tr>
+    <tr>
+      <th>2952</th>
+      <td>2016-01-09</td>
+      <td>7.785721</td>
+      <td>8.383166</td>
+    </tr>
+    <tr>
+      <th>2953</th>
+      <td>2016-01-10</td>
+      <td>8.281724</td>
+      <td>8.438601</td>
+    </tr>
+    <tr>
+      <th>2954</th>
+      <td>2016-01-11</td>
+      <td>8.470730</td>
+      <td>9.474756</td>
+    </tr>
+    <tr>
+      <th>2955</th>
+      <td>2016-01-12</td>
+      <td>8.135054</td>
+      <td>8.737663</td>
+    </tr>
+    <tr>
+      <th>2956</th>
+      <td>2016-01-13</td>
+      <td>8.067149</td>
+      <td>8.511306</td>
+    </tr>
+    <tr>
+      <th>2957</th>
+      <td>2016-01-14</td>
+      <td>8.023552</td>
+      <td>8.443560</td>
+    </tr>
+    <tr>
+      <th>2958</th>
+      <td>2016-01-15</td>
+      <td>8.021913</td>
+      <td>8.426756</td>
+    </tr>
+    <tr>
+      <th>2959</th>
+      <td>2016-01-16</td>
+      <td>7.817223</td>
+      <td>7.401877</td>
+    </tr>
+    <tr>
+      <th>2960</th>
+      <td>2016-01-17</td>
+      <td>9.273878</td>
+      <td>8.982437</td>
+    </tr>
+    <tr>
+      <th>2961</th>
+      <td>2016-01-18</td>
+      <td>10.333775</td>
+      <td>10.008520</td>
+    </tr>
+    <tr>
+      <th>2962</th>
+      <td>2016-01-19</td>
+      <td>9.125871</td>
+      <td>8.558125</td>
+    </tr>
+    <tr>
+      <th>2963</th>
+      <td>2016-01-20</td>
+      <td>8.891374</td>
+      <td>8.179056</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><p>You may notice that the forecast is not exactly the observations a week ago,
+because the Silverkite model did some adjustments on the growth, yearly seasonality
+and holidays.</p>
+<p>To override the model parameters, we will follow the rules mentioned in
+<a class="reference external" href="../tutorials/0200_multistage_forecast">multistage forecast</a>.
+For each stage of model, if you would like to just change one parameter
+and keep the other parameters the same,
+you can specify the same model template for the stage as in <code class="docutils literal notranslate"><span class="pre">SILVERKITE_WOW</span></code>
+(they are <code class="docutils literal notranslate"><span class="pre">SILVERKITE_EMPTY</span></code> and <code class="docutils literal notranslate"><span class="pre">LAG_BASED</span></code>),
+and specify a model components object to override the specific parameter.
+Otherwise, you can specify a new model template.
+The code below overrides both the Silverkite model and the lag model.
+In the first stage, it keeps the original configuration but forces turning yearly seasonality off.
+In the second stage, it uses week-over-3-week median instead of wow model.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span> <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+     <span class="n">custom</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+         <span class="n">multistage_forecast_configs</span><span class="o">=</span><span class="p">[</span>
+             <span class="n">MultistageForecastTemplateConfig</span><span class="p">(</span>
+                 <span class="n">train_length</span><span class="o">=</span><span class="s2">&quot;1096D&quot;</span><span class="p">,</span>
+                 <span class="n">fit_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">agg_func</span><span class="o">=</span><span class="s2">&quot;nanmean&quot;</span><span class="p">,</span>
+                 <span class="n">agg_freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+                 <span class="c1"># Keeps it the same as the model template in `SILVERKITE_WOW` to override selected parameters below</span>
+                 <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE_EMPTY</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+                 <span class="c1"># Since the model template in this stage is the same as the model template in `SILVERKITE_WOW`,</span>
+                 <span class="c1"># the parameter below will be applied on top of the existing parameters.</span>
+                 <span class="n">model_components</span><span class="o">=</span><span class="n">ModelComponentsParam</span><span class="p">(</span>
+                     <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+                         <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span>  <span class="c1"># force turning off yearly seasonality</span>
+                     <span class="p">}</span>
+                 <span class="p">)</span>
+             <span class="p">),</span>
+             <span class="n">MultistageForecastTemplateConfig</span><span class="p">(</span>
+                 <span class="n">train_length</span><span class="o">=</span><span class="s2">&quot;28D&quot;</span><span class="p">,</span>  <span class="c1"># any value longer than the lags (21D here)</span>
+                 <span class="n">fit_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># keep as None</span>
+                 <span class="n">agg_func</span><span class="o">=</span><span class="s2">&quot;nanmean&quot;</span><span class="p">,</span>
+                 <span class="n">agg_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="c1"># Keeps it the same as the model template in `SILVERKITE_WOW` to override selected parameters below</span>
+                 <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">LAG_BASED</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+                 <span class="c1"># Since the model template in this stage is the same as the model template in `SILVERKITE_WOW`,</span>
+                 <span class="c1"># the parameter below will be applied on top of the existing parameters.</span>
+                 <span class="n">model_components</span><span class="o">=</span><span class="n">ModelComponentsParam</span><span class="p">(</span>
+                     <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+                         <span class="s2">&quot;lags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>  <span class="c1"># changes to 3 weeks&#39; median, default unit is &quot;week&quot;,</span>
+                         <span class="s2">&quot;lag_unit&quot;</span><span class="p">:</span> <a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LagUnitEnum</span><span class="o">.</span><span class="n">week</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+                         <span class="s2">&quot;agg_func&quot;</span><span class="p">:</span> <a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">AggregationFunctionEnum</span><span class="o">.</span><span class="n">median</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>  <span class="c1"># changes to 3 weeks&#39; median</span>
+                     <span class="p">}</span>
+                 <span class="p">)</span>
+             <span class="p">)</span>
+         <span class="p">]</span>
+     <span class="p">)</span>
+ <span class="p">)</span>
+
+ <span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+     <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+     <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.7/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">LAG_BASED</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+     <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+     <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">evaluation</span><span class="p">,</span>
+     <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components</span>
+ <span class="p">)</span>
+
+ <span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+     <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a><span class="p">,</span>
+     <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+ <span class="p">)</span>
+
+ <a href="https://pandas.pydata.org/pandas-docs/version/0.24.2/reference/api/pandas.DataFrame.tail.html#pandas.DataFrame.tail" title="pandas.DataFrame.tail" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">result</span><span class="o">.</span><span class="n">forecast</span><span class="o">.</span><span class="n">df_train</span><span class="o">.</span><span class="n">tail</span></a><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<div class="output_subarea output_html rendered_html output_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ts</th>
+      <th>actual</th>
+      <th>forecast</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2950</th>
+      <td>2016-01-07</td>
+      <td>8.295798</td>
+      <td>8.004700</td>
+    </tr>
+    <tr>
+      <th>2951</th>
+      <td>2016-01-08</td>
+      <td>8.290293</td>
+      <td>7.589336</td>
+    </tr>
+    <tr>
+      <th>2952</th>
+      <td>2016-01-09</td>
+      <td>7.785721</td>
+      <td>7.825245</td>
+    </tr>
+    <tr>
+      <th>2953</th>
+      <td>2016-01-10</td>
+      <td>8.281724</td>
+      <td>8.249314</td>
+    </tr>
+    <tr>
+      <th>2954</th>
+      <td>2016-01-11</td>
+      <td>8.470730</td>
+      <td>9.295141</td>
+    </tr>
+    <tr>
+      <th>2955</th>
+      <td>2016-01-12</td>
+      <td>8.135054</td>
+      <td>8.568266</td>
+    </tr>
+    <tr>
+      <th>2956</th>
+      <td>2016-01-13</td>
+      <td>8.067149</td>
+      <td>8.352554</td>
+    </tr>
+    <tr>
+      <th>2957</th>
+      <td>2016-01-14</td>
+      <td>8.023552</td>
+      <td>8.295798</td>
+    </tr>
+    <tr>
+      <th>2958</th>
+      <td>2016-01-15</td>
+      <td>8.021913</td>
+      <td>8.290293</td>
+    </tr>
+    <tr>
+      <th>2959</th>
+      <td>2016-01-16</td>
+      <td>7.817223</td>
+      <td>7.785721</td>
+    </tr>
+    <tr>
+      <th>2960</th>
+      <td>2016-01-17</td>
+      <td>9.273878</td>
+      <td>8.281724</td>
+    </tr>
+    <tr>
+      <th>2961</th>
+      <td>2016-01-18</td>
+      <td>10.333775</td>
+      <td>8.470730</td>
+    </tr>
+    <tr>
+      <th>2962</th>
+      <td>2016-01-19</td>
+      <td>9.125871</td>
+      <td>8.135054</td>
+    </tr>
+    <tr>
+      <th>2963</th>
+      <td>2016-01-20</td>
+      <td>8.891374</td>
+      <td>8.067149</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<br />
+<br /><div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-templates-0300-lag-forecast-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/c93e259944c1ac2ae3a20383ce33126a/0300_lag_forecast.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">0300_lag_forecast.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/fbc433214b01cb38ee22f02fd1afd570/0300_lag_forecast.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">0300_lag_forecast.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0400_forecast_one_by_one.html" class="btn btn-neutral float-right" title="Forecast One By One" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0200_multistage_forecast.html" class="btn btn-neutral" title="The Multistage Forecast Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

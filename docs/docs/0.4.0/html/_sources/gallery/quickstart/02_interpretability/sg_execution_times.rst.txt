@@ -1,0 +1,14 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_quickstart_02_interpretability_sg_execution_times:
+
+Computation times
+=================
+**01:01.350** total execution time for **gallery_quickstart_02_interpretability** files:
+
++----------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_02_interpretability_0200_interpretability.py` (``0200_interpretability.py``) | 00:33.933 | 0.0 MB |
++----------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_02_interpretability_0100_model_summary.py` (``0100_model_summary.py``)       | 00:27.417 | 0.0 MB |
++----------------------------------------------------------------------------------------------------------------+-----------+--------+

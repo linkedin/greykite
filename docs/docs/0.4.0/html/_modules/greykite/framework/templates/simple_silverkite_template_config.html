@@ -1,0 +1,1420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.templates.simple_silverkite_template_config &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.templates.simple_silverkite_template_config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.templates.simple_silverkite_template_config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Provides templates for SimpleSilverkiteEstimator that are pre-tuned to fit</span>
+<span class="sd">specific use cases.</span>
+
+<span class="sd">A subset of these templates are recognized by</span>
+<span class="sd">`~greykite.framework.templates.ModelTemplateEnum`.</span>
+
+<span class="sd">`~greykite.framework.templates.simple_silverkite_template`</span>
+<span class="sd">also accepts any ``model_template`` name that follows</span>
+<span class="sd">the naming convention in this file. For details, see</span>
+<span class="sd">the ``model_template`` parameter in</span>
+<span class="sd">`~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_holiday</span> <span class="kn">import</span> <span class="n">SilverkiteHoliday</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">GrowthColEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">mutable_field</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+
+
+<span class="c1"># Defines the keywords used in default templates.</span>
+<span class="c1"># The first item in each value is the default value.</span>
+<span class="c1"># None of the keys can be any of the keywords, otherwise the algorithm will fail to parse the template name.</span>
+<div class="viewcode-block" id="SILVERKITE_FREQ"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_FREQ">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_FREQ</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name frequency.&quot;&quot;&quot;</span>
+    <span class="n">HOURLY</span> <span class="o">=</span> <span class="s2">&quot;HOURLY&quot;</span>
+    <span class="n">DAILY</span> <span class="o">=</span> <span class="s2">&quot;DAILY&quot;</span>
+    <span class="n">WEEKLY</span> <span class="o">=</span> <span class="s2">&quot;WEEKLY&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;DAILY&quot;</span></div>
+
+
+<span class="n">VALID_FREQ</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">SILVERKITE_FREQ</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;DEFAULT&quot;</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Valid non-default values for simple silverkite template string name frequency.</span>
+<span class="sd">These are the non-default frequencies recognized by</span>
+<span class="sd">`~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="SILVERKITE_SEAS"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_SEAS">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_SEAS</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name seasonality.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LT</span> <span class="o">=</span> <span class="s2">&quot;LT&quot;</span>
+    <span class="n">NM</span> <span class="o">=</span> <span class="s2">&quot;NM&quot;</span>
+    <span class="n">HV</span> <span class="o">=</span> <span class="s2">&quot;HV&quot;</span>
+    <span class="n">LTQM</span> <span class="o">=</span> <span class="s2">&quot;LTQM&quot;</span>
+    <span class="n">NMQM</span> <span class="o">=</span> <span class="s2">&quot;NMQM&quot;</span>
+    <span class="n">HVQM</span> <span class="o">=</span> <span class="s2">&quot;HVQM&quot;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;LT&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_GR"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_GR">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_GR</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name growth_term.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LINEAR</span> <span class="o">=</span> <span class="s2">&quot;LINEAR&quot;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;LINEAR&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_CP"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_CP">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_CP</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name changepoints_dict.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span>
+    <span class="n">LT</span> <span class="o">=</span> <span class="s2">&quot;LT&quot;</span>
+    <span class="n">NM</span> <span class="o">=</span> <span class="s2">&quot;NM&quot;</span>
+    <span class="n">HV</span> <span class="o">=</span> <span class="s2">&quot;HV&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_HOL"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_HOL">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_HOL</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name events.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span>
+    <span class="n">SP1</span> <span class="o">=</span> <span class="s2">&quot;SP1&quot;</span>
+    <span class="n">SP2</span> <span class="o">=</span> <span class="s2">&quot;SP2&quot;</span>
+    <span class="n">SP4</span> <span class="o">=</span> <span class="s2">&quot;SP4&quot;</span>
+    <span class="n">TG</span> <span class="o">=</span> <span class="s2">&quot;TG&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;NONE&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_FEASET"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_FEASET">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_FEASET</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name feature_sets_enabled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OFF</span> <span class="o">=</span> <span class="s2">&quot;OFF&quot;</span>
+    <span class="n">AUTO</span> <span class="o">=</span> <span class="s2">&quot;AUTO&quot;</span>
+    <span class="n">ON</span> <span class="o">=</span> <span class="s2">&quot;ON&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;OFF&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_ALGO"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_ALGO">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_ALGO</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name fit_algorithm.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LINEAR</span> <span class="o">=</span> <span class="s2">&quot;LINEAR&quot;</span>
+    <span class="n">RIDGE</span> <span class="o">=</span> <span class="s2">&quot;RIDGE&quot;</span>
+    <span class="n">SGD</span> <span class="o">=</span> <span class="s2">&quot;SGD&quot;</span>
+    <span class="n">LASSO</span> <span class="o">=</span> <span class="s2">&quot;LASSO&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;LINEAR&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_AR"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_AR">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_AR</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name autoregression.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OFF</span> <span class="o">=</span> <span class="s2">&quot;OFF&quot;</span>
+    <span class="n">AUTO</span> <span class="o">=</span> <span class="s2">&quot;AUTO&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;OFF&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_DSI"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_DSI">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_DSI</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name daily seasonality max interaction order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">AUTO</span> <span class="o">=</span> <span class="s2">&quot;AUTO&quot;</span>
+    <span class="n">OFF</span> <span class="o">=</span> <span class="s2">&quot;OFF&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;AUTO&quot;</span></div>
+
+
+<div class="viewcode-block" id="SILVERKITE_WSI"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_WSI">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_WSI</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name weekly seasonality max interaction order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">AUTO</span> <span class="o">=</span> <span class="s2">&quot;AUTO&quot;</span>
+    <span class="n">OFF</span> <span class="o">=</span> <span class="s2">&quot;OFF&quot;</span>
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;AUTO&quot;</span></div>
+
+
+<span class="c1"># Defines the enum that has all keywords.</span>
+<div class="viewcode-block" id="SILVERKITE_COMPONENT_KEYWORDS"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_COMPONENT_KEYWORDS">[docs]</a><span class="k">class</span> <span class="nc">SILVERKITE_COMPONENT_KEYWORDS</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name keywords.</span>
+<span class="sd">    The names are the keywords and the values are the corresponding value enum.</span>
+<span class="sd">    Can be used to create an instance of</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FREQ</span> <span class="o">=</span> <span class="n">SILVERKITE_FREQ</span>
+    <span class="n">SEAS</span> <span class="o">=</span> <span class="n">SILVERKITE_SEAS</span>
+    <span class="n">GR</span> <span class="o">=</span> <span class="n">SILVERKITE_GR</span>
+    <span class="n">CP</span> <span class="o">=</span> <span class="n">SILVERKITE_CP</span>
+    <span class="n">HOL</span> <span class="o">=</span> <span class="n">SILVERKITE_HOL</span>
+    <span class="n">FEASET</span> <span class="o">=</span> <span class="n">SILVERKITE_FEASET</span>
+    <span class="n">ALGO</span> <span class="o">=</span> <span class="n">SILVERKITE_ALGO</span>
+    <span class="n">AR</span> <span class="o">=</span> <span class="n">SILVERKITE_AR</span>
+    <span class="n">DSI</span> <span class="o">=</span> <span class="n">SILVERKITE_DSI</span>
+    <span class="n">WSI</span> <span class="o">=</span> <span class="n">SILVERKITE_WSI</span></div>
+
+
+<span class="c1"># Defines the data class of all keywords.</span>
+<div class="viewcode-block" id="SimpleSilverkiteTemplateOptions"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SimpleSilverkiteTemplateOptions</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Defines generic simple silverkite template options.</span>
+
+<span class="sd">    Attributes can be set to different values using</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_COMPONENT_KEYWORDS`</span>
+<span class="sd">    for high level tuning.</span>
+
+<span class="sd">    ``freq`` represents data frequency.</span>
+
+<span class="sd">    The other attributes stand for seasonality,</span>
+<span class="sd">    growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in</span>
+<span class="sd">    `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which are used in</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">freq</span><span class="p">:</span> <span class="n">SILVERKITE_FREQ</span> <span class="o">=</span> <span class="n">SILVERKITE_FREQ</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name frequency.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_FREQ`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seas</span><span class="p">:</span> <span class="n">SILVERKITE_SEAS</span> <span class="o">=</span> <span class="n">SILVERKITE_SEAS</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name seasonality.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_SEAS`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gr</span><span class="p">:</span> <span class="n">SILVERKITE_GR</span> <span class="o">=</span> <span class="n">SILVERKITE_GR</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name growth.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_GR`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cp</span><span class="p">:</span> <span class="n">SILVERKITE_CP</span> <span class="o">=</span> <span class="n">SILVERKITE_CP</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name changepoints.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_CP`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hol</span><span class="p">:</span> <span class="n">SILVERKITE_HOL</span> <span class="o">=</span> <span class="n">SILVERKITE_HOL</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name holiday.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_HOL`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">feaset</span><span class="p">:</span> <span class="n">SILVERKITE_FEASET</span> <span class="o">=</span> <span class="n">SILVERKITE_FEASET</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name feature sets enabled.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_FEASET`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">algo</span><span class="p">:</span> <span class="n">SILVERKITE_ALGO</span> <span class="o">=</span> <span class="n">SILVERKITE_ALGO</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name fit algorithm.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_ALGO`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ar</span><span class="p">:</span> <span class="n">SILVERKITE_AR</span> <span class="o">=</span> <span class="n">SILVERKITE_AR</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name autoregression.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_AR`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dsi</span><span class="p">:</span> <span class="n">SILVERKITE_DSI</span> <span class="o">=</span> <span class="n">SILVERKITE_DSI</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name max daily seasonality interaction order.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_DSI`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wsi</span><span class="p">:</span> <span class="n">SILVERKITE_WSI</span> <span class="o">=</span> <span class="n">SILVERKITE_WSI</span><span class="o">.</span><span class="n">DEFAULT</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name max weekly seasonality interaction order.</span>
+<span class="sd">    See `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_WSI`.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Defines the common single parameters in `ModelComponentsParam`.</span>
+<span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="c1"># Seasonality components and orders depending on frequency HOURLY/DAILY/WEEKLY.</span>
+    <span class="n">SEAS</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">HOURLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">LT</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">5</span>
+            <span class="p">},</span>
+            <span class="n">NM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span>
+            <span class="p">},</span>
+            <span class="n">HV</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">12</span>
+            <span class="p">},</span>
+            <span class="n">LTQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">5</span>
+            <span class="p">},</span>
+            <span class="n">NMQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span>
+            <span class="p">},</span>
+            <span class="n">HVQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">12</span>
+            <span class="p">},</span>
+            <span class="n">NONE</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="n">DAILY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">LT</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">NM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">HV</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">LTQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">NMQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">HVQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">NONE</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">}</span>
+        <span class="p">),</span>
+        <span class="n">WEEKLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">LT</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">NM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">HV</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">LTQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">NMQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">HVQM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="n">NONE</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">}</span>
+        <span class="p">)),</span>
+    <span class="c1"># Growth function.</span>
+    <span class="n">GR</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">LINEAR</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">},</span>
+        <span class="n">NONE</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}),</span>
+    <span class="c1"># Trend changepoints depending on frequency HOURLY/DAILY/WEEKLY.</span>
+    <span class="n">CP</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">HOURLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">LT</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;30D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="n">NM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;30D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span>
+            <span class="p">},</span>
+            <span class="n">HV</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;30D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span>
+            <span class="p">},</span>
+            <span class="n">NONE</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">DAILY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">LT</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;90D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="n">NM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span>
+            <span class="p">},</span>
+            <span class="n">HV</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span>
+            <span class="p">},</span>
+            <span class="n">NONE</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="n">WEEKLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">LT</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;14D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="n">NM</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;14D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span>
+            <span class="p">},</span>
+            <span class="n">HV</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+                <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;14D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;365D&quot;</span>
+            <span class="p">},</span>
+            <span class="n">NONE</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)),</span>
+    <span class="c1"># Holiday effect.</span>
+    <span class="n">HOL</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">SP1</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">SP2</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">SP4</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">TG</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">NONE</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}),</span>
+    <span class="c1"># Feature sets enabled.</span>
+    <span class="n">FEASET</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">AUTO</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="n">ON</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">OFF</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="c1"># Fit algorithm.</span>
+    <span class="n">ALGO</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">LINEAR</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="n">RIDGE</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="n">SGD</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;sgd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">},</span>
+        <span class="n">LASSO</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;lasso&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}),</span>
+    <span class="c1"># Autoregression.</span>
+    <span class="n">AR</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">AUTO</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=&quot;auto&quot;``</span>
+            <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">},</span>
+        <span class="n">OFF</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=None``</span>
+            <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">}),</span>
+    <span class="c1"># Max daily/weekly seasonality interaction orders.</span>
+    <span class="n">DSI</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">HOURLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">AUTO</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">OFF</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">DAILY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">AUTO</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">OFF</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">WEEKLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">AUTO</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">OFF</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">WSI</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">HOURLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">AUTO</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">OFF</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">DAILY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">AUTO</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">OFF</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">WEEKLY</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">AUTO</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">OFF</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Defines the default component values for</span>
+<span class="sd">`~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.</span>
+<span class="sd">The components include seasonality, growth, holiday, trend changepoints,</span>
+<span class="sd">feature sets, autoregression, fit algorithm, etc. These are used when</span>
+<span class="sd">`config.model_template` provides the</span>
+<span class="sd">`~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># Defines the SILVERKITE template here.</span>
+<span class="n">SILVERKITE</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+    <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span>
+    <span class="p">},</span>
+    <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;3D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="s2">&quot;actual_changepoint_min_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;30D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;90D&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=&quot;auto&quot;``</span>
+        <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="p">},</span>
+    <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># &quot;auto&quot; based on data freq and size</span>
+        <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;regression_weight_col&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Defines the ``SILVERKITE`` template. Contains automatic growth,</span>
+<span class="sd">seasonality, holidays, autoregression and interactions.</span>
+<span class="sd">Uses &quot;zero_to_one&quot; normalization method.</span>
+<span class="sd">Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># Defines the `SILVERKITE_EMPTY` template. Everything here is None or off.</span>
+<span class="c1"># The &quot;DAILY&quot; here does not make any difference from &quot;HOURLY&quot; or &quot;WEEKLY&quot; when everything is None or off.</span>
+<span class="n">SILVERKITE_EMPTY</span> <span class="o">=</span> <span class="s2">&quot;DAILY_SEAS_NONE_GR_NONE_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_OFF_WSI_OFF&quot;</span>
+
+
+<span class="c1"># Defines pre-tuned multi-templates.</span>
+<span class="c1"># The following 3 configs are defined as a single template in order to be used as candidates in the multi-template ``SILVERKITE_DAILY_1``.</span>
+<span class="c1"># In these 3 configs, yearly_seasonality, monthly_seasonality, weekly_seasonality, regularization_strength, and no_changepoint_distance_from_end</span>
+<span class="c1"># are tuned specifically for 1-day forecast.</span>
+<span class="n">SILVERKITE_DAILY_1_CONFIG_1</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+    <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span>
+    <span class="p">},</span>
+    <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="n">SilverkiteHoliday</span><span class="o">.</span><span class="n">HOLIDAYS_TO_MODEL_SEPARATELY_AUTO</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="n">SilverkiteHoliday</span><span class="o">.</span><span class="n">HOLIDAY_LOOKUP_COUNTRIES_AUTO</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.809</span><span class="p">,</span>
+            <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=&quot;auto&quot;``</span>
+        <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="p">},</span>
+    <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># &quot;auto&quot; based on data freq and size</span>
+        <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;regression_weight_col&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">SILVERKITE_DAILY_1_CONFIG_2</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+    <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span>
+    <span class="p">},</span>
+    <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="n">SilverkiteHoliday</span><span class="o">.</span><span class="n">HOLIDAYS_TO_MODEL_SEPARATELY_AUTO</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="n">SilverkiteHoliday</span><span class="o">.</span><span class="n">HOLIDAY_LOOKUP_COUNTRIES_AUTO</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.624</span><span class="p">,</span>
+            <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;17D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=&quot;auto&quot;``</span>
+        <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="p">},</span>
+    <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># &quot;auto&quot; based on data freq and size</span>
+        <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;regression_weight_col&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">SILVERKITE_DAILY_1_CONFIG_3</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+    <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+        <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span>
+    <span class="p">},</span>
+    <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="n">SilverkiteHoliday</span><span class="o">.</span><span class="n">HOLIDAYS_TO_MODEL_SEPARATELY_AUTO</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="n">SilverkiteHoliday</span><span class="o">.</span><span class="n">HOLIDAY_LOOKUP_COUNTRIES_AUTO</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.590</span><span class="p">,</span>
+            <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;8D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_change_freq&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=&quot;auto&quot;``</span>
+        <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">False</span>
+    <span class="p">},</span>
+    <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># &quot;auto&quot; based on data freq and size</span>
+        <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;regression_weight_col&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Defines the SILVERKITE monthly template here.</span>
+<span class="n">SILVERKITE_MONTHLY</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+    <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span>
+    <span class="p">},</span>
+    <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;28D&quot;</span><span class="p">,</span>  <span class="c1"># no effect for monthly data if less than or equal to 28 days</span>
+            <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;potential_changepoint_n_max&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="s2">&quot;actual_changepoint_min_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;730D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;180D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">6</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;lag_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;agg_lag_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;orders_list&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>  <span class="c1"># uses aggregated lags</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># `simulation_num` is not used when `fast_simulation` is True</span>
+        <span class="s2">&quot;fast_simulation&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">},</span>
+    <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="p">},</span>
+    <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;y_avglag_1_2_3*C(month, levels=list(range(1, 13)))&quot;</span><span class="p">,</span> <span class="s2">&quot;C(month, levels=list(range(1, 13)))&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;regression_weight_col&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Defines the ``SILVERKITE_MONTHLY`` template. Contains automatic growth.</span>
+<span class="sd">Seasonality is modeled via categorical variable &quot;month&quot;.</span>
+<span class="sd">Includes aggregated autoregression.</span>
+<span class="sd">Simulation is needed when forecast horizon is greater than 1.</span>
+<span class="sd">Uses statistical normalization method. Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">SILVERKITE_DAILY_1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_1&quot;</span><span class="p">,</span> <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_2&quot;</span><span class="p">,</span> <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_3&quot;</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Defines the ``SILVERKITE_DAILY_1`` template, which contains 3 candidate configs for grid search,</span>
+<span class="sd">optimized for the seasonality and changepoint parameters.</span>
+<span class="sd">Best for 1-day forecast for daily time series. Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">SILVERKITE_DAILY_90</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># For daily data, light seasonality up to weekly, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 2 days, default feature sets and linear fit algorithm.</span>
+    <span class="s2">&quot;DAILY_SEAS_LTQM_GR_LINEAR_CP_LT_HOL_SP2_FEASET_AUTO_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For daily data, light seasonality up to weekly, no trend changepoints,</span>
+    <span class="c1"># separate holidays +- 2 days, default feature sets and linear fit algorithm.</span>
+    <span class="s2">&quot;DAILY_SEAS_LTQM_GR_LINEAR_CP_NONE_HOL_SP2_FEASET_AUTO_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For daily data, light seasonality up to weekly, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 2 days, default feature sets and ridge fit algorithm.</span>
+    <span class="s2">&quot;DAILY_SEAS_LTQM_GR_LINEAR_CP_LT_HOL_SP2_FEASET_AUTO_ALGO_RIDGE_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For daily data, normal seasonality up to weekly, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, default feature sets and ridge fit algorithm.</span>
+    <span class="s2">&quot;DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span>
+<span class="p">]</span>
+
+<span class="n">SILVERKITE_WEEKLY</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># For weekly data, normal seasonality up to yearly, no trend changepoints,</span>
+    <span class="c1"># no holiday, no feature sets and linear fit algorithm.</span>
+    <span class="s2">&quot;WEEKLY_SEAS_NM_GR_LINEAR_CP_NONE_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For weekly data, normal seasonality up to yearly, light trend changepoints,</span>
+    <span class="c1"># no holiday, no feature sets and linear fit algorithm.</span>
+    <span class="s2">&quot;WEEKLY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For weekly data, heavy seasonality up to yearly, normal trend changepoints,</span>
+    <span class="c1"># no holiday, no feature sets and ridge fit algorithm.</span>
+    <span class="s2">&quot;WEEKLY_SEAS_HV_GR_LINEAR_CP_NM_HOL_NONE_FEASET_OFF_ALGO_RIDGE_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For weekly data, heavy seasonality up to yearly, light trend changepoints,</span>
+    <span class="c1"># no holiday, no feature sets and ridge fit algorithm.</span>
+    <span class="s2">&quot;WEEKLY_SEAS_HV_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_RIDGE_AR_OFF_DSI_AUTO_WSI_AUTO&quot;</span>
+<span class="p">]</span>
+
+<span class="n">SILVERKITE_HOURLY_1</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># For hourly data, the first template is the same as the &quot;SILVERKITE&quot; template defined above.</span>
+    <span class="s2">&quot;SILVERKITE&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, normal trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, no feature sets, automatic autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_NM_HOL_SP4_FEASET_OFF_ALGO_RIDGE_AR_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, normal trend changepoints,</span>
+    <span class="c1"># separate holidays +- 1 day, default feature sets, automatic autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP1_FEASET_AUTO_ALGO_RIDGE_AR_AUTO&quot;</span>
+<span class="p">]</span>
+
+<span class="n">SILVERKITE_HOURLY_24</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, normal trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, default feature sets, automatic autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_NM_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, no trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, default feature sets, automatic autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_NONE_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 1 days, no feature sets, automatic autoregression and linear fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_LT_HOL_SP1_FEASET_OFF_ALGO_LINEAR_AR_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, normal trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 day, default feature sets, automatic autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_AUTO&quot;</span>
+<span class="p">]</span>
+
+<span class="n">SILVERKITE_HOURLY_168</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, default feature sets, no autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_LT_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_OFF&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 2 days, default feature sets, no autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_LT_HOL_SP2_FEASET_AUTO_ALGO_RIDGE_AR_OFF&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, no trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, no feature sets, automatic autoregression and linear fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_NONE_HOL_SP4_FEASET_OFF_ALGO_LINEAR_AR_AUTO&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, normal trend changepoints,</span>
+    <span class="c1"># separate holidays +- 1 day, default feature sets, no autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP1_FEASET_AUTO_ALGO_RIDGE_AR_OFF&quot;</span>
+<span class="p">]</span>
+
+<span class="n">SILVERKITE_HOURLY_336</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 2 days, default feature sets, no autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_LT_HOL_SP2_FEASET_AUTO_ALGO_RIDGE_AR_OFF&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, light seasonality up to daily, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 4 days, default feature sets, no autoregression and ridge fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_LT_GR_LINEAR_CP_LT_HOL_SP4_FEASET_AUTO_ALGO_RIDGE_AR_OFF&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, light trend changepoints,</span>
+    <span class="c1"># separate holidays +- 2 days, default feature sets, no autoregression and linear fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_LT_HOL_SP1_FEASET_AUTO_ALGO_LINEAR_AR_OFF&quot;</span><span class="p">,</span>
+    <span class="c1"># For hourly data, normal seasonality up to daily, normal trend changepoints,</span>
+    <span class="c1"># separate holidays +- 1 day, default feature sets, automatic autoregression and linear fit algorithm.</span>
+    <span class="s2">&quot;HOURLY_SEAS_NM_GR_LINEAR_CP_NM_HOL_SP1_FEASET_AUTO_ALGO_LINEAR_AR_AUTO&quot;</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Defines pre-defined multi templates.</span>
+
+<span class="n">MULTI_TEMPLATES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;SILVERKITE_DAILY_1&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_DAILY_1</span><span class="p">,</span>
+    <span class="s2">&quot;SILVERKITE_DAILY_90&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_DAILY_90</span><span class="p">,</span>
+    <span class="s2">&quot;SILVERKITE_WEEKLY&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_WEEKLY</span><span class="p">,</span>
+    <span class="s2">&quot;SILVERKITE_HOURLY_1&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_HOURLY_1</span><span class="p">,</span>
+    <span class="s2">&quot;SILVERKITE_HOURLY_24&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_HOURLY_24</span><span class="p">,</span>
+    <span class="s2">&quot;SILVERKITE_HOURLY_168&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_HOURLY_168</span><span class="p">,</span>
+    <span class="s2">&quot;SILVERKITE_HOURLY_336&quot;</span><span class="p">:</span> <span class="n">SILVERKITE_HOURLY_336</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;A dictionary of multi templates.</span>
+
+<span class="sd">    - Keys are the available multi templates names (valid strings for `config.model_template`).</span>
+<span class="sd">    - Values correspond to a list of</span>
+<span class="sd">      `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ModelComponentsParam</span><span class="p">,</span> <span class="n">SimpleSilverkiteTemplateOptions</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Types accepted by SimpleSilverkiteTemplate for ``config.model_template``</span>
+<span class="sd">for a single template.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="SimpleSilverkiteTemplateConstants"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateConstants">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SimpleSilverkiteTemplateConstants</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Constants used by</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.</span>
+<span class="sd">    Includes the model templates and their default values.</span>
+
+<span class="sd">    `~greykite.common.python_utils.mutable_field` is used when the default value</span>
+<span class="sd">    is a mutable type like dict and list. Dataclass requires mutable default values</span>
+<span class="sd">    to be wrapped in &#39;default_factory&#39;, so that instances of this dataclass cannot</span>
+<span class="sd">    accidentally modify the default value.</span>
+<span class="sd">    `~greykite.common.python_utils.mutable_field` wraps the constant accordingly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">mutable_field</span><span class="p">(</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Defines the default component values for</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.</span>
+<span class="sd">    The components include seasonality, growth, holiday, trend changepoints,</span>
+<span class="sd">    feature sets, autoregression, fit algorithm, etc. These are used when</span>
+<span class="sd">    `config.model_template` provides the</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MULTI_TEMPLATES</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">mutable_field</span><span class="p">(</span><span class="n">MULTI_TEMPLATES</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;A dictionary of multi templates.</span>
+
+<span class="sd">        - Keys are the available multi templates names (valid strings for `config.model_template`).</span>
+<span class="sd">        - Values correspond to a list of</span>
+<span class="sd">          `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE</span><span class="p">:</span> <span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">SILVERKITE</span>
+    <span class="sd">&quot;&quot;&quot;Defines the ``&quot;SILVERKITE&quot;`` template. Contains automatic growth,</span>
+<span class="sd">    seasonality, holidays, autoregression and interactions.</span>
+<span class="sd">    Uses &quot;zero_to_one&quot; normalization method.</span>
+<span class="sd">    Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_MONTHLY</span><span class="p">:</span> <span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">SILVERKITE_MONTHLY</span>
+    <span class="sd">&quot;&quot;&quot;Defines the ``SILVERKITE_MONTHLY`` template.</span>
+<span class="sd">    Best for monthly forecasts. Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1_CONFIG_1</span><span class="p">:</span> <span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">SILVERKITE_DAILY_1_CONFIG_1</span>
+    <span class="sd">&quot;&quot;&quot;Config 1 in template ``SILVERKITE_DAILY_1``.</span>
+<span class="sd">    Compared to ``SILVERKITE``, it adds change points and uses parameters</span>
+<span class="sd">    specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1_CONFIG_2</span><span class="p">:</span> <span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">SILVERKITE_DAILY_1_CONFIG_2</span>
+    <span class="sd">&quot;&quot;&quot;Config 2 in template ``SILVERKITE_DAILY_1``.</span>
+<span class="sd">    Compared to ``SILVERKITE``, it adds change points and uses parameters</span>
+<span class="sd">    specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1_CONFIG_3</span><span class="p">:</span> <span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">SILVERKITE_DAILY_1_CONFIG_3</span>
+    <span class="sd">&quot;&quot;&quot;Config 3 in template ``SILVERKITE_DAILY_1``.</span>
+<span class="sd">    Compared to ``SILVERKITE``, it adds change points and uses parameters</span>
+<span class="sd">    specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="n">SILVERKITE_COMPONENT_KEYWORDS</span>
+    <span class="sd">&quot;&quot;&quot;Valid values for simple silverkite template string name keywords.</span>
+<span class="sd">    The names are the keywords and the values are the corresponding value enum.</span>
+<span class="sd">    Can be used to create an instance of</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_EMPTY</span><span class="p">:</span> <span class="n">SINGLE_MODEL_TEMPLATE_TYPE</span> <span class="o">=</span> <span class="n">SILVERKITE_EMPTY</span>
+    <span class="sd">&quot;&quot;&quot;Defines the ``&quot;SILVERKITE_EMPTY&quot;`` template. Everything here is None or off.&quot;&quot;&quot;</span>
+    <span class="n">VALID_FREQ</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">mutable_field</span><span class="p">(</span><span class="n">VALID_FREQ</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Valid non-default values for simple silverkite template string name frequency.</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SimpleSilverkiteTemplateOptions</span><span class="p">:</span> <span class="n">dataclass</span> <span class="o">=</span> <span class="n">SimpleSilverkiteTemplateOptions</span>
+    <span class="sd">&quot;&quot;&quot;Defines generic simple silverkite template options.</span>
+<span class="sd">    Attributes can be set to different values using</span>
+<span class="sd">    `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_COMPONENT_KEYWORDS`</span>
+<span class="sd">    for high level tuning.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

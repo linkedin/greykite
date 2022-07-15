@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.utils.result_summary &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.utils.result_summary</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.utils.result_summary</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Functions to summarize the output of</span>
+<span class="sd">`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">rankdata</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">FRACTION_OUTSIDE_TOLERANCE</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">assert_equal</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">CV_REPORT_METRICS_ALL</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_score_func_with_aggregation</span>
+
+
+<div class="viewcode-block" id="get_ranks_and_splits"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.utils.result_summary.get_ranks_and_splits">[docs]</a><span class="k">def</span> <span class="nf">get_ranks_and_splits</span><span class="p">(</span>
+        <span class="n">grid_search</span><span class="p">,</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">combine_splits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">decimals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">warn_metric</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts CV results from ``grid_search`` for the specified score function.</span>
+<span class="sd">    Returns the correct ranks on the test set and a tuple of the scores across splits,</span>
+<span class="sd">    for both test set and train set (if available).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    While ``cv_results`` contains keys with the ranks, these ranks are inverted</span>
+<span class="sd">    if lower values are better and the ``scoring`` function was initialized</span>
+<span class="sd">    with ``greater_is_better=True`` to report metrics with their original sign.</span>
+
+<span class="sd">    This function always returns the correct ranks, accounting for metric direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid_search : `~sklearn.model_selection.RandomizedSearchCV`</span>
+<span class="sd">        Grid search output (fitted RandomizedSearchCV object).</span>
+<span class="sd">    score_func : `str` or callable, default ``EvaluationMetricEnum.MeanAbsolutePercentError.name``</span>
+<span class="sd">        Score function to get the ranks for.</span>
+<span class="sd">        If a callable, takes arrays ``y_true``, ``y_pred`` and returns a float.</span>
+<span class="sd">        If a string, must be either a</span>
+<span class="sd">        `~greykite.common.evaluation.EvaluationMetricEnum` member name</span>
+<span class="sd">        or `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+
+<span class="sd">        Should be the same as what was passed to</span>
+<span class="sd">        :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.utils.get_hyperparameter_searcher`.</span>
+<span class="sd">    greater_is_better : `bool` or None, default False</span>
+<span class="sd">        True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        Must be provided if ``score_func`` is a callable (custom function).</span>
+<span class="sd">        Ignored if ``score_func`` is a string, because the direction is known.</span>
+
+<span class="sd">        Used in this function to rank values in the proper direction.</span>
+
+<span class="sd">        Should be the same as what was passed to</span>
+<span class="sd">        :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.utils.get_hyperparameter_searcher`.</span>
+<span class="sd">    combine_splits : `bool`, default True</span>
+<span class="sd">        Whether to report split scores as a tuple in a single column.</span>
+<span class="sd">        If True, a single column is returned for all the splits</span>
+<span class="sd">        of a given metric and train/test set.</span>
+<span class="sd">        For example, &quot;split_train_score&quot; would contain the values</span>
+<span class="sd">        (split1_train_score, split2_train_score, split3_train_score)</span>
+<span class="sd">        as as tuple.</span>
+<span class="sd">        If False, they are reported in their original columns.</span>
+<span class="sd">    decimals : `int` or None, default None</span>
+<span class="sd">        Number of decimal places to round to.</span>
+<span class="sd">        If decimals is negative, it specifies the number of</span>
+<span class="sd">        positions to the left of the decimal point.</span>
+<span class="sd">        If None, does not round.</span>
+<span class="sd">    warn_metric : `bool`, default True</span>
+<span class="sd">        Whether to issue a warning if the requested metric is</span>
+<span class="sd">        not found in the CV results.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ranks_and_splits : `dict`</span>
+<span class="sd">        Ranks and split scores.</span>
+<span class="sd">        Dictionary with the following keys:</span>
+
+<span class="sd">            ``&quot;short_name&quot;`` : `int`</span>
+<span class="sd">                Canonical short name for the ``score_func``.</span>
+<span class="sd">            ``&quot;ranks&quot;`` : `numpy.array`</span>
+<span class="sd">                Ranks of the test scores for the ``score_func``,</span>
+<span class="sd">                where 1 is the best.</span>
+<span class="sd">            ``&quot;split_train&quot;`` : `list` [`list` [`float`]]</span>
+<span class="sd">                Train split scores. Outer list corresponds to the</span>
+<span class="sd">                parameter setting; inner list contains the</span>
+<span class="sd">                scores for that parameter setting across all splits.</span>
+<span class="sd">            ``&quot;split_test&quot;`` : `list` [`list` [`float`]]</span>
+<span class="sd">                Test split scores. Outer list corresponds to the</span>
+<span class="sd">                parameter setting; inner list contains the</span>
+<span class="sd">                scores for that parameter setting across all splits.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">cv_results_</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="p">,</span> <span class="n">short_name</span> <span class="o">=</span> <span class="n">get_score_func_with_aggregation</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>  <span class="c1"># string or callable</span>
+        <span class="n">greater_is_better</span><span class="o">=</span><span class="n">greater_is_better</span><span class="p">,</span>
+        <span class="c1"># Dummy value, doesn&#39;t matter because we ignore the returned `score_func`</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="c1"># Warns if the metric is not available</span>
+    <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;mean_test_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">warn_metric</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Metric &#39;</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&#39; is not available in the CV results.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;short_name&quot;</span><span class="p">:</span> <span class="n">short_name</span><span class="p">,</span>
+            <span class="s2">&quot;ranks&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;split_train&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;split_test&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="c1"># Computes the ranks, using the same tiebreaking method as in sklearn.</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;mean_test_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">greater_is_better</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># `rankdata` function ranks lowest values first</span>
+    <span class="n">ranks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rankdata</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="c1"># Computes split score columns.</span>
+    <span class="n">train_scores</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">test_scores</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">round_as_list</span><span class="p">(</span><span class="n">split_scores</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rounds `split_scores` to the specified</span>
+<span class="sd">        `decimals` and returns the result as a list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        split_scores : `numpy.array`</span>
+<span class="sd">             Split scores.</span>
+<span class="sd">        decimals : `int` or None, default None</span>
+<span class="sd">            Number of decimal places to round to.</span>
+<span class="sd">            If decimals is negative, it specifies the number of</span>
+<span class="sd">            positions to the left of the decimal point.</span>
+<span class="sd">            If None, does not round.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        split_scores_list : `list` [`float`]</span>
+<span class="sd">            ``split_scores``, rounded according</span>
+<span class="sd">            to ``decimals`` and returned as a list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">decimals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">split_scores</span> <span class="o">=</span> <span class="n">split_scores</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">split_scores</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">combine_splits</span><span class="p">:</span>
+        <span class="c1"># Each sublist contains the scores for split i</span>
+        <span class="c1"># across all parameter settings.</span>
+        <span class="n">test_scores</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">round_as_list</span><span class="p">(</span>
+                <span class="n">cv_results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;split</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_test_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+                <span class="n">decimals</span><span class="o">=</span><span class="n">decimals</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_search</span><span class="o">.</span><span class="n">n_splits_</span><span class="p">)]</span>
+        <span class="c1"># Makes each sublist contain the scores for a particular</span>
+        <span class="c1"># parameter setting across all splits.</span>
+        <span class="n">test_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">test_scores</span><span class="p">))</span>
+
+        <span class="c1"># Train scores</span>
+        <span class="k">if</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">return_train_score</span><span class="p">:</span>
+            <span class="n">train_scores</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">round_as_list</span><span class="p">(</span>
+                    <span class="n">cv_results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;split</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_train_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span>
+                    <span class="n">decimals</span><span class="o">=</span><span class="n">decimals</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_search</span><span class="o">.</span><span class="n">n_splits_</span><span class="p">)]</span>
+            <span class="n">train_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">train_scores</span><span class="p">))</span>
+
+    <span class="n">ranks_and_splits</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;short_name&quot;</span><span class="p">:</span> <span class="n">short_name</span><span class="p">,</span>
+        <span class="s2">&quot;ranks&quot;</span><span class="p">:</span> <span class="n">ranks</span><span class="p">,</span>
+        <span class="s2">&quot;split_train&quot;</span><span class="p">:</span> <span class="n">train_scores</span><span class="p">,</span>
+        <span class="s2">&quot;split_test&quot;</span><span class="p">:</span> <span class="n">test_scores</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">ranks_and_splits</span></div>
+
+
+<div class="viewcode-block" id="summarize_grid_search_results"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.utils.result_summary.summarize_grid_search_results">[docs]</a><span class="k">def</span> <span class="nf">summarize_grid_search_results</span><span class="p">(</span>
+        <span class="n">grid_search</span><span class="p">,</span>
+        <span class="n">only_changing_params</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">combine_splits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">decimals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">CV_REPORT_METRICS_ALL</span><span class="p">,</span>
+        <span class="n">column_order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Summarizes CV results for each grid search parameter combination.</span>
+
+<span class="sd">    While ``grid_search.cv_results_`` could be imported into</span>
+<span class="sd">    a `pandas.DataFrame` without this function, the following conveniences</span>
+<span class="sd">    are provided:</span>
+
+<span class="sd">        - returns the correct ranks based on each metric&#39;s greater_is_better direction.</span>
+<span class="sd">        - summarizes the hyperparameter space, only showing the parameters that change</span>
+<span class="sd">        - combines split scores into a tuple to save table width</span>
+<span class="sd">        - rounds the values to specified decimals</span>
+<span class="sd">        - orders columns by type (test score, train score, metric, etc.)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid_search : `~sklearn.model_selection.RandomizedSearchCV`</span>
+<span class="sd">        Grid search output (fitted RandomizedSearchCV object).</span>
+<span class="sd">    only_changing_params : `bool`, default True</span>
+<span class="sd">        If True, only show parameters with multiple values in</span>
+<span class="sd">        the hyperparameter_grid.</span>
+<span class="sd">    combine_splits : `bool`, default True</span>
+<span class="sd">        Whether to report split scores as a tuple in a single column.</span>
+
+<span class="sd">            - If True, adds a column for the test splits scores for each</span>
+<span class="sd">              requested metric. Adds a column with train split scores if those</span>
+<span class="sd">              are available.</span>
+
+<span class="sd">              For example, &quot;split_train_score&quot; would contain the values</span>
+<span class="sd">              (split1_train_score, split2_train_score, split3_train_score)</span>
+<span class="sd">              as as tuple.</span>
+<span class="sd">            - If False, this summary column is not added.</span>
+
+<span class="sd">        The original split columns are available either way.</span>
+<span class="sd">    decimals : `int` or None, default None</span>
+<span class="sd">        Number of decimal places to round to.</span>
+<span class="sd">        If decimals is negative, it specifies the number of</span>
+<span class="sd">        positions to the left of the decimal point.</span>
+<span class="sd">        If None, does not round.</span>
+<span class="sd">    score_func : `str` or callable, default ``EvaluationMetricEnum.MeanAbsolutePercentError.name``</span>
+<span class="sd">        Score function used to select optimal model in CV.</span>
+<span class="sd">        If a callable, takes arrays ``y_true``, ``y_pred`` and returns a float.</span>
+<span class="sd">        If a string, must be either a</span>
+<span class="sd">        `~greykite.common.evaluation.EvaluationMetricEnum` member name</span>
+<span class="sd">        or `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+
+<span class="sd">        Used in this function to fix the ``&quot;rank_test_score&quot;`` column if</span>
+<span class="sd">        ``score_func_greater_is_better=False``.</span>
+
+<span class="sd">        Should be the same as what was passed to</span>
+<span class="sd">        :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.utils.get_hyperparameter_searcher`.</span>
+<span class="sd">    score_func_greater_is_better : `bool`, default False</span>
+<span class="sd">        True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        Must be provided if ``score_func`` is a callable (custom function).</span>
+<span class="sd">        Ignored if ``score_func`` is a string, because the direction is known.</span>
+
+<span class="sd">        Used in this function to fix the ``&quot;rank_test_score&quot;`` column if</span>
+<span class="sd">        ``score_func_greater_is_better=False``.</span>
+
+<span class="sd">        Should be the same as what was passed to</span>
+<span class="sd">        :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.utils.get_hyperparameter_searcher`.</span>
+<span class="sd">    cv_report_metrics : `~greykite.framework.constants.CV_REPORT_METRICS_ALL`, or `list` [`str`], or None, default `~greykite.common.constants.CV_REPORT_METRICS_ALL`  # noqa: E501</span>
+<span class="sd">        Additional metrics to show in the summary, besides the one specified by ``score_func``.</span>
+
+<span class="sd">        If a metric is specified but not available, a warning will be given.</span>
+
+<span class="sd">        Should be the same as what was passed to</span>
+<span class="sd">        :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">        or `~greykite.framework.pipeline.utils.get_hyperparameter_searcher`,</span>
+<span class="sd">        or a subset of computed metric to show.</span>
+
+<span class="sd">        If a list of strings, valid strings are</span>
+<span class="sd">        `greykite.common.evaluation.EvaluationMetricEnum` member names</span>
+<span class="sd">        and `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+<span class="sd">    column_order : `list` [`str`] or None, default None</span>
+<span class="sd">        How to order the columns.</span>
+<span class="sd">        A list of regex to order column names, in greedy fashion. Column names matching</span>
+<span class="sd">        the first item are placed first. Among remaining items, those matching the second</span>
+<span class="sd">        items are placed next, etc.</span>
+<span class="sd">        Use &quot;*&quot; as the last element to select all available columns, if desired.</span>
+<span class="sd">        If None, uses default ordering::</span>
+
+<span class="sd">            column_order = [&quot;rank_test&quot;, &quot;mean_test&quot;, &quot;split_test&quot;, &quot;mean_train&quot;,</span>
+<span class="sd">                            &quot;params&quot;, &quot;param&quot;, &quot;split_train&quot;, &quot;time&quot;, &quot;.*&quot;]</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Metrics are named in ``grid_search.cv_results_`` according to the ``scoring``</span>
+<span class="sd">    parameter passed to `~sklearn.model_selection.RandomizedSearchCV`.</span>
+
+<span class="sd">    ``&quot;score&quot;`` is the default used by sklearn for single metric</span>
+<span class="sd">    evaluation.</span>
+
+<span class="sd">    If a dictionary is provided to ``scoring``, as is the case through</span>
+<span class="sd">    templates, then the metrics are named by its keys, and the</span>
+<span class="sd">    metric used for selection is defined by ``refit``. The keys</span>
+<span class="sd">    are derived from ``score_func`` and ``cv_report_metrics``</span>
+<span class="sd">    in `~greykite.framework.pipeline.utils.get_scoring_and_refit`.</span>
+
+<span class="sd">        - The key for ``score_func`` if it is a callable is</span>
+<span class="sd">          `~greykite.common.constants.CUSTOM_SCORE_FUNC_NAME`.</span>
+<span class="sd">        - The key for ``EvaluationMetricEnum`` member name is the short name</span>
+<span class="sd">          from ``.get_metric_name()``.</span>
+<span class="sd">        - The key for `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`</span>
+<span class="sd">          is `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE_NAME`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cv_results : `pandas.DataFrame`</span>
+<span class="sd">        A summary of cross-validation results in tabular format.</span>
+<span class="sd">        Each row corresponds to a set of parameters used in the grid search.</span>
+
+<span class="sd">        The columns have the following format, where name is the canonical short</span>
+<span class="sd">        name for the metric.</span>
+
+<span class="sd">            ``&quot;rank_test_{name}&quot;`` : `int`</span>
+<span class="sd">                The params ranked by mean_test_score (1 is best).</span>
+<span class="sd">            ``&quot;mean_test_{name}&quot;`` : `float`</span>
+<span class="sd">                Average test score.</span>
+<span class="sd">            ``&quot;split_test_{name}&quot;`` : `list` [`float`]</span>
+<span class="sd">                Test score on each split. [split 0, split 1, ...]</span>
+<span class="sd">            ``&quot;std_test_{name}&quot;`` : `float`</span>
+<span class="sd">                Standard deviation of test scores.</span>
+<span class="sd">            ``&quot;mean_train_{name}&quot;`` : `float`</span>
+<span class="sd">                Average train score.</span>
+<span class="sd">            ``&quot;split_train_{name}&quot;`` : `list` [`float`]</span>
+<span class="sd">                Train score on each split. [split 0, split 1, ...]</span>
+<span class="sd">            ``&quot;std_train_{name}&quot;`` : `float`</span>
+<span class="sd">                Standard deviation of train scores.</span>
+<span class="sd">            ``&quot;mean_fit_time&quot;`` : `float`</span>
+<span class="sd">                Average time to fit each CV split (in seconds)</span>
+<span class="sd">            ``&quot;std_fit_time&quot;`` : `float`</span>
+<span class="sd">                Std of time to fit each CV split (in seconds)</span>
+<span class="sd">            ``&quot;mean_score_time&quot;`` : `float`</span>
+<span class="sd">                Average time to score each CV split (in seconds)</span>
+<span class="sd">            ``&quot;std_score_time&quot;`` : `float`</span>
+<span class="sd">                Std of time to score each CV split (in seconds)</span>
+<span class="sd">            ``&quot;params&quot;`` : `dict`</span>
+<span class="sd">                The parameters used. If ``only_changing==True``,</span>
+<span class="sd">                only shows the parameters which are not identical</span>
+<span class="sd">                across all CV splits.</span>
+<span class="sd">            ``&quot;param_{pipeline__param__name}&quot;`` : Any</span>
+<span class="sd">                The value of pipeline parameter `pipeline__param__name`</span>
+<span class="sd">                for each row.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">column_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">column_order</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rank_test&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_test&quot;</span><span class="p">,</span> <span class="s2">&quot;split_test&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_train&quot;</span><span class="p">,</span> <span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="s2">&quot;param&quot;</span><span class="p">,</span> <span class="s2">&quot;split_train&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;.*&quot;</span><span class="p">]</span>
+
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">cv_results_</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Overwrites the params</span>
+    <span class="n">selected_params</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">only_changing_params</span><span class="p">:</span>
+        <span class="c1"># Removes keys that don&#39;t vary</span>
+        <span class="n">keep_params</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">seen_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">seen_params</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">assert_equal</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">seen_params</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                    <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+                        <span class="c1"># the values are different</span>
+                        <span class="n">keep_params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">seen_params</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]:</span>
+            <span class="n">explore_params</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keep_params</span><span class="p">]</span>
+            <span class="n">selected_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">explore_params</span><span class="p">)</span>
+        <span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected_params</span>
+
+    <span class="c1"># Overwrites the ranks and computes combined split score columns</span>
+    <span class="c1"># for the requested metrics.</span>
+    <span class="n">metric_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">score_func</span><span class="p">,</span> <span class="n">score_func_greater_is_better</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">cv_report_metrics</span> <span class="o">==</span> <span class="n">CV_REPORT_METRICS_ALL</span><span class="p">:</span>
+        <span class="n">cv_report_metrics</span> <span class="o">=</span> <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Computes `FRACTION_OUTSIDE_TOLERANCE` if `relative_error_tolerance` is specified</span>
+        <span class="n">cv_report_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FRACTION_OUTSIDE_TOLERANCE</span><span class="p">)</span>
+        <span class="n">metric_list</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">metric</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">cv_report_metrics</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">cv_report_metrics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># greater_is_better is derived from the metric name</span>
+        <span class="n">metric_list</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">metric</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">cv_report_metrics</span><span class="p">]</span>
+
+    <span class="n">keep_metrics</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="p">,</span> <span class="n">warn_metric</span> <span class="ow">in</span> <span class="n">metric_list</span><span class="p">:</span>
+        <span class="n">ranks_and_splits</span> <span class="o">=</span> <span class="n">get_ranks_and_splits</span><span class="p">(</span>
+            <span class="n">grid_search</span><span class="o">=</span><span class="n">grid_search</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+            <span class="n">greater_is_better</span><span class="o">=</span><span class="n">greater_is_better</span><span class="p">,</span>
+            <span class="n">combine_splits</span><span class="o">=</span><span class="n">combine_splits</span><span class="p">,</span>
+            <span class="n">decimals</span><span class="o">=</span><span class="n">decimals</span><span class="p">,</span>
+            <span class="n">warn_metric</span><span class="o">=</span><span class="n">warn_metric</span><span class="p">)</span>
+        <span class="n">short_name</span> <span class="o">=</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;short_name&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;ranks&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cv_results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;rank_test_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;ranks&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;split_train&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cv_results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;split_train_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;split_train&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;split_test&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cv_results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;split_test_</span><span class="si">{</span><span class="n">short_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranks_and_splits</span><span class="p">[</span><span class="s2">&quot;split_test&quot;</span><span class="p">]</span>
+        <span class="n">keep_metrics</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">short_name</span><span class="p">)</span>
+
+    <span class="c1"># Creates DataFrame and orders the columns.</span>
+    <span class="c1"># Dictionary keys are unordered, but appears to follow insertion order.</span>
+    <span class="n">cv_results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+    <span class="n">available_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cv_results_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="c1"># Removes metrics not selected</span>
+    <span class="n">all_metrics</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;mean_test_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                      <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;mean_test_&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+    <span class="n">remove_metrics</span> <span class="o">=</span> <span class="n">all_metrics</span> <span class="o">-</span> <span class="n">keep_metrics</span>
+    <span class="n">remove_regex</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remove_metrics</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remove_regex</span><span class="p">:</span>
+        <span class="n">available_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">available_cols</span>
+                          <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">remove_regex</span><span class="p">,</span> <span class="n">col</span><span class="p">)]</span>
+    <span class="c1"># Orders the columns</span>
+    <span class="n">ordered_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">regex</span> <span class="ow">in</span> <span class="n">column_order</span><span class="p">:</span>
+        <span class="n">selected_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">available_cols</span>
+                         <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ordered_cols</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">col</span><span class="p">)]</span>
+        <span class="n">ordered_cols</span> <span class="o">+=</span> <span class="n">selected_cols</span>
+    <span class="n">cv_results_df</span> <span class="o">=</span> <span class="n">cv_results_df</span><span class="p">[</span><span class="n">ordered_cols</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">decimals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cv_results_df</span> <span class="o">=</span> <span class="n">cv_results_df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cv_results_df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1292 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.algo.common.seasonality_inferrer &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.algo.common.seasonality_inferrer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.algo.common.seasonality_inferrer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Automatically infers seasonality Fourier series orders.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">plotly</span> <span class="kn">import</span> <span class="n">graph_objs</span> <span class="k">as</span> <span class="n">go</span>
+<span class="kn">from</span> <span class="nn">plotly.colors</span> <span class="kn">import</span> <span class="n">DEFAULT_PLOTLY_COLORS</span>
+<span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">RidgeCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDRegressor</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TimeFeaturesEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">add_time_features_df</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">fourier_series_multi_fcn</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_default_origin_for_time_vars</span>
+
+
+<div class="viewcode-block" id="TrendAdjustMethodEnum"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum">[docs]</a><span class="k">class</span> <span class="nc">TrendAdjustMethodEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The methods that are available for adjusting trend in</span>
+<span class="sd">    `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer.infer_fourier_series_order`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seasonal_average</span> <span class="o">=</span> <span class="s2">&quot;seasonal_average&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the average within each seasonal period and removes it.&quot;&quot;&quot;</span>
+    <span class="n">overall_average</span> <span class="o">=</span> <span class="s2">&quot;overall_average&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the average of the whole timeseries and removes it.&quot;&quot;&quot;</span>
+    <span class="n">spline_fit</span> <span class="o">=</span> <span class="s2">&quot;spline_fit&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Fits a spline with no knots (polynomial) with a certain degree and removes it.&quot;&quot;&quot;</span>
+    <span class="n">none</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Does not adjust trend.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SeasonalityInferConfig"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SeasonalityInferConfig</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A dataclass to pass the parameters for</span>
+<span class="sd">    `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer.infer_fourier_series_order`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seas_name : `str`</span>
+<span class="sd">        Required.</span>
+<span class="sd">        The seasonality component name.</span>
+<span class="sd">        Will be used to distinguish the results.</span>
+<span class="sd">    col_name : `str`</span>
+<span class="sd">        Required.</span>
+<span class="sd">        The column name used to generate seasonality Fourier series.</span>
+<span class="sd">        Must be in ``df`` or can be generated by</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">        See `~greykite.common.features.timeseries_features.fourier_series_multi_func`.</span>
+<span class="sd">    period : `float`</span>
+<span class="sd">        Required.</span>
+<span class="sd">        The period corresponding to ``col_name``.</span>
+<span class="sd">        See `~greykite.common.features.timeseries_features.fourier_series_multi_func`.</span>
+<span class="sd">    max_order : `int`</span>
+<span class="sd">        Required.</span>
+<span class="sd">        The maximum Fourier series order to fit.</span>
+<span class="sd">    adjust_trend_method : `str` or None, default &quot;seasonal_average&quot;</span>
+<span class="sd">        The method used to adjust trend.</span>
+<span class="sd">        Supported methods are in `AdjustTrendMethodEnum`.</span>
+<span class="sd">        None values are default to &quot;seasonal_average&quot; with subtracting yearly average as the default.</span>
+<span class="sd">    adjust_trend_param : `dict` or None, default None</span>
+<span class="sd">        Additional parameters for adjusting the trend.</span>
+<span class="sd">        For valid options, see</span>
+<span class="sd">        `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer._adjust_trend`.</span>
+<span class="sd">    fit_algorithm : `str` or None, default &quot;ridge&quot;</span>
+<span class="sd">        The algorithm used to fit the seasonality.</span>
+<span class="sd">        Supported algorithms are &quot;linear&quot;, &quot;ridge&quot; and &quot;sgd&quot;.</span>
+<span class="sd">        None values are default to &quot;ridge&quot;.</span>
+<span class="sd">    plotting : `bool` or None, default False</span>
+<span class="sd">        Whether to generate plots.</span>
+<span class="sd">        If True, the returned dictionary will have plot via the &quot;fig&quot; key.</span>
+<span class="sd">        Can turn this off to speed up the process.</span>
+<span class="sd">        None values are default to False.</span>
+<span class="sd">    tolerance : `float` or None, default 0.0</span>
+<span class="sd">        A tolerance on the criterion to allow a smaller order.</span>
+<span class="sd">        For example, if AIC&#39;s minimum is 100 and ``tolerance`` is 0.1,</span>
+<span class="sd">        then the function will find the smallest order that has AIC less than or equal to 110.</span>
+<span class="sd">        None values are default to 0.0.</span>
+<span class="sd">    aggregation_period : `str` or None, default None</span>
+<span class="sd">        The aggregation period before fitting the Fourier series.</span>
+<span class="sd">        Having aggregation to eliminate shorter seasonal periods may help get more accurate orders.</span>
+<span class="sd">        But also making sure the number of observations after aggregation is sufficient.</span>
+<span class="sd">        None corresponds to no aggregation.</span>
+<span class="sd">    offset : `int` or None, default 0</span>
+<span class="sd">        The offset order to be added to the inferred orders.</span>
+<span class="sd">        The order after adding offset can not be negative.</span>
+<span class="sd">    criterion : `str` or None, default &quot;bic&quot;</span>
+<span class="sd">        The criterion to pick the most appropriate orders.</span>
+<span class="sd">        Supported criteria are &quot;aic&quot; and &quot;bic&quot;.</span>
+<span class="sd">        None values are default to &quot;bic&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seas_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">col_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">period</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">max_order</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">adjust_trend_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="n">seasonal_average</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">adjust_trend_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fit_algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ridge&quot;</span>
+    <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">plotting</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">aggregation_period</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">criterion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bic&quot;</span></div>
+
+
+<div class="viewcode-block" id="SeasonalityInferrer"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.seasonality_inferrer.SeasonalityInferrer">[docs]</a><span class="k">class</span> <span class="nc">SeasonalityInferrer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A class to infer appropriate Fourier series orders in different</span>
+<span class="sd">    seasonality components.</span>
+
+<span class="sd">    The method allows users to:</span>
+
+<span class="sd">        - optionally remove the trend with different methods.</span>
+<span class="sd">          Available methods are in `TrendAdjustMethodEnum`.</span>
+<span class="sd">        - optionally do an aggregation.</span>
+<span class="sd">        - fits the seasonality component with different Fourier series orders.</span>
+<span class="sd">        - calculates the AIC/BIC of the fits.</span>
+<span class="sd">        - choose the most appropriate order with AIC or BIC and an optional tolerance.</span>
+<span class="sd">        - plot the investigations.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame` or None</span>
+<span class="sd">        The input timeseries.</span>
+<span class="sd">    time_col : `str` or None</span>
+<span class="sd">        The column name for timestamps in ``df``.</span>
+<span class="sd">    value_col : `str` or None</span>
+<span class="sd">        The column name for values in ``df``.</span>
+<span class="sd">    fourier_series_orders : `dict` or None</span>
+<span class="sd">        The inferred Fourier series orders.</span>
+<span class="sd">        The keys are the seasonality component names.</span>
+<span class="sd">        The values are the inferred best orders according to the config.</span>
+<span class="sd">    df_features : `pandas.DataFrame` or None</span>
+<span class="sd">        The cached dataframe with time features.</span>
+<span class="sd">        Building this df is slow for large dataset.</span>
+<span class="sd">        We cache it the first time we build it for subsequent uses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set by inputs and preprocessing.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Set by inferrer.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fourier_series_orders</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_features</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">FITTED_TREND_COL</span> <span class="o">=</span> <span class="s2">&quot;FITTED_TREND&quot;</span>
+
+<div class="viewcode-block" id="SeasonalityInferrer.infer_fourier_series_order"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.seasonality_inferrer.SeasonalityInferrer.infer_fourier_series_order">[docs]</a>    <span class="k">def</span> <span class="nf">infer_fourier_series_order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SeasonalityInferConfig</span><span class="p">],</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">adjust_trend_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adjust_trend_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">fit_algorithm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">plotting</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">aggregation_period</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">offset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">criterion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Infers the most appropriate Fourier series order.</span>
+<span class="sd">        Can infer multiple seasonality components with multiple configs at the same time.</span>
+<span class="sd">        The configurations for each component are passed as a list of</span>
+<span class="sd">        `~greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig` object.</span>
+<span class="sd">        To override a parameter for all configs, pass it via this function&#39;s parameter.</span>
+
+<span class="sd">        For each seasonality component,</span>
+<span class="sd">        the method first does an optional trend removal via grouped average or spline fit.</span>
+<span class="sd">        For example, for yearly seasonality, one option is to remove the average of each year</span>
+<span class="sd">        from the time series.</span>
+<span class="sd">        The seasonality pattern is clearer and dominates after the trend removal.</span>
+
+<span class="sd">        Next it does an optional aggregation to emphasize the current seasonality.</span>
+<span class="sd">        For example, for yearly seasonality, it can do a weekly aggregation so that</span>
+<span class="sd">        the weekly seasonality won&#39;t be mixed when modeling yearly seasonality.</span>
+
+<span class="sd">        Then it fits seasonality model using Fourier series with orders up to a certain max_order,</span>
+<span class="sd">        and computes the AIC/BIC of the models.</span>
+
+<span class="sd">        The final order will be selected based on the criterion with a tolerance adjustment.</span>
+<span class="sd">        A pre-specified offset can also be added to the selected order for adjustment.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input timeseries.</span>
+<span class="sd">        configs : `list` [`SeasonalityInferConfig`]</span>
+<span class="sd">            A list of `~greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig`</span>
+<span class="sd">            objects. Each element corresponds to the config for a seasonality component.</span>
+<span class="sd">            For example, if you would like to infer seasonality orders for yearly seasonality and</span>
+<span class="sd">            weekly seasonality, you need to provide a list of two configs.</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            The column name for timestamps in ``df``.</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            The column name for values in ``df``.</span>
+<span class="sd">        adjust_trend_method : `str` or None, default None</span>
+<span class="sd">            The methods used to adjust trend.</span>
+<span class="sd">            Supported methods are in `AdjustTrendMethodEnum`.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        adjust_trend_param : `dict` or None, default None</span>
+<span class="sd">            Additional parameters for adjusting trend.</span>
+<span class="sd">            For valid options, see</span>
+<span class="sd">            `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer._adjust_trend`.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        fit_algorithm : `str` or None, default None</span>
+<span class="sd">            The algorithms used to fit the seasonality.</span>
+<span class="sd">            Supported algorithms are &quot;linear&quot;, &quot;ridge&quot; and &quot;sgd&quot;.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        plotting : `bool` or None, default None</span>
+<span class="sd">            Whether to generate plots.</span>
+<span class="sd">            If True, the returned dictionary will have plot via the &quot;fig&quot; key.</span>
+<span class="sd">            Can turn this off to speed up the process.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        tolerance : `float` or None, default None</span>
+<span class="sd">            A tolerance on the criterion to allow a smaller order.</span>
+<span class="sd">            For example, if AIC&#39;s minimum is 100 and ``tolerance`` is 0.1,</span>
+<span class="sd">            then the function will find the smallest order that has AIC less than or equal to 110.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        aggregation_period : `str` or None, default None</span>
+<span class="sd">            The aggregation periods before fitting the Fourier series.</span>
+<span class="sd">            Having aggregation to eliminate shorter seasonal periods may help get more accurate orders.</span>
+<span class="sd">            But also make sure the number of observations after aggregation is sufficient.</span>
+<span class="sd">            (At least 2 *  max_order + 1 to have a unique solution for the regression problem)</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        offset : `int` or None, default None</span>
+<span class="sd">            The offset order to be added to the inferred orders.</span>
+<span class="sd">            The orders after applying offsets can not be negative.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        criterion : `str` or None, default None</span>
+<span class="sd">            The criteria to pick the most appropriate orders.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict`</span>
+<span class="sd">            The result dictionary with the following keys:</span>
+
+<span class="sd">                - &quot;result&quot;: a list of result dictionaries from the inferring methods.</span>
+<span class="sd">                  The keys are:</span>
+
+<span class="sd">                    - &quot;seas_name&quot;: the seasonality name.</span>
+<span class="sd">                    - &quot;orders&quot;: the Fourier series orders fitted.</span>
+<span class="sd">                    - &quot;aics&quot;: the fitted AICs.</span>
+<span class="sd">                    - &quot;bics&quot;: the fitted BICs.</span>
+<span class="sd">                    - &quot;best_aic_order&quot;: the order corresponding to the best feasible AIC.</span>
+<span class="sd">                    - &quot;best_bic_order&quot;: the order corresponding to the best feasible BIC.</span>
+<span class="sd">                    - &quot;fig&quot;: the diagnostic figure.</span>
+
+<span class="sd">                - &quot;best_orders&quot;: a dictionary of seasonality component names and their</span>
+<span class="sd">                  inferred Fourier series orders.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Checks and processes the input parameters.</span>
+        <span class="n">configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_params</span><span class="p">(</span>
+            <span class="n">configs</span><span class="o">=</span><span class="n">configs</span><span class="p">,</span>
+            <span class="n">adjust_trend_method</span><span class="o">=</span><span class="n">adjust_trend_method</span><span class="p">,</span>
+            <span class="n">adjust_trend_param</span><span class="o">=</span><span class="n">adjust_trend_param</span><span class="p">,</span>
+            <span class="n">fit_algorithm</span><span class="o">=</span><span class="n">fit_algorithm</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">,</span>
+            <span class="n">plotting</span><span class="o">=</span><span class="n">plotting</span><span class="p">,</span>
+            <span class="n">aggregation_period</span><span class="o">=</span><span class="n">aggregation_period</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+            <span class="n">criterion</span><span class="o">=</span><span class="n">criterion</span>
+        <span class="p">)</span>
+        <span class="c1"># Sets class attributes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span> <span class="o">=</span> <span class="n">time_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span> <span class="o">=</span> <span class="n">value_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_features</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># resets ``df_features`` for every new call.</span>
+        <span class="c1"># Iteratively infer the Fourier series order for each component.</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+            <span class="c1"># Adjusts the trend and does aggregation.</span>
+            <span class="n">df_adj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_df</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">adjust_trend_method</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">adjust_trend_method</span><span class="p">,</span>
+                <span class="n">adjust_trend_params</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">adjust_trend_param</span><span class="p">,</span>
+                <span class="n">aggregation_period</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">aggregation_period</span>
+            <span class="p">)</span>
+            <span class="c1"># Infers the seasonality Fourier series order.</span>
+            <span class="n">seasonality_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gets_seasonality_fitting_metrics</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df_adj</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">seas_name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">seas_name</span><span class="p">,</span>
+                <span class="n">col_name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">col_name</span><span class="p">,</span>
+                <span class="n">period</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">period</span><span class="p">,</span>
+                <span class="n">max_order</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">max_order</span><span class="p">,</span>
+                <span class="n">fit_algorithm</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fit_algorithm</span><span class="p">,</span>
+                <span class="n">plotting</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">plotting</span><span class="p">,</span>
+                <span class="n">tolerance</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">tolerance</span><span class="p">,</span>
+                <span class="n">offset</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">offset</span>
+            <span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seasonality_result</span><span class="p">)</span>
+
+        <span class="c1"># Calculates best orders according to the criteria.</span>
+        <span class="n">best_orders</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">seas_name</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;best_aic_order&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;aic&quot;</span>
+            <span class="k">else</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;best_bic_order&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">configs</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fourier_series_orders</span> <span class="o">=</span> <span class="n">best_orders</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+            <span class="s2">&quot;best_orders&quot;</span><span class="p">:</span> <span class="n">best_orders</span>
+        <span class="p">}</span></div>
+
+    <span class="k">def</span> <span class="nf">_process_params</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SeasonalityInferConfig</span><span class="p">],</span>
+            <span class="n">adjust_trend_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">adjust_trend_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+            <span class="n">fit_algorithm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">tolerance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">plotting</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+            <span class="n">aggregation_period</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">offset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">criterion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SeasonalityInferConfig</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Checks and overrides the input parameters, and makes sure the values are valid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        configs : `list` [`SeasonalityInferConfig`]</span>
+<span class="sd">            A list of `~greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig`</span>
+<span class="sd">            objects. Each element corresponds to the config for a seasonality component.</span>
+<span class="sd">            For example, if you would like to infer seasonality orders for yearly seasonality and</span>
+<span class="sd">            weekly seasonality, you need to provide a list of two configs.</span>
+<span class="sd">        adjust_trend_method : `str` or None, default None</span>
+<span class="sd">            The methods used to adjust trend.</span>
+<span class="sd">            Supported methods are in `AdjustTrendMethodEnum`.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        adjust_trend_param : `dict` or None, default None</span>
+<span class="sd">            Additional parameters for adjusting trend.</span>
+<span class="sd">            For valid options, see</span>
+<span class="sd">            `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer._adjust_trend`.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        fit_algorithm : `str` or None, default None</span>
+<span class="sd">            The algorithms used to fit the seasonality.</span>
+<span class="sd">            Supported algorithms are &quot;linear&quot;, &quot;ridge&quot; and &quot;sgd&quot;.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        plotting : `bool` or None, default None</span>
+<span class="sd">            Whether to generate plots.</span>
+<span class="sd">            If True, the returned dictionary will have plot via the &quot;fig&quot; key.</span>
+<span class="sd">            Can turn this off to speed up the process.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        tolerance : `float` or None, default None</span>
+<span class="sd">            A tolerance on the criterion to allow a smaller order.</span>
+<span class="sd">            For example, if AIC&#39;s minimum is 100 and ``tolerance`` is 0.1,</span>
+<span class="sd">            then the function will find the smallest order that has AIC less than or equal to 110.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        aggregation_period : `str` or None, default None</span>
+<span class="sd">            The aggregation periods before fitting the Fourier series.</span>
+<span class="sd">            Having aggregation to eliminate shorter seasonal periods may help get more accurate orders.</span>
+<span class="sd">            But also make sure the number of observations after aggregation is sufficient.</span>
+<span class="sd">            (At least 2 *  max_order + 1 to have a unique solution for the regression problem)</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        offset : `int` or None, default None</span>
+<span class="sd">            The offset order to be added to the inferred orders.</span>
+<span class="sd">            The orders after applying offsets can not be negative.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+<span class="sd">        criterion : `str` or None, default None</span>
+<span class="sd">            The criteria to pick the most appropriate orders.</span>
+<span class="sd">            If not None, value is used to override all configs.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        configs : `list` [`SeasonalityInferConfig`]</span>
+<span class="sd">            A list of `~greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig`</span>
+<span class="sd">            objects. The values are checked and overridden if needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># For each of the optional parameters,</span>
+        <span class="c1"># checks the value is valid,</span>
+        <span class="c1"># overrides the value is needed,</span>
+        <span class="c1"># and fills the None values with defaults.</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">override_value</span><span class="p">,</span> <span class="n">default_value</span><span class="p">,</span> <span class="n">allowed_values</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="p">(</span><span class="s2">&quot;adjust_trend_method&quot;</span><span class="p">,</span> <span class="n">adjust_trend_method</span><span class="p">,</span>
+                 <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="n">seasonal_average</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                 <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">]),</span>
+                <span class="p">(</span><span class="s2">&quot;adjust_trend_param&quot;</span><span class="p">,</span> <span class="n">adjust_trend_param</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;fit_algorithm&quot;</span><span class="p">,</span> <span class="n">fit_algorithm</span><span class="p">,</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;sgd&quot;</span><span class="p">]),</span>
+                <span class="p">(</span><span class="s2">&quot;tolerance&quot;</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;plotting&quot;</span><span class="p">,</span> <span class="n">plotting</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>
+                <span class="p">(</span><span class="s2">&quot;aggregation_period&quot;</span><span class="p">,</span> <span class="n">aggregation_period</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;criterion&quot;</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="s2">&quot;bic&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;aic&quot;</span><span class="p">,</span> <span class="s2">&quot;bic&quot;</span><span class="p">])):</span>
+            <span class="n">configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_default_value</span><span class="p">(</span>
+                <span class="n">configs</span><span class="o">=</span><span class="n">configs</span><span class="p">,</span>
+                <span class="n">param_name</span><span class="o">=</span><span class="n">param_name</span><span class="p">,</span>
+                <span class="n">override_value</span><span class="o">=</span><span class="n">override_value</span><span class="p">,</span>
+                <span class="n">default_value</span><span class="o">=</span><span class="n">default_value</span><span class="p">,</span>
+                <span class="n">allowed_values</span><span class="o">=</span><span class="n">allowed_values</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">configs</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_apply_default_value</span><span class="p">(</span>
+            <span class="n">configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SeasonalityInferConfig</span><span class="p">],</span>
+            <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">override_value</span><span class="p">:</span> <span class="nb">any</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="p">:</span> <span class="nb">any</span><span class="p">,</span>
+            <span class="n">allowed_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SeasonalityInferConfig</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;For the corresponding parameter in each config in ``configs``,</span>
+<span class="sd">        replaces `None` with default values;</span>
+<span class="sd">        overrides all values if ``override_value`` is not `None`;</span>
+<span class="sd">        checks the final values are in ``allowed_values`` if the latter is not `None`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        configs : `list` [`SeasonalityInferConfig`]</span>
+<span class="sd">            A list of `~greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig`</span>
+<span class="sd">            objects. Each element corresponds to the config for a seasonality component.</span>
+<span class="sd">            For example, if you would like to infer seasonality orders for yearly seasonality and</span>
+<span class="sd">            weekly seasonality, you need to provide a list of two configs.</span>
+<span class="sd">        param_name : `str`</span>
+<span class="sd">            The name of the parameter.</span>
+<span class="sd">            Will be used in error message.</span>
+<span class="sd">        default_value : `any`</span>
+<span class="sd">            The default value to replace None.</span>
+<span class="sd">        allowed_values : `any`, `list` [`any`] or None, default None</span>
+<span class="sd">            The list of valid values.</span>
+<span class="sd">            If any given value is not valid, an error will be raised.</span>
+<span class="sd">            Leave as None to skip checking.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        configs : `list` [`SeasonalityInferConfig`]</span>
+<span class="sd">            A list of `~greykite.algo.common.seasonality_inferrer.SeasonalityInferConfig`</span>
+<span class="sd">            objects. The values are checked and overridden if needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Checks if ``override_value`` is given but not valid.</span>
+        <span class="k">if</span> <span class="n">override_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allowed_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">override_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_values</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The parameter &#39;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">&#39; has value </span><span class="si">{</span><span class="n">override_value</span><span class="si">}</span><span class="s2">, &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;which is not valid. Valid values are &#39;</span><span class="si">{</span><span class="n">allowed_values</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># If the ``override_value`` is provided and valid,</span>
+        <span class="c1"># overrides the parameter in all configs.</span>
+        <span class="k">if</span> <span class="n">override_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">override_value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">configs</span>
+
+        <span class="c1"># If ``override_value`` is None,</span>
+        <span class="c1"># checks the validity of each config&#39;s parameter and</span>
+        <span class="c1"># fills None with default value.</span>
+        <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+            <span class="n">param</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">param_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">default_value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">allowed_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_values</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The parameter &#39;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">&#39; in SeasonalityInferConfig has value </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">, &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;which is not valid. Valid values are &#39;</span><span class="si">{</span><span class="n">allowed_values</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">configs</span>
+
+    <span class="k">def</span> <span class="nf">_adjust_trend</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="n">seasonal_average</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">trend_average_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">spline_fit_degree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Adjusts the time series by removing trend.</span>
+
+<span class="sd">        There methods to remove trend from time series are listed in</span>
+<span class="sd">        `~greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum`.</span>
+<span class="sd">        The methods are:</span>
+
+<span class="sd">            - &quot;seasonal_average&quot; : subtracts the average from each seasonal period.</span>
+<span class="sd">            - &quot;overall_average&quot; : subtracts the overall average.</span>
+<span class="sd">            - &quot;spline_fit&quot; : fits the trend using a spline with no knots up to a certain degree (poly).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input time series.</span>
+<span class="sd">        time_col : `str`, default ``TIME_COL``</span>
+<span class="sd">            The column name for timestamps in ``df``.</span>
+<span class="sd">        value_col : `str`, default ``VALUE_COL``</span>
+<span class="sd">            The column name for values in ``df``.</span>
+<span class="sd">        method : `str`, default `~greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum.seasonal_average.name`</span>
+<span class="sd">            The adjustment method. Must be a method specified in</span>
+<span class="sd">            `~greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum`.</span>
+<span class="sd">        trend_average_col : `str`, default &quot;year&quot;</span>
+<span class="sd">            The column name that specifies the categories of calculating seasonal mean.</span>
+<span class="sd">            Suggested columns are &quot;year&quot;, &quot;year_quarter&quot;, &quot;year_month&quot;, etc.</span>
+<span class="sd">            Has no effect if ``method`` is not</span>
+<span class="sd">            `~greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum.seasonal_average.name`.</span>
+<span class="sd">            Must be provided in ``df`` or be generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features import build_time_features_df`.</span>
+<span class="sd">        spline_fit_degree : `int`, default 1</span>
+<span class="sd">            The degree of spline to fit the trend.</span>
+<span class="sd">            Has no effect if ``method`` is not</span>
+<span class="sd">            `~greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum.spline_fit.name`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            A copy of the original df but with the ``value_col`` subtracting trend</span>
+<span class="sd">            and an extra column indicating the fitted trend.</span>
+<span class="sd">            The ``value_col`` will have mean zero if trend is adjusted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Checks if the method is valid.</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The trend adjust method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39; is not a valid name. &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Available methods are </span><span class="si">{</span><span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_member_names_&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Subtracts the overall time series average.</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="n">overall_average</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="c1"># Subtracts the seasonal average within each seasonal period.</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="n">seasonal_average</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">df_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">trend_average_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">trend_average_col</span> <span class="ow">in</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">df</span> <span class="o">=</span> <span class="n">add_time_features_df</span><span class="p">(</span>
+                            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                            <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">get_default_origin_for_time_vars</span><span class="p">(</span>
+                                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">df_features</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_features</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The trend_average_col &#39;</span><span class="si">{</span><span class="n">trend_average_col</span><span class="si">}</span><span class="s2">&#39; is neither found in df &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; nor in the built time features &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_member_names_&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+            <span class="n">df_seasonal_average</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="n">value_col</span><span class="p">,</span> <span class="n">trend_average_col</span><span class="p">]]</span>
+                                   <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">trend_average_col</span><span class="p">)</span>
+                                   <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                                   <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                   <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">value_col</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span><span class="p">}))</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_seasonal_average</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">trend_average_col</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df_cols</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span><span class="p">]]</span>
+
+        <span class="c1"># Subtracts the fitted trend.</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="n">TrendAdjustMethodEnum</span><span class="o">.</span><span class="n">spline_fit</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">spline_fit_degree</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Spline degree has be to a positive integer, &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;but found </span><span class="si">{</span><span class="n">spline_fit_degree</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">df_features</span> <span class="o">=</span> <span class="n">add_time_features_df</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">get_default_origin_for_time_vars</span><span class="p">(</span>
+                    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                    <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">df_fit</span> <span class="o">=</span> <span class="n">df_features</span><span class="p">[[</span><span class="n">value_col</span><span class="p">,</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct1</span><span class="o">.</span><span class="n">name</span><span class="p">]]</span>
+            <span class="n">fit_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct1</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">degree</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">spline_fit_degree</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">df_fit</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ct</span><span class="si">{</span><span class="n">degree</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_fit</span><span class="p">[</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct1</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">**</span> <span class="n">degree</span>
+                <span class="n">fit_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ct</span><span class="si">{</span><span class="n">degree</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">()</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_fit</span><span class="p">[</span><span class="n">fit_cols</span><span class="p">],</span> <span class="n">df_fit</span><span class="p">[</span><span class="n">value_col</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df_fit</span><span class="p">[</span><span class="n">fit_cols</span><span class="p">])</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span> <span class="o">-=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">_process_df</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">adjust_trend_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">adjust_trend_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+            <span class="n">aggregation_period</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Does pre-processing which includes:</span>
+
+<span class="sd">                - adjust trend (optional)</span>
+<span class="sd">                - aggregation (optional)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input time series.</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            The column name for timestamps in ``df``.</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            The column name for values in ``df``.</span>
+<span class="sd">        adjust_trend_method : `str` or None</span>
+<span class="sd">            The adjustment method. Must be a method specified in</span>
+<span class="sd">            `~greykite.algo.common.seasonality_inferrer.TrendAdjustMethodEnum`.</span>
+<span class="sd">        adjust_trend_params : `dict` or None</span>
+<span class="sd">            Additional parameters for `self._adjust_trend`.</span>
+<span class="sd">        aggregation_period : `str` or None</span>
+<span class="sd">            The aggregation period after adjusting the trend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df_adj : `pandas.DataFrame`</span>
+<span class="sd">            The df with trend removed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">adjust_trend_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">adjust_trend_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">adjust_trend_params</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">df_adj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjust_trend</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">adjust_trend_method</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">adjust_trend_params</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df_adj</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">aggregation_period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df_adj</span> <span class="o">=</span> <span class="n">df_adj</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">aggregation_period</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">time_col</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df_adj</span>
+
+    <span class="k">def</span> <span class="nf">_gets_seasonality_fitting_metrics</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">seas_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">col_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">period</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">max_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">fit_algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="n">plotting</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Fits the seasonality with Fourier series and find the best order according to a criterion.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input time series after trend adjustment.</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            The column name for timestamps in ``df``.</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            The column name for values in ``df``.</span>
+<span class="sd">        seas_name : `str`</span>
+<span class="sd">            The name for the seasonality component.</span>
+<span class="sd">        col_name : `str`</span>
+<span class="sd">            The column name for the column used to build Fourier series.</span>
+<span class="sd">            Must be in ``df`` or can be generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See `~greykite.common.features.timeseries_features.fourier_series_multi_func`.</span>
+<span class="sd">        period : `float`</span>
+<span class="sd">            The period corresponding to ``col_name``.</span>
+<span class="sd">            See `~greykite.common.features.timeseries_features.fourier_series_multi_func`.</span>
+<span class="sd">        max_order : `int`</span>
+<span class="sd">            The maximum Fourier series order to fit.</span>
+<span class="sd">        fit_algorithm : `str`, default &quot;ridge&quot;</span>
+<span class="sd">            The algorithm used to fit the seasonality.</span>
+<span class="sd">            Supported algorithms are &quot;linear&quot;, &quot;ridge&quot; and &quot;sgd&quot;.</span>
+<span class="sd">        plotting : `bool`, default False</span>
+<span class="sd">            Whether to generate plots.</span>
+<span class="sd">            If True, the returned dictionary will have plot via the &quot;fig&quot; key.</span>
+<span class="sd">            Can turn this off to speed up the process.</span>
+<span class="sd">        tolerance : `float`, default 0.0</span>
+<span class="sd">            A tolerance on the criterion to allow a smaller order.</span>
+<span class="sd">            For example, if AIC&#39;s minimum is 100 and ``tolerance`` is 0.1,</span>
+<span class="sd">            then the function will find the smallest order that has AIC less than or equal to 110.</span>
+<span class="sd">        offset : `int`, default 0</span>
+<span class="sd">            The offset to be added to the best orders.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict`</span>
+<span class="sd">            A result dictionary with the following keys:</span>
+
+<span class="sd">                - &quot;seas_name&quot;: the seasonality name.</span>
+<span class="sd">                - &quot;orders&quot;: the Fourier series orders fitted.</span>
+<span class="sd">                - &quot;aics&quot;: the fitted AICs.</span>
+<span class="sd">                - &quot;bics&quot;: the fitted BICs.</span>
+<span class="sd">                - &quot;best_aic_order&quot;: the order corresponding to the best feasible AIC.</span>
+<span class="sd">                - &quot;best_bic_order&quot;: the order corresponding to the best feasible BIC.</span>
+<span class="sd">                - &quot;fig&quot;: the diagnostic figure.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Checks inputs.</span>
+        <span class="k">if</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The column name &#39;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&#39; is not found in ``df`` or time features.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_order</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span> <span class="o">!=</span> <span class="n">max_order</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The max order must be a positive integer, found </span><span class="si">{</span><span class="n">max_order</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ridge&quot;</span><span class="p">:</span> <span class="n">RidgeCV</span><span class="p">,</span>
+            <span class="s2">&quot;linear&quot;</span><span class="p">:</span> <span class="n">LinearRegression</span><span class="p">,</span>
+            <span class="s2">&quot;sgd&quot;</span><span class="p">:</span> <span class="n">SGDRegressor</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">fit_algorithm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The fit_algorithm &#39;</span><span class="si">{</span><span class="n">fit_algorithm</span><span class="si">}</span><span class="s2">&#39; is not supported. &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Must be one of </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">model_class</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">fit_algorithm</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">tolerance</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The tolerance percentage must be non-negative, found </span><span class="si">{</span><span class="n">tolerance</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Generates Fourier series.</span>
+        <span class="n">fourier_func</span> <span class="o">=</span> <span class="n">fourier_series_multi_fcn</span><span class="p">(</span>
+            <span class="n">col_names</span><span class="o">=</span><span class="p">[</span><span class="n">col_name</span><span class="p">],</span>
+            <span class="n">periods</span><span class="o">=</span><span class="p">[</span><span class="n">period</span><span class="p">],</span>
+            <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="n">max_order</span><span class="p">],</span>
+            <span class="n">seas_names</span><span class="o">=</span><span class="p">[</span><span class="n">seas_name</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">add_time_features_df</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">conti_year_origin</span><span class="o">=</span><span class="n">get_default_origin_for_time_vars</span><span class="p">(</span>
+                    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                    <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">seasonality_df</span> <span class="o">=</span> <span class="n">fourier_func</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span>
+        <span class="n">df_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+            <span class="n">df</span><span class="p">[[</span><span class="n">value_col</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">seasonality_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">df_features</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># In case ``df_features`` has NANs and fit fails.</span>
+
+        <span class="c1"># Fits the models and calculates the metrics.</span>
+        <span class="c1"># Defines a function to fit seasonality model for a single order.</span>
+        <span class="c1"># This is later used with the `map` method to fast calculate the AIC/BICs for</span>
+        <span class="c1"># all orders.</span>
+        <span class="c1"># See https://wiki.python.org/moin/PythonSpeed/PerformanceTips#Loops</span>
+        <span class="k">def</span> <span class="nf">fit_seasonality_model</span><span class="p">(</span><span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;A function to take a single order and fit</span>
+<span class="sd">            the seasonality model. Then it calculates the AIC/BIC of the model.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            order : `int`</span>
+<span class="sd">                The Fourier series order.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            result : `tuple`</span>
+<span class="sd">                (AIC, BIC) score for the model.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">model_class</span><span class="p">()</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_features</span><span class="o">.</span><span class="n">columns</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">value_col</span>
+                <span class="c1"># After split, the 1st element is sin{order} or cos{order}.</span>
+                <span class="c1"># Takes the order to compare with the current order.</span>
+                <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="n">order</span>
+            <span class="p">]</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_features</span><span class="p">[</span><span class="n">features</span><span class="p">],</span> <span class="n">df_features</span><span class="p">[</span><span class="n">value_col</span><span class="p">])</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df_features</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+            <span class="n">mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">df_features</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span> <span class="o">-</span> <span class="n">pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># The number of features in the current model is &quot;2 * order&quot;.</span>
+            <span class="c1"># In the i.i.d. Gaussian case, the -2 * loglikelihood reduces to n * log(MSE).</span>
+            <span class="n">aic</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">order</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_features</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>
+            <span class="n">bic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_features</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">order</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_features</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mse</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">aic</span><span class="p">,</span> <span class="n">bic</span>
+
+        <span class="c1"># Uses `map` to fast calculate the AIC/BICs.</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">abics</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">fit_seasonality_model</span><span class="p">,</span> <span class="n">orders</span><span class="p">))</span>
+        <span class="n">aics</span> <span class="o">=</span> <span class="p">[</span><span class="n">abic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">abic</span> <span class="ow">in</span> <span class="n">abics</span><span class="p">]</span>
+        <span class="n">bics</span> <span class="o">=</span> <span class="p">[</span><span class="n">abic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">abic</span> <span class="ow">in</span> <span class="n">abics</span><span class="p">]</span>
+
+        <span class="n">min_aic</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">aics</span><span class="p">)</span>
+        <span class="n">min_bic</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">bics</span><span class="p">)</span>
+
+        <span class="c1"># If a tolerance is allowed, the search will sacrifice some criterion</span>
+        <span class="c1"># to use a smaller order of Fourier series.</span>
+        <span class="k">if</span> <span class="n">tolerance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">aic_tol</span> <span class="o">=</span> <span class="n">min_aic</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">min_aic</span><span class="p">)</span> <span class="o">*</span> <span class="n">tolerance</span>
+            <span class="n">bic_tol</span> <span class="o">=</span> <span class="n">min_bic</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">min_bic</span><span class="p">)</span> <span class="o">*</span> <span class="n">tolerance</span>
+            <span class="c1"># Eligible criteria are those that are less than or equal to the tolerance.</span>
+            <span class="c1"># The original minimums are guaranteed to be in the lists.</span>
+            <span class="n">eligible_aics</span> <span class="o">=</span> <span class="p">[</span><span class="n">aic</span> <span class="k">for</span> <span class="n">aic</span> <span class="ow">in</span> <span class="n">aics</span> <span class="k">if</span> <span class="n">aic</span> <span class="o">&lt;=</span> <span class="n">aic_tol</span><span class="p">]</span>
+            <span class="n">eligible_bics</span> <span class="o">=</span> <span class="p">[</span><span class="n">bic</span> <span class="k">for</span> <span class="n">bic</span> <span class="ow">in</span> <span class="n">bics</span> <span class="k">if</span> <span class="n">bic</span> <span class="o">&lt;=</span> <span class="n">bic_tol</span><span class="p">]</span>
+            <span class="c1"># The first element is guaranteed to have order no greater than the original minimum.</span>
+            <span class="n">min_aic</span> <span class="o">=</span> <span class="n">eligible_aics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">min_bic</span> <span class="o">=</span> <span class="n">eligible_bics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">best_aic_order</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">orders</span><span class="p">[</span><span class="n">aics</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">min_aic</span><span class="p">)]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">best_bic_order</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">orders</span><span class="p">[</span><span class="n">bics</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">min_bic</span><span class="p">)]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Gets the optional plot.</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">plotting</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_plot</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">df_features</span><span class="o">=</span><span class="n">df_features</span><span class="p">,</span>
+                <span class="n">model_class</span><span class="o">=</span><span class="n">model_class</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">orders</span><span class="o">=</span><span class="n">orders</span><span class="p">,</span>
+                <span class="n">aics</span><span class="o">=</span><span class="n">aics</span><span class="p">,</span>
+                <span class="n">bics</span><span class="o">=</span><span class="n">bics</span><span class="p">,</span>
+                <span class="n">best_aic_order</span><span class="o">=</span><span class="n">best_aic_order</span><span class="p">,</span>
+                <span class="n">best_bic_order</span><span class="o">=</span><span class="n">best_bic_order</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;seas_name&quot;</span><span class="p">:</span> <span class="n">seas_name</span><span class="p">,</span>
+            <span class="s2">&quot;orders&quot;</span><span class="p">:</span> <span class="n">orders</span><span class="p">,</span>
+            <span class="s2">&quot;aics&quot;</span><span class="p">:</span> <span class="n">aics</span><span class="p">,</span>
+            <span class="s2">&quot;bics&quot;</span><span class="p">:</span> <span class="n">bics</span><span class="p">,</span>
+            <span class="s2">&quot;best_aic_order&quot;</span><span class="p">:</span> <span class="n">best_aic_order</span><span class="p">,</span>
+            <span class="s2">&quot;best_bic_order&quot;</span><span class="p">:</span> <span class="n">best_bic_order</span><span class="p">,</span>
+            <span class="s2">&quot;fig&quot;</span><span class="p">:</span> <span class="n">fig</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_make_plot</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">df_features</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">model_class</span><span class="p">:</span> <span class="nb">any</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">orders</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">aics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">bics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+            <span class="n">best_aic_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">best_bic_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Makes a figure that contains 2-3 subplots.</span>
+<span class="sd">        The subplots are:</span>
+
+<span class="sd">            - AIC/BIC vs. Fourier series orders.</span>
+<span class="sd">            - De-trended and aggregated time series vs fitted curves with best AIC/BICs.</span>
+<span class="sd">            - (Optional) the original time series, the fitted trend and the de-trended and aggregated</span>
+<span class="sd">              time series.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input time series after de-trend and aggregation.</span>
+<span class="sd">        df_features : `pandas.DataFrame`</span>
+<span class="sd">            The time series with seasonality features generated.</span>
+<span class="sd">        model_class : `any`</span>
+<span class="sd">            The class type for the model to fit the seasonality curve.</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            The column name for timestamps in ``df``.</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            The column name for values in ``df``.</span>
+<span class="sd">        orders : `list` [`int`]</span>
+<span class="sd">            The orders used in calculating ``aics`` and ``bics``.</span>
+<span class="sd">        aics : `list` [`float`]</span>
+<span class="sd">            The AICs corresponding to ``orders``.</span>
+<span class="sd">        bics : `list` [`float`]</span>
+<span class="sd">            The BICs corresponding to ``orders``.</span>
+<span class="sd">        best_aic_order : `int`</span>
+<span class="sd">            The best AIC order.</span>
+<span class="sd">        best_bic_order : `int</span>
+<span class="sd">            The best BIC order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_object.Figure`</span>
+<span class="sd">            The figure object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">subtitles</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Criteria vs. Fourier series orders&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Fitted seasonality on best orders&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># If both original df and trend adjusted df are available,</span>
+        <span class="c1"># we include the trend adjustment visualization, too.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">time_col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span>
+                <span class="ow">and</span> <span class="n">value_col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span> <span class="ow">in</span> <span class="n">df</span><span class="p">):</span>
+            <span class="n">rows</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">subtitles</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="s2">&quot;Original time series and detrended/aggregated time series&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span>
+            <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span>
+            <span class="n">cols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">subplot_titles</span><span class="o">=</span><span class="n">subtitles</span><span class="p">,</span>
+            <span class="n">vertical_spacing</span><span class="o">=</span><span class="mf">0.1</span>
+        <span class="p">)</span>
+        <span class="c1"># Adds metric plot.</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;AIC&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">aics</span><span class="p">,</span> <span class="n">best_aic_order</span><span class="p">,</span> <span class="s2">&quot;dash&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;BIC&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">bics</span><span class="p">,</span> <span class="n">best_bic_order</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">orders</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">DEFAULT_PLOTLY_COLORS</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dash</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;best_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">_order&quot;</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">DEFAULT_PLOTLY_COLORS</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dash</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="c1"># Adds fit plot.</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Timeseries&quot;</span><span class="p">,</span>
+                <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">best_orders</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;best_AIC_order_fit&quot;</span><span class="p">:</span> <span class="n">best_aic_order</span><span class="p">,</span>
+            <span class="s2">&quot;best_BIC_order_fit&quot;</span><span class="p">:</span> <span class="n">best_bic_order</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">best_orders</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">model_class</span><span class="p">()</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_features</span><span class="o">.</span><span class="n">columns</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">value_col</span>
+                <span class="c1"># After split, the 1st element is sin{order} or cos{order}.</span>
+                <span class="c1"># Takes the order to compare with the current order.</span>
+                <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="n">order</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_features</span><span class="p">[</span><span class="n">features</span><span class="p">],</span> <span class="n">df_features</span><span class="p">[</span><span class="n">value_col</span><span class="p">])</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df_features</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="n">df_features</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()],</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_features</span><span class="p">))</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">pred</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">DEFAULT_PLOTLY_COLORS</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">])</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Adds trend adjustment plot.</span>
+        <span class="k">if</span> <span class="n">rows</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Original time series&quot;</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Detrend/aggregated time series&quot;</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">FITTED_TREND_COL</span><span class="p">],</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Fitted trend&quot;</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
+            <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Fourier series order&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
+            <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span>
+            <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Criteria&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span>
+            <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Timeseries&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">rows</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
+                <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">,</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span>
+                <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Timeseries&quot;</span><span class="p">,</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;Inferred seasonality Fourier series orders&quot;</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">1000</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

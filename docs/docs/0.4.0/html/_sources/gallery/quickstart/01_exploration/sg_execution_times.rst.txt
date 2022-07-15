@@ -1,0 +1,16 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_quickstart_01_exploration_sg_execution_times:
+
+Computation times
+=================
+**03:15.548** total execution time for **gallery_quickstart_01_exploration** files:
+
++---------------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_01_exploration_0100_changepoint_detection.py` (``0100_changepoint_detection.py``)       | 02:27.783 | 0.0 MB |
++---------------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_01_exploration_0300_seasonality_plots.py` (``0300_seasonality_plots.py``)               | 00:43.124 | 0.0 MB |
++---------------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_01_exploration_0200_auto_configuration_tools.py` (``0200_auto_configuration_tools.py``) | 00:04.642 | 0.0 MB |
++---------------------------------------------------------------------------------------------------------------------------+-----------+--------+
