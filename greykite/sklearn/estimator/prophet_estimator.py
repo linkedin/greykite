@@ -115,7 +115,7 @@ class ProphetEstimator(BaseForecastEstimator):
         Prophet documentation for a description:
 
             * https://facebook.github.io/prophet/docs/quick_start.html
-            * https://github.com/facebook/prophet/blob/c7a150312ad26db5a8ea81d8cd32dd5fd6ce1eda/python/prophet/forecaster.py#L30
+            * https://github.com/facebook/prophet/blob/master/python/prophet/forecaster.py
 
     Attributes
     ----------
