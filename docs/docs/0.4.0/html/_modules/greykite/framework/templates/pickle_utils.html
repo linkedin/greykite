@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.framework.templates.pickle_utils &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.framework.templates.pickle_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.framework.templates.pickle_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Util functions to pickle and load forecast results.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">import</span> <span class="nn">dill</span>
+<span class="kn">from</span> <span class="nn">patsy.design_info</span> <span class="kn">import</span> <span class="n">DesignInfo</span>
+
+
+<span class="k">def</span> <span class="nf">recursive_rm_dir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recursively removes dirs and files in ``dir_name``.</span>
+
+<span class="sd">    This functions removes everything in ``dir_name`` that it has permission</span>
+<span class="sd">    to remove. This function is intended to remove the dumped directory.</span>
+<span class="sd">    Do not use this function to remove other directories,</span>
+<span class="sd">    unless you are sure to remove everything in the directory.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dir_name : `str`</span>
+<span class="sd">        The directory name to be removed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    The functions removes the directory from local file system and does not return anything.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">recursive_rm_dir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="dump_obj"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.pickle_utils.dump_obj">[docs]</a><span class="k">def</span> <span class="nf">dump_obj</span><span class="p">(</span>
+        <span class="n">obj</span><span class="p">,</span>
+        <span class="n">dir_name</span><span class="p">,</span>
+        <span class="n">obj_name</span><span class="o">=</span><span class="s2">&quot;obj&quot;</span><span class="p">,</span>
+        <span class="n">dump_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">overwrite_exist_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">top_level</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Uses DFS to recursively dump an object to pickle files.</span>
+<span class="sd">    Originally intended for dumping the</span>
+<span class="sd">    `~greykite.framework.pipeline.pipeline.ForecastResult` instance,</span>
+<span class="sd">    but could potentially used for other objects.</span>
+
+<span class="sd">    For each object, if it&#39;s picklable, a file with {object_name}.pkl will be</span>
+<span class="sd">    generated, otherwise, depending on its type, a {object_name}.type file will</span>
+<span class="sd">    be generated storing it&#39;s type, and a folder with {object_name} will be generated</span>
+<span class="sd">    to store each of its elements/attributes.</span>
+
+<span class="sd">    For example, if the folder to store results is forecast_result, the items in the</span>
+<span class="sd">    folders could be:</span>
+
+<span class="sd">        - timeseries.pkl: a picklable item.</span>
+<span class="sd">        - model.type: model is not picklable, this file includes the class (Pipeline)</span>
+<span class="sd">        - model: this folder includes the elements in model.</span>
+<span class="sd">        - forecast.type: forecast is not picklable, this file includes the class (UnivariateForecast)</span>
+<span class="sd">        - forecast: this folder includes the elements in forecast.</span>
+<span class="sd">        - backtest.type: backtest is not picklable, this file includes the class (UnivariateForecast)</span>
+<span class="sd">        - backtest: this folder includes the elements in backtest.</span>
+<span class="sd">        - grid_search.type: grid_search is not picklable, this file includes the class (GridSearchCV)</span>
+<span class="sd">        - grid_search: this folder includes the elements in grid_search.</span>
+
+<span class="sd">    The items in each subfolder follows the same rule.</span>
+
+<span class="sd">    The current supported recursion types are:</span>
+
+<span class="sd">        - list/tuple: type name is &quot;list&quot; or &quot;tuple&quot;, each element is attempted to</span>
+<span class="sd">          be pickled independently if the entire list/tuple is not picklable.</span>
+<span class="sd">          The order is preserved.</span>
+<span class="sd">        - OrderedDict: type name is &quot;ordered_dict&quot;, each key and value are attempted</span>
+<span class="sd">          to be pickled independently if the entire dict is not picklable.</span>
+<span class="sd">          The order is preserved.</span>
+<span class="sd">        - dict: type name is &quot;dict&quot;, each key and value are attempted to be pickled</span>
+<span class="sd">          independently if the entire dict is not picklable.</span>
+<span class="sd">          The order is not preserved.</span>
+<span class="sd">        - class instance: type name is the class object, used to create new instance.</span>
+<span class="sd">          Each attribute is attempted to be pickled independently if the entire</span>
+<span class="sd">          instance is not picklable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : `object`</span>
+<span class="sd">        The object to be pickled.</span>
+<span class="sd">    dir_name : `str`</span>
+<span class="sd">        The directory to store the pickled results.</span>
+<span class="sd">    obj_name : `str`, default &quot;obj&quot;</span>
+<span class="sd">        The name for the pickled items. Applies to the top level object only</span>
+<span class="sd">        when recursion is used.</span>
+<span class="sd">    dump_design_info : `bool`, default True</span>
+<span class="sd">        Whether to dump the design info in `ForecastResult`.</span>
+<span class="sd">        The design info is specifically for Silverkite and can be accessed from</span>
+
+<span class="sd">            - ForecastResult.model[-1].model_dict[&quot;x_design_info&quot;]</span>
+<span class="sd">            - ForecastResult.forecast.estimator.model_dict[&quot;x_design_info&quot;]</span>
+<span class="sd">            - ForecastResult.backtest.estimator.model_dict[&quot;x_design_info&quot;]</span>
+
+<span class="sd">        The design info is a class from `patsy` and contains a significant amount of</span>
+<span class="sd">        instances that can not be pickled directly. Recursively pickling them takes</span>
+<span class="sd">        longer to run. If speed is important and you don&#39;t need these information,</span>
+<span class="sd">        you can turn it off.</span>
+<span class="sd">    overwrite_exist_dir : `bool`, default False</span>
+<span class="sd">        If True and the directory in ``dir_name`` already exists, the existing</span>
+<span class="sd">        directory will be removed.</span>
+<span class="sd">        If False and the directory in ``dir_name`` already exists, an exception</span>
+<span class="sd">        will be raised.</span>
+<span class="sd">    top_level : `bool`, default True</span>
+<span class="sd">        Whether the implementation is an initial call</span>
+<span class="sd">        (applies to the root object you want to pickle, not a recursive call).</span>
+<span class="sd">        When you use this function to dump an object, this parameter should always be True.</span>
+<span class="sd">        Only top level checks if the dir exists,</span>
+<span class="sd">        because subsequent recursive calls may write files to the same directory,</span>
+<span class="sd">        and the check for dir exists will not be implemented.</span>
+<span class="sd">        Setting this parameter to False may cause problems.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    The function writes files to local directory and does not return anything.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Checks if to dump design info.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">dump_design_info</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DesignInfo</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;x_design_info&quot;</span><span class="p">)):</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Checks if directory already exists.</span>
+    <span class="k">if</span> <span class="n">top_level</span><span class="p">:</span>
+        <span class="n">dir_already_exist</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dir_already_exist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite_exist_dir</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="s2">&quot;The directory already exists. &quot;</span>
+                                      <span class="s2">&quot;Please either specify a new directory or &quot;</span>
+                                      <span class="s2">&quot;set overwrite_exist_dir to True to overwrite it.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+                    <span class="c1"># dir exists as a directory.</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># dir exists as a file.</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+
+    <span class="c1"># Creates the directory.</span>
+    <span class="c1"># None top-level may write to the same directory,</span>
+    <span class="c1"># so we allow existing directory in this case.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># Start dumping recursively.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Attempts to directly dump the object.</span>
+        <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+            <span class="n">obj</span><span class="p">,</span>
+            <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">.pkl&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+        <span class="c1"># Direct dumping fails.</span>
+        <span class="c1"># Removed the failed file.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">.pkl&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1"># Attempts to do recursive dumping depending on the object type.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
+            <span class="c1"># For OrderedDict (there are a lot in `pasty.design_info.DesignInfo`),</span>
+            <span class="c1"># recursively dumps the keys and values, because keys can be class instances</span>
+            <span class="c1"># and unpicklable, too.</span>
+            <span class="c1"># The keys and values have index number appended to the front,</span>
+            <span class="c1"># so the order is kept.</span>
+            <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                <span class="s2">&quot;ordered_dict&quot;</span><span class="p">,</span>
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">.type&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>  <span class="c1"># type &quot;ordered_dict&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">dump_obj</span><span class="p">(</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">__key__&quot;</span><span class="p">,</span>
+                    <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+                    <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">dump_obj</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">__value__&quot;</span><span class="p">,</span>
+                    <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+                    <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># For regular dictionary,</span>
+            <span class="c1"># recursively dumps the keys and values, because keys can be class instances</span>
+            <span class="c1"># and unpicklable, too.</span>
+            <span class="c1"># The order is not important.</span>
+            <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                <span class="s2">&quot;dict&quot;</span><span class="p">,</span>
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">.type&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>  <span class="c1"># type &quot;dict&quot;</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">dump_obj</span><span class="p">(</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">__key__&quot;</span><span class="p">,</span>
+                    <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+                    <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">dump_obj</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">__value__&quot;</span><span class="p">,</span>
+                    <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+                    <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="c1"># For list and tuples,</span>
+            <span class="c1"># recursively dumps the elements.</span>
+            <span class="c1"># The names have index number appended to the front,</span>
+            <span class="c1"># so the order is kept.</span>
+            <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">.type&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>  <span class="c1"># type &quot;list&quot;/&quot;tuple&quot;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="n">dump_obj</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_key&quot;</span><span class="p">,</span>
+                    <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+                    <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__class__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="c1"># For class instance,</span>
+            <span class="c1"># recursively dumps the attributes.</span>
+            <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_name</span><span class="si">}</span><span class="s2">.type&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>  <span class="c1"># type is class itself</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">dump_obj</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+                    <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Other unrecognized unpicklable types, not common.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;I Don&#39;t recognize type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_obj"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.pickle_utils.load_obj">[docs]</a><span class="k">def</span> <span class="nf">load_obj</span><span class="p">(</span>
+        <span class="n">dir_name</span><span class="p">,</span>
+        <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">load_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads the pickled files which are pickled by</span>
+<span class="sd">    `~greykite.framework.templates.pickle_utils.dump_obj`.</span>
+<span class="sd">    Originally intended for loading the</span>
+<span class="sd">    `~greykite.framework.pipeline.pipeline.ForecastResult` instance,</span>
+<span class="sd">    but could potentially used for other objects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dir_name : `str`</span>
+<span class="sd">        The directory that stores the pickled files.</span>
+<span class="sd">        Must be the top level dir when having nested pickling results.</span>
+<span class="sd">    obj : `object`, default None</span>
+<span class="sd">        The object type for the next-level files.</span>
+<span class="sd">        Can be one of &quot;list&quot;, &quot;tuple&quot;, &quot;dict&quot;, &quot;ordered_dict&quot; or a class.</span>
+<span class="sd">    load_design_info : `bool`, default True</span>
+<span class="sd">        Whether to load the design info in `ForecastResult`.</span>
+<span class="sd">        The design info is specifically for Silverkite and can be accessed from</span>
+
+<span class="sd">            - ForecastResult.model[-1].model_dict[&quot;x_design_info&quot;]</span>
+<span class="sd">            - ForecastResult.forecast.estimator.model_dict[&quot;x_design_info&quot;]</span>
+<span class="sd">            - ForecastResult.backtest.estimator.model_dict[&quot;x_design_info&quot;]</span>
+
+<span class="sd">        The design info is a class from `patsy` and contains a significant amount of</span>
+<span class="sd">        instances that can not be pickled directly. Recursively loading them takes</span>
+<span class="sd">        longer to run. If speed is important and you don&#39;t need these information,</span>
+<span class="sd">        you can turn it off.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : `object`</span>
+<span class="sd">        The loaded object from the pickled files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Checks if to load design info.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">load_design_info</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span> <span class="o">==</span> <span class="n">DesignInfo</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Gets file names in the level.</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dir is empty!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Gets the type files if any.</span>
+    <span class="c1"># Stores in a dictionary with key being the name and value being the loaded value.</span>
+    <span class="n">obj_types</span> <span class="o">=</span> <span class="p">{</span><span class="n">file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="s2">&quot;.type&quot;</span> <span class="ow">in</span> <span class="n">file</span><span class="p">}</span>
+
+    <span class="c1"># Gets directories and pickled files.</span>
+    <span class="c1"># Every type must have a directory with the same name.</span>
+    <span class="n">directories</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">file</span><span class="p">))]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">directory</span> <span class="ow">in</span> <span class="n">obj_types</span> <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">directories</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;type and directories do not match.&quot;</span><span class="p">)</span>
+    <span class="n">pickles</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">file</span><span class="p">]</span>
+
+    <span class="c1"># Starts loading objects</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># obj is None indicates this is the top level directory.</span>
+        <span class="c1"># This directory can either have 1 .pkl file, or 1 .type file associated with the directory of same name.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj_types</span><span class="p">:</span>
+            <span class="c1"># The only 1 .pkl file case.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Multiple elements found in top level.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># The .type + dir case.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Multiple elements found in top level&quot;</span><span class="p">)</span>
+            <span class="n">obj_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">obj_type</span> <span class="o">=</span> <span class="n">obj_types</span><span class="p">[</span><span class="n">obj_name</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">load_obj</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">),</span>
+                <span class="n">obj_type</span><span class="p">,</span>
+                <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If obj is not None, does recursive loading depending on the obj type.</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;tuple&quot;</span><span class="p">):</span>
+            <span class="c1"># Object is list or tuple.</span>
+            <span class="c1"># Fetches each element according to the number index to preserve orders.</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Order index is a number appended to the front.</span>
+            <span class="n">elements</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="n">pickles</span> <span class="o">+</span> <span class="n">directories</span><span class="p">,</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="c1"># Recursively loads elements.</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">load_obj</span><span class="p">(</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span>
+                            <span class="n">obj_types</span><span class="p">[</span><span class="n">element</span><span class="p">],</span>
+                            <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;tuple&quot;</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">elif</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
+            <span class="c1"># Object is a dictionary.</span>
+            <span class="c1"># Fetches keys and values recursively.</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">elements</span> <span class="o">=</span> <span class="n">pickles</span> <span class="o">+</span> <span class="n">directories</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="s2">&quot;__key__&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">]</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="s2">&quot;__value__&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">]</span>
+            <span class="c1"># Iterates through keys and finds the corresponding values.</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                        <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span>
+                        <span class="n">obj_types</span><span class="p">[</span><span class="n">element</span><span class="p">],</span>
+                        <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">)</span>
+                <span class="c1"># Value name could be either with .pkl or a directory.</span>
+                <span class="n">value_name</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__key__&quot;</span><span class="p">,</span> <span class="s2">&quot;__value__&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">value_name</span><span class="p">:</span>
+                    <span class="n">value_name_alt</span> <span class="o">=</span> <span class="n">value_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value_name_alt</span> <span class="o">=</span> <span class="n">value_name</span> <span class="o">+</span> <span class="s2">&quot;.pkl&quot;</span>
+                <span class="c1"># Checks if value name is in the dir.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">value_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">value_name_alt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value not found for key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">value_name</span> <span class="o">=</span> <span class="n">value_name</span> <span class="k">if</span> <span class="n">value_name</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">else</span> <span class="n">value_name_alt</span>
+                <span class="c1"># Gets the value.</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">value_name</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                        <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">),</span>
+                        <span class="n">obj_types</span><span class="p">[</span><span class="n">value_name</span><span class="p">],</span>
+                        <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">)</span>
+                <span class="c1"># Sets the key, value pair.</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">elif</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;ordered_dict&quot;</span><span class="p">:</span>
+            <span class="c1"># Object is OrderedDict.</span>
+            <span class="c1"># Fetches keys and values according to the number index to preserve orders.</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="c1"># Order index is a number appended to the front.</span>
+            <span class="n">elements</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pickles</span> <span class="o">+</span> <span class="n">directories</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="s2">&quot;__key__&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">]</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="s2">&quot;__value__&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">]</span>
+            <span class="c1"># Iterates through keys and finds the corresponding values.</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                        <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span>
+                        <span class="n">obj_types</span><span class="p">[</span><span class="n">element</span><span class="p">],</span>
+                        <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">)</span>
+                <span class="n">value_name</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__key__&quot;</span><span class="p">,</span> <span class="s2">&quot;__value__&quot;</span><span class="p">)</span>
+                <span class="c1"># Value name could be either with .pkl or a directory.</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">value_name</span><span class="p">:</span>
+                    <span class="n">value_name_alt</span> <span class="o">=</span> <span class="n">value_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value_name_alt</span> <span class="o">=</span> <span class="n">value_name</span> <span class="o">+</span> <span class="s2">&quot;.pkl&quot;</span>
+                <span class="c1"># Checks if value name is in the dir.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">value_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">value_name_alt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value not found for key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">value_name</span> <span class="o">=</span> <span class="n">value_name</span> <span class="k">if</span> <span class="n">value_name</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">else</span> <span class="n">value_name_alt</span>
+                <span class="c1"># Gets the value.</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">value_name</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                        <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">value_name</span><span class="p">),</span>
+                        <span class="n">obj_types</span><span class="p">[</span><span class="n">value_name</span><span class="p">],</span>
+                        <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">)</span>
+                <span class="c1"># Sets the key, value pair.</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="c1"># Object is a class instance.</span>
+            <span class="c1"># Creates the class instance and sets the attributes.</span>
+            <span class="c1"># Some class has required args during initialization,</span>
+            <span class="c1"># these args are pulled from attributes.</span>
+            <span class="n">init_params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>  <span class="c1"># init args</span>
+            <span class="n">elements</span> <span class="o">=</span> <span class="n">pickles</span> <span class="o">+</span> <span class="n">directories</span>
+            <span class="c1"># Gets the attribute names and their values in a dictionary.</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;.pkl&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                        <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">element</span><span class="p">),</span>
+                        <span class="n">obj_types</span><span class="p">[</span><span class="n">element</span><span class="p">],</span>
+                        <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span><span class="p">)</span>
+            <span class="c1"># Gets the init args from values.</span>
+            <span class="n">init_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">init_params</span><span class="p">}</span>
+            <span class="c1"># Some attributes has a &quot;_&quot; at the beginning.</span>
+            <span class="n">init_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                              <span class="k">if</span> <span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="ow">in</span> <span class="n">init_params</span> <span class="ow">and</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;_&quot;</span><span class="p">)})</span>
+            <span class="c1"># ``design_info`` does not have column_names attribute,</span>
+            <span class="c1"># which is required during init.</span>
+            <span class="c1"># The column_names param is pulled from the column_name_indexes attribute.</span>
+            <span class="c1"># This can be omitted once we allow dumping @property attributes.</span>
+            <span class="k">if</span> <span class="s2">&quot;column_names&quot;</span> <span class="ow">in</span> <span class="n">init_params</span><span class="p">:</span>
+                <span class="n">init_dict</span><span class="p">[</span><span class="s2">&quot;column_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;column_name_indexes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="c1"># Creates the instance.</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="o">**</span><span class="n">init_dict</span><span class="p">)</span>
+            <span class="c1"># Sets the attributes.</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Raises an error if the object is not recognized.</span>
+            <span class="c1"># This typically does not happen when the source file is dumped</span>
+            <span class="c1"># with the `dump_obj` function.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Object </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2"> is not recognized.&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

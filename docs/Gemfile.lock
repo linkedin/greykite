@@ -258,6 +258,7 @@ GEM
 
 PLATFORMS
   universal-darwin-20
+  universal-darwin-21
 
 DEPENDENCIES
   github-pages (~> 212)

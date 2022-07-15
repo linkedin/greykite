@@ -1,0 +1,1324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>greykite.sklearn.estimator.multistage_forecast_estimator &mdash; Greykite Library  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">Changelog</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>greykite.sklearn.estimator.multistage_forecast_estimator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for greykite.sklearn.estimator.multistage_forecast_estimator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Multistage Forecast estimator.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="kn">from</span> <span class="nn">pandas.tseries.frequencies</span> <span class="kn">import</span> <span class="n">to_offset</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.aggregation_function_enum</span> <span class="kn">import</span> <span class="n">AggregationFunctionEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.simple_silverkite_estimator</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteEstimator</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MultistageForecastModelConfig</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The dataclass to store Multistage Forecast model config for a single model.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    train_length : `str`, default &quot;392D&quot;</span>
+<span class="sd">        The length of data used for training. For example, &quot;56D&quot;.</span>
+<span class="sd">    fit_length : `str` or None, default None</span>
+<span class="sd">        The length of data where fitted values to be calculated.</span>
+<span class="sd">        Specify if ``fit_length`` is to be longer than ``train_length``.</span>
+<span class="sd">    agg_func : str or Callable, default &quot;nanmean&quot;</span>
+<span class="sd">        The aggregation function.</span>
+<span class="sd">    agg_freq : `str` or None, default None</span>
+<span class="sd">        The aggregation period. If None, no aggregation will be used.</span>
+<span class="sd">    estimator : `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`,</span>
+<span class="sd">        default `~greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator`</span>
+<span class="sd">        The estimator to fit the time series.</span>
+<span class="sd">    estimator_params : `dict` or None, default None</span>
+<span class="sd">        The init parameters for ``estimator``.</span>
+<span class="sd">        When the estimator is in the Silverkite family, the parameters shouldn&#39;t include</span>
+<span class="sd">        ``forecast_horizon`` or ``past_df``, as they will be passed automatically.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">train_length</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;392D&quot;</span>  <span class="c1"># 56 weeks</span>
+    <span class="n">fit_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">agg_func</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nanmean&quot;</span>
+    <span class="n">agg_freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">estimator</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseForecastEstimator</span><span class="p">]</span> <span class="o">=</span> <span class="n">SimpleSilverkiteEstimator</span>
+    <span class="n">estimator_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="MultistageForecastEstimator"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.multistage_forecast_estimator.MultistageForecastEstimator">[docs]</a><span class="k">class</span> <span class="nc">MultistageForecastEstimator</span><span class="p">(</span><span class="n">BaseForecastEstimator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The Multistage Forecast Estimator class.</span>
+<span class="sd">    Implements the Multistage forecast method.</span>
+
+<span class="sd">    The Multistage forecast method allows users to fit multiple stages of</span>
+<span class="sd">    models with each stage in the following fashions:</span>
+
+<span class="sd">        (1) subseting: take a subset of data from the end of training data;</span>
+<span class="sd">        (2) aggregation: aggregate the subset of data into desired frequency;</span>
+<span class="sd">        (3) training: train a model with the desired estimator and parameters.</span>
+
+<span class="sd">    Users can just use one stage model to train on a subset/aggregation of the original data,</span>
+<span class="sd">    or can specify multiple stages, where the later stages will be trained on the fitted</span>
+<span class="sd">    residuals of the previous stages.</span>
+
+<span class="sd">    This can significantly speed up the training process if the original data is long</span>
+<span class="sd">    and in fine granularity.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The following assumptions or special implementations are made in this class:</span>
+
+<span class="sd">        - The actual ``fit_length``, the length of data where the fitted values are calculated,</span>
+<span class="sd">          is the longer of ``train_length`` and ``fit_length``. The reason is that there is no</span>
+<span class="sd">          benefit of calculating a shorter period of fitted values. The fitted values are already</span>
+<span class="sd">          available during training (in Silverkite) so there is no loss to calculate fitted values</span>
+<span class="sd">          on a super set of the training data.</span>
+<span class="sd">        - The estimator sorts the ``model_configs`` according to the ``train_length`` in descending order.</span>
+<span class="sd">          The corresponding aggregation frequency, aggregation function, fit length,</span>
+<span class="sd">          estimator and parameters will be sorted accordingly.</span>
+<span class="sd">          This is to ensure that we have enough data to use from the previous model</span>
+<span class="sd">          when we fit the next model.</span>
+<span class="sd">        - When calculating the length of training data, the length of past df, etc,</span>
+<span class="sd">          the actual length used may include 1 more period to avoid missing timestamps.</span>
+<span class="sd">          For example, for an AR order of 5, you may see the length of ``past_df`` to be 6;</span>
+<span class="sd">          or for a train length of &quot;365D&quot;, you may see the actual length to be 366.</span>
+<span class="sd">          This is expected, just to avoid potential missing timestamps after dropping</span>
+<span class="sd">          incomplete aggregation periods.</span>
+<span class="sd">        - Since the models in each stage may not fit on the entire training data,</span>
+<span class="sd">          there could be periods where fitted values are not calculated.</span>
+<span class="sd">          Leading fitted values in the training period may be NA.</span>
+<span class="sd">          These values are ignored when computing evaluation metrics.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_configs : `list` [`MultistageForecastModelConfig`]</span>
+<span class="sd">        A list of model configs for Multistage Forecast estimator,</span>
+<span class="sd">        representing the stages in the model.</span>
+<span class="sd">    forecast_horizon : `int`</span>
+<span class="sd">        The forecast horizon on the original data frequency.</span>
+<span class="sd">    freq : `str` or None</span>
+<span class="sd">        The frequency of the original data.</span>
+<span class="sd">    train_lengths : `list` [`str`] or None</span>
+<span class="sd">        A list of training data lengths for the models.</span>
+<span class="sd">    fit_lengths : `list` [`str`] or None</span>
+<span class="sd">        A list of fitting data lengths for the models.</span>
+<span class="sd">    agg_funcs : `list` [`str` or Callable] or None</span>
+<span class="sd">        A list of aggregation functions for the models.</span>
+<span class="sd">    agg_freqs : `list` [`str`] or None</span>
+<span class="sd">        A list of aggregation frequencies for the models.</span>
+<span class="sd">    estimators : `list` [`BaseForecastEstimator`] or None</span>
+<span class="sd">        A list of estimators used in the models.</span>
+<span class="sd">    estimator_params : `list` [`dict` or None] or None</span>
+<span class="sd">        A list of estimator parameters for the estimators.</span>
+<span class="sd">    train_lengths_in_seconds : `list` [`int`] or None</span>
+<span class="sd">        The list of training lengths in seconds.</span>
+<span class="sd">    fit_lengths_in_seconds: : `list` [`int`] or None</span>
+<span class="sd">        The list of fitting lengths in seconds.</span>
+<span class="sd">        If the original ``fit_length`` is None or is shorter than the corresponding</span>
+<span class="sd">        ``train_length``, it will be replaced by the corresponding ``train_length``.</span>
+<span class="sd">    max_ar_orders : `list` [`int`] or None</span>
+<span class="sd">        A list of maximum AR orders in the models.</span>
+<span class="sd">    data_freq_in_seconds : `int` or None</span>
+<span class="sd">        The data frequency in seconds.</span>
+<span class="sd">    num_points_per_agg_freqs : `list` [`int`] or None</span>
+<span class="sd">        Number of data points in each aggregation frequency.</span>
+<span class="sd">    models : `list` [`BaseForecastEstimator`]</span>
+<span class="sd">        The list of model instances.</span>
+<span class="sd">    fit_df : `pandas.DataFrame` or None</span>
+<span class="sd">        The prediction df.</span>
+<span class="sd">    train_end : `pandas.Timestamp` or None</span>
+<span class="sd">        The train end timestamp.</span>
+<span class="sd">    forecast_horizons : `list` [`int`]</span>
+<span class="sd">        The list of forecast horizons for all models in terms of the aggregated frequencies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">model_configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MultistageForecastModelConfig</span><span class="p">],</span>
+            <span class="n">forecast_horizon</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">uncertainty_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiates the class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_configs : `list` [MultistageForecastModelConfig]</span>
+<span class="sd">            A list of</span>
+<span class="sd">            `~greykite.sklearn.estimator.multistage_forecast_estimator.MultistageModelConfig`</span>
+<span class="sd">            objects. Defines the stages in the Multistage Forecast model.</span>
+<span class="sd">        forecast_horizon : `int`</span>
+<span class="sd">            The forecast horizon in the original data frequency.</span>
+<span class="sd">        freq : `str` or None, default None</span>
+<span class="sd">            The training data frequency.</span>
+<span class="sd">            This parameter is important in Multistage Forecast model,</span>
+<span class="sd">            since calculation of aggregation and dropping incomplete aggregated periods depends on this.</span>
+<span class="sd">            If None, the model will try to infer it from data.</span>
+<span class="sd">            If inferring from data failed, the model fit will raise an error.</span>
+<span class="sd">        uncertainty_dict: `dict` or None, default None</span>
+<span class="sd">            How to fit the uncertainty model.</span>
+<span class="sd">            See `~greykite.sklearn.uncertainty.uncertainty_methods.UncertaintyMethodEnum`.</span>
+<span class="sd">            If not provided but ``coverage`` is given, this falls back to</span>
+<span class="sd">            `~greykite.sklearn.uncertainty.simple_conditional_residuals_model.SimpleConditionalResidualsModel`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># every subclass of BaseForecastEstimator must call super().__init__</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MultistageForecastModelConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_configs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">forecast_horizon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="n">uncertainty_dict</span>
+
+        <span class="c1"># Derived from ``self.model_configs``.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_funcs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimators</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseForecastEstimator</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths_in_seconds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Set by ``fit`` method.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_ar_orders</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_freq_in_seconds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_points_per_agg_freqs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">BaseForecastEstimator</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizons</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="MultistageForecastEstimator.fit"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.multistage_forecast_estimator.MultistageForecastEstimator.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fits ``MultistageForecast`` forecast model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries, with timestamp column,</span>
+<span class="sd">            value column, and any additional regressors.</span>
+<span class="sd">            The value column is the response, included in</span>
+<span class="sd">            ``X`` to allow transformation by `sklearn.pipeline`.</span>
+<span class="sd">        y: ignored</span>
+<span class="sd">            The original timeseries values, ignored.</span>
+<span class="sd">            (The ``y`` for fitting is included in ``X``).</span>
+<span class="sd">        time_col: `str`</span>
+<span class="sd">            Time column name in ``X``.</span>
+<span class="sd">        value_col: `str`</span>
+<span class="sd">            Value column name in ``X``.</span>
+<span class="sd">        fit_params: `dict`</span>
+<span class="sd">            additional parameters for null model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : self</span>
+<span class="sd">            Fitted model is stored in ``self.model_dict``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Fits null model</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">infer_freq</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Failed to infer frequency from data, please provide during &quot;</span>
+                             <span class="s2">&quot;instantiation. Data frequency is required for aggregation.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+
+        <span class="c1"># Gets the forecast horizons for all models.</span>
+        <span class="c1"># For each model, the forecast horizon is the length of the aggregated test df.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizons</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">agg_freq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">:</span>
+            <span class="c1"># Constructs a sample prediction df with the current freq and forecast horizon.</span>
+            <span class="n">sample_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="n">time_col</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:],</span>
+                <span class="n">value_col</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">})</span>
+            <span class="n">sample_df_agg</span> <span class="o">=</span> <span class="n">sample_df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">agg_freq</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">time_col</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># The aggregation function is not needed.</span>
+            <span class="c1"># The forecast horizon for the current model is the length of the aggregated df.</span>
+            <span class="c1"># The forecast horizon differ when the aggregation covers various periods of the aggregation frequency.</span>
+            <span class="c1"># For example, if the prediction period is 2020-01-01 23:00, 2020-01-02 00:00, 2020-01-02 01:00,</span>
+            <span class="c1"># and the aggregation frequency is &quot;D&quot;, although the length of prediction is less than a day,</span>
+            <span class="c1"># but after aggregation, it will become 2020-01-01 and 2020-01-02.</span>
+            <span class="c1"># On the other hand, if the prediction period is 2020-01-01 21:00, 2020-01-01 22:00, 2020-01-01 23:00,</span>
+            <span class="c1"># and the aggregation frequency is &quot;D&quot;, then after aggregation, it will be 2020-01-01 only.</span>
+            <span class="c1"># In each stage of model, the model will get the appropriate forecast horizon.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample_df_agg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">min_agg_freq</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">to_offset</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">min_agg_freq</span> <span class="o">&lt;</span> <span class="n">to_offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The minimum aggregation frequency </span><span class="si">{</span><span class="n">min_agg_freq</span><span class="si">}</span><span class="s2"> &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;is less than the data frequency </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="si">}</span><span class="s2">. Please make sure &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;the aggregation frequencies are at least the data frequency.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+        <span class="c1"># Trains the model.</span>
+        <span class="n">fit_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span> <span class="o">=</span> <span class="n">fit_df</span>
+
+        <span class="c1"># Fits the uncertainty model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit_uncertainty</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MultistageForecastEstimator.predict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.multistage_forecast_estimator.MultistageForecastEstimator.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates forecast for the dates specified in ``X``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries with timestamp column and any additional regressors.</span>
+<span class="sd">            Timestamps are the dates for prediction.</span>
+<span class="sd">            Value column, if provided in ``X``, is ignored.</span>
+<span class="sd">        y: ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions: `pandas.DataFrame`</span>
+<span class="sd">            Forecasted values for the dates in ``X``. Columns:</span>
+
+<span class="sd">                - ``TIME_COL``: dates</span>
+<span class="sd">                - ``PREDICTED_COL``: predictions</span>
+<span class="sd">                - ``PREDICTED_LOWER_COL``: lower bound of predictions, optional</span>
+<span class="sd">                - ``PREDICTED_UPPER_COL``: upper bound of predictions, optional</span>
+
+<span class="sd">            ``PREDICTED_LOWER_COL`` and ``PREDICTED_UPPER_COL`` are present</span>
+<span class="sd">            if ``self.coverage`` is not None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pred_with_uncertainty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_uncertainty</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">pred</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">pred_with_uncertainty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="n">pred_with_uncertainty</span>
+        <span class="k">return</span> <span class="n">pred</span></div>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the derived attributes from model init parameters.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">train_length</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">fit_length</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_funcs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_agg_func</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">agg_func</span><span class="p">)</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">agg_freq</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">agg_freq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimators</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseForecastEstimator</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">estimator</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimator_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">estimator_params</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="c1"># Assumes train length is integer multiples of 1 second, which is most of the cases.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths_in_seconds</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">to_offset</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">delta</span> <span class="o">//</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">to_offset</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">delta</span> <span class="o">//</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths</span><span class="p">]</span>
+        <span class="c1"># If ``fit_length`` is None or is shorter than ``train_length``, it will be replaced by ``train_length``.</span>
+        <span class="n">fit_lengths_in_seconds</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">fit_length</span> <span class="k">if</span> <span class="n">fit_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fit_length</span> <span class="o">&gt;=</span> <span class="n">train_length</span>
+            <span class="k">else</span> <span class="n">train_length</span>
+            <span class="k">for</span> <span class="n">fit_length</span><span class="p">,</span> <span class="n">train_length</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths_in_seconds</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">fit_lengths_in_seconds</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span> <span class="o">=</span> <span class="n">fit_lengths_in_seconds</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Some `fit_length` is None or is shorter than `train_length`. &quot;</span>
+                        <span class="s2">&quot;These `fit_length` have been replaced with `train_length`.&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseForecastEstimator</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">estimator</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">estimator_params</span><span class="p">)</span> <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_configs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_freq_in_seconds</span> <span class="o">=</span> <span class="n">to_offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span><span class="o">.</span><span class="n">delta</span> <span class="o">//</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_agg_func</span><span class="p">(</span><span class="n">agg_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the aggregation function.</span>
+
+<span class="sd">        Returns the input if it&#39;s None or a callable.</span>
+<span class="sd">        Finds the corresponding callable from</span>
+<span class="sd">        `~greykite.common.aggregation_function_enum.AggregationFunctionEnum`</span>
+<span class="sd">        and raises an error if no corresponding aggregation function is found.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        agg_func : `str`, Callable or None</span>
+<span class="sd">            The input of aggregation function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        agg_func : Callable</span>
+<span class="sd">            The corresponding aggregation function if input is a string otherwise the input itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">agg_func</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">agg_func</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">agg_func</span> <span class="o">=</span> <span class="n">AggregationFunctionEnum</span><span class="p">[</span><span class="n">agg_func</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">return</span> <span class="n">agg_func</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The aggregation function </span><span class="si">{</span><span class="n">agg_func</span><span class="si">}</span><span class="s2"> is not recognized as a string. &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Please either pass a known string or a function.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_num_points_per_agg_freq</span><span class="p">(</span>
+            <span class="n">data_freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">agg_freqs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the number of data points in a aggregation period.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_freq : `str`</span>
+<span class="sd">            The data frequency. For example, &quot;5T&quot;.</span>
+<span class="sd">        agg_freqs : `list` [`str`]</span>
+<span class="sd">            A list of aggregation frequencies.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        num_points : `list` [`int`]</span>
+<span class="sd">            The number of points in each aggregation period.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">to_offset</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span><span class="o">.</span><span class="n">delta</span> <span class="o">//</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">data_freq</span><span class="p">)</span><span class="o">.</span><span class="n">delta</span> <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">agg_freqs</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_get_freq_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the column name for a specific stage/frequency.</span>
+<span class="sd">        The name will be f&quot;{self.time_col_}__{index}__{freq}&quot;.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : `int`</span>
+<span class="sd">            The index for the currently stage of model.</span>
+<span class="sd">            This is used to distinguish models with the same frequency.</span>
+<span class="sd">        freq : `str`</span>
+<span class="sd">            The aggregation frequency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        freq_col_name : `str`</span>
+<span class="sd">            The time column name for the frequency, f&quot;{self.time_col_}__{index}__{freq}&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_non_time_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the non time columns in a df.</span>
+<span class="sd">        Non time columns do not have f&quot;{self.time_col}__&quot; in it or do not equal to self.time_col.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        columns : `list` [`str`]</span>
+<span class="sd">            The columns in a df.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        non_time_columns : `list` [`str`]</span>
+<span class="sd">            The non time columns.</span>
+<span class="sd">            Non time columns do not have f&quot;{self.time_col}__&quot; in it or do not equal to self.time_col.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span> <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="si">}</span><span class="s2">__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">col</span> <span class="ow">and</span> <span class="n">col</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_add_agg_freq_cols</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Appends the resample time columns to ``df``.</span>
+
+<span class="sd">        For example, the original df has hourly data with columns &quot;ts&quot; and &quot;y&quot;.</span>
+<span class="sd">        The original time column looks like</span>
+
+<span class="sd">            &quot;2020-01-01 00:00:00, 2020-01-01 01:00:00, 2020-01-01 02:00:00,</span>
+<span class="sd">             2020-01-01 03:00:00, 2020-01-01 04:00:00, 2020-01-01 05:00:00,</span>
+<span class="sd">             2020-01-01 06:00:00, 2020-01-01 07:00:00, 2020-01-01 08:00:00...&quot;</span>
+
+<span class="sd">        The resample frequencies are [&quot;3H&quot;, &quot;D&quot;].</span>
+<span class="sd">        The function adds two extra columns to ``df`` with names &quot;ts__0__3H&quot; and &quot;ts__1__D&quot;.</span>
+<span class="sd">        The &quot;ts__0__3H&quot; will have the same value for every 3 hours, such as</span>
+
+<span class="sd">            &quot;2020-01-01 00:00:00, 2020-01-01 00:00:00, 2020-01-01 00:00:00,</span>
+<span class="sd">             2020-01-01 03:00:00, 2020-01-01 03:00:00, 2020-01-01 03:00:00,</span>
+<span class="sd">             2020-01-01 06:00:00, 2020-01-01 06:00:00, 2020-01-01 06:00:00...&quot;</span>
+
+<span class="sd">         and &quot;ts__1__D&quot; will have the same value for every day, such as</span>
+
+<span class="sd">            &quot;2020-01-01 00:00:00, 2020-01-01 00:00:00, ...</span>
+<span class="sd">             ...</span>
+<span class="sd">             2020-01-01 00:00:00, 2020-01-01 00:00:00, 2020-01-01 00:00:00,</span>
+<span class="sd">             2020-01-02 00:00:00, 2020-01-02 00:00:00, 2020-01-02 00:00:00...&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The original data frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The augmented df with resampled time columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Original df has ``self.time_col_`` as the original time column.</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">):</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>  <span class="c1"># New column name for resampled time column.</span>
+            <span class="c1"># Borrows the value column for aggregation.</span>
+            <span class="n">df_time</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_time</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The df size is zero. Does your input have NANs that are dropped?&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Gets the resampled frequency column.</span>
+            <span class="c1"># This solution is fast and no need to further improve.</span>
+            <span class="n">df_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_time</span>
+                       <span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span>  <span class="c1"># resample, the index is resampled time column</span>
+                       <span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># this function doesn&#39;t matter</span>
+                       <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># adds the resampled time column to columns</span>
+                       <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># copies the resampled time column to index</span>
+                       <span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">df_time</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">)</span>  <span class="c1"># sets the original freq as index, fill resampled column</span>
+                       <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">:</span> <span class="n">col</span><span class="p">})</span>  <span class="c1"># renames the filled resampled column</span>
+                       <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>  <span class="c1"># copies the original freq time column to columns</span>
+
+            <span class="c1"># Merges new resampled frequency column into original df.</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_time</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="n">col</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">_drop_incomplete_agg</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">agg_freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">location</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">num_points_per_agg_freq</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Drops aggregations with incomplete periods.</span>
+
+<span class="sd">        For example, a daily aggregation of hourly data will have a biased aggregation if the data starts from</span>
+<span class="sd">        07:00:00, because the first day will be the aggregation of 07:00:00 to 23:00:00. This is not</span>
+<span class="sd">        representative and should be dropped.</span>
+
+<span class="sd">        The returned df&#39;s indices are reset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input dataframe with augmented aggregation frequency time columns.</span>
+<span class="sd">        agg_freq : `str`</span>
+<span class="sd">            The aggregation frequency.</span>
+<span class="sd">        location : `int`</span>
+<span class="sd">            Where to drop the incomplete aggregation periods.</span>
+<span class="sd">            Usually the incomplete aggregation periods happen at the begin and end of the df.</span>
+<span class="sd">            Specify location = 0 indicates the start, and specify location = -1 indicates the end.</span>
+<span class="sd">        num_points_per_agg_freq : `int`</span>
+<span class="sd">            The number of rows expected in a full period.</span>
+<span class="sd">        index : `int`</span>
+<span class="sd">            The index for the currently stage of model.</span>
+<span class="sd">            This is used to distinguish models with the same frequency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The dataframe after dropping incomplete aggregation periods.</span>
+<span class="sd">            The df&#39;s indices are reset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">df</span>
+        <span class="n">freq_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">agg_freq</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">freq_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="n">freq_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">location</span><span class="p">]])</span>
+                <span class="o">&lt;</span> <span class="n">num_points_per_agg_freq</span><span class="p">):</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">freq_col</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="n">freq_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">location</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_aggregate_values</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">agg_freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">callable</span><span class="p">],</span>
+            <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Aggregates the ``df`` with the given ``agg_freq`` and applies the ``agg_func``.</span>
+
+<span class="sd">        All columns whose names do not start with f&quot;{time_col}__&quot; will be kept and aggregated.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input dataframe.</span>
+<span class="sd">        agg_freq : `str`</span>
+<span class="sd">            The aggregation frequency.</span>
+<span class="sd">        agg_func : `str`, `callable` or None</span>
+<span class="sd">            The function used for aggregation. If None, no aggregation will be performed.</span>
+<span class="sd">        index : `int`</span>
+<span class="sd">            The index for the currently stage of model.</span>
+<span class="sd">            This is used to distinguish models with the same frequency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The aggregated dataframe with f&quot;{time_col}&quot; being the timestamps and all aggregated columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="si">}</span><span class="s2">__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span>
+        <span class="n">freq_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">agg_freq</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">agg_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
+                  <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">freq_col</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">agg_func</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">})</span>
+                  <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">freq_col</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">})</span>
+                  <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">freq_col</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">_drop_incomplete_agg_and_aggregate_values</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">agg_freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">callable</span><span class="p">],</span>
+            <span class="n">num_points_per_agg_freq</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">drop_incomplete</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Drops incomplete periods from the begin and end, and gets aggregated values.</span>
+
+<span class="sd">        Calls ``self._drop_incomplete_agg`` with locations 0 and -1, then calls</span>
+<span class="sd">        ``self._aggregate_values``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input dataframe with augmented aggregation frequency time columns.</span>
+<span class="sd">        agg_freq : `str`</span>
+<span class="sd">            The aggregation frequency.</span>
+<span class="sd">        agg_func : `str`, `callable` or None</span>
+<span class="sd">            The function used for aggregation. If None, no aggregation will be performed.</span>
+<span class="sd">        num_points_per_agg_freq : `int`</span>
+<span class="sd">            The number of rows expected in a full period.</span>
+<span class="sd">        drop_incomplete : `bool`</span>
+<span class="sd">            Whether to drop incomplete periods from the begin and end.</span>
+<span class="sd">            This shouldn&#39;t be done when calculating fitted or prediction values,</span>
+<span class="sd">            because dropping may result in missing time points to predict.</span>
+<span class="sd">        index : `int`</span>
+<span class="sd">            The index for the currently stage of model.</span>
+<span class="sd">            This is used to distinguish models with the same frequency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        agg_df : `pandas.DataFrame`</span>
+<span class="sd">            The aggregated dataframe with f&quot;{time_col}&quot; being the timestamps and all aggregated columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">df</span>
+        <span class="c1"># Drops incomplete periods.</span>
+        <span class="k">if</span> <span class="n">drop_incomplete</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_incomplete_agg</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">agg_freq</span><span class="o">=</span><span class="n">agg_freq</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">num_points_per_agg_freq</span><span class="o">=</span><span class="n">num_points_per_agg_freq</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+            <span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_incomplete_agg</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">agg_freq</span><span class="o">=</span><span class="n">agg_freq</span><span class="p">,</span>
+                <span class="n">location</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">num_points_per_agg_freq</span><span class="o">=</span><span class="n">num_points_per_agg_freq</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+            <span class="p">)</span>
+            <span class="c1"># Checks if there are any missing timestamps in ``df``.</span>
+            <span class="c1"># This may result in incomplete periods.</span>
+            <span class="n">df_check_incomplete_period</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span>
+                <span class="n">agg_freq</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+            <span class="n">df_with_incomplete_periods</span> <span class="o">=</span> <span class="n">df_check_incomplete_period</span><span class="p">[</span>
+                <span class="n">df_check_incomplete_period</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">num_points_per_agg_freq</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">df_with_incomplete_periods</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">log_message</span><span class="p">(</span>
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;There are missing timestamps in `df` when performing aggregation with &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;frequency </span><span class="si">{</span><span class="n">agg_freq</span><span class="si">}</span><span class="s2">. These points are </span><span class="si">{</span><span class="n">df_with_incomplete_periods</span><span class="si">}</span><span class="s2">. &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;This may cause the aggregated values to be biased.&quot;</span><span class="p">,</span>
+                    <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Aggregates values</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aggregate_values</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">agg_freq</span><span class="p">)]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_non_time_cols</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))],</span>
+            <span class="n">agg_freq</span><span class="o">=</span><span class="n">agg_freq</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">_get_agg_dfs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">agg_freq</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">callable</span><span class="p">],</span>
+            <span class="n">train_length_in_seconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">fit_length_in_seconds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">num_points_per_agg_freq</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">max_ar_order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given a dataframe, training/fitting configuration, gets the training data and fit data.</span>
+
+<span class="sd">        If training data include incomplete periods during aggregation, the periods will be dropped.</span>
+<span class="sd">        If fit length is shorter than train length, fit length will be replaced by train length.</span>
+<span class="sd">        Training data is the data that the model is to be trained on.</span>
+<span class="sd">        Fit data is the data that the fitted values are to be calculated on.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input dataframe.</span>
+<span class="sd">        agg_freq : `str`</span>
+<span class="sd">            The aggregation frequency. For example, &quot;D&quot;.</span>
+<span class="sd">        agg_func : Callable</span>
+<span class="sd">            The aggregation function. For example, `numpy.nanmean`.</span>
+<span class="sd">        train_length_in_seconds : `int`</span>
+<span class="sd">            The training data length in seconds.</span>
+<span class="sd">        fit_length_in_seconds : `int` or None</span>
+<span class="sd">            The fit data length in seconds.</span>
+<span class="sd">            If None, will use ``train_length_in_seconds``.</span>
+<span class="sd">        num_points_per_agg_freq : `int`</span>
+<span class="sd">            For ``agg_freq``, how many data points in data frequency should be in an entire period.</span>
+<span class="sd">        max_ar_order : `int`</span>
+<span class="sd">            The maximum order of AR. Used to generate ``past_df`` to be fed into the Silverkite models</span>
+<span class="sd">            to generate AR terms.</span>
+<span class="sd">        index : `int`</span>
+<span class="sd">            The index for the currently stage of model.</span>
+<span class="sd">            This is used to distinguish models with the same frequency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict`</span>
+<span class="sd">            A dictionary with the following keys:</span>
+
+<span class="sd">                train_df : `pandas.DataFrame`</span>
+<span class="sd">                    The training df with aggregated frequency.</span>
+<span class="sd">                fit_df : `pandas.DataFrame`</span>
+<span class="sd">                    The fit df with aggregated frequency.</span>
+<span class="sd">                df_past : `pandas.DataFrame`</span>
+<span class="sd">                    The past df used to generate AR terms.</span>
+<span class="sd">                fit_df_has_incomplete_period : `bool`</span>
+<span class="sd">                    Whether ``fit_df`` has incomplete period at the end.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Selects the columns in ``df`` excluding irrelevant aggregated time columns.</span>
+        <span class="n">freq_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">agg_freq</span><span class="p">)</span>
+        <span class="n">non_time_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_non_time_cols</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="n">freq_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">non_time_cols</span><span class="p">]</span>
+
+        <span class="n">train_end</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="c1"># Subtracts 1 extra full aggregation period for completion.</span>
+        <span class="c1"># Because we drop incomplete periods in a later step before aggregation.</span>
+        <span class="c1"># If there are incomplete periods and we don&#39;t take the extra period,</span>
+        <span class="c1"># the actual length will be the desired length minus 1.</span>
+        <span class="c1"># The only case that this will add an extra period is when there is no incomplete period,</span>
+        <span class="c1"># and having an extra period does not lose anything from there.</span>
+        <span class="n">train_start</span> <span class="o">=</span> <span class="n">train_end</span> <span class="o">-</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">train_length_in_seconds</span><span class="p">)</span> <span class="o">-</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">agg_freq</span><span class="p">)</span>
+        <span class="n">fit_start</span> <span class="o">=</span> <span class="n">train_end</span> <span class="o">-</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">fit_length_in_seconds</span><span class="p">)</span> <span class="o">-</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">agg_freq</span><span class="p">)</span>
+
+        <span class="n">train_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">train_start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">train_end</span><span class="p">)]</span>
+        <span class="n">fit_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">fit_start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">train_end</span><span class="p">)]</span>
+
+        <span class="c1"># Checks if there are incomplete periods in ``fit_df`` at the end.</span>
+        <span class="c1"># They won&#39;t be dropped for not missing any prediction periods,</span>
+        <span class="c1"># but if there are regressors, we record this.</span>
+        <span class="c1"># Because the aggregated regressor value could be biased.</span>
+        <span class="c1"># A warning will be raised if such regressor exists in the model.</span>
+        <span class="n">fit_df_has_incomplete_period</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">fit_df</span><span class="p">[</span><span class="n">fit_df</span><span class="p">[</span><span class="n">freq_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">fit_df</span><span class="p">[</span><span class="n">freq_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">num_points_per_agg_freq</span><span class="p">:</span>
+            <span class="n">fit_df_has_incomplete_period</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Removes incomplete periods aggregations since the aggregated values may be biased.</span>
+        <span class="c1"># We only drop incomplete aggregations for the training periods in case they affect</span>
+        <span class="c1"># training by including incorrect aggregated values.</span>
+        <span class="c1"># For fit/predict we don&#39;t drop incomplete aggregations because we want to make prediction</span>
+        <span class="c1"># for all data points in the original frequency.</span>
+        <span class="n">train_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_incomplete_agg_and_aggregate_values</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">train_df</span><span class="p">,</span>
+            <span class="n">agg_freq</span><span class="o">=</span><span class="n">agg_freq</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">num_points_per_agg_freq</span><span class="o">=</span><span class="n">num_points_per_agg_freq</span><span class="p">,</span>
+            <span class="n">drop_incomplete</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+        <span class="p">)</span>
+        <span class="n">fit_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_incomplete_agg_and_aggregate_values</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">fit_df</span><span class="p">,</span>
+            <span class="n">agg_freq</span><span class="o">=</span><span class="n">agg_freq</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">num_points_per_agg_freq</span><span class="o">=</span><span class="n">num_points_per_agg_freq</span><span class="p">,</span>
+            <span class="n">drop_incomplete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Generates past dataframe for AR terms, if needed.</span>
+        <span class="n">past_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">max_ar_order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Adds 2 complete periods to ensure we don&#39;t miss any data in ``past_df``.</span>
+            <span class="n">past_df_end</span> <span class="o">=</span> <span class="n">train_start</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">to_offset</span><span class="p">(</span><span class="n">agg_freq</span><span class="p">)</span>
+            <span class="c1"># By +1, we ensure that the ``past_df`` still has enough length after dropping incomplete periods.</span>
+            <span class="n">past_df_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">fit_start</span>
+                             <span class="o">-</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">to_offset</span><span class="p">(</span><span class="n">agg_freq</span><span class="p">)</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_ar_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="n">past_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">past_df_start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">past_df_end</span><span class="p">)]</span>
+            <span class="n">past_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_incomplete_agg_and_aggregate_values</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">past_df</span><span class="p">,</span>
+                <span class="n">agg_freq</span><span class="o">=</span><span class="n">agg_freq</span><span class="p">,</span>
+                <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+                <span class="n">num_points_per_agg_freq</span><span class="o">=</span><span class="n">num_points_per_agg_freq</span><span class="p">,</span>
+                <span class="n">drop_incomplete</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+            <span class="p">)</span>
+            <span class="n">past_df</span> <span class="o">=</span> <span class="n">past_df</span><span class="p">[</span><span class="n">past_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">train_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()]</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;train_df&quot;</span><span class="p">:</span> <span class="n">train_df</span><span class="p">,</span>
+            <span class="s2">&quot;fit_df&quot;</span><span class="p">:</span> <span class="n">fit_df</span><span class="p">,</span>
+            <span class="s2">&quot;past_df&quot;</span><span class="p">:</span> <span class="n">past_df</span><span class="p">,</span>
+            <span class="s2">&quot;fit_df_has_incomplete_period&quot;</span><span class="p">:</span> <span class="n">fit_df_has_incomplete_period</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_silverkite_ar_max_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the AR order so that the model can use ``past_df`` to generate AR terms instead of imputation.</span>
+
+<span class="sd">        This function only applies to the Silverkite family.</span>
+<span class="sd">        This function is called after ``freq`` and ``forecast_horizon`` parameters have been added to model instances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        max_ar_orders : `list` [`int` or None]</span>
+<span class="sd">            The maximum AR orders needed in each model.</span>
+<span class="sd">            The value is 0 if the model does not belong to the Silverkite family or the autoregression</span>
+<span class="sd">            parameter is not configured.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_ar_orders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">freq</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># All Silverkite family estimators have the method ``get_max_ar_order``.</span>
+                <span class="n">max_ar_order</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_max_ar_order</span><span class="p">()</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                <span class="n">max_ar_order</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">max_ar_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_ar_order</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_ar_orders</span>
+
+    <span class="k">def</span> <span class="nf">_train</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Trains the Multistage Forecast model with the given configurations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input dataframe.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fit_df : `pandas.DataFrame`</span>
+<span class="sd">            The dataframe with aggregated time columns and predictions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sorts the models by training data length from long to short.</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_funcs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths_in_seconds</span><span class="p">,</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizons</span><span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_funcs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths_in_seconds</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizons</span><span class="p">),</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># key is ``train_lengths_in_seconds``</span>
+            <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="c1"># Here we add the ``forecast_horizon`` and ``freq`` attribute regardless of what model it is.</span>
+        <span class="c1"># This doesn&#39;t affect the model if it does not expect the ``forecast_horizon``</span>
+        <span class="c1"># or ``freq`` attribute before fitting.</span>
+        <span class="c1"># If the forecast horizon parameter varies due to different periods in the fit</span>
+        <span class="c1"># and predict input, users can leave them as None and let the estimator automatically fill them.</span>
+        <span class="c1"># If the entry point is template, it&#39;s possible that &quot;forecast_horizon&quot; is a missing parameter.</span>
+        <span class="c1"># We add it here when it&#39;s missing.</span>
+        <span class="c1"># If either of these parameter is already set, we won&#39;t modify it.</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">forecast_horizon</span><span class="p">,</span> <span class="n">agg_freq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizons</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;forecast_horizon&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">forecast_horizon</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;freq&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">agg_freq</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_points_per_agg_freqs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_num_points_per_agg_freq</span><span class="p">(</span>
+            <span class="n">data_freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span>
+            <span class="n">agg_freqs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_ar_orders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_silverkite_ar_max_order</span><span class="p">()</span>
+
+        <span class="c1"># Adds resampled timestamps and aggregated columns to df.</span>
+        <span class="c1"># This is done after the sorting, so the index of model steps will be correct.</span>
+        <span class="n">df_with_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_agg_freq_cols</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="c1"># Makes a copy. This is used to store the results.</span>
+        <span class="n">fit_result_df</span> <span class="o">=</span> <span class="n">df_with_freq</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Adds a column to track cumulative fitted values.</span>
+        <span class="c1"># At each stage this column will be subtracted from the original time series</span>
+        <span class="c1"># to obtain the current residual to be fitted on the next model.</span>
+        <span class="n">fit_result_df</span><span class="p">[</span><span class="s2">&quot;cum_fitted_values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">train_length_in_seconds</span><span class="p">,</span> <span class="n">fit_length_in_seconds</span><span class="p">,</span>
+                    <span class="n">model</span><span class="p">,</span> <span class="n">num_points_per_agg_freq</span><span class="p">,</span> <span class="n">max_order</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_funcs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_lengths_in_seconds</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_points_per_agg_freqs</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">max_ar_orders</span><span class="p">)):</span>
+
+            <span class="n">df_with_freq_copy</span> <span class="o">=</span> <span class="n">df_with_freq</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># makes a copy since we want to calculate the residuals.</span>
+            <span class="n">df_with_freq_copy</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]</span> <span class="o">-=</span> <span class="n">fit_result_df</span><span class="p">[</span><span class="s2">&quot;cum_fitted_values&quot;</span><span class="p">]</span>
+
+            <span class="c1"># Gets the train_df and fit_df.</span>
+            <span class="c1"># The dfs will be subset and aggregated.</span>
+            <span class="c1"># The fitted values are to be calculated on fit_df.</span>
+            <span class="c1"># fit_df has length as the maximum of train_length and fit_length.</span>
+            <span class="n">agg_dfs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_agg_dfs</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df_with_freq_copy</span><span class="p">,</span>
+                <span class="n">agg_freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
+                <span class="n">agg_func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+                <span class="n">train_length_in_seconds</span><span class="o">=</span><span class="n">train_length_in_seconds</span><span class="p">,</span>
+                <span class="n">fit_length_in_seconds</span><span class="o">=</span><span class="n">fit_length_in_seconds</span><span class="p">,</span>
+                <span class="n">num_points_per_agg_freq</span><span class="o">=</span><span class="n">num_points_per_agg_freq</span><span class="p">,</span>
+                <span class="n">max_ar_order</span><span class="o">=</span><span class="n">max_order</span><span class="p">,</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">index</span>
+            <span class="p">)</span>
+            <span class="n">train_df</span> <span class="o">=</span> <span class="n">agg_dfs</span><span class="p">[</span><span class="s2">&quot;train_df&quot;</span><span class="p">]</span>
+            <span class="n">fit_df</span> <span class="o">=</span> <span class="n">agg_dfs</span><span class="p">[</span><span class="s2">&quot;fit_df&quot;</span><span class="p">]</span>
+            <span class="c1"># Adds ``past_df`` in case the model expects extra data to calculate autoregression terms.</span>
+            <span class="k">if</span> <span class="n">agg_dfs</span><span class="p">[</span><span class="s2">&quot;past_df&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">past_df</span> <span class="o">=</span> <span class="n">agg_dfs</span><span class="p">[</span><span class="s2">&quot;past_df&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">agg_dfs</span><span class="p">[</span><span class="s2">&quot;fit_df_has_incomplete_period&quot;</span><span class="p">]:</span>
+                <span class="n">regressor_cols</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;regressor_cols&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">regressor_cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">regressor_cols</span> <span class="o">!=</span> <span class="p">[]:</span>
+                    <span class="n">log_message</span><span class="p">(</span>
+                        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;There are incomplete periods in `fit_df`, thus the regressor &quot;</span>
+                                <span class="s2">&quot;values are biased after aggregation.&quot;</span><span class="p">,</span>
+                        <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+                    <span class="p">)</span>
+            <span class="c1"># Adds the actual values to the result df.</span>
+            <span class="n">fit_result_df</span> <span class="o">=</span> <span class="n">fit_result_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">train_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}),</span>
+                <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="p">),</span>
+                <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Fits the model.</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+                <span class="n">train_df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">)</span>
+
+            <span class="c1"># Calculates fitted values.</span>
+            <span class="n">y_fitted</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fit_df</span><span class="p">)[[</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+                    <span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+
+            <span class="c1"># Joins the fitted values with the original ``fit_result_df``.</span>
+            <span class="c1"># This is a left join since the fitted values is a subset of the entire period.</span>
+            <span class="n">fit_result_df</span> <span class="o">=</span> <span class="n">fit_result_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">y_fitted</span><span class="p">,</span>
+                <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+                <span class="n">left_on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="p">),</span>
+                <span class="n">right_on</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Adds the current fitted values to the previous fitted values to get cumulated fitted values.</span>
+            <span class="n">fit_result_df</span><span class="p">[</span><span class="s2">&quot;cum_fitted_values&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">fit_result_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+        <span class="n">fit_result_df</span> <span class="o">=</span> <span class="n">fit_result_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;cum_fitted_values&quot;</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span>
+        <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">fit_result_df</span>
+
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The prediction function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The input dataframe, covering the prediction phase.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pred : `pandas.DataFrame`</span>
+<span class="sd">            The predicted dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Since Multistage Forecast partitions the data and does not use the</span>
+        <span class="c1"># entire period to train the models, we do not allow predictions</span>
+        <span class="c1"># going beyond the earliest fit period.</span>
+        <span class="c1"># The predictions before the allowed periods will be marked as 0 for compatibility</span>
+        <span class="c1"># in calculating error metrics.</span>
+        <span class="c1"># This only affects the training evaluation in pipeline, not the validation/test/forecast.</span>
+        <span class="n">fit_starts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">train_end</span> <span class="o">-</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">fit_length</span><span class="p">)</span> <span class="k">for</span> <span class="n">fit_length</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_lengths_in_seconds</span><span class="p">]</span>
+
+        <span class="c1"># Adds resampled timestamps and aggregated columns to df.</span>
+        <span class="n">df_with_freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_agg_freq_cols</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="c1"># Generates predictions for each freq/model.</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_funcs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">,</span> <span class="n">fit_starts</span><span class="p">)):</span>
+            <span class="n">freq_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_freq_col</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+            <span class="n">current_df</span> <span class="o">=</span> <span class="n">df_with_freq</span><span class="p">[</span><span class="n">df_with_freq</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">start</span><span class="p">]</span>
+            <span class="n">current_df</span> <span class="o">=</span> <span class="n">current_df</span><span class="p">[</span>
+                <span class="p">[</span><span class="n">freq_col</span><span class="p">]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_non_time_cols</span><span class="p">(</span><span class="n">current_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]]</span>
+            <span class="c1"># We do this aggregation for the concern that there are regressors in ``df``.</span>
+            <span class="c1"># Uses ``set_index`` instead of resample &quot;on&quot; because the aggregation functions are</span>
+            <span class="c1"># defined with ``partial`` and there&#39;s some incompatibility between partial</span>
+            <span class="c1"># and ``np.nanmean`` with the &quot;on&quot; column.</span>
+            <span class="n">current_df</span> <span class="o">=</span> <span class="n">current_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">freq_col</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="n">current_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_df</span><span class="o">.</span><span class="n">index</span>
+            <span class="n">current_df</span> <span class="o">=</span> <span class="n">current_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">predicted_df</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">current_df</span><span class="p">)</span>  <span class="c1"># ``past_df`` has been added to model instance.</span>
+            <span class="n">df_with_freq</span> <span class="o">=</span> <span class="n">df_with_freq</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">predicted_df</span><span class="p">[[</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+                    <span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">:</span> <span class="n">freq_col</span><span class="p">,</span>
+                    <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">}),</span>
+                <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+                <span class="n">on</span><span class="o">=</span><span class="n">freq_col</span>
+            <span class="p">)</span>
+
+        <span class="n">df_with_freq</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_freqs</span><span class="p">):</span>
+            <span class="n">df_with_freq</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span> <span class="o">+=</span> <span class="n">df_with_freq</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">df_with_freq</span>
+
+    <span class="k">def</span> <span class="nf">_fit_uncertainty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fits the uncertainty model.&quot;&quot;&quot;</span>
+        <span class="n">fit_df_dropna</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span>
+            <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">})</span>  <span class="c1"># Estimator predictions have standard value column.</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_uncertainty</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">fit_df_dropna</span><span class="p">,</span>
+            <span class="n">uncertainty_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fit_df_with_uncertainty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_uncertainty</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">fit_df_dropna</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">fit_df_with_uncertainty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">fit_df_with_uncertainty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                    <span class="n">fit_df_with_uncertainty</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                        <span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fit_df_with_uncertainty</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]],</span>
+                    <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span>
+                    <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span> <span class="o">=</span> <span class="n">fit_df_with_uncertainty</span>
+
+<div class="viewcode-block" id="MultistageForecastEstimator.plot_components"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.multistage_forecast_estimator.MultistageForecastEstimator.plot_components">[docs]</a>    <span class="k">def</span> <span class="nf">plot_components</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Makes component plots.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        figs : `list` [`plotly.graph_objects.Figure` or None]</span>
+<span class="sd">            A list of figures from each model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please call `fit` before calling `plot_components`.&quot;</span><span class="p">)</span>
+        <span class="n">figs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fig</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">plot_components</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">fig</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">figs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">figs</span></div>
+
+<div class="viewcode-block" id="MultistageForecastEstimator.summary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.multistage_forecast_estimator.MultistageForecastEstimator.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets model summaries.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        summaries : `list` [`~greykite.algo.common.model_summary.ModelSummary` or None]</span>
+<span class="sd">            A list of model summaries from each model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please call `fit` before calling `summary`.&quot;</span><span class="p">)</span>
+        <span class="n">summaries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">summary</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">summaries</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, LinkedIn
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
