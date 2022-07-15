@@ -16,7 +16,7 @@ from greykite.common.python_utils import assert_equal
 def test_model_summary():
     # sets up data
     np.random.seed(1)
-    x = np.concatenate([np.ones([100, 1]), np.random.randn(100, 5)], axis=1)  # GLM fails with degenerating X matrix
+    x = np.concatenate([np.ones([100, 1]), np.random.randn(100, 5)], axis=1)
     beta = np.array([1, 1, 1, 1, 0, 0])
     y = np.exp(np.matmul(x, beta))
     pred_cols = ["Intercept",
