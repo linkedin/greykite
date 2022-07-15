@@ -34,7 +34,7 @@ import numpy as np
 import pandas as pd
 
 from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteForecast
-from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.features.timeseries_lags import build_autoreg_df_multi
 from greykite.common.python_utils import dictionaries_values_to_lists
 from greykite.common.python_utils import unique_in_list
@@ -44,6 +44,7 @@ from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
 from greykite.framework.templates.base_template import BaseTemplate
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
+from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
 
 
@@ -122,7 +123,12 @@ def apply_default_model_components(
     # sets default values
     default_seasonality = {
         "fs_components_df": [pd.DataFrame({
-            "name": ["tod", "tow", "tom", "toq", "toy"],
+            "name": [
+                TimeFeaturesEnum.tod.value,
+                TimeFeaturesEnum.tow.value,
+                TimeFeaturesEnum.tom.value,
+                TimeFeaturesEnum.toq.value,
+                TimeFeaturesEnum.toy.value],
             "period": [24.0, 7.0, 1.0, 1.0, 1.0],
             "order": [3, 3, 1, 1, 5],
             "seas_names": ["daily", "weekly", "monthly", "quarterly", "yearly"]})],
@@ -163,7 +169,8 @@ def apply_default_model_components(
 
     default_autoregression = {
         "autoreg_dict": [None],
-        "simulation_num": [10]
+        "simulation_num": [10],
+        "fast_simulation": [False]
     }
     model_components.autoregression = update_dictionary(
         default_autoregression,
@@ -203,7 +210,7 @@ def apply_default_model_components(
         # The same origin for every split, based on start year of full dataset.
         # To use first date of each training split, set to `None` in model_components.
         "origin_for_time_vars": [origin_for_time_vars],
-        "extra_pred_cols": ["ct1"],  # linear growth
+        "extra_pred_cols": [TimeFeaturesEnum.ct1.value],  # linear growth
         "drop_pred_cols": [None],
         "explicit_pred_cols": [None],
         "fit_algorithm_dict": [{
@@ -598,6 +605,7 @@ class SilverkiteTemplate(BaseTemplate):
             "estimator__fs_components_df": self.config.model_components_param.seasonality["fs_components_df"],
             "estimator__autoreg_dict": self.config.model_components_param.autoregression["autoreg_dict"],
             "estimator__simulation_num": self.config.model_components_param.autoregression["simulation_num"],
+            "estimator__fast_simulation": self.config.model_components_param.autoregression["fast_simulation"],
             "estimator__lagged_regressor_dict": self.config.model_components_param.lagged_regressors["lagged_regressor_dict"],
             "estimator__changepoints_dict": self.config.model_components_param.changepoints["changepoints_dict"],
             "estimator__seasonality_changepoints_dict": self.config.model_components_param.changepoints["seasonality_changepoints_dict"],

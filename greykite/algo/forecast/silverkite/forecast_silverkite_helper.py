@@ -25,8 +25,15 @@
 
 import math
 import warnings
+from typing import List
+from typing import Optional
 
+import pandas as pd
+
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.enums import SimpleTimeFrequencyEnum
+from greykite.common.features.timeseries_features import build_time_features_df
+from greykite.common.features.timeseries_features import get_default_origin_for_time_vars
 
 
 def get_similar_lag(freq_in_days):
@@ -123,7 +130,7 @@ def get_default_changepoints_dict(
             changepoints_dict = {
                 "method": "uniform",
                 "n_changepoints": changepoint_num,
-                "continuous_time_col": "ct1",
+                "continuous_time_col": TimeFeaturesEnum.ct1.value,
                 "growth_func": lambda x: x}
 
         elif changepoints_method == "auto":
@@ -281,7 +288,7 @@ def get_silverkite_uncertainty_dict(
             uncertainty_dict = {
                 "uncertainty_method": "simple_conditional_residuals",
                 "params": {
-                    "conditional_cols": ["dow_hr"],
+                    "conditional_cols": [TimeFeaturesEnum.dow_hr.value],
                     "quantiles": [0.025, 0.975],
                     "quantile_estimation_method": "normal_fit",
                     "sample_size_thresh": 5,
@@ -306,3 +313,40 @@ def get_silverkite_uncertainty_dict(
             uncertainty_dict["params"]["quantiles"] = [q1, q2]
 
     return uncertainty_dict
+
+
+def get_fourier_feature_col_names(
+        df: pd.DataFrame,
+        time_col: str,
+        fs_func: callable,
+        conti_year_origin: Optional[int] = None) -> List[str]:
+    """Gets the Fourier feature column names.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        The input data.
+    time_col : `str`
+        The column name for timestamps in ``df``.
+    fs_func : callable
+        The function to generate Fourier features.
+    conti_year_origin : `int` or None, default None
+        The continuous year origin.
+        If None, will be inferred from time column.
+        The names do not depend on this parameter though.
+
+    Returns
+    -------
+    col_names : `list` [`str`]
+        The list of Fourier feature column names.
+    """
+    if conti_year_origin is None:
+        conti_year_origin = get_default_origin_for_time_vars(
+            df=df,
+            time_col=time_col
+        )
+    time_features_example_df = build_time_features_df(
+        df[time_col][:2],
+        conti_year_origin=conti_year_origin)
+    fs = fs_func(time_features_example_df)
+    return fs["cols"]

@@ -3,10 +3,13 @@ import warnings
 from enum import Enum
 
 import numpy as np
+import pandas as pd
 import pytest
 from testfixtures import LogCapture
 
 from greykite.common.constants import LOGGER_NAME
+from greykite.common.constants import PREDICTED_LOWER_COL
+from greykite.common.constants import PREDICTED_UPPER_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.data_loader import DataLoader
@@ -35,7 +38,7 @@ from greykite.framework.utils.result_summary import summarize_grid_search_result
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
@@ -138,7 +141,7 @@ def test_init():
     """Tests constructor"""
     forecaster = Forecaster()
     assert forecaster.model_template_enum == ModelTemplateEnum
-    assert forecaster.default_model_template_name == "SILVERKITE"
+    assert forecaster.default_model_template_name == "AUTO"
     forecaster = Forecaster(
         model_template_enum=MyModelTemplateEnum,
         default_model_template_name="MYSILVERKITE"
@@ -152,7 +155,7 @@ def test_get_config_with_default_model_template_and_components():
     forecaster = Forecaster()
     config = forecaster._Forecaster__get_config_with_default_model_template_and_components()
     assert config == ForecastConfig(
-        model_template=ModelTemplateEnum.SILVERKITE.name,
+        model_template=ModelTemplateEnum.AUTO.name,
         model_components_param=ModelComponentsParam()
     )
 
@@ -185,7 +188,7 @@ def test_get_template_class():
     assert forecaster._Forecaster__get_template_class() == SimpleSilverkiteTemplate
     assert forecaster._Forecaster__get_template_class(
         config=ForecastConfig(model_template=ModelTemplateEnum.SILVERKITE_WEEKLY.name)) == SimpleSilverkiteTemplate
-    if "fbprophet" in sys.modules:
+    if "prophet" in sys.modules:
         assert forecaster._Forecaster__get_template_class(
             config=ForecastConfig(model_template=ModelTemplateEnum.PROPHET.name)) == ProphetTemplate
     assert forecaster._Forecaster__get_template_class(
@@ -202,10 +205,10 @@ def test_get_template_class():
     # `model_template` name is wrong
     model_template = "SOME_TEMPLATE"
     with pytest.raises(ValueError, match=f"Model Template '{model_template}' is not recognized! "
-                                         f"Must be one of: SILVERKITE, SILVERKITE_WITH_AR, "
+                                         f"Must be one of: SILVERKITE, "
                                          f"SILVERKITE_DAILY_1_CONFIG_1, SILVERKITE_DAILY_1_CONFIG_2, SILVERKITE_DAILY_1_CONFIG_3, "
                                          f"SILVERKITE_DAILY_1, SILVERKITE_DAILY_90, "
-                                         f"SILVERKITE_WEEKLY, SILVERKITE_HOURLY_1, SILVERKITE_HOURLY_24, "
+                                         f"SILVERKITE_WEEKLY, SILVERKITE_MONTHLY, SILVERKITE_HOURLY_1, SILVERKITE_HOURLY_24, "
                                          f"SILVERKITE_HOURLY_168, SILVERKITE_HOURLY_336, SILVERKITE_EMPTY"):
         forecaster = Forecaster()
         forecaster._Forecaster__get_template_class(
@@ -271,7 +274,7 @@ def test_get_template_class():
     )
     assert forecaster._Forecaster__get_template_class() == MySimpleSilverkiteTemplate
 
-    if "fbprophet" in sys.modules:
+    if "prophet" in sys.modules:
         model_template = ModelTemplateEnum.PROPHET.name  # `model_template` name is wrong
         with pytest.raises(ValueError, match=f"Model Template '{model_template}' is not recognized! "
                                              f"Must be one of: MYSILVERKITE, SILVERKITE or satisfy the `SimpleSilverkiteTemplate` rules."):
@@ -304,8 +307,7 @@ def test_get_template_class():
              "'greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate'>]"),
             (LOGGER_NAME,
              'DEBUG',
-             'Using template class <class '
-             "'test_forecaster.MySimpleSilverkiteTemplate'> "
+             "Using template class <class 'test_forecaster.MySimpleSilverkiteTemplate'> "
              'for the model template '
              "SimpleSilverkiteTemplateOptions(freq=<SILVERKITE_FREQ.DAILY: 'DAILY'>, "
              "seas=<SILVERKITE_SEAS.LT: 'LT'>, gr=<SILVERKITE_GR.LINEAR: 'LINEAR'>, "
@@ -325,7 +327,7 @@ def test_apply_forecast_config(df_config):
     # The same class can be re-used. `df` and `config` are taken from the function call
     #   to `apply_forecast_config`. Only `model_template_enum` and
     #   `default_model_template_name` are persistent in the state.
-    forecaster = Forecaster()
+    forecaster = Forecaster(default_model_template_name=ModelTemplateEnum.SILVERKITE.name)
 
     # no config
     with warnings.catch_warnings():
@@ -366,7 +368,7 @@ def test_apply_forecast_config(df_config):
         assert_basic_pipeline_equal(pipeline_params.pop("pipeline"), expected_pipeline)
         assert_equal(pipeline_params, expected_pipeline_params)
 
-    if "fbprophet" in sys.modules:
+    if "prophet" in sys.modules:
         # `model_component` of config is incompatible with model_template
         forecaster = Forecaster()
         config = ForecastConfig(
@@ -502,10 +504,10 @@ def test_run_forecast_config_custom():
 
         mse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
         q80 = EvaluationMetricEnum.Quantile80.get_metric_name()
-        assert result.backtest.test_evaluation[mse] == pytest.approx(2.976, rel=1e-2)
-        assert result.backtest.test_evaluation[q80] == pytest.approx(1.360, rel=1e-2)
-        assert result.forecast.train_evaluation[mse] == pytest.approx(2.224, rel=1e-2)
-        assert result.forecast.train_evaluation[q80] == pytest.approx(0.941, rel=1e-2)
+        assert result.backtest.test_evaluation[mse] == pytest.approx(3.299, rel=1e-2)
+        assert result.backtest.test_evaluation[q80] == pytest.approx(1.236, rel=1e-2)
+        assert result.forecast.train_evaluation[mse] == pytest.approx(1.782, rel=1e-2)
+        assert result.forecast.train_evaluation[q80] == pytest.approx(0.746, rel=1e-2)
         check_forecast_pipeline_result(
             result,
             coverage=coverage,
@@ -513,7 +515,8 @@ def test_run_forecast_config_custom():
             score_func=metric.name,
             greater_is_better=False)
 
-    with pytest.raises(KeyError,  match="missing_regressor"):
+    # Note that for newer scikit-learn version, needs to add a check for ValueError, matching "model is misconfigured"
+    with pytest.raises((ValueError, KeyError)) as exception_info:
         model_components = ModelComponentsParam(
             regressors={
                 "regressor_cols": ["missing_regressor"]
@@ -533,6 +536,8 @@ def test_run_forecast_config_custom():
             strategy=None,
             score_func=metric.get_metric_func(),
             greater_is_better=False)
+    info_str = str(exception_info.value)
+    assert "missing_regressor" in info_str or "model is misconfigured" in info_str
 
 
 def test_run_forecast_json():
@@ -669,14 +674,17 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__train_test_thresh": [None],
             "estimator__training_fraction": [None],
             "estimator__fit_algorithm_dict": [{"fit_algorithm": "linear", "fit_algorithm_params": None}],
+            "estimator__auto_holiday": [False],
             "estimator__holidays_to_model_separately": [[]],
             "estimator__holiday_lookup_countries": [[]],
             "estimator__holiday_pre_num_days": [0],
             "estimator__holiday_post_num_days": [0],
             "estimator__holiday_pre_post_num_dict": [None],
             "estimator__daily_event_df_dict": [None],
+            "estimator__auto_growth": [False],
             "estimator__changepoints_dict": [None],
             "estimator__seasonality_changepoints_dict": [None],
+            "estimator__auto_seasonality": [False],
             "estimator__yearly_seasonality": [0],
             "estimator__quarterly_seasonality": [0],
             "estimator__monthly_seasonality": [0],
@@ -686,10 +694,11 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__max_weekly_seas_interaction_order": [2],
             "estimator__autoreg_dict": [None],
             "estimator__simulation_num": [10],
+            "estimator__fast_simulation": [False],
             "estimator__lagged_regressor_dict": [None],
             "estimator__min_admissible_value": [None],
             "estimator__max_admissible_value": [None],
-            "estimator__normalize_method": [None],
+            "estimator__normalize_method": ["zero_to_one"],
             "estimator__uncertainty_dict": [None],
             "estimator__growth_term": ["linear"],
             "estimator__regressor_cols": [[]],
@@ -775,3 +784,81 @@ def test_estimator_get_coef_summary_from_forecaster():
     assert "sin1_ct1_yearly" not in x["Pred_col"].tolist()
     x = summary.get_coef_summary(return_df=True)
     assert x.shape[0] == summary.info_dict["coef_summary_df"].shape[0]
+
+
+def test_auto_model_template():
+    df = pd.DataFrame({
+        "ts": pd.date_range("2020-01-01", freq="D", periods=100),
+        "y": range(100)
+    })
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.AUTO.name,
+        forecast_horizon=1,
+        metadata_param=MetadataParam(
+            time_col="ts",
+            value_col="y",
+            freq="D"
+        ),
+        evaluation_period_param=EvaluationPeriodParam(
+            cv_max_splits=1,
+            test_horizon=0
+        )
+    )
+    forecaster = Forecaster()
+    forecaster.apply_forecast_config(
+        df=df,
+        config=config
+    )
+    assert forecaster.config.model_template == ModelTemplateEnum.SILVERKITE_DAILY_1_CONFIG_1.name
+
+    # Not able to infer frequency, so the default is SILVERKITE
+    df = df.drop([1])  # drops the second row
+    config.metadata_param.freq = None
+    forecaster = Forecaster()
+    assert forecaster._Forecaster__get_model_template(df, config) == ModelTemplateEnum.SILVERKITE.name
+    forecaster.apply_forecast_config(
+        df=df,
+        config=config
+    )
+    assert forecaster.config.model_template == ModelTemplateEnum.SILVERKITE.name
+
+
+def test_quantile_regression_uncertainty_model():
+    """Tests the quantile regression based uncertainty model."""
+    df = DataLoader().load_peyton_manning().iloc[-365:].reset_index(drop=True)
+    df[TIME_COL] = pd.to_datetime(df[TIME_COL])
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE.name,
+        forecast_horizon=7,
+        coverage=0.95,
+        metadata_param=MetadataParam(
+            time_col="ts",
+            value_col="y",
+            freq="D"
+        ),
+        evaluation_period_param=EvaluationPeriodParam(
+            cv_max_splits=1,
+            test_horizon=1
+        ),
+        model_components_param=ModelComponentsParam(
+            uncertainty=dict(
+                uncertainty_dict=dict(
+                    uncertainty_method="quantile_regression",
+                    params=dict(
+                        is_residual_based=False
+                    )
+                )
+            )
+        )
+    )
+    forecaster = Forecaster()
+    forecast_result = forecaster.run_forecast_config(
+        df=df,
+        config=config
+    )
+    assert PREDICTED_LOWER_COL in forecast_result.forecast.df_test.columns
+    assert PREDICTED_UPPER_COL in forecast_result.forecast.df_test.columns
+    assert forecast_result.forecast.df_test[PREDICTED_LOWER_COL].isna().sum() == 0
+    assert forecast_result.forecast.df_test[PREDICTED_UPPER_COL].isna().sum() == 0
+    assert all(
+        forecast_result.forecast.df_test[PREDICTED_LOWER_COL] <= forecast_result.forecast.df_test[PREDICTED_UPPER_COL])

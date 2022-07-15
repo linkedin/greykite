@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Type
 
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.enums import TimeEnum
 
 
@@ -49,7 +50,7 @@ class SilverkiteSeasonalityEnum(Enum):
     """
 
     DAILY_SEASONALITY: SilverkiteSeasonality = SilverkiteSeasonality(
-        name="tod",
+        name=TimeFeaturesEnum.tod.value,
         period=24.0,
         order=12,
         seas_names="daily",
@@ -59,7 +60,7 @@ class SilverkiteSeasonalityEnum(Enum):
     """
 
     WEEKLY_SEASONALITY: SilverkiteSeasonality = SilverkiteSeasonality(
-        name="tow",
+        name=TimeFeaturesEnum.tow.value,
         period=7.0,
         order=4,
         seas_names="weekly",
@@ -69,7 +70,7 @@ class SilverkiteSeasonalityEnum(Enum):
     """
 
     MONTHLY_SEASONALITY: SilverkiteSeasonality = SilverkiteSeasonality(
-        name="tom",
+        name=TimeFeaturesEnum.tom.value,
         period=1.0,
         order=2,
         seas_names="monthly",
@@ -77,7 +78,7 @@ class SilverkiteSeasonalityEnum(Enum):
     """``tom`` is 0-1 time of month (tom granularity based on input data, up to daily level)."""
 
     QUARTERLY_SEASONALITY: SilverkiteSeasonality = SilverkiteSeasonality(
-        name="toq",
+        name=TimeFeaturesEnum.toq.value,
         period=1.0,
         order=5,
         seas_names="quarterly",
@@ -88,7 +89,7 @@ class SilverkiteSeasonalityEnum(Enum):
     """
 
     YEARLY_SEASONALITY: SilverkiteSeasonality = SilverkiteSeasonality(
-        name="ct1",
+        name=TimeFeaturesEnum.ct1.value,
         period=1.0,
         order=15,
         seas_names="yearly",

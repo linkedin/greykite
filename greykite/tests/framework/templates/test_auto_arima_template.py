@@ -91,7 +91,7 @@ def test_auto_arima_hyperparameter_grid_default():
         "estimator__start_params": [None],
         "estimator__trend": [None],
         "estimator__method": ["lbfgs"],
-        "estimator__maxiter": [20],  # Reduced from 50 (default value in pmdarima) for improved speed and robustness,
+        "estimator__maxiter": [50],
         "estimator__offset_test_args": [None],
         "estimator__seasonal_test_args": [None],
         "estimator__suppress_warnings": [True],
@@ -189,16 +189,16 @@ def test_auto_arima_template_custom():
     # anomaly adjustment adds 10.0 to every record
     adjustment_size = 10.0
     anomaly_df = pd.DataFrame({
-        cst.START_DATE_COL: [df[time_col].min()],
-        cst.END_DATE_COL: [df[time_col].max()],
+        cst.START_TIME_COL: [df[time_col].min()],
+        cst.END_TIME_COL: [df[time_col].max()],
         cst.ADJUSTMENT_DELTA_COL: [adjustment_size],
         cst.METRIC_COL: [value_col]
     })
     anomaly_info = {
         "value_col": cst.VALUE_COL,
         "anomaly_df": anomaly_df,
-        "start_date_col": cst.START_DATE_COL,
-        "end_date_col": cst.END_DATE_COL,
+        "start_time_col": cst.START_TIME_COL,
+        "end_time_col": cst.END_TIME_COL,
         "adjustment_delta_col": cst.ADJUSTMENT_DELTA_COL,
         "filter_by_dict": {cst.METRIC_COL: cst.VALUE_COL},
         "adjustment_method": "add"
@@ -461,3 +461,41 @@ def test_run_auto_arima_template_custom():
     assert result.backtest.test_evaluation["MSE"] is not None
     assert result.forecast.train_evaluation[cst.PREDICTION_BAND_COVERAGE] is not None
     assert result.forecast.train_evaluation["MSE"] is not None
+
+
+def test_run_auto_arima_template_default():
+    """Tests running default auto arima template through the pipeline"""
+    df = generate_df_for_tests(
+        freq="MS",
+        periods=95,
+        conti_year_origin=2018
+    )["df"]
+    coverage = 0.95
+    forecast_horizon = 12
+    metadata = MetadataParam(
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        freq="MS"
+    )
+    # Creates `AUTO_ARIMA` config
+    model_template = ModelTemplateEnum.AUTO_ARIMA.name
+    model_components = ModelComponentsParam()
+    arima = ForecastConfig(
+        metadata_param=metadata,
+        forecast_horizon=forecast_horizon,
+        coverage=coverage,
+        model_template=model_template,
+        model_components_param=model_components
+    )
+    forecaster = Forecaster()
+    result = forecaster.run_forecast_config(
+        df=df,
+        config=arima
+    )
+    forecast_df = result.forecast.df_test.reset_index(drop=True)
+    expected_cols = ["ts", "actual", "forecast", "forecast_lower", "forecast_upper"]
+    assert list(forecast_df.columns) == expected_cols
+    assert result.backtest.coverage == 0.95, "coverage is not correct"
+    # NB: coverage is poor because of very small dataset size and low uncertainty_samples
+    assert result.backtest.train_evaluation[cst.PREDICTION_BAND_COVERAGE] is not None
+    assert result.backtest.test_evaluation[cst.PREDICTION_BAND_COVERAGE] is not None

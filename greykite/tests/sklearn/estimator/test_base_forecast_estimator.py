@@ -308,7 +308,7 @@ def test_uncertainty(df):
             uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
             params=dict(
                 value_col=VALUE_COL,
-                residual_col="residual_col"
+                is_residual_based=True
             )
         )
     )
@@ -350,26 +350,6 @@ def test_uncertainty_errors(df):
         assert res is None
         assert model.uncertainty_model is None
 
-    # Fit failed.
-    with LogCapture(LOGGER_NAME) as log_capture:
-        model.fit_uncertainty(
-            df=df[[TIME_COL, VALUE_COL]],
-            uncertainty_dict=dict(
-                uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
-                params=dict(
-                    value_col=VALUE_COL,
-                    residual_col="residual_col"
-                )
-            )
-        )
-        assert (
-                   (LOGGER_NAME,
-                    "WARNING",
-                    f"The following errors occurred during fitting the uncertainty model, "
-                    f"the uncertainty model is skipped."
-                    f" `residual_col` residual_col not found in `train_df.columns`.")
-               ) in log_capture.actual()
-
     # Uncertainty model not trained.
     with LogCapture(LOGGER_NAME) as log_capture:
         model = ConstantBaseForecastEstimator()
@@ -391,7 +371,13 @@ def test_uncertainty_errors(df):
         model.value_col_ = VALUE_COL
         model.fit_uncertainty(
             df=df,
-            uncertainty_dict={}
+            uncertainty_dict={
+                "uncertainty_method": "simple_conditional_residuals",
+                "params": {
+                    "is_residual_based": True,
+                    "predicted_col": PREDICTED_COL
+                }
+            }
         )
         model.predict_uncertainty(
             df=df[[TIME_COL]]
@@ -401,5 +387,5 @@ def test_uncertainty_errors(df):
                     "WARNING",
                     f"The following errors occurred during predicting the uncertainty model, "
                     f"the uncertainty model is skipped."
-                    f" The value column y is not found in `fut_df`.")
+                    f" The offset column {PREDICTED_COL} is not found in `fut_df`.")
                ) in log_capture.actual()

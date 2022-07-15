@@ -19,6 +19,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Type
 
+from greykite.common.constants import TimeFeaturesEnum
+
 
 @dataclass
 class SilverkiteComponent:
@@ -34,27 +36,27 @@ class SilverkiteComponentsEnum(Enum):
     """Defines groupby time feature, xlabel and ylabel for Silverkite Component Plots."""
 
     DAILY_SEASONALITY: SilverkiteComponent = SilverkiteComponent(
-        groupby_time_feature="tod",
+        groupby_time_feature=TimeFeaturesEnum.tod.value,
         xlabel="Hour of day",
         ylabel="daily")
 
     WEEKLY_SEASONALITY: SilverkiteComponent = SilverkiteComponent(
-        groupby_time_feature="tow",
+        groupby_time_feature=TimeFeaturesEnum.tow.value,
         xlabel="Day of week",
         ylabel="weekly")
 
     MONTHLY_SEASONALITY: SilverkiteComponent = SilverkiteComponent(
-        groupby_time_feature="tom",
+        groupby_time_feature=TimeFeaturesEnum.tom.value,
         xlabel="Time of month",
         ylabel="monthly")
 
     QUARTERLY_SEASONALITY: SilverkiteComponent = SilverkiteComponent(
-        groupby_time_feature="toq",
+        groupby_time_feature=TimeFeaturesEnum.toq.value,
         xlabel="Time of quarter",
         ylabel="quarterly")
 
     YEARLY_SEASONALITY: SilverkiteComponent = SilverkiteComponent(
-        groupby_time_feature="toy",
+        groupby_time_feature=TimeFeaturesEnum.toy.value,
         xlabel="Time of year",
         ylabel="yearly")
 

@@ -198,7 +198,7 @@ class AutoArimaTemplate(BaseTemplate):
             start_params=None,
             trend=None,
             method='lbfgs',
-            maxiter=20,  # Reduced from 50 (default value in pmdarima) for improved speed and robustness,
+            maxiter=50,
             offset_test_args=None,
             seasonal_test_args=None,
             suppress_warnings=True,

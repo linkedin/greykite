@@ -1,10 +1,13 @@
 import datetime
 
+import pandas as pd
 import pytest
 
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_default_changepoints_dict
+from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_fourier_feature_col_names
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_silverkite_uncertainty_dict
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_similar_lag
+from greykite.common.features.timeseries_features import fourier_series_multi_fcn
 from greykite.common.python_utils import assert_equal
 from greykite.common.testing_utils import generate_df_for_tests
 
@@ -273,3 +276,34 @@ def test_get_default_changepoints_dict():
         forecast_horizon_in_days=7)
 
     assert change_points_dict is None
+
+
+def test_get_fourier_feature_col_names():
+    """Tests getting Fourier feature column names."""
+    df = pd.DataFrame({
+        "ts": pd.date_range("2020-01-01", freq="D", periods=14)
+    })
+    fs_components_df = pd.DataFrame({
+        "name": ["tod", "tow", "toy"],
+        "period": [24.0, 7.0, 1.0],
+        "order": [1, 2, 3],
+        "seas_names": ["daily", "weekly", "yearly"]})
+    fs_func = fourier_series_multi_fcn(
+        col_names=fs_components_df.get("name"),
+        periods=fs_components_df.get("period"),
+        orders=fs_components_df.get("order"),
+        seas_names=fs_components_df.get("seas_names")
+    )
+    fs_cols = get_fourier_feature_col_names(
+        df=df,
+        time_col="ts",
+        fs_func=fs_func
+    )
+    assert fs_cols == [
+        "sin1_tod_daily", "cos1_tod_daily",
+        "sin1_tow_weekly", "cos1_tow_weekly",
+        "sin2_tow_weekly", "cos2_tow_weekly",
+        "sin1_toy_yearly", "cos1_toy_yearly",
+        "sin2_toy_yearly", "cos2_toy_yearly",
+        "sin3_toy_yearly", "cos3_toy_yearly",
+    ]

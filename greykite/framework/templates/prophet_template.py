@@ -116,7 +116,7 @@ class ProphetTemplate(BaseTemplate):
 
                 ``"holiday_lookup_countries"``: `list` [`str`] or "auto" or None
                     Which countries' holidays to include. Must contain all the holidays you intend to model.
-                    If "auto", uses default list of countries with large contribution to Internet traffic.
+                    If "auto", uses a default list of countries with a good coverage of global holidays.
                     If None or an empty list, no holidays are modeled.
                 ``"holidays_prior_scale"``: `float` or None or list of such values for grid search, default 10.0
                     Modulates the strength of the holiday effect.
@@ -216,9 +216,9 @@ class ProphetTemplate(BaseTemplate):
             estimator: Optional[BaseForecastEstimator] = None):
         try:
             global make_holidays_df
-            from fbprophet.make_holidays import make_holidays_df
+            from prophet.make_holidays import make_holidays_df
         except ModuleNotFoundError:
-            raise ValueError("Module 'fbprophet' is not installed. Please install it manually.")
+            raise ValueError("Module 'prophet' is not installed. Please install it manually.")
         if estimator is None:
             estimator = ProphetEstimator()
         super().__init__(estimator=estimator)
@@ -248,7 +248,7 @@ class ProphetTemplate(BaseTemplate):
         countries : `list` [`str`] or "auto" or None, default "auto"
             Countries for selecting holidays.
 
-            * If "auto", uses Top Countries for internet traffic.
+            * If "auto", uses a default list of countries with a good coverage of global holidays.
             * If a list, a list of country names.
             * If None, the function returns None.
 
@@ -273,7 +273,7 @@ class ProphetTemplate(BaseTemplate):
         if countries is None:
             countries = []
         elif countries == "auto":
-            # countries with large contribution to internet traffic
+            # countries with a good coverage of global holidays
             countries = self.HOLIDAY_LOOKUP_COUNTRIES_AUTO
         elif not isinstance(countries, (list, tuple)):
             raise ValueError(f"`countries` should be a list, found {countries}")

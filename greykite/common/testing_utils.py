@@ -28,12 +28,14 @@ import numpy as np
 import pandas as pd
 
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import ANOMALY_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import EVENT_DF_LABEL_COL
 from greykite.common.constants import METRIC_COL
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.features.timeseries_features import add_daily_events
 from greykite.common.features.timeseries_features import build_time_features_df
 from greykite.common.features.timeseries_features import fourier_series_multi_fcn
@@ -115,10 +117,13 @@ def generate_df_for_tests(
         dt=df0[TIME_COL],
         conti_year_origin=conti_year_origin)
     df = pd.concat([df0, time_df], axis=1)
-    df["growth"] = growth_coef * (df["ct1"] ** growth_pow)
+    df["growth"] = growth_coef * (df[TimeFeaturesEnum.ct1.value] ** growth_pow)
 
     func = fourier_series_multi_fcn(
-        col_names=["toy", "tow", "tod"],
+        col_names=[
+            TimeFeaturesEnum.toy.value,
+            TimeFeaturesEnum.tow.value,
+            TimeFeaturesEnum.tod.value],
         periods=[1.0, 7.0, 24.0],
         orders=[1, 1, 1],
         seas_names=None)
@@ -130,9 +135,9 @@ def generate_df_for_tests(
     df[VALUE_COL] = (
             intercept
             + df["growth"]
-            + fs_coefs[0] * df[get_fourier_col_name(1, "tod", function_name="sin")]
-            + fs_coefs[1] * df[get_fourier_col_name(1, "tow", function_name="sin")]
-            + fs_coefs[2] * df[get_fourier_col_name(1, "toy", function_name="sin")]
+            + fs_coefs[0] * df[get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="sin")]
+            + fs_coefs[1] * df[get_fourier_col_name(1, TimeFeaturesEnum.tow.value, function_name="sin")]
+            + fs_coefs[2] * df[get_fourier_col_name(1, TimeFeaturesEnum.toy.value, function_name="sin")]
             + noise_std * np.random.normal(size=df.shape[0]))
 
     if autoreg_coefs is not None:
@@ -140,8 +145,8 @@ def generate_df_for_tests(
         k = len(autoreg_coefs)
         for i in range(k):
             df["temporary_new_value"] = (
-                df["temporary_new_value"] +
-                autoreg_coefs[i]*df[VALUE_COL].shift(-i)).bfill()
+                    df["temporary_new_value"] +
+                    autoreg_coefs[i]*df[VALUE_COL].shift(-i)).bfill()
         df[VALUE_COL] = df["temporary_new_value"]
         del df["temporary_new_value"]
 
@@ -182,9 +187,12 @@ def generate_df_with_holidays(freq, periods):
 
     df[VALUE_COL] = (
             df[VALUE_COL]
-            + 2 * (df["events_US"] == "US_holiday") * df[get_fourier_col_name(1, "tod", function_name="sin")]
-            + 3 * (df["events_US"] == "US_holiday") * df[get_fourier_col_name(1, "tod", function_name="cos")]
-            + 4 * (df["events_India"] == "India_holiday") * df[get_fourier_col_name(1, "tod", function_name="cos")])
+            + 2 * (df["events_US"] == "US_holiday") * df[
+                get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="sin")]
+            + 3 * (df["events_US"] == "US_holiday") * df[
+                get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="cos")]
+            + 4 * (df["events_India"] == "India_holiday") * df[
+                get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="cos")])
 
     df = df[[TIME_COL, VALUE_COL]]
     thresh = datetime.datetime(2019, 8, 1)
@@ -251,23 +259,23 @@ def generate_df_with_reg_for_tests(
     df = result_list["df"]
     df["regressor1"] = (
             df["growth"]
-            + 4 * df[get_fourier_col_name(1, "tow", function_name="sin")]
-            - 3 * df[get_fourier_col_name(1, "tod", function_name="sin")]
-            + 7 * df[get_fourier_col_name(1, "toy", function_name="sin")]
+            + 4 * df[get_fourier_col_name(1, TimeFeaturesEnum.tow.value, function_name="sin")]
+            - 3 * df[get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="sin")]
+            + 7 * df[get_fourier_col_name(1, TimeFeaturesEnum.toy.value, function_name="sin")]
             - noise_std * np.random.normal(size=df.shape[0]))
 
     df["regressor2"] = (
             df["growth"]
-            + 1 * df[get_fourier_col_name(1, "tow", function_name="sin")]
-            - 2 * df[get_fourier_col_name(1, "tod", function_name="sin")]
-            + 3 * df[get_fourier_col_name(1, "toy", function_name="sin")]
+            + 1 * df[get_fourier_col_name(1, TimeFeaturesEnum.tow.value, function_name="sin")]
+            - 2 * df[get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="sin")]
+            + 3 * df[get_fourier_col_name(1, TimeFeaturesEnum.toy.value, function_name="sin")]
             + noise_std * np.random.normal(size=df.shape[0]))
 
     df["regressor3"] = (
             df["growth"]
-            + 9 * df[get_fourier_col_name(1, "tow", function_name="sin")]
-            - 8 * df[get_fourier_col_name(1, "tod", function_name="sin")]
-            + 5 * df[get_fourier_col_name(1, "toy", function_name="sin")]
+            + 9 * df[get_fourier_col_name(1, TimeFeaturesEnum.tow.value, function_name="sin")]
+            - 8 * df[get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="sin")]
+            + 5 * df[get_fourier_col_name(1, TimeFeaturesEnum.toy.value, function_name="sin")]
             + noise_std * np.random.normal(size=df.shape[0]))
 
     df["regressor_bool"] = np.random.rand(df.shape[0]) > 0.3
@@ -391,11 +399,11 @@ def generate_anomalous_data(periods=10):
         METRIC_COL: ["y", "y", "z", "z"],
         "platform": ["MOBILE", "MOBILE", "DESKTOP", "DESKTOP"],
         "vertical": ["ads", "sales", "ads", "ads"],
-        START_DATE_COL: ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"],
-        END_DATE_COL: ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"],
+        START_TIME_COL: ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"],
+        END_TIME_COL: ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"],
         ADJUSTMENT_DELTA_COL: [np.nan, 3., -5., np.nan]})
 
-    for col in ["start_date", "end_date"]:
+    for col in [START_TIME_COL, END_TIME_COL]:
         anomaly_df[col] = pd.to_datetime(anomaly_df[col])
 
     return {
@@ -411,7 +419,7 @@ def generic_test_adjust_anomalous_data(
     augmented_df = adj_df_info["augmented_df"]
     adjusted_df = adj_df_info["adjusted_df"]
     assert list(adjusted_df.columns) == ["ts", "y", "z"]
-    assert list(augmented_df.columns) == ["ts", "y", "z", f"adjusted_{value_col}"]
+    assert list(augmented_df.columns) == ["ts", "y", "z", ANOMALY_COL, f"adjusted_{value_col}"]
     assert_equal(
         adjusted_df[value_col],
         augmented_df[f"adjusted_{value_col}"],

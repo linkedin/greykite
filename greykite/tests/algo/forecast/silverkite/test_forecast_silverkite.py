@@ -15,11 +15,12 @@ from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteFore
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import cols_interact
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import generate_holiday_events
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import ERR_STD_COL
 from greykite.common.constants import EVENT_DF_LABEL_COL
 from greykite.common.constants import LOGGER_NAME
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import QUANTILE_SUMMARY_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.data_loader import DataLoader
@@ -113,7 +114,7 @@ def plt_comparison_forecast_vs_observed(
         plt.close()
 
 
-def plt_check_ci(fut_df, test_df):
+def plt_check_ci(fut_df, test_df, title=None):
     """A local function for creating conf. interval plots within this test file.
     :param fut_df: pd.DataFrame
         the dataframe which includes future predictions in its VALUE_COL column
@@ -129,7 +130,7 @@ def plt_check_ci(fut_df, test_df):
     from greykite.common.viz.timeseries_plotting import plot_forecast_vs_actual
 
     # splitting the ci column to create lower and upper columns
-    ci_df = pd.DataFrame(fut_df["y_quantile_summary"].tolist())
+    ci_df = pd.DataFrame(fut_df[QUANTILE_SUMMARY_COL].tolist())
     assert ci_df.shape[1] == 2, "ci_df must have exactly two columns"
     ci_df.columns = [PREDICTED_LOWER_COL, PREDICTED_UPPER_COL]
     # adding necessary columns
@@ -146,7 +147,7 @@ def plt_check_ci(fut_df, test_df):
         predicted_upper_col=PREDICTED_UPPER_COL,
         ylabel=VALUE_COL,
         train_end_date=None,
-        title=None,
+        title=title,
         actual_points_color="red",
         actual_points_size=2.0,
         forecast_curve_color="blue",
@@ -156,6 +157,8 @@ def plt_check_ci(fut_df, test_df):
         ci_boundary_curve_width=0.5)
 
     assert fig is not None
+
+    return fig
 
 
 def test_forecast_silverkite_hourly(hourly_data):
@@ -207,7 +210,7 @@ def test_forecast_silverkite_hourly(hourly_data):
             "period": [24.0, 7.0, 1.0],
             "order": [3, 0, 5]}),
         extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"],
-        normalize_method="min_max")
+        normalize_method="zero_to_one")
 
     fut_df = silverkite.predict_n_no_sim(
         fut_time_num=fut_time_num,
@@ -1598,8 +1601,8 @@ def test_forecast_silverkite_2min_with_uncertainty():
     fut_df["y_true"] = test_df["y"]
     fut_df["inside_95_ci"] = fut_df.apply(
         lambda row: (
-                (row["y_true"] <= row["y_quantile_summary"][1])
-                and (row["y_true"] >= row["y_quantile_summary"][0])),
+                (row["y_true"] <= row[QUANTILE_SUMMARY_COL][1])
+                and (row["y_true"] >= row[QUANTILE_SUMMARY_COL][0])),
         axis=1)
 
     ci_coverage = 100.0 * fut_df["inside_95_ci"].mean()
@@ -1780,17 +1783,28 @@ def test_forecast_silverkite_simulator_exception():
 
 
 def test_forecast_silverkite_predict_via_sim():
-    """Tests silverkite simulator on hourly data with linear model fit"""
+    """Tests silverkite simulator on hourly data with linear model fit.
+    Both the regular and fast method are tested.
+    """
     data = generate_df_for_tests(
         freq="H",
         periods=100 * 30,
         train_frac=0.8,
         train_end_date=None,
-        noise_std=0.3)
+        noise_std=0.1,
+        growth_coef=0.0,
+        growth_pow=1,
+        fs_coefs=[-0.1, 0.1, 0.1],
+        autoreg_coefs=[0.25, 0.25, 0.25, 0.25])
     train_df = data["train_df"]
-    test_df = data["test_df"][:30 * 7]
+    test_df = data["test_df"][:100]
     fut_df = test_df.copy()
     fut_df[VALUE_COL] = None
+
+    autoreg_dict = {
+        "lag_dict": {"orders": list(range(1, 5))},
+        "agg_lag_dict": None,
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
 
     silverkite = SilverkiteForecast()
     trained_model = silverkite.forecast(
@@ -1804,6 +1818,7 @@ def test_forecast_silverkite_predict_via_sim():
             "period": [24.0, 7.0, 1.0],
             "order": [3, 0, 5]}),
         extra_pred_cols=["ct_sqrt", "dow_hr", "ct1"],
+        autoreg_dict=autoreg_dict,
         uncertainty_dict={
             "uncertainty_method": "simple_conditional_residuals",
             "params": {
@@ -1816,41 +1831,408 @@ def test_forecast_silverkite_predict_via_sim():
 
     past_df = train_df[[TIME_COL, VALUE_COL]].copy()
 
-    # predict via sim
-    np.random.seed(123)
-    fut_df = silverkite.predict_via_sim(
+    # Predicts with the original sim
+    # import time
+    # t0 = time.time()
+    pred_df = silverkite.predict_via_sim(
         fut_df=fut_df,
         trained_model=trained_model,
         past_df=past_df,
         new_external_regressor_df=None,
-        simulation_num=10,
-        include_err=True)["fut_df"]
+        simulation_num=5)["fut_df"]
+    # t1 = time.time()
+    # print(f"elapsed time: {t1 - t0}")
 
-    assert list(fut_df.columns) == [
+    assert list(pred_df.columns) == [
         TIME_COL,
         VALUE_COL,
-        f"{VALUE_COL}_quantile_summary",
+        QUANTILE_SUMMARY_COL,
         ERR_STD_COL]
-
-    err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
+    err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
-    assert round(err[enum.get_metric_name()], 2) == 0.98
+    assert round(err[enum.get_metric_name()], 2) == 0.80
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert round(err[enum.get_metric_name()], 2) == 0.48
-
+    assert round(err[enum.get_metric_name()], 2) == 0.14
     """
     import os
-    from pathlib import Path
-    directory = Path(__file__).parents[6]
+    import plotly
+    directory = os.path.expanduser("~")
+    # to plot CIs
+    fig = plt_check_ci(fut_df=fut_df, test_df=test_df, title="multiple simulations")
+    html_file_name = f"{directory}/predict_via_sim_ci.html"
+    plotly.offline.plot(fig, filename=html_file_name)
+    """
+
+    # Predicts via fast simulation method
+    np.random.seed(123)
+    # t0 = time.time()
+    pred_df = silverkite.predict_via_sim_fast(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None)["fut_df"]
+    # t1 = time.time()
+    # print(f"elapsed time: {t1 - t0}")
+
+    assert list(pred_df.columns) == [
+        TIME_COL,
+        VALUE_COL,
+        QUANTILE_SUMMARY_COL,
+        ERR_STD_COL]
+    err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
+    enum = EvaluationMetricEnum.Correlation
+    assert round(err[enum.get_metric_name()], 2) == 0.82
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    assert round(err[enum.get_metric_name()], 2) == 0.13
+    """
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
+    # to plot CIs
+    fig = plt_check_ci(fut_df=fut_df, test_df=test_df, title="fast simulation")
+    file_name = f"{directory}/predict_via_sim_fast_ci.html"
+    plotly.offline.plot(fig, filename=file_name)
+    """
+
+
+def test_forecast_silverkite_predict_via_sim2():
+    """Tests silverkite simulator on hourly data with linear model fit.
+    Both the regular and fast method are tested. This example has a strong
+    autoregressive structure and no other patterns.
+    """
+    train_len = 500
+    test_len = 20
+    data_len = train_len + test_len
+    np.random.seed(179)
+    ts = pd.date_range(start="1/1/2018", periods=data_len, freq="D")
+    z = np.random.randint(low=-50, high=50, size=data_len)
+    y = [0]*data_len
+    y[0] = 0
+    y[1] = 0
+    y[2] = 0
+    y[3] = 0
+    y[4] = 0
+    # Explicitly defines auto-regressive structure
+    for i in range(4, data_len):
+        y[i] = round(0.5*y[i-1] + 0.5*y[i-2] + z[i])
+
+    df = pd.DataFrame({
+        "ts": ts,
+        "y": y})
+    df["y"] = df["y"].map(float)
+    df["ts"] = pd.to_datetime(df["ts"])
+    abs_y_mean = np.mean(abs(df["y"]))
+    """
+    # Checks generated data
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
     file_name = os.path.join(
         directory,
-        "predict_silverkite_via_sim.png")
+        "gen_autoreg_data.png")
     plt_comparison_forecast_vs_observed(
-        fut_df=fut_df,
-        test_df=test_df,
+        fut_df=df,
+        test_df=df,
         file_name=file_name)
+    """
+
+    train_df = df[:(train_len)].reset_index(drop=True)
+    test_df = df[(train_len):].reset_index(drop=True)
+    fut_df = test_df.copy()
+    fut_df[VALUE_COL] = None
+
+    silverkite = SilverkiteForecast()
+    autoreg_dict = {
+        "lag_dict": {"orders": list(range(1, 3))},
+        "agg_lag_dict": None,
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=None,
+        fs_components_df=None,
+        extra_pred_cols=None,
+        drop_pred_cols=["ct1"],
+        autoreg_dict=autoreg_dict,
+        uncertainty_dict={
+            "uncertainty_method": "simple_conditional_residuals",
+            "params": {
+                "conditional_cols": ["dow"],
+                "quantiles": [0.025, 0.975],
+                "quantile_estimation_method": "normal_fit",
+                "sample_size_thresh": 20,
+                "small_sample_size_method": "std_quantiles",
+                "small_sample_size_quantile": 0.98}})
+
+    ml_model = trained_model["ml_model"]
+    ml_model_coef = ml_model.coef_
+    intercept = ml_model.intercept_
+
+    y_lag1_coef = ml_model_coef["y_lag1"]
+    y_lag2_coef = ml_model_coef["y_lag2"]
+    intercept += ml_model_coef["Intercept"]
+
+    # Checks the model auto-regressive coefficients with the data generation coefficients
+    assert round(y_lag1_coef, 2) == 0.46
+    assert round(y_lag2_coef, 2) == 0.52
+
+    past_df = train_df[[TIME_COL, VALUE_COL]].copy()
+
+    # Predicts with multiple simulations (slower)
+    np.random.seed(123)
+    # import time
+    # t0 = time.time()
+    pred_df = silverkite.predict_via_sim(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        simulation_num=50)["fut_df"]
+    # t1 = time.time()
+    # print(f"elapsed time: {t1 - t0}")
+    assert list(pred_df.columns) == [
+        TIME_COL,
+        VALUE_COL,
+        QUANTILE_SUMMARY_COL,
+        ERR_STD_COL]
+
+    err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    rmse = err[enum.get_metric_name()]
+    err = 100 * (rmse / abs_y_mean)
+    assert round(err) == 15
+
+    # Checks if simulation is done correctly
+    # It manually calculates the predictions using lags and
+    # compares with simulation results
+    # Note that in this case since error is used during simulation
+    # the difference will not be zero
+    y_pred = pred_df["y"]
+    # Attaches the last two observations to y_pred
+    y_pred_aug = list(train_df.tail(2)["y"].values) + list(y_pred)
+    for i in range(3, len(y_pred_aug)):
+        y = y_pred_aug[i]
+        y_lag1 = y_pred_aug[i-1]
+        y_lag2 = y_pred_aug[i-2]
+        y_manual = intercept + y_lag1_coef*y_lag1 + y_lag2_coef*y_lag2
+        diff = 100 * abs(y - y_manual) / abs_y_mean
+        assert diff < 5
+    """
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
     # to plot CIs
-    plt_check_ci(fut_df=fut_df, test_df=test_df)
+    fig = plt_check_ci(fut_df=pred_df, test_df=test_df, title="multiple simulations")
+    html_file_name = f"{directory}/predict_via_sim_ci.html"
+    plotly.offline.plot(fig, filename=html_file_name)
+    """
+
+    # Predicts via fast simulation method
+    np.random.seed(123)
+    # t0 = time.time()
+    pred_df = silverkite.predict_via_sim_fast(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None)["fut_df"]
+    # t1 = time.time()
+    # print(f"elapsed time: {t1 - t0}")
+    assert list(pred_df.columns) == [
+        TIME_COL,
+        VALUE_COL,
+        QUANTILE_SUMMARY_COL,
+        ERR_STD_COL]
+
+    err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    rmse = err[enum.get_metric_name()]
+    err = 100 * (rmse / abs_y_mean)
+    assert round(err) == 15
+    # Checks if simulation is done correctly
+    # It manually calculates the predictions using lags and
+    # compares with simulation results
+    y_pred = pred_df["y"]
+    # we attach the last two observations to y_pred
+    y_pred_aug = list(train_df.tail(2)["y"].values) + list(y_pred)
+    y_pred = pred_df["y"]
+    # Attaches the last two observations to y_pred
+    y_pred_aug = list(train_df.tail(2)["y"].values) + list(y_pred)
+    for i in range(3, len(y_pred_aug)):
+        y = y_pred_aug[i]
+        y_lag1 = y_pred_aug[i-1]
+        y_lag2 = y_pred_aug[i-2]
+        y_manual = intercept + y_lag1_coef*y_lag1 + y_lag2_coef*y_lag2
+        diff = 100 * abs(y - y_manual) / abs_y_mean
+        # We expect a very small diff in this case, as no error are used in simulation
+        assert diff < 0.01
+    """
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
+    # to plot CIs
+    fig = plt_check_ci(fut_df=pred_df, test_df=test_df, title="fast simulation")
+    file_name = f"{directory}/predict_via_sim_fast_ci.html"
+    plotly.offline.plot(fig, filename=file_name)
+    """
+    pred_res = silverkite.predict(
+        fut_df=fut_df[:5],
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        fast_simulation=True)
+    assert len(pred_res["fut_df"]) == 5
+    assert len(pred_res["x_mat"]) == 5
+
+
+def test_forecast_silverkite_predict_via_sim3():
+    """This test is used to measure speed for simulations"""
+    train_len = 2000
+    test_len = 50
+    data_len = train_len + test_len
+    np.random.seed(179)
+    ts = pd.date_range(start="1/1/2018", periods=data_len, freq="D")
+    z = np.random.randint(low=-50, high=50, size=data_len)
+    y = [0]*data_len
+    y[0] = 0
+    y[1] = 0
+    y[2] = 0
+    y[3] = 0
+    y[4] = 0
+    # Explicitly defines auto-regressive structure
+    for i in range(4, data_len):
+        y[i] = i + round(0.2*y[i-1] + 0.2*y[i-2] + 0.2*y[i-3] + 0.2*y[i-4] + z[i])
+
+    df = pd.DataFrame({
+        "ts": ts,
+        "y": y})
+    df["y"] = df["y"].map(float)
+    df["ts"] = pd.to_datetime(df["ts"])
+    abs_y_mean = np.mean(abs(df["y"]))
+    """
+    # Checks generated data
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
+    file_name = os.path.join(
+        directory,
+        "gen_autoreg_data.png")
+    plt_comparison_forecast_vs_observed(
+        fut_df=df,
+        test_df=df,
+        file_name=file_name)
+    """
+
+    train_df = df[:(train_len)].reset_index(drop=True)
+    test_df = df[(train_len):].reset_index(drop=True)
+    fut_df = test_df.copy()
+    fut_df[VALUE_COL] = None
+
+    silverkite = SilverkiteForecast()
+    autoreg_dict = {
+        "lag_dict": {"orders": list(range(1, 5))},
+        "agg_lag_dict": {"orders_list": [list(range(10))]},
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=None,
+        fs_components_df=None,
+        extra_pred_cols=None,
+        drop_pred_cols=None,
+        autoreg_dict=autoreg_dict,
+        uncertainty_dict={
+            "uncertainty_method": "simple_conditional_residuals",
+            "params": {
+                "conditional_cols": ["dow"],
+                "quantiles": [0.025, 0.975],
+                "quantile_estimation_method": "normal_fit",
+                "sample_size_thresh": 20,
+                "small_sample_size_method": "std_quantiles",
+                "small_sample_size_quantile": 0.98}})
+
+    ml_model = trained_model["ml_model"]
+    ml_model_coef = ml_model.coef_
+    y_lag1_coef = ml_model_coef["y_lag1"]
+    y_lag2_coef = ml_model_coef["y_lag2"]
+    y_lag3_coef = ml_model_coef["y_lag3"]
+    y_lag4_coef = ml_model_coef["y_lag4"]
+
+    # Checks the model auto-regressive coefficients with the data generation coefficients
+    assert round(y_lag1_coef, 2) == 0.18
+    assert round(y_lag2_coef, 2) == 0.16
+    assert round(y_lag3_coef, 2) == 0.24
+    assert round(y_lag4_coef, 2) == 0.21
+
+    past_df = train_df[[TIME_COL, VALUE_COL]].copy()
+
+    # Predicts with multiple simulations (slower)
+    np.random.seed(123)
+    # import time
+    # t0 = time.time()
+    pred_df = silverkite.predict_via_sim(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        simulation_num=5)["fut_df"]
+    # t1 = time.time()
+    # print(f"elapsed time: {t1 - t0}")
+    assert list(pred_df.columns) == [
+        TIME_COL,
+        VALUE_COL,
+        QUANTILE_SUMMARY_COL,
+        ERR_STD_COL]
+
+    err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    rmse = err[enum.get_metric_name()]
+    err = 100 * (rmse / abs_y_mean)
+    assert round(err, 2) == 0.58
+    """
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
+    # to plot CIs
+    fig = plt_check_ci(fut_df=pred_df, test_df=test_df, title="multiple simulations")
+    html_file_name = f"{directory}/predict_via_sim_ci.html"
+    plotly.offline.plot(fig, filename=html_file_name)
+    """
+
+    # Predicts via fast simulation method
+    np.random.seed(123)
+    # t0 = time.time()
+    pred_df = silverkite.predict_via_sim_fast(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None)["fut_df"]
+    # t1 = time.time()
+    # print(f"elapsed time: {t1 - t0}")
+    assert list(pred_df.columns) == [
+        TIME_COL,
+        VALUE_COL,
+        QUANTILE_SUMMARY_COL,
+        ERR_STD_COL]
+
+    err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    rmse = err[enum.get_metric_name()]
+    err = 100 * (rmse / abs_y_mean)
+    assert round(err, 2) == 0.55
+    """
+    import os
+    import plotly
+    directory = os.path.expanduser("~")
+    # to plot CIs
+    fig = plt_check_ci(fut_df=pred_df, test_df=test_df, title="fast simulation")
+    file_name = f"{directory}/predict_via_sim_fast_ci.html"
+    plotly.offline.plot(fig, filename=file_name)
     """
 
 
@@ -1886,7 +2268,7 @@ def test_silverkite_predict():
 
     # These are the columns we expect to get from the predictions
     expected_fut_df_cols = [
-        TIME_COL, VALUE_COL, f"{VALUE_COL}_quantile_summary", ERR_STD_COL]
+        TIME_COL, VALUE_COL, QUANTILE_SUMMARY_COL, ERR_STD_COL]
 
     silverkite = SilverkiteForecast()
     trained_model = silverkite.forecast(
@@ -2007,7 +2389,7 @@ def test_predict_silverkite_with_regressors():
 
     # These are the columns we expect to get from the predictions
     expected_fut_df_cols = [
-        TIME_COL, VALUE_COL, f"{VALUE_COL}_quantile_summary", ERR_STD_COL]
+        TIME_COL, VALUE_COL, QUANTILE_SUMMARY_COL, ERR_STD_COL]
 
     silverkite = SilverkiteForecast()
     trained_model = silverkite.forecast(
@@ -2514,8 +2896,8 @@ def test_predict_silverkite_compare_various_ways():
 
     # (Case 1) First the case with autoregression with old lag only
     # In this case we expect that no sim approach will be triggered
-    # by ``silverkite.predict_n(``, and ``predict_silverkite``,
-    # because ``min_lag_order`` is 2 while forecast horizon is 24
+    # by ``silverkite.predict_n``, and ``predict_silverkite``,
+    # because ``min_lag_order`` is 168 while forecast horizon is 24
     np.random.seed(123)
     fut_df_with_ar = silverkite.predict_n_no_sim(
         fut_time_num=test_df.shape[0],
@@ -2523,7 +2905,7 @@ def test_predict_silverkite_compare_various_ways():
         freq="1H",
         new_external_regressor_df=None)["fut_df"]
 
-    # Directly using `silverkite.predict_n(` which will use simulations.
+    # Directly using ``silverkite.predict_n`` which will use simulations.
     # We expect the same result as above.
     np.random.seed(123)
     predict_info = silverkite.predict_n(
@@ -2540,7 +2922,7 @@ def test_predict_silverkite_compare_various_ways():
 
     fut_df_with_ar_2 = predict_info["fut_df"]
 
-    # Uses ``predict_silverkite``
+    # Uses ``predict``
     np.random.seed(123)
     predict_info = silverkite.predict(
         fut_df=fut_df,
@@ -2556,7 +2938,7 @@ def test_predict_silverkite_compare_various_ways():
 
     fut_df_with_ar_3 = predict_info["fut_df"]
 
-    # Checks the case where `past_df` is not passed
+    # Checks the case where ``past_df`` is not passed
     np.random.seed(123)
     predict_info = silverkite.predict(
         fut_df=fut_df.copy(),
@@ -2588,13 +2970,15 @@ def test_predict_silverkite_compare_various_ways():
     assert list(fut_df_with_ar.columns) == [
         TIME_COL,
         VALUE_COL,
-        f"{VALUE_COL}_quantile_summary",
+        QUANTILE_SUMMARY_COL,
         ERR_STD_COL]
 
     # (Case 2) The case with short autoregression
     # In this case we expect that via_sim approach will be triggered
-    # by ``silverkite.predict_n(``, and ``predict_silverkite``
-    # because ``min_lag_order`` is 168*2 while forecast horizon is 24
+    # by ``silverkite.predict_n``, and ``predict_silverkite``
+    # because ``min_lag_order`` is 1 while forecast horizon is 24
+    fast_simulation = trained_model_with_recent_lag["fast_simulation"]
+    simulation_num = trained_model_with_recent_lag["simulation_num"]
     np.random.seed(123)
     fut_df_with_ar = silverkite.predict_n_via_sim(
         fut_time_num=test_df.shape[0],
@@ -2602,9 +2986,10 @@ def test_predict_silverkite_compare_various_ways():
         freq="1H",
         new_external_regressor_df=None,
         include_err=None,
-        simulation_num=5)["fut_df"]
+        simulation_num=simulation_num,
+        fast_simulation=fast_simulation)["fut_df"]
 
-    # Directly uses ``silverkite.predict_n(`` which will use simulations.
+    # Directly uses ``silverkite.predict_n`` which will use simulations.
     # We expect the same result as above.
     np.random.seed(123)
     predict_info = silverkite.predict_n(
@@ -2613,14 +2998,15 @@ def test_predict_silverkite_compare_various_ways():
         freq="1H",
         new_external_regressor_df=None,
         include_err=None,
-        force_no_sim=False)
+        force_no_sim=False,
+        simulation_num=simulation_num)
 
     assert not predict_info["simulations_not_used"]
     assert predict_info["fut_df_info"]["inferred_forecast_horizon"] == 5
     assert predict_info["min_lag_order"] == 1
     fut_df_with_ar_2 = predict_info["fut_df"]
 
-    # Uses ``predict_silverkite``
+    # Uses ``predict``
     np.random.seed(123)
     predict_info = silverkite.predict(
         fut_df=fut_df.copy(),
@@ -2628,7 +3014,8 @@ def test_predict_silverkite_compare_various_ways():
         past_df=train_df[[TIME_COL, VALUE_COL]].copy(),
         new_external_regressor_df=None,
         include_err=None,
-        force_no_sim=False)
+        force_no_sim=False,
+        simulation_num=simulation_num)
 
     assert not predict_info["simulations_not_used"]
     assert predict_info["fut_df_info"]["inferred_forecast_horizon"] == 5
@@ -2636,7 +3023,7 @@ def test_predict_silverkite_compare_various_ways():
 
     fut_df_with_ar_3 = predict_info["fut_df"]
 
-    # Checks the case when`past_df` is not passed.
+    # Checks the case when ``past_df`` is not passed.
     np.random.seed(123)
     predict_info = silverkite.predict(
         fut_df=fut_df,
@@ -2644,7 +3031,8 @@ def test_predict_silverkite_compare_various_ways():
         past_df=None,
         new_external_regressor_df=None,
         include_err=None,
-        force_no_sim=False)
+        force_no_sim=False,
+        simulation_num=simulation_num)
 
     assert not predict_info["simulations_not_used"]
     assert predict_info["fut_df_info"]["inferred_forecast_horizon"] == 5
@@ -2667,7 +3055,7 @@ def test_predict_silverkite_compare_various_ways():
     assert list(fut_df_with_ar.columns) == [
         TIME_COL,
         VALUE_COL,
-        f"{VALUE_COL}_quantile_summary",
+        QUANTILE_SUMMARY_COL,
         ERR_STD_COL]
 
     # (Case 3) Tests the cases with no AR
@@ -2705,7 +3093,7 @@ def test_predict_silverkite_compare_various_ways():
 
     err = calc_pred_err(test_df[VALUE_COL], fut_df_with_ar[VALUE_COL])
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert err[enum.get_metric_name()] == pytest.approx(114.2, rel=1e-2)
+    assert err[enum.get_metric_name()] == pytest.approx(85.896, rel=1e-2)
 
     err = calc_pred_err(test_df[VALUE_COL], fut_df_no_ar[VALUE_COL])
     enum = EvaluationMetricEnum.RootMeanSquaredError
@@ -2863,7 +3251,7 @@ def test_forecast_silverkite_simulator_regressor():
     assert list(fut_df.columns) == [
         TIME_COL,
         VALUE_COL,
-        f"{VALUE_COL}_quantile_summary",
+        QUANTILE_SUMMARY_COL,
         ERR_STD_COL]
 
     assert sim_df[VALUE_COL].dtype == "float64"
@@ -3086,8 +3474,8 @@ def test_forecast_silverkite_with_adjust_anomalous():
             "func": adjust_anomalous_data,
             "params": {
                 "anomaly_df": anomaly_df,
-                "start_date_col": START_DATE_COL,
-                "end_date_col": END_DATE_COL,
+                "start_time_col": START_TIME_COL,
+                "end_time_col": END_TIME_COL,
                 "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
                 "filter_by_dict": {"platform": "MOBILE"}}})
 
@@ -4108,7 +4496,7 @@ def test_normalize_changepoint_values():
     # tests min_max
     normalize_result = normalize_df(
         df=df,
-        method="min_max"
+        method="zero_to_one"
     )
     pred_cols = normalize_result["keep_cols"]
     normalize_df_func = normalize_result["normalize_df_func"]

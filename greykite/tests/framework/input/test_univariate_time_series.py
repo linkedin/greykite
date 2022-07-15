@@ -7,9 +7,9 @@ import pytest
 from pandas.testing import assert_frame_equal
 
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import METRIC_COL
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.python_utils import assert_equal
@@ -152,8 +152,8 @@ def test_load_data_anomaly():
     dim_one = "one"
     dim_two = "two"
     anomaly_df = pd.DataFrame({
-        START_DATE_COL: ["2011-04-04-10", "2011-10-10-00", "2012-12-20-10"],
-        END_DATE_COL: ["2011-04-05-20", "2011-10-11-23", "2012-12-20-13"],
+        START_TIME_COL: ["2011-04-04-10", "2011-10-10-00", "2012-12-20-10"],
+        END_TIME_COL: ["2011-04-05-20", "2011-10-11-23", "2012-12-20-13"],
         ADJUSTMENT_DELTA_COL: [np.nan, 100.0, -100.0],
         METRIC_COL: [dim_one, dim_one, dim_two]
     })
@@ -161,8 +161,8 @@ def test_load_data_anomaly():
         {
             "value_col": value_col,
             "anomaly_df": anomaly_df,
-            "start_date_col": START_DATE_COL,
-            "end_date_col": END_DATE_COL,
+            "start_time_col": START_TIME_COL,
+            "end_time_col": END_TIME_COL,
             "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
             "filter_by_dict": {METRIC_COL: dim_one},
             "adjustment_method": "add"
@@ -170,8 +170,8 @@ def test_load_data_anomaly():
         {
             "value_col": "pres",
             "anomaly_df": anomaly_df,
-            "start_date_col": START_DATE_COL,
-            "end_date_col": END_DATE_COL,
+            "start_time_col": START_TIME_COL,
+            "end_time_col": END_TIME_COL,
             "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
             "filter_by_dict": {METRIC_COL: dim_two},
             "adjustment_method": "subtract"
@@ -499,8 +499,12 @@ def test_train_end_date_with_regressors():
         result = ts.make_future_dataframe(
             periods=10,
             include_history=True)
+        # gathers all warning messages
+        all_warnings = ""
+        for i in range(len(record)):
+            all_warnings += record[i].message.args[0]
         assert "Provided periods '10' is more than allowed ('4') due to the length of " \
-               "regressor columns. Using '4'." in record[0].message.args[0]
+               "regressor columns. Using '4'." in all_warnings
         expected = ts.df.copy()[[TIME_COL, VALUE_COL, "regressor2"]]
         expected = expected[expected.index <= ts.last_date_for_reg]
         assert_frame_equal(result, expected)
@@ -514,8 +518,12 @@ def test_train_end_date_with_regressors():
         ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
         assert ts.train_end_date == dt(2018, 1, 20)
         assert ts.last_date_for_reg == dt(2018, 1, 28)
+        # gathers all warning messages
+        all_warnings = ""
+        for i in range(len(record)):
+            all_warnings += record[i].message.args[0]
         assert (f"The following columns are not available to use as "
-                f"regressors: ['regressor4', 'regressor5']") in record[0].message.args[0]
+                f"regressors: ['regressor4', 'regressor5']") in all_warnings
         result = ts.make_future_dataframe(
             periods=10,
             include_history=True)
@@ -547,16 +555,16 @@ def test_plot():
     value_col = "pm"
     # Masks up to 2011-02-04-03, and adds 100.0 to the rest
     anomaly_df = pd.DataFrame({
-        START_DATE_COL: ["2010-01-01-00", "2011-02-04-03"],
-        END_DATE_COL: ["2011-02-04-03", "2014-12-31-23"],
+        START_TIME_COL: ["2010-01-01-00", "2011-02-04-03"],
+        END_TIME_COL: ["2011-02-04-03", "2014-12-31-23"],
         ADJUSTMENT_DELTA_COL: [np.nan, 100.0],
         METRIC_COL: [value_col, value_col]
     })
     anomaly_info = {
         "value_col": value_col,
         "anomaly_df": anomaly_df,
-        "start_date_col": START_DATE_COL,
-        "end_date_col": END_DATE_COL,
+        "start_time_col": START_TIME_COL,
+        "end_time_col": END_TIME_COL,
         "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
         "filter_by_dict": {METRIC_COL: value_col},
         "adjustment_method": "add"

@@ -48,6 +48,7 @@ from greykite.algo.changepoint.adalasso.changepoints_utils import get_seasonalit
 from greykite.algo.changepoint.adalasso.changepoints_utils import get_trend_changes_from_adaptive_lasso
 from greykite.algo.changepoint.adalasso.changepoints_utils import get_yearly_seasonality_changepoint_dates_from_freq
 from greykite.algo.changepoint.adalasso.changepoints_utils import plot_change
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.features.timeseries_features import get_evenly_spaced_changepoints_dates
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
@@ -148,10 +149,12 @@ class ChangepointDetector:
             actual_changepoint_min_distance="30D",
             potential_changepoint_distance=None,
             potential_changepoint_n=100,
+            potential_changepoint_n_max=None,
             no_changepoint_distance_from_begin=None,
             no_changepoint_proportion_from_begin=0.0,
             no_changepoint_distance_from_end=None,
-            no_changepoint_proportion_from_end=0.0):
+            no_changepoint_proportion_from_end=0.0,
+            fast_trend_estimation=True):
         """Finds trend change points automatically by adaptive lasso.
 
         The algorithm does an aggregation with a user-defined frequency, defaults daily.
@@ -203,9 +206,10 @@ class ChangepointDetector:
 
             Note that if you use `str` as input, the maximal supported unit is day, i.e.,
             you might use "200D" but not "12M" or "1Y".
-        resample_freq : `DateOffset`, `Timedelta` or `str`, default "D".
+        resample_freq : `DateOffset`, `Timedelta`, `str` or None, default "D".
             The frequency to aggregate data.
             Coarser aggregation leads to fitting longer term trends.
+            If None, no aggregation will be done.
         trend_estimator : `str` in ["ridge", "lasso" or "ols"], default "ridge".
             The estimator to estimate trend. The estimated trend is only for plotting purposes.
             'ols' is not recommended when ``yearly_seasonality_order`` is specified other than 0,
@@ -234,6 +238,12 @@ class ChangepointDetector:
         potential_changepoint_n : `int`, default 100
             Number of change points to be evenly distributed, recommended 1-2 per month, based
             on the training data length.
+        potential_changepoint_n_max : `int` or None, default None
+            The maximum number of potential changepoints.
+            This parameter is effective when user specifies ``potential_changepoint_distance``,
+            and the number of potential changepoints in the training data is more than ``potential_changepoint_n_max``,
+            then it is equivalent to specifying ``potential_changepoint_n = potential_changepoint_n_max``,
+            and ignoring ``potential_changepoint_distance``.
         no_changepoint_distance_from_begin : `DateOffset`, `Timedelta`, `str` or None, default None
             The length of time from the beginning of training data, within which no change point will be placed.
             If provided, will override the parameter ``no_changepoint_proportion_from_begin``.
@@ -254,6 +264,10 @@ class ChangepointDetector:
             ``potential_changepoint_n`` change points will be placed evenly over the whole training period,
             however, change points that are located within the last ``no_changepoint_proportion_from_end``
             proportion of training period will not be used for change point detection.
+        fast_trend_estimation : `bool`, default True
+            If True, the trend estimation is not refitted on the original data,
+            but is a linear interpolation of the fitted trend from the resampled time series.
+            If False, the trend estimation is refitted on the original data.
 
         Return
         ------
@@ -314,20 +328,36 @@ class ChangepointDetector:
             check_freq_unit_at_most_day(potential_changepoint_distance, "potential_changepoint_distance")
             data_length = pd.to_datetime(df[time_col].iloc[-1]) - pd.to_datetime(df[time_col].iloc[0])
             potential_changepoint_n = data_length // to_offset(potential_changepoint_distance).delta
+            if potential_changepoint_n_max is not None:
+                if potential_changepoint_n_max <= 0:
+                    raise ValueError("potential_changepoint_n_max must be a positive integer.")
+                if potential_changepoint_n > potential_changepoint_n_max:
+                    log_message(
+                        message=f"Number of potential changepoints is capped by 'potential_changepoint_n_max' "
+                                f"as {potential_changepoint_n_max}. The 'potential_changepoint_distance' "
+                                f"{potential_changepoint_distance} is ignored. "
+                                f"The original number of changepoints was {potential_changepoint_n}.",
+                        level=LoggingLevelEnum.INFO
+                    )
+                    potential_changepoint_n = potential_changepoint_n_max
         if regularization_strength is not None and (regularization_strength < 0 or regularization_strength > 1):
             raise ValueError("regularization_strength must be between 0.0 and 1.0.")
+        df = df.copy()
         self.trend_potential_changepoint_n = potential_changepoint_n
         self.time_col = time_col
         self.value_col = value_col
-        self.original_df = df.copy()
+        self.original_df = df
         # Resamples df to get a coarser granularity to get rid of shorter seasonality.
         # The try except below speeds up unnecessary datetime transformation.
-        try:
-            df_resample = df.resample(resample_freq, on=time_col).mean().reset_index()
-        except TypeError:
-            df = df.copy()
+        if resample_freq is not None:
+            try:
+                df_resample = df.resample(resample_freq, on=time_col).mean().reset_index()
+            except TypeError:
+                df[time_col] = pd.to_datetime(df[time_col])
+                df_resample = df.resample(resample_freq, on=time_col).mean().reset_index()
+        else:
             df[time_col] = pd.to_datetime(df[time_col])
-            df_resample = df.resample(resample_freq, on=time_col).mean().reset_index()
+            df_resample = df.copy()
         # The ``df.resample`` function creates NA when the original df has a missing observation
         # or its value is NA.
         # The estimation algorithm does not allow NA, so we drop those rows.
@@ -372,7 +402,7 @@ class ChangepointDetector:
                     method="custom",
                     dates=yearly_seasonality_changepoint_dates),
                 fs_components_df=pd.DataFrame({
-                    "name": ["conti_year"],
+                    "name": [TimeFeaturesEnum.conti_year.value],
                     "period": [1.0],
                     "order": [yearly_seasonality_order],
                     "seas_names": ["yearly"]})
@@ -460,12 +490,34 @@ class ChangepointDetector:
             "dates": trend_changepoints
         }
         # Computes trend estimates for seasonality use.
-        trend_estimation = estimate_trend_with_detected_changepoints(
-            df=df,
-            time_col=time_col,
-            value_col=value_col,
-            changepoints=trend_changepoints
-        )
+        if fast_trend_estimation:
+            # Fast calculation of trend estimation.
+            # Do not fit trend again on the original df.
+            # This is much faster when the original df has small frequencies.
+            # Uses linear interpolation on the trend fitted with the resampled df.
+            trend_estimation = np.matmul(
+                trend_df.values[:, :(len(trend_changepoints) + 1)],
+                trend_model.coef_[:(len(trend_changepoints) + 1)]
+            ) + trend_model.intercept_
+            trend_estimation = pd.DataFrame({
+                time_col: df_resample[time_col],
+                "trend": trend_estimation
+            })
+            trend_estimation = trend_estimation.merge(
+                df[[time_col]],
+                on=time_col,
+                how="right"
+            )
+            trend_estimation["trend"].interpolate(inplace=True)
+            trend_estimation.index = df[time_col]
+            trend_estimation = trend_estimation["trend"]
+        else:
+            trend_estimation = estimate_trend_with_detected_changepoints(
+                df=df,
+                time_col=time_col,
+                value_col=value_col,
+                changepoints=trend_changepoints
+            )
         self.trend_estimation = trend_estimation
         result = {
             "trend_feature_df": trend_df,
@@ -482,7 +534,10 @@ class ChangepointDetector:
             time_col,
             value_col,
             seasonality_components_df=pd.DataFrame({
-                "name": ["tod", "tow", "conti_year"],
+                "name": [
+                    TimeFeaturesEnum.tod.value,
+                    TimeFeaturesEnum.tow.value,
+                    TimeFeaturesEnum.conti_year.value],
                 "period": [24.0, 7.0, 1.0],
                 "order": [3, 3, 5],
                 "seas_names": ["daily", "weekly", "yearly"]}),
@@ -1024,6 +1079,7 @@ def get_changepoints_dict(df, time_col, value_col, changepoints_dict):
             "actual_changepoint_min_distance",
             "potential_changepoint_distance",
             "potential_changepoint_n",
+            "potential_changepoint_n_max",
             "no_changepoint_distance_from_begin",
             "no_changepoint_proportion_from_end",
             "no_changepoint_distance_from_end",

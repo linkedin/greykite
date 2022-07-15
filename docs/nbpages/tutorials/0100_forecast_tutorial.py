@@ -139,13 +139,13 @@ plotly.io.show(fig)
 # The `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries` class
 # has a very powerful plotting tool
 # `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays`.
-# A tutorial of using the function can be found at `Seasonality <../quickstart/0300_seasonality.html>`_.
+# A tutorial of using the function can be found at :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`.
 
 # %%
 # Baseline model
 # --------------------
 # A simple forecast can be created on the data set,
-# see details in `Simple Forecast <../quickstart/0100_simple_forecast.html>`_.
+# see details in :doc:`/gallery/quickstart/0100_simple_forecast`.
 # Note that if you do not provide any extra parameters, all model parameters are by default.
 # The default parameters are chosen conservatively, so consider this a baseline
 # model to assess forecast difficulty and make further improvements if necessary.
@@ -324,7 +324,7 @@ cv_results.transpose()
 # in the future. Including anomaly points will lead the model to fit the
 # anomaly as an intrinsic property of the time series, resulting in inaccurate forecasts.
 # These anomalies could be identified through overlay plots, see
-# `Seasonality <../quickstart/0300_seasonality.html>`_.
+# :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`.
 
 fig = ts.plot_quantiles_and_overlays(
     groupby_time_feature="month_dom",
@@ -356,8 +356,8 @@ plotly.io.show(fig)
 anomaly_df = pd.DataFrame({
     # start and end date are inclusive
     # each row is an anomaly interval
-    cst.START_DATE_COL: ["2010-06-05", "2012-03-01"],  # inclusive
-    cst.END_DATE_COL: ["2010-06-20", "2012-03-20"],  # inclusive
+    cst.START_TIME_COL: ["2010-06-05", "2012-03-01"],  # inclusive
+    cst.END_TIME_COL: ["2010-06-20", "2012-03-20"],  # inclusive
     cst.ADJUSTMENT_DELTA_COL: [np.nan, np.nan],  # mask as NA
 })
 # Creates anomaly_info dictionary.
@@ -382,7 +382,7 @@ anomaly_info = {
 # potential trend changepoints, at which time the linear growth changes its rate.
 # Detailed changepoint configuration can be found at :doc:`/pages/model_components/0500_changepoints`.
 # These points can be detected with the ``ChangepointDetector`` class. For a quickstart example,
-# see `Changepoint detection <../quickstart/0200_changepoint_detection.html>`_.
+# see :doc:`/gallery/quickstart/01_exploration/0100_changepoint_detection`.
 # Here we explore the automatic changepoint detection.
 # The parameters in this automatic changepoint detection is customized for this data set.
 # We keep the ``yearly_seasonality_order`` the same as the model's yearly seasonality order.
@@ -450,7 +450,7 @@ changepoints = {
 # Detailed seasonality configurations can be found at
 # :doc:`/pages/model_components/0300_seasonality`.
 # A detailed seasonality detection quickstart example on the same data set is
-# available at `Seasonality Detection <../quickstart/0300_seasonality.html>`_.
+# available at :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`.
 # The conclusions about seasonality terms are:
 #
 #   - daily seasonality is not available (because frequency is daily);
@@ -482,7 +482,7 @@ seasonality = {
 # differently. For ``SILVERKITE``, this means the Fourier series coefficients are allowed
 # to change. We could decide to add this feature if cross-validation performance is poor
 # and seasonality changepoints are detected in exploratory analysis.
-# For details, see :doc:`/gallery/quickstart/0200_changepoint_detection`.
+# For details, see :doc:`/gallery/quickstart/01_exploration/0100_changepoint_detection`.
 
 # %%
 # Holidays and events
@@ -495,7 +495,7 @@ seasonality = {
 # Events such as superbowl could potentially increase the pageviews.
 # Therefore, we add United States holidays and superbowls dates as custom events.
 # Other important events that affect the time series can also be found
-# through the yearly seasonality plots in `Seasonality <../quickstart/0300_seasonality.html>`_.
+# through the yearly seasonality plots in :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`.
 
 # Includes major holidays and the superbowl date.
 events = {
@@ -524,7 +524,7 @@ events = {
 # """"""
 # Now we consider some custom features that could relate to the pageviews. The documentation for
 # extra regressors can be found at :Doc:`/pages/model_components/0700_regressors`. As mentioned
-# in `Seasonality <../quickstart/0300_seasonality.html>`_, we observe that the football
+# in :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`, we observe that the football
 # season heavily affects the pageviews, therefore we need to use regressors to identify the football season.
 # There are multiple ways to include this feature: adding indicator for the whole season;
 # adding number of days till season start (end) and number of days since season start (end).
@@ -572,7 +572,7 @@ regressors = {
 # Finally, let's consider what possible interactions are relevant to the forecast problem.
 # Generally speaking, if a feature behaves differently on different values of another feature,
 # these two features could have potential interaction effects.
-# As in `Seasonality <../quickstart/0300_seasonality.html>`_, the weekly seasonality
+# As in :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`, the weekly seasonality
 # is different through football season and non-football season, therefore, the multiplicative
 # term ``is_football_season x weekly_seasonality`` is able to capture this pattern.
 
@@ -732,7 +732,7 @@ print(summary)
 # etc.
 #
 # For a more detailed guide on model summary, see
-# :doc:`/gallery/quickstart/0400_model_summary`.
+# :doc:`/gallery/quickstart/02_interpretability/0100_model_summary`.
 
 # %%
 # Summary in model tuning
@@ -769,7 +769,7 @@ print(summary)
 #      Try to detect this through the overlay plot
 #      (`~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays`), too.
 #      By default, we have a few pre-defined interaction terms, see
-#      `feature_set_enabled <../../pages/model_components/0600_custom.html#interactions>`_.
+#      `feature_sets_enabled <../../pages/model_components/0600_custom.html#interactions>`_.
 #
 #   #. Choose an appropriate fit algorithm. This is the algorithm that models the relationship between the features
 #      and the time series. See a full list of available algorithms at
@@ -780,7 +780,7 @@ print(summary)
 # It is worth noting that the template supports automatic grid search with different sets of parameters.
 # For each parameter, if you provide the configuration in a list, it will automatically run each combination
 # and choose the one with the best cross-validation performance. This will save a lot of time.
-# For details, see `grid search <../quickstart/0500_grid_search.html>`_.
+# For details, see :doc:`/gallery/quickstart/03_benchmark/0100_grid_search`.
 
 # %%
 # Follow your insights and intuitions, and play with the parameters, you will get good forecasts!

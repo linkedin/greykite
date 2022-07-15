@@ -23,6 +23,7 @@
 
 from abc import ABC
 from abc import abstractmethod
+from typing import Optional
 
 import pandas as pd
 from sklearn.base import BaseEstimator
@@ -241,6 +242,7 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
             self,
             df: pd.DataFrame,
             uncertainty_dict: dict,
+            fit_params: Optional[dict] = None,
             **kwargs):
         """Fits the uncertainty model with a given ``df`` and ``uncertainty_dict``.
 
@@ -255,6 +257,8 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
                     `~greykite.sklearn.uncertainty.uncertainty_methods.UncertaintyMethodEnum`.
                 "params": a dictionary that includes any additional parameters needed by the uncertainty method.
 
+        fit_params : `dict` [`str`, any] or None, default None
+            Parameters to be passed to the ``fit`` function.
         kwargs : additional parameters to be fed into the uncertainty method.
             These parameters are from the estimator attributes, not given by user.
 
@@ -268,7 +272,9 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
             uncertainty_dict = dict(
                 uncertainty_method=UncertaintyMethodEnum.simple_conditional_residuals.name,
                 params=dict(
-                    value_col=self.value_col_
+                    value_col=self.value_col_,
+                    is_residual_based=True,
+                    offset_col=cst.PREDICTED_COL
                 )
             )
         # Gets the uncertainty method.
@@ -297,11 +303,15 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
                 self.uncertainty_model = uncertainty_model(
                     uncertainty_dict=uncertainty_dict,
                     time_col=self.time_col_,
-                    value_col=self.value_col_,
                     coverage=self.coverage,
                     **kwargs
                 )
-                self.uncertainty_model.fit(df)
+                if fit_params is None:
+                    fit_params = {}
+                self.uncertainty_model.fit(
+                    df,
+                    **fit_params
+                )
             except UncertaintyError as e:
                 self.uncertainty_model = None
                 log_message(
@@ -312,7 +322,8 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
 
     def predict_uncertainty(
             self,
-            df: pd.DataFrame):
+            df: pd.DataFrame,
+            predict_params: Optional[dict] = None):
         """Makes predictions of prediction intervals for ``df`` based on the predictions
         and ``self.uncertainty_model``.
 
@@ -323,6 +334,8 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
             It should have either ``self.value_col_`` or
             `~greykite.common.constants.PREDICT_COL` which the
             prediction interval is based on.
+        predict_params : `dict` [`str`, any] or None, default None
+            Parameters to be passed to the ``predict`` function.
 
         Returns
         -------
@@ -341,7 +354,9 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
         # Tries to predict prediction intervals,
         # and skip if ``UncertaintyError`` occurred.
         try:
-            result_df = self.uncertainty_model.predict(df)
+            if predict_params is None:
+                predict_params = {}
+            result_df = self.uncertainty_model.predict(df, **predict_params)
         except UncertaintyError as e:
             log_message(
                 message=f"The following errors occurred during predicting the uncertainty model, "
@@ -379,4 +394,10 @@ class BaseForecastEstimator(BaseEstimator, RegressorMixin, ABC):
             if "residual_col" not in params:
                 params["residual_col"] = "residual_col"
             uncertainty_dict["params"] = params
-        return uncertainty_dict
+            return uncertainty_dict
+        if uncertainty_dict.get("uncertainty_method") == UncertaintyMethodEnum.quantile_regression.name:
+            params = uncertainty_dict.get("params", {})
+            if "value_col" not in params:
+                params["value_col"] = self.value_col_
+            uncertainty_dict["params"] = params
+            return uncertainty_dict

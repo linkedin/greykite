@@ -3,9 +3,9 @@ import pandas as pd
 import pytest
 
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import METRIC_COL
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.features.adjust_anomalous_data import adjust_anomalous_data
 from greykite.common.testing_utils import generate_anomalous_data
@@ -29,8 +29,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict={
             METRIC_COL: value_col,
@@ -51,8 +51,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict={
             "platform": "MOBILE",
@@ -73,8 +73,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict={
             METRIC_COL: value_col,
@@ -96,8 +96,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col="z",
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict={
             METRIC_COL: value_col,
@@ -118,8 +118,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col="z",
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict={
             METRIC_COL: value_col,
@@ -139,8 +139,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col="y",
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict={METRIC_COL: value_col},
         filter_by_value_col=None)
@@ -158,8 +158,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col="y",
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict=None,
         filter_by_value_col=METRIC_COL)
@@ -178,8 +178,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=ADJUSTMENT_DELTA_COL,
         filter_by_dict=None,
         filter_by_value_col=None)
@@ -199,8 +199,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=None,
         filter_by_dict=None,
         filter_by_value_col=None)
@@ -219,8 +219,8 @@ def test_adjust_anomalous_data(data):
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=None,
         filter_by_dict={
             METRIC_COL: ("y", "z"),
@@ -239,16 +239,16 @@ def test_adjust_anomalous_data(data):
     # Successful date conversion for comparison.
     # The provided dates are strings in `anomaly_df_format`, datetime in `df_raw`.
     anomaly_df_format = anomaly_df.copy()
-    anomaly_df_format[START_DATE_COL] = ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"]
-    anomaly_df_format[END_DATE_COL] = ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"]
+    anomaly_df_format[START_TIME_COL] = ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"]
+    anomaly_df_format[END_TIME_COL] = ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"]
     value_col = "y"
     adj_df_info = adjust_anomalous_data(
         df=df_raw,
         time_col=TIME_COL,
         value_col=value_col,
         anomaly_df=anomaly_df_format,
-        start_date_col=START_DATE_COL,
-        end_date_col=END_DATE_COL,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
         adjustment_delta_col=None,
         filter_by_dict={
             METRIC_COL: ("y", "z"),
@@ -265,8 +265,8 @@ def test_adjust_anomalous_data(data):
         adj_values=adj_values)
 
     # Checks failure to convert date
-    anomaly_df_format[START_DATE_COL] = ["999/999/2018", "1/4/2018", "1/8/2018", "1/10/2018"]
-    anomaly_df_format[END_DATE_COL] = ["999/999/2019", "1/6/2018", "1/9/2018", "1/10/2018"]
+    anomaly_df_format[START_TIME_COL] = ["999/999/2018", "1/4/2018", "1/8/2018", "1/10/2018"]
+    anomaly_df_format[END_TIME_COL] = ["999/999/2019", "1/6/2018", "1/9/2018", "1/10/2018"]
     with pytest.warns(
             UserWarning,
             match=r"Dates could not be parsed by `pandas.to_datetime`, using string comparison "
@@ -277,8 +277,8 @@ def test_adjust_anomalous_data(data):
             time_col=TIME_COL,
             value_col=value_col,
             anomaly_df=anomaly_df_format,
-            start_date_col=START_DATE_COL,
-            end_date_col=END_DATE_COL,
+            start_time_col=START_TIME_COL,
+            end_time_col=END_TIME_COL,
             adjustment_delta_col=None,
             filter_by_dict={
                 METRIC_COL: ("y", "z"),
@@ -298,15 +298,15 @@ def test_adjust_anomalous_data(data):
             time_col=TIME_COL,
             value_col=value_col,
             anomaly_df=anomaly_df,
-            start_date_col=START_DATE_COL,
-            end_date_col=END_DATE_COL,
+            start_time_col=START_TIME_COL,
+            end_time_col=END_TIME_COL,
             adjustment_delta_col=None,
             filter_by_dict=None,
             filter_by_value_col=None)
 
     # Checks the bad timestamps exception where a start date is after end date
     # Test is done by inputting the column names for
-    # ``start_date_col`` and ``end_date_col`` in reverse order.
+    # ``start_time_col`` and ``end_time_col`` in reverse order.
     expected_match = "End Time:"
     with pytest.raises(ValueError, match=expected_match):
         value_col = "y"
@@ -315,8 +315,8 @@ def test_adjust_anomalous_data(data):
             time_col=TIME_COL,
             value_col=value_col,
             anomaly_df=anomaly_df,
-            start_date_col=END_DATE_COL,
-            end_date_col=START_DATE_COL,
+            start_time_col=END_TIME_COL,
+            end_time_col=START_TIME_COL,
             adjustment_delta_col=None,
             filter_by_dict=None,
             filter_by_value_col=None)
@@ -329,8 +329,8 @@ def test_adjust_anomalous_data(data):
             time_col=TIME_COL,
             value_col=value_col,
             anomaly_df=anomaly_df,
-            start_date_col=START_DATE_COL,
-            end_date_col=END_DATE_COL,
+            start_time_col=START_TIME_COL,
+            end_time_col=END_TIME_COL,
             adjustment_delta_col=None,
             filter_by_dict={"device": "iPhone"},
             filter_by_value_col=None)

@@ -92,6 +92,18 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                 `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.forecast_simple_silverkite`.
                 Refer to that function for more details.
 
+                ``"auto_seasonality"`` : `bool`, default False
+                        Whether to automatically infer seasonality orders.
+                        If True, the seasonality orders will be automatically inferred from input timeseries
+                        and the following parameters will be ignored:
+
+                            * ``"yearly_seasonality"``
+                            * ``"quarterly_seasonality"``
+                            * ``"monthly_seasonality"``
+                            * ``"weekly_seasonality"``
+                            * ``"daily_seasonality"``
+
+                        For detail, see `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer`.
                 ``"yearly_seasonality"``: `str` or `bool` or `int` or a list of such values for grid search, default 'auto'
                     Determines the yearly seasonality
                     'auto', True, False, or a number for the Fourier order
@@ -113,37 +125,51 @@ class SimpleSilverkiteTemplate(BaseTemplate):
 
                 ``"growth_term"``: `str` or None or a list of such values for grid search
                     How to model the growth.
-                    Valid options are "linear", "quadratic", "sqrt", "cubic", "cuberoot"
+                    Valid options are "linear", "quadratic", "sqrt", "cubic", "cuberoot".
+                    See `~greykite.common.constants.GrowthColEnum`.
                     All these terms have their origin at the train start date.
 
             events: `dict` [`str`, `any`] or None, optional
                 Holiday/events configuration dictionary with the following optional keys:
 
-            ``"holiday_lookup_countries"``: `list` [`str`] or "auto" or None or a list of such values for grid search, default "auto"
-                The countries that contain the holidays you intend to model
-                (``holidays_to_model_separately``).
+                ``"auto_holiday"`` : `bool`, default False
+                    Whether to automatically infer holiday configuration based on the input timeseries.
+                    If True, the following keys will be ignored:
 
-                * If "auto", uses a default list of countries
-                  that contain the default ``holidays_to_model_separately``.
-                  See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO`.
-                * If a list, must be a list of country names.
-                * If None or an empty list, no holidays are modeled.
+                        * ``"holiday_lookup_countries"``
+                        * ``"holidays_to_model_separately"``
+                        * ``"holiday_pre_num_days"``
+                        * ``"holiday_post_num_days"``
+                        * ``"holiday_pre_post_num_dict"``
 
-            ``"holidays_to_model_separately"``: `list` [`str`] or "auto" or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None or a list of such values for grid search, default "auto"  # noqa: E501
-                Which holidays to include in the model.
-                The model creates a separate key, value for each item in ``holidays_to_model_separately``.
-                The other holidays in the countries are grouped together as a single effect.
+                    For details, see `~greykite.algo.common.holiday_inferrer.HolidayInferrer`.
+                    Extra events specified in ``daily_event_df_dict`` will be added to the inferred holidays.
 
-                * If "auto", uses a default list of important holidays.
-                  See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.
-                * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,
-                  uses all available holidays in ``holiday_lookup_countries``. This can often
-                  create a model that has too many parameters, and should typically be avoided.
-                * If a list, must be a list of holiday names.
-                * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together
-                  as a single effect.
+                ``"holiday_lookup_countries"``: `list` [`str`] or "auto" or None or a list of such values for grid search, default "auto"
+                    The countries that contain the holidays you intend to model
+                    (``holidays_to_model_separately``).
 
-                Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.
+                    * If "auto", uses a default list of countries
+                      that contain the default ``holidays_to_model_separately``.
+                      See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO`.
+                    * If a list, must be a list of country names.
+                    * If None or an empty list, no holidays are modeled.
+
+                ``"holidays_to_model_separately"``: `list` [`str`] or "auto" or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None or a list of such values for grid search, default "auto"  # noqa: E501
+                    Which holidays to include in the model.
+                    The model creates a separate key, value for each item in ``holidays_to_model_separately``.
+                    The other holidays in the countries are grouped together as a single effect.
+
+                    * If "auto", uses a default list of important holidays.
+                      See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.
+                    * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,
+                      uses all available holidays in ``holiday_lookup_countries``. This can often
+                      create a model that has too many parameters, and should typically be avoided.
+                    * If a list, must be a list of holiday names.
+                    * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together
+                      as a single effect.
+
+                    Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.
 
                 ``"holiday_pre_num_days"``: `int` or a list of such values for grid search, default 2
                     model holiday effects for pre_num days before the holiday.
@@ -152,93 +178,106 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                     model holiday effects for post_num days after the holiday.
                     The unit is days, not periods. It does not depend on input data frequency.
 
-            ``"holiday_pre_post_num_dict"``: `dict` [`str`, (`int`, `int`)] or None, default None
-                Overrides ``pre_num`` and ``post_num`` for each holiday in
-                ``holidays_to_model_separately``.
-                For example, if ``holidays_to_model_separately`` contains "Thanksgiving" and "Labor Day",
-                this parameter can be set to ``{"Thanksgiving": [1, 3], "Labor Day": [1, 2]}``,
-                denoting that the "Thanksgiving" ``pre_num`` is 1 and ``post_num`` is 3, and "Labor Day"
-                ``pre_num`` is 1 and ``post_num`` is 2.
-                Holidays not specified use the default given by ``pre_num`` and ``post_num``.
-            ``"daily_event_df_dict"``: `dict` [`str`, `pandas.DataFrame`] or None, default None
-                A dictionary of data frames, each representing events data for the corresponding key.
-                Specifies additional events to include besides the holidays specified above. The format
-                is the same as in `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
-                The DataFrame has two columns:
+                ``"holiday_pre_post_num_dict"``: `dict` [`str`, (`int`, `int`)] or None, default None
+                    Overrides ``pre_num`` and ``post_num`` for each holiday in
+                    ``holidays_to_model_separately``.
+                    For example, if ``holidays_to_model_separately`` contains "Thanksgiving" and "Labor Day",
+                    this parameter can be set to ``{"Thanksgiving": [1, 3], "Labor Day": [1, 2]}``,
+                    denoting that the "Thanksgiving" ``pre_num`` is 1 and ``post_num`` is 3, and "Labor Day"
+                    ``pre_num`` is 1 and ``post_num`` is 2.
+                    Holidays not specified use the default given by ``pre_num`` and ``post_num``.
+                ``"daily_event_df_dict"``: `dict` [`str`, `pandas.DataFrame`] or None, default None
+                    A dictionary of data frames, each representing events data for the corresponding key.
+                    Specifies additional events to include besides the holidays specified above. The format
+                    is the same as in `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
+                    The DataFrame has two columns:
 
-                    - The first column contains event dates. Must be in a format
-                      recognized by `pandas.to_datetime`. Must be at daily
-                      frequency for proper join. It is joined against the time
-                      in ``df``, converted to a day:
-                      ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.
-                    - the second column contains the event label for each date
+                        - The first column contains event dates. Must be in a format
+                          recognized by `pandas.to_datetime`. Must be at daily
+                          frequency for proper join. It is joined against the time
+                          in ``df``, converted to a day:
+                          ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.
+                        - the second column contains the event label for each date
 
-                The column order is important; column names are ignored.
-                The event dates must span their occurrences in both the training
-                and future prediction period.
+                    The column order is important; column names are ignored.
+                    The event dates must span their occurrences in both the training
+                    and future prediction period.
 
-                During modeling, each key in the dictionary is mapped to a categorical variable
-                named ``f"{EVENT_PREFIX}_{key}"``, whose value at each timestamp is specified
-                by the corresponding DataFrame.
+                    During modeling, each key in the dictionary is mapped to a categorical variable
+                    named ``f"{EVENT_PREFIX}_{key}"``, whose value at each timestamp is specified
+                    by the corresponding DataFrame.
 
-                For example, to manually specify a yearly event on September 1
-                during a training/forecast period that spans 2020-2022::
+                    For example, to manually specify a yearly event on September 1
+                    during a training/forecast period that spans 2020-2022::
 
-                    daily_event_df_dict = {
-                        "custom_event": pd.DataFrame({
-                            "date": ["2020-09-01", "2021-09-01", "2022-09-01"],
-                            "label": ["is_event", "is_event", "is_event"]
-                        })
-                    }
+                        daily_event_df_dict = {
+                            "custom_event": pd.DataFrame({
+                                "date": ["2020-09-01", "2021-09-01", "2022-09-01"],
+                                "label": ["is_event", "is_event", "is_event"]
+                            })
+                        }
 
-                It's possible to specify multiple events in the same df. Two events,
-                ``"sep"`` and ``"oct"`` are specified below for 2020-2021::
+                    It's possible to specify multiple events in the same df. Two events,
+                    ``"sep"`` and ``"oct"`` are specified below for 2020-2021::
 
-                    daily_event_df_dict = {
-                        "custom_event": pd.DataFrame({
-                            "date": ["2020-09-01", "2020-10-01", "2021-09-01", "2021-10-01"],
-                            "event_name": ["sep", "oct", "sep", "oct"]
-                        })
-                    }
+                        daily_event_df_dict = {
+                            "custom_event": pd.DataFrame({
+                                "date": ["2020-09-01", "2020-10-01", "2021-09-01", "2021-10-01"],
+                                "event_name": ["sep", "oct", "sep", "oct"]
+                            })
+                        }
 
-                Use multiple keys if two events may fall on the same date. These events
-                must be in separate DataFrames::
+                    Use multiple keys if two events may fall on the same date. These events
+                    must be in separate DataFrames::
 
-                    daily_event_df_dict = {
-                        "fixed_event": pd.DataFrame({
-                            "date": ["2020-09-01", "2021-09-01", "2022-09-01"],
-                            "event_name": "fixed_event"
-                        }),
-                        "moving_event": pd.DataFrame({
-                            "date": ["2020-09-01", "2021-08-28", "2022-09-03"],
-                            "event_name": "moving_event"
-                        }),
-                    }
+                        daily_event_df_dict = {
+                            "fixed_event": pd.DataFrame({
+                                "date": ["2020-09-01", "2021-09-01", "2022-09-01"],
+                                "event_name": "fixed_event"
+                            }),
+                            "moving_event": pd.DataFrame({
+                                "date": ["2020-09-01", "2021-08-28", "2022-09-03"],
+                                "event_name": "moving_event"
+                            }),
+                        }
 
-                The multiple event specification can be used even if events never overlap. An
-                equivalent specification to the second example::
+                    The multiple event specification can be used even if events never overlap. An
+                    equivalent specification to the second example::
 
-                    daily_event_df_dict = {
-                        "sep": pd.DataFrame({
-                            "date": ["2020-09-01", "2021-09-01"],
-                            "event_name": "is_event"
-                        }),
-                        "oct": pd.DataFrame({
-                            "date": ["2020-10-01", "2021-10-01"],
-                            "event_name": "is_event"
-                        }),
-                    }
+                        daily_event_df_dict = {
+                            "sep": pd.DataFrame({
+                                "date": ["2020-09-01", "2021-09-01"],
+                                "event_name": "is_event"
+                            }),
+                            "oct": pd.DataFrame({
+                                "date": ["2020-10-01", "2021-10-01"],
+                                "event_name": "is_event"
+                            }),
+                        }
 
-                Note: All these events are automatically added to the model. There is no need
-                to specify them in ``extra_pred_cols`` as you would for
-                `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
+                    Note: All these events are automatically added to the model. There is no need
+                    to specify them in ``extra_pred_cols`` as you would for
+                    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
 
-                Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
-                in the second column. This is reserved to indicate dates that do not
-                correspond to an event.
+                    Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
+                    in the second column. This is reserved to indicate dates that do not
+                    correspond to an event.
             changepoints: `dict` [`str`, `dict`] or None, optional
                 Specifies the changepoint configuration. Dictionary with the following
                 optional key:
+
+                ``"auto_growth"`` : `bool`, default False
+                    Whether to automatically infer growth configuration.
+                    If True, the growth term and automatically changepoint detection configuration
+                    will be inferred from input timeseries,
+                    and the following parameters will be ignored:
+
+                        * ``"growth_term"`` in ``growth`` dictionary
+                        * ``"changepoints_dict"`` (All parameters but custom changepoint parameters
+                          to be combined with automatically detected changepoints.)
+
+                    For detail, see
+                    `~greykite.algo.changepoint.adalasso.auto_changepoint_params.generate_trend_changepoint_detection_params`.
 
                 ``"changepoints_dict"``: `dict` or None or a list of such values for grid search
                     Changepoints dictionary passed to ``forecast_simple_silverkite``. A dictionary
@@ -312,6 +351,13 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                     The number of simulations to use. Applies only if any of the lags in ``autoreg_dict``
                     are smaller than ``forecast_horizon``. In that case, simulations are needed to generate
                     forecasts and prediction intervals.
+
+                ``"fast_simulation"`` : `bool`, default False
+                    Deterimes if fast simulations are to be used. This only impacts models
+                    which include auto-regression. This method will only generate one simulation
+                    without any error being added and then add the error using the volatility
+                    model. The advantage is a major boost in speed during inference and the
+                    disadvantage is potentially less accurate prediction intervals.
 
             regressors: `dict` [`str`, `any`] or None, optional
                 Specifies the regressors to include in the model (e.g. macro-economic factors).
@@ -490,7 +536,11 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                     If None, there is no upper bound.
                 ``"normalize_method"``: `str` or None, default None
                     The normalization method for feature matrix.
-                    Available values are "statistical" and "min_max".
+                    If a string is provided, it will be used as the normalization method
+                    in `~greykite.common.features.normalize.normalize_df`,
+                    passed via the argument ``method``.
+                    Available values are "statistical", "zero_to_one", "minus_half_to_half"
+                    and "zero_at_origin". See that function for more details.
 
             hyperparameter_override: `dict` [`str`, `any`] or None or `list` [`dict` [`str`, `any`] or None], optional
                 After the above model components are used to create a hyperparameter grid, the result is
@@ -526,12 +576,14 @@ class SimpleSilverkiteTemplate(BaseTemplate):
 
         model_template: `str`, `list`[`str`] or None, default None
             The simple silverkite template support single templates, multi templates or a list of single/multi templates.
-            A valid single template must be either ``SILVERKITE`` or consists of
+            A valid single template must be one of ``SILVERKITE``, ``SILVERKITE_MONTHLY``,
+            ``SILVERKITE_DAILY_1_CONFIG_1``, ``SILVERKITE_DAILY_1_CONFIG_2``, ``SILVERKITE_DAILY_1_CONFIG_3``,
+            ``SILVERKITE_EMPTY``, or that consists of
 
                 {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}
 
             For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL
-            can be found at `~greykite.framework.templates.template_defaults`. The components stand for seasonality,
+            can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,
             growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in
             `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in
             `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to
@@ -540,7 +592,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                 - Switch the order of different component-value pairs.
 
             A valid multi template must belong to
-            `~greykite.framework.templates.template_defaults.MULTI_TEMPLATES`
+            `~greykite.framework.templates.simple_silverkite_template_config.MULTI_TEMPLATES`
             or must be a list of single or multi template names.
     """
     DEFAULT_MODEL_TEMPLATE = "SILVERKITE"
@@ -841,7 +893,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}
 
         For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL
-        can be found at `~greykite.framework.templates.template_defaults`. The components stand for seasonality,
+        can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,
         growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in
         `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in
         `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to
@@ -862,7 +914,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             `DAILY_SEAS_LT_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_ON`.
         """
         if template in ("SILVERKITE",
-                        "SILVERKITE_WITH_AR",
+                        "SILVERKITE_MONTHLY",
                         "SILVERKITE_DAILY_1_CONFIG_1",
                         "SILVERKITE_DAILY_1_CONFIG_2",
                         "SILVERKITE_DAILY_1_CONFIG_3"):
@@ -925,12 +977,14 @@ class SimpleSilverkiteTemplate(BaseTemplate):
         """Checks the template name is valid and whether it is single or multi template.
         Raises an error if the template is not recognized.
 
-        A valid single template must be either ``SILVERKITE`` or consists of
+        A valid single template must be one of ``SILVERKITE``, ``SILVERKITE_MONTHLY``,
+        ``SILVERKITE_DAILY_1_CONFIG_1``, ``SILVERKITE_DAILY_1_CONFIG_2``, ``SILVERKITE_DAILY_1_CONFIG_3``,
+        ``SILVERKITE_EMPTY``, or that consists of
 
             {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}
 
         For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL
-        can be found at `~greykite.framework.templates.template_defaults`. The components stand for seasonality,
+        can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,
         growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in
         `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in
         `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to
@@ -939,7 +993,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             - Switch the order of different component-value pairs.
 
         A valid multi template must belong to
-        `~greykite.framework.templates.template_defaults.MULTI_TEMPLATES`
+        `~greykite.framework.templates.simple_silverkite_template_config.MULTI_TEMPLATES`
         or must be a list of single or multi template names.
 
         Parameters
@@ -955,7 +1009,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             "single" or "multi".
         """
         if (template in ["SILVERKITE",
-                         "SILVERKITE_WITH_AR",
+                         "SILVERKITE_MONTHLY",
                          "SILVERKITE_DAILY_1_CONFIG_1",
                          "SILVERKITE_DAILY_1_CONFIG_2",
                          "SILVERKITE_DAILY_1_CONFIG_3",
@@ -965,7 +1019,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             return "single"
         if template in self.constants.MULTI_TEMPLATES:
             return "multi"
-        raise ValueError(f"The template name {template} is not recognized. It must be 'SILVERKITE', 'SILVERKITE_WITH_AR', "
+        raise ValueError(f"The template name {template} is not recognized. It must be 'SILVERKITE', "
                          f"'SILVERKITE_DAILY_1_CONFIG_1', 'SILVERKITE_DAILY_1_CONFIG_2', 'SILVERKITE_DAILY_1_CONFIG_3', 'SILVERKITE_EMPTY', "
                          f"a `SimpleSilverkiteTemplateOptions` data class, of the type"
                          " '{FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}' or"
@@ -984,7 +1038,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}
 
         For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL
-        can be found at `~greykite.framework.templates.template_defaults`. The components stand for seasonality,
+        can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,
         growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in
         `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in
         `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to
@@ -1041,8 +1095,8 @@ class SimpleSilverkiteTemplate(BaseTemplate):
         """
         if template == "SILVERKITE":
             return self.constants.SILVERKITE
-        if template == "SILVERKITE_WITH_AR":
-            return self.constants.SILVERKITE_WITH_AR
+        if template == "SILVERKITE_MONTHLY":
+            return self.constants.SILVERKITE_MONTHLY
         if template == "SILVERKITE_DAILY_1_CONFIG_1":
             return self.constants.SILVERKITE_DAILY_1_CONFIG_1
         if template == "SILVERKITE_DAILY_1_CONFIG_2":
@@ -1057,6 +1111,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             seasonality=self.constants.COMMON_MODELCOMPONENTPARAM_PARAMETERS["SEAS"][freq][components[components.index("SEAS")+1]],
             growth=self.constants.COMMON_MODELCOMPONENTPARAM_PARAMETERS["GR"][components[components.index("GR")+1]],
             changepoints={
+                "auto_growth": False,
                 "changepoints_dict": self.constants.COMMON_MODELCOMPONENTPARAM_PARAMETERS["CP"][freq][components[components.index("CP")+1]],
                 "seasonality_changepoints_dict": None
             },
@@ -1072,7 +1127,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                 "min_admissible_value": None,
                 "max_admissible_value": None,
                 "regression_weight_col": None,
-                "normalize_method": None
+                "normalize_method": "zero_to_one"
             },
             autoregression=self.constants.COMMON_MODELCOMPONENTPARAM_PARAMETERS["AR"][components[components.index("AR")+1]],
             regressors={
@@ -1204,14 +1259,17 @@ class SimpleSilverkiteTemplate(BaseTemplate):
              `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam.hyperparameter_override`.
         """
         hyperparameter_grid = {
+            "estimator__auto_seasonality": model_components.seasonality["auto_seasonality"],
             "estimator__yearly_seasonality": model_components.seasonality["yearly_seasonality"],
             "estimator__quarterly_seasonality": model_components.seasonality["quarterly_seasonality"],
             "estimator__monthly_seasonality": model_components.seasonality["monthly_seasonality"],
             "estimator__weekly_seasonality": model_components.seasonality["weekly_seasonality"],
             "estimator__daily_seasonality": model_components.seasonality["daily_seasonality"],
+            "estimator__auto_growth": model_components.changepoints["auto_growth"],
             "estimator__growth_term": model_components.growth["growth_term"],
             "estimator__changepoints_dict": model_components.changepoints["changepoints_dict"],
             "estimator__seasonality_changepoints_dict": model_components.changepoints["seasonality_changepoints_dict"],
+            "estimator__auto_holiday": model_components.events["auto_holiday"],
             "estimator__holidays_to_model_separately": model_components.events["holidays_to_model_separately"],
             "estimator__holiday_lookup_countries": model_components.events["holiday_lookup_countries"],
             "estimator__holiday_pre_num_days": model_components.events["holiday_pre_num_days"],
@@ -1230,6 +1288,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             "estimator__normalize_method": model_components.custom["normalize_method"],
             "estimator__autoreg_dict": model_components.autoregression["autoreg_dict"],
             "estimator__simulation_num": model_components.autoregression["simulation_num"],
+            "estimator__fast_simulation": model_components.autoregression["fast_simulation"],
             "estimator__regressor_cols": model_components.regressors["regressor_cols"],
             "estimator__lagged_regressor_dict": model_components.lagged_regressors["lagged_regressor_dict"],
             "estimator__regression_weight_col": model_components.custom["regression_weight_col"],

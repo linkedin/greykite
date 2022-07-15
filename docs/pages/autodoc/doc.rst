@@ -32,6 +32,19 @@ Silverkite Template
 .. currentmodule:: greykite.framework.templates.silverkite_template
 .. autoclass:: SilverkiteTemplate
 
+Lag Based Template
+------------------
+.. autoclass:: greykite.framework.templates.lag_based_template.LagBasedTemplate
+
+.. autoclass:: greykite.sklearn.estimator.lag_based_estimator.LagBasedEstimator
+.. autoclass:: greykite.sklearn.estimator.lag_based_estimator.LagUnitEnum
+
+Multistage Forecast Template
+----------------------------
+.. currentmodule:: greykite.framework.templates.multistage_forecast_template
+.. autoclass:: MultistageForecastTemplate
+
+.. autoclass:: greykite.sklearn.estimator.multistage_forecast_estimator.MultistageForecastEstimator
 
 Prophet Template
 ----------------
@@ -61,6 +74,7 @@ Template Output
 
 Constants
 ---------
+.. autoclass:: greykite.common.aggregation_function_enum.AggregationFunctionEnum
 .. autoclass:: greykite.common.evaluation.EvaluationMetricEnum
 .. automodule:: greykite.common.constants
 .. automodule:: greykite.framework.constants
@@ -72,6 +86,14 @@ Constants
 .. autoclass:: greykite.algo.forecast.silverkite.constants.silverkite_time_frequency.SilverkiteTimeFrequencyEnum
 .. automodule:: greykite.framework.templates.simple_silverkite_template_config
 
+EasyConfig
+----------
+.. currentmodule:: greykite.algo.common.seasonality_inferrer
+.. autoclass:: SeasonalityInferrer
+.. autoclass:: TrendAdjustMethodEnum
+.. autoclass:: SeasonalityInferConfig
+
+.. autoclass:: greykite.algo.common.holiday_inferrer.HolidayInferrer
 
 Changepoint Detection
 ---------------------
@@ -94,6 +116,10 @@ Transformers
 .. automodule:: greykite.sklearn.transform.normalize_transformer
 .. automodule:: greykite.sklearn.transform.null_transformer
 .. automodule:: greykite.sklearn.transform.drop_degenerate_transformer
+
+Quantile Regression
+-------------------
+.. autoclass:: greykite.algo.common.l1_quantile_regression.QuantileRegression
 
 Hierarchical Forecast
 ---------------------

@@ -13,7 +13,7 @@ Together, growth and changepoints define the overall trend.
 Seasonality changepoints allow you to specify changes in the seasonality shapes.
 
 A quickstart example for automatic trend changepoint detection in Silverkite can be
-found at :doc:`/gallery/quickstart/0200_changepoint_detection`
+found at :doc:`/gallery/quickstart/01_exploration/0100_changepoint_detection`
 
 By default, there are no changepoints.
 
@@ -283,6 +283,27 @@ Other usage
     By interacting trend and seasonality, you can use changepoints to
     specify changes in seasonality (e.g increasing over time).
 
+
+Auto growth
+^^^^^^^^^^^
+
+The Silverkite model supports automatically setting the growth configuration.
+Although automatic changepoint detection is already set by ``method = "auto"``,
+there are still parameters that need to be specified.
+The "auto" growth will automatically configure the growth function and
+the automatic changepoint detection parameters by checking the data and forecast configurations.
+
+To use the auto growth option, simply specify ``auto_growth = True`` in the ``changepoints`` dictionary.
+The auto growth functionality will override the specified growth function and trend changepoint detection
+parameters. However, you can specify custom changepoints parameters in ``changepoints_dict``
+(``dates``, ``combine_changepoint_min_distance`` and ``keep_detected``),
+so that these custom changepoints will be added to any detected changepoints.
+
+.. code-block:: python
+
+    changepoints=dict(
+        auto_growth=True
+    )
 
 .. _seasonality-changepoints:
 

@@ -57,7 +57,7 @@ class ForecastConfigDefaults:
 
     Subclasses may override these if different defaults are desired.
     """
-    DEFAULT_MODEL_TEMPLATE = "SILVERKITE"
+    DEFAULT_MODEL_TEMPLATE = "AUTO"
     """The default model template. See `~greykite.framework.templates.model_templates.ModelTemplateEnum`.
     Uses a string to avoid circular imports.
     """
@@ -198,7 +198,7 @@ class ForecastConfigDefaults:
         return model_components
 
     def apply_model_template_defaults(self, model_template: Optional[Union[str, List[Optional[str]]]] = None) -> Union[str, List[str]]:
-        """Applies the default ModelComponentsParam values to the given object.
+        """Applies the default model template to the given object.
 
         Unpacks a list of a single element to the element itself.
         Sets default value if None.

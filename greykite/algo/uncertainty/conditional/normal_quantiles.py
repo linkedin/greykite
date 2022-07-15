@@ -29,25 +29,43 @@ def normal_quantiles_df(
         std_col,
         mean_col=None,
         fixed_mean=0.0,
-        quantiles=(0.025, 0.975)):
-    """Calculates normal quantiles for each row of dataframe (df)
-    using available means (either given in "mean_col" or "fixed_mean") and stds ("std_col").
+        quantiles=(0.025, 0.975),
+        quantile_summary_col="normal_quantiles"):
+    """Calculates normal quantiles for each row of ``df``
+    using available means (either given in ``mean_col`` or ``fixed_mean``) and
+    standard deviations (given in ``std_col``).
 
-    :param mean_col: string,  the column with the sample means for each row
-    :param std: string, the column with the sample std for each row
-    :param sample_size: integer, the sample size of the random sample for the given row
-    :quantiles: tuple of float/double with values in [0, 1], denoting the desired quantiles
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        A DataFrame containing the standard deviations.
+    fixed_mean : `float`, default 0
+        Fixed sample mean to add to each row of ``df``.
+        It is only used if ``mean_col`` is None.
+    mean_col : `str` or None, default None
+        The column with the sample means for each row of ``df``.
+    std_col : `str`
+        The column with the sample std for each row
+    quantiles : `list` [`float`]
+        The normal quantiles to be calculated for each row of ``df``.
+    quantile_summary_col : `str`, default "normal_quantiles"
+        The column name where the computed quantiles are stored.
+
+    Returns
+    -------
+    df : `pandas.DataFrame`
+        ``df`` augmented with normal quantiles for each row.
     """
     df = df.copy()
     if mean_col is None:
-        df["normal_quantiles"] = df.apply(
+        df[quantile_summary_col] = df.apply(
             lambda row: stats.norm.ppf(
                 loc=fixed_mean,
                 scale=row[std_col],
                 q=quantiles),
             axis=1)
     else:
-        df["normal_quantiles"] = df.apply(
+        df[quantile_summary_col] = df.apply(
             lambda row: stats.norm.ppf(
                 loc=row[mean_col],
                 scale=row[std_col],

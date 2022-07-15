@@ -32,14 +32,16 @@ from sklearn.exceptions import NotFittedError
 from sklearn.metrics import mean_squared_error
 
 from greykite.algo.common.col_name_utils import create_pred_category
+from greykite.algo.common.ml_models import breakdown_regression_based_prediction
 from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteForecast
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_silverkite_uncertainty_dict
-from greykite.algo.forecast.silverkite.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.common import constants as cst
 from greykite.common.features.timeseries_lags import min_max_lag_order
 from greykite.common.time_properties import min_gap_in_seconds
 from greykite.common.time_properties_forecast import get_simple_time_frequency_from_period
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
+from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
+from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
 
 
 class BaseSilverkiteEstimator(BaseForecastEstimator):
@@ -90,7 +92,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
     ----------
     silverkite : Class or a derived class of `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast`
         The silverkite algorithm instance used for forecasting
-    silverkite_diagnostics : Class or a derived class of `~greykite.algo.forecast.silverkite.silverkite_diagnostics.SilverkiteDiagnostics`
+    silverkite_diagnostics : Class or a derived class of `~greykite.sklearn.estimator.silverkite_diagnostics.SilverkiteDiagnostics`
         The silverkite class used for plotting and generating model summary.
     model_dict : `dict` or None
         A dict with fitted model and its attributes.
@@ -142,7 +144,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         - ``fs_components_df["seas_names"]`` (e.g. ``daily``, ``weekly``) is appended
           to the column names, if provided.
 
-    `~greykite.algo.forecast.silverkite.silverkite_diagnostics.SilverkiteDiagnostics.plot_silverkite_components` groups
+    `~greykite.sklearn.estimator.silverkite_diagnostics.SilverkiteDiagnostics.plot_silverkite_components` groups
     based on ``fs_components_df["seas_names"]`` passed to ``forecast_silverkite`` during fit.
     E.g. any column containing ``daily`` is added to daily seasonality effect. The reason
     is as follows:
@@ -363,21 +365,46 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
             trained_model=self.model_dict,
             past_df=self.past_df,
             new_external_regressor_df=None)  # regressors are included in X
-
         pred_df = pred_res["fut_df"]
+        x_mat = pred_res["x_mat"]
+        assert len(pred_df) == len(X), "The returned prediction data must have same number of rows as the input ``X``"
+        assert len(x_mat) == len(X), "The returned design matrix (features matrix) must have same number of rows as the input ``X``"
+
+        # Predicts the uncertainty model if not already fit.
+        if self.uncertainty_model is not None:
+            # The quantile regression model.
+            if self.uncertainty_dict.get("uncertainty_method") == UncertaintyMethodEnum.quantile_regression.name:
+                pred_df = self.predict_uncertainty(
+                    df=pred_df.rename(
+                        # The ``self.value_col_`` in ``pred_df`` is the predictions.
+                        columns={self.value_col_: cst.PREDICTED_COL}
+                    ),
+                    predict_params=dict(
+                        x_mat=x_mat
+                    )
+                )
+
+            # In case prediction fails for uncertainty, uses the original output.
+            if pred_df is None:
+                pred_df = pred_res["fut_df"]
+
         self.forecast = pred_df
-        self.forecast_x_mat = pred_res["x_mat"]
+        self.forecast_x_mat = x_mat
+
         # renames columns to standardized schema
         output_columns = {
-            self.time_col_: cst.TIME_COL,
-            self.value_col_: cst.PREDICTED_COL}
+            self.time_col_: cst.TIME_COL}
+        if cst.PREDICTED_COL in pred_df.columns:
+            output_columns[cst.PREDICTED_COL] = cst.PREDICTED_COL
+        elif self.value_col_ in pred_df.columns:
+            output_columns[self.value_col_] = cst.PREDICTED_COL
 
-        # Checks if uncertainty is also returned.
+        # Checks if uncertainty by "simple_conditional_residuals" is also returned.
         # If so, extract the upper and lower limits of the tuples in
         # ``uncertainty_col`` to be lower and upper limits of the prediction interval.
         # Note that the tuple might have more than two elements if more than two
         # ``quantiles`` are passed in ``uncertainty_dict``.
-        uncertainty_col = f"{self.value_col_}_quantile_summary"
+        uncertainty_col = cst.QUANTILE_SUMMARY_COL
         if uncertainty_col in list(pred_df.columns):
             pred_df[cst.PREDICTED_LOWER_COL] = pred_df[uncertainty_col].apply(
                 lambda x: x[0])
@@ -386,17 +413,95 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
             # The following entries are to include the columns in the output,
             # they are not intended to rename the columns.
             output_columns.update({
-                cst.PREDICTED_LOWER_COL: cst.PREDICTED_LOWER_COL,
-                cst.PREDICTED_UPPER_COL: cst.PREDICTED_UPPER_COL,
                 uncertainty_col: uncertainty_col})
             if cst.ERR_STD_COL in pred_df.columns:
                 output_columns.update({cst.ERR_STD_COL: cst.ERR_STD_COL})
+        # Checks if lower/upper columns are in the output df.
+        # If so, includes these columns in the final output.
+        if cst.PREDICTED_LOWER_COL in pred_df.columns and cst.PREDICTED_UPPER_COL in pred_df.columns:
+            output_columns.update({
+                cst.PREDICTED_LOWER_COL: cst.PREDICTED_LOWER_COL,
+                cst.PREDICTED_UPPER_COL: cst.PREDICTED_UPPER_COL})
 
         predictions = (pred_df[output_columns.keys()]
                        .rename(output_columns, axis=1))
         # Caches the predictions
         self.cached_predictions_ = predictions
         return predictions
+
+    def forecast_breakdown(
+            self,
+            grouping_regex_patterns_dict,
+            forecast_x_mat=None,
+            time_values=None,
+            center_components=False,
+            denominator=None,
+            plt_title="breakdown of forecasts"):
+        """Generates silverkite forecast breakdown for groupings given in
+        ``grouping_regex_patterns_dict``. Note that this only works for
+        additive regression models and not for models such as random forest.
+
+        Parameters
+        ----------
+        grouping_regex_patterns_dict : `dict` {`str`: `str`}
+            A dictionary with group names as keys and regexes as values.
+            This dictinary is used to partition the columns into various groups
+        forecast_x_mat : `pd.DataFrame`, default None
+            The dataframe of design matrix of regression model.
+            If None, this will be extracted from the estimator.
+        time_values : `list` or `np.array`, default None
+            A collection of values (usually timestamps) to be used in the figure.
+            It can also be used to join breakdown data with other data when needed.
+            If None, and ``forecast_x_mat`` is not passed, timestamps will be extracted
+            from the estimator to match the``forecast_x_mat`` which is also extracted
+            from the estimator.
+            If None, and``forecast_x_mat`` is passed, the timestamps cannot be inferred.
+            Therefore we simply create an integer index with size of ``forecast_x_mat``.
+        center_components : `bool`, default False
+            It determines if components should be centered at their mean and the mean
+            be added to the intercept. More concretely if a componet is "x" then it will
+            be mapped to "x - mean(x)"; and "mean(x)" will be added to the intercept so
+            that the sum of the components remains the same.
+        denominator : `str`, default None
+            If not None, it will specify a way to divide the components. There are
+            two options implemented:
+
+            - "abs_y_mean" : `float`
+                The absolute value of the observed mean of the response
+            - "y_std" : `float`
+                The standard deviation of the observed response
+
+        plt_title : `str`, default "prediction breakdown"
+            The title of generated plot
+
+        Returns
+        -------
+        result : `dict`
+            Dictionary returned by `~greykite.algo.common.ml_models.breakdown_regression_based_prediction`
+        """
+        # If ``forecast_x_mat`` is not passed, we assume its the
+        # ``forecast_x_mat`` from the estimator.
+        # In this case, we also have access to the corresponding timestamps.
+        if forecast_x_mat is None:
+            forecast_x_mat = self.forecast_x_mat
+            time_values = self.forecast[self.model_dict["time_col"]]
+
+        # If ``time_values`` is not passed or implicitly grabbed from previous step,
+        # we simply create an integer index with size of ``forecast_x_mat``.
+        # This will be useful in the figure x axis.
+        if time_values is None:
+            time_values = range(len(forecast_x_mat))
+
+        return breakdown_regression_based_prediction(
+            trained_model=self.model_dict,
+            x_mat=forecast_x_mat,
+            grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+            remainder_group_name="OTHER",
+            center_components=center_components,
+            denominator=denominator,
+            index_values=time_values,
+            index_col=self.model_dict["time_col"],
+            plt_title=plt_title)
 
     @property
     def pred_category(self):
@@ -407,7 +512,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
 
             - "intercept" : the intercept.
             - "time_features" : the predictors that include
-              `~greykite.common.constants.TIME_FEATURES`
+              `~greykite.common.constants.TimeFeaturesEnum`
               but not
               `~greykite.common.constants.SEASONALITY_REGEX`.
             - "event_features" : the predictors that include
@@ -439,10 +544,16 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
             # regressor_cols could be non-exist/None/list
             # the if catches non-exist and None
             regressor_cols = [] if getattr(self, "regressor_cols", None) is None else getattr(self, "regressor_cols")
+            # lagged regressors
+            lagged_regressor_dict = getattr(self, "lagged_regressor_dict", None)
+            lagged_regressor_cols = []
+            if lagged_regressor_dict is not None:
+                lagged_regressor_cols = list(lagged_regressor_dict.keys())
             self._pred_category = create_pred_category(
                 pred_cols=self.model_dict["x_mat"].columns,
                 # extra regressors are specified via "regressor_cols" in simple_silverkite_estimator
-                extra_pred_cols=extra_pred_cols + regressor_cols)
+                extra_pred_cols=extra_pred_cols + regressor_cols + lagged_regressor_cols,
+                df_cols=list(self.model_dict["df"].columns))
         return self._pred_category
 
     def get_max_ar_order(self):

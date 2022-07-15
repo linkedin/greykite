@@ -28,6 +28,9 @@ Options (defaults shown for ``SILVERKITE`` template):
         `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.forecast_simple_silverkite`.
         Refer to that function for more details.
 
+        auto_seasonality: `bool`, default False
+            If set to True, will trigger automatic seasonality inferring.
+            The keys below are ignored unless the value is False to force turn the seasonality off.
         yearly_seasonality: `str` or `bool` or `int` or a list of such values for grid search, default 'auto'
             Determines the yearly seasonality
             'auto', True, False, or a number for the Fourier order
@@ -46,6 +49,10 @@ Options (defaults shown for ``SILVERKITE`` template):
 
 
 For each seasonality, you can choose ``'auto', True, False, or a number for the Fourier order``.
+Alternatively, you can choose to use automatic seasonality inferrer, which will infer
+all seasonality orders for you.
+Simply set ``auto_seasonality=True``, and the seasonality orders will be populated automatically.
+For more details, see Seasonality Inferrer in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
 
 .. code-block:: none
 
@@ -99,6 +106,12 @@ Examples:
         monthly_seasonality=False,
         weekly_seasonality=[3, 1],
         daily_seasonality=False,
+    )
+
+    # Auto seasonality
+    seasonality = dict(
+        auto_seasonality=True,  # automatically infers all seasonality orders
+        yearly_seasonality=False,  # forces turning yearly seasonality off despite the inferring result
     )
 
 

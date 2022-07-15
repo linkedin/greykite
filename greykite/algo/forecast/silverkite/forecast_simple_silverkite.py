@@ -29,6 +29,9 @@ from typing import Union
 import pandas as pd
 
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_changepoints_dict
+from greykite.algo.forecast.silverkite.auto_config import get_auto_growth
+from greykite.algo.forecast.silverkite.auto_config import get_auto_holidays
+from greykite.algo.forecast.silverkite.auto_config import get_auto_seasonality
 from greykite.algo.forecast.silverkite.constants.silverkite_column import SilverkiteColumn
 from greykite.algo.forecast.silverkite.constants.silverkite_constant import SilverkiteConstant
 from greykite.algo.forecast.silverkite.constants.silverkite_constant import default_silverkite_constant
@@ -40,7 +43,7 @@ from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import 
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import get_event_pred_cols
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import patsy_categorical_term
 from greykite.common import constants as cst
-from greykite.common.constants import GROWTH_COL_ALIAS
+from greykite.common.constants import GrowthColEnum
 from greykite.common.enums import SimpleTimeFrequencyEnum
 from greykite.common.enums import TimeEnum
 from greykite.common.features.timeseries_features import get_available_holidays_across_countries
@@ -57,11 +60,13 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
     Provides an alternative interface with simplified configuration parameters.
     Produces the same trained model output and uses the same predict functions.
     """
+
     def __init__(
             self,
             constants: SilverkiteConstant = default_silverkite_constant):
         super().__init__(constants=constants)
-        self._silverkite_time_frequency_enum: Type[SilverkiteTimeFrequencyEnum] = constants.get_silverkite_time_frequency_enum()
+        self._silverkite_time_frequency_enum: Type[
+            SilverkiteTimeFrequencyEnum] = constants.get_silverkite_time_frequency_enum()
         self._silverkite_holiday: Type[SilverkiteHoliday] = constants.get_silverkite_holiday()
         self._silverkite_column: Type[SilverkiteColumn] = constants.get_silverkite_column()
 
@@ -78,13 +83,16 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             training_fraction: Optional[float] = 0.9,
             fit_algorithm: str = "ridge",
             fit_algorithm_params: Optional[Dict] = None,
+            auto_holiday: bool = False,
             holidays_to_model_separately: Optional[Union[str, List[str]]] = "auto",
             holiday_lookup_countries: Optional[Union[str, List[str]]] = "auto",
             holiday_pre_num_days: int = 2,
             holiday_post_num_days: int = 2,
             holiday_pre_post_num_dict: Optional[Dict] = None,
             daily_event_df_dict: Optional[Dict] = None,
+            auto_growth: bool = False,
             changepoints_dict: Optional[Dict] = None,
+            auto_seasonality: bool = False,
             yearly_seasonality: Union[bool, str, int] = "auto",
             quarterly_seasonality: Union[bool, str, int] = "auto",
             monthly_seasonality: Union[bool, str, int] = "auto",
@@ -100,7 +108,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             max_admissible_value: Optional[float] = None,
             uncertainty_dict: Optional[Dict] = None,
             normalize_method: Optional[str] = None,
-            growth_term: Optional[str] = "linear",
+            growth_term: Optional[str] = cst.GrowthColEnum.linear.name,
             regressor_cols: Optional[List[str]] = None,
             feature_sets_enabled: Optional[Union[bool, str, Dict[str, Optional[Union[bool, str]]]]] = "auto",
             extra_pred_cols: Optional[List[str]] = None,
@@ -108,7 +116,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             explicit_pred_cols: Optional[List[str]] = None,
             regression_weight_col: Optional[str] = None,
             simulation_based: Optional[bool] = False,
-            simulation_num: int = 10):
+            simulation_num: int = 10,
+            fast_simulation: bool = False):
         """Converts parameters of
         :func:`~greykite.algo.forecast.silverkite.forecast_simple_silverkite` into those
         of :func:`~greykite.algo.forecast.forecast_silverkite.SilverkiteForecast::forecast`.
@@ -218,6 +227,18 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         fit_algorithm_params : `dict` or None, optional, default None
             Parameters passed to the requested fit_algorithm.
             If None, uses the defaults in `~greykite.algo.common.ml_models.fit_model_via_design_matrix`.
+        auto_holiday : `bool`, default False
+            Whether to automatically infer holiday configuration based on the input timeseries.
+            The candidate lookup countries are specified by ``holiday_lookup_countries``.
+            If True, the following parameters will be ignored:
+
+                * "holidays_to_model_separately"
+                * "holiday_pre_num_days"
+                * "holiday_post_num_days"
+                * "holiday_pre_post_num_dict"
+
+            For details, see `~greykite.algo.common.holiday_inferrer.HolidayInferrer`.
+            Extra events specified in ``daily_event_df_dict`` will be added to the inferred holidays.
         holiday_lookup_countries : `list` [`str`] or "auto" or None, optional, default "auto"
             The countries that contain the holidays you intend to model
             (``holidays_to_model_separately``).
@@ -331,6 +352,19 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
             in the second column. This is reserved to indicate dates that do not
             correspond to an event.
+        auto_growth : `bool`, default False
+            Whether to automatically infer growth configuration.
+            If True, the growth term and automatically changepoint detection configuration
+            will be inferred from input timeseries,
+            and the following parameters will be ignored:
+
+                * "growth_term"
+                * "changepoints_dict" (Except parameters that controls how custom changepoint
+                  are combined with automatically detected changepoints. These parameters include
+                  "dates", "combine_changepoint_min_distance" and "keep_detected".)
+
+            For detail, see
+            `~greykite.algo.changepoint.adalasso.auto_changepoint_params.generate_trend_changepoint_detection_params`.
         changepoints_dict : `dict` or None, optional, default None
             Specifies the changepoint configuration.
 
@@ -372,6 +406,21 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
                 "custom_changepoint_dates", "min_distance" and "keep_detected" in
                 `~greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints`.
 
+        auto_seasonality : `bool`, default False
+            Whether to automatically infer seasonality orders.
+            If True, the seasonality orders will be automatically inferred from input timeseries
+            and the following parameters will be ignored unless the value is ``False``:
+
+                * "yearly_seasonality"
+                * "quarterly_seasonality"
+                * "monthly_seasonality"
+                * "weekly_seasonality"
+                * "daily_seasonality"
+
+            If any of the above parameter's value is ``False``,
+            the corresponding seasonality order will be forced to be zero,
+            regardless of the inferring result.
+            For detail, see `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer`.
         yearly_seasonality : `str` or `bool` or `int`
             Determines the yearly seasonality.
             'auto', True, False, or a number for the Fourier order
@@ -474,12 +523,14 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         normalize_method : `str` or None, default None
             If a string is provided, it will be used as the normalization method
             in `~greykite.common.features.normalize.normalize_df`, passed via
-            the argument ``method``. Available options are: "min_max", "statistical".
+            the argument ``method``.
+            Available options are: "zero_to_one", "statistical", "minus_half_to_half", "zero_at_origin".
             If None, no normalization will be performed.
             See that function for more details.
         growth_term : `str` or None, optional, default "ct1"
             How to model the growth. Valid options are
             {"linear", "quadratic", "sqrt", "cuberoot"}.
+            See `~greykite.common.constants.GrowthColEnum`.
         regressor_cols : `list` [`str`] or None, optional, default None
             The columns in ``df`` to use as regressors.
             These must be provided during prediction as well.
@@ -552,6 +603,12 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         simulation_num : `int`, default 10
             The number of simulations for when simulations are used for generating
             forecasts and prediction intervals.
+        fast_simulation: `bool`, default False
+            Deterimes if fast simulations are to be used. This only impacts models
+            which include auto-regression. This method will only generate one simulation
+            without any error being added and then add the error using the volatility
+            model. The advantage is a major boost in speed during inference and the
+            disadvantage is potentially less accurate prediction intervals.
 
 
         Returns
@@ -591,13 +648,27 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             origin_for_time_vars = time_properties["origin_for_time_vars"]
 
         # Specifies seasonality (added to ``extra_pred_cols`` by `SilverkiteForecast::forecast`)
-        seasonality_dict = {
-            "yearly_seasonality": yearly_seasonality,
-            "quarterly_seasonality": quarterly_seasonality,
-            "monthly_seasonality": monthly_seasonality,
-            "weekly_seasonality": weekly_seasonality,
-            "daily_seasonality": daily_seasonality,
-        }
+        # Seasonality orders are automatically inferred if ``auto_seasonality`` is True,
+        # and they are pulled from configuration if False.
+        if auto_seasonality:
+            seasonality_dict = get_auto_seasonality(
+                df=df,
+                time_col=time_col,
+                value_col=value_col,
+                yearly_seasonality=(yearly_seasonality is not False),
+                quarterly_seasonality=(quarterly_seasonality is not False),
+                monthly_seasonality=(monthly_seasonality is not False),
+                weekly_seasonality=(weekly_seasonality is not False),
+                daily_seasonality=(daily_seasonality is not False)
+            )
+        else:
+            seasonality_dict = {
+                "yearly_seasonality": yearly_seasonality,
+                "quarterly_seasonality": quarterly_seasonality,
+                "monthly_seasonality": monthly_seasonality,
+                "weekly_seasonality": weekly_seasonality,
+                "daily_seasonality": daily_seasonality,
+            }
 
         fs_components_df = self.__get_silverkite_seasonality(
             simple_freq=time_properties["simple_freq"].name,
@@ -605,21 +676,38 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             seasonality=seasonality_dict)
 
         # Specifies growth (via ``extra_pred_cols``)
+        # The ``growth_term`` and ``changepoints_dict`` are automatically inferred
+        # and overridden if ``auto_growth`` is True.
+        if auto_growth:
+            growth_result = get_auto_growth(
+                df=df,
+                time_col=time_col,
+                value_col=value_col,
+                forecast_horizon=forecast_horizon,
+                changepoints_dict_override=changepoints_dict
+            )
+            growth_term = growth_result["growth_term"]
+            changepoints_dict = growth_result["changepoints_dict"]
         growth_term_formula = None
         if growth_term is not None:
-            growth_term_formula = GROWTH_COL_ALIAS[growth_term]
+            growth_term_formula = GrowthColEnum[growth_term].value
             extra_pred_cols += [growth_term_formula]
 
         # Specifies events (via ``daily_event_df_dict``, ``extra_pred_cols``).
         # Constant daily effect.
         holiday_df_dict = self.__get_silverkite_holidays(
+            auto_holiday=auto_holiday,
             holiday_lookup_countries=holiday_lookup_countries,
             holidays_to_model_separately=holidays_to_model_separately,
             start_year=time_properties["start_year"],
             end_year=time_properties["end_year"],
             pre_num=holiday_pre_num_days,
             post_num=holiday_post_num_days,
-            pre_post_num_dict=holiday_pre_post_num_dict)
+            pre_post_num_dict=holiday_pre_post_num_dict,
+            df=df,
+            time_col=time_col,
+            value_col=value_col,
+            forecast_horizon=forecast_horizon)
         if holiday_df_dict is not None:
             # Adds holidays to the user-specified events,
             # giving preference to user events
@@ -687,33 +775,34 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         # the parameters to call ``SilverkiteForecast::forecast``
         # parameters that are directly passed through are noted below
         parameters = dict(
-            df=df,                                                          # pass-through
-            time_col=time_col,                                              # pass-through
-            value_col=value_col,                                            # pass-through
+            df=df,  # pass-through
+            time_col=time_col,  # pass-through
+            value_col=value_col,  # pass-through
             origin_for_time_vars=origin_for_time_vars,
             extra_pred_cols=extra_pred_cols,
             drop_pred_cols=drop_pred_cols,
             explicit_pred_cols=explicit_pred_cols,
-            train_test_thresh=train_test_thresh,                            # pass-through
-            training_fraction=training_fraction,                            # pass-through
-            fit_algorithm=fit_algorithm,                                    # pass-through
-            fit_algorithm_params=fit_algorithm_params,                      # pass-through
+            train_test_thresh=train_test_thresh,  # pass-through
+            training_fraction=training_fraction,  # pass-through
+            fit_algorithm=fit_algorithm,  # pass-through
+            fit_algorithm_params=fit_algorithm_params,  # pass-through
             daily_event_df_dict=daily_event_df_dict,
             fs_components_df=fs_components_df,
-            autoreg_dict=autoreg_dict,                                      # pass-through
-            past_df=past_df,                                                # pass-through
-            lagged_regressor_dict=lagged_regressor_dict,                    # pass-through
-            changepoints_dict=changepoints_dict,                            # pass-through
-            seasonality_changepoints_dict=seasonality_changepoints_dict,    # pass-through
+            autoreg_dict=autoreg_dict,  # pass-through
+            past_df=past_df,  # pass-through
+            lagged_regressor_dict=lagged_regressor_dict,  # pass-through
+            changepoints_dict=changepoints_dict,  # pass-through
+            seasonality_changepoints_dict=seasonality_changepoints_dict,  # pass-through
             changepoint_detector=changepoint_detector,
-            min_admissible_value=min_admissible_value,                      # pass-through
-            max_admissible_value=max_admissible_value,                      # pass-through
+            min_admissible_value=min_admissible_value,  # pass-through
+            max_admissible_value=max_admissible_value,  # pass-through
             uncertainty_dict=uncertainty_dict,
-            normalize_method=normalize_method,                              # pass-through
-            regression_weight_col=regression_weight_col,                    # pass-through
-            forecast_horizon=forecast_horizon,                              # pass-through
-            simulation_based=simulation_based,                              # pass-through
-            simulation_num=simulation_num                                   # pass-through
+            normalize_method=normalize_method,  # pass-through
+            regression_weight_col=regression_weight_col,  # pass-through
+            forecast_horizon=forecast_horizon,  # pass-through
+            simulation_based=simulation_based,  # pass-through
+            simulation_num=simulation_num,  # pass-through
+            fast_simulation=fast_simulation  # pass-through
         )
 
         return parameters
@@ -1102,7 +1191,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         :param weekly_seas_interaction_order: int
             Order on interaction terms with weekly seasonality
         :param growth_term: Optional[str]
-            How to model the growth. Valid options are "linear", "quadratic", "sqrt", "cubic", "cuberoot"
+            How to model the growth. Valid options are "linear", "quadratic", "sqrt", "cubic", "cuberoot".
+            See `~greykite.common.constants.GrowthColEnum`.
         :param changepoint_cols: Optional[List[str]]
             Names of the changepoint feature columns to be generated by `build_silverkite_features`
         :return: Dict[str, List[str]]
@@ -1136,13 +1226,15 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         # all possible values of `dow` and `dow_hr` from `build_time_features_df`
         dow_levels = ["1-Mon", "2-Tue", "3-Wed", "4-Thu", "5-Fri", "6-Sat", "7-Sun"]
         dow_hr_levels = [f"{day + 1}_{str(hour).zfill(2)}" for day in range(7) for hour in range(24)]
-        day_of_week = patsy_categorical_term(term="str_dow", levels=dow_levels)
-        hour_of_week = patsy_categorical_term(term="dow_hr", levels=dow_hr_levels)
+        day_of_week = patsy_categorical_term(term=cst.TimeFeaturesEnum.str_dow.value, levels=dow_levels)
+        hour_of_week = patsy_categorical_term(term=cst.TimeFeaturesEnum.dow_hr.value, levels=dow_hr_levels)
 
         extra_pred_cols_grouped[self._silverkite_column.COLS_DAY_OF_WEEK] = [day_of_week]
         extra_pred_cols_grouped[self._silverkite_column.COLS_HOUR_OF_WEEK] = [hour_of_week]
-        extra_pred_cols_grouped[self._silverkite_column.COLS_TREND_WEEKEND] = [f"is_weekend:{col}" for col in trend_cols]
-        extra_pred_cols_grouped[self._silverkite_column.COLS_TREND_DAY_OF_WEEK] = [f"{day_of_week}:{col}" for col in trend_cols]
+        extra_pred_cols_grouped[self._silverkite_column.COLS_TREND_WEEKEND] = [
+            f"{cst.TimeFeaturesEnum.is_weekend.value}:{col}" for col in trend_cols]
+        extra_pred_cols_grouped[self._silverkite_column.COLS_TREND_DAY_OF_WEEK] = [
+            f"{day_of_week}:{col}" for col in trend_cols]
 
         # allows major holidays to have different daily seasonality
         # interact with fourier series terms up to fs_daily_interaction_order
@@ -1151,7 +1243,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         if daily_seas_interaction_order > 0:
             for holiday in self._silverkite_holiday.HOLIDAYS_TO_INTERACT:
                 if daily_event_df_dict is not None and holiday in daily_event_df_dict.keys():
-                    event_levels = [cst.EVENT_DEFAULT]  # reference level for non-event days, added by `add_daily_events`
+                    event_levels = [
+                        cst.EVENT_DEFAULT]  # reference level for non-event days, added by `add_daily_events`
                     # This event's levels
                     event_levels += list(daily_event_df_dict[holiday][cst.EVENT_DF_LABEL_COL].unique())
 
@@ -1164,13 +1257,14 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
                         fs_seas_name=daily_seasonality.seas_names)
 
                     extra_pred_cols_grouped[self._silverkite_column.COLS_EVENT_WEEKEND_SEAS] += cols_interact(
-                        static_col=f"is_weekend:{patsy_categorical_term(term=term, levels=event_levels)}",
+                        static_col=f"{cst.TimeFeaturesEnum.is_weekend.value}:"
+                                   f"{patsy_categorical_term(term=term, levels=event_levels)}",
                         fs_name=daily_seasonality.name,
                         fs_order=daily_seas_interaction_order,
                         fs_seas_name=daily_seasonality.seas_names)
 
             extra_pred_cols_grouped[self._silverkite_column.COLS_WEEKEND_SEAS] = cols_interact(
-                static_col="is_weekend",
+                static_col=cst.TimeFeaturesEnum.is_weekend.value,
                 fs_name=daily_seasonality.name,
                 fs_order=daily_seas_interaction_order,
                 fs_seas_name=daily_seasonality.seas_names)
@@ -1183,7 +1277,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
             for col in trend_cols:
                 extra_pred_cols_grouped[self._silverkite_column.COLS_TREND_DAILY_SEAS] += cols_interact(
-                    static_col=f"is_weekend:{col}",
+                    static_col=f"{cst.TimeFeaturesEnum.is_weekend.value}:{col}",
                     fs_name=daily_seasonality.name,
                     fs_order=daily_seas_interaction_order,
                     fs_seas_name=daily_seasonality.seas_names)
@@ -1200,18 +1294,28 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
     def __get_silverkite_holidays(
             self,
+            auto_holiday=False,
             holiday_lookup_countries="auto",
             holidays_to_model_separately="auto",
             start_year=2015,
             end_year=2030,
             pre_num=2,
             post_num=2,
-            pre_post_num_dict=None):
+            pre_post_num_dict=None,
+            df=None,
+            time_col=cst.TIME_COL,
+            value_col=cst.VALUE_COL,
+            forecast_horizon=None):
         """Generates holidays dictionary for input to daily_event_df_dict parameter of silverkite model.
         The main purpose is to provide reasonable defaults for the holiday names and countries
 
         Parameters
         ----------
+        auto_holiday : `bool`, default False
+            If True, the other holiday configurations will be ignored.
+            An algorithm is used to automatically infer the holiday configuration.
+            For details, see `~greykite.algo.common.holiday_inferrer.HolidayInferrer`.
+            If False, the specified holiday configuration will be used to generate holiday features.
         holiday_lookup_countries : `list` [`str`] or "auto" or None, optional, default "auto"
             The countries that contain the holidays you intend to model
             (``holidays_to_model_separately``).
@@ -1253,6 +1357,17 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             denoting that the "Thanksgiving" ``pre_num`` is 1 and ``post_num`` is 3, and "Labor Day"
             ``pre_num`` is 1 and ``post_num`` is 2.
             Holidays not specified use the default given by ``pre_num`` and ``post_num``.
+        df : `pandas.DataFrame` or None, default None.
+            The timeseries data needed for automatically inferring holiday configuration.
+            This is not used when ``auto_holiday`` is False.
+        time_col : `str`, default `cst.TIME_COL`
+            The column name for timestamps in ``df``.
+            This is not used when ``auto_holiday`` is False.
+        value_col : `str`, default `cst.VALUE_COL`
+            The column name for values in ``df``.
+            This is not used when ``auto_holiday`` is False.
+        forecast_horizon : `int` or None, default None
+            The forecast horizon, used to calculate the year list for "auto" option.
 
         Returns
         -------
@@ -1277,26 +1392,36 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         elif not isinstance(holiday_lookup_countries, (list, tuple)):
             raise ValueError(
                 f"`holiday_lookup_countries` should be a list, found {holiday_lookup_countries}")
-
-        if holidays_to_model_separately is None:
-            holidays_to_model_separately = []
-        elif holidays_to_model_separately == "auto":
-            # important holidays
-            holidays_to_model_separately = self._silverkite_holiday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO
-        elif holidays_to_model_separately == self._silverkite_holiday.ALL_HOLIDAYS_IN_COUNTRIES:
-            holidays_to_model_separately = get_available_holidays_across_countries(
+        if auto_holiday:
+            if df is None:
+                raise ValueError("Automatically inferring holidays is turned on. Dataframe must be provided.")
+            return get_auto_holidays(
+                df=df,
+                time_col=time_col,
+                value_col=value_col,
                 countries=holiday_lookup_countries,
-                year_start=start_year - 1,
-                year_end=end_year + 1)
-        elif not isinstance(holidays_to_model_separately, (list, tuple)):
-            raise ValueError(
-                f"`holidays_to_model_separately` should be a list, found {holidays_to_model_separately}")
+                forecast_horizon=forecast_horizon,
+                daily_event_dict_override=None)  # ``daily_event_dict`` is handled in `convert_params` with other cases.
+        else:
+            if holidays_to_model_separately is None:
+                holidays_to_model_separately = []
+            elif holidays_to_model_separately == "auto":
+                # important holidays
+                holidays_to_model_separately = self._silverkite_holiday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO
+            elif holidays_to_model_separately == self._silverkite_holiday.ALL_HOLIDAYS_IN_COUNTRIES:
+                holidays_to_model_separately = get_available_holidays_across_countries(
+                    countries=holiday_lookup_countries,
+                    year_start=start_year - 1,
+                    year_end=end_year + 1)
+            elif not isinstance(holidays_to_model_separately, (list, tuple)):
+                raise ValueError(
+                    f"`holidays_to_model_separately` should be a list, found {holidays_to_model_separately}")
 
-        return generate_holiday_events(
-            countries=holiday_lookup_countries,
-            holidays_to_model_separately=holidays_to_model_separately,
-            year_start=start_year - 1,  # subtract 1 just in case, to ensure coverage of all holidays
-            year_end=end_year + 1,  # add 1 just in case, to ensure coverage of all holidays
-            pre_num=pre_num,
-            post_num=post_num,
-            pre_post_num_dict=pre_post_num_dict)
+            return generate_holiday_events(
+                countries=holiday_lookup_countries,
+                holidays_to_model_separately=holidays_to_model_separately,
+                year_start=start_year - 1,  # subtract 1 just in case, to ensure coverage of all holidays
+                year_end=end_year + 1,  # add 1 just in case, to ensure coverage of all holidays
+                pre_num=pre_num,
+                post_num=post_num,
+                pre_post_num_dict=pre_post_num_dict)

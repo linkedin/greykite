@@ -14,7 +14,7 @@ on forecasted weather conditions.
 Silverkite
 ----------
 
-Examples:
+Examples for SILVERKITE:
 
 .. code-block:: python
 
@@ -30,6 +30,35 @@ Examples:
     # Grid search is possible
     regressors=dict(
         regressor_cols=[
+            ["gdp", "weather", "population"],
+            ["gdp", "weather"],
+            None
+        ]
+    )
+
+.. note::
+  If you use the low-level model template SK, it expects a different way to specify regressors.
+  The low-level interface Silverkite does not expect the ``regressors.regressor_cols`` variable.
+  Instead, please add any regressor columns to ``custom.extra_pred_cols``.
+
+Examples for SK:
+
+.. code-block:: python
+
+    # For input data with 3 regressors.
+    # Input data columns: ["time", "value", "gdp", "weather", "population"]
+    custom=dict(
+        extra_pred_cols=["gdp", "weather", "population"]
+    )
+
+    # No regressors (default)
+    custom=dict(
+      extra_pred_cols=None
+    )
+
+    # Grid search is possible
+    custom=dict(
+        extra_pred_cols=[
             ["gdp", "weather", "population"],
             ["gdp", "weather"],
             None

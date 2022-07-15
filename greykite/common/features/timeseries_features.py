@@ -175,6 +175,7 @@ def build_time_features_df(dt, conti_year_origin):
     second = dt.second
 
     # grouped time feature
+    year_quarter = dt.strftime("%Y-") + quarter.astype(str)  # e.g. 2020-1 for March 2020
     str_doy = dt.strftime("%Y-%m-%d")       # e.g. 2020-03-20 for March 20, 2020
     year_month = dt.strftime("%Y-%m")       # e.g. 2020-03 for March 2020
     month_dom = dt.strftime("%m/%d")        # e.g. 02/20 for February 20th
@@ -183,6 +184,12 @@ def build_time_features_df(dt, conti_year_origin):
     woy_dow = dt.strftime("%W_%u")          # e.g. 03_6 for Saturday of 3rd week
     dow_hr = dt.strftime("%u_%H")           # e.g. 4_09 for 9am on Thursday
     dow_hr_min = dt.strftime("%u_%H_%M")    # e.g. 4_09_10 for 9:10am on Thursday
+
+    # iso features https://en.wikipedia.org/wiki/ISO_week_date
+    # Uses `pd.Index` to avoid overriding the indices in the output df.
+    year_iso = pd.Index(dt.isocalendar()["year"])
+    year_woy_iso = pd.Index(year_iso.astype(str) + "_" + dt.strftime("%V"))
+    year_woy_dow_iso = pd.Index(year_woy_iso + "_" + dt.isocalendar()["day"].astype(str))
 
     # derived time features
     tod = hour + (minute / 60.0) + (second / 3600.0)
@@ -214,45 +221,49 @@ def build_time_features_df(dt, conti_year_origin):
 
     # All keys must be added to constants.
     features_dict = {
-        "datetime": dt,
-        "date": date,
-        "year": year,
-        "year_length": year_length,
-        "quarter": quarter,
-        "quarter_start": quarter_start,
-        "quarter_length": quarter_length,
-        "month": month,
-        "month_length": month_length,
-        "woy": woy,
-        "doy": doy,
-        "doq": doq,
-        "dom": dom,
-        "dow": dow,
-        "str_dow": str_dow,
-        "str_doy": str_doy,
-        "hour": hour,
-        "minute": minute,
-        "second": second,
-        "year_month": year_month,
-        "year_woy": year_woy,
-        "month_dom": month_dom,
-        "year_woy_dow": year_woy_dow,
-        "woy_dow": woy_dow,
-        "dow_hr": dow_hr,
-        "dow_hr_min": dow_hr_min,
-        "tod": tod,
-        "tow": tow,
-        "tom": tom,
-        "toq": toq,
-        "toy": toy,
-        "conti_year": conti_year,
-        "is_weekend": is_weekend,
-        "dow_grouped": dow_grouped,
-        "ct1": ct1,
-        "ct2": ct2,
-        "ct3": ct3,
-        "ct_sqrt": ct_sqrt,
-        "ct_root3": ct_root3,
+        cst.TimeFeaturesEnum.datetime.value: dt,
+        cst.TimeFeaturesEnum.date.value: date,
+        cst.TimeFeaturesEnum.year.value: year,
+        cst.TimeFeaturesEnum.year_length.value: year_length,
+        cst.TimeFeaturesEnum.quarter.value: quarter,
+        cst.TimeFeaturesEnum.quarter_start.value: quarter_start,
+        cst.TimeFeaturesEnum.quarter_length.value: quarter_length,
+        cst.TimeFeaturesEnum.month.value: month,
+        cst.TimeFeaturesEnum.month_length.value: month_length,
+        cst.TimeFeaturesEnum.woy.value: woy,
+        cst.TimeFeaturesEnum.doy.value: doy,
+        cst.TimeFeaturesEnum.doq.value: doq,
+        cst.TimeFeaturesEnum.dom.value: dom,
+        cst.TimeFeaturesEnum.dow.value: dow,
+        cst.TimeFeaturesEnum.str_dow.value: str_dow,
+        cst.TimeFeaturesEnum.str_doy.value: str_doy,
+        cst.TimeFeaturesEnum.hour.value: hour,
+        cst.TimeFeaturesEnum.minute.value: minute,
+        cst.TimeFeaturesEnum.second.value: second,
+        cst.TimeFeaturesEnum.year_quarter.value: year_quarter,
+        cst.TimeFeaturesEnum.year_month.value: year_month,
+        cst.TimeFeaturesEnum.year_woy.value: year_woy,
+        cst.TimeFeaturesEnum.month_dom.value: month_dom,
+        cst.TimeFeaturesEnum.year_woy_dow.value: year_woy_dow,
+        cst.TimeFeaturesEnum.woy_dow.value: woy_dow,
+        cst.TimeFeaturesEnum.dow_hr.value: dow_hr,
+        cst.TimeFeaturesEnum.dow_hr_min.value: dow_hr_min,
+        cst.TimeFeaturesEnum.year_iso.value: year_iso,
+        cst.TimeFeaturesEnum.year_woy_iso.value: year_woy_iso,
+        cst.TimeFeaturesEnum.year_woy_dow_iso.value: year_woy_dow_iso,
+        cst.TimeFeaturesEnum.tod.value: tod,
+        cst.TimeFeaturesEnum.tow.value: tow,
+        cst.TimeFeaturesEnum.tom.value: tom,
+        cst.TimeFeaturesEnum.toq.value: toq,
+        cst.TimeFeaturesEnum.toy.value: toy,
+        cst.TimeFeaturesEnum.conti_year.value: conti_year,
+        cst.TimeFeaturesEnum.is_weekend.value: is_weekend,
+        cst.TimeFeaturesEnum.dow_grouped.value: dow_grouped,
+        cst.TimeFeaturesEnum.ct1.value: ct1,
+        cst.TimeFeaturesEnum.ct2.value: ct2,
+        cst.TimeFeaturesEnum.ct3.value: ct3,
+        cst.TimeFeaturesEnum.ct_sqrt.value: ct_sqrt,
+        cst.TimeFeaturesEnum.ct_root3.value: ct_root3,
     }
     df = pd.DataFrame(features_dict)
     return df
@@ -306,6 +317,12 @@ def get_holidays(countries, year_start, year_end):
         country_df = pd.DataFrame({
             cst.EVENT_DF_DATE_COL: list(holidays.keys()),
             cst.EVENT_DF_LABEL_COL: list(holidays.values())})
+        # Replaces any occurrence of "/" with ", " in order to avoid saving / loading error in
+        # `~greykite.framework.templates.pickle_utils` because a holiday name can be the key
+        # of a dictionary that will be used as directory name.
+        # For example, "Easter Monday [England/Wales/Northern Ireland]" will be casted to
+        # "Easter Monday [England, Wales, Northern Ireland]".
+        country_df[cst.EVENT_DF_LABEL_COL] = country_df[cst.EVENT_DF_LABEL_COL].str.replace("/", ", ")
         country_df[cst.EVENT_DF_DATE_COL] = pd.to_datetime(country_df[cst.EVENT_DF_DATE_COL])
         country_holiday_dict[country] = country_df
 
@@ -485,7 +502,7 @@ def add_event_window(
 
 def get_evenly_spaced_changepoints_values(
         df,
-        continuous_time_col="ct1",
+        continuous_time_col=cst.TimeFeaturesEnum.ct1.value,
         n_changepoints=2):
     """Partitions interval into n_changepoints + 1 segments,
         placing a changepoint at left endpoint of each segment.
@@ -540,7 +557,7 @@ def get_custom_changepoints_values(
         df,
         changepoint_dates,
         time_col=cst.TIME_COL,
-        continuous_time_col="ct1"):
+        continuous_time_col=cst.TimeFeaturesEnum.ct1.value):
     """Returns the values of continuous_time_col at the
         requested changepoint_dates.
 
@@ -598,7 +615,7 @@ def get_changepoint_string(changepoint_dates):
 def get_changepoint_features(
         df,
         changepoint_values,
-        continuous_time_col="ct1",
+        continuous_time_col=cst.TimeFeaturesEnum.ct1.value,
         growth_func=None,
         changepoint_dates=None):
     """Returns features for growth terms with continuous time origins at
@@ -646,7 +663,7 @@ def get_changepoint_features(
         Changepoint features, 0-indexed
     """
     if continuous_time_col is None:
-        continuous_time_col = "ct1"
+        continuous_time_col = cst.TimeFeaturesEnum.ct1.value
     if growth_func is None:
         def growth_func(x):
             return x
@@ -662,8 +679,7 @@ def get_changepoint_features(
         growth_term = np.array([growth_func(max(x, 0)) for x in time_feature])  # growth as a function of time
         time_feature_ind = time_feature >= 0  # Indicator(t >= c_i), lets changepoint take effect starting at c_i
         new_col = growth_term * time_feature_ind
-        new_changepoint = pd.Series(new_col, name=f"{cst.CHANGEPOINT_COL_PREFIX}{i}{time_postfixes[i]}")
-        changepoint_df = pd.concat([changepoint_df, new_changepoint], axis=1)
+        changepoint_df[f"{cst.CHANGEPOINT_COL_PREFIX}{i}{time_postfixes[i]}"] = new_col
     return changepoint_df
 
 

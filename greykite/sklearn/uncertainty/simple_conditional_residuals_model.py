@@ -27,12 +27,11 @@ from typing import Optional
 
 import pandas as pd
 
+from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_silverkite_uncertainty_dict
 from greykite.algo.uncertainty.conditional.conf_interval import conf_interval
 from greykite.algo.uncertainty.conditional.conf_interval import predict_ci
 from greykite.common import constants as cst
 from greykite.common.features.timeseries_features import add_time_features_df
-from greykite.common.logging import LoggingLevelEnum
-from greykite.common.logging import log_message
 from greykite.sklearn.uncertainty.base_uncertainty_model import BaseUncertaintyModel
 from greykite.sklearn.uncertainty.exceptions import UncertaintyError
 
@@ -43,6 +42,13 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
 
     Attributes
     ----------
+    uncertainty_dict : `dict` [`str`, any]
+        The uncertainty model specification. It should have the following keys:
+
+                "uncertainty_method": a string that is in
+                    `~greykite.sklearn.uncertainty.uncertainty_methods.UncertaintyMethodEnum`.
+                "params": a dictionary that includes any additional parameters needed by the uncertainty method.
+
     UNCERTAINTY_METHOD : `str`
         The name for the uncertainty method.
     REQUIRED_PARAMS : `list` [`str`]
@@ -52,12 +58,18 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
         Will be used to calculate the quantiles.
     time_col : `str`
         The column name for timestamps in ``train_df`` and ``fut_df``.
-    value_col : `str` or None
+    value_col : `str`
         The column name for values in ``train_df`` and ``fut_df``.
+    distribution_col : `str` or None
+        The column name for the column used to fit the distribution in ``train_df`` and ``fut_df``.
     residual_col : `str` or None
         The column name for residuals in ``train_df``.
     conditional_cols : `list` [`str`]
         The conditional columns when calculating the standard errors of the residuals.
+    offset_col : `str` or None
+        The column name for the column used to offset predicted intervals.
+    is_residual_based : `bool` or None
+        Whether to fit the original values or residuals.
     """
 
     UNCERTAINTY_METHOD = "simple_conditional_residuals"
@@ -81,9 +93,16 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
         self.time_col = time_col
 
         # Set by ``fit`` method.
+        self.distribution_col: Optional[str] = None
         self.value_col: Optional[str] = None
+        self.predicted_col: Optional[str] = None
         self.residual_col: Optional[str] = None
         self.conditional_cols: Optional[List[str]] = None
+        self.offset_col: Optional[str] = None
+        self.is_residual_based: Optional[bool] = None
+
+        # Set by ``predict`` method
+        self.pred_df = None
 
     def _check_input(self):
         """Checks that necessary input are provided in ``self.uncertainty_dict`` and ``self.train_df``.
@@ -91,51 +110,45 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
         `~greykite.sklearn.uncertainty.exceptions.UncertaintyError`.
         """
         super()._check_input()
-        # Checks the uncertainty method matches.
-        self.uncertainty_method = self.uncertainty_dict.get("uncertainty_method")
-        if self.uncertainty_method != self.UNCERTAINTY_METHOD:
-            raise UncertaintyError(
-                f"The uncertainty method {self.uncertainty_method} is not as expected {self.UNCERTAINTY_METHOD}."
-            )
-        # Gets the parameters.
-        self.params = self.uncertainty_dict.get("params", {})
-        # Tries to populate value column if it is not given.
-        if self.params.get("value_col", None) is None and cst.VALUE_COL in self.train_df.columns:
-            self.params["value_col"] = cst.VALUE_COL
-        # Checks all required parameters are given.
-        for required_param in self.REQUIRED_PARAMS:
-            if required_param not in self.params:
-                raise UncertaintyError(
-                    f"The parameter {required_param} is required but not found in "
-                    f"`uncertainty['params']` {self.params}. "
-                    f"The required parameters are {self.REQUIRED_PARAMS}."
-                )
+
+        # Gets whether it's residual based. If not provided, the default is residual based.
+        self.is_residual_based = self.params.get("is_residual_based", True)
+        if not self.is_residual_based:
+            raise UncertaintyError(f"'is_residual_based' must be True when "
+                                   f"the uncertainty method is {self.UNCERTAINTY_METHOD}.")
+
         # Checks value column.
         self.value_col = self.params.get("value_col")
-        if self.value_col is None or not isinstance(self.value_col, str):
-            raise UncertaintyError(f"`value_col` has to be a string, but found {self.value_col}.")
         if self.value_col not in self.train_df:
             raise UncertaintyError(f"`value_col` {self.value_col} not found in `train_df`.")
-        # Checks residual column.
-        self.residual_col = self.params.get("residual_col")
-        if self.residual_col is not None and not isinstance(self.residual_col, str):
-            raise UncertaintyError(
-                f"`residual_col` has to be a string or None, but found {self.residual_col}.")
-        # Residuals are calculated if ``PREDICT_COL`` exists.
-        # The method in this class always looks for using residual based approach.
-        if self.residual_col is not None and self.residual_col not in self.train_df.columns:
-            if cst.PREDICTED_COL in self.train_df.columns:
-                log_message(
-                    message=f"`residual_col` {self.residual_col} is given but not found in `train_df.columns`, "
-                            f"however, the prediction column {cst.PREDICTED_COL} is found. "
-                            f"Calculating residuals based on the prediction column.",
-                    level=LoggingLevelEnum.INFO
-                )
-                self.train_df[self.residual_col] = self.train_df[self.value_col] - self.train_df[cst.PREDICTED_COL]
-            else:
-                raise UncertaintyError(
-                    f"`residual_col` {self.residual_col} not found in `train_df.columns`."
-                )
+
+        # Checks columns needed when ``is_residual_based = True``.
+        # If residual based, ``predicted_col`` must be provided.
+        # Also looks for ``cst.PREDICTED_COL`` if the above is not provided.
+        self.distribution_col = self.value_col
+        if self.is_residual_based:
+            # Tries to get predicted column from parameters and set ``offset_col``.
+            self.predicted_col = self.params.get("predicted_col")
+            if self.predicted_col is None:
+                self.predicted_col = cst.PREDICTED_COL
+            self.offset_col = self.predicted_col
+
+            # Creates ``residual_col`` with ``value_col`` and ``predicted_col``.
+            self.residual_col = cst.RESIDUAL_COL
+            self.train_df[cst.RESIDUAL_COL] = self.train_df[self.value_col] - self.train_df[self.predicted_col]
+            self.distribution_col = self.residual_col
+
+        self.params["distribution_col"] = self.distribution_col
+        self.params["offset_col"] = self.offset_col
+
+        # Gets the valid parameters for ``conf_interval``.
+        valid_params = ["distribution_col", "offset_col", "conditional_cols",
+                        "quantiles", "quantile_estimation_method",
+                        "sample_size_thresh", "small_sample_size_method",
+                        "small_sample_size_quantile", "min_admissible_value",
+                        "max_admissible_value"]
+        self.params = {k: v for k, v in self.params.items() if k in valid_params}
+
         # Tries to build conditional features based on time column.
         if self.time_col is not None and self.time_col in self.train_df.columns:
             self.train_df = add_time_features_df(
@@ -164,18 +177,16 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
                 raise UncertaintyError(
                     f"The following conditional columns are not found in `train_df`: {cols_not_in_df}."
                 )
+
+        if self.coverage is None:
+            self.coverage = self.DEFAULT_COVERAGE
         # If ``self.coverage`` is given and ``quantiles`` is not given in ``params``,
         # the coverage is used to calculate quantiles.
-        if self.coverage is not None:
-            if self.coverage <= 0 or self.coverage >= 1:
-                raise UncertaintyError(
-                    f"Coverage must be between 0 and 1, found {self.coverage}"
-                )
-            if self.params is not None:
-                quantiles = self.params.get("quantiles")
-                if quantiles is None:
-                    alpha = (1 + self.coverage) / 2
-                    self.params["quantiles"] = (1 - alpha, alpha)
+        uncertainty_dict = get_silverkite_uncertainty_dict(
+            uncertainty=self.uncertainty_dict,
+            coverage=self.coverage)
+        self.quantiles = uncertainty_dict["params"]["quantiles"]
+        self.params["quantiles"] = self.quantiles
 
     def fit(
             self,
@@ -223,11 +234,11 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
         result_df : `pandas.DataFrame`
             The ``fut_df`` augmented with prediction intervals.
         """
-        fut_df = fut_df.copy()
-        # Checks ``value_col`` in ``fut_df``.
-        if self.value_col not in fut_df.columns:
+        fut_df = fut_df.reset_index(drop=True)
+        # Checks ``self.offset_col`` in ``fut_df``.
+        if self.offset_col is not None and self.offset_col not in fut_df.columns:
             raise UncertaintyError(
-                f"The value column {self.value_col} is not found in `fut_df`."
+                f"The offset column {self.offset_col} is not found in `fut_df`."
             )
         # Records the originals columns to be output.
         output_cols = list(fut_df.columns)
@@ -245,28 +256,13 @@ class SimpleConditionalResidualsModel(BaseUncertaintyModel):
                 conti_year_origin=0  # this only affects the ``ct`` columns, which are not expected as conditional cols
             )
 
-        # If ``PREDICT_COL`` is in the df,
-        # it will be used instead of ``value_col``.
-        # The original ``value_col`` will be recorded and appended in the output.
-        value_col = None
-        if cst.PREDICTED_COL in fut_df.columns:
-            if self.value_col in fut_df.columns:
-                value_col = fut_df[self.value_col]
-            fut_df[self.value_col] = fut_df[cst.PREDICTED_COL]
-
         # Predict.
-        pred_df_with_uncertainty = predict_ci(
+        fut_df = predict_ci(
             fut_df,
             self.uncertainty_model)
-        # Adds uncertainty column to df
-        pred_df_with_uncertainty.reset_index(drop=True, inplace=True)
-        fut_df.reset_index(drop=True, inplace=True)
-        fut_df[f"{self.value_col}_quantile_summary"] = (
-            pred_df_with_uncertainty[f"{self.value_col}_quantile_summary"])
-        fut_df[cst.ERR_STD_COL] = pred_df_with_uncertainty[cst.ERR_STD_COL]
-        fut_df[cst.PREDICTED_LOWER_COL] = fut_df[f"{self.value_col}_quantile_summary"].str[0]
-        fut_df[cst.PREDICTED_UPPER_COL] = fut_df[f"{self.value_col}_quantile_summary"].str[-1]
+        fut_df[cst.PREDICTED_LOWER_COL] = fut_df[cst.QUANTILE_SUMMARY_COL].str[0]
+        fut_df[cst.PREDICTED_UPPER_COL] = fut_df[cst.QUANTILE_SUMMARY_COL].str[-1]
+        self.pred_df = fut_df
         output_cols += [cst.PREDICTED_LOWER_COL, cst.PREDICTED_UPPER_COL, cst.ERR_STD_COL]
-        if value_col is not None:
-            fut_df[self.value_col] = value_col
+
         return fut_df[output_cols]

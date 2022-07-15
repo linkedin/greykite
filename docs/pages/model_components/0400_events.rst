@@ -12,7 +12,7 @@ The model assumes the event has similar effect each time it occurs.
 Holidays
 --------
 
-Silverkite provides a standard set of holidays by country (imported from ``pypi:holidays`` and ``pypi:fbprophet``).
+Silverkite provides a standard set of holidays by country (imported from ``pypi:holidays-ext``).
 
 Each holiday is mapped to a list of calendar dates where it occurs. For modeling, you can choose to
 extend the holiday window to include days before and after the holiday. A separate effect is modeled for each
@@ -213,24 +213,46 @@ To customize this, you will want to see the available holidays.
     get_available_holiday_lookup_countries()
 
     # Filter the full list to your countries of interest
-    get_available_holiday_lookup_countries(["UnitedStates", "NewZealand", "EuropeanCentralBank"])
+    get_available_holiday_lookup_countries(["US", "IN", "EuropeanCentralBank"])
 
-    # Full list for v3.0.0
+    # Full list for `holidays-ext` 0.0.7, `holidays` 0.13
     >>> get_available_holiday_lookup_countries()
-    ['AR', 'AT', 'AU', 'Argentina', 'Australia', 'Austria', 'BD', 'BE', 'BG', 'BR',
-     'BY', 'Bangladesh', 'Belarus', 'Belgium', 'Brazil', 'Bulgaria', 'CA', 'CH', 'CN',
-     'CO', 'CZ', 'Canada', 'China', 'Colombia', 'Croatia', 'Czech', 'Czechia', 'DE',
-     'DK', 'Denmark', 'ECB', 'EG', 'ES', 'Egypt', 'England', 'EuropeanCentralBank',
-     'FI', 'FRA', 'Finland', 'France', 'Germany', 'HND', 'HR', 'HU', 'Honduras',
-     'Hungary', 'ID', 'IE', 'IN', 'IND', 'IT', 'India', 'Indonesia', 'Ireland',
-     'IsleOfMan', 'Italy', 'JP', 'Japan', 'LT', 'LU', 'Lithuania', 'Luxembourg',
-     'MX', 'MY', 'Malaysia', 'Mexico', 'NL', 'NO', 'NZ', 'Netherlands', 'NewZealand',
-     'NorthernIreland', 'Norway', 'PH', 'PK', 'PL', 'PT', 'PTE', 'Pakistan', 'Philippines',
-     'Polish', 'Portugal', 'PortugalExt', 'RU', 'Russia', 'SE', 'SI', 'SK', 'Scotland',
-     'Slovak', 'Slovenia', 'SouthAfrica', 'Spain', 'Sweden', 'Switzerland', 'TAR', 'TH',
-     'TU', 'Thailand', 'Turkey', 'UA', 'UK', 'US', 'Ukraine', 'UnitedKingdom',
-     'UnitedStates', 'VN', 'Vietnam', 'Wales', 'ZA']
-
+    ['ABW', 'AE', 'AGO', 'AO', 'AR', 'ARE', 'ARG', 'AT', 'AU', 'AUS',
+     'AUT', 'AW', 'AZ', 'AZE', 'Angola', 'Argentina', 'Aruba', 'Australia',
+     'Austria', 'Azerbaijan', 'BD', 'BDI', 'BE', 'BEL', 'BG', 'BGD', 'BI',
+     'BLG', 'BLR', 'BR', 'BRA', 'BW', 'BWA', 'BY', 'Bangladesh', 'Belarus',
+     'Belgium', 'Botswana', 'Brazil', 'Bulgaria', 'Burundi', 'CA', 'CAN',
+     'CH', 'CHE', 'CHL', 'CHN', 'CL', 'CN', 'CO', 'COL', 'CUW', 'CW', 'CZ',
+     'CZE', 'Canada', 'Chile', 'China', 'Colombia', 'Croatia', 'Curacao',
+     'Czechia', 'DE', 'DEU', 'DJ', 'DJI', 'DK', 'DNK', 'DO', 'DOM',
+     'Denmark', 'Djibouti', 'DominicanRepublic', 'ECB', 'EE', 'EG', 'EGY',
+     'ES', 'ESP', 'EST', 'ET', 'ETH', 'Egypt', 'England', 'Estonia',
+     'Ethiopia', 'EuropeanCentralBank', 'FI', 'FIN', 'FR', 'FRA', 'Finland',
+     'France', 'GB', 'GBR', 'GE', 'GEO', 'GR', 'GRC', 'Georgia', 'Germany',
+     'Greece', 'HK', 'HKG', 'HN', 'HND', 'HR', 'HRV', 'HU', 'HUN',
+     'HolidaySum', 'Honduras', 'HongKong', 'Hungary', 'ID', 'IE', 'IL',
+     'IM', 'IN', 'IND', 'IRL', 'IS', 'ISL', 'ISR', 'IT', 'ITA', 'Iceland',
+     'India', 'Indonesia', 'Ireland', 'IsleOfMan', 'Israel', 'Italy', 'JAM',
+     'JM', 'JP', 'JPN', 'Jamaica', 'Japan', 'KAZ', 'KE', 'KEN', 'KOR', 'KR',
+     'KZ', 'Kazakhstan', 'Kenya', 'Korea', 'LS', 'LSO', 'LT', 'LTU', 'LU',
+     'LUX', 'LV', 'LVA', 'Latvia', 'Lesotho', 'Lithuania', 'Luxembourg',
+     'MA', 'MEX', 'MK', 'MKD', 'MOR', 'MOZ', 'MW', 'MWI', 'MX', 'MY', 'MYS',
+     'MZ', 'Malawi', 'Malaysia', 'Mexico', 'Morocco', 'Mozambique', 'NA',
+     'NAM', 'NG', 'NGA', 'NI', 'NIC', 'NL', 'NLD', 'NO', 'NOR', 'NZ', 'NZL',
+     'Namibia', 'Netherlands', 'NewZealand', 'Nicaragua', 'Nigeria',
+     'NorthMacedonia', 'NorthernIreland', 'Norway', 'PE', 'PER', 'PH', 'PK',
+     'PL', 'POL', 'PRT', 'PRTE', 'PRY', 'PT', 'PTE', 'PY', 'Pakistan',
+     'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'PortugalExt',
+     'RO', 'ROU', 'RS', 'RU', 'RUS', 'Romania', 'Russia', 'SA', 'SAU', 'SE',
+     'SG', 'SGP', 'SI', 'SK', 'SRB', 'SVK', 'SVN', 'SWE', 'SZ', 'SZW',
+     'SaudiArabia', 'Scotland', 'Serbia', 'Singapore', 'Slovakia',
+     'Slovenia', 'SouthAfrica', 'Spain', 'Swaziland', 'Sweden',
+     'Switzerland', 'TAR', 'TH', 'TN', 'TR', 'TUN', 'TUR', 'TW', 'TWN',
+     'Taiwan', 'Thailand', 'Tunisia', 'Turkey', 'UA', 'UK', 'UKR', 'URY',
+     'US', 'USA', 'UY', 'UZ', 'UZB', 'Ukraine', 'UnitedArabEmirates',
+     'UnitedKingdom', 'UnitedStates', 'Uruguay', 'Uzbekistan', 'VE', 'VEN',
+     'VN', 'VNM', 'Venezuela', 'Vietnam', 'Wales', 'ZA', 'ZAF', 'ZM', 'ZMB',
+     'ZW', 'ZWE', 'Zambia', 'Zimbabwe']
 
 * To check the available ``holidays_to_model_separately`` in those countries,
   run ``get_available_holidays_across_countries``:
@@ -240,7 +262,7 @@ To customize this, you will want to see the available holidays.
     from greykite.common.features.timeseries_features import get_available_holidays_across_countries
 
     # Select your countries
-    holiday_lookup_countries = ["UnitedStates", "NewZealand", "EuropeanCentralBank"]
+    holiday_lookup_countries = ["US", "IN", "EuropeanCentralBank"]
     # List the holidays
     get_available_holidays_across_countries(
         countries=holiday_lookup_countries,
@@ -253,6 +275,27 @@ To customize this, you will want to see the available holidays.
   sub-daily holiday effects. For more information, see :doc:`/pages/model_components/0600_custom`.
 
 
+Auto holiday
+~~~~~~~~~~~~
+
+Silverkite models support automatically inferring significant holidays and generate holiday configurations.
+It utilizes the `~greykite.algo.common.holiday_inferrer.HolidayInferrer` method to infer holidays.
+For more details, see Holiday Inferrer in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
+
+It's easy to use auto holiday in model components.
+In the event dictionary, specify ``auto_holiday = True``,
+and the model will automatically pull significant holidays or neighboring days from ``holiday_lookup_countries``
+by checking their individual effects from the training data.
+All other parameters will be ignored except ``daily_event_df_dict``, which will be
+added to any inferred significant holiday and neighboring day events.
+
+.. code-block:: python
+
+    events=dict(
+        auto_holiday=True,
+        holiday_lookup_countries=["US"]
+    )
+
 Prophet
 ^^^^^^^
 
@@ -264,7 +307,7 @@ Options:
         Holiday/events configuration dictionary with the following optional keys:
 
         holiday_lookup_countries: `list` [`str`] or "auto" or None, optional.
-            default ("auto") uses default list of countries with large contribution to Internet traffic.
+            default ("auto") uses a default list of countries with a good coverage of global holidays.
             If None or an empty list, no holidays are modeled.
             Must include all countries, for which you want to model holidays.
             Grid search is not supported.

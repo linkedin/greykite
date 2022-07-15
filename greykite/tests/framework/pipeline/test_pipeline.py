@@ -14,11 +14,12 @@ from sklearn.pipeline import Pipeline
 
 from greykite.common.constants import ACTUAL_COL
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import FRACTION_OUTSIDE_TOLERANCE
 from greykite.common.constants import METRIC_COL
 from greykite.common.constants import PREDICTED_COL
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import QUANTILE_SUMMARY_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.constants import R2_null_model_score
@@ -50,7 +51,7 @@ from greykite.sklearn.transform.zscore_outlier_transformer import ZscoreOutlierT
 
 
 try:
-    import fbprophet  # noqa
+    import prophet  # noqa
 except ModuleNotFoundError:
     pass
 
@@ -254,15 +255,15 @@ def test_input(df, df_reg):
         # anomaly adjustment adds 10.0 to every record
         adjustment_size = 10.0
         anomaly_df = pd.DataFrame({
-            START_DATE_COL: [df[TIME_COL].min()],
-            END_DATE_COL: [df[TIME_COL].max()],
+            START_TIME_COL: [df[TIME_COL].min()],
+            END_TIME_COL: [df[TIME_COL].max()],
             ADJUSTMENT_DELTA_COL: [adjustment_size],
             METRIC_COL: [VALUE_COL]})
         anomaly_info = {
             "value_col": VALUE_COL,
             "anomaly_df": anomaly_df,
-            "start_date_col": START_DATE_COL,
-            "end_date_col": END_DATE_COL,
+            "start_time_col": START_TIME_COL,
+            "end_time_col": END_TIME_COL,
             "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
             "filter_by_dict": {METRIC_COL: VALUE_COL},
             "adjustment_method": "add"}
@@ -563,8 +564,8 @@ def test_train_end_date_gap_regressors():
     assert result.forecast.test_start_date == expected_forecast_test_start_date
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_exceptions(df):
     """Tests error messages when CV is skipped and there are
     multiple hyperparameter options.
@@ -1054,8 +1055,8 @@ def test_default():
         expected_grid_size=1)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_simple():
     """Tests forecast_pipeline function with Prophet and default parameters"""
     data = generate_df_for_tests(freq="H", periods=24*10)
@@ -1103,8 +1104,8 @@ def test_prophet_simple():
         assert result.backtest.df_test.shape == (24, 5)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_with_regressor():
     """Tests forecast_pipeline function with Prophet,
     input regressors, and default parameters
@@ -1157,8 +1158,8 @@ def test_prophet_with_regressor():
         greater_is_better=False)
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_prophet_complex():
     """Tests forecast_pipeline function with Prophet,
     custom parameters, missing data, and holidays
@@ -1279,10 +1280,14 @@ def test_silverkite_longterm():
             cv_periods_between_train_test=3 * 7,
             cv_max_splits=None)
 
+        # gathers all warning messages
+        all_warnings = ""
+        for i in range(len(record)):
+            all_warnings += record[i].message.args[0]
         assert "`min_train_periods` is too small for your `forecast_horizon`. Should be at " \
-               "least 728=2*`forecast_horizon`." in record[0].message.args[0]
+               "least 728=2*`forecast_horizon`." in all_warnings
         assert "There is a high number of CV splits (41). If training is slow, increase " \
-               "`periods_between_splits` or `min_train_periods`, or decrease `max_splits`" in record[1].message.args[0]
+               "`periods_between_splits` or `min_train_periods`, or decrease `max_splits`" in all_warnings
         check_forecast_pipeline_result(
             result,
             coverage=coverage,
@@ -1526,8 +1531,8 @@ def test_silverkite_regressor_with_missing_values():
     assert result.model[-1].model_dict["min_lagged_regressor_order"] == 5
 
 
-@pytest.mark.skipif("fbprophet" not in sys.modules,
-                    reason="Module 'fbprophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif("prophet" not in sys.modules,
+                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
 def test_custom_pipeline():
     """Tests forecast_pipeline function with custom pipeline"""
     data = generate_df_for_tests(freq="D", periods=30*8)  # 8 months
@@ -1729,7 +1734,7 @@ def test_pipeline_end2end_predict():
 
     pred_df = trained_estimator.predict(test_df[:forecast_horizon])
     pred_df.rename(columns={"forecast": "y"}, inplace=True)
-    cols = ["ts", "y", "forecast_lower", "forecast_upper", "y_quantile_summary", "err_std"]
+    cols = ["ts", "y", "forecast_lower", "forecast_upper", QUANTILE_SUMMARY_COL, "err_std"]
 
     # We expect the predictions to be the same as original predictions
     # since we are passing the same test data
@@ -1738,7 +1743,7 @@ def test_pipeline_end2end_predict():
     # Tries a new forecast horizon (10)
     new_pred_df = trained_estimator.predict(test_df[:10])
     new_pred_df.rename(columns={"forecast": "y"}, inplace=True)
-    cols = ["ts", "y", "forecast_lower", "forecast_upper", "y_quantile_summary", "err_std"]
+    cols = ["ts", "y", "forecast_lower", "forecast_upper", QUANTILE_SUMMARY_COL, "err_std"]
 
     # Checks to see if forecat and design matrix are updated in the estimator
     assert len(new_pred_df) == 10

@@ -6,7 +6,7 @@ from greykite.common.features.normalize import normalize_df
 
 def test_normalize_df():
     """Testing `normalize_df`"""
-    df = pd.DataFrame({"x": [1, 2, 3], "y": [1, 1, 1]})
+    df = pd.DataFrame({"x": [2, 1, 3], "y": [1, 1, 1]})
 
     expected_warning = "was dropped during normalization"
 
@@ -21,7 +21,20 @@ def test_normalize_df():
     normalize_df_func = normalization_info["normalize_df_func"]
     normalized_df = normalize_df_func(df)
     assert list(normalized_df.columns) == ["x"]
-    assert list(normalized_df["x"].values) == [-1, 0, 1]
+    assert list(normalized_df["x"].values) == [0, -1, 1]
+
+    # `"zero_at_origin"` method
+    with pytest.warns(Warning) as record:
+        normalization_info = normalize_df(
+            df=df,
+            method="zero_at_origin",
+            drop_degenerate_cols=True)
+        assert expected_warning in record[0].message.args[0]
+
+    normalize_df_func = normalization_info["normalize_df_func"]
+    normalized_df = normalize_df_func(df)
+    assert list(normalized_df.columns) == ["x"]
+    assert list(normalized_df["x"].values) == [0, -0.5, 0.5]
 
     # `"statistical"` method with replacement of zero denominator
     normalization_info = normalize_df(
@@ -33,21 +46,34 @@ def test_normalize_df():
     normalize_df_func = normalization_info["normalize_df_func"]
     normalized_df = normalize_df_func(df)
     assert list(normalized_df.columns) == ["x", "y"]
-    assert list(normalized_df["x"].values) == [-1, 0, 1]
+    assert list(normalized_df["x"].values) == [0, -1, 1]
     assert list(normalized_df["y"].values) == [0, 0, 0]
 
-    # `"min_max"` method
+    # `"zero_to_one"` method
     with pytest.warns(Warning) as record:
         normalization_info = normalize_df(
             df=df,
-            method="min_max",
+            method="zero_to_one",
             drop_degenerate_cols=True)
         assert expected_warning in record[0].message.args[0]
 
     normalize_df_func = normalization_info["normalize_df_func"]
     normalized_df = normalize_df_func(df)
     assert list(normalized_df.columns) == ["x"]
-    assert list(normalized_df["x"].values) == [0, 0.5, 1]
+    assert list(normalized_df["x"].values) == [0.5, 0, 1]
+
+    # `"minus_half_to_half"` method
+    with pytest.warns(Warning) as record:
+        normalization_info = normalize_df(
+            df=df,
+            method="minus_half_to_half",
+            drop_degenerate_cols=True)
+        assert expected_warning in record[0].message.args[0]
+
+    normalize_df_func = normalization_info["normalize_df_func"]
+    normalized_df = normalize_df_func(df)
+    assert list(normalized_df.columns) == ["x"]
+    assert list(normalized_df["x"].values) == [0, -0.5, 0.5]
 
     # apply to a new dataframe with new elements
     new_df = pd.DataFrame({"x": [1, 2, 3, 4, -1], "y": [1, 1, 1, 5, 6]})
@@ -72,7 +98,7 @@ def test_normalize_df():
     normalize_df_func = normalization_info["normalize_df_func"]
     normalized_df = normalize_df_func(df)
     assert list(normalized_df.columns) == ["x", "y"]
-    assert list(normalized_df["x"].values) == [-1, 0, 1]
+    assert list(normalized_df["x"].values) == [0, -1, 1]
     assert sum(normalized_df["y"].isnull()) == 3
 
     # Testing for raising exception if the `method` is not available

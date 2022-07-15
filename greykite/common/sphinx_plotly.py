@@ -27,7 +27,7 @@ Adapted from the functions in plotly v4.6.0 to support:
     1. List of examples_dirs, gallery_dirs
     2. Do not render png thumbnail to avoid dependencies
 
-Compatible with plotly 3.10.0.
+Compatible with plotly 5.4.0.
 """
 
 import inspect
@@ -76,6 +76,9 @@ class SphinxGalleryRenderer(ExternalRenderer):
             # Assumes the default image is one level above the .py file
             try:
                 filename_default_image = Path(filename_root).parents[1].joinpath('default_thumb.png')
+                if not os.path.exists(filename_default_image):
+                    # the .py file is in a subfolder (sub-gallery)
+                    filename_default_image = Path(filename_root).parents[2].joinpath('default_thumb.png')
                 shutil.copyfile(filename_default_image, filename_png)
             except FileNotFoundError:
                 warnings.warn(f"Thumbnail not found! Expected default_thumb.png to be "
@@ -130,35 +133,12 @@ def plotly_sg_scraper(block, block_vars, gallery_conf, **kwargs):
     -----
     Add this function to the image scrapers
     """
-    # e.g. '/home/user/Documents/greykite/module/docs/gallery/subgallery/images/sphx_glr_plot_mymodule_{0:03}.png'
-    # where 'gallery/subgallery' is an element specified in gallery_conf["gallery_dirs"].
+    examples_dir = os.path.dirname(block_vars["src_file"])
+    pngs = sorted(glob(os.path.join(examples_dir, "*.png")))
+    htmls = sorted(glob(os.path.join(examples_dir, "*.html")))
     image_path_iterator = block_vars["image_path_iterator"]
-
-    # Finds the examples_dirs directory with the files
-    # to move to the locations specified by image_path_iterator
-    examples_dirs = gallery_conf["examples_dirs"]
-    if isinstance(examples_dirs, (list, tuple)):
-        # Gets `gallery_dirs` item corresponding to the ``image_path_iterator``
-        # example: '/home/user/Documents/mp/module/docs/gallery/subgallery'
-        abs_gallery_path = Path(image_path_iterator.image_path).parents[1]
-        # example: 'gallery/subgallery'
-        rel_gallery_path = os.path.relpath(abs_gallery_path, gallery_conf["src_dir"])
-        # Maps relative paths in gallery_dirs to those in examples_dirs
-        gallery_to_examples = dict(zip(gallery_conf["gallery_dirs"], examples_dirs))
-        # Gets `example_dirs` item corresponding to the gallery_dirs item
-        rel_example_path = gallery_to_examples[rel_gallery_path]
-        # Converts to absolute example path
-        # `rel_example_path` is the path relative to gallery_conf["src_dir"]
-        # (/home/user/Documents/mp/module/docs) but the current working directory
-        # could be /home/user/Documents/mp or something else
-        abs_example_path = os.path.join(gallery_conf["src_dir"], rel_example_path)
-
-    # Copies files from rel_example_path to the proper location in gallery_dirs
-    pngs = sorted(glob(os.path.join(abs_example_path, "*.png")))
-    htmls = sorted(glob(os.path.join(abs_example_path, "*.html")))
     image_names = list()
     seen = set()
-
     for html, png in zip(htmls, pngs):
         if png not in seen:
             seen |= set(png)

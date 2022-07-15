@@ -27,6 +27,7 @@ import pandas as pd
 
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import cols_interact
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper import generate_holiday_events
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.features.timeseries_features import convert_date_to_continuous_time
 
 
@@ -42,7 +43,7 @@ def params_components():
     uncertainty_dict = {
         "uncertainty_method": "simple_conditional_residuals",
         "params": {
-            "conditional_cols": ["dow"],
+            "conditional_cols": [TimeFeaturesEnum.dow.value],
             "quantiles": [0.025, 0.975],
             "quantile_estimation_method": "normal_fit",
             "sample_size_thresh": 5,
@@ -69,16 +70,23 @@ def params_components():
     # constant event effect at daily level
     event_cols = [f"Q('events_{key}')" for key in event_df_dict.keys()]
     interaction_cols = cols_interact(
-        static_col="is_weekend",
-        fs_name="tow",
+        static_col=TimeFeaturesEnum.is_weekend.value,
+        fs_name=TimeFeaturesEnum.tow.value,
         fs_order=4,
         fs_seas_name="weekly")
-    extra_pred_cols = ["ct_sqrt", "dow_hr", "ct1", "ct1:tod", "regressor1", "regressor2"] + \
-        event_cols + interaction_cols
+    extra_pred_cols = [TimeFeaturesEnum.ct_sqrt.value,
+                       TimeFeaturesEnum.dow_hr.value,
+                       TimeFeaturesEnum.ct1.value,
+                       f"{TimeFeaturesEnum.ct1.value}:{TimeFeaturesEnum.tod.value}",
+                       "regressor1",
+                       "regressor2"] + event_cols + interaction_cols
 
     # seasonality terms
     fs_components_df = pd.DataFrame({
-        "name": ["tod", "tow", "ct1"],
+        "name": [
+            TimeFeaturesEnum.tod.value,
+            TimeFeaturesEnum.tow.value,
+            TimeFeaturesEnum.ct1.value],
         "period": [24.0, 7.0, 1.0],
         "order": [12, 4, 5],
         "seas_names": ["daily", "weekly", "yearly"]})
@@ -87,7 +95,7 @@ def params_components():
     changepoints_dict = dict(
         method="custom",
         dates=["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"],
-        continuous_time_col="ct2")
+        continuous_time_col=TimeFeaturesEnum.ct2.value)
 
     return {
         "coverage": 0.95,

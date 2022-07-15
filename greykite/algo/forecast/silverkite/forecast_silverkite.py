@@ -38,14 +38,16 @@ from greykite.algo.common.ml_models import predict_ml_with_uncertainty
 from greykite.algo.forecast.silverkite.constants.silverkite_constant import default_silverkite_constant
 from greykite.algo.forecast.silverkite.constants.silverkite_seasonality import SilverkiteSeasonalityEnum
 from greykite.algo.forecast.silverkite.constants.silverkite_seasonality import SilverkiteSeasonalityEnumMixin
+from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_fourier_feature_col_names
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_similar_lag
 from greykite.common.constants import CHANGEPOINT_COL_PREFIX
 from greykite.common.constants import ERR_STD_COL
+from greykite.common.constants import QUANTILE_SUMMARY_COL
 from greykite.common.constants import SEASONALITY_REGEX
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.enums import TimeEnum
 from greykite.common.features.timeseries_features import add_daily_events
 from greykite.common.features.timeseries_features import add_time_features_df
-from greykite.common.features.timeseries_features import build_time_features_df
 from greykite.common.features.timeseries_features import fourier_series_multi_fcn
 from greykite.common.features.timeseries_features import get_changepoint_dates_from_changepoints_dict
 from greykite.common.features.timeseries_features import get_changepoint_features
@@ -96,7 +98,10 @@ class SilverkiteForecast():
             fit_algorithm_params=None,
             daily_event_df_dict=None,
             fs_components_df=pd.DataFrame({
-                "name": ["tod", "tow", "toy"],
+                "name": [
+                    TimeFeaturesEnum.tod.value,
+                    TimeFeaturesEnum.tow.value,
+                    TimeFeaturesEnum.toy.value],
                 "period": [24.0, 7.0, 1.0],
                 "order": [3, 3, 5],
                 "seas_names": ["daily", "weekly", "yearly"]}),
@@ -115,7 +120,8 @@ class SilverkiteForecast():
             regression_weight_col=None,
             forecast_horizon=None,
             simulation_based=False,
-            simulation_num=10):
+            simulation_num=10,
+            fast_simulation=False):
         """A function for forecasting.
         It captures growth, seasonality, holidays and other patterns.
         See "Capturing the time-dependence in the precipitation process for
@@ -428,7 +434,8 @@ class SilverkiteForecast():
         normalize_method : `str` or None, default None
             If a string is provided, it will be used as the normalization method
             in `~greykite.common.features.normalize.normalize_df`, passed via
-            the argument ``method``. Available options are: "min_max", "statistical".
+            the argument ``method``.
+            Available options are: "zero_to_one", "statistical", "minus_half_to_half", "zero_at_origin".
             If None, no normalization will be performed.
             See that function for more details.
         adjust_anomalous_dict : `dict` or None, default None
@@ -482,6 +489,13 @@ class SilverkiteForecast():
         simulation_num : `int`, default 10
             The number of simulations for when simulations are used for generating
             forecasts and prediction intervals.
+        fast_simulation: `bool`, default False
+            Deterimes if fast simulations are to be used. This only impacts models
+            which include auto-regression. This method will only generate one simulation
+            without any error being added and then add the error using the volatility
+            model. The advantage is a major boost in speed during inference and the
+            disadvantage is potentially less accurate prediction intervals.
+
 
         Returns
         -------
@@ -601,6 +615,9 @@ class SilverkiteForecast():
         num_training_points = df.shape[0]
         adjust_anomalous_info = None
 
+        if simulation_num is not None:
+            assert simulation_num > 0, "simulation number must be a natural number"
+
         if past_df is not None:
             if past_df.shape[0] == 0:
                 past_df = None
@@ -657,7 +674,7 @@ class SilverkiteForecast():
         forecast_horizon_in_days = inferred_freq_in_days * forecast_horizon
 
         if extra_pred_cols is None:
-            extra_pred_cols = ["ct1"]  # linear in time
+            extra_pred_cols = [TimeFeaturesEnum.ct1.value]  # linear in time
 
         # Makes sure the ``train_test_thresh`` is within the data
         last_time_available = max(df[time_col])
@@ -744,12 +761,12 @@ class SilverkiteForecast():
                     seas_names=fs_components_df.get("seas_names")
                 )
                 # Determines fourier series column names for use in "build_features"
-                # to save computation, only need a few rows are needed
-                time_features_example_df = build_time_features_df(
-                    df[time_col][:2],
-                    conti_year_origin=origin_for_time_vars)
-                fs = fs_func(time_features_example_df)
-                fs_cols = fs["cols"]
+                fs_cols = get_fourier_feature_col_names(
+                    df=df,
+                    time_col=time_col,
+                    fs_func=fs_func,
+                    conti_year_origin=origin_for_time_vars
+                )
         # Removes fs_cols with perfect or almost perfect collinearity for OLS.
         # For example, yearly seasonality with order 4 and quarterly seasonality with order 1, and etc.
         if fit_algorithm in ["linear", "statsmodels_wls", "statsmodels_gls"]:
@@ -1014,6 +1031,7 @@ class SilverkiteForecast():
         trained_model["forecast_horizon_in_timedelta"] = forecast_horizon_in_timedelta
         trained_model["simulation_based"] = simulation_based
         trained_model["simulation_num"] = simulation_num
+        trained_model["fast_simulation"] = fast_simulation
 
         return trained_model
 
@@ -1056,9 +1074,11 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
             - "x_mat": `pandas.DataFrame`
                 Design matrix of the predictive machine-learning model
+            - "features_df": `pandas.DataFrame`
+                The features dataframe used for prediction.
 
         """
         fut_df = fut_df.copy()
@@ -1076,12 +1096,27 @@ class SilverkiteForecast():
                 "or it was not long enough to calculate all necessery lags "
                 f"which is equal to `max_lag_order`={max_lag_order}")
 
-        if max_lagged_regressor_order is not None and (past_df is None or past_df.shape[0] < max_lagged_regressor_order):
+        if max_lagged_regressor_order is not None and (
+                past_df is None or past_df.shape[0] < max_lagged_regressor_order):
             warnings.warn(
                 "The lagged regressor data had to be interpolated at predict time."
                 "`past_df` was either not passed to `predict_silverkite` "
                 "or it was not long enough to calculate all necessery lags "
                 f"which is equal to `max_lagged_regressor_order`={max_lagged_regressor_order}")
+
+        # This is the overall maximum lag order
+        max_order = None
+        if max_lag_order is not None and max_lagged_regressor_order is not None:
+            max_order = np.max([
+                max_lag_order,
+                max_lagged_regressor_order])
+        elif max_lag_order is not None:
+            max_order = max_lag_order
+        elif max_lagged_regressor_order is not None:
+            max_order = max_lagged_regressor_order
+        # We only keep the rows needed in ``past_df``
+        if past_df is not None and max_order is not None and len(past_df) > max_order:
+            past_df = past_df.tail(max_order).reset_index(drop=True)
 
         # adds extra regressors if provided
         if new_external_regressor_df is None or regressors_ready:
@@ -1125,7 +1160,7 @@ class SilverkiteForecast():
                 if phase == "predict":
                     # If phase is predict, we do not allow using ``value_col``.
                     # The AR lags should be enough since otherwise one would use ``predict_via_sim``.
-                    df = pd.DataFrame({value_col: [np.nan]*fut_df.shape[0]})
+                    df = pd.DataFrame({value_col: [np.nan] * fut_df.shape[0]})
                     df.index = fut_df.index
                 else:
                     # If phase is fit, we keep the values in ``value_col``.
@@ -1187,7 +1222,7 @@ class SilverkiteForecast():
             x_mat = pred_res["x_mat"]
         else:
             # predictions are stored to ``value_col``
-            # quantiles are stored to ``f"{value_col}_quantile_summary"``
+            # quantiles are stored to ``QUANTILE_SUMMARY_COL``
             pred_res = predict_ml_with_uncertainty(
                 fut_df=features_df_fut,
                 trained_model=trained_model)
@@ -1195,13 +1230,14 @@ class SilverkiteForecast():
             x_mat = pred_res["x_mat"]
 
         # Makes sure to return only necessary columns
-        potential_forecast_cols = [time_col, value_col, f"{value_col}_quantile_summary", ERR_STD_COL]
+        potential_forecast_cols = [time_col, value_col, QUANTILE_SUMMARY_COL, ERR_STD_COL]
         existing_forecast_cols = [col for col in potential_forecast_cols if col in fut_df.columns]
         fut_df = fut_df[existing_forecast_cols]
 
         return {
             "fut_df": fut_df,
-            "x_mat": x_mat}
+            "x_mat": x_mat,
+            "features_df": features_df_fut}
 
     def predict_n_no_sim(
             self,
@@ -1240,7 +1276,7 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
             - "x_mat": `pandas.DataFrame`
                 Design matrix of the predictive machine-learning model
 
@@ -1302,28 +1338,46 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
                 Here are the expected columns:
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
-                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                (3) Quantile summary response in ``QUANTILE_SUMMARY_COL`` column.
                     This column only appears if the model includes uncertainty.
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
 
             - "x_mat": `pandas.DataFrame`
                 Design matrix of the predictive machine-learning model
+            - "features_df": `pandas.DataFrame`
+                The features dataframe used for prediction.
 
         """
-        n = fut_df.shape[0]
+        n = len(fut_df)
         past_df_sim = None if past_df is None else past_df.copy()
-        fut_df = fut_df.copy()
+        fut_df = fut_df.reset_index(drop=True)
         fut_df_sim = fut_df.copy()
         time_col = trained_model["time_col"]
         value_col = trained_model["value_col"]
         fut_df_sim[value_col] = np.nan
         fut_df_sim = fut_df_sim.astype({value_col: "float64"})
+        max_lag_order = trained_model["max_lag_order"]
+        max_lagged_regressor_order = trained_model["max_lagged_regressor_order"]
+        # overall maximum lag order
+        max_order = None
+        if max_lag_order is not None and max_lagged_regressor_order is not None:
+            max_order = np.max([
+                max_lag_order,
+                max_lagged_regressor_order])
+        elif max_lag_order is not None:
+            max_order = max_lag_order
+        elif max_lagged_regressor_order is not None:
+            max_order = max_lagged_regressor_order
+
+        # Only need to keep the last relevant rows to calculate AR terms
+        if past_df_sim is not None and max_order is not None and len(past_df_sim) > max_order:
+            past_df_sim = past_df_sim.tail(max_order)
 
         # adds the other features
         if time_features_ready is not True:
@@ -1348,8 +1402,10 @@ class SilverkiteForecast():
                 sort=False)
 
         x_mat_list = []
+        features_df_list = []
         for i in range(n):
             fut_df_sub = fut_df.iloc[[i]].reset_index(drop=True)
+            assert len(fut_df_sub) == 1, "the subset dataframe must have only one row"
 
             pred_res = self.predict_no_sim(
                 fut_df=fut_df_sub,
@@ -1360,8 +1416,13 @@ class SilverkiteForecast():
                 regressors_ready=True)
 
             fut_df_sub = pred_res["fut_df"]
+            # we expect the returned prediction will have only one row
+            assert len(fut_df_sub) == 1
+
             x_mat = pred_res["x_mat"]
+            features_df = pred_res["features_df"]
             x_mat_list.append(x_mat)
+            features_df_list.append(features_df)
 
             fut_df_sim.at[i, value_col] = fut_df_sub[value_col].values[0]
 
@@ -1372,15 +1433,18 @@ class SilverkiteForecast():
                         loc=0.0,
                         scale=scale)
                     fut_df_sim.at[i, value_col] = (
-                        fut_df_sub[value_col].values[0]
-                        + err)
+                            fut_df_sub[value_col].values[0]
+                            + err)
                 else:
                     raise ValueError(
                         "Error is requested via ``include_err = True``. "
                         f"However the std column ({ERR_STD_COL}) "
                         "does not appear in the prediction")
 
-            past_df_increment = fut_df_sim[[value_col]]
+            # we get the last prediction value and concat that to the end of
+            # ``past_df``
+            past_df_increment = fut_df_sub[[value_col]]
+            assert len(past_df_increment) == 1
             if past_df_sim is None:
                 past_df_sim = past_df_increment
             else:
@@ -1389,15 +1453,29 @@ class SilverkiteForecast():
                     axis=0,
                     sort=False)
 
+            # Only need to keep the last relevant rows to calculate AR terms
+            if past_df_sim is not None and max_order is not None and len(past_df_sim) > max_order:
+                past_df_sim = past_df_sim.tail(max_order)
+            past_df_sim = past_df_sim.reset_index(drop=True)
+
         x_mat = pd.concat(
             x_mat_list,
             axis=0,
             ignore_index=True,  # The index does not matter as we simply want to stack up the data
             sort=False)
+        assert len(x_mat) == len(fut_df), "The design matrix size (number of rows) used in simulation must have same size as the input"
+
+        features_df = pd.concat(
+            features_df_list,
+            axis=0,
+            ignore_index=True,  # The index does not matter as we simply want to stack up the data
+            sort=False)
+        assert len(features_df) == len(fut_df), "The features data size (number of rows) used in simulation must have same size as the input"
 
         return {
             "sim_df": fut_df_sim[[time_col, value_col]],
-            "x_mat": x_mat}
+            "x_mat": x_mat,
+            "features_df": features_df}
 
     def simulate_multi(
             self,
@@ -1421,7 +1499,7 @@ class SilverkiteForecast():
         simulation_num : `int`
             The number of simulated series,
             (each of which have the same number of rows as ``fut_df``)
-            to be stacked up row-wise.
+            to be stacked up row-wise. This number must be larger than zero.
         past_df : `pandas.DataFrame`, optional
             A data frame with past values if autoregressive methods are called
             via ``autoreg_dict`` parameter of ``greykite.algo.forecast.silverkite.SilverkiteForecast.py``.
@@ -1451,6 +1529,7 @@ class SilverkiteForecast():
                 Note that the all copies will be the same except for the case where
                 auto-regression is utilized.
         """
+        assert simulation_num > 0, "simulation number has to be a natural number."
 
         if include_err is None:
             include_err = trained_model["uncertainty_dict"] is not None
@@ -1498,9 +1577,9 @@ class SilverkiteForecast():
             sim_df = sim_res["sim_df"]
             x_mat = sim_res["x_mat"]
             sim_df["sim_label"] = label
-            # ``x_mat`` does not necessarily have an index column
-            # we keet track of the original index, to be able to aggregate
-            # across simulations later
+            # ``x_mat`` does not necessarily have an index column.
+            # We keep track of the original index, to be able to aggregate
+            # across simulations later.
             x_mat["original_row_index"] = range(len(fut_df))
 
             return {
@@ -1571,12 +1650,12 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
                 Here are the expected columns:
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
-                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                (3) Quantile summary response in ``QUANTILE_SUMMARY_COL`` column.
                     This column only appears if the model includes uncertainty.
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
@@ -1623,7 +1702,7 @@ class SilverkiteForecast():
         agg_df.columns = [
             time_col,
             value_col,
-            f"{value_col}_quantile_summary",
+            QUANTILE_SUMMARY_COL,
             ERR_STD_COL]
 
         # When there is no uncertainty dict, the uncertainty columns are NA.
@@ -1644,6 +1723,97 @@ class SilverkiteForecast():
             "fut_df": agg_df,
             "x_mat": x_mat}
 
+    def predict_via_sim_fast(
+            self,
+            fut_df,
+            trained_model,
+            past_df=None,
+            new_external_regressor_df=None):
+        """Performs predictions and calculates uncertainty using
+        one simulation of future and calculate the error separately
+        (not relying on multiple simulations). Due to this the prediction
+        intervals well into future will be narrower than ``predict_via_sim``
+        and therefore less accurate. However there will be a major speed gain
+        which might be important in some use cases.
+
+        Parameters
+        ----------
+        fut_df : `pandas.DataFrame`
+            The data frame which includes the timestamps for prediction
+            and possibly regressors.
+        trained_model : `dict`
+            A fitted silverkite model which is the output of ``self.forecast``.
+        past_df : `pandas.DataFrame` or None, default None
+            A data frame with past values if autoregressive methods are called
+            via ``autoreg_dict`` parameter of ``greykite.algo.forecast.silverkite.SilverkiteForecast.py``
+        new_external_regressor_df: `pandas.DataFrame` or None, default None
+            Contains the regressors not already included in ``fut_df``.
+
+        Returns
+        -------
+        result: `dict`
+            A dictionary with following items
+
+            - "fut_df": `pandas.DataFrame`
+                The same as input dataframe with an added column for the response.
+                If value_col already appears in ``fut_df``, it will be over-written.
+                If ``uncertainty_dict`` is provided as input,
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
+                Here are the expected columns:
+
+                (1) A time column with the column name being ``trained_model["time_col"]``
+                (2) The predicted response in ``value_col`` column.
+                (3) Quantile summary response in ``QUANTILE_SUMMARY_COL`` column.
+                    This column only appears if the model includes uncertainty.
+                (4) Error std in `ERR_STD_COL` column.
+                    This column only appears if the model includes uncertainty.
+
+            - "x_mat": `pandas.DataFrame`
+                Design matrix of the predictive machine-learning model
+            - "features_df": `pandas.DataFrame`
+                The features dataframe used for prediction.
+
+        """
+        fut_df = fut_df.copy()
+        time_col = trained_model["time_col"]
+        value_col = trained_model["value_col"]
+
+        # We only simulate one series without using any error during simulations
+        sim_res = self.simulate(
+            fut_df=fut_df,
+            trained_model=trained_model,
+            past_df=past_df,
+            new_external_regressor_df=new_external_regressor_df,
+            include_err=False)
+        x_mat = sim_res["x_mat"]
+        features_df = sim_res["features_df"]
+
+        if trained_model["uncertainty_dict"] is None:
+            # predictions are stored to ``value_col``
+            pred_res = predict_ml(
+                fut_df=features_df,
+                trained_model=trained_model)
+            fut_df = pred_res["fut_df"]
+            x_mat = pred_res["x_mat"]
+        else:
+            # predictions are stored to ``value_col``
+            # quantiles are stored to ``QUANTILE_SUMMARY_COL``
+            pred_res = predict_ml_with_uncertainty(
+                fut_df=features_df,
+                trained_model=trained_model)
+            fut_df = pred_res["fut_df"]
+            x_mat = pred_res["x_mat"]
+
+        # Makes sure to return only necessary columns
+        potential_forecast_cols = [time_col, value_col, QUANTILE_SUMMARY_COL, ERR_STD_COL]
+        existing_forecast_cols = [col for col in potential_forecast_cols if col in fut_df.columns]
+        fut_df = fut_df[existing_forecast_cols]
+
+        return {
+            "fut_df": fut_df,
+            "x_mat": x_mat,
+            "features_df": features_df}
+
     def predict_n_via_sim(
             self,
             fut_time_num,
@@ -1651,12 +1821,16 @@ class SilverkiteForecast():
             freq,
             new_external_regressor_df=None,
             simulation_num=10,
+            fast_simulation=False,
             include_err=None):
         """This is the forecast function which can be used to forecast.
-        This function's predictions are constructed using multiple simulations
-        from the fitted series.
-        The ``past_df`` to use in ``predict_silverkite_via_sim`` is set to
-        be the training data which is available in ``trained_model``.
+        This function's predictions are constructed using simulations
+        from the fitted series. This supports both ``predict_silverkite_via_sim``
+        and ````predict_silverkite_via_sim_fast`` depending on value of the
+        passed argument ``fast_simulation``.
+
+        The ``past_df`` is set to be the training data which is available
+        in ``trained_model``.
         It accepts extra regressors (``extra_pred_cols``) originally in
         ``df`` via ``new_external_regressor_df``.
 
@@ -1673,12 +1847,19 @@ class SilverkiteForecast():
             Contains the extra regressors if specified.
         simulation_num : `int`, optional, default 10
             The number of simulated series to be used in prediction.
+        fast_simulation: `bool`, default False
+            Deterimes if fast simulations are to be used. This only impacts models
+            which include auto-regression. This method will only generate one simulation
+            without any error being added and then add the error using the volatility
+            model. The advantage is a major boost in speed during inference and the
+            disadvantage is potentially less accurate prediction intervals.
         include_err : `bool`, optional, default None
             Boolean to determine if errors are to be incorporated in the simulations.
             If None, it will be set to True if uncertainty is passed to the model and
             otherwise will be set to False
 
         Returns
+        -------
         result: `dict`
             A dictionary with following items
 
@@ -1686,12 +1867,12 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
                 Here are the expected columns:
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
-                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                (3) Quantile summary response in ``QUANTILE_SUMMARY_COL`` column.
                     This column only appears if the model includes uncertainty.
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
@@ -1721,6 +1902,13 @@ class SilverkiteForecast():
 
         past_df = trained_model["df"][[value_col]].reset_index(drop=True)
 
+        if fast_simulation:
+            return self.predict_via_sim_fast(
+                fut_df=fut_df,
+                trained_model=trained_model,
+                past_df=past_df,  # observed data used for training the model
+                new_external_regressor_df=new_external_regressor_df)
+
         return self.predict_via_sim(
             fut_df=fut_df,
             trained_model=trained_model,
@@ -1738,6 +1926,8 @@ class SilverkiteForecast():
             new_external_regressor_df=None,
             include_err=None,
             force_no_sim=False,
+            simulation_num=None,
+            fast_simulation=None,
             na_fill_func=lambda s: s.interpolate().bfill().ffill()):
         """Performs predictions using silverkite model.
         It determines if the prediction should be simulation-based or not and then
@@ -1790,6 +1980,17 @@ class SilverkiteForecast():
             In this case, the potential non-available lags will be imputed.
             Most users should not set this to True as the consequences could be
             hard to quantify.
+        simulation_num : `int` or None, default None
+            The number of simulations for when simulations are used for generating
+            forecasts and prediction intervals. If None, it will be inferred from
+            the model (``trained_model``).
+        fast_simulation: `bool` or None, default None
+            Deterimes if fast simulations are to be used. This only impacts models
+            which include auto-regression. This method will only generate one simulation
+            without any error being added and then add the error using the volatility
+            model. The advantage is a major boost in speed during inference and the
+            disadvantage is potentially less accurate prediction intervals.
+            If None, it will be inferred from the model (``trained_model``).
         na_fill_func : callable (`pd.DataFrame` -> `pd.DataFrame`)
             default::
 
@@ -1813,12 +2014,12 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
                 Here are the expected columns:
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
-                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                (3) Quantile summary response in ``QUANTILE_SUMMARY_COL`` column.
                     This column only appears if the model includes uncertainty.
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
@@ -1832,7 +2033,12 @@ class SilverkiteForecast():
         value_col = trained_model["value_col"]
         min_lag_order = trained_model["min_lag_order"]
         max_lag_order = trained_model["max_lag_order"]
-        simulation_num = trained_model["simulation_num"]
+
+        if simulation_num is None:
+            simulation_num = trained_model["simulation_num"]
+
+        if fast_simulation is None:
+            fast_simulation = trained_model["fast_simulation"]
 
         if freq is None:
             freq = trained_model["freq"]
@@ -1931,11 +2137,25 @@ class SilverkiteForecast():
         # From here we assume model has autoregression,
         # because otherwise we would have returned above.
 
-        # Raises a warning if imputation is needed.
-        if (
-                past_df[past_df[time_col] >= fut_df[time_col].min() - to_offset(
-                    freq) * max_lag_order].isna().sum().sum() > 0
-                or past_df[time_col].min() > fut_df[time_col].min() - to_offset(freq) * max_lag_order):
+        # Checks if imputation is needed.
+        # Writes to log message if imputation is needed for debugging purposes.
+        # This happens when
+        # (1) ``past_df`` is too short and does not cover the earliest lag needed.
+        # (2) ``past_df`` has missing values.
+        past_df_sufficient = True
+        # The check happens when ``freq`` is not None.
+        # We made sure ``freq`` is not None before but wanna add a safeguard.
+        if freq is not None:
+            pred_min_ts = fut_df[time_col].min()  # the prediction period's minimum timestamp
+            past_df_min_ts = past_df[time_col].min()  # the past df's minimum timestamp
+            lag_min_ts_needed = pred_min_ts - to_offset(freq) * max_lag_order  # the minimum timestamp needed (max lag)
+            # Checks (1) if ``past_df`` covers the period after ``lag_min_ts_needed``.
+            past_df_sufficient = past_df_sufficient and (past_df_min_ts <= lag_min_ts_needed)
+            if past_df_sufficient:
+                # Checks (2) if ``past_df`` has any missing value after ``lag_min_ts_needed``
+                past_df_after_min_ts = past_df[past_df[time_col] >= lag_min_ts_needed]
+                past_df_sufficient = past_df_sufficient and (past_df_after_min_ts[value_col].isna().sum() == 0)
+        if not past_df_sufficient:
             log_message(
                 message="``past_df`` is not sufficient, imputation is performed when creating autoregression terms.",
                 level=LoggingLevelEnum.DEBUG)
@@ -1977,7 +2197,7 @@ class SilverkiteForecast():
                 on=time_col,
                 how="left"
             )
-            # Imputation will be done during `self.predict_no_sim` if ``past_df_before_min_timestamp``
+            # Imputation will be done during ``self.predict_no_sim`` if ``past_df_before_min_timestamp``
             # does not have sufficient AR terms.
             pred_res = self.predict_no_sim(
                 fut_df=fut_df_before_training,
@@ -1993,7 +2213,7 @@ class SilverkiteForecast():
 
         fitted_df = trained_model["fitted_df"]
         fitted_x_mat = trained_model["x_mat"]
-        potential_forecast_cols = [time_col, value_col, f"{value_col}_quantile_summary", ERR_STD_COL]
+        potential_forecast_cols = [time_col, value_col, QUANTILE_SUMMARY_COL, ERR_STD_COL]
         existing_forecast_cols = [col for col in potential_forecast_cols if col in fitted_df.columns]
         fitted_df = fitted_df[existing_forecast_cols]
 
@@ -2027,7 +2247,8 @@ class SilverkiteForecast():
         # The future timestamps need to be predicted
         # There are two cases: either simulations are needed or not
         # This is decided as follows:
-        simulations_not_used = (not has_autoreg_structure) or force_no_sim or (inferred_forecast_horizon <= min_lag_order)
+        simulations_not_used = (not has_autoreg_structure) or force_no_sim or (
+                inferred_forecast_horizon <= min_lag_order)
 
         # ``new_external_regressor_df`` will be passed as None
         # since it is already included in ``fut_df``.
@@ -2047,6 +2268,14 @@ class SilverkiteForecast():
                     regressors_ready=True)
                 fut_df0 = pred_res["fut_df"]
                 x_mat0 = pred_res["x_mat"]
+            elif fast_simulation:
+                pred_res = self.predict_via_sim_fast(
+                    fut_df=fut_df_after_training_expanded,
+                    trained_model=trained_model,
+                    past_df=past_df,
+                    new_external_regressor_df=None)
+                fut_df0 = pred_res["fut_df"]
+                x_mat0 = pred_res["x_mat"]
             else:
                 pred_res = self.predict_via_sim(
                     fut_df=fut_df_after_training_expanded,
@@ -2058,6 +2287,7 @@ class SilverkiteForecast():
                 fut_df0 = pred_res["fut_df"]
                 x_mat0 = pred_res["x_mat"]
             fut_df0 = fut_df0[index_after_training_original]
+            x_mat0 = x_mat0[index_after_training_original]
             fut_df_list.append(fut_df0.reset_index(drop=True))
             x_mat_list.append(x_mat0)
 
@@ -2074,11 +2304,13 @@ class SilverkiteForecast():
             sort=False)
 
         # Makes sure to return only necessary columns
-        potential_forecast_cols = [time_col, value_col, f"{value_col}_quantile_summary", ERR_STD_COL]
+        potential_forecast_cols = [time_col, value_col, QUANTILE_SUMMARY_COL, ERR_STD_COL]
         existing_forecast_cols = [col for col in potential_forecast_cols if col in fut_df_final.columns]
         fut_df_final = fut_df_final[existing_forecast_cols]
 
-        assert fut_df.shape[0] == fut_df_final.shape[0]
+        # Expects the created data has same size as the passed ``fut_df``
+        assert len(fut_df_final) == len(fut_df), "The generated data at predict phase must have same length as input ``fut_df``"
+        assert len(x_mat_final) == len(fut_df), "The generated data at predict phase must have same length as input ``fut_df``"
 
         return {
             "fut_df": fut_df_final,
@@ -2096,6 +2328,8 @@ class SilverkiteForecast():
             new_external_regressor_df=None,
             include_err=None,
             force_no_sim=False,
+            simulation_num=None,
+            fast_simulation=None,
             na_fill_func=lambda s: s.interpolate().bfill().ffill()):
         """This is the forecast function which can be used to forecast a number of
         periods into the future.
@@ -2118,6 +2352,13 @@ class SilverkiteForecast():
             Contains the extra regressors if specified.
         simulation_num : `int`, optional, default 10
             The number of simulated series to be used in prediction.
+        fast_simulation: `bool` or None, default None
+            Deterimes if fast simulations are to be used. This only impacts models
+            which include auto-regression. This method will only generate one simulation
+            without any error being added and then add the error using the volatility
+            model. The advantage is a major boost in speed during inference and the
+            disadvantage is potentially less accurate prediction intervals.
+            If None, it will be inferred from the model (``trained_model``).
         include_err : `bool` or None, default None
             Boolean to determine if errors are to be incorporated in the simulations.
             If None, it will be set to True if uncertainty is passed to the model and
@@ -2146,12 +2387,12 @@ class SilverkiteForecast():
                 The same as input dataframe with an added column for the response.
                 If value_col already appears in ``fut_df``, it will be over-written.
                 If ``uncertainty_dict`` is provided as input,
-                it will also contain a ``{value_col}_quantile_summary`` column.
+                it will also contain a ``QUANTILE_SUMMARY_COL`` column.
                 Here are the expected columns:
 
                 (1) A time column with the column name being ``trained_model["time_col"]``
                 (2) The predicted response in ``value_col`` column.
-                (3) Quantile summary response in ``f"{value_col}_quantile_summary`` column.
+                (3) Quantile summary response in ``QUANTILE_SUMMARY_COL`` column.
                     This column only appears if the model includes uncertainty.
                 (4) Error std in `ERR_STD_COL` column.
                     This column only appears if the model includes uncertainty.
@@ -2177,6 +2418,8 @@ class SilverkiteForecast():
             new_external_regressor_df=new_external_regressor_df,
             include_err=include_err,
             force_no_sim=force_no_sim,
+            simulation_num=simulation_num,
+            fast_simulation=fast_simulation,
             na_fill_func=na_fill_func)
 
     def partition_fut_df(
@@ -2315,8 +2558,8 @@ class SilverkiteForecast():
 
         index_before_training = (fut_df[time_col] < training_start_timestamp)
         index_within_training = (
-            (fut_df[time_col] >= training_start_timestamp) &
-            (fut_df[time_col] <= training_end_timestamp))
+                (fut_df[time_col] >= training_start_timestamp) &
+                (fut_df[time_col] <= training_end_timestamp))
         index_after_training = (fut_df[time_col] > training_end_timestamp)
 
         fut_df_before_training = fut_df[index_before_training]
@@ -2366,9 +2609,9 @@ class SilverkiteForecast():
             # Imputes the missing values
             fut_df_expanded = na_fill_func(fut_df_expanded)
             index = (
-                [False]*fut_df_within_training.shape[0] +
-                [True]*fut_df_gap.shape[0] +
-                [False]*fut_df_after_training.shape[0])
+                    [False] * fut_df_within_training.shape[0] +
+                    [True] * fut_df_gap.shape[0] +
+                    [False] * fut_df_after_training.shape[0])
             fut_df_gap = fut_df_expanded[index].copy()
 
         inferred_forecast_horizon = fut_df_after_training.shape[0]
@@ -2378,7 +2621,7 @@ class SilverkiteForecast():
         # Creates an expanded dataframe which includes the missing times
         # between the end of training and the forecast period
         fut_df_after_training_expanded = fut_df_after_training
-        index_after_training_original = [True]*fut_df_after_training.shape[0]
+        index_after_training_original = [True] * fut_df_after_training.shape[0]
         if fut_df_gap is not None:
             fut_df_after_training_expanded = pd.concat(
                 [fut_df_gap, fut_df_after_training],
@@ -2386,8 +2629,8 @@ class SilverkiteForecast():
                 ignore_index=True,
                 sort=False)
             index_after_training_original = (
-                [False] * fut_df_gap.shape[0] +
-                [True] * fut_df_after_training.shape[0])
+                    [False] * fut_df_gap.shape[0] +
+                    [True] * fut_df_after_training.shape[0])
 
         forecast_partition_summary = {
             "len_before_training": fut_df_before_training.shape[0],
@@ -2679,12 +2922,7 @@ class SilverkiteForecast():
                 f"`past_df` columns: {list(past_df.columns)}")
 
         autoreg_data = autoreg_func(df=df, past_df=past_df)
-
-        # we concat the dataframes returned by `autoreg_func`, one by one
-        autoreg_df = None
-        for key, value in autoreg_data.items():
-            if value is not None:
-                autoreg_df = pd.concat([autoreg_df, value], axis=1, sort=False)
+        autoreg_df = pd.concat(autoreg_data.values(), axis=1, sort=False)
 
         # Preserves the original index of `df`
         autoreg_df.index = df.index
@@ -2841,25 +3079,27 @@ class SilverkiteForecast():
         if simulation_based:
             orders = [1, 2, 3]  # 1st, 2nd, 3rd time lags
             if similar_lag is not None:
-                interval_list = [(1, similar_lag), (similar_lag+1, similar_lag*2)]  # weekly average of last week, and weekly average of two weeks ago
+                interval_list = [(1, similar_lag), (
+                    similar_lag + 1,
+                    similar_lag * 2)]  # weekly average of last week, and weekly average of two weeks ago
                 orders_list = [[
-                    similar_lag,     # (i) same week day in a week which is 7 days prior
-                    similar_lag*2,   # (ii) same week day a week before (i)
-                    similar_lag*3]]  # (iii) same week day in a week before (ii)
+                    similar_lag,  # (i) same week day in a week which is 7 days prior
+                    similar_lag * 2,  # (ii) same week day a week before (i)
+                    similar_lag * 3]]  # (iii) same week day in a week before (ii)
         else:  # non-simulation-based case
             if forecast_horizon_in_days <= 30:
-                orders = [forecast_horizon, forecast_horizon+1, forecast_horizon+2]
+                orders = [forecast_horizon, forecast_horizon + 1, forecast_horizon + 2]
 
                 if similar_lag is not None:
                     interval_list = [
-                        (forecast_horizon, forecast_horizon+similar_lag-1),
-                        (forecast_horizon + similar_lag, forecast_horizon+similar_lag*2-1)]
+                        (forecast_horizon, forecast_horizon + similar_lag - 1),
+                        (forecast_horizon + similar_lag, forecast_horizon + similar_lag * 2 - 1)]
 
                     # The following will induce an average between three lags on the same time of week
                     orders_list = [[
-                        proper_order,                   # (i) same time in week, in a week which is ``proper_order`` times prior
-                        proper_order + similar_lag,     # (ii) same time in a week before (i)
-                        proper_order + similar_lag*2]]  # (iii) same time in a week before (ii)
+                        proper_order,  # (i) same time in week, in a week which is ``proper_order`` times prior
+                        proper_order + similar_lag,  # (ii) same time in a week before (i)
+                        proper_order + similar_lag * 2]]  # (iii) same time in a week before (ii)
 
         if forecast_horizon_in_days <= 30:
             autoreg_dict = {}
@@ -2949,13 +3189,13 @@ class SilverkiteForecast():
 
             if similar_lag is not None:
                 interval_list = [
-                    (forecast_horizon, forecast_horizon+similar_lag-1)]
+                    (forecast_horizon, forecast_horizon + similar_lag - 1)]
 
                 # The following will induce an average between three lags on the same time of week
                 orders_list = [[
-                    proper_order,                   # (i) same time in week, in a week which is ``proper_order`` times prior
-                    proper_order + similar_lag,     # (ii) same time in a week before (i)
-                    proper_order + similar_lag*2]]  # (iii) same time in a week before (ii)
+                    proper_order,  # (i) same time in week, in a week which is ``proper_order`` times prior
+                    proper_order + similar_lag,  # (ii) same time in a week before (i)
+                    proper_order + similar_lag * 2]]  # (iii) same time in a week before (ii)
 
         if forecast_horizon_in_days <= 30:
             lag_reg_dict = {}
@@ -3008,7 +3248,7 @@ class SilverkiteForecast():
         if normalize_df_func is None:
             return changepoint_values
         if continuous_time_col is None:
-            continuous_time_col = "ct1"
+            continuous_time_col = TimeFeaturesEnum.ct1.value
         new_df = pd.DataFrame(np.zeros([len(changepoint_values), len(pred_cols)]))
         new_df.columns = pred_cols
         new_df[continuous_time_col] = changepoint_values
@@ -3062,13 +3302,13 @@ class SilverkiteForecast():
 
         # Removes redundant quarterly seasonality with yearly seasonality.
         for i in range(4, max_yearly_order + 1, 4):
-            removed_cols += [col for col in quarterly_cols if f"sin{i//4}_" in col or f"cos{i//4}_" in col]
+            removed_cols += [col for col in quarterly_cols if f"sin{i // 4}_" in col or f"cos{i // 4}_" in col]
         # Removes redundant monthly seasonality with yearly seasonality.
         for i in range(12, max_yearly_order + 1, 12):
-            removed_cols += [col for col in monthly_cols if f"sin{i//12}_" in col or f"cos{i//12}_" in col]
+            removed_cols += [col for col in monthly_cols if f"sin{i // 12}_" in col or f"cos{i // 12}_" in col]
         # Removes redundant monthly seasonality with quarterly seasonality.
         for i in range(3, max_quarterly_order + 1, 3):
-            removed_cols += [col for col in monthly_cols if f"sin{i//3}_" in col or f"cos{i//3}_" in col]
+            removed_cols += [col for col in monthly_cols if f"sin{i // 3}_" in col or f"cos{i // 3}_" in col]
 
         # Adds columns for weekly seasonality.
         # Removes higher order cosine terms because order k and order period - k have the same cosine columns.

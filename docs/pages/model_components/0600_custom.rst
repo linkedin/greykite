@@ -27,28 +27,36 @@ Parameters unique to the Silverkite algorithm are included under ``model_compone
 Fit algorithm
 -------------
 
-Silverkite abstracts feature creation from model fitting. First, Silverkite generates features
-for forecasting, using time-series domain knowledge. Then, any standard algorithm can be applied
+Silverkite abstracts feature generation from model fitting. First, Silverkite generates features
+for forecasting using time-series domain knowledge. Then, any standard algorithm can be applied
 for fitting.
 
-Silverkite supports the following algorithms from scikit-learn and statsmodels:
+Silverkite supports many fit algorithms from ``scikit-learn`` and ``statsmodels``, as
+well as our own fast quantile regression implementation.
+Here are a few important ones:
 
 .. csv-table:: Silverkite fitting algorithms
-   :widths: 25 25 25
-   :header: "fit_algorithm", "class", "notes"
+   :widths: 25 25 50
+   :header: "fit_algorithm", "implementation", "notes"
 
-   "linear", `statsmodels.regression.linear_model.OLS`, "More stable than `sklearn.linear_model.LinearRegression`"
-   "elastic_net", `~sklearn.linear_model.ElasticNetCV`, ""
-   "ridge", `~sklearn.linear_model.RidgeCV`, ""
+   "ridge", `~sklearn.linear_model.RidgeCV`, "Default alpha = np.logspace(-5, 5, 30)"
    "lasso", `~sklearn.linear_model.LassoCV`, ""
-   "sgd", `~sklearn.linear_model.SGDRegressor` , "Default penalty = 'l2', alpha = 1e-4"
-   "lars", `~sklearn.linear_model.LarsCV`, ""
-   "lasso_lars", `~sklearn.linear_model.LassoLarsCV`, ""
-   "rf", `~sklearn.ensemble.RandomForestRegressor`, "Tree methods cannot capture growth"
-   "gradient_boosting", `~sklearn.ensemble.GradientBoostingRegressor` , "Supports quantile loss, tree methods cannot capture growth"
+   "elastic_net", `~sklearn.linear_model.ElasticNetCV`, ""
+   "linear", `~statsmodels.regression.linear_model.OLS`, ""
+   "quantile_regression", `~greykite.algo.common.l1_quantile_regression.QuantileRegression`, "Default quantile=0.5, alpha=0"
 
-You can select the algorithm via ``fit_algorithm`` and set its initialization parameters
-via ``fit_algorithm_params``.
+.. note::
+
+  For mean forecasts, ``"ridge"`` or ``"linear"`` are recommended.
+  ``"ridge"`` is preferred when there are many features.
+
+  For quantile prediction, ``"quantile_regression"`` is recommended.
+
+  ``"sgd"`` is often unstable. Tree-based methods (``"rf"``, ``"gradient_boosting"``)
+  are generally not good at projecting growth into the future.
+
+Here is the full list of supported fit algorithms. You can select the algorithm via
+``fit_algorithm`` and set its initialization parameters via ``fit_algorithm_params``.
 
 .. code-block:: none
 
@@ -74,13 +82,14 @@ via ``fit_algorithm_params``.
                 - "lasso_lars"        : `sklearn.linear_model.LassoLarsCV`
                 - "rf"                : `sklearn.ensemble.RandomForestRegressor`
                 - "gradient_boosting" : `sklearn.ensemble.GradientBoostingRegressor`
+                - "quantile_regression" : `greykite.algo.common.l1_quantile_regression.QuantileRegression`
 
             See `~greykite.algo.common.ml_models.fit_model_via_design_matrix`
-            for the sklearn and statsmodels classes that implement these methods, and their parameters.
+            for the sklearn and statsmodels classes that implement these methods, and their default parameters.
 
             "linear" is the same as "statsmodels_ols", because `statsmodels.regression.linear_model.OLS`
             is more stable than `sklearn.linear_model.LinearRegression`.
-        ``"fit_algorithm_params"`` : `dict` or None, default None (ridge penalty with alpha=1e-4)
+        ``"fit_algorithm_params"`` : `dict` or None, default None
             Parameters passed to the requested fit algorithm.
             If None, uses the defaults in `~greykite.algo.common.ml_models.fit_model_via_design_matrix`.
 
@@ -98,32 +107,18 @@ Examples:
         fit_algorithm_dict=dict(
             fit_algorithm="ridge",
             fit_algorithm_params={
-                "alphas": 20
+                "alphas": np.logspace(-5, 5, 30)
             }
         )
     )
 
     custom = dict(
         fit_algorithm_dict=dict(
-            fit_algorithm="lasso_lars",
+            fit_algorithm="quantile_regression",
             fit_algorithm_params={
-                "max_n_alphas": 100,
-                "eps": 1e-2,
-                "cv": 2
+                "quantile": 0.5,
+                "alpha": 1,
             }
-        )
-    )
-
-    # Example using `sgd`. Note that `sgd` is often unstable.
-    # Consider using `ridge`, `lasso`, `elastic_net` instead.
-    custom = dict(
-        fit_algorithm_dict=dict(
-            fit_algorithm="sgd",
-            fit_algorithm_params=dict(
-                penalty="elasticnet",
-                alpha=0.01,
-                l1_ratio=0.2
-            )
         )
     )
 
@@ -136,17 +131,11 @@ Examples:
             dict(
                 fit_algorithm="ridge",
                 fit_algorithm_params={
-                    "alphas": 20
+                    "alphas": np.logspace(-5, 5, 30)
                 }
             ),
         ]
     )
-
-.. note::
-
-  "linear" is a good starting point. Sometimes the fit can be numerically unstable
-  if you request holidays that don't appear in your dataset. In that case, try
-  "ridge" or "sgd".
 
 
 Interactions
@@ -462,7 +451,7 @@ and regularization is used.
 
     normalize_method : `str` or None, default None
         The normalization method for the feature matrix.
-        Available values are "statistical" and "min_max".
+        Available values are "statistical", "zero_to_one" and "minus_half_to_half".
 
 Examples:
 
@@ -472,9 +461,10 @@ Examples:
         normalize_method="statistical"
     )
     custom = dict(
-        normalize_method="min_max"
+        normalize_method="zero_to_one"
     )
 
 The ``statistical`` method removes the "mean" and divides by "std" for each column.
-The ``min_max`` method removes the "min" and divides by the "max - min"
+The ``zero_to_one`` method removes the "min" and divides by the "max - min"
+The ````minus_half_to_half```` method removes the "(min + max)/2" and divides by the "max - min"
 for each column. For details, see `~greykite.common.features.normalize.normalize_df`.

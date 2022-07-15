@@ -27,6 +27,9 @@ from typing import Optional
 
 import pandas as pd
 
+from greykite.common import constants as cst
+from greykite.sklearn.uncertainty.exceptions import UncertaintyError
+
 
 class BaseUncertaintyModel:
     """The base uncertainty model.
@@ -43,8 +46,11 @@ class BaseUncertaintyModel:
     uncertainty_method : `str` or None
         The name of the uncertainty model.
         Must be in `~greykite.sklearn.uncertainty.uncertainty_methods.UncertaintyMethodEnum`.
+        This parameter is a required parameter by all subclasses.
     params : `dict` [`str`, any] or None
         The parameters to be fed into the uncertainty model.
+        This class tries to populate ``value_col`` if ``cst.VALUE_COL`` is found in the training df,
+        because ``value_col`` is a common parameter used by many subclasses.
     train_df : `pandas.DataFrame` or None
         The data used to fit the uncertainty model.
     uncertainty_model : any or None
@@ -52,6 +58,11 @@ class BaseUncertaintyModel:
     pred_df : `pandas.DataFrame`
         The prediction result df.
     """
+
+    UNCERTAINTY_METHOD = None
+    REQUIRED_PARAMS = []
+    DEFAULT_COVERAGE = 0.95
+
     def __init__(
             self,
             uncertainty_dict: Dict[str, any],
@@ -81,6 +92,30 @@ class BaseUncertaintyModel:
         if self.uncertainty_dict is None:
             self.uncertainty_dict = {}
 
+        # Checks the uncertainty method matches.
+        self.uncertainty_method = self.uncertainty_dict.get("uncertainty_method")
+        if self.uncertainty_method != self.UNCERTAINTY_METHOD:
+            raise UncertaintyError(
+                f"The uncertainty method {self.uncertainty_method} is not as expected {self.UNCERTAINTY_METHOD}."
+            )
+
+        # Gets the parameters.
+        self.params = self.uncertainty_dict.get("params", {})
+
+        # Populates ``value_col`` since it's a commonly used param.
+        if (self.params.get("value_col", None) is None and self.train_df is not None
+                and cst.VALUE_COL in self.train_df.columns):
+            self.params["value_col"] = cst.VALUE_COL
+
+        # Checks all required parameters are given.
+        for required_param in self.REQUIRED_PARAMS:
+            if required_param not in self.params:
+                raise UncertaintyError(
+                    f"The parameter {required_param} is required but not found in "
+                    f"`uncertainty['params']` {self.params}. "
+                    f"The required parameters are {self.REQUIRED_PARAMS}."
+                )
+
     def fit(
             self,
             train_df: pd.DataFrame):
@@ -91,7 +126,7 @@ class BaseUncertaintyModel:
         train_df : `pandas.DataFrame`
             The training data.
         """
-        self.train_df = train_df
+        self.train_df = train_df.copy()
 
     def predict(
             self,

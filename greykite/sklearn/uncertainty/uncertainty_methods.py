@@ -26,6 +26,7 @@ from enum import Enum
 from typing import Type
 
 from greykite.sklearn.uncertainty.base_uncertainty_model import BaseUncertaintyModel
+from greykite.sklearn.uncertainty.quantile_regression_uncertainty_model import QuantileRegressionUncertaintyModel
 from greykite.sklearn.uncertainty.simple_conditional_residuals_model import SimpleConditionalResidualsModel
 
 
@@ -51,3 +52,9 @@ class UncertaintyMethodEnum(Enum):
         description="A simple uncertainty method based on conditional residuals."
     )
     """A simple uncertainty method based on conditional residuals."""
+    quantile_regression = UncertaintyMethod(
+        model_class=QuantileRegressionUncertaintyModel,
+        description="A quantile regression based uncertainty model. "
+                    "Supports fitting on both original values and residuals."
+    )
+    """A quantile regression based uncertainty model. Supports fitting on both original values and residuals."""

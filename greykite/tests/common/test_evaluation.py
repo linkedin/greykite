@@ -273,7 +273,7 @@ def test_add_finite_filter_to_scorer():
         assert "There are 0 non-null elements for evaluation." in record[0].message.args[0]
 
     with pytest.warns(UserWarning) as record, \
-            pytest.raises(ValueError, match="Input contains NaN, infinity or a value too large"):
+            pytest.raises(ValueError, match="Input contains NaN"):
         y_true = pd.Series([3, 1, 3, np.nan])
         y_pred = pd.Series([1, 4, np.nan, 2])  # this causes an error
         # ``add_finite_filter_to_scorer`` does not drop NAN which are not heading NANs in ``y_pred``.

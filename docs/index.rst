@@ -26,6 +26,7 @@ Welcome to Greykite! View the contents to get started.
 
    gallery/quickstart/index
    gallery/tutorials/index
+   gallery/templates/index
 
 .. toctree::
    :maxdepth: 1

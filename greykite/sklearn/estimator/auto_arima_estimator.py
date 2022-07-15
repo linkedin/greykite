@@ -295,16 +295,18 @@ class AutoArimaEstimator(BaseForecastEstimator):
 
         if self.freq is None:
             self.freq = pd.infer_freq(self.fit_df[self.time_col_])
-        if self.freq == "H":
-            self.freq = self.freq.lower()  # np.timedelta recognizes lower case letters
+        if self.freq == "MS":
+            timedelta_freq = "M"  # `to_period` does not recognize non-traditional frequencies
+        else:
+            timedelta_freq = self.freq
         chosen_d = self.model.model_.order[1]  # This is the value of the d chosen by auto-arima
-        forecast_start = int((X[self.time_col_].iloc[0] - self.fit_df[self.time_col_].iloc[0])/np.timedelta64(1, self.freq))
+        forecast_start = (X[self.time_col_].iloc[0].to_period(timedelta_freq) - self.fit_df[self.time_col_].iloc[0].to_period(timedelta_freq)).n
         if forecast_start < chosen_d:
             append_length = chosen_d - forecast_start  # Number of NaNs to append to `pred_df`
             forecast_start = chosen_d  # Auto-arima can not predict below the chosen d
         else:
             append_length = 0
-        forecast_end = int((X[self.time_col_].iloc[-1] - self.fit_df[self.time_col_].iloc[0])/np.timedelta64(1, self.freq))
+        forecast_end = (X[self.time_col_].iloc[-1].to_period(timedelta_freq) - self.fit_df[self.time_col_].iloc[0].to_period(timedelta_freq)).n
 
         predictions = self.model.predict_in_sample(
             X=fut_reg_df,

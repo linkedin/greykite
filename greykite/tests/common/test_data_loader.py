@@ -46,7 +46,9 @@ def test_get_data_names():
         "daily_hierarchical_actuals",
         "daily_hierarchical_forecasts",
         "daily_istanbul_stock",
-        "daily_peyton_manning"}
+        "daily_peyton_manning",
+        "daily_bitcoin_transactions"
+    }
 
 
 def test_get_aggregated_data():
@@ -105,6 +107,10 @@ def test_get_data_inventory():
         "hourly_traffic_volume",
         "hourly_bikesharing",
         "hourly_beijing_pm",
+        "hourly_solarpower",
+        "hourly_windpower",
+        "hourly_electricity",
+        "hourly_sf_traffic",
         "daily_temperature_australia",
         "daily_demand_order",
         "daily_female_births",
@@ -112,8 +118,11 @@ def test_get_data_inventory():
         "daily_hierarchical_forecasts",
         "daily_istanbul_stock",
         "daily_peyton_manning",
+        "daily_bitcoin_transactions",
         "monthly_shampoo",
-        "monthly_sunspot"
+        "monthly_sunspot",
+        "monthly_sunspot_monash",
+        "monthly_fred_housing"
     }
 
 
@@ -194,6 +203,106 @@ def test_load_hourly_beijing_pm():
     df = dl.load_beijing_pm(agg_freq="monthly", agg_func=agg_func)
     assert TIME_COL in df.columns
     assert df.shape == (60, len(agg_func) + 1)
+
+
+def test_load_solarpower():
+    """Tests load_solarpower function."""
+    dl = DataLoader()
+    df = dl.load_solarpower()
+    assert list(df.columns) == ["ts", "y"]
+    assert df.shape == (8220, 2)
+
+    agg_func = {"y": "mean"}
+    df = dl.load_solarpower(agg_freq="daily", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (343, 2)
+    df = dl.load_solarpower(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (50, 2)
+    df = dl.load_solarpower(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (12, 2)
+
+
+def test_load_windpower():
+    """Tests load_windpower function."""
+    dl = DataLoader()
+    df = dl.load_windpower()
+    assert list(df.columns) == ["ts", "y"]
+    assert df.shape == (8220, 2)
+
+    agg_func = {"y": "mean"}
+    df = dl.load_windpower(agg_freq="daily", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (343, 2)
+    df = dl.load_windpower(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (50, 2)
+    df = dl.load_windpower(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (12, 2)
+
+
+def test_load_electricity():
+    """Tests load_electricity function."""
+    dl = DataLoader()
+    df = dl.load_electricity()
+    assert list(df.columns) == ["ts", "y"]
+    assert df.shape == (26304, 2)
+
+    agg_func = {"y": "mean"}
+    df = dl.load_electricity(agg_freq="daily", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (1096, 2)
+    df = dl.load_electricity(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (158, 2)
+    df = dl.load_electricity(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (36, 2)
+
+
+def test_load_sf_traffic():
+    """Tests load_sf_traffic function."""
+    dl = DataLoader()
+    df = dl.load_sf_traffic()
+    assert list(df.columns) == ["ts", "y"]
+    assert df.shape == (17544, 2)
+
+    agg_func = {"y": "mean"}
+    df = dl.load_sf_traffic(agg_freq="daily", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (731, 2)
+    df = dl.load_sf_traffic(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (105, 2)
+    df = dl.load_sf_traffic(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (24, 2)
+
+
+def test_load_bitcoin_transactions():
+    """Tests load_bitcoin_transactions function."""
+    dl = DataLoader()
+    df = dl.load_bitcoin_transactions()
+    assert list(df.columns) == ["ts", "y"]
+    assert df.shape == (4572, 2)
+
+    agg_func = {"y": "mean"}
+    df = dl.load_bitcoin_transactions(agg_freq="weekly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (654, 2)
+    df = dl.load_bitcoin_transactions(agg_freq="monthly", agg_func=agg_func)
+    assert TIME_COL in df.columns
+    assert df.shape == (151, 2)
+
+
+def test_load_sunspot():
+    """Tests load_sunspot function."""
+    dl = DataLoader()
+    df = dl.load_sunspot()
+    assert list(df.columns) == ["ts", "y"]
+    assert df.shape == (2429, 2)
 
 
 def test_load_hierarchical():

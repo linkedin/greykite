@@ -180,7 +180,7 @@ the time series is included in the result.
     result = forecaster.run_forecast_config(
         df=df,  # input data
         config=ForecastConfig(
-            model_template=ModelTemplateEnum.SILVERKITE.name,
+            model_template=ModelTemplateEnum.AUTO.name,
             metadata_param=metadata,
             forecast_horizon=30,
             coverage=0.95
@@ -276,8 +276,8 @@ For example:
     # anomaly applies to.
     anomaly_df = pd.DataFrame({
         # start and end date are inclusive
-        cst.START_DATE_COL: ["2018-07-15", "2018-07-13"],  # inclusive
-        cst.END_DATE_COL: ["2018-07-15", "2018-07-14"],    # inclusive
+        cst.START_TIME_COL: ["2018-07-15", "2018-07-13"],  # inclusive
+        cst.END_TIME_COL: ["2018-07-15", "2018-07-14"],    # inclusive
         cst.ADJUSTMENT_DELTA_COL: [-27, np.nan],
         cst.METRIC_COL: ["y", "regressor3"]
     })
@@ -345,7 +345,7 @@ For example, look at weekly averages.
     iplot(fig)
 
 For a more detailed examination, including automatic changepoint detection,
-see :doc:`/gallery/quickstart/0200_changepoint_detection`.
+see :doc:`/gallery/quickstart/01_exploration/0100_changepoint_detection`.
 
 Check seasonality
 ~~~~~~~~~~~~~~~~~
@@ -398,4 +398,4 @@ To see other features to group by:
 see :py:func:`~greykite.common.features.timeseries_features.build_time_features_df`.
 
 For a more detailed examination using a more powerful
-plotting function, see :doc:`/gallery/quickstart/0300_seasonality`.
+plotting function, see :doc:`/gallery/quickstart/01_exploration/0300_seasonality_plots`.

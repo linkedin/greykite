@@ -127,20 +127,20 @@ class DataLoader:
         elif agg_freq and agg_func:
             df_raw = df[list(agg_func.keys())]
             df_raw.insert(0, TIME_COL, pd.to_datetime(df[TIME_COL]))
-            # Aggregate to daily
-            df_tmp = df_raw.resample("D", on=TIME_COL).agg(agg_func)
-            df_daily = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
-            # Aggregate to weekly
-            df_tmp = df_raw.resample("W-MON", on=TIME_COL).agg(agg_func)
-            df_weekly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
-            # Aggregate to monthly
-            df_tmp = df_raw.resample("MS", on=TIME_COL).agg(agg_func)
-            df_monthly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
             if agg_freq == "daily":
+                # Aggregate to daily
+                df_tmp = df_raw.resample("D", on=TIME_COL).agg(agg_func)
+                df_daily = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
                 return df_daily
             elif agg_freq == "weekly":
+                # Aggregate to weekly
+                df_tmp = df_raw.resample("W-MON", on=TIME_COL).agg(agg_func)
+                df_weekly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
                 return df_weekly
             elif agg_freq == "monthly":
+                # Aggregate to monthly
+                df_tmp = df_raw.resample("MS", on=TIME_COL).agg(agg_func)
+                df_monthly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
                 return df_monthly
             else:
                 warnings.warn("Invalid \"agg_freq\", must be one of \"daily\", \"weekly\" or \"monthly\". "
@@ -263,7 +263,7 @@ class DataLoader:
         This dataset contains aggregated hourly count of the number of rented bikes.
         The data also includes weather data: Maximum Daily temperature (tmax);
         Minimum Daily Temperature (tmin); Precipitation (pn)
-        The raw bike-sharing data is provided by Capital Bikeshares.
+        The raw bike-sharing data is provided by Capital Bikeshare.
         Source: https://www.capitalbikeshare.com/system-data
         The raw weather data (Baltimore-Washington INTL Airport)
         https://www.ncdc.noaa.gov/data-access/land-based-station-data
@@ -296,6 +296,240 @@ class DataLoader:
         data_path = self.get_data_home(data_dir=None, data_sub_dir="hourly")
         df = self.get_df(data_path=data_path, data_name="hourly_bikesharing")
         return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
+
+    def load_solarpower(self, agg_freq=None, agg_func=None):
+        """Loads the Hourly Solar Power dataset.
+
+        This dataset contains the solar power production of an Australian wind farm
+        from August 2019 to July 2020, with original frequency 4-second.
+        We aggregated it to an hourly series and removed any incomplete hours.
+        Source: https://zenodo.org/record/4656027#.YrpHbuzMLGp
+
+        Below is the dataset attribute information:
+
+            ts : hourly timestamp
+            y : solar power production in MW (megawatt)
+
+        Parameters
+        ----------
+        agg_freq : `str` or None, default None
+            Possible values: "daily", "weekly", or "monthly".
+            If None, data will not be aggregated and will include all columns.
+
+        agg_func : `Dict` [`str`, `str`], default None
+            A dictionary of the columns to be aggregated and the corresponding aggregating functions.
+            Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
+            An example input can be {"col1":"mean", "col2":"sum"}
+            If None, data will not be aggregated and will include all columns.
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with Solar Power data.
+            Has the following columns:
+
+                "ts" : hourly timestamp
+                "y" : solar power production in MW (megawatt)
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="hourly")
+        df = self.get_df(data_path=data_path, data_name="hourly_solarpower")
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
+
+    def load_windpower(self, agg_freq=None, agg_func=None):
+        """Loads the Hourly Wind Power dataset.
+
+        This dataset contains the wind power production of an Australian wind farm
+        from August 2019 to July 2020, with original frequency 4-second.
+        We aggregated it to an hourly series and removed any incomplete hours.
+        Source: https://zenodo.org/record/4656032#.YrpJTezMLGp
+
+        Below is the dataset attribute information:
+
+            ts : hourly timestamp
+            y : wind power production in MW (megawatt)
+
+        Parameters
+        ----------
+        agg_freq : `str` or None, default None
+            Possible values: "daily", "weekly", or "monthly".
+            If None, data will not be aggregated and will include all columns.
+
+        agg_func : `Dict` [`str`, `str`], default None
+            A dictionary of the columns to be aggregated and the corresponding aggregating functions.
+            Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
+            An example input can be {"col1":"mean", "col2":"sum"}
+            If None, data will not be aggregated and will include all columns.
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with Wind Power data.
+            Has the following columns:
+
+                "ts" : hourly timestamp
+                "y" : wind power production in MW (megawatt)
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="hourly")
+        df = self.get_df(data_path=data_path, data_name="hourly_windpower")
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
+
+    def load_electricity(self, agg_freq=None, agg_func=None):
+        """Loads the Hourly Electricity dataset.
+
+        This dataset contains the hourly consumption (in Kilowatt)
+        of 321 clients from 2012 to 2014 published by Monash.
+        We aggregated them by taking the average across the 321 clients.
+        Source: https://zenodo.org/record/4656140#.YrpKtezMJqs
+
+        Below is the dataset attribute information:
+
+            ts : hourly timestamp
+            y : average electricity consumption in Kilowatt
+
+        Parameters
+        ----------
+        agg_freq : `str` or None, default None
+            Possible values: "daily", "weekly", or "monthly".
+            If None, data will not be aggregated and will include all columns.
+
+        agg_func : `Dict` [`str`, `str`], default None
+            A dictionary of the columns to be aggregated and the corresponding aggregating functions.
+            Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
+            An example input can be {"col1":"mean", "col2":"sum"}
+            If None, data will not be aggregated and will include all columns.
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with Electricity data.
+            Has the following columns:
+
+                "ts" : hourly timestamp
+                "y" : average electricity consumption in Kilowatt
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="hourly")
+        df = self.get_df(data_path=data_path, data_name="hourly_electricity")
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
+
+    def load_sf_traffic(self, agg_freq=None, agg_func=None):
+        """Loads the Hourly San Francisco Bay Area Traffic dataset.
+
+        This dataset contains the road occupancy rates (between 0 and 1)
+        measured by different sensors on San Francisco
+        Bay area freeways from 2015 to 2016.
+        Source: https://zenodo.org/record/4656132#.YrpMxuzMLGp
+
+        Below is the dataset attribute information:
+
+            ts : hourly timestamp
+            y : average occupancy rate
+
+        Parameters
+        ----------
+        agg_freq : `str` or None, default None
+            Possible values: "daily", "weekly", or "monthly".
+            If None, data will not be aggregated and will include all columns.
+
+        agg_func : `Dict` [`str`, `str`], default None
+            A dictionary of the columns to be aggregated and the corresponding aggregating functions.
+            Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
+            An example input can be {"col1":"mean", "col2":"sum"}
+            If None, data will not be aggregated and will include all columns.
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with San Francisco Bay Area Traffic data.
+            Has the following columns:
+
+                "ts" : hourly timestamp
+                "y" : average occupancy rate
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="hourly")
+        df = self.get_df(data_path=data_path, data_name="hourly_sf_traffic")
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
+
+    def load_bitcoin_transactions(self, agg_freq=None, agg_func=None):
+        """Loads the Daily Bitcoin Transactions dataset.
+
+        This dataset contains the number of Bitcoin transactions from 2009 to 2021.
+        The dataset was curated (with missing values filled) by Monash.
+        Source: https://zenodo.org/record/5122101#.YrpNFuzMLGp
+
+        Below is the dataset attribute information:
+
+            ts : date
+            y : number of transactions
+
+        Parameters
+        ----------
+        agg_freq : `str` or None, default None
+            Possible values: "daily", "weekly", or "monthly".
+            If None, data will not be aggregated and will include all columns.
+
+        agg_func : `Dict` [`str`, `str`], default None
+            A dictionary of the columns to be aggregated and the corresponding aggregating functions.
+            Possible aggregating functions include "sum", "mean", "median", "max", "min", etc.
+            An example input can be {"col1":"mean", "col2":"sum"}
+            If None, data will not be aggregated and will include all columns.
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with Bitcoin Transactions data.
+            Has the following columns:
+
+                "ts" : date
+                "y" : number of transactions
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="daily")
+        df = self.get_df(data_path=data_path, data_name="daily_bitcoin_transactions")
+        return self.get_aggregated_data(df=df, agg_freq=agg_freq, agg_func=agg_func)
+
+    def load_sunspot(self):
+        """Loads the Sunspot dataset.
+
+        This dataset contains the number of observed sunspots from 1818 to 2020
+        published by Monash.
+        The original dataset was a daily series, and we aggregate it to a
+        monthly time series more than 200 years long.
+        Source: https://zenodo.org/record/4654722#.YrpQ4uzMLGp
+
+        Below is the dataset attribute information:
+
+            ts : month start date
+            y : average number of sunspots
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with Sunspot data.
+            Has the following columns:
+
+                "ts" : date
+                "y" : average number of sunspots
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="monthly")
+        df = self.get_df(data_path=data_path, data_name="monthly_sunspot_monash")
+        return df
+
+    def load_fred_housing(self):
+        """Loads the FRED House Supply dataset.
+
+        This dataset contains the monthly house supply in the United States
+        from 1963 to 2021 obtained from FRED.
+        Source: https://fred.stlouisfed.org/series/MSACSR
+
+        Below is the dataset attribute information:
+
+            ts : month start date
+            y : monthly supply of new houses
+
+        Returns
+        -------
+        df : `pandas.DataFrame` object with FRED House Supply data.
+            Has the following columns:
+
+                "ts" : date
+                "y" : monthly supply of new houses
+        """
+        data_path = self.get_data_home(data_dir=None, data_sub_dir="monthly")
+        df = self.get_df(data_path=data_path, data_name="monthly_fred_housing")
+        return df
 
     def load_beijing_pm(self, agg_freq=None, agg_func=None):
         """Loads the Beijing Particulate Matter (PM2.5) dataset.

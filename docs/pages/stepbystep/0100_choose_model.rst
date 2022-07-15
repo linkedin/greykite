@@ -1,54 +1,64 @@
 Choose a Model
 ==============
 
-Greykite offers two forecasting models:
-the Prophet model and the Silverkite model.
-This page explains your options.
+Greykite offers a few forecasting models: Silverkite, Prophet, and ARIMA.
+This page provides an overview.
 
 .. csv-table:: high-level comparison
-   :widths: 20 35 35
-   :header: "", "PROPHET", "SILVERKITE"
+   :widths: 16 28 28 28
+   :header: "", "SILVERKITE", "PROPHET", "ARIMA"
 
-   "speed", "slower", "**faster**"
-   "forecast accuracy (default)", "good", "good"
-   "forecast accuracy (*customized*)", "limited", "**high**"
-   "prediction interval accuracy", "*TBD*", "*TBD*"
-   "interpretability", "good (additive model)", "good (additive model)"
-   "ease of use", "good", "good"
-   "API", "similar to ``sklearn``", "uses ``sklearn``"
-   "fit", "Bayesian", "ridge, elastic net, boosted trees, etc."
+   "speed", "**fast**", "slow", "**fast**"
+   "forecast accuracy (default)", "decent", "decent", "decent"
+   "forecast accuracy (*customized*)", "**very good**", "good", "good"
+   "interpretability", "**good**", "**good**", "decent"
+   "ease of use", "good", "good", "**very good**"
+   "API", "``sklearn``", "similar to ``sklearn``", "similar to ``sklearn``"
 
-Both models have the similar customization options. Differences are **bolded** below.
+Like Prophet, Silverkite includes intepretable terms for growth,
+seasonality, holidays, trend changepoints, and regressors.
+Silverkite also supports autoregression, seasonality changepoints,
+easy-to-use interaction terms, quantile loss, and custom fit algorithms.
+This makes Silverkite flexible to capture different time series patterns.
+
+.. we use '|' before all entries in the table to make the font sizes consistent
 
 .. csv-table:: customization options
-   :header: "", "PROPHET", "SILVERKITE"
+   :header: "", "SILVERKITE", "PROPHET"
 
-   "automatic defaults", "yes", "yes"
-   "growth", "linear, **logistic**", "linear, sqrt, quadratic, any combination, **custom**"
-   "seasonality", "daily, weekly, yearly, custom", "daily, weekly, monthly, quarterly, yearly"
-   "holidays", "specify countries, with window", "specify by name or country, with window; or custom events"
-   "trend changepoints", "yes", "yes"
-   "seasonality changepoints", "no", "**yes**"
-   "regressors", "yes", "yes"
-   "autoregression", "limited, via regressors", "full support, coming soon"
-   "interaction terms", "build it yourself (regressor)", "**model formula** terms, or as regressor"
-   "extras", "**prior scale** (bayesian)", "**fitting algorithm**"
-   "loss function", "MSE", "MSE, **Quantile loss** (with ``gradient_boosting`` fitting algorithm)"
-   "prediction intervals", "yes", "yes"
-
-.. note:: When to use the Prophet model?
-
-  * If it works better for your dataset
-  * If you like Bayesian models
-  * If you need logistic growth with changing capacity over time
+   "automatic defaults", "| yes", "| yes"
+   "growth", "| linear, sqrt, quadratic,
+   | any combination, **custom**", "| linear, **logistic**"
+   "seasonality", "| daily, weekly, monthly,
+   | quarterly, yearly", "| daily, weekly, yearly, custom"
+   "holidays", "| specify names or countries,
+   | with window; or custom events", "| specify countries, with window"
+   "regressors", "| yes", "| yes"
+   "trend changepoints", "| yes", "| yes"
+   "seasonality changepoints", "| **yes**", "| no"
+   "autoregression", "| **yes**", "| limited
+   | (via regressors)"
+   "interaction terms", "| **yes**
+   | (via model formula or regressors)", "| limited
+   | (via regressors)"
+   "loss function", "| MSE, **Quantile loss**", "| MSE"
+   "fit algorithm", "| **custom**
+   | (ridge, quantile regression, etc.)", "| fixed
+   | (Bayesian formulation)"
 
 .. note:: When to use the Silverkite model?
 
-  * If it works better for your dataset (e.g. b/c of custom growth, interaction
-    terms, seasonality changepoints).
-  * If speed is important.
-  * If you want to forecast a quantile, not the mean.
+  * If both speed and interpretability are important
+  * If you need flexible tuning options to achieve high accuracy
+  * If you need to forecast a quantile
 
-.. note::
+.. note:: When to use the Prophet model?
 
-  We use Prophet 0.5 (`Prophet documentation <https://facebook.github.io/prophet/docs/installation.html>`_.)
+  * If you need logistic growth with changing capacity over time
+  * If speed is not as important
+
+.. note:: When to use the ARIMA model?
+
+  * If you want to try a classic algorithm that is different from the other two
+  * If you want to quickly establish an accuracy baseline to assess forecast difficulty
+  * If interpretability is not as important

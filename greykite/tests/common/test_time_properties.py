@@ -5,9 +5,9 @@ import pandas as pd
 import pytest
 
 from greykite.common.constants import ADJUSTMENT_DELTA_COL
-from greykite.common.constants import END_DATE_COL
+from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import METRIC_COL
-from greykite.common.constants import START_DATE_COL
+from greykite.common.constants import START_TIME_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
 from greykite.common.data_loader import DataLoader
@@ -311,8 +311,8 @@ def test_gcd_load_data_anomaly():
     dim_one = "one"
     dim_two = "two"
     anomaly_df = pd.DataFrame({
-        START_DATE_COL: ["2011-04-04-10", "2011-10-10-00", "2012-12-20-10"],
-        END_DATE_COL: ["2011-04-05-20", "2011-10-11-23", "2012-12-20-13"],
+        START_TIME_COL: ["2011-04-04-10", "2011-10-10-00", "2012-12-20-10"],
+        END_TIME_COL: ["2011-04-05-20", "2011-10-11-23", "2012-12-20-13"],
         ADJUSTMENT_DELTA_COL: [np.nan, 100.0, -100.0],
         METRIC_COL: [dim_one, dim_one, dim_two]  # used to filter rows in this df
     })
@@ -320,8 +320,8 @@ def test_gcd_load_data_anomaly():
     anomaly_info = {
         "value_col": value_col,
         "anomaly_df": anomaly_df,
-        "start_date_col": START_DATE_COL,
-        "end_date_col": END_DATE_COL,
+        "start_time_col": START_TIME_COL,
+        "end_time_col": END_TIME_COL,
         "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
         "filter_by_dict": {METRIC_COL: dim_one},
         "adjustment_method": "add"
@@ -334,12 +334,12 @@ def test_gcd_load_data_anomaly():
     assert_equal(canonical_data_dict2["df_before_adjustment"], canonical_data_dict["df"])
     expected_df = canonical_data_dict["df"].copy()
     # first anomaly
-    idx = ((expected_df[TIME_COL] >= anomaly_df[START_DATE_COL][0])
-           & (expected_df[TIME_COL] <= anomaly_df[END_DATE_COL][0]))
+    idx = ((expected_df[TIME_COL] >= anomaly_df[START_TIME_COL][0])
+           & (expected_df[TIME_COL] <= anomaly_df[END_TIME_COL][0]))
     expected_df.loc[idx, VALUE_COL] = np.nan
     # second anomaly
-    idx = ((expected_df[TIME_COL] >= anomaly_df[START_DATE_COL][1])
-           & (expected_df[TIME_COL] <= anomaly_df[END_DATE_COL][1]))
+    idx = ((expected_df[TIME_COL] >= anomaly_df[START_TIME_COL][1])
+           & (expected_df[TIME_COL] <= anomaly_df[END_TIME_COL][1]))
     expected_df.loc[idx, VALUE_COL] += 100.0
     assert_equal(canonical_data_dict2["df"], expected_df)
 
@@ -348,8 +348,8 @@ def test_gcd_load_data_anomaly():
     anomaly_info = [anomaly_info, {
         "value_col": value_col_two,
         "anomaly_df": anomaly_df,
-        "start_date_col": START_DATE_COL,
-        "end_date_col": END_DATE_COL,
+        "start_time_col": START_TIME_COL,
+        "end_time_col": END_TIME_COL,
         "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
         "filter_by_dict": {METRIC_COL: dim_two},
         "adjustment_method": "subtract"
@@ -360,8 +360,8 @@ def test_gcd_load_data_anomaly():
         value_col=value_col,
         anomaly_info=anomaly_info)
     # third anomaly. The value is subtracted, according to `adjustment_method`.
-    idx = ((expected_df[TIME_COL] >= anomaly_df[START_DATE_COL][2])
-           & (expected_df[TIME_COL] <= anomaly_df[END_DATE_COL][2]))
+    idx = ((expected_df[TIME_COL] >= anomaly_df[START_TIME_COL][2])
+           & (expected_df[TIME_COL] <= anomaly_df[END_TIME_COL][2]))
     expected_df.loc[idx, value_col_two] -= -100.0
     assert_equal(canonical_data_dict3["df_before_adjustment"], canonical_data_dict["df"])
     assert_equal(canonical_data_dict3["df"], expected_df)

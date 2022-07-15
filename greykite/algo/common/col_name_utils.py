@@ -62,7 +62,7 @@ def simplify_time_features(name):
     it will be simplified to "str_dow_2-Tue".
     If the original name is like "str_dow[T.7-Sun]", it will be simplified to "str_dow_7-Sun".
     If the original name is like "toy", it will be kept as it is.
-    If any ``cst.TIME_FEATURES`` is not in the name, the original name will be returned.
+    If any ``cst.TimeFeaturesEnum`` is not in the name, the original name will be returned.
 
     Parameters
     ----------
@@ -74,7 +74,7 @@ def simplify_time_features(name):
     simplified_name : `str`
         The simplified name.
     """
-    if any([x in name for x in cst.TIME_FEATURES]):
+    if any([x in name for x in cst.TimeFeaturesEnum.__dict__["_member_names_"]]):
         result = re.search(r"(.*)\[T.(.*)\]", name)
         if result is not None:
             name = result.group(1)
@@ -85,7 +85,7 @@ def simplify_time_features(name):
                     name = name_result.group(1)
         else:
             level = ""
-        if name == "is_weekend":  # is_weekend only has two levels
+        if name == cst.TimeFeaturesEnum.is_weekend.value:  # is_weekend only has two levels
             level = ""
         name = name + level
     return name
@@ -176,7 +176,7 @@ def add_category_cols(coef_summary, pred_category):
                 Intercept or not.
             "is_time_feature" : 0 or 1
                 Time features or not.
-                Time features belong to `~greykite.common.constants.TIME_FEATURES`.
+                Time features belong to `~greykite.common.constants.TimeFeaturesEnum`.
             "is_event" : 0 or 1
                 Event features or not.
                 Event features have `~greykite.common.constants.EVENT_PREFIX`.
@@ -217,7 +217,7 @@ def add_category_cols(coef_summary, pred_category):
     return coef_summary
 
 
-def create_pred_category(pred_cols, extra_pred_cols):
+def create_pred_category(pred_cols, extra_pred_cols, df_cols):
     """Creates a dictionary of predictor categories.
 
     The keys are categories, and the values are the corresponding
@@ -233,6 +233,10 @@ def create_pred_category(pred_cols, extra_pred_cols):
         In ``SilverkiteEstimator``, this is the ``extra_pred_cols``.
         In ``SimpleSilverkiteEstimator``, this is the combination of ``regressor_cols``
         and ``extra_pred_cols``.
+    df_cols : `list` [ `str` ]
+        The extra columns that are present in the input df.
+        Columns that are in ``df_cols`` are not considered for categories other than regressors.
+        Columns are considered as regressors only if they are in ``df_cols``.
 
     Returns
     -------
@@ -244,6 +248,18 @@ def create_pred_category(pred_cols, extra_pred_cols):
     if extra_pred_cols is None:
         extra_pred_cols = []
     extra_pred_cols = list(set(extra_pred_cols))  # might have duplicates
+    # SimpleSilverkiteEstimator and SilverkiteEstimator have different ways to specify
+    # regressors and lagged regressors. The ``extra_pred_cols`` in this function
+    # should have a super set of such columns.
+    # Regressor columns are defined as columns that are in
+    # ``df_cols`` and that are present either in ``extra_pred_cols`` directly
+    # or via interaction terms.
+    # Because all columns in ``regressor_cols`` are present in ``df_cols``,
+    # these columns are not categorized to any other category.
+    regressor_cols = [
+        col for col in df_cols
+        if col in [c for term in extra_pred_cols for c in term.split(":")]
+    ]
     pred_category = {
         "intercept": [col for col in pred_cols if re.search(INTERCEPT, col)],
         # Time feature names could be included in seasonality features.
@@ -256,55 +272,47 @@ def create_pred_category(pred_cols, extra_pred_cols):
         # This keeps "ct1:is_weekend" and "ct1:cos1_ct1_yearly"
         # and excludes "is_weekend:cos1_ct1_yearly".
         "time_features": [col for col in pred_cols
-                          if (re.search(":", col) is None
-                              and
-                              re.search("|".join(cst.TIME_FEATURES), col)
-                              and
-                              re.search(cst.SEASONALITY_REGEX, col) is None)
-                          or
-                          (re.search(":", col)
-                           and
-                           any([re.search("|".join(cst.TIME_FEATURES), subcol)
-                                and
-                                re.search(cst.SEASONALITY_REGEX, subcol) is None
-                                for subcol in col.split(":")]))
-                          ],
-        "event_features": [col for col in pred_cols if cst.EVENT_PREFIX in col],
-        # the same logic as time features for trend features
-        "trend_features": [col for col in pred_cols
-                           if (re.search(":", col) is None
+                          if ((re.search(":", col) is None
                                and
-                               re.search(cst.TREND_REGEX, col)
+                               re.search("|".join(cst.TimeFeaturesEnum.__dict__["_member_names_"]), col)
                                and
                                re.search(cst.SEASONALITY_REGEX, col) is None)
-                           or
-                           (re.search(":", col)
-                            and
-                            any([re.search(cst.TREND_REGEX, subcol)
-                                 and
-                                 re.search(cst.SEASONALITY_REGEX, subcol) is None
-                                 for subcol in col.split(":")]))
+                              or
+                              (re.search(":", col)
+                               and
+                               any([re.search("|".join(cst.TimeFeaturesEnum.__dict__["_member_names_"]), subcol)
+                                    and
+                                    re.search(cst.SEASONALITY_REGEX, subcol) is None
+                                    for subcol in col.split(":")])))
+                          and col not in regressor_cols
+                          ],
+        "event_features": [col for col in pred_cols if cst.EVENT_PREFIX in col
+                           and col not in regressor_cols],
+        # the same logic as time features for trend features
+        "trend_features": [col for col in pred_cols
+                           if ((re.search(":", col) is None
+                                and
+                                re.search(cst.TREND_REGEX, col)
+                                and
+                                re.search(cst.SEASONALITY_REGEX, col) is None)
+                               or
+                               (re.search(":", col)
+                                and
+                                any([re.search(cst.TREND_REGEX, subcol)
+                                     and
+                                     re.search(cst.SEASONALITY_REGEX, subcol) is None
+                                     for subcol in col.split(":")])))
+                           and col not in regressor_cols
                            ],
-        "seasonality_features": [col for col in pred_cols if re.search(cst.SEASONALITY_REGEX, col)],
-        "lag_features": [col for col in pred_cols if re.search(cst.LAG_REGEX, col)],
+        "seasonality_features": [col for col in pred_cols if re.search(cst.SEASONALITY_REGEX, col)
+                                 and col not in regressor_cols],
+        "lag_features": [col for col in pred_cols if re.search(cst.LAG_REGEX, col)
+                         and col not in regressor_cols],
         # only the supplied extra_pred_col that are also in pred_cols
-        "regressor_features": [col for col in pred_cols if col in extra_pred_cols],
+        "regressor_features": [col for col in pred_cols if col in regressor_cols
+                               or any([x in regressor_cols for x in col.split(":")])],
         "interaction_features": [col for col in pred_cols if re.search(":", col)]
     }
-    # removes the regressor_features that are in the other categories
-    time_series_features = []
-    for category in pred_category:
-        if category not in ["regressor_features", "interaction_features"]:
-            time_series_features += pred_category[category]
-    pred_category["regressor_features"] = [x for x in pred_category["regressor_features"]
-                                           if (re.search(":", x) is None
-                                               and
-                                               x not in time_series_features)
-                                           or
-                                           (re.search(":", x)
-                                            and
-                                            any([subx not in time_series_features
-                                                 for subx in x.split(":")]))]
     return pred_category
 
 
@@ -344,7 +352,7 @@ def filter_coef_summary(
         Intercept or not.
     is_time_feature : `bool` or `None`, default `None`
         Time features or not.
-        Time features belong to `~greykite.common.constants.TIME_FEATURES`.
+        Time features belong to `~greykite.common.constants.TimeFeaturesEnum`.
     is_event : `bool` or `None`, default `None`
         Event features or not.
         Event features have `~greykite.common.constants.EVENT_PREFIX`.

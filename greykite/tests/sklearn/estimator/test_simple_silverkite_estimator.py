@@ -9,6 +9,9 @@ from sklearn.metrics import mean_squared_error
 
 import greykite.common.constants as cst
 from greykite.algo.forecast.silverkite.forecast_simple_silverkite import SimpleSilverkiteForecast
+from greykite.common.constants import EVENT_DF_DATE_COL
+from greykite.common.constants import EVENT_DF_LABEL_COL
+from greykite.common.data_loader import DataLoader
 from greykite.common.features.timeseries_features import convert_date_to_continuous_time
 from greykite.common.python_utils import assert_equal
 from greykite.common.testing_utils import daily_data_reg
@@ -391,7 +394,7 @@ def test_uncertainty(daily_data):
 
     predictions = model.predict(test_df)
     expected_forecast_cols = \
-        {"ts", "y", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"}
+        {"ts", "y", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower", "forecast_upper"}
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
     actual = daily_data["test_df"][cst.VALUE_COL]
@@ -439,7 +442,7 @@ def test_normalize_method(daily_data):
 
     predictions = model.predict(test_df)
     expected_forecast_cols = \
-        {"ts", "y", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"}
+        {"ts", "y", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower", "forecast_upper"}
     assert expected_forecast_cols.issubset(list(model.forecast.columns))
 
     actual = daily_data["test_df"][cst.VALUE_COL]
@@ -599,7 +602,7 @@ def test_x_mat_in_predict(daily_data):
         value_col=cst.VALUE_COL)
 
     pred_df = model.predict(test_df)
-    cols = ["ts", "y_quantile_summary", "err_std", "forecast_lower", "forecast_upper"]
+    cols = ["ts", cst.QUANTILE_SUMMARY_COL, "err_std", "forecast_lower", "forecast_upper"]
     assert_equal(model.forecast[cols], pred_df[cols])
     assert (model.forecast["y"].values == pred_df["forecast"].values).all()
 
@@ -623,3 +626,107 @@ def test_uncertainty_with_nonstandard_cols(daily_data):
     pred_df = model.predict(df)
     assert cst.PREDICTED_LOWER_COL in pred_df
     assert cst.PREDICTED_UPPER_COL in pred_df
+
+
+def test_auto_config():
+    df = DataLoader().load_peyton_manning()
+    df[cst.TIME_COL] = pd.to_datetime(df[cst.TIME_COL])
+    model = SimpleSilverkiteEstimator(
+        forecast_horizon=7,
+        auto_holiday=True,
+        holidays_to_model_separately="auto",
+        holiday_lookup_countries="auto",
+        holiday_pre_num_days=2,
+        holiday_post_num_days=2,
+        daily_event_df_dict=dict(
+            custom_event=pd.DataFrame({
+                EVENT_DF_DATE_COL: pd.to_datetime(["2010-03-03", "2011-03-03", "2012-03-03"]),
+                EVENT_DF_LABEL_COL: "threethree"
+            })
+        ),
+        auto_growth=True,
+        growth_term="quadratic",
+        changepoints_dict=dict(
+            method="uniform",
+            n_changepoints=2
+        ),
+        auto_seasonality=True,
+        yearly_seasonality=0,
+        quarterly_seasonality="auto",
+        monthly_seasonality=False,
+        weekly_seasonality=True,
+        daily_seasonality=5
+    )
+    model.fit(
+        X=df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL
+    )
+    # Seasonality is overridden by auto seasonality.
+    assert model.model_dict["fs_components_df"][["name", "period", "order", "seas_names"]].equals(pd.DataFrame({
+        "name": ["tow", "toq", "ct1"],
+        "period": [7.0, 1.0, 1.0],
+        "order": [3, 1, 6],
+        "seas_names": ["weekly", "quarterly", "yearly"]
+    }))
+    # Growth is overridden by auto growth.
+    assert "ct1" in model.model_dict["x_mat"].columns
+    assert model.model_dict["changepoints_dict"]["method"] == "custom"
+    # Holidays is overridden by auto seasonality.
+    assert len(model.model_dict["daily_event_df_dict"]) == 198
+    assert "custom_event" in model.model_dict["daily_event_df_dict"]
+    assert "China_Chinese New Year" in model.model_dict["daily_event_df_dict"]
+
+
+def test_quantile_regression_uncertainty_model():
+    """Tests the quantile regression uncertainty model."""
+    df = DataLoader().load_peyton_manning().iloc[-365:].reset_index(drop=True)
+    df[cst.TIME_COL] = pd.to_datetime(df[cst.TIME_COL])
+
+    # Residual based
+    model = SimpleSilverkiteEstimator(
+        coverage=0.99,
+        uncertainty_dict=dict(
+            uncertainty_method="quantile_regression",
+            params=dict(
+                is_residual_based=True
+            )
+        )
+    )
+    model.fit(
+        X=df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL
+    )
+    assert model.uncertainty_model is not None
+    assert len(model.uncertainty_model.models) == 2
+    df_fut = pd.DataFrame({
+        "ts": pd.date_range(df["ts"].max(), freq="D", periods=15),
+        "y": np.nan
+    }).iloc[1:].reset_index(drop=True)
+    pred = model.predict(df_fut)
+    assert cst.PREDICTED_LOWER_COL in pred.columns
+    assert cst.PREDICTED_UPPER_COL in pred.columns
+    assert all(pred[cst.PREDICTED_LOWER_COL] <= pred[cst.PREDICTED_UPPER_COL])
+
+    # Not residual based
+    model = SimpleSilverkiteEstimator(
+        coverage=0.95,
+        uncertainty_dict=dict(
+            uncertainty_method="quantile_regression",
+            params=dict(
+                is_residual_based=False
+            )
+        )
+    )
+    model.fit(
+        X=df,
+        time_col=cst.TIME_COL,
+        value_col=cst.VALUE_COL
+    )
+    assert model.uncertainty_model is not None
+    assert len(model.uncertainty_model.models) == 2
+    pred = model.predict(df)
+    assert cst.PREDICTED_LOWER_COL in pred.columns
+    assert cst.PREDICTED_UPPER_COL in pred.columns
+    assert all(pred[cst.PREDICTED_LOWER_COL].round(5) <= pred[cst.PREDICTED_UPPER_COL].round(5))
