@@ -18,7 +18,7 @@ LunarCalendar==0.0.9
 matplotlib==3.4.1
 nbformat==5.1.3
 notebook==5.4.1
-numpy==1.20.2
+numpy==1.22.0
 osqp==0.6.1
 overrides==2.8.0
 pandas==1.1.3
