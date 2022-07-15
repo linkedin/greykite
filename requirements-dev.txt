@@ -13,7 +13,7 @@ jupyter==1.0.0
 jupyter-client==6.1.7
 jupyter-console==6.4.0
 jupyter-core==4.7.1
-jupyter-server==0.1.1
+jupyter-server==1.15.4
 LunarCalendar==0.0.9
 matplotlib==3.4.1
 nbformat==5.1.3
