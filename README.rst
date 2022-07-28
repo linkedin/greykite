@@ -77,15 +77,14 @@ You can obtain forecasts with only a few lines of code:
 
     # df = ...  # your input timeseries!
     metadata = MetadataParam(
-        time_col="ts",     # time column in `df`
-        value_col="y"      # value in `df`
+        time_col="ts",  # time column in `df`
+        value_col="y"   # value column in `df`
     )
     forecaster = Forecaster()  # creates forecasts and stores the result
     forecaster.run_forecast_config(
          df=df,
          config=ForecastConfig(
-             # uses the SILVERKITE model template parameters
-             model_template=ModelTemplateEnum.SILVERKITE.name,
+             model_template=ModelTemplateEnum.AUTO.name,  # automatically selects model parameters
              forecast_horizon=365,  # forecasts 365 steps ahead
              coverage=0.95,         # 95% prediction intervals
              metadata_param=metadata
