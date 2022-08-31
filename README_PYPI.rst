@@ -7,7 +7,6 @@
    :alt: Greykite
    :align: center
 
-
 Why Greykite?
 -------------
 
@@ -72,29 +71,31 @@ You can obtain forecasts with only a few lines of code:
 
 .. code-block:: python
 
+    from greykite.common.data_loader import DataLoader
     from greykite.framework.templates.autogen.forecast_config import ForecastConfig
     from greykite.framework.templates.autogen.forecast_config import MetadataParam
     from greykite.framework.templates.forecaster import Forecaster
     from greykite.framework.templates.model_templates import ModelTemplateEnum
 
-    # df = ...  # your input timeseries!
-    metadata = MetadataParam(
-        time_col="ts",  # time column in `df`
-        value_col="y"   # value column in `df`
-    )
-    forecaster = Forecaster()  # creates forecasts and stores the result
-    forecaster.run_forecast_config(
-         df=df,
-         config=ForecastConfig(
-             model_template=ModelTemplateEnum.AUTO.name,  # automatically selects model parameters
-             forecast_horizon=365,  # forecasts 365 steps ahead
-             coverage=0.95,         # 95% prediction intervals
-             metadata_param=metadata
-         )
+    # Defines inputs
+    df = DataLoader().load_bikesharing().tail(24*90)  # Input time series (pandas.DataFrame)
+    config = ForecastConfig(
+         metadata_param=MetadataParam(time_col="ts", value_col="count"),  # Column names in `df`
+         model_template=ModelTemplateEnum.AUTO.name,  # AUTO model configuration
+         forecast_horizon=24,   # Forecasts 24 steps ahead
+         coverage=0.95,         # 95% prediction intervals
      )
-    # Access the result
-    forecaster.forecast_result
-    # ...
+
+    # Creates forecasts
+    forecaster = Forecaster()
+    result = forecaster.run_forecast_config(df=df, config=config)
+
+    # Accesses results
+    result.forecast     # Forecast with metrics, diagnostics
+    result.backtest     # Backtest with metrics, diagnostics
+    result.grid_search  # Time series CV result
+    result.model        # Trained model
+    result.timeseries   # Processed time series with plotting functions
 
 For a demo, please see our `quickstart <https://linkedin.github.io/greykite/get_started>`_.
 
@@ -118,7 +119,7 @@ Learn More
 ----------
 
 * `Website <https://linkedin.github.io/greykite>`_
-* `Paper <https://arxiv.org/abs/2105.01098>`_
+* `Paper <https://doi.org/10.1145/3534678.3539165>`_ (KDD '22 Best Paper Runner-up, Applied Data Science Track)
 * `Blog post <https://engineering.linkedin.com/blog/2021/greykite--a-flexible--intuitive--and-fast-forecasting-library>`_
 
 Citation
@@ -133,6 +134,7 @@ Please cite Greykite in your publications if it helps your research:
                 Albert Chen and
                 Kaixu Yang and
                 Sayan Patra and
+                Yi Su and
                 Rachit Arora},
       title  = {Greykite: a flexible, intuitive and fast forecasting library},
       url    = {https://github.com/linkedin/greykite},
@@ -141,15 +143,23 @@ Please cite Greykite in your publications if it helps your research:
 
 .. code-block::
 
-    @misc{reza2021greykite-paper,
-      author = {Reza Hosseini and
-                Kaixu Yang and
-                Albert Chen and
-                Sayan Patra},
-      title  = {A flexible forecasting model for production systems},
-      url    = {https://arxiv.org/abs/2105.01098},
-      year   = {2021}
+    @inproceedings{reza2022greykite-kdd,
+      author = {Hosseini, Reza and Chen, Albert and Yang, Kaixu and Patra, Sayan and Su, Yi and Al Orjany, Saad Eddin and Tang, Sishi and Ahammad, Parvez},
+      title = {Greykite: Deploying Flexible Forecasting at Scale at LinkedIn},
+      year = {2022},
+      isbn = {9781450393850},
+      publisher = {Association for Computing Machinery},
+      address = {New York, NY, USA},
+      url = {https://doi.org/10.1145/3534678.3539165},
+      doi = {10.1145/3534678.3539165},
+      booktitle = {Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining},
+      pages = {3007–3017},
+      numpages = {11},
+      keywords = {forecasting, scalability, interpretable machine learning, time series},
+      location = {Washington DC, USA},
+      series = {KDD '22}
     }
+
 
 License
 -------
