@@ -48,10 +48,12 @@ def daily_data_reg():
         remove_extra_cols=False)["df"]
     df["dow_categorical"] = df["str_dow"].astype("category")
     df = df[[cst.TIME_COL, cst.VALUE_COL, "regressor1", "regressor2", "regressor_bool", "str_dow", "dow_categorical"]]
-    df = df.rename({
-        cst.TIME_COL: "custom_time_col",
-        cst.VALUE_COL: "custom_value_col"
-    }, axis=1)
+    df = df.rename(
+        {
+            cst.TIME_COL: "custom_time_col",
+            cst.VALUE_COL: "custom_value_col"},
+        axis=1)
+
     return df
 
 
@@ -442,7 +444,7 @@ def test_extra_pred_cols(hourly_data, daily_data_reg, weekly_data):
         'Mid-Autumn Festival\'])',
         'C(Q(\'events_UnitedStates\'), levels=[\'\', "New Year\'s Day", \'Martin Luther King Jr. Day\', '
         '"Washington\'s Birthday", \'Memorial Day\', \'Independence Day\', \'Independence Day (Observed)\', '
-        '\'Labor Day\', \'Columbus Day\', \'Veterans Day\', \'Thanksgiving\', \'Christmas Day\', '
+        '\'Labor Day\', \'Columbus Day\', \'Veterans Day\', \'Thanksgiving\', \'Christmas Day\', \'Halloween\', '
         '\'Christmas Day (Observed)\', "New Year\'s Day (Observed)", \'Veterans Day (Observed)\', '
         '\'Juneteenth National Independence Day\', \'Juneteenth National Independence Day (Observed)\'])']
 
@@ -573,6 +575,8 @@ def test_convert_simple_silverkite_params_hourly(hourly_data):
         fit_algorithm="ridge",
         fit_algorithm_params=None,
         daily_event_df_dict=expected_event,
+        daily_event_neighbor_impact=None,
+        daily_event_shifted_effect=None,
         changepoints_dict=None,
         fs_components_df=expected_fs,
         autoreg_dict=None,
@@ -590,7 +594,8 @@ def test_convert_simple_silverkite_params_hourly(hourly_data):
         forecast_horizon=24,
         simulation_based=False,
         simulation_num=10,
-        fast_simulation=False
+        fast_simulation=False,
+        remove_intercept=False
     )
     assert_equal(parameters, expected)
 
@@ -790,6 +795,15 @@ def test_get_requested_seasonality_order():
         is_enabled_auto=True) == 0
     assert silverkite._SimpleSilverkiteForecast__get_requested_seasonality_order(
         requested_seasonality=False,
+        default_order=5,
+        is_enabled_auto=False) == 0
+
+    assert silverkite._SimpleSilverkiteForecast__get_requested_seasonality_order(
+        requested_seasonality=None,
+        default_order=5,
+        is_enabled_auto=True) == 0
+    assert silverkite._SimpleSilverkiteForecast__get_requested_seasonality_order(
+        requested_seasonality=None,
         default_order=5,
         is_enabled_auto=False) == 0
 
@@ -1431,9 +1445,36 @@ def test_auto_config_params(daily_data_reg):
     assert "ct1" in params["extra_pred_cols"]
     assert params["changepoints_dict"]["method"] == "custom"
     # Holidays is overridden by auto seasonality.
-    assert len(params["daily_event_df_dict"]) == 198
+    assert len(params["daily_event_df_dict"]) == 203
     assert "custom_event" in params["daily_event_df_dict"]
     assert "China_Chinese New Year" in params["daily_event_df_dict"]
+
+
+def test_config_run_with_dst_features(daily_data_reg):
+    """Tests `extra_pred_cols` with daylight saving features along with auto
+    paramters
+    """
+    df = daily_data_reg[["custom_time_col", "custom_value_col"]]
+    silverkite = SimpleSilverkiteForecast()
+    trained_model = silverkite.forecast_simple(
+        df=df,
+        time_col="custom_time_col",
+        value_col="custom_value_col",
+        forecast_horizon=1,
+        auto_holiday=True,
+        holidays_to_model_separately="auto",
+        holiday_lookup_countries="auto",
+        holiday_pre_num_days=2,
+        holiday_post_num_days=2,
+        extra_pred_cols=["europe_dst"],
+        auto_seasonality=True,
+        yearly_seasonality=0,
+        quarterly_seasonality="auto",
+        monthly_seasonality=False,
+        weekly_seasonality=True,
+        daily_seasonality=5)
+
+    assert "europe_dst" in trained_model["pred_cols"]
 
 
 def test_auto_config_run(daily_data_reg):
@@ -1512,3 +1553,38 @@ def test_quantile_regression():
     )
     pred = silverkite.predict(df, trained_model=trained_model)["fut_df"]
     assert round(sum(pred[VALUE_COL] > df[VALUE_COL]) / len(pred), 1) == 0.9
+
+
+def test_holidays_with_neighbor_and_remove_intercept():
+    """Tests holiday with additional neighbors and removing intercept."""
+    dl = DataLoader()
+    df = dl.load_peyton_manning()
+    df[TIME_COL] = pd.to_datetime(df[TIME_COL])
+    silverkite = SimpleSilverkiteForecast()
+    trained_model = silverkite.forecast_simple(
+        df=df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        forecast_horizon=7,
+        holidays_to_model_separately=[],
+        holiday_lookup_countries=["US"],
+        holiday_pre_num_days=0,
+        holiday_post_num_days=0,
+        daily_event_shifted_effect=["7D"],
+        growth_term=None,
+        changepoints_dict=None,
+        yearly_seasonality=False,
+        quarterly_seasonality=False,
+        monthly_seasonality=False,
+        weekly_seasonality=False,
+        daily_seasonality=False,
+        feature_sets_enabled=False,
+        fit_algorithm="ridge",
+        remove_intercept=True,
+        extra_pred_cols=["0"]
+    )
+    assert trained_model["drop_intercept_col"] == "C(Q('events_Other'), levels=['', 'event'])[]"
+    assert trained_model["daily_event_shifted_effect"] == ["7D"]
+    assert "C(Q('events_Other'), levels=['', 'event'])[]" not in trained_model["x_mat"].columns
+    assert "C(Q('events_Other_7D_after'), levels=['', 'event_7D_after'])[T.event_7D_after]" in trained_model["x_mat"].columns
+    silverkite.predict(df, trained_model=trained_model)["fut_df"]

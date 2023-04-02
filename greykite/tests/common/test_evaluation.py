@@ -35,6 +35,7 @@ from greykite.common.evaluation import elementwise_within_bands
 from greykite.common.evaluation import fraction_outside_tolerance
 from greykite.common.evaluation import fraction_within_bands
 from greykite.common.evaluation import mean_absolute_percent_error
+from greykite.common.evaluation import mean_interval_score
 from greykite.common.evaluation import median_absolute_percent_error
 from greykite.common.evaluation import prediction_band_width
 from greykite.common.evaluation import quantile_loss
@@ -551,6 +552,90 @@ def test_fraction_within_bands():
         assert "1 of 4 upper bound values are smaller than the lower bound" in record[0].message.args[0]
 
 
+def test_mean_interval_score():
+    """Tests `mean_interval_score` function."""
+
+    # Checks that the mean interval score is the same regardless of coverage if lower < observed < upper.
+    mean_interval_scores = [mean_interval_score(
+        lower=[0., 0., 0., 0.],
+        observed=[2., 2., 2., 2.],
+        upper=[5., 5., 5., 5.],
+        coverage=coverage) for coverage in np.linspace(0, 1, num=21)]
+    assert all([score == 5.0 for score in mean_interval_scores])
+
+    # Checks that the mean interval score increases as a function of coverage if observed is not between lower and upper.
+    mean_interval_scores = [mean_interval_score(
+        lower=[0.],
+        observed=[-2.],
+        upper=[5.],
+        coverage=coverage) for coverage in np.linspace(0, 1, num=21)]
+    assert all(i < j for i, j in zip(mean_interval_scores, mean_interval_scores[1:]))
+
+    # Checks that the mean interval score equals infinity if any of lower or upper is infinity.
+    assert mean_interval_score(
+        lower=[-np.Inf, 0., 0., 0.],
+        observed=[2., 2., 2., 2.],
+        upper=[5., 5., 5., 5.],
+        coverage=0.95
+    ) == float("inf")
+
+    # Checks that we get expected value when observed is less than lower.
+    lower = 0.0
+    upper = 5.0
+    observed = -2.0
+    coverage = 0.95
+    expected = upper - lower + 2.0 * (lower - observed) / (1.0 - coverage)
+    assert mean_interval_score(
+        lower=[lower],
+        observed=[observed],
+        upper=[upper],
+        coverage=coverage
+    ) == pytest.approx(expected)
+
+    # Checks that we get expected value when observed is greater than upper.
+    lower = 0.0
+    upper = 5.0
+    observed = 7.0
+    coverage = 0.95
+    expected = upper - lower + 2.0 * (observed - upper) / (1.0 - coverage)
+    assert mean_interval_score(
+        lower=[lower],
+        observed=[observed],
+        upper=[upper],
+        coverage=coverage
+    ) == pytest.approx(expected)
+
+    with pytest.warns(UserWarning) as record:
+        # Checks that the mean interval score returns the correct value even if there are `np.nan` in the observed.
+        assert mean_interval_score(
+            lower=[0., 0., 0., 0.],
+            observed=[2., np.nan, 2., 2.],
+            upper=[5., 5., 5., 5.],
+            coverage=0.95
+        ) == 5.0
+        assert "1 value(s) in y_true were NA or infinite and are omitted in error calc" in record[0].message.args[0]
+
+    with pytest.warns(UserWarning) as record:
+        # Checks that the mean interval score returns the correct value even if there are `np.Inf` in the observed.
+        assert mean_interval_score(
+            lower=[0., 0., 0., 0.],
+            observed=[2., np.Inf, 2., 2.],
+            upper=[5., 5., 5., 5.],
+            coverage=0.95
+        ) == 5.0
+        assert "1 value(s) in y_true were NA or infinite and are omitted in error calc" in record[0].message.args[0]
+
+    with pytest.warns(UserWarning) as record:
+        # Checks that the mean interval score returns the correct value even if there are `np.nan` in lower or upper.
+        assert mean_interval_score(
+            lower=[0., 0., np.nan, 0.],
+            observed=[2., 2., 2., 2.],
+            upper=[5., 5., 5., 5.],
+            coverage=0.95
+        ) == 5.0
+        assert "1 value(s) in lower/upper bounds were NA and are omitted in error calc" in record[0].message.args[0]
+
+
 def test_prediction_band_width():
     """Tests prediction_band_width function"""
     assert prediction_band_width(
@@ -781,13 +866,24 @@ def test_validation_metric_enum():
     """Tests ValidationMetricEnum accessors"""
     assert ValidationMetricEnum.BAND_WIDTH == ValidationMetricEnum["BAND_WIDTH"]
     assert ValidationMetricEnum.BAND_WIDTH.name == "BAND_WIDTH"
-    assert ValidationMetricEnum.BAND_WIDTH.value == (prediction_band_width, False)
+    assert ValidationMetricEnum.BAND_WIDTH.value == (prediction_band_width, False, "band_width")
     # tuple access works as usual
     assert ValidationMetricEnum["BAND_WIDTH"].value[0] == prediction_band_width
     assert ValidationMetricEnum.BAND_WIDTH.get_metric_func() == prediction_band_width
+    assert ValidationMetricEnum.BAND_WIDTH.get_metric_name() == "band_width"
     assert not ValidationMetricEnum["BAND_WIDTH"].value[1]
     assert not ValidationMetricEnum.BAND_WIDTH.get_metric_greater_is_better()
 
     assert len(", ".join(ValidationMetricEnum.__dict__["_member_names_"])) > 0
 
+    assert ValidationMetricEnum.BAND_COVERAGE == ValidationMetricEnum["BAND_COVERAGE"]
     assert ValidationMetricEnum.BAND_COVERAGE.name == "BAND_COVERAGE"
+    assert ValidationMetricEnum.BAND_COVERAGE.value == (fraction_within_bands, True, "band_coverage")
+    assert ValidationMetricEnum.BAND_COVERAGE.get_metric_func() == fraction_within_bands
+    assert ValidationMetricEnum.BAND_COVERAGE.get_metric_name() == "band_coverage"
+
+    assert ValidationMetricEnum.MEAN_INTERVAL_SCORE == ValidationMetricEnum["MEAN_INTERVAL_SCORE"]
+    assert ValidationMetricEnum.MEAN_INTERVAL_SCORE.name == "MEAN_INTERVAL_SCORE"
+    assert ValidationMetricEnum.MEAN_INTERVAL_SCORE.value == (mean_interval_score, False, "MIS")
+    assert ValidationMetricEnum.MEAN_INTERVAL_SCORE.get_metric_func() == mean_interval_score
+    assert ValidationMetricEnum.MEAN_INTERVAL_SCORE.get_metric_name() == "MIS"

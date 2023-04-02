@@ -20,6 +20,7 @@ from greykite.framework.output.univariate_forecast import UnivariateForecast
 from greykite.framework.pipeline.utils import get_forecast
 from greykite.sklearn.estimator.prophet_estimator import ProphetEstimator
 from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
+from greykite.sklearn.estimator.testing_utils import params_component_breakdowns
 
 
 try:
@@ -59,6 +60,11 @@ def df2():
         cst.NULL_PREDICTED_COL:
             [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
     })
+
+
+@pytest.fixture
+def expected_component_names():
+    return params_component_breakdowns()["expected_component_names"]
 
 
 def test_univariate_forecast(df):
@@ -733,8 +739,8 @@ def test_make_univariate_time_series(df):
     assert forecast.make_univariate_time_series().df.equals(ts.df)
 
 
-def test_plot_components():
-    """Test plot_components of UnivariateForecast class"""
+def test_plot_components(expected_component_names):
+    """Tests "plot_components" of UnivariateForecast class"""
     X = pd.DataFrame({
         cst.TIME_COL: pd.date_range("2018-01-01", periods=10, freq="D"),
         cst.VALUE_COL: np.arange(1, 11)
@@ -745,31 +751,19 @@ def test_plot_components():
     trained_model = Pipeline([("estimator", SilverkiteEstimator(coverage=coverage))])
     with pytest.warns(Warning) as record:
         trained_model.fit(X, X[cst.VALUE_COL])
-        assert "No slice had sufficient sample size" in record[0].message.args[0]
+        assert "Zero degrees of freedom" in record[0].message.args[0]
+        assert "No slice had sufficient sample size" in record[1].message.args[0]
     forecast = get_forecast(X, trained_model)
 
-    with pytest.warns(Warning) as record:
-        title = "Custom component plot"
-        fig = forecast.plot_components(names=["trend", "YEARLY_SEASONALITY", "DUMMY"], title=title)
-
-        expected_rows = 3
-        assert len(fig.data) == expected_rows
-        assert [fig.data[i].name for i in range(expected_rows)] == \
-            [cst.VALUE_COL, "trend", "YEARLY_SEASONALITY"]
-
-        assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis2.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis3.title["text"] == "Time of year"
-
-        assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-        assert fig.layout.yaxis2.title["text"] == "trend"
-        assert fig.layout.yaxis3.title["text"] == "yearly"
-
-        assert fig.layout.title["text"] == title
-        assert fig.layout.title["x"] == 0.5
-
-        assert f"The following components have not been specified in the model: " \
-               f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
+    # Tests plot_components
+    title = "Custom component plot"
+    fig = forecast.plot_components(title=title)
+    expected_rows = 9
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
+    assert fig.layout.title["text"] == title
+    assert fig.layout.title["x"] == 0.5
 
 
 @pytest.mark.skipif("prophet" not in sys.modules,

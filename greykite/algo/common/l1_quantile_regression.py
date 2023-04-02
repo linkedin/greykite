@@ -32,6 +32,7 @@ from typing import Optional
 import cvxpy as cp
 import numpy as np
 import pandas as pd
+import scipy
 from sklearn.base import BaseEstimator
 from sklearn.base import RegressorMixin
 
@@ -95,7 +96,12 @@ def ordinary_quantile_regression(
         # Solves with formula.
         # Multiplies weights to x first to speed up.
         x_l = x / s
-        beta_new = np.linalg.pinv(x_l.T @ x) @ (x_l.T @ y)
+        # Tries to solve with `scipy.linalg.solve`, which gives a more stable solution.
+        # In cases it fails, uses `numpy.linalg.pinv`.
+        try:
+            beta_new = scipy.linalg.solve(x_l.T @ x, x_l.T @ y, assume_a="pos")
+        except np.linalg.LinAlgError:
+            beta_new = np.linalg.pinv(x_l.T @ x) @ (x_l.T @ y)
         err = (np.abs(beta_new - beta) / np.abs(beta)).max()
         beta = beta_new
         if err < tol:
@@ -215,7 +221,8 @@ class QuantileRegression(RegressorMixin, BaseEstimator):
             feature_weight: Optional[np.typing.ArrayLike] = None,
             max_iter: int = 100,
             tol: float = 1e-2,
-            fit_intercept: bool = True):
+            fit_intercept: bool = True,
+            optimize_mape: bool = False):
         self.quantile = quantile
         self.alpha = alpha
         self.sample_weight = sample_weight
@@ -223,6 +230,7 @@ class QuantileRegression(RegressorMixin, BaseEstimator):
         self.max_iter = max_iter
         self.tol = tol
         self.fit_intercept = fit_intercept
+        self.optimize_mape = optimize_mape
 
         # Parameters, set by ``fit`` method.
         self.n = None
@@ -301,6 +309,19 @@ class QuantileRegression(RegressorMixin, BaseEstimator):
             self.nonconstant_cols = [i for i in range(self.p) if i not in self.constant_cols]
             if self.alpha == 0:
                 x = np.concatenate([np.ones([self.n, 1]), x[:, self.nonconstant_cols]], axis=1)
+
+        # If ``optimize_mape`` is ``True``, this overrides ``quantile`` and ``sample_weight``.
+        if self.optimize_mape:
+            log_message(
+                message="The parameter 'optimize_mape' is set to 'True', "
+                        "ignoring the input 'quantile' and 'sample_weight', "
+                        "setting 'quantile' to 0.5 and 'sample_weight' to the inverse "
+                        "absolute values of the response.",
+                level=LoggingLevelEnum.WARNING
+            )
+            self.sample_weight = 1 / np.abs(y)
+            self.quantile = 0.5
+
         return x, y
 
     def fit(

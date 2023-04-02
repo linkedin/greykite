@@ -20,6 +20,7 @@ from greykite.common.python_utils import group_strs_with_regex_patterns
 from greykite.common.python_utils import ignore_warnings
 from greykite.common.python_utils import mutable_field
 from greykite.common.python_utils import reorder_columns
+from greykite.common.python_utils import split_offset_str
 from greykite.common.python_utils import unique_dict_in_list
 from greykite.common.python_utils import unique_elements_in_list
 from greykite.common.python_utils import unique_in_list
@@ -982,3 +983,11 @@ def test_group_strs_with_regex_patterns():
     assert result == {
         "str_groups": [["sd2"], ["sd1", "sd22"]],
         "remainder": ["sd", "rr", "urr", "uu", "11", "12"]}
+
+
+def test_split_offset_str():
+    """Tests splitting offset strings."""
+    assert split_offset_str("7D") == ["7", "D"]
+    assert split_offset_str("2H") == ["2", "H"]
+    assert split_offset_str("+1D") == ["+1", "D"]
+    assert split_offset_str("-500D") == ["-500", "D"]

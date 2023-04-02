@@ -117,12 +117,9 @@ You can plot the results:
 
 .. code-block:: python
 
-      from plotly.offline import init_notebook_mode, iplot
-      init_notebook_mode(connected=True)   # for generating offline graphs within Jupyter Notebook
-
       backtest = result.backtest
       fig = backtest.plot()
-      iplot(fig)
+      fig.show()
 
 
 Show the evaluation metrics:
@@ -133,16 +130,13 @@ Show the evaluation metrics:
     print(backtest.test_evaluation)   # hold out test set
 
 
-See the component plot to understand how trend, seasonality,
-and holidays are handled by the forecast:
+See the component plot to understand how factors like trend, seasonality,
+and holidays are handled by the forecast and to visualize changes points and residuals:
 
 .. code-block:: python
 
-    from plotly.offline import init_notebook_mode, iplot
-    init_notebook_mode(connected=True)
-
     fig = backtest.plot_components()
-    iplot(fig)  # fig.show() if you are using "PROPHET" template
+    fig.show()
 
 Access backtest forecasted values and prediction intervals:
 
@@ -159,10 +153,7 @@ and their descriptions.
 
 .. code-block:: python
 
-    from plotly.offline import init_notebook_mode, iplot
     from greykite.common.evaluation import EvaluationMetricEnum
-
-    init_notebook_mode(connected=True)   # for generating offline graphs within Jupyter Notebook
 
     # MAPE by day of week
     fig = backtest.plot_grouping_evaluation(
@@ -172,7 +163,7 @@ and their descriptions.
         groupby_time_feature="dow",  # day of week
         groupby_sliding_window_size=None,
         groupby_custom_column=None)
-    iplot(fig)
+    fig.show()
 
     # RMSE over time
     fig = backtest.plot_grouping_evaluation(
@@ -182,15 +173,17 @@ and their descriptions.
         groupby_time_feature=None,
         groupby_sliding_window_size=7,  # weekly aggregation of daily data
         groupby_custom_column=None)
-    iplot(fig)
+    fig.show()
 
 See `~greykite.framework.output.univariate_forecast.UnivariateForecast.plot_flexible_grouping_evaluation`
 for a more powerful plotting function to plot the quantiles of the error along with the mean.
 
-You can use component plots for a concise visual representation of how the dataset's trend, seasonality
-and holiday patterns are estimated by the forecast model. Currently, ``Silverkite`` calculates component
-plots based on dataset passed to the ``fit`` method, whereas ``Prophet`` calculates component plots
-based on dataset passed to the ``predict``  method.
+You can use component plots for a concise visual representation of how factors like the dataset's trend, seasonality
+and holiday patterns are estimated by the forecast model and to visualize other model information like residuals and
+change points. Currently, by default, ``Silverkite`` calculates component plots based on a dataset passed to the ``fit``
+method,  whereas ``Prophet`` calculates component plots based on a dataset passed to the ``predict``  method.  See the
+discussion below on model forecasts for more information on how to access component plots based on the dataset
+passed to the ``predict`` method in ``Silverkite``.
 
 .. code-block:: python
 
@@ -209,7 +202,7 @@ if it looks reasonable.
 
       forecast = result.forecast
       fig = forecast.plot()
-      iplot(fig)
+      fig.show()
 
 
 Show the error metrics on the training set.
@@ -228,8 +221,9 @@ Access future forecasted values and prediction intervals:
 
 Just as for backtest, you can use ``forecast.plot_grouping_evaluation()`` to examine the training error by
 various dimensions (e.g. over time, by day of week), and ``forecast.plot_components()`` to check the trend,
-seasonality and holiday effects. See
-`~greykite.framework.output.univariate_forecast.UnivariateForecast` for details.
+seasonality and holiday effects and visualize change points and residuals. Note that
+components from the data set used in the ``predict`` call can be accessed by ``.plot_components(predict_phase=True)``.
+See `~greykite.framework.output.univariate_forecast.UnivariateForecast` for details.
 
 
 Model

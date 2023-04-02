@@ -76,13 +76,17 @@ def build_lag_df(
         orders = range(1, max_order + 1)
 
     if df is not None:
-        lag_df = pd.DataFrame()
+        lag_df_list = []
 
     for i in orders:
         col_name = f"{value_col}{cst.LAG_INFIX}{i}"
         col_names.append(col_name)
         if df is not None:
-            lag_df[col_name] = df[value_col].shift(i)
+            lag_df_list.append(df[value_col].shift(i).rename(col_name))
+
+    if df is not None:
+        lag_df = pd.concat(objs=lag_df_list, axis=1, ignore_index=False)
+
     return {
         "lag_df": lag_df,
         "col_names": col_names}
@@ -267,7 +271,7 @@ def build_agg_lag_df(
             max_order=max_order,
             orders=None)
         lag_df = lag_info["lag_df"]
-        agg_lag_df = pd.DataFrame()
+        agg_lag_df_list = []
 
     for orders in orders_list:
         if len(orders) > len(set(orders)):
@@ -280,12 +284,14 @@ def build_agg_lag_df(
         if df is not None:
             if agg_func == "mean":
                 # uses vectorized mean for speed
-                agg_lag_df[col_name] = (
-                    lag_df.iloc[:, orders_col_index].mean(axis=1))
+                agg_lag_df_list.append(
+                    lag_df.iloc[:, orders_col_index].mean(axis=1).rename(col_name)
+                )
             else:
                 # generic aggregation
-                agg_lag_df[col_name] = (
-                    lag_df.iloc[:, orders_col_index].apply(agg_func, axis=1))
+                agg_lag_df_list.append(
+                    lag_df.iloc[:, orders_col_index].apply(agg_func, axis=1).rename(col_name)
+                )
 
     for interval in interval_list:
         if len(interval) != 2:
@@ -302,8 +308,12 @@ def build_agg_lag_df(
         col_name = f"{value_col}_{agg_name}_{col_suffix}"
         col_names.append(col_name)
         if df is not None:
-            agg_lag_df[col_name] = (
-                lag_df.iloc[:, orders_col_index].apply(agg_func, axis=1))
+            agg_lag_df_list.append(
+                lag_df.iloc[:, orders_col_index].apply(agg_func, axis=1).rename(col_name)
+            )
+
+    if df is not None:
+        agg_lag_df = pd.concat(objs=agg_lag_df_list, axis=1, ignore_index=False)
 
     return {
         "agg_lag_df": agg_lag_df,
@@ -461,14 +471,14 @@ def build_autoreg_df(
             # if past_df length (number of rows) is smaller than max_order
             # we expand it to avoid NULLs
             if past_df.shape[0] < max_order:
-                past_df_addition = pd.DataFrame(
-                    {value_col: [np.nan]*(max_order - past_df.shape[0])})
-                past_df = past_df_addition.append(past_df)
+                past_df_list = [pd.DataFrame(
+                    {value_col: [np.nan]*(max_order - past_df.shape[0])}), past_df]
+                past_df = pd.concat(past_df_list)
 
         # df is expanded by adding past_df as the past data for df
         # this will help in avoiding NULLs to appear in lag_df and agg_lag_df
         # as long as past_df has data in it or expanded df is interpolated
-        df_expanded = past_df.append(df)
+        df_expanded = pd.concat([past_df, df])
         if series_na_fill_func is not None:
             df_expanded[value_col] = series_na_fill_func(df_expanded[value_col])
 

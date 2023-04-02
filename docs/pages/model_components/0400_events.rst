@@ -26,8 +26,8 @@ If you are not sure which holidays to use, start with our defaults and create a 
 Plot forecasts against actuals, and look for large errors. If these happen on holidays,
 include relevant countries in ``holiday_lookup_countries`` list.
 
-Silverkite
-^^^^^^^^^^
+Silverkite Holidays
+^^^^^^^^^^^^^^^^^^^
 
 Options (defaults shown for ``SILVERKITE`` template):
 
@@ -274,9 +274,44 @@ To customize this, you will want to see the available holidays.
   While holidays are specified at a daily level, you can use interactions with seasonality to capture
   sub-daily holiday effects. For more information, see :doc:`/pages/model_components/0600_custom`.
 
+Holiday Indicators and Neighboring Effect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Auto holiday
-~~~~~~~~~~~~
+1. When holidays are present in the model, we allow for using holiday indicators:
+
+* "is_event": an indicator column which is 1 when the timestamp is either the exact holiday dates or its
+  adjacent days.
+
+* "is_event_exact": an indicator of whether the timestamp is exactly on the holiday date.
+
+* "is_event_adjacent": an indicator of whether the timestamp is adjacent to a holiday if ``holiday_pre_num_days``
+  or ``holiday_post_num_days`` is not 0.
+
+You may include the interactions between such indicators and other features in ``extra_pred_cols`` like
+``extra_pred_col = ["is_event:y_lag1"]``.
+See more at :doc:`/pages/model_components/0600_custom`.
+
+Or you may use it as a conditional column in the uncertainty model ``conditional_cols = ["dow", "is_event"]``.
+
+2. Sometimes you may have a weekly time series or the response is daily rolling sum.
+In such cases, the whole week, or the whole rolling window is impacted by a holiday within it.
+We allow for modeling such holiday neighboring effect by specifying ``daily_event_neighbor_event`` in ``events``.
+For example, you may use ``daily_event_neighbor_event = 6`` to model rolling 7-day sum holiday effect
+in a daily time series. Or you may use
+``daily_event_neighbor_impact = lambda x: [x - timedelta(days=x.isocalendar()[2] - 1) + timedelta(days=i) for i in range(7)]``
+to model a holiday effect in weekly time series.
+
+Note that this feature works as adding extra dates with the same event name to the holiday model,
+therefore the number of events does not increase.
+
+3. There are also cases where you need additional events that are shifted based on existing events.
+For example, if we model the week-over-week changes as response, the week after a holiday has a counter effect.
+We support an easy way of adding such events using ``daily_event_shifted_effect`` parameter in ``events``.
+For example, if we have an event called "Christmas Day", ``daily_event_shifted_effect=["7D"]`` will add a new
+event called "Christmas Day_7D_after" which is 7 days after the Christmas Day.
+
+Auto Holiday and Holiday Grouper
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Silverkite models support automatically inferring significant holidays and generate holiday configurations.
 It utilizes the `~greykite.algo.common.holiday_inferrer.HolidayInferrer` method to infer holidays.
@@ -294,6 +329,20 @@ added to any inferred significant holiday and neighboring day events.
     events=dict(
         auto_holiday=True,
         holiday_lookup_countries=["US"]
+    )
+
+We also provide a Holiday Grouper tool to help you group holidays based on their estimated impact inferred from
+the training data. The smart grouping makes sure to not create too many parameters to each holiday while making
+sure that holidays that are different enough will be modeled separately.
+For more details, see Holiday Grouper in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
+
+The Holiday Grouper returns a curated ``daily_event_df_dict`` which can be directly specified in events.
+
+.. code-block:: python
+
+    events=dict(
+        holiday_lookup_countries=[],
+        daily_event_df_dict=daily_event_df_dict
     )
 
 Prophet

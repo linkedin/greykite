@@ -156,7 +156,11 @@ forecast.df.head().round(2)
 # Model Diagnostics
 # ^^^^^^^^^^^^^^^^^
 # The component plot shows how your dataset's trend,
-# seasonality, and event / holiday patterns are handled in the model:
+# seasonality, event / holiday and other patterns are handled in the model.
+# When called, with defaults, function displays three plots: 1) components of the model,
+# 2) linear trend and changepoints, and 3) the residuals of the model and
+# smoothed estimates of the residuals.  By clicking different legend entries, the visibility of
+# lines in each plot can be toggled on or off.
 fig = forecast.plot_components()
 plotly.io.show(fig)     # fig.show() if you are using "PROPHET" template
 

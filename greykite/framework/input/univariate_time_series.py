@@ -119,7 +119,7 @@ class UnivariateTimeSeries:
         self.last_date_for_val: Optional[datetime] = None
         self.last_date_for_reg: Optional[datetime] = None
         self.last_date_for_lag_reg: Optional[datetime] = None
-        self.train_end_date: Optional[str] = None
+        self.train_end_date: Optional[str, datetime] = None
         self.fit_cols: List[str] = []
         self.fit_df: Optional[pd.DataFrame] = None
         self.fit_y: Optional[pd.DataFrame] = None
@@ -132,12 +132,12 @@ class UnivariateTimeSeries:
             df: pd.DataFrame,
             time_col: str = TIME_COL,
             value_col: str = VALUE_COL,
-            freq: str = None,
-            date_format: str = None,
-            tz: str = None,
-            train_end_date: datetime = None,
-            regressor_cols: List[str] = None,
-            lagged_regressor_cols: List[str] = None,
+            freq: Optional[str] = None,
+            date_format: Optional[str] = None,
+            tz: Optional[str] = None,
+            train_end_date: Optional[Union[str, datetime]] = None,
+            regressor_cols: Optional[List[str]] = None,
+            lagged_regressor_cols: Optional[List[str]] = None,
             anomaly_info: Optional[Union[Dict, List[Dict]]] = None):
         """Loads data to internal representation. Parses date column,
         sets timezone aware index.
@@ -162,7 +162,7 @@ class UnivariateTimeSeries:
             If None (recommended), inferred by `pandas.to_datetime`.
         tz : `str` or pytz.timezone object or None, default None
             Passed to `pandas.tz_localize` to localize the timestamp.
-        train_end_date : `datetime.datetime` or None, default None
+        train_end_date : `str` or `datetime.datetime` or None, default None
             Last date to use for fitting the model. Forecasts are generated after this date.
             If None, it is set to the minimum of ``self.last_date_for_val`` and
             ``self.last_date_for_reg``.
@@ -227,7 +227,7 @@ class UnivariateTimeSeries:
             freq=freq,
             date_format=date_format,
             tz=tz,
-            train_end_date=train_end_date,
+            train_end_date=pd.to_datetime(train_end_date, format=date_format),
             regressor_cols=regressor_cols,
             lagged_regressor_cols=lagged_regressor_cols,
             anomaly_info=anomaly_info)

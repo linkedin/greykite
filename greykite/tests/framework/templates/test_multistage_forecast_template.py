@@ -335,6 +335,8 @@ def test_get_hyperparameter_grid_extra_configs(df, forecast_config):
         'holiday_post_num_days': 1,
         'holiday_pre_post_num_dict': None,
         'daily_event_df_dict': None,
+        'daily_event_neighbor_impact': None,
+        'daily_event_shifted_effect': None,
         'feature_sets_enabled': 'auto',
         'fit_algorithm_dict': {
             'fit_algorithm': 'ridge',
@@ -353,6 +355,7 @@ def test_get_hyperparameter_grid_extra_configs(df, forecast_config):
         'regressor_cols': [],
         'lagged_regressor_dict': None,
         'regression_weight_col': None,
+        'remove_intercept': False,
         'uncertainty_dict': None,
         'origin_for_time_vars': None,
         'train_test_thresh': None,
@@ -375,6 +378,8 @@ def test_get_hyperparameter_grid_extra_configs(df, forecast_config):
         'holiday_post_num_days': 0,
         'holiday_pre_post_num_dict': None,
         'daily_event_df_dict': None,
+        'daily_event_neighbor_impact': None,
+        'daily_event_shifted_effect': None,
         'feature_sets_enabled': 'auto',
         'fit_algorithm_dict': {
             'fit_algorithm': 'ridge',
@@ -393,6 +398,7 @@ def test_get_hyperparameter_grid_extra_configs(df, forecast_config):
         'regressor_cols': [],
         'lagged_regressor_dict': None,
         'regression_weight_col': None,
+        'remove_intercept': False,
         'uncertainty_dict': None,
         'origin_for_time_vars': None,
         'train_test_thresh': None,
@@ -449,6 +455,7 @@ def test_get_multistage_forecast_configs_override(df, forecast_config):
                     'drop_pred_cols': None,
                     'explicit_pred_cols': None,
                     'regression_weight_col': None,
+                    'remove_intercept': False,
                     'normalize_method': 'zero_to_one'
                 },
                 events={
@@ -457,7 +464,9 @@ def test_get_multistage_forecast_configs_override(df, forecast_config):
                     'holiday_pre_num_days': 1,
                     'holiday_post_num_days': 1,
                     'holiday_pre_post_num_dict': None,
-                    'daily_event_df_dict': None
+                    'daily_event_df_dict': None,
+                    'daily_event_neighbor_impact': None,
+                    'daily_event_shifted_effect': None
                 },
                 growth={
                     'growth_term': 'linear'
@@ -506,6 +515,7 @@ def test_get_multistage_forecast_configs_override(df, forecast_config):
                     'drop_pred_cols': None,
                     'explicit_pred_cols': None,
                     'regression_weight_col': None,
+                    'remove_intercept': False,
                     'normalize_method': 'zero_to_one'
                 },
                 events={
@@ -514,7 +524,9 @@ def test_get_multistage_forecast_configs_override(df, forecast_config):
                     'holiday_pre_num_days': 0,
                     'holiday_post_num_days': 0,
                     'holiday_pre_post_num_dict': None,
-                    'daily_event_df_dict': None
+                    'daily_event_df_dict': None,
+                    'daily_event_neighbor_impact': None,
+                    'daily_event_shifted_effect': None
                 },
                 growth={
                     'growth_term': None
@@ -587,6 +599,8 @@ def test_get_estimators_and_params_from_template_configs(df, forecast_config):
             'estimator__holiday_post_num_days': [1],
             'estimator__holiday_pre_post_num_dict': [None],
             'estimator__daily_event_df_dict': [None],
+            'estimator__daily_event_neighbor_impact': [None],
+            'estimator__daily_event_shifted_effect': [None],
             'estimator__feature_sets_enabled': ['auto'],
             'estimator__fit_algorithm_dict': [{
                 'fit_algorithm': 'ridge',
@@ -605,6 +619,7 @@ def test_get_estimators_and_params_from_template_configs(df, forecast_config):
             'estimator__regressor_cols': [[]],
             'estimator__lagged_regressor_dict': [None],
             'estimator__regression_weight_col': [None],
+            'estimator__remove_intercept': [False],
             'estimator__uncertainty_dict': [None],
             'estimator__origin_for_time_vars': [None],
             'estimator__train_test_thresh': [None],
@@ -628,6 +643,8 @@ def test_get_estimators_and_params_from_template_configs(df, forecast_config):
             'estimator__holiday_post_num_days': [0],
             'estimator__holiday_pre_post_num_dict': [None],
             'estimator__daily_event_df_dict': [None],
+            'estimator__daily_event_neighbor_impact': [None],
+            'estimator__daily_event_shifted_effect': [None],
             'estimator__feature_sets_enabled': ['auto'],
             'estimator__fit_algorithm_dict': [{
                 'fit_algorithm': 'ridge',
@@ -646,6 +663,7 @@ def test_get_estimators_and_params_from_template_configs(df, forecast_config):
             'estimator__regressor_cols': [[]],
             'estimator__lagged_regressor_dict': [None],
             'estimator__regression_weight_col': [None],
+            'estimator__remove_intercept': [False],
             'estimator__uncertainty_dict': [None],
             'estimator__origin_for_time_vars': [None],
             'estimator__train_test_thresh': [None],

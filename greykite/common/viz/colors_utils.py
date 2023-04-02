@@ -18,9 +18,11 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# original author: Sayan Patra
+# original author: Sayan Patra, Kaixu Yang, Reza Hosseini
 """Color palette for plotting."""
 
+import numpy as np
+from matplotlib.cm import get_cmap
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 from plotly.colors import n_colors
 from plotly.colors import validate_colors
@@ -58,3 +60,45 @@ def get_color_palette(num, colors=DEFAULT_PLOTLY_COLORS):
             num,
             colortype="rgb")
     return color_palette
+
+
+def get_distinct_colors(
+        num_colors,
+        opacity=0.95):
+    """Gets ``num_colors`` most distinguishable colors.
+    Uses color maps "tab10", "tab20" or "viridis" depending on the
+    number of colors needed.
+    See above color pallettes here:
+    https://matplotlib.org/stable/tutorials/colors/colormaps.html
+
+    Parameters
+    ----------
+    num_colors : `int`
+        The number of colors needed.
+    opacity : `float`, default 0.95
+        The opacity of the color. This has to be a number between 0 and 1.
+
+    Returns
+    -------
+    colors : `list` [`str`]
+        A list of string colors in RGB.
+    """
+    if opacity < 0 or opacity > 1:
+        raise ValueError("Opacity must be between 0 and 1.")
+
+    if num_colors <= 10:
+        colors = get_cmap("tab10").colors
+    elif num_colors <= 20:
+        colors = get_cmap("tab20").colors
+    elif num_colors <= 256:
+        # Removes default opacity by ":3".
+        colors = get_cmap(name="viridis")(np.linspace(0, 1, num_colors))[:, :3]
+    else:
+        raise ValueError("The maximum number of colors is 256.")
+
+    result = []
+    for color in colors:
+        # Converts the color components to "rgba" format
+        color = f"rgba{int(color[0] * 255), int(color[1] * 255), int(color[2] * 255), opacity}"
+        result.append(color)
+    return result[:num_colors]

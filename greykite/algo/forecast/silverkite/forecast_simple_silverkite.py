@@ -90,6 +90,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             holiday_post_num_days: int = 2,
             holiday_pre_post_num_dict: Optional[Dict] = None,
             daily_event_df_dict: Optional[Dict] = None,
+            daily_event_neighbor_impact: Optional[Union[int, List[int], callable]] = None,
+            daily_event_shifted_effect: Optional[List[str]] = None,
             auto_growth: bool = False,
             changepoints_dict: Optional[Dict] = None,
             auto_seasonality: bool = False,
@@ -117,7 +119,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             regression_weight_col: Optional[str] = None,
             simulation_based: Optional[bool] = False,
             simulation_num: int = 10,
-            fast_simulation: bool = False):
+            fast_simulation: bool = False,
+            remove_intercept: bool = False):
         """Converts parameters of
         :func:`~greykite.algo.forecast.silverkite.forecast_simple_silverkite` into those
         of :func:`~greykite.algo.forecast.forecast_silverkite.SilverkiteForecast::forecast`.
@@ -352,6 +355,37 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
             in the second column. This is reserved to indicate dates that do not
             correspond to an event.
+        daily_event_neighbor_impact : `int`, `list` [`int`], callable or None, default None
+            The impact of neighboring timestamps of the events in ``event_df_dict``.
+            This is for daily events so the units below are all in days.
+
+            For example, if the data is weekly ("W-SUN") and an event is daily,
+            it may not exactly fall on the weekly date.
+            But you can specify for New Year's day on 1/1, it affects all dates
+            in the week, e.g. 12/31, 1/1, ..., 1/6, then it will be mapped to the weekly date.
+            In this case you may want to map a daily event's date to a few dates,
+            and can specify
+            ``neighbor_impact=lambda x: [x-timedelta(days=x.isocalendar()[2]-1) + timedelta(days=i) for i in range(7)]``.
+
+            Another example is that the data is rolling 7 day daily data,
+            thus a holiday may affect the t, t+1, ..., t+6 dates.
+            You can specify ``neighbor_impact=7``.
+
+            If input is `int`, the mapping is t, t+1, ..., t+neighbor_impact-1.
+            If input is `list`, the mapping is [t+x for x in neighbor_impact].
+            If input is a function, it maps each daily event's date to a list of dates.
+        daily_event_shifted_effect : `list` [`str`] or None, default None
+            Additional neighbor events based on given events.
+            For example, passing ["-1D", "7D"] will add extra daily events which are 1 day before
+            and 7 days after the given events.
+            Offset format is {d}{freq} with any integer plus a frequency string.
+            Must be parsable by pandas ``to_offset``.
+            The new events' names will be the current events' names with suffix "{offset}_before" or "{offset}_after".
+            For example, if we have an event named "US_Christmas Day",
+            a "7D" shift will have name "US_Christmas Day_7D_after".
+            This is useful when you expect an offset of the current holidays also has impact on the
+            time series, or you want to interact the lagged terms with autoregression.
+            If ``daily_event_neighbor_impact`` is also specified, this will be applied after adding neighboring days.
         auto_growth : `bool`, default False
             Whether to automatically infer growth configuration.
             If True, the growth term and automatically changepoint detection configuration
@@ -609,6 +643,15 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             without any error being added and then add the error using the volatility
             model. The advantage is a major boost in speed during inference and the
             disadvantage is potentially less accurate prediction intervals.
+        remove_intercept : `bool`, default False
+            Whether to remove explicit and implicit intercepts.
+            By default, `patsy` will make the design matrix always full rank.
+            It will always include an intercept term unless we specify "-1" or "+0".
+            However, if there are categorical variables, even we specify "-1" or "+0",
+            it will include an implicit intercept by adding all levels of a categorical
+            variable into the design matrix.
+            Sometimes we don't want this to happen.
+            Setting this parameter to True will remove both explicit and implicit intercepts.
 
 
         Returns
@@ -720,7 +763,10 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             # Sets empty dictionary to None
             daily_event_df_dict = None
 
-        extra_pred_cols += get_event_pred_cols(daily_event_df_dict)
+        extra_pred_cols += get_event_pred_cols(
+            daily_event_df_dict,
+            daily_event_shifted_effect
+        )
 
         # Specifies ``extra_pred_cols`` (interactions and additional model terms).
         # Seasonality interaction order is limited by the available order and max requested.
@@ -787,6 +833,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             fit_algorithm=fit_algorithm,  # pass-through
             fit_algorithm_params=fit_algorithm_params,  # pass-through
             daily_event_df_dict=daily_event_df_dict,
+            daily_event_neighbor_impact=daily_event_neighbor_impact,  # pass-through
+            daily_event_shifted_effect=daily_event_shifted_effect,  # pass-through
             fs_components_df=fs_components_df,
             autoreg_dict=autoreg_dict,  # pass-through
             past_df=past_df,  # pass-through
@@ -802,7 +850,8 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             forecast_horizon=forecast_horizon,  # pass-through
             simulation_based=simulation_based,  # pass-through
             simulation_num=simulation_num,  # pass-through
-            fast_simulation=fast_simulation  # pass-through
+            fast_simulation=fast_simulation,  # pass-through
+            remove_intercept=remove_intercept  # pass-through
         )
 
         return parameters
@@ -845,13 +894,13 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
         Parameters
         ----------
-        requested_seasonality :  `str` or `bool` or `int`, default = 'auto'
+        requested_seasonality :  `str` or `bool` or `int` or None, default = "auto"
             The requested seasonality.
-            'auto', True, False, or a number for the Fourier order.
+            "auto", `True`, `False`, None (same as `False`) or a number for the Fourier order.
         default_order : `int`
-            The default order to use for 'auto' and True.
+            The default order to use for "auto" and True.
         is_enabled_auto : `bool`
-            Whether the seasonality should be modeled for 'auto' seasonality.
+            Whether the seasonality should be modeled for "auto" seasonality.
 
         Returns
         -------
@@ -862,12 +911,14 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             order = default_order
         elif requested_seasonality is False or (requested_seasonality == 'auto' and not is_enabled_auto):
             order = 0
+        elif requested_seasonality is None:
+            order = 0
         else:
             try:
                 order = int(requested_seasonality)
             except ValueError as e:
                 log_message(f"Requested seasonality order '{requested_seasonality}' must be one of:"
-                            f" 'auto', True, False, integer", LoggingLevelEnum.ERROR)
+                            f" 'auto', True, False, None, or int.", LoggingLevelEnum.ERROR)
                 raise e
         return order
 

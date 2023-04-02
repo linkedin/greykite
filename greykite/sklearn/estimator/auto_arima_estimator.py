@@ -34,6 +34,7 @@ from greykite.common.constants import PREDICTED_LOWER_COL
 from greykite.common.constants import PREDICTED_UPPER_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.constants import VALUE_COL
+from greykite.common.time_properties import infer_freq
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
 
 
@@ -294,7 +295,7 @@ class AutoArimaEstimator(BaseForecastEstimator):
             fut_reg_df = fut_df[self.regressor_cols]  # Auto-arima only accepts regressor values beyond `fit_df`
 
         if self.freq is None:
-            self.freq = pd.infer_freq(self.fit_df[self.time_col_])
+            self.freq = infer_freq(self.fit_df, self.time_col_)
         if self.freq == "MS":
             timedelta_freq = "M"  # `to_period` does not recognize non-traditional frequencies
         else:

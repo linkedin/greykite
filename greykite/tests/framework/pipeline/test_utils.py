@@ -690,7 +690,9 @@ def test_run_hyperparameter_searcher():
             "constant": sp_randint(1, 30)
         }
     ]
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="There is only one CV split"):
         # full hyperparameter_grid search, default 10
         grid_search = run_dummy_grid_search(
             random_hyperparameter_grid,
@@ -737,7 +739,6 @@ def test_run_hyperparameter_searcher():
             score_func=mean_squared_error,
             greater_is_better=False,
             cv_report_metrics_names=expected_names)
-        assert "There is only one CV split" in record[0].message.args[0]
 
 
 def test_get_forecast():

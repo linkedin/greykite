@@ -38,6 +38,7 @@ from greykite.common import constants as cst
 from greykite.common.aggregation_function_enum import AggregationFunctionEnum
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
+from greykite.common.time_properties import infer_freq
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
 from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverkiteEstimator
 
@@ -259,7 +260,7 @@ class MultistageForecastEstimator(BaseForecastEstimator):
             value_col=value_col,
             **fit_params)
         if self.freq is None:
-            self.freq = pd.infer_freq(X[time_col])
+            self.freq = infer_freq(X, time_col)
         if self.freq is None:
             raise ValueError("Failed to infer frequency from data, please provide during "
                              "instantiation. Data frequency is required for aggregation.")

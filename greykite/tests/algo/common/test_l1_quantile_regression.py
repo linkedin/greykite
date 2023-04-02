@@ -106,6 +106,28 @@ def test_quantile_regression_fit_predict_l1(data):
     assert round(sum(pred > data["y"]) / len(data["y"]), 1) == 0.9
 
 
+def test_quantile_regression_fit_predict_mape(data):
+    """Tests fitting quantile regression fit and predict optimizing mape."""
+    qr = QuantileRegression(
+        quantile=0.8,
+        alpha=0,
+        optimize_mape=True
+    )
+    with LogCapture(LOGGER_NAME) as log_capture:
+        qr.fit(data["x"], data["y"])
+        qr.predict(data["x"])
+        assert qr.quantile == 0.5
+        assert all(qr.sample_weight == 1 / np.abs(data["y"]))
+        log_capture.check_present((
+            LOGGER_NAME,
+            "WARNING",
+            "The parameter 'optimize_mape' is set to 'True', "
+            "ignoring the input 'quantile' and 'sample_weight', "
+            "setting 'quantile' to 0.5 and 'sample_weight' to the inverse "
+            "absolute values of the response."
+        ))
+
+
 def test_errors(data):
     """Tests errors."""
     # y is not a column vector.

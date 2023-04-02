@@ -76,7 +76,7 @@ def test_infer_daily_data(daily_df):
         plot=True
     )
     # Checks result.
-    assert len(result["scores"]) == 50
+    assert len(result["scores"]) == 55
     assert sorted(result["independent_holidays"]) == sorted([
         ('US', 'Labor Day_+0'),
         ('US', 'Labor Day_-1'),
@@ -98,37 +98,41 @@ def test_infer_daily_data(daily_df):
         ('US', 'Columbus Day_+0'),
         ('US', 'Memorial Day_+1'),
         ('US', 'Labor Day_+1'),
-        ('US', "New Year's Day_+0"),
         ('US', 'Martin Luther King Jr. Day_-1'),
         ('US', 'Independence Day_-2'),
         ('US', 'Christmas Day_-1'),
         ('US', 'Independence Day_-1'),
+        ('US', 'Martin Luther King Jr. Day_+1'),
+        ('US', 'Halloween_+0'),
+        ('US', 'Halloween_+2'),
     ])
 
     assert sorted(result["together_holidays_positive"]) == sorted([
-        ('US', 'Martin Luther King Jr. Day_+1'),
         ('US', 'Martin Luther King Jr. Day_+2'),
         ('US', 'Labor Day_+2'),
         ('US', 'Thanksgiving_+1'),
         ('US', 'Memorial Day_+2'),
         ('US', "New Year's Day_-1"),
         ('US', "New Year's Day_-2"),
-        ('US', "New Year's Day_+2")
+        ('US', "New Year's Day_+2"),
+        ('US', 'Halloween_-1'),
+        ('US', 'Halloween_-2'),
     ])
 
     assert sorted(result["together_holidays_negative"]) == sorted([
-        ('US', 'Independence Day_+1'),
-        ('US', 'Independence Day_+0'),
-        ('US', 'Columbus Day_+1'),
-        ('US', 'Martin Luther King Jr. Day_-2'),
-        ('US', 'Veterans Day_+2'),
-        ('US', 'Memorial Day_-2'),
-        ('US', 'Memorial Day_-1'),
-        ('US', 'Columbus Day_-2'),
-        ('US', 'Columbus Day_+2'),
-        ('US', 'Christmas Day_-2'),
         ('US', 'Christmas Day_+2'),
-        ('US', 'Independence Day_+2'),
+        ('US', 'Christmas Day_-2'),
+        ('US', 'Columbus Day_+1'),
+        ('US', 'Columbus Day_+2'),
+        ('US', 'Columbus Day_-2'),
+        ('US', 'Halloween_+1'),
+        ('US', 'Independence Day_+0'),
+        ('US', 'Independence Day_+1'),
+        ('US', 'Martin Luther King Jr. Day_-2'),
+        ('US', 'Memorial Day_-1'),
+        ('US', 'Memorial Day_-2'),
+        ('US', "New Year's Day_+0"),
+        ('US', 'Veterans Day_+2')
     ])
 
     assert len(result["fig"].data) == 6
@@ -140,9 +144,9 @@ def test_infer_daily_data(daily_df):
     assert hi.year_end == 2016
     assert len(hi.ts) == len(hi.df)
     assert hi.country_holiday_df is not None
-    assert len(hi.holidays) == 10
-    assert len(hi.score_result) == 50
-    assert len(hi.score_result_avg) == 50
+    assert len(hi.holidays) == 11
+    assert len(hi.score_result) == 55
+    assert len(hi.score_result_avg) == 55
     assert hi.result == result
 
 
@@ -160,14 +164,14 @@ def test_daily_data_diff_params(daily_df):
         together_holiday_thres=0.8
     )
     # Checks result.
-    assert len(result["scores"]) == 196
+    assert len(result["scores"]) == 200
     assert "US_Christmas Day_+0" in result["scores"]
     assert "US_New Year's Day_-3" in result["scores"]
     assert "India_All Saints Day_-1" in result["scores"]
     assert len(result["fig"].data) == 5
-    assert len(result["independent_holidays"]) == 104
-    assert len(result["together_holidays_positive"]) == 10
-    assert len(result["together_holidays_negative"]) == 9
+    assert len(result["independent_holidays"]) == 100
+    assert len(result["together_holidays_positive"]) == 12
+    assert len(result["together_holidays_negative"]) == 10
     # Checks attributes.
     assert hi.df is not None
     assert hi.time_col == TIME_COL
@@ -176,9 +180,9 @@ def test_daily_data_diff_params(daily_df):
     assert hi.year_end == 2016
     assert len(hi.ts) == len(hi.df)
     assert hi.country_holiday_df is not None
-    assert len(hi.holidays) == 49
-    assert len(hi.score_result) == 196
-    assert len(hi.score_result_avg) == 196
+    assert len(hi.holidays) == 50
+    assert len(hi.score_result) == 200
+    assert len(hi.score_result_avg) == 200
     assert hi.result == result
 
 
@@ -195,7 +199,7 @@ def test_sub_daily_data():
         plot=True
     )
     # Checks result.
-    assert len(result["scores"]) == 55
+    assert len(result["scores"]) == 60
     assert len(result["fig"].data) == 6
     assert len(result["independent_holidays"]) == 7
     assert len(result["together_holidays_negative"]) == 0
@@ -208,9 +212,9 @@ def test_sub_daily_data():
     assert hi.year_end == 2020
     assert len(hi.ts) == len(hi.df)
     assert hi.country_holiday_df is not None
-    assert len(hi.holidays) == 11
-    assert len(hi.score_result) == 55
-    assert len(hi.score_result_avg) == 55
+    assert len(hi.holidays) == 12
+    assert len(hi.score_result) == 60
+    assert len(hi.score_result_avg) == 60
     assert hi.result == result
 
 
@@ -255,16 +259,29 @@ def test_get_scores():
         "ts": pd.date_range("2020-12-01", freq="D", periods=40),
         "y": [1] * 22 + [2, 3, 4, 3, 2, 1, 1, 2, 3, 4, 3, 2] + [1] * 6
     })
-    result = hi.infer_holidays(df=df)
+    result = hi.infer_holidays(df=df, use_relative_score=False)
     assert result["scores"]["US_Christmas Day_-2"] == [0.5]
     assert result["scores"]["US_Christmas Day_-1"] == [1.0]
-    assert result["scores"]["US_Christmas Day_+0"] == [1.5]
+    assert result["scores"]["US_Christmas Day_+0"] == [3.0]
     assert result["scores"]["US_Christmas Day_+1"] == [1.0]
     assert result["scores"]["US_Christmas Day_+2"] == [0.5]
     assert result["scores"]["US_New Year's Day_-2"] == [0.5]
     assert result["scores"]["US_New Year's Day_-1"] == [1.0]
-    assert result["scores"]["US_New Year's Day_+0"] == [1.5]
+    assert result["scores"]["US_New Year's Day_+0"] == [3.0]
     assert result["scores"]["US_New Year's Day_+1"] == [1.0]
+    assert result["scores"]["US_New Year's Day_+2"] == [0.0]
+
+    # Tests the relative scores
+    result = hi.infer_holidays(df=df, use_relative_score=True)
+    assert result["scores"]["US_Christmas Day_-2"] == [1/3]
+    assert result["scores"]["US_Christmas Day_-1"] == [0.5]
+    assert result["scores"]["US_Christmas Day_+0"] == [3.0]
+    assert result["scores"]["US_Christmas Day_+1"] == [0.5]
+    assert result["scores"]["US_Christmas Day_+2"] == [1/3]
+    assert result["scores"]["US_New Year's Day_-2"] == [1/3]
+    assert result["scores"]["US_New Year's Day_-1"] == [0.5]
+    assert result["scores"]["US_New Year's Day_+0"] == [3.0]
+    assert result["scores"]["US_New Year's Day_+1"] == [0.5]
     assert result["scores"]["US_New Year's Day_+2"] == [0.0]
 
 
@@ -277,10 +294,10 @@ def test_remove_observed():
     })
     # 5 observed holidays are removed.
     country_holiday_df = get_holiday_df(country_list=["US"], years=[2020, 2021, 2022])
-    assert len(country_holiday_df) == 39
+    assert len(country_holiday_df) == 42
     hi = HolidayInferrer()
     hi.infer_holidays(df=df)
-    assert len(hi.country_holiday_df) == 32
+    assert len(hi.country_holiday_df) == 35
     # Tests the correctness of observed holiday removal.
     # 2020-07-03 is the observed Independence Day for 2022-07-04.
     assert hi.country_holiday_df[
@@ -381,7 +398,7 @@ def test_get_daily_event_dict(daily_df):
     # Infers holidays and call.
     hi.infer_holidays(df=daily_df)
     daily_event_dict = hi.generate_daily_event_dict()
-    assert len(daily_event_dict) == 27
+    assert len(daily_event_dict) == 29
     assert "Holiday_positive_group" in daily_event_dict
     assert "Holiday_negative_group" in daily_event_dict
     # Every single holiday should cover 11 years.

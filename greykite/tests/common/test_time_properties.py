@@ -18,6 +18,7 @@ from greykite.common.time_properties import describe_timeseries
 from greykite.common.time_properties import fill_missing_dates
 from greykite.common.time_properties import find_missing_dates
 from greykite.common.time_properties import get_canonical_data
+from greykite.common.time_properties import infer_freq
 from greykite.common.time_properties import min_gap_in_seconds
 
 
@@ -366,6 +367,38 @@ def test_gcd_load_data_anomaly():
     assert_equal(canonical_data_dict3["df_before_adjustment"], canonical_data_dict["df"])
     assert_equal(canonical_data_dict3["df"], expected_df)
 
+    # Checks that when `anomaly_df` sets the last few datapoints in `df` to NA,
+    # `train_end_date` will not be affected.
+    value_col = "pm"
+    anomaly_df = pd.DataFrame({
+        START_TIME_COL: ["2014-12-31-22"],
+        END_TIME_COL: ["2015-01-01-22"],
+        ADJUSTMENT_DELTA_COL: [np.nan]
+    })
+    # Adjusts one column (value_col)
+    anomaly_info = {
+        "value_col": value_col,
+        "anomaly_df": anomaly_df,
+        "start_time_col": START_TIME_COL,
+        "end_time_col": END_TIME_COL,
+        "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
+        "adjustment_method": "add"
+    }
+
+    canonical_data_dict4 = get_canonical_data(
+        df=df,
+        time_col=TIME_COL,
+        value_col=value_col,
+        anomaly_info=anomaly_info)
+
+    # Checks `train_end_date`.
+    assert canonical_data_dict4["train_end_date"] == df[TIME_COL].max()
+
+    # Checks if the adjustment was done correctly.
+    values_after_adjustment = canonical_data_dict4["df"][VALUE_COL].tail(3).values
+    expected_after_adjustment = np.array([10, np.nan, np.nan])
+    assert_equal(values_after_adjustment, expected_after_adjustment)
+
 
 def test_gcd_train_end_date():
     """Tests train_end_date for data without regressors"""
@@ -382,31 +415,23 @@ def test_gcd_train_end_date():
     with pytest.warns(UserWarning) as record:
         train_end_date = datetime.datetime(2018, 1, 1, 5, 0, 0)
         get_canonical_data(df=df)
-        assert f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains " \
+               f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a non-null value " \
+               f"({train_end_date})." in record[0].message.args[0]
 
     # train_end_date later than last date in df
     with pytest.warns(UserWarning) as record:
         train_end_date = datetime.datetime(2018, 1, 1, 8, 0, 0)
-        result_train_end_date = datetime.datetime(2018, 1, 1, 5, 0, 0)
         get_canonical_data(df, train_end_date=train_end_date)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({result_train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains null values at the end, " \
+               f"or the input `train_end_date` is beyond the last timestamp available." in record[0].message.args[0]
 
     # train_end_date in between last date in df and last date before
     with pytest.warns(UserWarning) as record:
         train_end_date = datetime.datetime(2018, 1, 1, 6, 0, 0)
-        result_train_end_date = datetime.datetime(2018, 1, 1, 5, 0, 0)
         get_canonical_data(df, train_end_date=train_end_date)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({result_train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains trailing NAs" in record[0].message.args[0]
 
     # train end date equal to last date before null
     canonical_data_dict = get_canonical_data(df, train_end_date=datetime.datetime(2018, 1, 1, 5, 0, 0))
@@ -448,9 +473,10 @@ def test_gcd_train_end_date_regressor():
             df=df,
             train_end_date=None,
             regressor_cols=None)
-        assert f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({result_train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains " \
+               f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a non-null value " \
+               f"({result_train_end_date})." in record[0].message.args[0]
         assert canonical_data_dict["df"].shape == df.shape
         assert canonical_data_dict["fit_df"].shape == (22, 2)
         assert canonical_data_dict["regressor_cols"] == []
@@ -466,15 +492,12 @@ def test_gcd_train_end_date_regressor():
             df=df,
             train_end_date=train_end_date,
             regressor_cols=regressor_cols)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({result_train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains null values at the end, " \
+               f"or the input `train_end_date` is beyond the last timestamp available." in record[0].message.args[0]
         assert canonical_data_dict["fit_df"].shape == (22, 5)
         assert canonical_data_dict["regressor_cols"] == regressor_cols
         assert canonical_data_dict["fit_cols"] == [TIME_COL, VALUE_COL] + regressor_cols
-        assert canonical_data_dict["train_end_date"] == result_train_end_date
+        assert canonical_data_dict["train_end_date"] == datetime.datetime(2018, 1, 22)
         assert canonical_data_dict["last_date_for_val"] == datetime.datetime(2018, 1, 22)
         assert canonical_data_dict["last_date_for_reg"] == datetime.datetime(2018, 1, 28)
 
@@ -486,15 +509,11 @@ def test_gcd_train_end_date_regressor():
             df=df,
             train_end_date=train_end_date,
             regressor_cols=None)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({result_train_end_date})." in record[0].message.args[0]
-        assert canonical_data_dict["fit_df"].shape == (22, 2)
+        assert f"{VALUE_COL} column of the provided time series contains trailing NAs" in record[0].message.args[0]
+        assert canonical_data_dict["fit_df"].shape == (25, 2)
         assert canonical_data_dict["regressor_cols"] == []
         assert canonical_data_dict["fit_cols"] == [TIME_COL, VALUE_COL]
-        assert canonical_data_dict["train_end_date"] == datetime.datetime(2018, 1, 22)
+        assert canonical_data_dict["train_end_date"] == train_end_date  # `train_end_date` is unchanged when provided.
         assert canonical_data_dict["last_date_for_val"] == datetime.datetime(2018, 1, 22)
         assert canonical_data_dict["last_date_for_reg"] is None
 
@@ -530,3 +549,37 @@ def test_gcd_train_end_date_regressor():
         assert canonical_data_dict["last_date_for_reg"] == datetime.datetime(2018, 1, 28)
         assert (f"The following columns are not available to use as "
                 f"regressors: ['regressor4', 'regressor5']") in record[0].message.args[0]
+
+
+def test_infer_freq():
+    freq_list = ["B", "W", "W-SAT", "W-TUE", "M",
+                 "MS", "SM", "SMS", "CBMS", "BM", "B", "Q",
+                 "QS", "BQS", "BQ-NOV", "Y", "A-JAN", "YS",
+                 "AS-SEP", "BH", "T", "S"]
+
+    for freq in freq_list:
+        date_list = pd.date_range(
+            start="2020-06-10",
+            periods=100,
+            freq=freq).tolist()
+        df = pd.DataFrame({TIME_COL: date_list})
+
+        # With complete timestamps
+        pandas_freq_complete = pd.infer_freq(df[TIME_COL])
+        inferred_freq_complete = infer_freq(df, TIME_COL)
+
+        # With NaN timestamps
+        df[TIME_COL][5:8] = np.nan
+        df[TIME_COL][32:40] = None
+        pandas_freq_nan = pd.infer_freq(df[TIME_COL])
+        inferred_freq_nan = infer_freq(df, TIME_COL)
+
+        # With missing timestamps
+        df = df[df[TIME_COL].notna()]
+        pandas_freq_missing = pd.infer_freq(df[TIME_COL])
+        inferred_freq_missing = infer_freq(df, TIME_COL)
+
+        print(freq, pandas_freq_complete, inferred_freq_complete, inferred_freq_nan)
+
+        assert pandas_freq_nan == pandas_freq_missing is None
+        assert pandas_freq_complete == inferred_freq_complete == inferred_freq_missing == inferred_freq_complete

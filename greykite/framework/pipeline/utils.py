@@ -775,7 +775,7 @@ def get_forecast(
 
     # combines actual with predictions
     union_df = pd.DataFrame({
-        xlabel: df[cst.TIME_COL].values,
+        cst.TIME_COL: df[cst.TIME_COL].values,
         # .values here, since df and predicted_df have different indexes
         cst.ACTUAL_COL: df[cst.VALUE_COL].values,
         # evaluation and plots are done on the values *before* any transformations
@@ -808,7 +808,7 @@ def get_forecast(
 
     return UnivariateForecast(
         union_df,
-        time_col=xlabel,
+        time_col=cst.TIME_COL,
         actual_col=cst.ACTUAL_COL,
         predicted_col=cst.PREDICTED_COL,
         predicted_lower_col=predicted_lower_col,

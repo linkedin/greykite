@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from datetime import timedelta
 
 import matplotlib
@@ -7,6 +8,7 @@ import pandas as pd
 import pytest
 from pandas.tseries.frequencies import to_offset
 from pandas.util.testing import assert_frame_equal
+from sklearn.exceptions import ConvergenceWarning
 from testfixtures import LogCapture
 
 from greykite.algo.changepoint.adalasso.changepoint_detector import ChangepointDetector
@@ -18,6 +20,9 @@ from greykite.common.constants import ADJUSTMENT_DELTA_COL
 from greykite.common.constants import END_TIME_COL
 from greykite.common.constants import ERR_STD_COL
 from greykite.common.constants import EVENT_DF_LABEL_COL
+from greykite.common.constants import IS_EVENT_ADJACENT_COL
+from greykite.common.constants import IS_EVENT_COL
+from greykite.common.constants import IS_EVENT_EXACT_COL
 from greykite.common.constants import LOGGER_NAME
 from greykite.common.constants import QUANTILE_SUMMARY_COL
 from greykite.common.constants import START_TIME_COL
@@ -37,6 +42,7 @@ from greykite.common.features.timeseries_features import get_holidays
 from greykite.common.features.timeseries_impute import impute_with_lags
 from greykite.common.features.timeseries_lags import build_autoreg_df
 from greykite.common.features.timeseries_lags import build_autoreg_df_multi
+from greykite.common.gen_moving_timeseries_forecast import gen_moving_timeseries_forecast
 from greykite.common.python_utils import assert_equal
 from greykite.common.python_utils import get_pattern_cols
 from greykite.common.testing_utils import generate_anomalous_data
@@ -48,7 +54,7 @@ from greykite.common.viz.timeseries_plotting_mpl import plt_compare_timeseries
 
 
 matplotlib.use("agg")  # noqa: E402
-import matplotlib.pyplot as plt  # isort:skip
+import matplotlib.pyplot as plt  # isort:skip # noqa: E402
 
 
 @pytest.fixture
@@ -59,6 +65,30 @@ def hourly_data():
         periods=24 * 500,
         train_start_date=datetime.datetime(2018, 7, 1),
         conti_year_origin=2018)
+
+
+@pytest.fixture
+def real_data():
+    """Loads and prepares some real data sets for performance testing."""
+    dl = DataLoader()
+    df_pt = dl.load_peyton_manning()
+    df_hourly_bk = dl.load_bikesharing()
+    # This adds a small number to avoid zeros in MAPE calculation
+    df_hourly_bk["count"] += 1
+
+    agg_func = {"count": "sum", "tmin": "mean", "tmax": "mean", "pn": "mean"}
+    df_bk = dl.load_bikesharing(agg_freq="daily", agg_func=agg_func)
+
+    # This adds a small number to avoid zeros in MAPE calculation
+    df_bk["count"] += 10
+    # Drops last value as data might be incorrect since the original data is hourly
+    df_bk.drop(df_bk.tail(1).index, inplace=True)
+    df_bk.reset_index(drop=True, inplace=True)
+
+    return {
+        "daily_pt": df_pt,
+        "hourly_bk": df_hourly_bk,
+        "daily_bk": df_bk}
 
 
 @pytest.fixture
@@ -217,6 +247,48 @@ def test_forecast_silverkite_hourly(hourly_data):
         trained_model=trained_model,
         freq="H",
         new_external_regressor_df=None)["fut_df"]
+    err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
+    enum = EvaluationMetricEnum.Correlation
+    assert err[enum.get_metric_name()] > 0.3
+    enum = EvaluationMetricEnum.RootMeanSquaredError
+    assert err[enum.get_metric_name()] < 6.0
+    assert trained_model["x_mat"]["ct1"][0] == 0  # this should be true when origin_for_time_vars=None
+    """
+    plt_comparison_forecast_vs_observed(
+        fut_df=fut_df,
+        test_df=test_df,
+        file_name=None)
+    """
+
+
+def test_forecast_silverkite_hourly_with_dst(hourly_data):
+    """Tests silverkite on hourly data with daylight saving variables"""
+    train_df = hourly_data["train_df"]
+    test_df = hourly_data["test_df"]
+    fut_time_num = hourly_data["fut_time_num"]
+
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=datetime.datetime(2019, 6, 1),
+        origin_for_time_vars=None,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5]}),
+        extra_pred_cols=["ct_sqrt", "dow_hr", "ct1", "us_dst*dow_hr"],
+        normalize_method="zero_to_one")
+
+    assert "us_dst*dow_hr" in trained_model["pred_cols"]
+
+    fut_df = silverkite.predict_n_no_sim(
+        fut_time_num=fut_time_num,
+        trained_model=trained_model,
+        freq="H",
+        new_external_regressor_df=None)["fut_df"]
+
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
     assert err[enum.get_metric_name()] > 0.3
@@ -741,12 +813,11 @@ def test_forecast_silverkite_freq():
             check_like=True)
 
 
-def test_forecast_silverkite_changepoints():
+def test_forecast_silverkite_changepoints(real_data):
     """Tests forecast_silverkite on peyton manning data
     (with changepoints and missing values)
     """
-    dl = DataLoader()
-    df_pt = dl.load_peyton_manning()
+    df_pt = real_data["daily_pt"]
 
     silverkite = SilverkiteForecast()
     trained_model = silverkite.forecast(
@@ -793,10 +864,9 @@ def test_forecast_silverkite_changepoints():
     assert len(changepoint_values) == len(changepoint_dates)
 
 
-def test_forecast_silverkite_seasonality_changepoints():
+def test_forecast_silverkite_seasonality_changepoints(real_data):
     # test forecast_silverkite on peyton manning data
-    dl = DataLoader()
-    df_pt = dl.load_peyton_manning()
+    df_pt = real_data["daily_pt"]
     silverkite = SilverkiteForecast()
     # seasonality changepoints is None if dictionary is not provided
     trained_model = silverkite.forecast(
@@ -1606,8 +1676,8 @@ def test_forecast_silverkite_2min_with_uncertainty():
         axis=1)
 
     ci_coverage = 100.0 * fut_df["inside_95_ci"].mean()
-    assert round(ci_coverage) == 91, (
-        "95 percent CI coverage is not as expected (91%)")
+    assert round(ci_coverage) == 93, (
+        "95 percent CI coverage is not as expected (93%)")
 
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
@@ -1654,6 +1724,7 @@ def test_forecast_silverkite_simulator():
     past_df = train_df[[TIME_COL, VALUE_COL]].copy()
 
     # simulations with error
+    np.random.seed(123)
     sim_df = silverkite.simulate(
         fut_df=fut_df,
         trained_model=trained_model,
@@ -1661,13 +1732,12 @@ def test_forecast_silverkite_simulator():
         new_external_regressor_df=None,
         include_err=True)["sim_df"]
 
-    np.random.seed(123)
     assert sim_df[VALUE_COL].dtype == "float64"
     err = calc_pred_err(test_df[VALUE_COL], sim_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
-    assert round(err[enum.get_metric_name()], 2) == 0.97
+    assert round(err[enum.get_metric_name()], 2) == 0.90
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert round(err[enum.get_metric_name()], 2) == 0.55
+    assert round(err[enum.get_metric_name()], 2) == 1.05
 
     # simulations without errors
     sim_df = silverkite.simulate(
@@ -1677,7 +1747,6 @@ def test_forecast_silverkite_simulator():
         new_external_regressor_df=None,
         include_err=False)["sim_df"]
 
-    np.random.seed(123)
     assert sim_df[VALUE_COL].dtype == "float64"
     err = calc_pred_err(test_df[VALUE_COL], sim_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
@@ -1834,6 +1903,7 @@ def test_forecast_silverkite_predict_via_sim():
     # Predicts with the original sim
     # import time
     # t0 = time.time()
+    np.random.seed(1)  # Result is highly sensitive to seed due to propagating errors in AR terms.
     pred_df = silverkite.predict_via_sim(
         fut_df=fut_df,
         trained_model=trained_model,
@@ -1850,9 +1920,9 @@ def test_forecast_silverkite_predict_via_sim():
         ERR_STD_COL]
     err = calc_pred_err(test_df[VALUE_COL], pred_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
-    assert round(err[enum.get_metric_name()], 2) == 0.80
+    assert round(err[enum.get_metric_name()], 2) == 0.76
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert round(err[enum.get_metric_name()], 2) == 0.14
+    assert round(err[enum.get_metric_name()], 2) == 0.16
     """
     import os
     import plotly
@@ -1863,8 +1933,7 @@ def test_forecast_silverkite_predict_via_sim():
     plotly.offline.plot(fig, filename=html_file_name)
     """
 
-    # Predicts via fast simulation method
-    np.random.seed(123)
+    # Predicts via fast simulation method (no seed is needed)
     # t0 = time.time()
     pred_df = silverkite.predict_via_sim_fast(
         fut_df=fut_df,
@@ -2003,7 +2072,7 @@ def test_forecast_silverkite_predict_via_sim2():
     enum = EvaluationMetricEnum.RootMeanSquaredError
     rmse = err[enum.get_metric_name()]
     err = 100 * (rmse / abs_y_mean)
-    assert round(err) == 15
+    assert round(err) == 13
 
     # Checks if simulation is done correctly
     # It manually calculates the predictions using lags and
@@ -2193,7 +2262,7 @@ def test_forecast_silverkite_predict_via_sim3():
     enum = EvaluationMetricEnum.RootMeanSquaredError
     rmse = err[enum.get_metric_name()]
     err = 100 * (rmse / abs_y_mean)
-    assert round(err, 2) == 0.58
+    assert round(err, 2) == 0.57
     """
     import os
     import plotly
@@ -2357,6 +2426,214 @@ def test_silverkite_predict():
         "len_gap": 5}
     assert predict_info["fut_df"].shape[0] == fut_df_with_gap.shape[0]
     assert list(predict_info["fut_df"].columns) == expected_fut_df_cols
+
+
+def test_silverkite_various_algos(real_data):
+    """A test function to benchmark the performance of various algorithms in core silverkite.
+    This test is also useful for adding new functionality and algorithms and
+    includes a low level bench-marking method.
+    It does not require more advanced machinery available at other layers e.g. pipeline.
+    This test is not intended to replace comprehensive bench-marking but
+    it is included to do a quick performance test on the core level."""
+    autoreg_coefs = [0.5] * 15
+    periods = 600
+    df_pt = real_data["daily_pt"]
+    df_bk = real_data["daily_bk"]
+    df_bk = df_bk[["ts", "count"]]
+    df_bk.columns = ["ts", "y"]
+    np.random.seed(1317)
+    data = generate_df_for_tests(
+        freq="D",
+        periods=periods + len(autoreg_coefs),  # Generates more data to avoid missing at the end
+        train_frac=0.8,
+        train_end_date=None,
+        noise_std=0.5,
+        remove_extra_cols=True,
+        autoreg_coefs=autoreg_coefs,
+        fs_coefs=[0.1, 1, 0.1],
+        growth_coef=2.0,
+        intercept=10.0)
+
+    df = data["df"][:periods]  # Removes last few values which are Nan due to using of lags in the data generation
+    df_dict = {}
+    df_dict["daily_pt"] = df_pt[:periods]
+    df_dict["daily_bk"] = df_bk[:periods]
+    df_dict["sim"] = df
+    """
+    # Commented out code to inspect the raw series.
+    import os
+    home = os.path.expanduser("~")
+    from greykite.common.viz.timeseries_annotate import plot_lines_markers
+
+    for label, df in df_dict.items():
+        fig = plot_lines_markers(
+            df=df,
+            x_col="ts",
+            line_cols=["y"],
+            marker_cols=None,
+            line_colors=None,
+            marker_colors=None)
+
+        fig.write_html(f"{home}/raw_series_{label}.html", auto_open=True)
+    """
+
+    def train_forecast_fcn(
+            fit_algorithm,
+            changepoints_dict):
+        """It constructs a function which fits data and then forecasts for the
+        given parameters. The constructed function will be an input to
+        ``~greykite.common.gen_moving_timeseries_forecast.gen_moving_timeseries_forecast``
+        For details abou the expected inputs and outputs of the generated function see
+        the description for the input argument: ``train_forecast_func`` of ``gen_moving_timeseries_forecast``"""
+
+        def train_forecast_func(
+                df,
+                time_col,
+                value_col,
+                forecast_horizon,
+                new_external_regressor_df=None):
+            """A function which fits a forecast model and then predicts for given
+            forecast horizon. This function will be a proper input to
+            ``~greykite.common.gen_moving_timeseries_forecast.gen_moving_timeseries_forecast``
+            For description of the inputs and output of this function refer to ``gen_moving_timeseries_forecast``"""
+            autoreg_dict = {
+                "lag_dict": {"orders": list(range(7, 14))},
+                "agg_lag_dict": None,
+                "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+            countries = ["US", "India"]
+            event_df_dict = get_holidays(
+                countries,
+                year_start=2000,
+                year_end=2025)
+
+            silverkite = SilverkiteForecast()
+            trained_model = silverkite.forecast(
+                df=df,
+                time_col=TIME_COL,
+                value_col=VALUE_COL,
+                train_test_thresh=None,
+                origin_for_time_vars=None,
+                fit_algorithm=fit_algorithm,
+                fs_components_df=pd.DataFrame({
+                    "name": ["tow", "conti_year"],
+                    "period": [7.0, 1.0],
+                    "order": [7, 15]}),
+                extra_pred_cols=["ct1"],
+                daily_event_df_dict=event_df_dict,
+                changepoints_dict=changepoints_dict,
+                seasonality_changepoints_dict=None,
+                uncertainty_dict=None,
+                autoreg_dict=autoreg_dict,
+                fast_simulation=True)
+
+            # Prediction phase
+            np.random.seed(123)
+            predict_info = silverkite.predict_n(
+                fut_time_num=forecast_horizon,
+                trained_model=trained_model,
+                past_df=None,
+                new_external_regressor_df=None,
+                include_err=None,
+                force_no_sim=False)
+
+            fut_df = predict_info["fut_df"]
+
+            return {
+                "fut_df": fut_df
+            }
+
+        return train_forecast_func
+
+    def cross_validate_all_models(changepoints_dict):
+        """Runs cross validation for all algo, data pairs. It returns a dictionary
+        which contains the error for each model / data pair.
+
+        The input is ``changepoints_dict`` which is passed to ``SilverkiteForecast``
+        class's ``forecast`` function. See
+        ~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast
+        for more details.
+
+        The output is a dictionary with:
+            - keys being f"{data_label}_{fit_algorithm}"
+            - values being tuples (R2, MAPE).
+
+        """
+
+        def cross_validate_one_model(data_label, fit_algorithm, changepoints_dict):
+            """Runs cross validation for one algo, data pair."""
+            train_forecast_func = train_forecast_fcn(
+                fit_algorithm=fit_algorithm,
+                changepoints_dict=changepoints_dict)
+
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=ConvergenceWarning)
+                num_tests = 8
+                train_move_ahead = 13
+                min_training_end_point = len(df) - (num_tests * train_move_ahead)
+                test_res = gen_moving_timeseries_forecast(
+                    df=df_dict[data_label].copy(),
+                    time_col="ts",
+                    value_col="y",
+                    train_forecast_func=train_forecast_func,
+                    train_move_ahead=train_move_ahead,
+                    forecast_horizon=3,
+                    min_training_end_point=min_training_end_point)
+
+                compare_df = test_res["compare_df"]
+                validation_num = test_res["validation_num"]
+                assert round(validation_num) == num_tests
+
+                err = calc_pred_err(compare_df["y_true"], compare_df["y_hat"])
+                enum = EvaluationMetricEnum.Correlation
+                r2 = err[enum.get_metric_name()]
+                enum = EvaluationMetricEnum.MeanAbsolutePercentError
+                mape = err[enum.get_metric_name()]
+                err_dict[f"{data_label}_{fit_algorithm}"] = (round(r2, 2), round(mape, 2))
+            return None
+
+        err_dict = {}
+        algos = ["ridge", "elastic_net"]
+
+        for data_label in df_dict.keys():
+            for fit_algorithm in algos:
+                cross_validate_one_model(
+                    data_label,
+                    fit_algorithm,
+                    changepoints_dict)
+
+        return err_dict
+
+    # The case without changepoints
+    err_dict = cross_validate_all_models(
+        changepoints_dict=None)
+
+    assert err_dict == {
+        "daily_pt_ridge": (0.86, 2.97),
+        "daily_pt_elastic_net": (0.89, 2.8),
+        "daily_bk_ridge": (0.74, 25.68),
+        "daily_bk_elastic_net": (0.75, 25.94),
+        "sim_ridge": (0.93, 0.8),
+        "sim_elastic_net": (0.94, 0.85)}
+
+    # The case with change points
+    changepoints_dict0 = {
+        "method": "auto",
+        "yearly_seasonality_order": 15,
+        "resample_freq": "2D",
+        "actual_changepoint_min_distance": "50D",
+        "potential_changepoint_distance": "10D",
+        "no_changepoint_proportion_from_end": 0.1}
+    err_dict_cp = cross_validate_all_models(
+        changepoints_dict=changepoints_dict0)
+
+    assert err_dict_cp == {
+        "daily_pt_ridge": (0.82, 3.36),
+        "daily_pt_elastic_net": (0.89, 2.8),
+        "daily_bk_ridge": (0.74, 25.7),
+        "daily_bk_elastic_net": (0.75, 25.94),
+        "sim_ridge": (0.93, 0.8),
+        "sim_elastic_net": (0.94, 0.85)}
 
 
 def test_predict_silverkite_with_regressors():
@@ -3093,7 +3370,7 @@ def test_predict_silverkite_compare_various_ways():
 
     err = calc_pred_err(test_df[VALUE_COL], fut_df_with_ar[VALUE_COL])
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert err[enum.get_metric_name()] == pytest.approx(85.896, rel=1e-2)
+    assert err[enum.get_metric_name()] == pytest.approx(113.482, rel=1e-2)
 
     err = calc_pred_err(test_df[VALUE_COL], fut_df_no_ar[VALUE_COL])
     enum = EvaluationMetricEnum.RootMeanSquaredError
@@ -3234,9 +3511,9 @@ def test_forecast_silverkite_simulator_regressor():
     assert sim_df[VALUE_COL].dtype == "float64"
     err = calc_pred_err(test_df[VALUE_COL], sim_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
-    assert round(err[enum.get_metric_name()], 2) == 0.56
+    assert round(err[enum.get_metric_name()], 2) == 0.45
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert round(err[enum.get_metric_name()], 2) == 2.83
+    assert round(err[enum.get_metric_name()], 2) == 3.65
 
     # predict via sim
     np.random.seed(123)
@@ -3257,9 +3534,9 @@ def test_forecast_silverkite_simulator_regressor():
     assert sim_df[VALUE_COL].dtype == "float64"
     err = calc_pred_err(test_df[VALUE_COL], fut_df[VALUE_COL])
     enum = EvaluationMetricEnum.Correlation
-    assert round(err[enum.get_metric_name()], 2) == 0.65
+    assert round(err[enum.get_metric_name()], 2) == 0.60
     enum = EvaluationMetricEnum.RootMeanSquaredError
-    assert round(err[enum.get_metric_name()], 2) == 2.35
+    assert round(err[enum.get_metric_name()], 2) == 2.51
 
     """
     plt_comparison_forecast_vs_observed(
@@ -3310,7 +3587,8 @@ def test_forecast_silverkite_with_holidays_hourly():
             "seas_names": ["daily", "weekly", None]}),
         extra_pred_cols=["ct_sqrt", "dow_hr", f"events_US*{fourier_col1}",
                          f"events_US*{fourier_col2}",
-                         f"events_US*{fourier_col3}"],
+                         f"events_US*{fourier_col3}",
+                         IS_EVENT_COL, IS_EVENT_EXACT_COL, IS_EVENT_ADJACENT_COL],
         daily_event_df_dict=event_df_dict)
 
     fut_df = silverkite.predict_n_no_sim(
@@ -3329,6 +3607,19 @@ def test_forecast_silverkite_with_holidays_hourly():
         test_df=test_df,
         file_name=None)
     """
+
+    # Checks that event indicators are in the feature matrix
+    assert set(
+        [IS_EVENT_COL, IS_EVENT_EXACT_COL, IS_EVENT_ADJACENT_COL]
+    ).issubset(set(trained_model["x_mat"].columns))
+    # Checks that event indicators have correct values
+    num_is_event = trained_model["x_mat"][IS_EVENT_COL].sum()
+    num_is_event_exact = trained_model["x_mat"][IS_EVENT_EXACT_COL].sum()
+    num_is_event_adjacent = trained_model["x_mat"][IS_EVENT_ADJACENT_COL].sum()
+    assert num_is_event == num_is_event_exact
+    assert num_is_event_exact > 0
+    assert num_is_event_adjacent == 0
+    assert num_is_event == num_is_event_exact + num_is_event_adjacent
 
 
 def test_forecast_silverkite_with_holidays_effect():
@@ -3357,8 +3648,8 @@ def test_forecast_silverkite_with_holidays_effect():
         holidays_to_model_separately=holidays_to_model_separately,
         year_start=2015,
         year_end=2025,
-        pre_num=0,
-        post_num=0)
+        pre_num=1,
+        post_num=1)
 
     # constant event effect at daily level
     event_cols = [f"Q('events_{key}')" for key in event_df_dict.keys()]
@@ -3369,7 +3660,8 @@ def test_forecast_silverkite_with_holidays_effect():
         fs_name="tod",
         fs_order=3,
         fs_seas_name="daily")
-    extra_pred_cols = ["ct_sqrt", "dow_hr"] + event_cols + interaction_cols
+    extra_pred_cols = ["ct_sqrt", "dow_hr"] + event_cols + interaction_cols + \
+                      [IS_EVENT_COL, IS_EVENT_EXACT_COL, IS_EVENT_ADJACENT_COL, f"{IS_EVENT_COL}:is_weekend"]
     silverkite = SilverkiteForecast()
     trained_model = silverkite.forecast(
         df=train_df,
@@ -3401,6 +3693,39 @@ def test_forecast_silverkite_with_holidays_effect():
         test_df=test_df,
         file_name=None)
     """
+
+    # Checks that event indicators are in the feature matrix
+    assert set(
+        [IS_EVENT_COL, IS_EVENT_EXACT_COL, IS_EVENT_ADJACENT_COL, f"{IS_EVENT_COL}:is_weekend[T.True]"]
+    ).issubset(set(trained_model["x_mat"].columns))
+    # Checks that event indicators have correct values
+    num_is_event = trained_model["x_mat"][IS_EVENT_COL].sum()
+    num_is_event_exact = trained_model["x_mat"][IS_EVENT_EXACT_COL].sum()
+    num_is_event_adjacent = trained_model["x_mat"][IS_EVENT_ADJACENT_COL].sum()
+    assert num_is_event > num_is_event_exact  # is_event is a union of is_event_exact and is_event_adjacent
+    assert num_is_event_exact > 0
+    assert num_is_event_adjacent > 0
+    assert num_is_event <= num_is_event_exact + num_is_event_adjacent  # event and its neighboring days may overlap
+
+    # Event indicators should not be included if not specified
+    extra_pred_cols = ["ct_sqrt", "dow_hr"] + event_cols + interaction_cols
+    silverkite = SilverkiteForecast()
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col="ts",
+        value_col=VALUE_COL,
+        train_test_thresh=datetime.datetime(2019, 6, 1),
+        origin_for_time_vars=2018,
+        fs_components_df=pd.DataFrame({
+            "name": ["tod", "tow", "conti_year"],
+            "period": [24.0, 7.0, 1.0],
+            "order": [3, 0, 5],
+            "seas_names": ["daily", "weekly", None]}),
+        extra_pred_cols=extra_pred_cols,
+        daily_event_df_dict=event_df_dict)
+    assert set(
+        [IS_EVENT_COL, IS_EVENT_EXACT_COL, IS_EVENT_ADJACENT_COL]
+    ).intersection(set(trained_model["x_mat"].columns)) == set()
 
 
 def test_forecast_silverkite_train_test_thresh_error(hourly_data):
@@ -3477,7 +3802,7 @@ def test_forecast_silverkite_with_adjust_anomalous():
                 "start_time_col": START_TIME_COL,
                 "end_time_col": END_TIME_COL,
                 "adjustment_delta_col": ADJUSTMENT_DELTA_COL,
-                "filter_by_dict": {"platform": "MOBILE"}}})
+                "filter_by_dict": {"dimension1": "level_1"}}})
 
     adj_df_info = trained_model["adjust_anomalous_info"]
 
@@ -5016,3 +5341,168 @@ def test_past_df_sufficient_warning_for_monthly_data(hourly_data):
             "DEBUG",
             "``past_df`` is not sufficient, imputation is performed when creating autoregression terms."
         ) not in log_capture.actual()
+
+
+def test_min_admissible_value_with_simulations():
+    """Tests ``min_admissible_value`` and ``max_admissible_value`` in `simulate` to check its basic functionality;
+    Then tests in `predict_via_sim` to check if the final results are all bounded.
+    """
+
+    # Generates data and model
+    train_len = 500
+    test_len = 10
+    data_len = train_len + test_len
+    np.random.seed(179)
+    ts = pd.date_range(start="1/1/2018", periods=data_len, freq="D")
+    z = np.random.randint(low=-50, high=50, size=data_len)
+    y = [0]*data_len
+    y[0] = 600
+    y[1] = 600
+    y[2] = 600
+    y[3] = 600
+    y[4] = 600
+
+    # Explicitly defines auto-regressive structure
+    for i in range(4, data_len):
+        y[i] = round(0.5*y[i-1] + 0.5*y[i-2] + z[i])
+
+    df = pd.DataFrame({
+        "ts": ts,
+        "y": y})
+    df["y"] = df["y"].map(float)
+    df["ts"] = pd.to_datetime(df["ts"])
+
+    train_df = df[:(train_len)].reset_index(drop=True)
+    test_df = df[(train_len):].reset_index(drop=True)
+    fut_df = test_df.copy()
+    fut_df[VALUE_COL] = None
+
+    silverkite = SilverkiteForecast()
+    autoreg_dict = {
+        "lag_dict": {"orders": list(range(1, 3))},
+        "agg_lag_dict": None,
+        "series_na_fill_func": lambda s: s.bfill().ffill()}
+
+    trained_model = silverkite.forecast(
+        df=train_df,
+        time_col=TIME_COL,
+        value_col=VALUE_COL,
+        train_test_thresh=None,
+        origin_for_time_vars=None,
+        fs_components_df=None,
+        extra_pred_cols=None,
+        drop_pred_cols=["ct1"],
+        autoreg_dict=autoreg_dict,
+        uncertainty_dict={
+            "uncertainty_method": "simple_conditional_residuals",
+            "params": {
+                "conditional_cols": ["dow"],
+                "quantiles": [0.025, 0.975],
+                "quantile_estimation_method": "normal_fit",
+                "sample_size_thresh": 20,
+                "small_sample_size_method": "std_quantiles",
+                "small_sample_size_quantile": 0.98}})
+
+    past_df = train_df[[TIME_COL, VALUE_COL]].copy()
+
+    # Tests with function ``simulate`` to check the expected functionality with ``min_admissible_value``
+    trained_model["min_admissible_value"] = None
+    trained_model["max_admissible_value"] = None
+
+    np.random.seed(21)
+    sim_df = silverkite.simulate(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        include_err=True)["sim_df"]
+    # Asserts the predicted values when ``min_admissible_value`` and ``max_admissible_value`` are set to None
+    assert np.array_equal(np.round(sim_df[VALUE_COL]), [-10, -21, 18, -34, 18, -51, -16, -37, 10, -12])
+
+    # Tests with ``min_admissible_value``
+    trained_model["min_admissible_value"] = -30
+    trained_model["max_admissible_value"] = None
+
+    np.random.seed(21)
+    sim_df = silverkite.simulate(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        include_err=True)["sim_df"]
+    # Values below are clipped down to -30 as a result.
+    assert np.array_equal(np.round(sim_df[VALUE_COL]), [-10, -21, 18, -30, 20, -30, -5, -22, 23, 2])
+
+    # Tests with ``max_admissible_value``
+    trained_model["min_admissible_value"] = None
+    trained_model["max_admissible_value"] = 0
+
+    np.random.seed(21)
+    sim_df = silverkite.simulate(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        include_err=True)["sim_df"]
+
+    # Values below are clipped up to 0 as a result.
+    assert np.array_equal(np.round(sim_df[VALUE_COL]), [-10, -21, 0, -42, 0, -63, -31, -51, -4, -26])
+
+    # Tests with the final predictions after multiple simulations (with ``predict_via_sim``)
+    trained_model["min_admissible_value"] = None
+    trained_model["max_admissible_value"] = None
+
+    np.random.seed(10)
+    pred_df = silverkite.predict_via_sim(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        simulation_num=5)["fut_df"]
+    assert np.array_equal(np.round(pred_df[VALUE_COL]), [-8, -21, -28, -8, -1, 6, 2, 17, 29, 17])
+
+    # Re-sets the ``min_admissible_value`` and ``max_admissible_value`` in such a way that some of the above predictions
+    # are outside the interval ``(min_admissible_value, max_admissible_value)``
+    trained_model["min_admissible_value"] = -15
+    trained_model["max_admissible_value"] = 10
+
+    # Makes a new prediction with ``min_admissible_value`` and ``max_admissible_value``
+    np.random.seed(10)
+    pred_df = silverkite.predict_via_sim(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None,
+        simulation_num=5)["fut_df"]
+
+    # Predicted values are all between ``min_admissible_value`` and ``max_admissible_value``. Notice that the first prediction
+    # -8 changed to -1 though it was within the boundary. The reason was that the predicted values from ``predict_via_sim`` took
+    # an average of simulated predictions, and these simulated values were clipped (in ``simulate``).
+    assert np.array_equal(np.round(pred_df[VALUE_COL]), [-1, -5, -11, -2, 4, 0, 0, 4, 8, -2])
+
+    # Tests with ``predict_via_sim_fast`` (where ``include_err=False``) to verify that without error added, the forecasted
+    # value should not change until it exceeds the boundary for the first time.
+    trained_model["min_admissible_value"] = None
+    trained_model["max_admissible_value"] = None
+
+    pred_df = silverkite.predict_via_sim_fast(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None)["fut_df"]
+    assert np.array_equal(np.round(pred_df[VALUE_COL]), [-9, -18, -9, -10, -6, -5, -2, -1, 2, 4])
+
+    # Re-sets the ``min_admissible_value`` and ``max_admissible_value`` in such a way that some of the above predictions
+    # are outside the interval ``(min_admissible_value, max_admissible_value)``
+    trained_model["min_admissible_value"] = -18
+    trained_model["max_admissible_value"] = -5
+
+    # Makes a new prediction with ``min_admissible_value`` and ``max_admissible_value``
+    pred_df = silverkite.predict_via_sim_fast(
+        fut_df=fut_df,
+        trained_model=trained_model,
+        past_df=past_df,
+        new_external_regressor_df=None)["fut_df"]
+
+    # As expected, values only start to change when they first exceed the boundary
+    assert np.array_equal(np.round(pred_df[VALUE_COL]), [-9, -18, -9, -10, -6, -5, -5, -5, -5, -5])

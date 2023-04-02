@@ -535,9 +535,8 @@ class PartialRegularizeRegressionCV:
             lasso_input = self._get_lasso_input(x_train, y_train, l2_alpha)
             if l1_alphas is not None:
                 # Fits all `l1_alphas`.
-                path = LassoCV().path(
+                path = LassoCV(fit_intercept=False).path(
                     alphas=l1_alphas,
-                    fit_intercept=False,
                     X=lasso_input["x_lasso"],
                     y=lasso_input["y_lasso"]
                 )

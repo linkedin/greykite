@@ -603,6 +603,50 @@ def prediction_band_width(observed, lower, upper):
     return 100.0 * np.mean(np.abs(upper - lower) / observed) if len(observed) > 0 and observed.min() > 0 else None
 
 
+def mean_interval_score(observed, lower, upper, coverage):
+    """Calculates the mean interval score.
+    If an observed value falls within the interval, the score is simply the width of the interval.
+    If an observed value falls outside the interval, the score is the width of the interval plus an error term
+    proportional to distance between the actual and its closest interval boundary.
+    The proportionality constant is 2.0 / (1.0 - `coverage`).
+    See `Strictly Proper Scoring Rules, Prediction, and Estimation, Tilmann Gneiting and Adrian E. Raftery, 2007,
+    Journal of the American Statistical Association, Volume 102, 2007 - Issue 477`.
+
+    Parameters
+    ----------
+    observed: `pandas.Series` or `numpy.array`
+        Numeric, observed values.
+    lower: `pandas.Series` or `numpy.array`
+        Numeric, lower bound.
+    upper: `pandas.Series` or `numpy.array`
+        Numeric, upper bound.
+    coverage: `float`
+        Intended coverage of the prediction bands (0.0 to 1.0)
+
+    Returns
+    -------
+    mean_interval_score: `float`
+        The mean interval score.
+    """
+    observed, lower, upper = valid_elements_for_evaluation(
+        reference_arrays=[observed],
+        arrays=[lower, upper],
+        reference_array_names="y_true",
+        drop_leading_only=False,
+        keep_inf=False)
+    lower, upper, observed = valid_elements_for_evaluation(
+        reference_arrays=[lower, upper],
+        arrays=[observed],
+        reference_array_names="lower/upper bounds",
+        drop_leading_only=False,
+        keep_inf=True)
+    interval_width = upper - lower
+    error_lower = np.where(observed < lower, 2.0 * (lower - observed) / (1.0 - coverage), 0.0)
+    error_upper = np.where(observed > upper, 2.0 * (observed - upper) / (1.0 - coverage), 0.0)
+    interval_score = interval_width + error_lower + error_upper
+    return np.mean(interval_score)
+
+
 def calc_pred_coverage(observed, predicted, lower, upper, coverage):
     """Calculates the prediction coverages:
     prediction band width, prediction band coverage etc.
@@ -629,21 +673,27 @@ def calc_pred_coverage(observed, predicted, lower, upper, coverage):
     metrics = {}
 
     if len(observed) > 0:
-        # relative size of prediction bands vs actual, as a percent
+        # Relative size of prediction bands vs actual, as a percent.
         enum = ValidationMetricEnum.BAND_WIDTH
         metric_func = enum.get_metric_func()
         metrics.update({PREDICTION_BAND_WIDTH: metric_func(observed, lower, upper)})
 
         enum = ValidationMetricEnum.BAND_COVERAGE
         metric_func = enum.get_metric_func()
-        # fraction of observations within the bands
+        # Fraction of observations within the bands.
         metrics.update({PREDICTION_BAND_COVERAGE: metric_func(observed, lower, upper)})
-        # fraction of observations within the lower band
+        # Fraction of observations within the lower band.
         metrics.update({LOWER_BAND_COVERAGE: metric_func(observed, lower, predicted)})
-        # fraction of observations within the upper band
+        # Fraction of observations within the upper band.
         metrics.update({UPPER_BAND_COVERAGE: metric_func(observed, predicted, upper)})
-        # difference between actual and intended coverage
+        # Difference between actual and intended coverage.
         metrics.update({COVERAGE_VS_INTENDED_DIFF: (metrics[PREDICTION_BAND_COVERAGE] - coverage)})
+
+        # Mean interval score.
+        enum = ValidationMetricEnum.MEAN_INTERVAL_SCORE
+        metric_func = enum.get_metric_func()
+        metric_name = enum.get_metric_name()
+        metrics.update({metric_name: (metric_func(observed, lower, upper, coverage))})
     return metrics
 
 
@@ -936,27 +986,35 @@ class EvaluationMetricEnum(Enum):
     """Fraction of forecasted values that deviate more than 5% from the actual"""
 
     def get_metric_func(self):
-        """Returns the metric function"""
+        """Returns the metric function."""
         return self.value[0]
 
     def get_metric_greater_is_better(self):
-        """Returns the greater_is_better boolean"""
+        """Returns the greater_is_better boolean."""
         return self.value[1]
 
     def get_metric_name(self):
-        """Returns the short name"""
+        """Returns the short name."""
         return self.value[2]
 
 
 class ValidationMetricEnum(Enum):
     """Valid diagnostic metrics.
-    The values tuple is ``(score_func: callable, greater_is_better: boolean)``
+    The values tuple is ``(score_func: callable, greater_is_better: boolean, short_name: str)``
     """
-    BAND_WIDTH = (prediction_band_width, False)
-    BAND_COVERAGE = (fraction_within_bands, True)
+    BAND_WIDTH = (prediction_band_width, False, "band_width")
+    BAND_COVERAGE = (fraction_within_bands, True, "band_coverage")
+    MEAN_INTERVAL_SCORE = (mean_interval_score, False, "MIS")
+    """Mean interval score"""
 
     def get_metric_func(self):
+        """Returns the metric function."""
         return self.value[0]
 
     def get_metric_greater_is_better(self):
+        """Returns the greater_is_better boolean."""
         return self.value[1]
+
+    def get_metric_name(self):
+        """Returns the short name."""
+        return self.value[2]

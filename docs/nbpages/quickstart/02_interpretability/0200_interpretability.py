@@ -15,12 +15,17 @@ The approach to generate these breakdowns consists of two steps:
 
 These breakdowns then can be used to answer questions such as:
 
-- Question 1: How is the forecast value is generated?
+- Question 1: How is the forecast value generated?
 - Question 2: What is driving the change of the forecast as new data comes in?
 
 Forecast components can also help us analyze model behavior and sensitivity.
 This is because while it is not feasible to compare a large set of features across two model
 settings, it can be quite practical and informative to compare a few well-defined components.
+
+This tutorial discusses in detail the usage of ``forecast_breakdown`` and how to estimate forecast
+components using custom component dictionaries. Some of this functionality has been built in estimators
+using the method ``plot_components(...)``.  An example of this usage is in the "Simple Forecast" tutorial
+in the Quick Start.
 """
 
 # required imports
@@ -82,7 +87,7 @@ def prepare_bikesharing_data():
     # This is needed because we are using regressors,
     # and future regressor data must be augmented to ``df``.
     # We mimic that by removal of the values of the response.
-    train_df.at[(len(train_df) - forecast_horizon):len(train_df), value_col] = None
+    train_df.loc[(len(train_df) - forecast_horizon):len(train_df), value_col] = None
 
     print(f"train_df shape: \n {train_df.shape}")
     print(f"test_df shape: \n {test_df.shape}")
@@ -119,7 +124,7 @@ def fit_forecast(
                 "orders_list": [[7, 7*2, 7*3]],
                 "interval_list": [(1, 7), (8, 7*2)]},
             "series_na_fill_func": lambda s: s.bfill().ffill()},
-            "fast_simulation": True
+        "fast_simulation": True
     }
 
     # Changepoints configuration
@@ -253,6 +258,9 @@ print(trained_estimator.summary())
 # If some variables do not satisfy any of the groupings, they will be grouped into "OTHER".
 # The following breakdown dictionary should work for many use cases.
 # However, the users can customize it as needed.
+#
+# Two alternative dictionaries are included in `~greykite.common.constants` in the variables
+# ``DEFAULT_COMPONENTS_REGEX_DICT`` and ``DETAILED_SEASONALITY_COMPONENTS_REGEX_DICT``.
 
 grouping_regex_patterns_dict = {
     "regressors": "regressor_.*",  # regressor effects

@@ -100,7 +100,8 @@ def get_forecast_time_properties(
         Frequency strings can have multiples, e.g. '5H'.
         See https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases
         for a list of frequency aliases.
-        If None, inferred by pd.infer_freq.
+        If None, inferred by
+        `~greykite.common.time_properties.infer_freq`.
         Provide this parameter if ``df`` has missing timepoints.
     date_format : `str` or None, default None
         strftime format to parse time column, eg ``%m/%d/%Y``.

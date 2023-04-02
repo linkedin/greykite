@@ -394,14 +394,16 @@ def generate_anomalous_data(periods=10):
         "ts": ts,
         "y": range(periods),
         "z": range(20, 20+periods)})
+    df["y"] = df["y"].astype(float)
+    df["z"] = df["z"].astype(float)
 
     anomaly_df = pd.DataFrame({
-        METRIC_COL: ["y", "y", "z", "z"],
-        "platform": ["MOBILE", "MOBILE", "DESKTOP", "DESKTOP"],
-        "vertical": ["ads", "sales", "ads", "ads"],
-        START_TIME_COL: ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018"],
-        END_TIME_COL: ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018"],
-        ADJUSTMENT_DELTA_COL: [np.nan, 3., -5., np.nan]})
+        METRIC_COL: ["y", "y", "z", "z", "z"],
+        "dimension1": ["level_1", "level_1", "level_2", "level_2", "level_2"],
+        "dimension2": ["level_1", "level_2", "level_1", "level_1", "level_1"],
+        START_TIME_COL: ["1/1/2018", "1/4/2018", "1/8/2018", "1/10/2018", "1/1/2099"],
+        END_TIME_COL: ["1/2/2018", "1/6/2018", "1/9/2018", "1/10/2018", "1/2/2099"],
+        ADJUSTMENT_DELTA_COL: [np.nan, 3., -5., np.nan, np.nan]})
 
     for col in [START_TIME_COL, END_TIME_COL]:
         anomaly_df[col] = pd.to_datetime(anomaly_df[col])

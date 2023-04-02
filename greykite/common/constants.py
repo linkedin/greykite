@@ -30,76 +30,92 @@ from enum import Enum
 # The time series data is represented in pandas dataframes
 # The default column names for the series are given below
 TIME_COL = "ts"
-"""The default name for the column with the timestamps of the time series"""
+"""The default name for the column with the timestamps of the time series."""
 VALUE_COL = "y"
-"""The default name for the column with the values of the time series"""
+"""The default name for the column with the values of the time series."""
 ACTUAL_COL = "actual"
-"""The column name representing actual (observed) values"""
+"""The column name representing actual (observed) values."""
 PREDICTED_COL = "forecast"
-"""The column name representing the predicted values"""
+"""The column name representing the predicted values."""
 RESIDUAL_COL = "residual"
 """The column name representing the forecast residuals."""
 PREDICTED_LOWER_COL = "forecast_lower"
-"""The column name representing upper bounds of prediction interval"""
+"""The column name representing lower bounds of prediction interval."""
 PREDICTED_UPPER_COL = "forecast_upper"
-"""The column name representing lower bounds of prediction interval"""
+"""The column name representing upper bounds of prediction interval."""
 NULL_PREDICTED_COL = "forecast_null"
-"""The column name representing predicted values from null model"""
+"""The column name representing predicted values from null model."""
 ERR_STD_COL = "err_std"
-"""The column name representing the error standard deviation from models"""
+"""The column name representing the error standard deviation from models."""
 QUANTILE_SUMMARY_COL = "quantile_summary"
-"""The column name representing the quantile summary from models"""
+"""The column name representing the quantile summary from models."""
 
-# Evaluation metrics corresponding to `~greykite.common.evaluation`
+# Evaluation metrics corresponding to `~greykite.common.evaluation`.
 R2_null_model_score = "R2_null_model_score"
 """Evaluation metric. Improvement in the specified loss function compared to the predictions of a null model."""
 FRACTION_OUTSIDE_TOLERANCE = "Outside Tolerance (fraction)"
-"""Evaluation metric. The fraction of predictions outside the specified tolerance level"""
+"""Evaluation metric. The fraction of predictions outside the specified tolerance level."""
 PREDICTION_BAND_WIDTH = "Prediction Band Width (%)"
-"""Evaluation metric. Relative size of prediction bands vs actual, as a percent"""
+"""Evaluation metric. Relative size of prediction bands vs actual, as a percent."""
 PREDICTION_BAND_COVERAGE = "Prediction Band Coverage (fraction)"
-"""Evaluation metric. Fraction of observations within the bands"""
+"""Evaluation metric. Fraction of observations within the bands."""
 LOWER_BAND_COVERAGE = "Coverage: Lower Band"
-"""Evaluation metric. Fraction of observations within the lower band"""
+"""Evaluation metric. Fraction of observations within the lower band."""
 UPPER_BAND_COVERAGE = "Coverage: Upper Band"
-"""Evaluation metric. Fraction of observations within the upper band"""
+"""Evaluation metric. Fraction of observations within the upper band."""
 COVERAGE_VS_INTENDED_DIFF = "Coverage Diff: Actual_Coverage - Intended_Coverage"
-"""Evaluation metric. Difference between actual and intended coverage"""
+"""Evaluation metric. Difference between actual and intended coverage."""
 
-# Column names used by `~greykite.common.features.timeseries_features`
+# Column names used by `~greykite.common.features.timeseries_features`.
 EVENT_DF_DATE_COL = "date"
-"""Name of date column for the DataFrames passed to silverkite `custom_daily_event_df_dict`"""
+"""Name of date column for the DataFrames passed to silverkite `custom_daily_event_df_dict`."""
 EVENT_DF_LABEL_COL = "event_name"
-"""Name of event column for the DataFrames passed to silverkite `custom_daily_event_df_dict`"""
+"""Name of event column for the DataFrames passed to silverkite `custom_daily_event_df_dict`."""
 EVENT_PREFIX = "events"
 """Prefix for naming event features."""
 EVENT_DEFAULT = ""
 """Label used for days without an event."""
 EVENT_INDICATOR = "event"
-"""Binary indicatory for an event"""
+"""Binary indicator for an event."""
+IS_EVENT_COL = "is_event"
+"""Indicator column in feature matrix, 1 if the day is an event or its neighboring days."""
+IS_EVENT_ADJACENT_COL = "is_event_adjacent"
+"""Indicator column in feature matrix, 1 if the day is adjacent to an event."""
+IS_EVENT_EXACT_COL = "is_event_exact"
+"""Indicator column in feature matrix, 1 if the day is an event but not its neighboring days."""
+EVENT_SHIFTED_SUFFIX_BEFORE = "_before"
+"""The suffix for neighboring events before the events added to the event names."""
+EVENT_SHIFTED_SUFFIX_AFTER = "_after"
+"""The suffix for neighboring events after the events added to the event names."""
 CHANGEPOINT_COL_PREFIX = "changepoint"
 """Prefix for naming changepoint features."""
 CHANGEPOINT_COL_PREFIX_SHORT = "cp"
 """Short prefix for naming changepoint features."""
 
 # Column names used by
-# `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`
+# `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`.
 START_TIME_COL = "start_time"
-"""Start timestamp column name"""
+"""Default column name for anomaly start time in the anomaly dataframe."""
 END_TIME_COL = "end_time"
-"""Standard end timestamp column"""
+"""Default column name for anomaly end time in the anomaly dataframe."""
 ADJUSTMENT_DELTA_COL = "adjustment_delta"
-"""Adjustment column"""
+"""Default column name for anomaly adjustment in the anomaly dataframe."""
 METRIC_COL = "metric"
-"""Column to denote metric of interest"""
+"""Column to denote metric of interest."""
 DIMENSION_COL = "dimension"
-"""Dimension column"""
+"""Dimension column."""
 ANOMALY_COL = "is_anomaly"
-"""The default name for the column with the anomaly labels of the time series"""
+"""Default column name for anomaly labels (boolean) in the time series."""
+PREDICTED_ANOMALY_COL = "is_anomaly_predicted"
+"""Default column name for predicted anomaly labels (boolean) in the time series."""
 
-
-# Constants related to
-# `~greykite.common.features.timeseries_features.build_time_features_df`.
+# Column names used in anomaly dataframe during anomaly detection.
+SEVERITY_SCORE_COL = "severity_score"
+"""Default column name for anomaly severity score in the anomaly dataframe."""
+USER_REVIEWED_COL = "is_user_reviewed"
+"""Default column name for whether an anomaly is reviewed by the user (boolean) in the anomaly dataframe."""
+NEW_PATTERN_ANOMALY_COL = "new_pattern_anomaly"
+"""Default column name for whether an anomaly is a new pattern (boolean) in the anomaly dataframe."""
 
 
 class TimeFeaturesEnum(Enum):
@@ -158,6 +174,8 @@ class TimeFeaturesEnum(Enum):
     ct3 = "ct3"
     ct_sqrt = "ct_sqrt"
     ct_root3 = "ct_root3"
+    us_dst = "us_dst"
+    europe_dst = "europe_dst"
 
 
 class GrowthColEnum(Enum):
@@ -177,9 +195,9 @@ class GrowthColEnum(Enum):
 # Column names used by
 # `~greykite.common.features.timeseries_lags`
 LAG_INFIX = "_lag"
-"""Infix for lagged feature names"""
+"""Infix for lagged feature names."""
 AGG_LAG_INFIX = "avglag"
-"""Infix for aggregated lag feature names"""
+"""Infix for aggregated lag feature names."""
 
 # Patterns for categorizing timeseries features
 TREND_REGEX = f"{CHANGEPOINT_COL_PREFIX}\\d|ct\\d|ct_|{CHANGEPOINT_COL_PREFIX_SHORT}\\d"
@@ -193,3 +211,25 @@ LAG_REGEX = f"{LAG_INFIX}\\d|_{AGG_LAG_INFIX}_\\d"
 
 LOGGER_NAME = "Greykite"
 """Name used by the logger."""
+
+# Default regex dictionary for component plots
+DEFAULT_COMPONENTS_REGEX_DICT = {
+    "Regressors": ".*regressor.|regressor",
+    "Autoregressive": ".*_lag.|.*avglag.",
+    "Event": f".*{EVENT_REGEX}.",
+    "Seasonality": f".*tod.|.*tow.|.*dow.|.*is_weekend.|.*tom.|.*month.|.*toq.|.*quarter.|.*toy.|.*year.|.*yearly",
+    "Trend": TREND_REGEX,
+}
+
+# Detailed seasonality regex dictionary for component plots
+DETAILED_SEASONALITY_COMPONENTS_REGEX_DICT = {
+    "Regressors": ".*regressor.|regressor",
+    "Autoregressive": ".*_lag.|.*avglag.",
+    "Event": f".*{EVENT_REGEX}.",
+    "Daily": f".*tod.",
+    "Weekly": f".*tow.|.*dow.|.*is_weekend.",
+    "Monthly": f".*tom.|.*month.",
+    "Quarterly": f".*toq.|.*quarter.",
+    "Yearly": f".*toy.|.*year.|.*yearly",
+    "Trend": TREND_REGEX,
+}

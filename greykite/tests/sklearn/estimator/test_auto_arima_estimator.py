@@ -199,7 +199,7 @@ def test_score_function(daily_data):
     time_col = "ts"
     model.fit(train_df, time_col=time_col, value_col=value_col)
     score = model.score(daily_data["test_df"], daily_data["test_df"][value_col])
-    assert score < 8.0
+    assert score < 9.0
 
 
 def test_summary(daily_data):

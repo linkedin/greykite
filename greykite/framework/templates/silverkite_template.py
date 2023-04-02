@@ -44,7 +44,6 @@ from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
 from greykite.framework.templates.base_template import BaseTemplate
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
-from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.sklearn.estimator.silverkite_estimator import SilverkiteEstimator
 
 
@@ -148,6 +147,8 @@ def apply_default_model_components(
 
     default_events = {
         "daily_event_df_dict": [None],
+        "daily_event_neighbor_impact": [None],
+        "daily_event_shifted_effect": [None]
     }
     model_components.events = update_dictionary(
         default_events,
@@ -206,7 +207,6 @@ def apply_default_model_components(
 
     default_custom = {
         "silverkite": [SilverkiteForecast()],  # NB: sklearn creates a copy in grid search
-        "silverkite_diagnostics": [SilverkiteDiagnostics()],
         # The same origin for every split, based on start year of full dataset.
         # To use first date of each training split, set to `None` in model_components.
         "origin_for_time_vars": [origin_for_time_vars],
@@ -220,7 +220,8 @@ def apply_default_model_components(
         "min_admissible_value": [None],
         "max_admissible_value": [None],
         "regression_weight_col": [None],
-        "normalize_method": [None]
+        "normalize_method": [None],
+        "remove_intercept": [False]
     }
     model_components.custom = update_dictionary(
         default_custom,
@@ -374,7 +375,7 @@ class SilverkiteTemplate(BaseTemplate):
                 parameters in `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
 
                 Allowed keys:
-                    ``"silverkite"``, ``"silverkite_diagnostics"``,
+                    ``"silverkite"``,
                     ``"origin_for_time_vars"``, ``"extra_pred_cols"``,
                     ``"drop_pred_cols"``, ``"explicit_pred_cols"``,
                     ``"fit_algorithm_dict"``, ``"min_admissible_value"``,
@@ -593,7 +594,6 @@ class SilverkiteTemplate(BaseTemplate):
         # returns a single set of parameters for grid search
         hyperparameter_grid = {
             "estimator__silverkite": self.config.model_components_param.custom["silverkite"],
-            "estimator__silverkite_diagnostics": self.config.model_components_param.custom["silverkite_diagnostics"],
             "estimator__origin_for_time_vars": self.config.model_components_param.custom["origin_for_time_vars"],
             "estimator__extra_pred_cols": self.config.model_components_param.custom["extra_pred_cols"],
             "estimator__drop_pred_cols": self.config.model_components_param.custom["drop_pred_cols"],
@@ -602,6 +602,8 @@ class SilverkiteTemplate(BaseTemplate):
             "estimator__training_fraction": [None],
             "estimator__fit_algorithm_dict": self.config.model_components_param.custom["fit_algorithm_dict"],
             "estimator__daily_event_df_dict": self.config.model_components_param.events["daily_event_df_dict"],
+            "estimator__daily_event_neighbor_impact": self.config.model_components_param.events["daily_event_neighbor_impact"],
+            "estimator__daily_event_shifted_effect": self.config.model_components_param.events["daily_event_shifted_effect"],
             "estimator__fs_components_df": self.config.model_components_param.seasonality["fs_components_df"],
             "estimator__autoreg_dict": self.config.model_components_param.autoregression["autoreg_dict"],
             "estimator__simulation_num": self.config.model_components_param.autoregression["simulation_num"],
@@ -614,6 +616,7 @@ class SilverkiteTemplate(BaseTemplate):
             "estimator__max_admissible_value": self.config.model_components_param.custom["max_admissible_value"],
             "estimator__normalize_method": self.config.model_components_param.custom["normalize_method"],
             "estimator__regression_weight_col": self.config.model_components_param.custom["regression_weight_col"],
+            "estimator__remove_intercept": self.config.model_components_param.custom["remove_intercept"],
             "estimator__uncertainty_dict": self.config.model_components_param.uncertainty["uncertainty_dict"],
         }
 
@@ -630,7 +633,10 @@ class SilverkiteTemplate(BaseTemplate):
         hyperparameter_grid = dictionaries_values_to_lists(
             hyperparameter_grid,
             hyperparameters_list_type={
-                "estimator__extra_pred_cols": [None]}
+                "estimator__extra_pred_cols": [None],
+                "estimator__drop_pred_cols": [None],
+                "estimator__explicit_pred_cols": [None]
+            }
         )
         return hyperparameter_grid
 

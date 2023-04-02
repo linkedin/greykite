@@ -197,9 +197,10 @@ def test_make_future_dataframe():
     })
     with pytest.warns(UserWarning) as record:
         ts.load_data(df, TIME_COL, VALUE_COL, regressor_cols=None)
-        assert f"{ts.original_value_col} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
+        assert f"{ts.original_value_col} column of the provided time series contains " \
+               f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a non-null value " \
+               f"({ts.train_end_date})." in record[0].message.args[0]
 
     # test regressor_cols from load_data
     assert ts.regressor_cols == []
@@ -272,7 +273,7 @@ def test_make_future_dataframe_with_regressor():
 
     with pytest.warns(Warning) as record:
         ts.load_data(df, TIME_COL, VALUE_COL, regressor_cols=regressor_cols)
-        assert "y column of the provided TimeSeries contains null " \
+        assert "y column of the provided time series contains null " \
                "values at the end" in record[0].message.args[0]
 
     # test regressor_cols from load_data
@@ -373,163 +374,164 @@ def test_train_end_date_without_regressors():
 
     # train_end_date later than last date in df
     with pytest.warns(UserWarning) as record:
-        train_end_date = dt(2018, 1, 1, 8, 0, 0)
-        ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
-        assert ts.train_end_date == dt(2018, 1, 1, 5, 0, 0)
-        result = ts.make_future_dataframe(
-            periods=10,
-            include_history=True)
-        expected = pd.DataFrame({
-            TIME_COL: pd.date_range(
-                start=dt(2018, 1, 1, 3, 0, 0),
-                periods=13,
-                freq="H"),
-            VALUE_COL: np.concatenate((ts.fit_y, np.repeat(np.nan, 10)))
-        })
-        expected.index = expected[TIME_COL]
-        expected.index.name = None
-        assert_frame_equal(result, expected)
+        for train_end_date in ["2018/1/1/7"]:
+            date_format = "%Y/%m/%d/%H"
+            ts.load_data(
+                df,
+                TIME_COL,
+                VALUE_COL,
+                train_end_date=train_end_date,
+                date_format=date_format
+            )
+            assert f"{VALUE_COL} column of the provided time series contains trailing NAs." in record[0].message.args[0]
+            assert ts.train_end_date == dt(2018, 1, 1, 7, 0, 0)
+            result = ts.make_future_dataframe(
+                periods=10,
+                include_history=True)
+            expected = pd.DataFrame({
+                TIME_COL: pd.date_range(
+                    start=dt(2018, 1, 1, 3, 0, 0),
+                    periods=15,
+                    freq="H"),
+                VALUE_COL: np.concatenate((ts.fit_y, np.repeat(np.nan, 10)))
+            })
+            expected.index = expected[TIME_COL]
+            expected.index.name = None
+            assert_frame_equal(result, expected)
 
 
 def test_train_end_date_with_regressors():
     """Tests make_future_dataframe and train_end_date with regressors"""
-    data = generate_df_with_reg_for_tests(
-        freq="D",
-        periods=30,
-        train_start_date=datetime.datetime(2018, 1, 1),
-        remove_extra_cols=True,
-        mask_test_actuals=True)
-    regressor_cols = ["regressor1", "regressor2", "regressor_categ"]
-    keep_cols = [TIME_COL, VALUE_COL] + regressor_cols
-    df = data["df"][keep_cols].copy()
-    # Setting NaN values at the end
-    df.loc[df.tail(2).index, "regressor1"] = np.nan
-    df.loc[df.tail(4).index, "regressor2"] = np.nan
-    df.loc[df.tail(6).index, "regressor_categ"] = np.nan
-    df.loc[df.tail(8).index, VALUE_COL] = np.nan
+    for train_start_date in ["2018-01-01", datetime.datetime(2018, 1, 1)]:
+        data = generate_df_with_reg_for_tests(
+            freq="D",
+            periods=30,
+            train_start_date=train_start_date,
+            remove_extra_cols=True,
+            mask_test_actuals=True)
+        regressor_cols = ["regressor1", "regressor2", "regressor_categ"]
+        keep_cols = [TIME_COL, VALUE_COL] + regressor_cols
+        df = data["df"][keep_cols].copy()
+        # Setting NaN values at the end
+        df.loc[df.tail(2).index, "regressor1"] = np.nan
+        df.loc[df.tail(4).index, "regressor2"] = np.nan
+        df.loc[df.tail(6).index, "regressor_categ"] = np.nan
+        df.loc[df.tail(8).index, VALUE_COL] = np.nan
 
-    # default train_end_date, default regressor_cols
-    with pytest.warns(UserWarning) as record:
-        ts = UnivariateTimeSeries()
-        ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=None, regressor_cols=None)
-        assert f"{ts.original_value_col} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
-        assert ts.train_end_date == dt(2018, 1, 22)
-        assert ts.fit_df.shape == (22, 2)
-        assert ts.last_date_for_val == df[df[VALUE_COL].notnull()][TIME_COL].max()
-        assert ts.last_date_for_reg is None
-        result = ts.make_future_dataframe(
-            periods=10,
-            include_history=True)
-        expected = pd.DataFrame({
-            TIME_COL: pd.date_range(
-                start=dt(2018, 1, 1),
-                periods=32,
-                freq="D"),
-            VALUE_COL: np.concatenate([ts.fit_y, np.repeat(np.nan, 10)])
-        })
-        expected.index = expected[TIME_COL]
-        expected.index.name = None
-        assert_frame_equal(result, expected)
+        # default train_end_date, default regressor_cols
+        with pytest.warns(UserWarning) as record:
+            ts = UnivariateTimeSeries()
+            ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=None, regressor_cols=None)
+            assert f"{ts.original_value_col} column of the provided time series contains " \
+                   f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+                   f"Setting `train_end_date` to the last timestamp with a non-null value " \
+                   f"({ts.train_end_date})." in record[0].message.args[0]
+            assert ts.train_end_date == dt(2018, 1, 22)
+            assert ts.fit_df.shape == (22, 2)
+            assert ts.last_date_for_val == df[df[VALUE_COL].notnull()][TIME_COL].max()
+            assert ts.last_date_for_reg is None
+            result = ts.make_future_dataframe(
+                periods=10,
+                include_history=True)
+            expected = pd.DataFrame({
+                TIME_COL: pd.date_range(
+                    start=dt(2018, 1, 1),
+                    periods=32,
+                    freq="D"),
+                VALUE_COL: np.concatenate([ts.fit_y, np.repeat(np.nan, 10)])
+            })
+            expected.index = expected[TIME_COL]
+            expected.index.name = None
+            assert_frame_equal(result, expected)
 
-    # train_end_date later than last date in df, all available regressor_cols
-    with pytest.warns(UserWarning) as record:
-        ts = UnivariateTimeSeries()
-        train_end_date = dt(2018, 2, 10)
-        ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
-        assert ts.last_date_for_val == dt(2018, 1, 22)
-        assert ts.last_date_for_reg == dt(2018, 1, 28)
-        result = ts.make_future_dataframe(
-            periods=10,
-            include_history=False)
-        expected = df.copy()[22:28]
-        expected.loc[expected.tail(6).index, VALUE_COL] = np.nan
-        expected.index = expected[TIME_COL]
-        expected.index.name = None
-        assert_frame_equal(result, expected)
+        # train_end_date later than last date in df, all available regressor_cols
+        with pytest.warns(UserWarning) as record:
+            ts = UnivariateTimeSeries()
+            train_end_date = dt(2018, 2, 10)
+            ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
+            assert f"{VALUE_COL} column of the provided time series contains " \
+                   f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+                   f"Setting `train_end_date` to the last timestamp with a non-null value " \
+                   f"({dt(2018, 1, 22)})." in record[0].message.args[0]
+            assert ts.last_date_for_val == dt(2018, 1, 22)
+            assert ts.last_date_for_reg == dt(2018, 1, 28)
+            result = ts.make_future_dataframe(
+                periods=10,
+                include_history=False)
+            expected = df.copy()[22:28]
+            expected.loc[expected.tail(6).index, VALUE_COL] = np.nan
+            expected.index = expected[TIME_COL]
+            expected.index.name = None
+            assert_frame_equal(result, expected)
 
-    # train_end_date in between last date in df and last date before null
-    # user passes no regressor_cols
-    with pytest.warns(UserWarning) as record:
-        ts = UnivariateTimeSeries()
-        train_end_date = dt(2018, 1, 25)
-        regressor_cols = []
-        ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
-        assert ts.train_end_date == dt(2018, 1, 22)
-        assert ts.last_date_for_reg is None
-        result = ts.make_future_dataframe(
-            periods=10,
-            include_history=True)
-        expected = pd.DataFrame({
-            TIME_COL: pd.date_range(
-                start=dt(2018, 1, 1),
-                periods=32,
-                freq="D"),
-            VALUE_COL: np.concatenate([ts.fit_y, np.repeat(np.nan, 10)])
-        })
-        expected.index = expected[TIME_COL]
-        expected.index.name = None
-        assert_frame_equal(result, expected)
+        # train_end_date in between last date in df and last date before null
+        # user passes no regressor_cols
+        with pytest.warns(UserWarning) as record:
+            ts = UnivariateTimeSeries()
+            train_end_date = dt(2018, 1, 25)
+            regressor_cols = []
+            ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
+            assert f"{VALUE_COL} column of the provided time series contains trailing NAs." in record[0].message.args[0]
+            assert ts.train_end_date == dt(2018, 1, 25)
+            assert ts.last_date_for_reg is None
+            result = ts.make_future_dataframe(
+                periods=10,
+                include_history=True)
+            assert len(ts.fit_y) == 25  # Since `train_end_date` is 2018-01-25.
+            expected = pd.DataFrame({
+                TIME_COL: pd.date_range(
+                    start=dt(2018, 1, 1),
+                    periods=35,
+                    freq="D"),
+                VALUE_COL: np.concatenate([ts.fit_y, np.repeat(np.nan, 10)])
+            })
+            expected.index = expected[TIME_COL]
+            expected.index.name = None
+            assert_frame_equal(result, expected)
 
-    # train end date equal to last date before null
-    # user requests a subset of the regressor_cols
-    with pytest.warns(UserWarning) as record:
-        ts = UnivariateTimeSeries()
-        train_end_date = dt(2018, 1, 22)
-        regressor_cols = ["regressor2"]
-        ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
-        assert ts.train_end_date == dt(2018, 1, 22)
-        assert ts.last_date_for_reg == dt(2018, 1, 26)
-        result = ts.make_future_dataframe(
-            periods=10,
-            include_history=True)
-        # gathers all warning messages
-        all_warnings = ""
-        for i in range(len(record)):
-            all_warnings += record[i].message.args[0]
-        assert "Provided periods '10' is more than allowed ('4') due to the length of " \
-               "regressor columns. Using '4'." in all_warnings
-        expected = ts.df.copy()[[TIME_COL, VALUE_COL, "regressor2"]]
-        expected = expected[expected.index <= ts.last_date_for_reg]
-        assert_frame_equal(result, expected)
+        # train end date equal to last date before null
+        # user requests a subset of the regressor_cols
+        with pytest.warns(UserWarning) as record:
+            ts = UnivariateTimeSeries()
+            train_end_date = dt(2018, 1, 22)
+            regressor_cols = ["regressor2"]
+            ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
+            assert ts.train_end_date == dt(2018, 1, 22)
+            assert ts.last_date_for_reg == dt(2018, 1, 26)
+            result = ts.make_future_dataframe(
+                periods=10,
+                include_history=True)
+            # gathers all warning messages
+            all_warnings = ""
+            for i in range(len(record)):
+                all_warnings += record[i].message.args[0]
+            assert "Provided periods '10' is more than allowed ('4') due to the length of " \
+                   "regressor columns. Using '4'." in all_warnings
+            expected = ts.df.copy()[[TIME_COL, VALUE_COL, "regressor2"]]
+            expected = expected[expected.index <= ts.last_date_for_reg]
+            assert_frame_equal(result, expected)
 
-    # train_end_date smaller than last date before null
-    # user requests regressor_cols that does not exist in df
-    with pytest.warns(UserWarning) as record:
-        ts = UnivariateTimeSeries()
-        train_end_date = dt(2018, 1, 20)
-        regressor_cols = ["regressor1", "regressor4", "regressor5"]
-        ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
-        assert ts.train_end_date == dt(2018, 1, 20)
-        assert ts.last_date_for_reg == dt(2018, 1, 28)
-        # gathers all warning messages
-        all_warnings = ""
-        for i in range(len(record)):
-            all_warnings += record[i].message.args[0]
-        assert (f"The following columns are not available to use as "
-                f"regressors: ['regressor4', 'regressor5']") in all_warnings
-        result = ts.make_future_dataframe(
-            periods=10,
-            include_history=True)
-        expected = ts.df.copy()[[TIME_COL, VALUE_COL, "regressor1"]]
-        expected = expected[expected.index <= ts.last_date_for_reg]
-        assert_frame_equal(result, expected)
+        # train_end_date smaller than last date before null
+        # user requests regressor_cols that does not exist in df
+        with pytest.warns(UserWarning) as record:
+            ts = UnivariateTimeSeries()
+            train_end_date = dt(2018, 1, 20)
+            regressor_cols = ["regressor1", "regressor4", "regressor5"]
+            ts.load_data(df, TIME_COL, VALUE_COL, train_end_date=train_end_date, regressor_cols=regressor_cols)
+            assert ts.train_end_date == dt(2018, 1, 20)
+            assert ts.last_date_for_reg == dt(2018, 1, 28)
+            # gathers all warning messages
+            all_warnings = ""
+            for i in range(len(record)):
+                all_warnings += record[i].message.args[0]
+            assert (f"The following columns are not available to use as "
+                    f"regressors: ['regressor4', 'regressor5']") in all_warnings
+            result = ts.make_future_dataframe(
+                periods=10,
+                include_history=True)
+            expected = ts.df.copy()[[TIME_COL, VALUE_COL, "regressor1"]]
+            expected = expected[expected.index <= ts.last_date_for_reg]
+            assert_frame_equal(result, expected)
 
 
 def test_plot():

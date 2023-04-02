@@ -513,6 +513,8 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 1,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         SP2={
             "auto_holiday": False,
@@ -522,6 +524,8 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         SP4={
             "auto_holiday": False,
@@ -531,6 +535,8 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 4,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         TG={
             "auto_holiday": False,
@@ -540,6 +546,8 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 3,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         NONE={
             "auto_holiday": False,
@@ -549,6 +557,8 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         }),
     # Feature sets enabled.
     FEASET=dict(
@@ -645,6 +655,8 @@ SILVERKITE = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     },
     changepoints={
         "auto_growth": False,
@@ -687,7 +699,8 @@ SILVERKITE = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": "zero_to_one"
+        "normalize_method": "zero_to_one",
+        "remove_intercept": False
     }
 )
 """Defines the ``SILVERKITE`` template. Contains automatic growth,
@@ -726,6 +739,8 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     },
     changepoints={
         "auto_growth": False,
@@ -768,7 +783,8 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": "zero_to_one"
+        "normalize_method": "zero_to_one",
+        "remove_intercept": False
     }
 )
 
@@ -792,6 +808,8 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     },
     changepoints={
         "auto_growth": False,
@@ -834,7 +852,8 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": "zero_to_one"
+        "normalize_method": "zero_to_one",
+        "remove_intercept": False
     }
 )
 
@@ -858,6 +877,8 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     },
     changepoints={
         "auto_growth": False,
@@ -900,7 +921,8 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": "zero_to_one"
+        "normalize_method": "zero_to_one",
+        "remove_intercept": False
     }
 )
 
@@ -925,6 +947,8 @@ SILVERKITE_MONTHLY = ModelComponentsParam(
         "holiday_post_num_days": 0,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     },
     changepoints={
         "auto_growth": False,
@@ -974,7 +998,8 @@ SILVERKITE_MONTHLY = ModelComponentsParam(
         "min_admissible_value": None,
         "max_admissible_value": None,
         "regression_weight_col": None,
-        "normalize_method": "zero_to_one"
+        "normalize_method": "zero_to_one",
+        "remove_intercept": False
     }
 )
 """Defines the ``SILVERKITE_MONTHLY`` template. Contains automatic growth.

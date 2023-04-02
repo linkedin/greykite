@@ -266,10 +266,10 @@ napoleon_use_rtype = True
 
 intersphinx_mapping = {
     'numpy': ('https://numpy.org/devdocs/', None),
-    'pandas': ('https://pandas.pydata.org/pandas-docs/version/0.24.2/', None),
+    'pandas': ('https://pandas.pydata.org/pandas-docs/version/1.5.0/', None),
     'plotly': ('https://plotly.com/python-api-reference/', None),
-    'python': ('http://docs.python.org/3.7/', None),
+    'python': ('http://docs.python.org/3.10/', None),
     'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-    'sklearn': ('https://scikit-learn.org/0.24/', None),
-    'stasmodels': ('https://www.statsmodels.org/v0.10.1/', None)
+    'sklearn': ('https://scikit-learn.org/1.1/', None),
+    'stasmodels': ('https://www.statsmodels.org/v0.13.5/', None)
 }

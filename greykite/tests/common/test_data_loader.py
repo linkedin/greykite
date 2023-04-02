@@ -54,7 +54,7 @@ def test_get_data_names():
 def test_get_aggregated_data():
     dl = DataLoader()
     test_df = pd.DataFrame({
-        TIME_COL: pd.date_range("2020-01-01 00:00", "2020-12-31 23:00", freq="1H"),
+        TIME_COL: pd.date_range("2020-01-01 00:00", "2020-12-31 23:30", freq="0.5H"),
         "col1": 1,
         "col2": 2,
         "col3": 3,
@@ -65,10 +65,18 @@ def test_get_aggregated_data():
     # For each frequency,
     # (1) make sure the `TIME_COL` column is correctly included
     # (2) verify the aggregation part works correctly
+    # Hourly aggregation
+    df = dl.get_aggregated_data(test_df, agg_freq="hourly", agg_func=agg_func)
+    assert df.shape == (366*24, len(agg_func) + 1)
+    assert (df["col1"] != 1*2).sum() == 0
+    assert (df["col2"] != 2).sum() == 0
+    assert (df["col3"] != 3).sum() == 0
+    assert (df["col4"] != 4).sum() == 0
+    assert (df["col5"] != 5).sum() == 0
     # Daily aggregation
     df = dl.get_aggregated_data(test_df, agg_freq="daily", agg_func=agg_func)
     assert df.shape == (366, len(agg_func) + 1)
-    assert (df["col1"] != 24).sum() == 0
+    assert (df["col1"] != 24*2).sum() == 0
     assert (df["col2"] != 2).sum() == 0
     assert (df["col3"] != 3).sum() == 0
     assert (df["col4"] != 4).sum() == 0
@@ -76,7 +84,7 @@ def test_get_aggregated_data():
     # Weekly aggregation
     df = dl.get_aggregated_data(test_df, agg_freq="weekly", agg_func=agg_func)
     assert df.shape == (53, len(agg_func) + 1)
-    assert (df["col1"] != 24*7).sum() == 2
+    assert (df["col1"] != 24*7*2).sum() == 2
     assert (df["col2"] != 2).sum() == 0
     assert (df["col3"] != 3).sum() == 0
     assert (df["col4"] != 4).sum() == 0
@@ -84,7 +92,7 @@ def test_get_aggregated_data():
     # Monthly aggregation
     df = dl.get_aggregated_data(test_df, agg_freq="monthly", agg_func=agg_func)
     assert df.shape == (12, len(agg_func) + 1)
-    assert (df["col1"].isin([24*29, 24*30, 24*31])).sum() == 12
+    assert (df["col1"].isin([24*29*2, 24*30*2, 24*31*2])).sum() == 12
     assert (df["col2"] != 2).sum() == 0
     assert (df["col3"] != 3).sum() == 0
     assert (df["col4"] != 4).sum() == 0

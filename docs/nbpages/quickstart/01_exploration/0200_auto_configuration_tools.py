@@ -9,6 +9,7 @@ In this tutorial, we will present
 
   * seasonality inferrer
   * holiday inferrer
+  * holiday grouper
 
 .. note::
   If you use the model templates, you can specify the "auto" option for certain model components
@@ -283,3 +284,154 @@ plotly.io.show(result["fig"])
 # based on the inferred results, that is consumable directly by the Silverkite model.
 
 hi.generate_daily_event_dict()
+
+# %%
+# Holiday Grouper
+# ---------------
+#
+# One step further, `~greykite.algo.common.holiday_grouper.HolidayGrouper`
+# is a convenient tool that automatically groups similar holidays and their neighboring days
+# together based on their estimated impact and clustering algorithms.
+# This helps to (1) reduce the number of parameters to be estimated
+# and have each group have sufficient data points to be reliably estimated;
+# (2) make sure different holidays can be separately modeled to avoid confounding effects.
+#
+# Also, we provide flexible diagnostics to help users choose the number of groups, as well as
+# utility functions to spot check which group a holiday belongs to and what are the similar
+# holidays within the same group.
+#
+# How it works
+# ~~~~~~~~~~~~
+#
+# First, we need to supply the algorithm a list of holidays and dates, as well as a time series of interest.
+# In addition, we specify a dictionary of neighboring days that a holiday may have effect on.
+# For example, for Thanksgiving that always falls on Thursday, we may expect a holiday effect
+# that starts the day before and lasts till the coming Monday, then we can specify
+# ``"Thanksgiving": (1, 4)`` as an item in the dictionary.
+# All the neighboring days specified as such will be added to the events pool.
+# Note that each neighboring day is also treated as a single event, and may not end up with the same group
+# as its original holiday date.
+# That is, ``"Thanksgiving_plus_4"`` (Monday) may have a very different impact than
+# ``"Thanksgiving`` (Thursday) and they may not end up with being in the same group.
+#
+# Second, we also note that holidays falling on weekdays may have a different impact than those on weekends.
+# For example, ``"Christmas Day_WE"`` may have a different effect than ``"Christmas Day_WD"``.
+# We included two built-in options ("wd_we": weekday vs weekend, "dow_grouped": weekday, Sat, Sun), but one
+# can custom their own grouping via ``get_suffix_func`` parameter.
+#
+# Next, each single event gets a score, the estimated (relative) impact that uses the same methodology
+# as in the Holiday Inferrer (e.g. -0.1 means 10% lower than the baseline).
+# For example, you can use ``baseline_offsets=[-7, 7]``.
+# The score will then be used for the clustering algorithm. Therefore, if an event only shows up once
+# in the input time series, the estimated impact may not be accurate.
+# One can set the minimal number of occurrences of an event by parameter ``min_n_days`` (set it to 1 if
+# you are okay with including all events that appear only once on a single day in the input data).
+# Also, you can specify the minimal average score of an event to be kept in consideration by ``min_abs_avg_score``.
+# If an event has an average score of -1% (across all its occurrences), it may not be worth including in the model.
+# Absolute effects lower than ``min_abs_avg_score`` will be excluded before clustering.
+# Also, if an event have inconsistent scores (e.g. two occurrences have -8%, +5% respectively), then this could be
+# noise rather than signal. These events are excluded as well.
+# This is handled automatically and user does not need to worry about it.
+#
+# The last step of the grouper is to group events that have similar effects and generate ``daily_event_df_dict``.
+# We provide two options for clustering, Kernel Density Estimation (``clustering_method="kde"``)
+# and K-means (``clustering_method="kmeans"``).
+# In K-means, you can specify ``n_clusters`` to your desired number of groups.
+# In KDE clustering, you can change the default bandwidth parameter to adjust the number of groups you get.
+# Depending on the length of the time series and the number of holidays considered, we recommend a range from 5 to
+# 15 groups. You can check the visualization / diagnostics via attribute ``self.result_dict["kmean_plot"]``
+# or ``self.result_dict["kde_plot"]``, respectively.
+# See `~greykite.algo.common.holiday_grouper.HolidayGrouper.group_holidays` for more parameter details.
+#
+# Example
+# ~~~~~~~
+#
+# Now we look at an example with the Peyton-Manning Wiki page view data.
+
+import pandas as pd
+import plotly
+from greykite.algo.common.holiday_grouper import HolidayGrouper
+from greykite.common.data_loader import DataLoader
+from greykite.common.features.timeseries_features import get_holidays
+from greykite.common import constants as cst
+
+df = DataLoader().load_peyton_manning()
+df[cst.TIME_COL] = pd.to_datetime(df[cst.TIME_COL])
+
+# %%
+# Let's generate a list of holidays in the United States, and we
+# also specify the neighboring days we want to consider in the holiday model.
+
+year_start = df[cst.TIME_COL].dt.year.min() - 1
+year_end = df[cst.TIME_COL].dt.year.max() + 1
+holiday_df = get_holidays(countries=["US"], year_start=year_start, year_end=year_end)["US"]
+
+# Defines the number of pre / post days that a holiday has impact on.
+# If not specified, (0, 0) will be used.
+holiday_impact_dict = {
+    "Christmas Day": (4, 3),  # 12/25.
+    "Independence Day": (4, 4),  # 7/4.
+    "Juneteenth National Independence Day": (3, 3),  # 6/19.
+    "Labor Day": (3, 1),  # Monday.
+    "Martin Luther King Jr. Day": (3, 1),  # Monday.
+    "Memorial Day": (3, 1),  # Monday.
+    "New Year's Day": (3, 4),  # 1/1.
+    "Thanksgiving": (1, 4),  # Thursday.
+}
+
+# %%
+# Now we run the holiday grouper with K-means clustering.
+
+# Instantiates `HolidayGrouper`.
+hg = HolidayGrouper(
+    df=df,
+    time_col=cst.TIME_COL,
+    value_col=cst.VALUE_COL,
+    holiday_df=holiday_df,
+    holiday_date_col="date",
+    holiday_name_col="event_name",
+    holiday_impact_dict=holiday_impact_dict,
+    get_suffix_func="dow_grouped"
+)
+
+# Runs holiday grouper using k-means with diagnostics.
+hg.group_holidays(
+    baseline_offsets=[-7, 7],
+    min_n_days=2,
+    min_abs_avg_score=0.03,
+    clustering_method="kmeans",
+    n_clusters=6,
+    include_diagnostics=True
+)
+
+result_dict = hg.result_dict
+daily_event_df_dict = result_dict["daily_event_df_dict"]  # Can be directed used in events.
+
+# %%
+# Check results. For example, we can check the score and grouping of New Year's Day that falls on weekdays.
+
+hg.check_scores("New Year's Day_WD")
+hg.check_holiday_group("New Year's Day_WD")
+
+# %%
+# Check the diagnostics plot for K-means clustering.
+
+plotly.io.show(result_dict["kmeans_plot"])
+
+# %%
+# Now let's try clustering using KDE and check the results.
+
+hg.group_holidays(
+    baseline_offsets=[-7, 7],
+    min_n_days=1,
+    min_abs_avg_score=0.03,
+    bandwidth_multiplier=0.5,
+    clustering_method="kde"
+)
+result_dict = hg.result_dict
+daily_event_df_dict = result_dict["daily_event_df_dict"]
+
+plotly.io.show(result_dict["kde_plot"])
+# Checks the number of events in each group.
+for event_group, event_df in daily_event_df_dict.items():
+    print(f"{event_group}: contains {event_df.shape[0]} days.")

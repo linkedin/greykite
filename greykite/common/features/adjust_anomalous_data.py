@@ -97,8 +97,8 @@ def adjust_anomalous_data(
                 "adjustment_delta": [np.nan, 3, -5, np.nan],
                 # extra columns for filtering
                 "metric": ["y", "y", "z", "z"],
-                "platform": ["MOBILE", "MOBILE", "DESKTOP", "DESKTOP"],
-                "vertical": ["ads", "sales", "ads", "ads"],
+                "dimension1": ["level_1", "level_1", "level_2", "level_2"],
+                "dimension2": ["level_1", "level_2", "level_1", "level_1"],
             })
 
         In the above example,
@@ -108,7 +108,7 @@ def adjust_anomalous_data(
             - "adjustment_delta" is the column which includes the delta if it is known. The name of this
               column is provided using the argument ``adjustment_delta_col``. Use `numpy.nan` if the
               adjustment size is not known, and the adjusted value will be set to `numpy.nan`.
-            - "metric", "platform", and "vertical" are example columns for filtering. They
+            - "metric", "dimension1", and "dimension2" are example columns for filtering. They
               contain the metric name and dimensions for which the anomaly is applicable.
               ``filter_by_dict` is used to filter on these columns to get the relevant
               anomalies for the timeseries represented by ``df[value_col]``.
@@ -183,6 +183,10 @@ def adjust_anomalous_data(
     anomaly_df = anomaly_df.copy()
     new_value_col = f"adjusted_{value_col}"
 
+    # Gets min and max timestamps from the input time series
+    min_ts = df[time_col].min()
+    max_ts = df[time_col].max()
+
     if new_value_col in df.columns:
         raise ValueError(
             f"`df` cannot include this column name: {new_value_col}."
@@ -229,10 +233,16 @@ def adjust_anomalous_data(
         time_values = augmented_df[time_col].astype(str)
         anomaly_df[start_time_col] = anomaly_df[start_time_col].astype(str)
         anomaly_df[end_time_col] = anomaly_df[end_time_col].astype(str)
+        min_ts = str(min_ts)
+        max_ts = str(max_ts)
     for i in range(anomaly_df.shape[0]):
         row = anomaly_df.iloc[i]
         t1 = row[start_time_col]
         t2 = row[end_time_col]
+        if t1 > max_ts or t2 < min_ts:
+            continue
+        t1 = max(min_ts, t1)
+        t2 = min(max_ts, t2)
         if t2 < t1:
             raise ValueError(
                 f"End Time: {t2} cannot be before Start Time: {t1}, in ``anomaly_df``.")
@@ -255,3 +265,163 @@ def adjust_anomalous_data(
     return {
         "adjusted_df": df,
         "augmented_df": augmented_df}
+
+
+def label_anomalies_multi_metric(
+        df,
+        time_col,
+        value_cols,
+        anomaly_df,
+        anomaly_df_grouping_col=None,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL):
+    """This function operates on a given data frame (``df``) which includes time (given in ``time_col``) and
+    metrics.
+    For each metric (given in ``value_cols``), it augments the data with a
+
+        - a new column which determines if a value is an anomaly (``f"{metric}_is_anomaly"``)
+        - a new column which is not NA (`np.nan`) when the value is an anomaly (``f"{metric}_anomaly_value"``)
+        - a new column which is not NA (`np.nan`) when the value is non-anomalous / "normal" (``f"{metric}_normal_value"``)
+
+    The information regarding the anomalies is stored in the input argument ``anomaly_df`` and ``anomaly_df_grouping_col`` determines
+    which anomaly rows in ``anomaly_df`` correspond to each metric.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        A data frame which at least inludes a timestamp column (``TIME_COL``) and
+        ``value_cols`` which represent the metrics.
+    time_col : `str`
+        The column name in ``df`` representing time for the time series data.
+        The time column can be anything that can be parsed by `pandas.DatetimeIndex`.
+    value_cols : `list` [`str`]
+        The columns which include the metrics.
+    anomaly_df : `pandas.DataFrame`
+        Data frame with ``start_time_col`` and ``end_time_col`` and ``grouping_col``
+        (if provided). This contains the anomaly periods for each metric
+        (one of the ``value_cols``). Each row of this dataframe corresponds
+        to an anomaly occurring between the times given in ``row[start_time_col]``
+        and ``row[end_time_col]``.
+        The ``grouping_col`` (if not None) determines which metric that
+        anomaly corresponds too (otherwise we assume all anomalies apply to all metrics).
+    anomaly_df_grouping_col : `str` or None, default None
+        The column name for grouping the list of the anomalies which is to appear
+        in ``anomaly_df``.
+        This column should include some of the metric names
+        specified in ``value_cols``. The ``grouping_col`` (if not None) determines which metric that
+        anomaly corresponds too (otherwise we assume all anomalies apply to all metrics).
+    start_time_col : `str`, default ``START_TIME_COL``
+        The column name in ``anomaly_df`` representing the start timestamp of
+        the anomalous period, inclusive.
+        The format can be anything that can be parsed by pandas DatetimeIndex.
+    end_time_col : `str`, default ``END_TIME_COL``
+        The column name in ``anomaly_df`` representing the start timestamp of
+        the anomalous period, inclusive.
+        The format can be anything that can be parsed by pandas DatetimeIndex.
+
+
+    Returns
+    -------
+    result : `dict`
+        A dictionary with following items:
+
+        - "augmented_df": `pandas.DataFrame`
+            This is a dataframe obtained by augmenting the input ``df`` with new
+            columns determining if the metrics appearing in ``df`` are anomaly
+            or not and the new columns denoting anomaly values and normal values
+            (described below).
+        - "is_anomaly_cols": `list` [`str`]
+            The list of add boolean columns to determine if a value is an anomaly for
+            a given metric. The format of the columns is ``f"{metric}_is_anomaly"``.
+        - "anomaly_value_cols": `list` [`str`]
+            The list of columns containing only anomaly values (`np.nan` otherwise) for each corresponding
+            metric. The format of the columns is ``f"{metric}_anomaly_value"``.
+        - "normal_value_cols": `list` [`str`]
+            The list of columns containing only non-anomalous / normal values (`np.nan` otherwise)
+            for each corresponding metric. The format of the columns is ``f"{metric}_normal_value"``.
+
+    """
+    df = df.copy()
+    anomaly_df = anomaly_df.copy()
+
+    if time_col not in df.columns:
+        raise ValueError(
+            f"time_col: {time_col} wasn't found in data frame which has columns {df.columns}")
+
+    for value_col in value_cols:
+        if value_col not in df.columns:
+            raise ValueError(
+                f"value_col: {value_col} wasn't found in data frame which has columns {df.columns}")
+
+    if (start_time_col not in anomaly_df.columns):
+        raise ValueError(
+            f"start_time_col: {start_time_col} wasn't found in data frame which has columns {anomaly_df.columns}")
+    if (end_time_col not in anomaly_df.columns):
+        raise ValueError(
+            f"end_time_col: {end_time_col} wasn't found in data frame which has columns {anomaly_df.columns}")
+
+    anomaly_df[start_time_col] = pd.to_datetime(anomaly_df[start_time_col])
+    anomaly_df[end_time_col] = pd.to_datetime(anomaly_df[end_time_col])
+
+    df[time_col] = pd.to_datetime(df[time_col])
+
+    is_anomaly_cols = []
+    anomaly_value_cols = []
+    normal_value_cols = []
+
+    def add_anomaly_cols_one_metric(df, value_col):
+        """This function adds the new anomaly columns for each metric.
+        This will be applied to ``df`` once for each metric below.
+
+        Parameters
+        ----------
+        df : `pandas.DataFrame`
+            A data frame which at least inludes a timestamp column (``TIME_COL``) and
+            ``value_col`` which represent the metric.
+        value_col : `str`
+            The column which includes the metric of interest.
+
+        Returns
+        -------
+        df : `pandas.DataFrame`
+            A dataframe which has these new columns added to input ``df``:
+
+                - a new column which determines if a value is an anomaly (``f"{value_col}_is_anomaly"``)
+                - a new column which is not NA (`np.nan`) when the value is an anomaly (``f"{value_col}_anomaly_value"``)
+                - a new column which is not NA (`np.nan`) when the value is non-anomalous / "normal" (``f"{value_col}_normal_value"``)
+
+
+        """
+        adj_df_info = adjust_anomalous_data(
+            df=df,
+            time_col=time_col,
+            value_col=value_col,
+            anomaly_df=anomaly_df,
+            start_time_col=start_time_col,
+            end_time_col=end_time_col,
+            filter_by_value_col=anomaly_df_grouping_col)
+
+        df0 = adj_df_info["augmented_df"]
+        df0[f"{value_col}_is_anomaly"] = df0[ANOMALY_COL]
+        df0[f"{value_col}_anomaly_value"] = np.nan
+        anomaly_ind = (df0[ANOMALY_COL] == 1)
+        normal_ind = (df0[ANOMALY_COL] == 0)
+        df0.loc[anomaly_ind, f"{value_col}_anomaly_value"] = df0.loc[anomaly_ind, value_col]
+        df0.loc[normal_ind, f"{value_col}_normal_value"] = df0.loc[normal_ind, value_col]
+        del df0[ANOMALY_COL]
+        del df0[f"adjusted_{value_col}"]
+
+        is_anomaly_cols.append(f"{value_col}_is_anomaly")
+        anomaly_value_cols.append(f"{value_col}_anomaly_value")
+        normal_value_cols.append(f"{value_col}_normal_value")
+
+        return df0
+
+    for value_col in value_cols:
+        df = add_anomaly_cols_one_metric(df, value_col)
+
+    return {
+        "augmented_df": df,
+        "is_anomaly_cols": is_anomaly_cols,
+        "anomaly_value_cols": anomaly_value_cols,
+        "normal_value_cols": normal_value_cols}
