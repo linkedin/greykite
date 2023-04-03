@@ -288,8 +288,8 @@ def assert_equal(
             }
         }
     kwargs : keyword args, optional
-        Keyword args to pass to `pandas.util.testing.assert_frame_equal`,
-        `pandas.util.testing.assert_series_equal`.
+        Keyword args to pass to `pandas.testing.assert_frame_equal`,
+        `pandas.testing.assert_series_equal`.
 
     Raises
     ------

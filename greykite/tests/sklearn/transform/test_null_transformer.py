@@ -4,11 +4,11 @@ Test for null_transformer.py
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.util.testing import assert_equal
 from sklearn.exceptions import NotFittedError
 from testfixtures import LogCapture
 
 from greykite.common.constants import LOGGER_NAME
+from greykite.common.python_utils import assert_equal
 from greykite.sklearn.transform.null_transformer import NullTransformer
 
 

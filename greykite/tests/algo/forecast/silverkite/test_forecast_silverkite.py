@@ -6,8 +6,8 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import pytest
+from pandas.testing import assert_frame_equal
 from pandas.tseries.frequencies import to_offset
-from pandas.util.testing import assert_frame_equal
 from sklearn.exceptions import ConvergenceWarning
 from testfixtures import LogCapture
 

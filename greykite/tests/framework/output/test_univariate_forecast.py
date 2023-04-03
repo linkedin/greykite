@@ -6,8 +6,8 @@ from functools import partial
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.util.testing import assert_frame_equal
-from pandas.util.testing import assert_series_equal
+from pandas.testing import assert_frame_equal
+from pandas.testing import assert_series_equal
 from sklearn.pipeline import Pipeline
 
 from greykite.common import constants as cst

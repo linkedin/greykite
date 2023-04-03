@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 import scipy
-from pandas.util.testing import assert_frame_equal
+from pandas.testing import assert_frame_equal
 from patsy import dmatrices
 
 from greykite.algo.common.ml_models import breakdown_regression_based_prediction

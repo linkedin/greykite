@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.util.testing import assert_frame_equal
+from pandas.testing import assert_frame_equal
 from sklearn.linear_model import SGDRegressor
 from sklearn.metrics import mean_squared_error
 

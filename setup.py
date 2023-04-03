@@ -18,7 +18,7 @@ requirements = [
     "numpy>=1.22.0",  # support for Python 3.10
     "osqp>=0.6.1",
     "overrides>=2.8.0",
-    "pandas>=1.5.0",
+    "pandas>=1.5.0, <2.0.0",
     "patsy>=0.5.1",
     "plotly>=4.12.0",
     "pmdarima>=1.8.0, <=1.8.5",
