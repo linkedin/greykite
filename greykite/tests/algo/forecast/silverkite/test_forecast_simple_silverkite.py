@@ -1466,7 +1466,7 @@ def test_config_run_with_dst_features(daily_data_reg):
         holiday_lookup_countries="auto",
         holiday_pre_num_days=2,
         holiday_post_num_days=2,
-        extra_pred_cols=["europe_dst"],
+        extra_pred_cols=["eu_dst"],
         auto_seasonality=True,
         yearly_seasonality=0,
         quarterly_seasonality="auto",
@@ -1474,7 +1474,7 @@ def test_config_run_with_dst_features(daily_data_reg):
         weekly_seasonality=True,
         daily_seasonality=5)
 
-    assert "europe_dst" in trained_model["pred_cols"]
+    assert "eu_dst" in trained_model["pred_cols"]
 
 
 def test_auto_config_run(daily_data_reg):

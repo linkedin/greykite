@@ -32,8 +32,8 @@ from greykite.common.features.timeseries_features import get_changepoint_string
 from greykite.common.features.timeseries_features import get_changepoint_values_from_config
 from greykite.common.features.timeseries_features import get_custom_changepoints_values
 from greykite.common.features.timeseries_features import get_default_origin_for_time_vars
-from greykite.common.features.timeseries_features import get_europe_dst_end
-from greykite.common.features.timeseries_features import get_europe_dst_start
+from greykite.common.features.timeseries_features import get_eu_dst_end
+from greykite.common.features.timeseries_features import get_eu_dst_start
 from greykite.common.features.timeseries_features import get_evenly_spaced_changepoints_dates
 from greykite.common.features.timeseries_features import get_evenly_spaced_changepoints_values
 from greykite.common.features.timeseries_features import get_fourier_col_name
@@ -131,12 +131,12 @@ def test_pytz_is_dst_fcn():
         dst_end=us_dst_end)
 
     # Europe case
-    europe_dst_start = pd.to_datetime("2022-03-27 01:00:00")
-    europe_dst_end = pd.to_datetime("2022-10-30 01:59:59")
+    eu_dst_start = pd.to_datetime("2022-03-27 01:00:00")
+    eu_dst_end = pd.to_datetime("2022-10-30 01:59:59")
     validate_dst_times(
         is_dst_func=pytz_is_dst_fcn("Europe/London"),
-        dst_start=europe_dst_start,
-        dst_end=europe_dst_end)
+        dst_start=eu_dst_start,
+        dst_end=eu_dst_end)
 
 
 def test_is_dst_fcn():
@@ -158,17 +158,17 @@ def test_is_dst_fcn():
         dst_end=us_dst_end)
 
     # Europe case
-    europe_dst_start = pd.to_datetime("2022-03-27 01:00:00")
-    europe_dst_end = pd.to_datetime("2022-10-30 01:59:59")
+    eu_dst_start = pd.to_datetime("2022-03-27 01:00:00")
+    eu_dst_end = pd.to_datetime("2022-10-30 01:59:59")
     validate_dst_times(
         is_dst_func=is_dst_fcn("Europe/London"),
-        dst_start=europe_dst_start,
-        dst_end=europe_dst_end)
+        dst_start=eu_dst_start,
+        dst_end=eu_dst_end)
 
 
 def test_get_dst_start_end_date():
     """Tests `get_us_dst_start`, `get_us_dst_end`,
-    `get_europe_dst_start`, `get_europe_dst_end` functions.
+    `get_eu_dst_start`, `get_eu_dst_end` functions.
     """
     years = [2015, 2022, 2023, 2024]
     expected_us_dst_start_dates = [
@@ -183,13 +183,13 @@ def test_get_dst_start_end_date():
         dt(2023, 11, 5, 2, 0),
         dt(2024, 11, 3, 2, 0)
     ]
-    expected_europe_dst_start_dates = [
+    expected_eu_dst_start_dates = [
         dt(2015, 3, 29, 1, 0),
         dt(2022, 3, 27, 1, 0),
         dt(2023, 3, 26, 1, 0),
         dt(2024, 3, 31, 1, 0)
     ]
-    expected_europe_dst_end_dates = [
+    expected_eu_dst_end_dates = [
         dt(2015, 10, 25, 2, 0),
         dt(2022, 10, 30, 2, 0),
         dt(2023, 10, 29, 2, 0),
@@ -197,17 +197,17 @@ def test_get_dst_start_end_date():
     ]
     us_dst_start_dates = []
     us_dst_end_dates = []
-    europe_dst_start_dates = []
-    europe_dst_end_dates = []
+    eu_dst_start_dates = []
+    eu_dst_end_dates = []
     for year in years:
         us_dst_start_dates.append(get_us_dst_start(year))
         us_dst_end_dates.append(get_us_dst_end(year))
-        europe_dst_start_dates.append(get_europe_dst_start(year))
-        europe_dst_end_dates.append(get_europe_dst_end(year))
+        eu_dst_start_dates.append(get_eu_dst_start(year))
+        eu_dst_end_dates.append(get_eu_dst_end(year))
     assert us_dst_start_dates == expected_us_dst_start_dates
     assert us_dst_end_dates == expected_us_dst_end_dates
-    assert europe_dst_start_dates == expected_europe_dst_start_dates
-    assert europe_dst_end_dates == expected_europe_dst_end_dates
+    assert eu_dst_start_dates == expected_eu_dst_start_dates
+    assert eu_dst_end_dates == expected_eu_dst_end_dates
 
 
 def test_build_time_features_df():
@@ -362,7 +362,7 @@ def test_build_time_features_df_with_dst():
         add_dst_info=True)
 
     assert (time_df["us_dst"] == [False, False, True, True, True]).all()
-    assert (time_df["europe_dst"] == [False]*5).all()
+    assert (time_df["eu_dst"] == [False]*5).all()
 
 
 def test_build_time_features_df_leap_years():

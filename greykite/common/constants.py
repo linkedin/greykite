@@ -175,7 +175,7 @@ class TimeFeaturesEnum(Enum):
     ct_sqrt = "ct_sqrt"
     ct_root3 = "ct_root3"
     us_dst = "us_dst"
-    europe_dst = "europe_dst"
+    eu_dst = "eu_dst"
 
 
 class GrowthColEnum(Enum):

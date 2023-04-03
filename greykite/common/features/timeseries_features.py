@@ -192,7 +192,7 @@ def get_us_dst_end(year):
     return first_sunday_date
 
 
-def get_europe_dst_start(year):
+def get_eu_dst_start(year):
     """For each year, it returns the last Sunday in March,
     which is the start of the daylight saving (DST) in Europe.
 
@@ -221,7 +221,7 @@ def get_europe_dst_start(year):
     return last_sunday_date
 
 
-def get_europe_dst_end(year):
+def get_eu_dst_end(year):
     """For each year, it returns the last Sunday in October,
     which is the end of the daylight saving (DST) in Europe.
 
@@ -294,8 +294,8 @@ def is_dst_fcn(time_zone):
         get_dst_start = get_us_dst_start
         get_dst_end = get_us_dst_end
     elif "Europe" in time_zone:
-        get_dst_start = get_europe_dst_start
-        get_dst_end = get_europe_dst_end
+        get_dst_start = get_eu_dst_start
+        get_dst_end = get_eu_dst_end
     else:
         raise ValueError(
             f"`time_zone` string {time_zone} does not include "
@@ -424,7 +424,7 @@ def build_time_features_df(
             * "ct_root3": float, signed cubic root growth, -infinity to infinity
             * "us_dst": bool, determines if the time inside the daylight saving time of US
                 This column is only generated if ``add_dst_info=True``
-            * "europe_dst": bool, determines if the time inside the daylight saving time of Europe. This column is only generated if ``add_dst_info=True``
+            * "eu_dst": bool, determines if the time inside the daylight saving time of Europe. This column is only generated if ``add_dst_info=True``
 
     """
     dt = pd.DatetimeIndex(dt)
@@ -566,7 +566,7 @@ def build_time_features_df(
         df[cst.TimeFeaturesEnum.us_dst.value] = is_dst_fcn("US/Pacific")(
             df[cst.TimeFeaturesEnum.datetime.value])
 
-        df[cst.TimeFeaturesEnum.europe_dst.value] = is_dst_fcn("Europe/London")(
+        df[cst.TimeFeaturesEnum.eu_dst.value] = is_dst_fcn("Europe/London")(
             df[cst.TimeFeaturesEnum.datetime.value])
 
     return df
