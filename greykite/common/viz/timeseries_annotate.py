@@ -20,8 +20,19 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # original author: Reza Hosseini, Kaixu Yang
 """Plotting functions to add annotations to timseries"""
-
+import pandas as pd
 import plotly.graph_objects as go
+
+from greykite.common.constants import ACTUAL_COL
+from greykite.common.constants import ANOMALY_COL
+from greykite.common.constants import END_TIME_COL
+from greykite.common.constants import PREDICTED_ANOMALY_COL
+from greykite.common.constants import PREDICTED_COL
+from greykite.common.constants import START_TIME_COL
+from greykite.common.constants import TIME_COL
+from greykite.common.features.adjust_anomalous_data import label_anomalies_multi_metric
+from greykite.common.viz.colors_utils import get_distinct_colors
+from greykite.common.viz.timeseries_plotting import plot_forecast_vs_actual
 
 
 def plt_annotate_series(
@@ -343,4 +354,797 @@ def plt_compare_series_annotations(
     )
     fig = go.Figure(data=data, layout=layout)
 
+    return fig
+
+
+def plot_lines_markers(
+        df,
+        x_col,
+        line_cols=None,
+        marker_cols=None,
+        line_colors=None,
+        marker_colors=None):
+    """A lightweight, easy-to-use function to create a plotly figure of given
+    lines (curves) and markers (points) from the columns of a dataframe with a
+    legend which matches the column names.
+    This can be used for example to annotate multiple curves with markers
+    with an easy function call.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        Data frame with ``x_col`` and value columns specified in ``line_cols`` and ``marker_cols``.
+    x_col : `str`
+        The column used for the x-axis.
+    line_cols : `list` [`str`] or None, default None
+        The list of y-axis variables to be plotted as lines / curves.
+    marker_cols : `list` [`str`] or None, default None
+        The list of y-axis variables to be plotted as markers / points.
+    line_colors : `list` [`str`] or None, default None
+        The list of colors to be used for each corresponding line given in ``line_cols``
+    marker_colors : `list` [`str`] or None, default None
+        The list of colors to be used for each corresponding line given in ``line_cols``
+    title : `str` or None, default None
+        Plot title. If None, default is based on axis labels.
+
+    Returns
+    -------
+    fig : `plotly.graph_objects.Figure`
+        Interactive plotly graph of one or more columns in ``df`` against ``x_col``.
+    """
+
+    if line_colors is not None:
+        if len(line_colors) != len(line_cols):
+            raise ValueError(
+                "If `line_colors` is passed, its length must be equal to `line_cols`")
+
+    if marker_colors is not None:
+        if len(marker_colors) != len(marker_cols):
+            raise ValueError(
+                "If `line_colors` is passed, its length must be equal to `line_cols`")
+
+    if line_cols is None and marker_cols is None:
+        raise ValueError(
+                "At least one of `line_cols` or `marker_cols` must be passed as a list of strings (not None).")
+
+    fig = go.Figure()
+    # Below we count the number of figure components to assign proper labels to legends
+    count_fig_data = -1
+    if line_cols is not None:
+        for i, col in enumerate(line_cols):
+            if line_colors is not None:
+                line = go.scatter.Line(color=line_colors[i])
+            else:
+                line = go.scatter.Line()
+
+            fig.add_trace(go.Scatter(
+                x=df[x_col],
+                y=df[col],
+                mode="lines",
+                line=line,
+                showlegend=True))
+            count_fig_data += 1
+            fig["data"][count_fig_data]["name"] = col
+
+    if marker_cols is not None:
+        for i, col in enumerate(marker_cols):
+            if marker_colors is not None:
+                marker = go.scatter.Marker(color=marker_colors[i])
+            else:
+                marker = go.scatter.Marker()
+            fig.add_trace(go.Scatter(
+                x=df[x_col],
+                y=df[col],
+                mode="markers",
+                marker=marker,
+                showlegend=True))
+            count_fig_data += 1
+            fig["data"][count_fig_data]["name"] = col
+
+    return fig
+
+
+def plot_event_periods_multi(
+        periods_df,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
+        freq=None,
+        grouping_col=None,
+        min_timestamp=None,
+        max_timestamp=None,
+        new_cols_tag="_is_anomaly",
+        title="anomaly periods"):
+    """For a dataframe (``periods_df``) with rows denoting start and end of the periods,
+    it plots the periods. If there extra segmentation is given (``grouping_col``) then
+    the periods in each segment/slice will be plotted separately on top of each other so that
+    their overlap can be seen easily.
+
+    Parameters
+    ----------
+    periods_df : `pandas.DataFrame`
+        Data frame with ``start_time_col`` and ``end_time_col`` and optionally
+        ``grouping_col`` if passed.
+    start_time_col : `str`, default START_TIME_COL
+        The column denoting the start of a period. The type can be any type
+        admissable as `pandas.to_datetime`.
+    end_time_col : `str`, default END_TIME_COL
+        The column denoting the start of a period. The type can be any type
+        admissable as `pandas.to_datetime`.
+    freq : `str` or None, default None
+        Frequency of the generated time grid which is used to plot the horizontal
+        line segments (points).
+
+        If None, we use hourly as default (freq = "H") which will be accurate
+        for timestamps which are rounded up to an hour. For finer timestamps
+        user should specify higher frequencies e.g. "min" for minutely. Also for
+        daily, weekly, monthly data, user can use a lower frequency to make the plot
+        size on disk smaller.
+    grouping_col : `str` or None, default None
+        A column which specifies the slicing.
+        Each slice's event / anomaly period will be plotted with a specific color
+        for that slice. Each segment will appear at a different height of the y-axis
+        and its periods would be annotated at that height.
+    min_timestamp : `str` or None, default None
+        A string denoting the starting point (time) the x axis.
+        If None, the minimum of ``start_time_col`` will be used.
+    max_timestamp : `str` or None, default None
+        A string denoting the end point (time) for the x axis.
+        If None, the maximum of ``end_time_col`` will be used.
+    title : `str` or None, default None
+        Plot title. If None, default is based on axis labels.
+    new_cols_tag : `str`, default "_is_anomaly"
+        The tag used in the column names for each group.
+        The column name has this format: f"{group}{new_cols_tag}".
+        For example if a group is "impressions", with the default value
+        of this argument the added column name is "impressions_is_anomaly"
+
+    Returns
+    -------
+    result : `dict`
+
+        - "fig" : `plotly.graph_objects.Figure`
+            Interactive plotly graph of periods given for each group.
+        - "labels_df" : `pandas.DataFrame`
+            A dataframe which includes timestamps as one column (TIME_COL) and one
+            dummy string column for each group.
+            The values of the new columns are None, except for the time periods specified
+            in each corresponding group.
+        - "groups" : `list` [`str`]
+            The distinct values seen in ``df[grouping_col]`` which are used for
+            slicing of data.
+        - "new_cols" : `list` [`str`]
+            The new columns generated and added to ``labels_df``.
+            Each column corresponds to one slice of the data as specified in
+            ``grouping_col``.
+        - "ts" : `list` [`pandas._libs.tslibs.timestamps.Timestamp`]
+            A time-grid generated by ``pandas.date_range``
+        - "min_timestamp" : `str` or None, default None
+            A string denoting the starting point (time) the x axis.
+        - "max_timestamp" : `str` or None, default None
+            A string denoting the end point (time) for the x axis.
+        - "marker_colors" : `list` [`str`]
+            A list of strings denoting the colors used for various slices.
+
+    """
+    periods_df = periods_df.copy()
+    if min_timestamp is None:
+        min_timestamp = periods_df[start_time_col].min()
+    if max_timestamp is None:
+        max_timestamp = periods_df[end_time_col].max()
+
+    periods_df = periods_df[
+        (periods_df[start_time_col] >= min_timestamp) &
+        (periods_df[end_time_col] <= max_timestamp)].reset_index(drop=True)
+
+    if freq is None:
+        freq = "H"
+
+    ts = pd.date_range(start=min_timestamp, end=max_timestamp, freq=freq)
+    labels_df = pd.DataFrame({TIME_COL: ts})
+    # Converting the time to standard string format in order to use plotly safely
+    labels_df[TIME_COL] = labels_df[TIME_COL].dt.strftime("%Y-%m-%d %H:%M:%S")
+
+    def add_periods_dummy_column_for_one_group(
+            labels_df,
+            periods_df,
+            new_col,
+            label):
+        """This function will add a dummy column for the time periods of each group to the ``labels_df``.
+        Parameters
+        ----------
+        labels_df : `pandas.DataFrame`
+            A data frame which at least inludes a timestamp column (TIME_COL).
+        periods_df : `pandas.DataFrame`
+            Data frame with ``start_time_col`` and ``end_time_col``.
+        new_col : `str`
+            The column name for the new dummy column to be added.
+        label : `str`
+            The label to be used in the new column when an event / anomaly is
+            happening. Other values will be None.
+
+
+        Returns
+        -------
+        labels_df : `pandas.DataFrame`
+            A dataframe which has one extra column as compared with the input ``labels_df``.
+            This extra column is a dummy string column for the input ``group``.
+        """
+        for i, row in periods_df.iterrows():
+            t1 = row[start_time_col]
+            t2 = row[end_time_col]
+            if t2 < t1:
+                raise ValueError(
+                    f"End Time: {t2} cannot be before Start Time: {t1}, in ``periods_df``.")
+            bool_index = (ts >= t1) & (ts <= t2)
+            labels_df.loc[bool_index, new_col] = label
+
+        return labels_df
+
+    new_cols = []
+    # If there is no grouping column we add a grouping column with only one value ("metric")
+    if grouping_col is None:
+        grouping_col = "metric"
+        periods_df["metric"] = "metric"
+
+    groups = set(periods_df[grouping_col].values)
+
+    marker_colors = get_distinct_colors(
+        len(groups),
+        opacity=0.8)
+
+    for group in groups:
+        new_col = f"{group}{new_cols_tag}"
+        new_cols.append(new_col)
+        periods_df_group = periods_df.loc[
+            periods_df[grouping_col] == group]
+        labels_df = add_periods_dummy_column_for_one_group(
+            labels_df=labels_df,
+            periods_df=periods_df_group,
+            new_col=new_col,
+            label=group)
+
+    # Plotting line segments for each period.
+    # The line segments will have the same color for the same group.
+    # Each group will be occupying one horizontal level in the plot.
+    # The groups are stacked vertically in the plot so that the user can
+    # scan and compare the periods across groups.
+    fig = plot_lines_markers(
+        df=labels_df,
+        x_col=TIME_COL,
+        line_cols=None,
+        marker_cols=new_cols,
+        line_colors=None,
+        marker_colors=marker_colors)
+
+    # Specify the y axis range
+    fig.update_yaxes(range=[-1, len(groups)])
+
+    # We add rectangles for each event period.
+    # The rectangle colors for each group will be the same and consistent with
+    # the line segments generated before for the same group.
+    # The rectangles span all the way through the y-axis so that the user can
+    # inspect the intersections between various groups better.
+    shapes = []
+    for i, group in enumerate(groups):
+        ind = (periods_df[grouping_col] == group)
+        periods_df_group = periods_df.loc[ind]
+
+        fillcolor = marker_colors[i]
+        for j, row in periods_df_group.iterrows():
+            x0 = row[start_time_col]
+            x1 = row[end_time_col]
+            y0 = -1
+            y1 = len(groups)
+
+            # Specify the corners of the rectangles
+            shape = dict(
+                type="rect",
+                x0=x0,
+                y0=y0,
+                x1=x1,
+                y1=y1,
+                fillcolor=fillcolor,
+                opacity=0.6,
+                line_width=2,
+                line_color=fillcolor,
+                layer="below")
+
+            shapes.append(shape)
+
+    fig.update_layout(
+        shapes=shapes,
+        title=title,
+        plot_bgcolor="rgba(233, 233, 233, 0.3)")  # light grey (lighter than default background)
+
+    return {
+        "fig": fig,
+        "labels_df": labels_df,
+        "groups": groups,
+        "new_cols": new_cols,
+        "ts": ts,
+        "min_timestamp": min_timestamp,
+        "max_timestamp": max_timestamp,
+        "marker_colors": marker_colors,
+        "periods_df": periods_df
+    }
+
+
+def add_multi_vrects(
+        fig,
+        periods_df,
+        grouping_col=None,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
+        y_min=None,
+        y_max=None,
+        annotation_text_col=None,
+        annotation_position="top left",
+        opacity=0.5,
+        grouping_color_dict=None):
+    """Adds vertical rectangle shadings to existing figure.
+    Each vertical rectangle information is given in rows of data frame ``periods_df``.
+    The information includes the beginning and end of vertical ranges of each rectangle as well as optional
+    annotation.
+    Rectangle colors can be grouped using a grouping given in ``grouping_col`` if available.
+
+    Parameters
+    ----------
+    fig : `plotly.graph_objects.Figure`
+        Existing plotly object which is going to be augmented with vertical
+        rectangles and annotations.
+    periods_df : `pandas.DataFrame`
+        Data frame with at least ``start_time_col`` and ``end_time_col`` to denote the
+        beginning and end of each vertical rectangle.
+        This might also include ``grouping_col`` if the rectangle colors are to be grouped
+        into same color within the group.
+    grouping_col : `str` or None, default None
+        The column which is used for grouping the vertical rectangle colors.
+        For each group, the same color will be used for all periods in that group.
+        If None, a dummy column will be added ("metric") with a single value (also "metric")
+        which results in generating only one color for all rectangles.
+    start_time_col : `str`, default ``START_TIME_COL``
+        The column denoting the start of a period. The type can be any type
+        consistent with the type of existing x axis in ``fig``.
+    end_time_col : `str`, default ``END_TIME_COL``
+        The column denoting the start of a period. The type can be any type
+        consistent with the type of existing x axis in ``fig``.
+    y_min : `float` or None, default None
+        The lower limit of the rectangles.
+    y_max : `float` or None, default None
+        The upper limit of the rectangles.
+    annotation_text_col : `str` or None, default None
+        A column which includes annotation texts for each vertical rectangle.
+    annotation_position : `str`, default "top left"
+        The position of annotation texts with respect to the vertical rectangle.
+    opacity : `float`, default 0.5
+        The opacity of the colors. Note that the passed colors could have opacity
+        as well, in which case this opacity will act as a relative opacity.
+    grouping_color_dict : `dict` [`str`, `str`] or None, default None
+        A dictionary to specify colors for each group given in ``grouping_col``.
+        If there is no ``grouping_col`` passed, there will be only one color needed
+        and in that case a dummy ``grouping_col`` will be created with the name "metric".
+        Therefore user needs to specify ``grouping_color_dict = {"metric": desired_color}``.
+
+    Returns
+    -------
+    result : `dict`
+        - "fig": `plotly.graph_objects.Figure`
+            Updated plotly object which is augmented with vertical
+            rectangles and annotations.
+        - "grouping_color_dict": `dict` [`str`, `str`]
+            A dictionary with keys being the groups and the values being the colors.
+
+    """
+    # If there is no grouping column we add a grouping column with only one value ("metric")
+    if grouping_col is None:
+        grouping_col = "metric"
+        periods_df["metric"] = "metric"
+
+    if start_time_col not in periods_df.columns:
+        raise ValueError(
+            f"start_time_col: {start_time_col} is not found in ``periods_df`` columns: {periods_df.columns}")
+
+    if end_time_col not in periods_df.columns:
+        raise ValueError(
+            f"end_time_col: {end_time_col} is not found in ``periods_df`` columns: {periods_df.columns}")
+
+    if grouping_col is not None and grouping_col not in periods_df.columns:
+        raise ValueError(
+            f"grouping_col: {grouping_col} is passed but not found in ``periods_df`` columns: {periods_df.columns}")
+
+    if annotation_text_col is not None and annotation_text_col not in periods_df.columns:
+        raise ValueError(
+            f"annotation_text_col: {annotation_text_col} is passed but not found in ``periods_df`` columns: {periods_df.columns}")
+
+    groups = list(set(periods_df[grouping_col]))
+    groups.sort()
+
+    if grouping_color_dict is None:
+        colors = get_distinct_colors(
+            len(groups),
+            opacity=1.0)
+        grouping_color_dict = {groups[i]: colors[i] for i in range(len(groups))}
+
+    for i, group in enumerate(groups):
+        ind = (periods_df[grouping_col] == group)
+        periods_df_group = periods_df.loc[ind]
+
+        fillcolor = grouping_color_dict[group]
+        for j, row in periods_df_group.iterrows():
+            x0 = row[start_time_col]
+            x1 = row[end_time_col]
+
+            if annotation_text_col is not None:
+                annotation_text = row[annotation_text_col]
+            else:
+                annotation_text = ""
+            # Adds the vertical rectangles
+            fig.add_vrect(
+                x0=x0,
+                y0=y_min,
+                x1=x1,
+                y1=y_max,
+                fillcolor=fillcolor,
+                opacity=opacity,
+                line_width=2,
+                line_color=fillcolor,
+                layer="below",
+                annotation_text=annotation_text,
+                annotation_position=annotation_position)
+    return {
+        "fig": fig,
+        "grouping_color_dict": grouping_color_dict}
+
+
+def plot_overlay_anomalies_multi_metric(
+        df,
+        time_col,
+        value_cols,
+        anomaly_df,
+        anomaly_df_grouping_col=None,
+        start_time_col=START_TIME_COL,
+        end_time_col=END_TIME_COL,
+        annotation_text_col=None,
+        annotation_position="top left",
+        lines_opacity=0.6,
+        markers_opacity=0.8,
+        vrect_opacity=0.3):
+    """This function operates on a given data frame (``df``) which includes time (given in ``time_col``) and
+    metrics (given in ``value_cols``), as well as ``anomaly_df`` which includes the anomaly periods
+    corresponding to those metrics. It generates a plot of the metrics annotated with anomaly
+    values as markers on the curves and vertical rectangles for the same periods.
+    Each metric, its anomaly values and vertical rectangles use the same color with
+    varying opacity.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        A data frame which at least inludes a timestamp column (``TIME_COL``) and
+        ``value_cols`` which represent the metrics.
+    time_col : `str`
+        The column name in ``df`` representing time for the time series data.
+        The time column can be anything that can be parsed by `pandas.DatetimeIndex`.
+    value_cols : `list` [`str`]
+        The columns which include the metrics.
+    anomaly_df : `pandas.DataFrame`
+        Data frame with ``start_time_col`` and ``end_time_col`` and ``grouping_col``
+        (if provided). This contains the anomaly periods for each metric
+        (one of the ``value_cols``). Each row of this dataframe corresponds
+        to an anomaly occurring between the times given in ``row[start_time_col]``
+        and ``row[end_time_col]``.
+        The ``grouping_col`` (if not None) determines which metric that
+        anomaly corresponds too (otherwise we assume all anomalies apply to all metrics).
+    anomaly_df_grouping_col : `str` or None, default None
+        The column name for grouping the list of the anomalies which is to appear
+        in ``anomaly_df``.
+        This column should include some of the metric names
+        specified in ``value_cols``. The ``grouping_col`` (if not None) determines which metric that
+        anomaly corresponds too (otherwise we assume all anomalies apply to all metrics).
+    start_time_col : `str`, default ``START_TIME_COL``
+        The column name in ``anomaly_df`` representing the start timestamp of
+        the anomalous period, inclusive.
+        The format can be anything that can be parsed by pandas DatetimeIndex.
+    end_time_col : `str`, default ``END_TIME_COL``
+        The column name in ``anomaly_df`` representing the start timestamp of
+        the anomalous period, inclusive.
+        The format can be anything that can be parsed by pandas DatetimeIndex.
+    annotation_text_col : `str` or None, default None
+        A column which includes annotation texts for each vertical rectangle.
+    annotation_position : `str`, default "top left"
+        The position of annotation texts with respect to the vertical rectangle.
+    lines_opacity : `float`, default 0.6
+        The opacity of the colors used in the lines (curves) which represent the
+        metrics given in ``value_cols``.
+    markers_opacity: `float`, default 0.8
+        The opacity of the colors used in the markersc which represent the
+        value of the metrics given in ``value_cols`` during anomaly times as
+        specified in ``anomaly_df``.
+    vrect_opacity : `float`, default 0.3
+        The opacity of the colors for the vertical rectangles.
+
+
+    Returns
+    -------
+    result : `dict`
+        A dictionary with following items:
+
+        - "fig": `plotly.graph_objects.Figure`
+            Plotly object which includes the metrics augmented with vertical
+            rectangles and annotations.
+        - "augmented_df": `pandas.DataFrame`
+            This is a dataframe obtained by augmenting the input ``df`` with new
+            columns determining if the metrics appearing in ``df`` are anomaly
+            or not and the new columns denoting anomaly values and normal values
+            (described below).
+        - "is_anomaly_cols": `list` [`str`]
+            The list of add boolean columns to determine if a value is an anomaly for
+            a given metric. The format of the columns is ``f"{metric}_is_anomaly"``.
+        - "anomaly_value_cols": `list` [`str`]
+            The list of columns containing only anomaly values (`np.nan` otherwise) for each corresponding
+            metric. The format of the columns is ``f"{metric}_anomaly_value"``.
+        - "normal_value_cols": `list` [`str`]
+            The list of columns containing only non-anomalous / normal values (`np.nan` otherwise)
+            for each corresponding metric. The format of the columns is ``f"{metric}_normal_value"``.
+        - "line_colors": `list` [`str`]
+            The colors generated for the metric lines (curves).
+        - "marker_colors": `list` [`str`]
+            The colors generated for the anomaly values markers.
+        - "vrect_colors": `list` [`str`]
+            The colors generated for the vertical rectangles.
+
+    """
+    # Adds anomaly information columns to the data
+    # For every column specified in ``value_cols``, there will be 3 new columns are added to ``df``:
+    # ``f"{value_col}_is_anomaly"``
+    # ``f"{value_col}_anomaly_value"``
+    # ``f"{value_col}_normal_value"``
+    augmenting_data_res = label_anomalies_multi_metric(
+        df=df,
+        time_col=time_col,
+        value_cols=value_cols,
+        anomaly_df=anomaly_df,
+        anomaly_df_grouping_col=anomaly_df_grouping_col,
+        start_time_col=start_time_col,
+        end_time_col=end_time_col)
+
+    augmented_df = augmenting_data_res["augmented_df"]
+    is_anomaly_cols = augmenting_data_res["is_anomaly_cols"]
+    anomaly_value_cols = augmenting_data_res["anomaly_value_cols"]
+    normal_value_cols = augmenting_data_res["normal_value_cols"]
+
+    line_colors = get_distinct_colors(
+        len(value_cols),
+        opacity=lines_opacity)
+
+    marker_colors = get_distinct_colors(
+        len(value_cols),
+        opacity=markers_opacity)
+
+    vrect_colors = get_distinct_colors(
+        len(value_cols),
+        opacity=vrect_opacity)
+
+    fig = plot_lines_markers(
+        df=augmented_df,
+        x_col=time_col,
+        line_cols=value_cols,
+        marker_cols=anomaly_value_cols,
+        line_colors=line_colors,
+        marker_colors=marker_colors)
+
+    grouping_color_dict = {value_cols[i]: vrect_colors[i] for i in range(len(value_cols))}
+
+    y_min = df[value_cols].min(numeric_only=True).min()
+    y_max = df[value_cols].max(numeric_only=True).max()
+
+    augmenting_fig_res = add_multi_vrects(
+        fig=fig,
+        periods_df=anomaly_df,
+        grouping_col=anomaly_df_grouping_col,
+        start_time_col=start_time_col,
+        end_time_col=end_time_col,
+        y_min=y_min,
+        y_max=y_max,
+        annotation_text_col=annotation_text_col,
+        annotation_position="top left",
+        opacity=1.0,
+        grouping_color_dict=grouping_color_dict)
+
+    fig = augmenting_fig_res["fig"]
+
+    return {
+        "fig": fig,
+        "augmented_df": augmented_df,
+        "is_anomaly_cols": is_anomaly_cols,
+        "anomaly_value_cols": anomaly_value_cols,
+        "normal_value_cols": normal_value_cols,
+        "line_colors": line_colors,
+        "marker_colors": marker_colors,
+        "vrect_colors": vrect_colors
+    }
+
+
+def plot_precision_recall_curve(
+        df,
+        grouping_col=None,
+        recall_col="recall",
+        precision_col="precision",
+        axis_font_size=18,
+        title_font_size=20,
+        title="Precision - Recall Curve",
+        opacity=0.95):
+    """Plots a Precision - Recall curve, where the x axis is recall and the y axis is precision.
+    If ``grouping_col`` is None, it creates one Precision - Recall curve given the data in ``df``.
+    Otherwise, this function creates an overlay plot for multiple Precision - Recall curves, one for each level in the ``grouping_col``.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        The input dataframe. Must contain the columns:
+
+            - ``recall_col``: `float`
+            - ``precision_col``: `float`
+
+        If ``grouping_col`` is not None, it must also contain the column ``grouping_col``.
+    grouping_col : `str` or None, default None
+        Column name for the grouping column.
+    recall_col : `str`, default "recall"
+        Column name for recall.
+    precision_col : `str`, default "precision"
+        Column name for precision.
+    axis_font_size : `int`, default 18
+        Axis font size.
+    title_font_size : 20
+        Title font size.
+    title : `str`, default "Precision - Recall Curve"
+        Plot title.
+    opacity : `float`, default 0.95
+        The opacity of the color. This has to be a number between 0 and 1.
+
+    Returns
+    -------
+        fig : `plotly.graph_objs._figure.Figure`
+            Plot figure.
+    """
+    if any([col not in df.columns for col in [recall_col, precision_col]]):
+        raise ValueError(f"`df` must contain the `recall_col`: '{recall_col}' and the `precision_col`: '{precision_col}' specified!")
+    # Stores the curves to be plotted.
+    data = []
+    # Creates the curve(s).
+    if grouping_col is None:  # Creates one precision - recall curve.
+        num_colors = 1
+        df.sort_values(recall_col, inplace=True)
+        line = go.Scatter(
+            x=df[recall_col].tolist(),
+            y=df[precision_col].tolist())
+        data.append(line)
+    else:  # Creates precision - recall curve for every level in `grouping_col`.
+        if grouping_col not in df.columns:
+            raise ValueError(f"`grouping_col` = '{grouping_col}' is not found in the columns of `df`!")
+        num_colors = 0
+        for level, indices in df.groupby(grouping_col).groups.items():
+            df_subset = df.loc[indices].reset_index(drop=True).sort_values(recall_col)
+            line = go.Scatter(
+                name=f"{level}",
+                x=df_subset[recall_col].tolist(),
+                y=df_subset[precision_col].tolist())
+            data.append(line)
+            num_colors += 1
+    # Creates a list of colors for the curve(s).
+    color_list = get_distinct_colors(
+        num_colors=num_colors,
+        opacity=opacity)
+    if color_list is not None:
+        if len(color_list) < len(data):
+            raise ValueError("`color_list` must not be shorter than the number of traces in this figure!")
+        for i, v in enumerate(data):
+            v.line.color = color_list[i]
+    # Creates the layout.
+    range_epsilon = 0.05  # Space at the beginning and end of the margins.
+    layout = go.Layout(
+        xaxis=dict(
+            title=recall_col.title(),
+            titlefont=dict(size=axis_font_size),
+            range=[0 - range_epsilon, 1 + range_epsilon],  # Sets the range of xaxis.
+            tickfont_size=axis_font_size,
+            tickformat=".0%",
+            hoverformat=",.1%"),  # Keeps 1 decimal place.
+        yaxis=dict(
+            title=precision_col.title(),
+            titlefont=dict(size=axis_font_size),
+            range=[0 - range_epsilon, 1 + range_epsilon],  # Sets the range of yaxis.
+            tickfont_size=axis_font_size,
+            tickformat=".0%",
+            hoverformat=",.1%"),  # Keeps 1 decimal place.
+        title=title.title(),
+        title_x=0.5,
+        titlefont=dict(size=title_font_size),
+        autosize=False,
+        width=1000,
+        height=800)
+    # Creates the figure.
+    fig = go.Figure(data=data, layout=layout)
+    fig.update_yaxes(
+        constrain="domain",  # Compresses the yaxis by decreasing its "domain".
+        automargin=True,
+        rangemode="tozero")
+    fig.update_xaxes(
+        constrain="domain",  # Compresses the xaxis by decreasing its "domain".
+        automargin=True,
+        rangemode="tozero")
+    fig.add_hline(y=0.0, line_width=1, line_color="gray")
+    fig.add_vline(x=0.0, line_width=1, line_color="gray")
+    return fig
+
+
+def plot_anomalies_over_forecast_vs_actual(
+        df,
+        time_col=TIME_COL,
+        actual_col=ACTUAL_COL,
+        predicted_col=PREDICTED_COL,
+        predicted_anomaly_col=PREDICTED_ANOMALY_COL,
+        anomaly_col=ANOMALY_COL,
+        marker_opacity=0.7,
+        predicted_anomaly_marker_color="green",
+        anomaly_marker_color="red",
+        **kwargs):
+    """Utility function which overlayes the predicted anomalies or anomalies on the forecast vs actual plot.
+    The function calls the internal function `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`
+    and then adds markers on top.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        The input dataframe.
+    time_col : `str`, default `~greykite.common.constants.TIME_COL`
+        Column in ``df`` with timestamp (x-axis).
+    actual_col : `str`, default `~greykite.common.constants.ACTUAL_COL`
+        Column in ``df`` with actual values.
+    predicted_col : `str`, default `~greykite.common.constants.PREDICTED_COL`
+        Column in ``df`` with predicted values.
+    predicted_anomaly_col : `str` or None, default `~greykite.common.constants.PREDICTED_ANOMALY_COL`
+        Column in ``df`` with predicted anomaly labels (boolean) in the time series.
+        `True` denotes a predicted anomaly.
+    anomaly_col : `str` or None, default `~greykite.common.constants.ANOMALY_COL`
+        Column in ``df`` with anomaly labels (boolean) in the time series.
+        `True` denotes an anomaly.
+    marker_opacity : `float`, default 0.5
+        The opacity of the marker colors.
+    predicted_anomaly_marker_color : `str`, default "green"
+        The color of the marker(s) for the predicted anomalies.
+    anomaly_marker_color : `str`, default "red"
+        The color of the marker(s) for the anomalies.
+    **kwargs
+        Additional arguments on how to decorate your plot.
+        The keyword arguments are passed to `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`.
+
+    Returns
+    -------
+    fig : `plotly.graph_objs._figure.Figure`
+        Plot figure.
+    """
+    fig = plot_forecast_vs_actual(
+        df=df,
+        time_col=time_col,
+        actual_col=actual_col,
+        predicted_col=predicted_col,
+        **kwargs)
+    if predicted_anomaly_col is not None:
+        fig.add_trace(go.Scatter(
+            x=df.loc[df[predicted_anomaly_col].apply(lambda val: val is True), time_col],
+            y=df.loc[df[predicted_anomaly_col].apply(lambda val: val is True), predicted_col],
+            mode="markers",
+            marker=go.scatter.Marker(color=predicted_anomaly_marker_color),
+            name=predicted_anomaly_col.title(),
+            showlegend=True,
+            opacity=marker_opacity))
+    if anomaly_col is not None:
+        fig.add_trace(go.Scatter(
+            x=df.loc[df[anomaly_col].apply(lambda val: val is True), time_col],
+            y=df.loc[df[anomaly_col].apply(lambda val: val is True), actual_col],
+            mode="markers",
+            marker=go.scatter.Marker(color=anomaly_marker_color),
+            name=anomaly_col.title(),
+            showlegend=True,
+            opacity=marker_opacity))
     return fig

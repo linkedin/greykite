@@ -106,7 +106,7 @@ class DataLoader:
 
         agg_freq : `str` or None, default None
             If None, data will not be aggregated and will include all columns.
-            Possible values: "daily", "weekly", or "monthly".
+            Possible values: "hourly", "daily", "weekly", or "monthly".
 
         agg_func : `Dict` [`str`, `str`], default None
             A dictionary of the columns to be aggregated and the corresponding aggregating functions.
@@ -127,7 +127,12 @@ class DataLoader:
         elif agg_freq and agg_func:
             df_raw = df[list(agg_func.keys())]
             df_raw.insert(0, TIME_COL, pd.to_datetime(df[TIME_COL]))
-            if agg_freq == "daily":
+            if agg_freq == "hourly":
+                # Aggregate to hourly
+                df_tmp = df_raw.resample("H", on=TIME_COL).agg(agg_func)
+                df_hourly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
+                return df_hourly
+            elif agg_freq == "daily":
                 # Aggregate to daily
                 df_tmp = df_raw.resample("D", on=TIME_COL).agg(agg_func)
                 df_daily = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
@@ -143,7 +148,7 @@ class DataLoader:
                 df_monthly = df_tmp.drop(columns=TIME_COL).reset_index() if TIME_COL in df_tmp.columns else df_tmp.reset_index()
                 return df_monthly
             else:
-                warnings.warn("Invalid \"agg_freq\", must be one of \"daily\", \"weekly\" or \"monthly\". "
+                warnings.warn("Invalid \"agg_freq\", must be one of \"hourly\", \"daily\", \"weekly\" or \"monthly\". "
                               "Non-aggregated data is returned.")
                 return df_raw
         else:

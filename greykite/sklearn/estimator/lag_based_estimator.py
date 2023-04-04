@@ -38,6 +38,7 @@ from greykite.common.aggregation_function_enum import AggregationFunctionEnum
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
 from greykite.common.time_properties import fill_missing_dates
+from greykite.common.time_properties import infer_freq
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
 
 
@@ -308,7 +309,7 @@ class LagBasedEstimator(BaseForecastEstimator):
         self.df[self.time_col_] = pd.to_datetime(self.df[self.time_col_])
         self.df = self.df.sort_values(by=self.time_col_).reset_index(drop=True)
         # Infers data frequency.
-        freq = pd.infer_freq(self.df[self.time_col_])
+        freq = infer_freq(self.df, self.time_col_)
         if self.freq is None:
             self.freq = freq
         if freq is not None and self.freq != freq:

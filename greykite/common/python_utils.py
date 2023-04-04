@@ -27,6 +27,7 @@ import math
 import re
 import warnings
 from dataclasses import field
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -287,8 +288,8 @@ def assert_equal(
             }
         }
     kwargs : keyword args, optional
-        Keyword args to pass to `pandas.util.testing.assert_frame_equal`,
-        `pandas.util.testing.assert_series_equal`.
+        Keyword args to pass to `pandas.testing.assert_frame_equal`,
+        `pandas.testing.assert_series_equal`.
 
     Raises
     ------
@@ -831,3 +832,26 @@ def group_strs_with_regex_patterns(
         strings_list = [x for x in strings_list if x not in group]
 
     return {"str_groups": str_groups, "remainder": strings_list}
+
+
+def split_offset_str(
+        offset_str: str) -> List[str]:
+    """Splits a pandas offset string into number part and frequency string part.
+
+    Parameters
+    ----------
+    offset_str : `str`
+        An offset string parsable by `pandas`.
+        For example, "7D", "-5H", etc.
+        The number part should only include numbers and "+" or "-".
+        The frequency part should only include letters.
+
+    Returns
+    -------
+    split_strs : `list` [`str`]
+        A list of split strings.
+        For example, ["7", "D"].
+    """
+    freq = offset_str.lstrip("+-012334556789")
+    num = offset_str[:-len(freq)]
+    return [num, freq]

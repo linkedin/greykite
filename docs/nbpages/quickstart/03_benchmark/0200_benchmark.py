@@ -93,22 +93,23 @@ common_config = ForecastConfig(
 # %%
 # Now we update ``common_config`` to specify the individual models.
 
-# Defines ``Prophet`` model template with custom seasonality
-model_components = ModelComponentsParam(
-    seasonality={
-            "seasonality_mode": ["additive"],
-            "yearly_seasonality": ["auto"],
-            "weekly_seasonality": [True],
-        },
-        growth={
-            "growth_term": ["linear"]
-        }
-)
-param_update = dict(
-    model_template=ModelTemplateEnum.PROPHET.name,
-    model_components_param=model_components
-)
-Prophet = replace(common_config, **param_update)
+# # The following code defines a ``Prophet`` configuration.
+# # Defines ``Prophet`` model template with custom seasonality
+# model_components = ModelComponentsParam(
+#     seasonality={
+#             "seasonality_mode": ["additive"],
+#             "yearly_seasonality": ["auto"],
+#             "weekly_seasonality": [True],
+#         },
+#         growth={
+#             "growth_term": ["linear"]
+#         }
+# )
+# param_update = dict(
+#     model_template=ModelTemplateEnum.PROPHET.name,
+#     model_components_param=model_components
+# )
+# Prophet = replace(common_config, **param_update)
 
 # Defines ``Silverkite`` model template with automatic autoregression
 # and changepoint detection
@@ -138,7 +139,7 @@ Silverkite_2 = replace(common_config, **param_update)
 # Define the list of configs to benchmark
 # The dictionary keys will be used to store the benchmark results
 configs = {
-    "Prophet": Prophet,
+    # "Prophet": Prophet,
     "SK_1": Silverkite_1,
     "SK_2": Silverkite_2,
 }
@@ -402,13 +403,13 @@ plotly.io.show(fig)
 # Error due to incompatible model components in config
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-# regressor_cols is not part of Prophet's model components
+# some_regressor is not part of Prophet's model components
 model_components=ModelComponentsParam(
     regressors={
-        "regressor_cols": ["regressor1", "regressor2", "regressor_categ"]
+        "some_regressor": ["regressor1", "regressor2", "regressor_categ"]
     }
 )
-invalid_prophet = replace(Prophet, model_components_param=model_components)
+invalid_prophet = replace(Silverkite_1, model_components_param=model_components)
 invalid_configs = {"invalid_prophet": invalid_prophet}
 bm = BenchmarkForecastConfig(df=df, configs=invalid_configs, tscv=tscv)
 try:
@@ -421,7 +422,7 @@ except ValueError as err:
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # model template name is not part of TemplateEnum, thus invalid
-unknown_template = replace(Prophet, model_template="SOME_TEMPLATE")
+unknown_template = replace(Silverkite_1, model_template="SOME_TEMPLATE")
 invalid_configs = {"unknown_template": unknown_template}
 bm = BenchmarkForecastConfig(df=df, configs=invalid_configs, tscv=tscv)
 try:
@@ -435,10 +436,10 @@ except ValueError as err:
 
 # the configs are valid by themselves, however incompatible for
 # benchmarking as these have different forecast horizons
-Prophet_forecast_horizon_30 = replace(Prophet, forecast_horizon=30)
+Silverkite_forecast_horizon_30 = replace(Silverkite_1, forecast_horizon=30)
 invalid_configs = {
-    "Prophet": Prophet,
-    "Prophet_30": Prophet_forecast_horizon_30
+    "Silverkite": Silverkite_1,
+    "Silverkite_30": Silverkite_forecast_horizon_30
 }
 bm = BenchmarkForecastConfig(df=df, configs=invalid_configs, tscv=tscv)
 try:
@@ -450,7 +451,7 @@ except ValueError as err:
 # Error due to different forecast horizons in config and tscv
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-## Error due to different forecast horizons in config and tscv
+# Error due to different forecast horizons in config and tscv
 tscv = RollingTimeSeriesSplit(forecast_horizon=15)
 bm = BenchmarkForecastConfig(df=df, configs=configs, tscv=tscv)
 try:

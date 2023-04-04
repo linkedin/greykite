@@ -58,6 +58,8 @@ def test_multistage_forecast():
             "holiday_post_num_days": 1,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "changepoints_dict": {
@@ -97,6 +99,7 @@ def test_multistage_forecast():
             "drop_pred_cols": None,
             "explicit_pred_cols": None,
             "regression_weight_col": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
@@ -124,6 +127,8 @@ def test_multistage_forecast():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "changepoints_dict": None,
@@ -155,6 +160,7 @@ def test_multistage_forecast():
             "drop_pred_cols": None,
             "explicit_pred_cols": None,
             "regression_weight_col": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
@@ -189,6 +195,8 @@ def test_multistage_forecast_silverkite_wow():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "auto_growth": True,
@@ -221,6 +229,7 @@ def test_multistage_forecast_silverkite_wow():
             "drop_pred_cols": None,
             "explicit_pred_cols": None,
             "regression_weight_col": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )

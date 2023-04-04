@@ -309,3 +309,21 @@ def test_get_event_pred_cols():
         f"C(Q('events_k1'), levels=['{EVENT_DEFAULT}', 'level1', 'level2'])",
         f"C(Q('events_k2'), levels=['{EVENT_DEFAULT}', 'a', 'b', 'c'])",
         f"C(Q('events_k3'), levels=['{EVENT_DEFAULT}', 'd'])"]
+
+
+def test_get_event_pred_cols_with_neighbor():
+    """Tests `get_event_pred_cols` with neighbor events."""
+
+    daily_event_df_dict = {
+        "k1": pd.DataFrame({EVENT_DF_LABEL_COL: ["level1", "level2", "level1"]}),
+        "k2": pd.DataFrame({EVENT_DF_LABEL_COL: ["a", "b", "c"]}),
+        "k3": pd.DataFrame({EVENT_DF_LABEL_COL: ["d", "d", "d"]}),
+    }
+    assert get_event_pred_cols(daily_event_df_dict, ["7D"]) == [
+        f"C(Q('events_k1'), levels=['{EVENT_DEFAULT}', 'level1', 'level2'])",
+        f"C(Q('events_k1_7D_after'), levels=['{EVENT_DEFAULT}', 'level1_7D_after', 'level2_7D_after'])",
+        f"C(Q('events_k2'), levels=['{EVENT_DEFAULT}', 'a', 'b', 'c'])",
+        f"C(Q('events_k2_7D_after'), levels=['{EVENT_DEFAULT}', 'a_7D_after', 'b_7D_after', 'c_7D_after'])",
+        f"C(Q('events_k3'), levels=['{EVENT_DEFAULT}', 'd'])",
+        f"C(Q('events_k3_7D_after'), levels=['{EVENT_DEFAULT}', 'd_7D_after'])"
+    ]

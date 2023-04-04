@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from pandas.util.testing import assert_equal
 
 from greykite.common.features.timeseries_impute import impute_with_lags
 from greykite.common.features.timeseries_impute import impute_with_lags_multi
+from greykite.common.python_utils import assert_equal
 
 
 def test_impute_with_lags():

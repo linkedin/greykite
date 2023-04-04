@@ -34,7 +34,6 @@ from greykite.algo.forecast.silverkite.forecast_simple_silverkite import SimpleS
 from greykite.common import constants as cst
 from greykite.common.python_utils import update_dictionary
 from greykite.sklearn.estimator.base_silverkite_estimator import BaseSilverkiteEstimator
-from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
 
 
@@ -101,7 +100,6 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
     def __init__(
             self,
             silverkite: SimpleSilverkiteForecast = SimpleSilverkiteForecast(),
-            silverkite_diagnostics: SilverkiteDiagnostics = SilverkiteDiagnostics(),
             score_func: callable = mean_squared_error,
             coverage: float = None,
             null_model_params: Optional[Dict] = None,
@@ -119,6 +117,8 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             holiday_post_num_days: int = 2,
             holiday_pre_post_num_dict: Optional[Dict] = None,
             daily_event_df_dict: Optional[Dict] = None,
+            daily_event_neighbor_impact: Optional[Union[int, List[int], callable]] = None,
+            daily_event_shifted_effect: Optional[List[str]] = None,
             auto_growth: bool = False,
             changepoints_dict: Optional[Dict] = None,
             auto_seasonality: bool = False,
@@ -146,11 +146,11 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             regression_weight_col: Optional[str] = None,
             simulation_based: Optional[bool] = False,
             simulation_num: int = 10,
-            fast_simulation: bool = False):
+            fast_simulation: bool = False,
+            remove_intercept: bool = False):
         # every subclass of BaseSilverkiteEstimator must call super().__init__
         super().__init__(
             silverkite=silverkite,
-            silverkite_diagnostics=silverkite_diagnostics,
             score_func=score_func,
             coverage=coverage,
             null_model_params=null_model_params,
@@ -175,6 +175,8 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.holiday_post_num_days = holiday_post_num_days
         self.holiday_pre_post_num_dict = holiday_pre_post_num_dict
         self.daily_event_df_dict = daily_event_df_dict
+        self.daily_event_neighbor_impact = daily_event_neighbor_impact
+        self.daily_event_shifted_effect = daily_event_shifted_effect
         self.auto_growth = auto_growth
         self.changepoints_dict = changepoints_dict
         self.auto_seasonality = auto_seasonality
@@ -203,6 +205,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.simulation_based = simulation_based
         self.simulation_num = simulation_num
         self.fast_simulation = fast_simulation
+        self.remove_intercept = remove_intercept
         # ``forecast_simple_silverkite`` generates a ``fs_components_df`` to call
         # ``forecast_silverkite`` that is compatible with ``BaseSilverkiteEstimator``.
         # Unlike ``SilverkiteEstimator``, this does not need to call ``validate_inputs``.
@@ -287,6 +290,8 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             holiday_post_num_days=self.holiday_post_num_days,
             holiday_pre_post_num_dict=self.holiday_pre_post_num_dict,
             daily_event_df_dict=self.daily_event_df_dict,
+            daily_event_neighbor_impact=self.daily_event_neighbor_impact,
+            daily_event_shifted_effect=self.daily_event_shifted_effect,
             auto_growth=self.auto_growth,
             changepoints_dict=self.changepoints_dict,
             auto_seasonality=self.auto_seasonality,
@@ -314,7 +319,8 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             regression_weight_col=self.regression_weight_col,
             simulation_based=self.simulation_based,
             simulation_num=self.simulation_num,
-            fast_simulation=self.fast_simulation)
+            fast_simulation=self.fast_simulation,
+            remove_intercept=self.remove_intercept)
 
         # Fits the uncertainty model if not already fit.
         if self.uncertainty_dict is not None and uncertainty_dict is None:

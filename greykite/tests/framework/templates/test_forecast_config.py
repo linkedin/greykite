@@ -282,7 +282,7 @@ def test_forecast_config_json():
     assert config.to_dict()
 
 
-def assert_forecast_config_json_multiple_model_componments_parameter(config: Optional[ForecastConfig] = None):
+def assert_forecast_config_json_multiple_model_components_parameter(config: Optional[ForecastConfig] = None):
     """Asserts the forecast config values. This function expects a particular config and is not generic"""
     config = ForecastConfigDefaults().apply_forecast_config_defaults(config)
     assert config.model_template == [ModelTemplateEnum.SILVERKITE.name,
@@ -318,7 +318,7 @@ def assert_forecast_config_json_multiple_model_componments_parameter(config: Opt
     assert config.to_dict()  # runs without error
 
 
-def test_forecast_config_json_multiple_model_componments_parameter():
+def test_forecast_config_json_multiple_model_components_parameter():
     """Tests ForecastConfig json with a list of model_template and model_components_param parameters"""
     json_str = """{
         "model_template": ["SILVERKITE", "SILVERKITE_DAILY_90", "SILVERKITE_WEEKLY"],
@@ -391,7 +391,7 @@ def test_forecast_config_json_multiple_model_componments_parameter():
     }"""
     forecast_dict = json.loads(json_str)
     config = forecast_config_from_dict(forecast_dict)
-    assert_forecast_config_json_multiple_model_componments_parameter(config)
+    assert_forecast_config_json_multiple_model_components_parameter(config)
 
     # Null values inside `model_template` and `model_components_param`
     json_str = """{

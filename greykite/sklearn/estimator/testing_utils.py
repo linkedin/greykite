@@ -112,3 +112,20 @@ def params_components():
         "max_admissible_value": None,
         "uncertainty_dict": uncertainty_dict
     }
+
+
+def params_component_breakdowns():
+    """Parameters for ``plot_components``"""
+    expected_component_names = [
+        "Intercept",
+        "Regressors",
+        "Autoregressive",
+        "Event",
+        "Trend",
+        "Seasonality",
+        "Residuals",
+        "Smoothed Residuals",
+        "Changepoints"]
+    return {
+        "expected_component_names": expected_component_names,
+    }

@@ -18,19 +18,24 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-# original author: Reza Hosseini
+# original author: Reza Hosseini, Yi Su
 """Functions to fit a machine learning model
 and use it for prediction.
 """
 
 import random
 import re
+import traceback
 import warnings
+from typing import Dict
+from typing import List
+from typing import Optional
 
 import matplotlib
 import numpy as np
 import pandas as pd
 import patsy
+import scipy
 import statsmodels.api as sm
 from pandas.plotting import register_matplotlib_converters
 from sklearn.ensemble import GradientBoostingRegressor
@@ -50,56 +55,134 @@ from greykite.common.constants import R2_null_model_score
 from greykite.common.evaluation import calc_pred_err
 from greykite.common.evaluation import r2_null_model_score
 from greykite.common.features.normalize import normalize_df
+from greykite.common.logging import LoggingLevelEnum
+from greykite.common.logging import log_message
 from greykite.common.python_utils import group_strs_with_regex_patterns
 from greykite.common.viz.timeseries_plotting import plot_multivariate
 
 
 matplotlib.use("agg")  # noqa: E402
-import matplotlib.pyplot as plt  # isort:skip
+import matplotlib.pyplot as plt  # isort:skip # noqa: E402
 
 
 register_matplotlib_converters()
 
 
-def design_mat_from_formula(
-        df,
-        model_formula_str,
-        y_col=None,
-        pred_cols=None):
-    """ Given a formula it extracts the response vector (y)
-    and builds the design matrix (x_mat)
+def get_intercept_col_from_design_mat(
+        x_mat: pd.DataFrame) -> Optional[str]:
+    """Gets the explicit or implicit intercept column name from `patsy` design matrix.
 
-    :param df: pd.DataFrame
-        A dataframe with the response vector (y) and the feature columns (x_mat)
-    :param model_formula_str: str
+    By default, `patsy` will make the design matrix always full rank.
+    It will always include an intercept term unless we specify "-1" or "+0".
+    However, if there are categorical variables, even we specify "-1" or "+0",
+    it will include an implicit intercept by adding all levels of a categorical
+    variable into the design matrix.
+
+    The logic in patsy is that when intercept is excluded,
+    always the first categorical variable in the formula string will have all levels.
+    The levels are ordered in alphabetical order.
+    In this case, we will search for the first categorical variable
+    and remove its first level.
+
+    Parameters
+    ----------
+    x_mat : `pandas.DataFrame`
+        The design matrix built by `patsy`.
+        Must have attribute ``design_info``.
+
+    Returns
+    -------
+    name : `str` or None
+        The column name of explicit or implicit intercept in ``x_mat``.
+    """
+    design_info = getattr(x_mat, "design_info", None)
+    name = None
+    if design_info is not None:
+        terms = design_info.terms
+        # Checks if intercept is in the design matrix.
+        if patsy.desc.Term([]) in terms:
+            name = patsy.desc.Term([]).name()  # Name is "Intercept".
+        else:
+            # Intercept is not in design matrix,
+            # finds the implicit intercept.
+            # `patsy` orders categorical variables first,
+            # and the first categorical variable has all levels.
+            # We remove the first level.
+            for _, idx_slice in design_info.term_name_slices.items():
+                # We only need to iterate the first element.
+                if idx_slice.stop - idx_slice.start > 1:
+                    # Sets name to the first column only when the term has
+                    # more than 1 columns (ignores no-categorical case).
+                    name = list(x_mat.columns)[idx_slice.start]
+                break
+    return name
+
+
+def design_mat_from_formula(
+        df: pd.DataFrame,
+        model_formula_str: str,
+        y_col: Optional[str] = None,
+        pred_cols: Optional[List[str]] = None,
+        remove_intercept: bool = False) -> Dict:
+    """ Given a formula it extracts the response vector (y)
+    and builds the design matrix (x_mat).
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        A dataframe with the response vector (y) and the feature columns (x_mat).
+    model_formula_str : `str`
         A formula string e.g. "y~x1+x2+x3*x4".
         This is similar to R formulas.
         See https://patsy.readthedocs.io/en/latest/formulas.html#how-formulas-work.
-    :param y_col: str
+    y_col : `str` or None, default None
         The column name which has the value of interest to be forecasted.
         If the model_formula_str is not passed, y_col e.g. ["y"] is used
-        as the response vector column
-    :param pred_cols: List[str]
-        The names of the feature columns
+        as the response vector column.
+    pred_cols : `list` [`str`] or None, default None
+        The names of the feature columns.
         If the model_formula_str is not passed, pred_cols e.g.
-        ["x1", "x2", "x3"] is used as the design matrix columns
-    :return: dict
-        "y": The response vector
-        "y_col": Name of the response column (y)
-        "x_mat": A design matrix
-        "pred_cols": Name of the columns of the design matrix (x_mat)
-        "x_design_info": Information for design matrix
+        ["x1", "x2", "x3"] is used as the design matrix columns.
+    remove_intercept : `bool`, default False
+        Whether to remove explicit and implicit intercepts.
+        By default, `patsy` will make the design matrix always full rank.
+        It will always include an intercept term unless we specify "-1" or "+0".
+        However, if there are categorical variables, even we specify "-1" or "+0",
+        it will include an implicit intercept by adding all levels of a categorical
+        variable into the design matrix.
+        Sometimes we don't want this to happen.
+        Setting this parameter to True will remove both explicit and implicit intercepts.
+
+    Returns
+    -------
+    result : `dict`
+        Result dictionary with the following keys:
+
+            - "y": The response vector.
+            - "y_col": Name of the response column (y).
+            - "x_mat": A design matrix.
+            - "pred_cols": Name of the columns of the design matrix (x_mat).
+            - "x_design_info": Information for design matrix.
+            - "drop_intercept_col": The intercept column to be dropped.
+
     """
+    intercept_col = None
     if model_formula_str is not None:
         y, x_mat = patsy.dmatrices(
             model_formula_str,
             data=df,
             return_type="dataframe")
+        x_design_info = x_mat.design_info
+        if remove_intercept:
+            intercept_col = get_intercept_col_from_design_mat(
+                x_mat=x_mat
+            )
+            if intercept_col is not None:
+                x_mat = x_mat.drop(columns=intercept_col)
         pred_cols = list(x_mat.columns)
-        # get the response column name using "~" location
+        # Gets the response column name using "~" location.
         y_col = re.search("(.*)~", model_formula_str).group(1).strip(" ")
         y = y[y.columns[0]]
-        x_design_info = x_mat.design_info
     elif y_col is not None and pred_cols is not None:
         y = df[y_col]
         x_mat = df[pred_cols]
@@ -113,7 +196,9 @@ def design_mat_from_formula(
         "y_col": y_col,
         "x_mat": x_mat,
         "pred_cols": pred_cols,
-        "x_design_info": x_design_info}
+        "x_design_info": x_design_info,
+        "drop_intercept_col": intercept_col
+    }
 
 
 def fit_model_via_design_matrix(
@@ -261,6 +346,38 @@ def fit_model_via_design_matrix(
     return ml_model
 
 
+def get_h_mat(x_mat, alpha):
+    """Computes the H matrix given ``x_mat`` and ``alpha`` for linear and ridge regression.
+    The formula is ``H = inv(X.T @ X + alpha * np.eye(p)) @ X.T``.
+
+    Parameters
+    ----------
+    x_mat : `numpy.ndarray` or `pandas.DataFrame`
+        Design matrix, dimension n by p.
+    alpha : `float`
+        The regularization term from the linear / ridge regression.
+        Note that the OLS (ridge) estimator is ``inv(X.T @ X + alpha * np.eye(p)) @ X.T @ Y =: H @ Y``.
+
+    Returns
+    -------
+    h_mat : `numpy.ndarray`
+        The H matrix as defined above. Dimension is p by n.
+    """
+    X = np.array(x_mat)
+    p = X.shape[1]
+    XTX_alpha = X.T @ X + np.diag([alpha] * p)
+    log_cond = np.log10(np.linalg.cond(XTX_alpha))
+    digits_to_lose = 8
+    # When `log_cond` is small, the matrix is full rank and not near singular,
+    # in this case we should use `solve` for a positive definite matrix to optimize efficiency.
+    # When `log_cond` is large, the matrix is near singular, we use `pinv` instead.
+    if log_cond < digits_to_lose:
+        h_mat = scipy.linalg.solve(XTX_alpha, X.T, assume_a="pos")
+    else:
+        h_mat = scipy.linalg.pinvh(XTX_alpha) @ X.T
+    return h_mat
+
+
 def fit_ml_model(
         df,
         model_formula_str=None,
@@ -272,7 +389,8 @@ def fit_ml_model(
         max_admissible_value=None,
         uncertainty_dict=None,
         normalize_method="zero_to_one",
-        regression_weight_col=None):
+        regression_weight_col=None,
+        remove_intercept=False):
     """Fits predictive ML (machine learning) models to continuous
     response vector (given in ``y_col``)
     and returns fitted model.
@@ -328,6 +446,15 @@ def fit_ml_model(
     regression_weight_col : `str` or None, default None
         The column name for the weights to be used in weighted regression version
         of applicable machine-learning models.
+    remove_intercept : `bool`, default False
+        Whether to remove explicit and implicit intercepts.
+        By default, `patsy` will make the design matrix always full rank.
+        It will always include an intercept term unless we specify "-1" or "+0".
+        However, if there are categorical variables, even we specify "-1" or "+0",
+        it will include an implicit intercept by adding all levels of a categorical
+        variable into the design matrix.
+        Sometimes we don't want this to happen.
+        Setting this parameter to True will remove both explicit and implicit intercepts.
 
     Returns
     -------
@@ -350,12 +477,14 @@ def fit_ml_model(
 
     """
 
-    # build model matrices
+    # Builds model matrices.
     res = design_mat_from_formula(
         df=df,
         model_formula_str=model_formula_str,
         y_col=y_col,
-        pred_cols=pred_cols)
+        pred_cols=pred_cols,
+        remove_intercept=remove_intercept
+    )
 
     y = res["y"]
     y_mean = np.mean(y)
@@ -363,6 +492,7 @@ def fit_ml_model(
     x_mat = res["x_mat"]
     y_col = res["y_col"]
     x_design_info = res["x_design_info"]
+    drop_intercept_col = res["drop_intercept_col"]
 
     normalize_df_func = None
     if normalize_method is not None:
@@ -387,7 +517,7 @@ def fit_ml_model(
                 f"The column {regression_weight_col} includes negative values.")
         sample_weight = df[regression_weight_col]
 
-    # prediction model generated by using all observed data
+    # Prediction model generated by using all observed data.
     ml_model = fit_model_via_design_matrix(
         x_train=x_mat,
         y_train=y,
@@ -395,17 +525,86 @@ def fit_ml_model(
         fit_algorithm_params=fit_algorithm_params,
         sample_weight=sample_weight)
 
-    # uncertainty model is fitted if uncertainty_dict is passed
+    # Obtains `alpha`, `p_effective`, `h_mat` (H), and `sigma_scaler`.
+    # See comments below the variables.
+    # Read more at https://online.stat.psu.edu/stat508/lesson/5/5.1 or
+    # book: “Applied Regression Analysis” by Norman R. Draper, Harry Smith.
+    alpha = None
+    """The regularization term from the linear / ridge regression.
+    Note that the OLS (ridge) estimator is ``inv(X.T @ X + alpha * np.eye(p)) @ X.T @ Y =: H @ Y``.
+    """
+    p_effective = None
+    """Effective number of parameters.
+    In linear regressions, it is also equal to ``trace(X @ H)``, where H is defined above.
+    ``X @ H`` is also called the hat matrix.
+    """
+    h_mat = None
+    """The H matrix (p by n) in linear regression estimator, as defined above.
+    Note that H is not necessarily of full-rank p even in ridge regression.
+    ``H = inv(X.T @ X + alpha * np.eye(p)) @ X.T``.
+    """
+    sigma_scaler = None
+    """Theoretical scaler of the estimated sigma.
+    Volatility model estimates sigma by taking the sample standard deviation, and
+    we need to scale it by ``np.sqrt((n_train - 1) / (n_train - p_effective))`` to obtain
+    an unbiased estimator.
+    """
+    x_mean = None
+    """Column mean of ``x_mat`` as a row vector.
+    This is stored and used in ridge regression to compute the prediction intervals.
+    In other methods, it is set to `None`.
+    """
+    if fit_algorithm in ["ridge", "linear"]:
+        X = np.array(x_mat)
+        n_train, p = X.shape
+        # Extracts `alpha` from the fitted ML model.
+        # In linear regression, the rank of the design matrix is `p_effective`,
+        # but `RidgeCV` we need to manually derive it by taking the trace.
+        # Note that `RidgeCV` centers `X` and `Y` before fitting, hence we need to center `X` too.
+        if fit_algorithm == "ridge":
+            alpha = ml_model.alpha_
+            x_mean = X.mean(axis=0).reshape(1, -1)
+            X = X - x_mean
+        else:
+            alpha = 0
+            p_effective = np.linalg.matrix_rank(X)
+        # Computes `h_mat` (H, p x n).
+        try:
+            h_mat = get_h_mat(x_mat=X, alpha=alpha)
+            if fit_algorithm == "ridge":
+                # Computes the effective number of parameters.
+                # Note that `p_effective` is the trace of `X @ h_mat` plus 1 for intercept, however
+                # computing `trace(h_mat @ X)` is more efficient due to much faster matrix multiplication.
+                p_effective = round(np.trace(h_mat @ X), 6) + 1  # Avoids floating issues e.g. 1.9999999999999998.
+        except np.linalg.LinAlgError as e:
+            message = traceback.format_exc()
+            warning_msg = f"Error '{e}' occurred when computing `h_mat`, no variance scaling is done!\n" \
+                          f"{message}"
+            log_message(warning_msg, LoggingLevelEnum.WARNING)
+            warnings.warn(warning_msg)
+
+        if p_effective is not None and round(p_effective) < n_train:
+            # Computes scaler on sigma estimate.
+            sigma_scaler = np.sqrt((n_train - 1) / (n_train - p_effective))
+        else:
+            warnings.warn(f"Zero degrees of freedom ({n_train}-{p_effective}) or the inverse solver failed. "
+                          f"Likely caused by singular `X.T @ X + alpha * np.eye(p)`. "
+                          f"Please check \"x_mat\", \"alpha\". "
+                          f"`sigma_scaler` cannot be computed!")
+
+    # Uncertainty model is fitted if `uncertainty_dict` is passed.
     uncertainty_model = None
     if uncertainty_dict is not None:
         uncertainty_method = uncertainty_dict["uncertainty_method"]
         if uncertainty_method == "simple_conditional_residuals":
-            # reset index to match behavior of predict before assignment
+            # Resets index to match behavior of predict before assignment.
             new_df = df.reset_index(drop=True)
             (new_x_mat,) = patsy.build_design_matrices(
                 [x_design_info],
                 data=new_df,
                 return_type="dataframe")
+            if drop_intercept_col is not None:
+                new_x_mat = new_x_mat.drop(columns=drop_intercept_col)
             if normalize_df_func is not None:
                 if "Intercept" in list(x_mat.columns):
                     cols = [col for col in list(x_mat.columns) if col != "Intercept"]
@@ -416,8 +615,8 @@ def fit_ml_model(
             new_df[f"{y_col}_pred"] = ml_model.predict(new_x_mat)
             new_df[RESIDUAL_COL] = new_df[y_col] - new_df[f"{y_col}_pred"]
 
-            # re-assign some param defaults for function conf_interval
-            # with values best suited to this case
+            # Re-assigns some param defaults for function `conf_interval`
+            # with values best suited to this case.
             conf_interval_params = {
                 "quantiles": [0.025, 0.975],
                 "sample_size_thresh": 10}
@@ -428,6 +627,9 @@ def fit_ml_model(
                 df=new_df,
                 distribution_col=RESIDUAL_COL,
                 offset_col=y_col,
+                sigma_scaler=sigma_scaler,
+                h_mat=h_mat,
+                x_mean=x_mean,
                 min_admissible_value=min_admissible_value,
                 max_admissible_value=max_admissible_value,
                 **conf_interval_params)
@@ -436,8 +638,8 @@ def fit_ml_model(
                 f"uncertainty method: {uncertainty_method} is not implemented")
 
     # We get the model summary for a subset of models
-    # where summary is available (statsmodels module),
-    # or summary can be constructed (a subset of models from sklearn).
+    # where summary is available (`statsmodels` module),
+    # or summary can be constructed (a subset of models from `sklearn`).
     ml_model_summary = None
     if "statsmodels" in fit_algorithm:
         ml_model_summary = ml_model.summary()
@@ -461,7 +663,12 @@ def fit_ml_model(
         "min_admissible_value": min_admissible_value,
         "max_admissible_value": max_admissible_value,
         "normalize_df_func": normalize_df_func,
-        "regression_weight_col": regression_weight_col}
+        "regression_weight_col": regression_weight_col,
+        "drop_intercept_col": drop_intercept_col,
+        "alpha": alpha,
+        "h_mat": h_mat,
+        "p_effective": p_effective,
+        "sigma_scaler": sigma_scaler}
 
     if uncertainty_dict is None:
         fitted_df = predict_ml(
@@ -501,6 +708,7 @@ def predict_ml(
     y_col = trained_model["y_col"]
     ml_model = trained_model["ml_model"]
     x_design_info = trained_model["x_design_info"]
+    drop_intercept_col = trained_model["drop_intercept_col"]
     min_admissible_value = trained_model["min_admissible_value"]
     max_admissible_value = trained_model["max_admissible_value"]
 
@@ -510,6 +718,8 @@ def predict_ml(
         [x_design_info],
         data=fut_df,
         return_type="dataframe")
+    if drop_intercept_col is not None:
+        x_mat = x_mat.drop(columns=drop_intercept_col)
     if trained_model["normalize_df_func"] is not None:
         if "Intercept" in list(x_mat.columns):
             cols = [col for col in list(x_mat.columns) if col != "Intercept"]
@@ -552,7 +762,7 @@ def predict_ml_with_uncertainty(
         - "x_mat": `patsy.design_info.DesignMatrix`
             Design matrix of the predictive model
     """
-    # gets point predictions
+    # Gets point predictions.
     fut_df = fut_df.reset_index(drop=True)
     y_col = trained_model["y_col"]
     pred_res = predict_ml(
@@ -564,10 +774,11 @@ def predict_ml_with_uncertainty(
 
     fut_df[y_col] = y_pred.tolist()
 
-    # apply uncertainty model
+    # Applies uncertainty model.
     pred_df_with_uncertainty = predict_ci(
         fut_df,
-        trained_model["uncertainty_model"])
+        trained_model["uncertainty_model"],
+        x_mat=x_mat)
 
     return {
         "fut_df": pred_df_with_uncertainty,
@@ -589,7 +800,8 @@ def fit_ml_model_with_evaluation(
         max_admissible_value=None,
         uncertainty_dict=None,
         normalize_method="zero_to_one",
-        regression_weight_col=None):
+        regression_weight_col=None,
+        remove_intercept=False):
     """Fits prediction models to continuous response vector (y)
     and report results.
 
@@ -655,6 +867,15 @@ def fit_ml_model_with_evaluation(
     regression_weight_col : `str` or None, default None
         The column name for the weights to be used in weighted regression version
         of applicable machine-learning models.
+    remove_intercept : `bool`, default False
+        Whether to remove explicit and implicit intercepts.
+        By default, `patsy` will make the design matrix always full rank.
+        It will always include an intercept term unless we specify "-1" or "+0".
+        However, if there are categorical variables, even we specify "-1" or "+0",
+        it will include an implicit intercept by adding all levels of a categorical
+        variable into the design matrix.
+        Sometimes we don't want this to happen.
+        Setting this parameter to True will remove both explicit and implicit intercepts.
 
     Returns
     -------
@@ -712,7 +933,8 @@ def fit_ml_model_with_evaluation(
         max_admissible_value=max_admissible_value,
         uncertainty_dict=uncertainty_dict,
         normalize_method=normalize_method,
-        regression_weight_col=regression_weight_col)
+        regression_weight_col=regression_weight_col,
+        remove_intercept=remove_intercept)
 
     # we store the obtained ``y_col`` from the function in a new variable (``y_col_final``)
     # this is done since the input y_col could be None
@@ -780,7 +1002,8 @@ def fit_ml_model_with_evaluation(
             max_admissible_value=max_admissible_value,
             uncertainty_dict=uncertainty_dict,
             normalize_method=normalize_method,
-            regression_weight_col=regression_weight_col)
+            regression_weight_col=regression_weight_col,
+            remove_intercept=remove_intercept)
 
         y_train_pred = predict_ml(
             fut_df=df_train,

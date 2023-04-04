@@ -76,7 +76,7 @@ class ProphetEstimator(BaseForecastEstimator):
             }
 
     add_seasonality_dict: dict of custom seasonality parameters to be added to the model, optional, default=None
-        parameter details: https://github.com/facebook/prophet/blob/master/python/prophet/forecaster.py - refer to
+        parameter details: https://github.com/facebook/prophet/blob/main/python/prophet/forecaster.py - refer to
         add_seasonality() function.
         Key is the seasonality component name e.g. 'monthly'; parameters are specified via dict.
 
@@ -115,7 +115,7 @@ class ProphetEstimator(BaseForecastEstimator):
         Prophet documentation for a description:
 
             * https://facebook.github.io/prophet/docs/quick_start.html
-            * https://github.com/facebook/prophet/blob/master/python/prophet/forecaster.py
+            * https://github.com/facebook/prophet/blob/main/python/prophet/forecaster.py
 
     Attributes
     ----------
@@ -378,6 +378,6 @@ class ProphetEstimator(BaseForecastEstimator):
             if "'DatetimeIndex'" in repr(e):
                 # 'DatetimeIndex' object has no attribute 'weekday_name'
                 raise Exception("Prophet 0.5 component plots are incompatible with pandas 1.*. "
-                                "Upgrade to prophet:0.6 or higher.")
+                                "Upgrade to Prophet 0.6 or higher.")
             else:
                 raise e

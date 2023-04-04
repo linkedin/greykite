@@ -28,6 +28,7 @@ import pandas as pd
 
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
+from greykite.common.time_properties import infer_freq
 from greykite.common.time_properties import min_gap_in_seconds
 from greykite.framework.pipeline.utils import get_default_time_parameters
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
@@ -86,8 +87,9 @@ def get_auto_silverkite_model_template(
     metadata = config.metadata_param
     freq = metadata.freq
     if freq is None:
-        freq = pd.infer_freq(
-            df[metadata.time_col]
+        freq = infer_freq(
+            df,
+            metadata.time_col
         )
     if freq is None:
         # NB: frequency inference fails if there are missing points in the input data

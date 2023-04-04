@@ -97,6 +97,8 @@ class SilverkiteForecast():
             fit_algorithm="linear",
             fit_algorithm_params=None,
             daily_event_df_dict=None,
+            daily_event_neighbor_impact=None,
+            daily_event_shifted_effect=None,
             fs_components_df=pd.DataFrame({
                 "name": [
                     TimeFeaturesEnum.tod.value,
@@ -121,7 +123,8 @@ class SilverkiteForecast():
             forecast_horizon=None,
             simulation_based=False,
             simulation_num=10,
-            fast_simulation=False):
+            fast_simulation=False,
+            remove_intercept=False):
         """A function for forecasting.
         It captures growth, seasonality, holidays and other patterns.
         See "Capturing the time-dependence in the precipitation process for
@@ -279,6 +282,37 @@ class SilverkiteForecast():
                 Do not use `~greykite.common.constants.EVENT_DEFAULT`
                 in the second column. This is reserved to indicate dates that do not
                 correspond to an event.
+        daily_event_neighbor_impact : `int`, `list` [`int`], callable or None, default None
+            The impact of neighboring timestamps of the events in ``event_df_dict``.
+            This is for daily events so the units below are all in days.
+
+            For example, if the data is weekly ("W-SUN") and an event is daily,
+            it may not exactly fall on the weekly date.
+            But you can specify for New Year's day on 1/1, it affects all dates
+            in the week, e.g. 12/31, 1/1, ..., 1/6, then it will be mapped to the weekly date.
+            In this case you may want to map a daily event's date to a few dates,
+            and can specify
+            ``neighbor_impact=lambda x: [x-timedelta(days=x.isocalendar()[2]-1) + timedelta(days=i) for i in range(7)]``.
+
+            Another example is that the data is rolling 7 day daily data,
+            thus a holiday may affect the t, t+1, ..., t+6 dates.
+            You can specify ``neighbor_impact=7``.
+
+            If input is `int`, the mapping is t, t+1, ..., t+neighbor_impact-1.
+            If input is `list`, the mapping is [t+x for x in neighbor_impact].
+            If input is a function, it maps each daily event's date to a list of dates.
+        daily_event_shifted_effect : `list` [`str`] or None, default None
+            Additional neighbor events based on given events.
+            For example, passing ["-1D", "7D"] will add extra daily events which are 1 day before
+            and 7 days after the given events.
+            Offset format is {d}{freq} with any integer plus a frequency string.
+            Must be parsable by pandas ``to_offset``.
+            The new events' names will be the current events' names with suffix "{offset}_before" or "{offset}_after".
+            For example, if we have an event named "US_Christmas Day",
+            a "7D" shift will have name "US_Christmas Day_7D_after".
+            This is useful when you expect an offset of the current holidays also has impact on the
+            time series, or you want to interact the lagged terms with autoregression.
+            If ``daily_event_neighbor_impact`` is also specified, this will be applied after adding neighboring days.
         fs_components_df : `pandas.DataFrame` or None, optional
             A dataframe with information about fourier series generation.
             Must contain columns with following names:
@@ -495,7 +529,15 @@ class SilverkiteForecast():
             without any error being added and then add the error using the volatility
             model. The advantage is a major boost in speed during inference and the
             disadvantage is potentially less accurate prediction intervals.
-
+        remove_intercept : `bool`, default False
+            Whether to remove explicit and implicit intercepts.
+            By default, `patsy` will make the design matrix always full rank.
+            It will always include an intercept term unless we specify "-1" or "+0".
+            However, if there are categorical variables, even we specify "-1" or "+0",
+            it will include an implicit intercept by adding all levels of a categorical
+            variable into the design matrix.
+            Sometimes we don't want this to happen.
+            Setting this parameter to True will remove both explicit and implicit intercepts.
 
         Returns
         -------
@@ -608,6 +650,8 @@ class SilverkiteForecast():
                     The past dataframe used to generate AR terms.
                     It includes the concatenation of ``past_df`` and ``df`` if ``past_df`` is provided,
                     otherwise it is the ``df`` itself.
+                drop_intercept_col : `str` or None
+                    The intercept column, explicit or implicit, to be dropped.
 
         """
         df = df.copy()
@@ -805,6 +849,8 @@ class SilverkiteForecast():
             time_col=time_col,
             origin_for_time_vars=origin_for_time_vars,
             daily_event_df_dict=daily_event_df_dict,
+            daily_event_neighbor_impact=daily_event_neighbor_impact,
+            daily_event_shifted_effect=daily_event_shifted_effect,
             changepoint_values=changepoint_values,
             continuous_time_col=continuous_time_col,
             growth_func=growth_func,
@@ -966,7 +1012,8 @@ class SilverkiteForecast():
             max_admissible_value=max_admissible_value,
             uncertainty_dict=uncertainty_dict,
             normalize_method=normalize_method,
-            regression_weight_col=regression_weight_col)
+            regression_weight_col=regression_weight_col,
+            remove_intercept=remove_intercept)
 
         # Normalizes the changepoint_values
         normalized_changepoint_values = self.__normalize_changepoint_values(
@@ -997,6 +1044,8 @@ class SilverkiteForecast():
         trained_model["lagged_regressor_cols"] = lagged_regressor_cols
         trained_model["normalize_method"] = normalize_method
         trained_model["daily_event_df_dict"] = daily_event_df_dict
+        trained_model["daily_event_neighbor_impact"] = daily_event_neighbor_impact
+        trained_model["daily_event_shifted_effect"] = daily_event_shifted_effect
         trained_model["changepoints_dict"] = changepoints_dict
         trained_model["changepoint_values"] = changepoint_values
         trained_model["normalized_changepoint_values"] = normalized_changepoint_values
@@ -1136,6 +1185,8 @@ class SilverkiteForecast():
                 time_col=trained_model["time_col"],
                 origin_for_time_vars=trained_model["origin_for_time_vars"],
                 daily_event_df_dict=trained_model["daily_event_df_dict"],
+                daily_event_neighbor_impact=trained_model["daily_event_neighbor_impact"],
+                daily_event_shifted_effect=trained_model["daily_event_shifted_effect"],
                 changepoint_values=trained_model["changepoint_values"],
                 continuous_time_col=trained_model["continuous_time_col"],
                 growth_func=trained_model["growth_func"],
@@ -1386,6 +1437,8 @@ class SilverkiteForecast():
                 time_col=time_col,
                 origin_for_time_vars=trained_model["origin_for_time_vars"],
                 daily_event_df_dict=trained_model["daily_event_df_dict"],
+                daily_event_neighbor_impact=trained_model["daily_event_neighbor_impact"],
+                daily_event_shifted_effect=trained_model["daily_event_shifted_effect"],
                 changepoint_values=trained_model["changepoint_values"],
                 continuous_time_col=trained_model["continuous_time_col"],
                 growth_func=trained_model["growth_func"],
@@ -1441,9 +1494,20 @@ class SilverkiteForecast():
                         f"However the std column ({ERR_STD_COL}) "
                         "does not appear in the prediction")
 
+            # Here after assigning values for future forecast, we clip the values based on ``min_admissible_value`` and ``max_admissible_value``
+            # saved in ``trained_model``. The clip should only function when error terms are added, as ``predict_no_sim`` ensures the predicted
+            # values (before errors are added) are bounded.
+            min_admissible_value = trained_model["min_admissible_value"]
+            max_admissible_value = trained_model["max_admissible_value"]
+            if min_admissible_value is not None or max_admissible_value is not None:
+                fut_df_sim.at[i, value_col] = np.clip(
+                    a=fut_df_sim.at[i, value_col],
+                    a_min=min_admissible_value,
+                    a_max=max_admissible_value)
+
             # we get the last prediction value and concat that to the end of
             # ``past_df``
-            past_df_increment = fut_df_sub[[value_col]]
+            past_df_increment = fut_df_sim.iloc[[i]].reset_index(drop=True)[[value_col]]
             assert len(past_df_increment) == 1
             if past_df_sim is None:
                 past_df_sim = past_df_increment
@@ -1548,6 +1612,8 @@ class SilverkiteForecast():
             time_col=trained_model["time_col"],
             origin_for_time_vars=trained_model["origin_for_time_vars"],
             daily_event_df_dict=trained_model["daily_event_df_dict"],
+            daily_event_neighbor_impact=trained_model["daily_event_neighbor_impact"],
+            daily_event_shifted_effect=trained_model["daily_event_shifted_effect"],
             changepoint_values=trained_model["changepoint_values"],
             continuous_time_col=trained_model["continuous_time_col"],
             growth_func=trained_model["growth_func"],
@@ -1721,7 +1787,8 @@ class SilverkiteForecast():
 
         return {
             "fut_df": agg_df,
-            "x_mat": x_mat}
+            "x_mat": x_mat,
+            "sim_res": sim_res}
 
     def predict_via_sim_fast(
             self,
@@ -2607,7 +2674,10 @@ class SilverkiteForecast():
                 ignore_index=True,
                 sort=False)
             # Imputes the missing values
-            fut_df_expanded = na_fill_func(fut_df_expanded)
+            # Excludes time column which doesn't need imputation,
+            # otherwise it causes error with pandas>=1.4.
+            fut_df_expanded.loc[:, fut_df_expanded.columns != time_col] = na_fill_func(
+                fut_df_expanded.loc[:, fut_df_expanded.columns != time_col])
             index = (
                     [False] * fut_df_within_training.shape[0] +
                     [True] * fut_df_gap.shape[0] +
@@ -2661,6 +2731,8 @@ class SilverkiteForecast():
             time_col,
             origin_for_time_vars,
             daily_event_df_dict=None,
+            daily_event_neighbor_impact=None,
+            daily_event_shifted_effect=None,
             changepoint_values=None,
             continuous_time_col=None,
             growth_func=None,
@@ -2756,6 +2828,37 @@ class SilverkiteForecast():
             Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
             in the second column. This is reserved to indicate dates that do not
             correspond to an event.
+        daily_event_neighbor_impact : `int`, `list` [`int`], callable or None, default None
+            The impact of neighboring timestamps of the events in ``event_df_dict``.
+            This is for daily events so the units below are all in days.
+
+            For example, if the data is weekly ("W-SUN") and an event is daily,
+            it may not exactly fall on the weekly date.
+            But you can specify for New Year's day on 1/1, it affects all dates
+            in the week, e.g. 12/31, 1/1, ..., 1/6, then it will be mapped to the weekly date.
+            In this case you may want to map a daily event's date to a few dates,
+            and can specify
+            ``neighbor_impact=lambda x: [x-timedelta(days=x.isocalendar()[2]-1) + timedelta(days=i) for i in range(7)]``.
+
+            Another example is that the data is rolling 7 day daily data,
+            thus a holiday may affect the t, t+1, ..., t+6 dates.
+            You can specify ``neighbor_impact=7``.
+
+            If input is `int`, the mapping is t, t+1, ..., t+neighbor_impact-1.
+            If input is `list`, the mapping is [t+x for x in neighbor_impact].
+            If input is a function, it maps each daily event's date to a list of dates.
+        daily_event_shifted_effect : `list` [`str`] or None, default None
+            Additional neighbor events based on given events.
+            For example, passing ["-1D", "7D"] will add extra daily events which are 1 day before
+            and 7 days after the given events.
+            Offset format is {d}{freq} with any integer plus a frequency string.
+            Must be parsable by pandas ``to_offset``.
+            The new events' names will be the current events' names with suffix "{offset}_before" or "{offset}_after".
+            For example, if we have an event named "US_Christmas Day",
+            a "7D" shift will have name "US_Christmas Day_7D_after".
+            This is useful when you expect an offset of the current holidays also has impact on the
+            time series, or you want to interact the lagged terms with autoregression.
+            If ``daily_event_neighbor_impact`` is also specified, this will be applied after adding neighboring days.
         changepoint_values : `list` of Union[int, float, double]], optional
             The values of the growth term at the changepoints
             Can be generated by the ``get_evenly_spaced_changepoints``,
@@ -2805,7 +2908,9 @@ class SilverkiteForecast():
             features_df = add_daily_events(
                 df=features_df,
                 event_df_dict=daily_event_df_dict,
-                date_col="date")
+                date_col="date",
+                neighbor_impact=daily_event_neighbor_impact,
+                shifted_effect=daily_event_shifted_effect)
 
         # adds changepoints
         if changepoint_values is not None:

@@ -132,7 +132,7 @@ Make sure your data loads correctly. First, check the printed logs of ``load_dat
         time_col="ts",
         value_col="y",
         freq="D")  # optional, but recommended if you have missing data points
-                   # W for weekly, D for daily, H for hourly, etc. See ``pd.date_range``
+                   # W for weekly, D for daily, H for hourly, etc. See `pd.date_range`.
 
 
 Here is some example logging info for hourly data. The loaded data spans 2017-10-11 to 2020-02-23.
@@ -186,7 +186,7 @@ the time series is included in the result.
             coverage=0.95
         )
     )
-    ts = result.timeseries  # a `UnivariateTimeSeries`
+    ts = result.timeseries  # a `UnivariateTimeSeries` instance
 
 You can also check the information programatically:
 
@@ -208,11 +208,8 @@ The best way to check your data is to plot it. You can do this interactively in 
 
 .. code-block:: python
 
-    from plotly.offline import init_notebook_mode, iplot
-    init_notebook_mode(connected=True)   # for generating offline graphs within Jupyter Notebook
-
     fig = ts.plot()
-    iplot(fig)
+    fig.show() # Or simply `ts.plot()`
 
 
 Anomalies
@@ -244,9 +241,6 @@ For example:
     import numpy as np
     import pandas as pd
 
-    from plotly.offline import init_notebook_mode, iplot
-    init_notebook_mode(connected=True)   # for generating offline graphs within Jupyter Notebook
-
     import greykite.common.constants as cst
     from greykite.framework.input.univariate_time_series import UnivariateTimeSeries
 
@@ -269,7 +263,7 @@ For example:
     #     "regressor3": [None, None, 2.14, 2.16, 2.17]
     # })
 
-    # Specify anomalies using ``anomaly_df``.
+    # Specify anomalies using `anomaly_df`.
     # Each row corresponds to an anomaly. The start date, end date,
     # and impact (if known) are provided. Extra columns can be
     # used to annotate information such as which metrics the
@@ -281,10 +275,10 @@ For example:
         cst.ADJUSTMENT_DELTA_COL: [-27, np.nan],
         cst.METRIC_COL: ["y", "regressor3"]
     })
-    # ``anomaly_info`` dictates which columns
-    # in ``df`` to correct (``value_col`` below), and which rows
-    # in ``anomaly_df`` to use to correct them.
-    # Rows are filtered using ``filter_by_dict``.
+    # `anomaly_info` dictates which columns
+    # in `df` to correct (`value_col` below), and which rows
+    # in `anomaly_df` to use to correct them.
+    # Rows are filtered using `filter_by_dict`.
     anomaly_info = [
         {
             "value_col": "y",
@@ -300,8 +294,8 @@ For example:
         },
     ]
 
-    # Pass ``anomaly_info`` to ``load_data``.
-    # Since our dataset has regressors, we pass ``regressor_cols`` as well.
+    # Passes `anomaly_info` to `load_data`.
+    # Since our dataset has regressors, we pass `regressor_cols` as well.
     ts = UnivariateTimeSeries()
     ts.load_data(
         df=df,
@@ -313,13 +307,13 @@ For example:
 
     # Plots the dataset after correction
     fig = ts.plot()
-    iplot(fig)
+    fig.show()
     # Set show_anomaly_adjustment=True to show the dataset before correction
     fig = ts.plot(show_anomaly_adjustment=True)
-    iplot(fig)
+    fig.show()
     # The results are stored as attributes.
-    ts.df                    # dataset after correction (same as ``df_adjusted`` above)
-    ts.df_before_adjustment  # dataset before correction (same as ``df`` above)
+    ts.df                    # dataset after correction (same as `df_adjusted` above)
+    ts.df_before_adjustment  # dataset before correction (same as `df` above)
 
 Check trend
 ~~~~~~~~~~~
@@ -342,7 +336,7 @@ For example, look at weekly averages.
                                         # (7*24 for weekly aggregation of hourly data)
         groupby_custom_column=None,
         title=f"Weekly average of {value_col}")
-    iplot(fig)
+    fig.show()
 
 For a more detailed examination, including automatic changepoint detection,
 see :doc:`/gallery/quickstart/01_exploration/0100_changepoint_detection`.
@@ -364,7 +358,7 @@ To check daily seasonality, aggregate by hour of day and plot the average:
         groupby_sliding_window_size=None,
         groupby_custom_column=None,
         title=f"daily seasonality: mean of {value_col}")
-    iplot(fig)
+    fig.show()
 
 
 To check weekly seasonality, group by day of week.
@@ -378,7 +372,7 @@ To check weekly seasonality, group by day of week.
         groupby_sliding_window_size=None,
         groupby_custom_column=None,
         title=f"weekly seasonality: mean of {value_col}")
-    iplot(fig)
+    fig.show()
 
 
 To check yearly seasonality, group by week of year.
@@ -392,7 +386,7 @@ To check yearly seasonality, group by week of year.
         groupby_sliding_window_size=None,
         groupby_custom_column=None,
         title=f"yearly seasonality: mean of {value_col}")
-    iplot(fig)
+    fig.show()
 
 To see other features to group by:
 see :py:func:`~greykite.common.features.timeseries_features.build_time_features_df`.

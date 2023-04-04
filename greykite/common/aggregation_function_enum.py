@@ -38,4 +38,5 @@ class AggregationFunctionEnum(Enum):
     nanmean = partial(np.nanmean)
     maximum = partial(np.max)
     minimum = partial(np.min)
+    sum = partial(np.sum)
     weighted_average = partial(np.average)

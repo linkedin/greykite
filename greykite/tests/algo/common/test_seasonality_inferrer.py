@@ -9,6 +9,7 @@ from greykite.algo.common.seasonality_inferrer import TrendAdjustMethodEnum
 from greykite.common import constants as cst
 from greykite.common.testing_utils import assert_equal
 from greykite.common.testing_utils import generate_df_for_tests
+from greykite.common.time_properties import infer_freq
 
 
 @pytest.fixture
@@ -214,12 +215,12 @@ def test_adjust_trend(df):
     )
     assert_equal(
         df_adj.loc[:4, "y"],
-        pd.Series([-3.6315, 2.8088, 3.6551, 0.5856, 0.7478], name="y"),
+        pd.Series([-3.4947, 2.9445, 3.7897, 0.7191, 0.8803], name="y"),
         rel=1e-3
     )
     assert_equal(
         df_adj.loc[:4, model.FITTED_TREND_COL],
-        pd.Series([-0.7820, -0.7752, -0.7683, -0.7614, -0.7545], name=model.FITTED_TREND_COL),
+        pd.Series([-0.9188, -0.9108, -0.9029, -0.8950, -0.8870], name=model.FITTED_TREND_COL),
         rel=1e-3
     )
 
@@ -270,7 +271,7 @@ def test_process_df(df):
         adjust_trend_params=None,
         aggregation_period="W-SUN"
     )
-    assert pd.infer_freq(df_adj[cst.TIME_COL]) == "W-SUN"
+    assert infer_freq(df_adj, cst.TIME_COL) == "W-SUN"
 
 
 def test_tolerance(df):

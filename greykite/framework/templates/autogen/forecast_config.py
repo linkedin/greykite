@@ -7,6 +7,7 @@
 #
 #     result = forecast_config_from_dict(json.loads(json_string))
 
+import json
 from dataclasses import dataclass
 from typing import Any
 from typing import Callable
@@ -17,6 +18,8 @@ from typing import Type
 from typing import TypeVar
 from typing import Union
 from typing import cast
+
+from greykite.common.python_utils import assert_equal
 
 
 T = TypeVar("T")
@@ -99,6 +102,20 @@ def from_bool(x: Any) -> bool:
 def to_class(c: Type[T], x: Any) -> dict:
     assert isinstance(x, c)
     return cast(Any, x).to_dict()
+
+
+def from_list_float(x: Any) -> List[float]:
+    """Parses a list of floats"""
+    assert isinstance(x, list)
+    assert all(isinstance(item, (float, int)) and not isinstance(item, bool) for item in x)
+    return x
+
+
+def from_list_list_str(x: Any) -> List[List[str]]:
+    """Parses a list that contains lists of strings"""
+    assert isinstance(x, list)
+    assert all(from_list_str(item) for item in x)
+    return x
 
 
 @dataclass
@@ -414,11 +431,13 @@ class ForecastConfig:
         forecast_one_by_one = from_union([from_int, from_bool, from_none, from_list_int], obj.get("forecast_one_by_one"))
         metadata_param = from_union([MetadataParam.from_dict, from_none], obj.get("metadata_param"))
         if not isinstance(obj.get("model_components_param"), list):
-            obj["model_components_param"] = [obj.get("model_components_param")]
-        model_components_param = [from_union([ModelComponentsParam.from_dict, from_none], mcp) for mcp in obj.get("model_components_param")]
+            model_components_param = from_union([ModelComponentsParam.from_dict, from_none], obj.get("model_components_param"))
+        else:
+            model_components_param = [from_union([ModelComponentsParam.from_dict, from_none], mcp) for mcp in obj.get("model_components_param")]
         if not isinstance(obj.get("model_template"), list):
-            obj["model_template"] = [obj.get("model_template")]
-        model_template = [from_union([from_str, from_none], mt) for mt in obj.get("model_template")]
+            model_template = from_union([from_str, from_none], obj.get("model_template"))
+        else:
+            model_template = [from_union([from_str, from_none], mt) for mt in obj.get("model_template")]
         return ForecastConfig(
             computation_param=computation_param,
             coverage=coverage,
@@ -447,6 +466,18 @@ class ForecastConfig:
         result["model_template"] = [from_union([from_str, from_none], mt) for mt in self.model_template]
         return result
 
+    @staticmethod
+    def from_json(obj: Any) -> 'ForecastConfig':
+        """Converts a json string to the corresponding instance of the `ForecastConfig` class.
+        Raises ValueError if the input is not a json string.
+        """
+        try:
+            forecast_dict = json.loads(obj)
+        except Exception:
+            raise ValueError(f"The input ({obj}) is not a json string.")
+
+        return ForecastConfig.from_dict(forecast_dict)
+
 
 def forecast_config_from_dict(s: Any) -> ForecastConfig:
     return ForecastConfig.from_dict(s)
@@ -454,3 +485,31 @@ def forecast_config_from_dict(s: Any) -> ForecastConfig:
 
 def forecast_config_to_dict(x: ForecastConfig) -> Any:
     return to_class(ForecastConfig, x)
+
+
+def assert_equal_forecast_config(
+        forecast_config_1: ForecastConfig,
+        forecast_config_2: ForecastConfig):
+    """Asserts equality between two instances of `ForecastConfig`.
+    Raises an error in case of parameter mismatch.
+
+    Parameters
+    ----------
+    forecast_config_1: `ForecastConfig`
+        First instance of the
+        :class:`~greykite.framework.templates.model_templates.ForecastConfig` for comparing.
+    forecast_config_2: `ForecastConfig`
+        Second instance of the
+        :class:`~greykite.framework.templates.model_templates.ForecastConfig` for comparing.
+
+    Raises
+    -------
+    AssertionError
+        If `ForecastConfig`s do not match, else returns None.
+    """
+    if not isinstance(forecast_config_1, ForecastConfig):
+        raise ValueError(f"The input ({forecast_config_1}) is not a member of 'ForecastConfig' class.")
+    if not isinstance(forecast_config_2, ForecastConfig):
+        raise ValueError(f"The input ({forecast_config_2}) is not a member of 'ForecastConfig' class.")
+
+    assert_equal(forecast_config_1.to_dict(), forecast_config_2.to_dict())

@@ -466,13 +466,13 @@ def test_missing_timestamps_during_aggregation(params, hourly_data_with_reg):
             drop_incomplete=True,
             index=0
         )
-        log_capture.check(
+        log_capture.check_present(
             (cst.LOGGER_NAME,
              "WARNING",
              "There are missing timestamps in `df` when performing aggregation with "
-             "frequency D. These points are             ts   y\nts                "
-             "\n2018-01-03  23  23. "
-             "This may cause the aggregated values to be biased.")
+             "frequency D. These points are              y\n"
+             "ts            \n"
+             "2018-01-03  23. This may cause the aggregated values to be biased.")
         )
 
 
@@ -496,7 +496,7 @@ def test_short_fit_length(params):
     model = MultistageForecastEstimator(**params)
     with LogCapture(cst.LOGGER_NAME) as log_capture:
         model._initialize()
-        log_capture.check(
+        log_capture.check_present(
             (cst.LOGGER_NAME,
              "INFO",
              "Some `fit_length` is None or is shorter than `train_length`. "

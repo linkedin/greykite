@@ -25,13 +25,17 @@ in forecasting, such as growth, seasonality, holidays.
 
 import math
 from datetime import datetime
+from datetime import timedelta
 
 import numpy as np
 import pandas as pd
+import pytz
 from holidays_ext import get_holidays as get_hdays
+from pandas.tseries.frequencies import to_offset
 from scipy.special import expit
 
 from greykite.common import constants as cst
+from greykite.common.python_utils import split_offset_str
 
 
 def convert_date_to_continuous_time(dt):
@@ -76,7 +80,293 @@ def get_default_origin_for_time_vars(df, time_col):
     return convert_date_to_continuous_time(date)
 
 
-def build_time_features_df(dt, conti_year_origin):
+def pytz_is_dst_fcn(time_zone):
+    """For a given timezone, it constructs a function which determines
+    if a timestamp (`dt`) is inside the daylight saving period or not for
+    a list of timestamps.
+
+    This function, should work for regions in US / Canada and Europe.
+
+    The returned function assumes that the timestamps are in the given
+    ``time_zone``.
+    Note that since daylight saving is the same for all of mainland US / Canada,
+    one can pass any US time zone e.g. ``"US/Pacific"`` to construct a function
+    which works for all of mainland US.
+    Similarly for most of Europe, it is suffcient to pass any Europe time zone e.g.
+    ``"Europe/London"``.
+
+    Note: Since this function is slow, a faster version is available:
+    `~greykite.common.features.timeseries_features.is_dst_fcn`.
+    However, we expect the current function would be more accurate assuming
+    the package `pytz` keeps up to date with potential changes in DST.
+
+
+    Parameters
+    ----------
+    time_zone : `str`
+        A string denoting the timestamp e.g. "US/Pacific", "Canada/Eastern",
+        "Europe/London".
+
+    Returns
+    -------
+    is_dst : callable
+        A function which takes a list of datetime-like objects
+        and returns a list of colleans to determine if each timestamp is in daylight saving.
+    """
+    timezone = pytz.timezone(time_zone)
+
+    def is_dst(dt):
+        """A function which takes a list of datetime-like objects
+        and returns a list of booleans to determine if that timestamp
+        is in daylight saving.
+
+        Parameters
+        ----------
+        dt : `list` of datetime-like object
+
+        Returns
+        -------
+        result : `list` [`bool`]
+            A list of booleans:
+
+            - If True, the input time is in daylight saving.
+            - If False, the input time is NOT in daylight saving.
+
+        """
+        diff = []
+        for dt0 in dt:
+            timezone_date = timezone.localize(dt0, is_dst=False)
+            diff.append(timezone_date.tzinfo._dst.seconds)
+        return list(pd.Series(diff) != 0)
+
+    return is_dst
+
+
+def get_us_dst_start(year):
+    """For each year, it returns the second Sunday in March,
+    which is the start of the daylight saving (DST) in US/Canada.
+
+    We assume DST starts on Second Sunday of March at 2 a.m.
+
+    Parameters
+    ----------
+    year : `int`
+        Year for which DST start date is desired.
+
+    Returns
+    -------
+    result : `datetime.datetime`
+        The timestamp of start of DST in US/Canada.
+    """
+    # Finds a date in third week of March.
+    date_in_3rd_week = datetime(year, 3, 15, 2)
+    # Finds out which week day it is:
+    weekday = date_in_3rd_week.weekday()
+    # Finds the Sunday before that by going back to Monday and does an extra -1.
+    second_sunday_date = date_in_3rd_week.replace(day=(15 - weekday - 1))
+    return second_sunday_date
+
+
+def get_us_dst_end(year):
+    """For each year, it returns the first Sunday in November,
+    which is the end of the daylight saving (DST) in US/Canada.
+
+    We assume DST ends on Second Sunday of Novemeber at 2 a.m.
+
+    Parameters
+    ----------
+    year : `int`
+        Year for which DST end date is desired.
+
+    Returns
+    -------
+    result : `datetime.datetime`
+        The timestamp of end of DST in US/Canada.
+    """
+    # Finds the first date in the second week.
+    date_in_2nd_week = datetime(year, 11, 8, 2)
+    # Finds out which week day it is:
+    weekday = date_in_2nd_week.weekday()
+    # Goes back to Monday of the second week and does an extra -1.
+    first_sunday_date = date_in_2nd_week.replace(day=(8 - weekday - 1))
+    return first_sunday_date
+
+
+def get_eu_dst_start(year):
+    """For each year, it returns the last Sunday in March,
+    which is the start of the daylight saving (DST) in Europe.
+
+    We assume Europe DST starts on last Sunday of March at 1 a.m.
+
+    Parameters
+    ----------
+    year : `int`
+        Year for which DST start date is desired.
+
+    Returns
+    -------
+    result : `datetime.datetime`
+        The timestamp of start of DST in Europe.
+    """
+    # March is 31 days.
+    # Finds the last date in the month.
+    date_in_last_week = datetime(year, 3, 31, 1)
+    # Finds out which week day it is:
+    weekday = date_in_last_week.weekday()
+    # If above date is already a Sunday, returns it.
+    if weekday == 6:
+        return date_in_last_week
+    # Otherwise, goes back to the Monday of that week and does an extra -1.
+    last_sunday_date = date_in_last_week.replace(day=(31 - weekday - 1))
+    return last_sunday_date
+
+
+def get_eu_dst_end(year):
+    """For each year, it returns the last Sunday in October,
+    which is the end of the daylight saving (DST) in Europe.
+
+    We assume Europe DST ends on last Sunday of October at 2 a.m.
+
+    Parameters
+    ----------
+    year : `int`
+        Year for which DST end date is desired.
+
+    Returns
+    -------
+    result : `datetime.datetime`
+        The timestamp of end of DST in Europe.
+    """
+    # October is 31 days.
+    # Finds the last date in the month.
+    date_in_last_week = datetime(year, 10, 31, 2)
+    # Finds out which week day it is:
+    weekday = date_in_last_week.weekday()
+    # If above date is already a Sunday, returns it.
+    if weekday == 6:
+        return date_in_last_week
+    # Otherwise, goes back to the Monday of that week and does an extra -1.
+    last_sunday_date = date_in_last_week.replace(day=(31 - weekday - 1))
+    return last_sunday_date
+
+
+def is_dst_fcn(time_zone):
+    """For a given timezone, it constructs a function which determines
+    if a timestamp (`dt`) is inside the daylight saving period or not for
+    a list of timestamps.
+
+    This function, should work for regions in US / Canada and Europe.
+
+    The returned function assumes that the timestamps are in the given
+    ``time_zone``.
+    Note that since daylight saving is the same for all of mainland US / Canada,
+    one can pass any US time zone e.g. ``"US/Pacific"`` to construct a function
+    which works for all of mainland US.
+    Similarly for most of Europe, it is suffcient to pass any Europe time zone e.g.
+    ``"Europe/London"``.
+
+    Some references on when did DST start in modern era:
+
+    - Europe: https://www.timeanddate.com/time/europe/daylight-saving-history.html
+    - US: https://en.wikipedia.org/wiki/Daylight_saving_time_in_the_United_States
+
+    Note: This function assumes the DST rules remain the same as what they
+    are in the year 2022 (when this code was written).
+    A potentially more accurate (but much slower) version is available:
+    `~greykite.common.features.timeseries_features.pytz_is_dst_fcn`.
+    However, we expect the current function would be much faster and it can be
+    updated in case DST rules change.
+
+
+    Parameters
+    ----------
+    time_zone : `str`
+        A string denoting the timestamp e.g. "US/Pacific", "Canada/Eastern",
+        "Europe/London".
+
+    Returns
+    -------
+    is_dst : callable
+        A function which takes a list of datetime-like objects
+        and returns a list of colleans to determine if each timestamp is in daylight saving.
+    """
+    if "US" in time_zone or "Canada" in time_zone:
+        get_dst_start = get_us_dst_start
+        get_dst_end = get_us_dst_end
+    elif "Europe" in time_zone:
+        get_dst_start = get_eu_dst_start
+        get_dst_end = get_eu_dst_end
+    else:
+        raise ValueError(
+            f"`time_zone` string {time_zone} does not include "
+            "either of: 'US'/'Canada'/'Europe'")
+
+    # For US, the current convention seems to have started in 2007
+    # See references in function docstring
+    us_year_range = range(2007, 2080)
+    us_starts = {year: get_dst_start(year) for year in us_year_range}
+    us_ends = {year: get_dst_end(year) for year in us_year_range}
+
+    # For Europe, the current convention seems to have started in 1996
+    # See references in function docstring:
+    # Quoting from the link: "In 1996, the European Union (EU) standardized the DST schedule"
+    europe_year_range = range(1996, 2080)
+    europe_starts = {year: get_dst_start(year) for year in europe_year_range}
+    europe_ends = {year: get_dst_end(year) for year in europe_year_range}
+
+    if "US" in time_zone or "Canada" in time_zone:
+        year_range = us_year_range
+        starts = us_starts
+        ends = us_ends
+    else:
+        # Note that due to above if statements, we now that else maps to "Europe"
+        # Otherwise a `ValueError` would have been raised.
+        year_range = europe_year_range
+        starts = europe_starts
+        ends = europe_ends
+
+    def is_dst(dt):
+        """A function which takes a list of datetime-like objects
+        and returns a list of booleans to determine if that timestamp
+        is in daylight saving.
+
+        Parameters
+        ----------
+        dt : `list` of datetime-like object
+
+        Returns
+        -------
+        result : `list` [`bool`]
+            A list of booleans:
+
+            - If True, the input time is in daylight saving.
+            - If False, the input time is NOT in daylight saving.
+
+        """
+        is_dst_bool = []
+        for dt0 in dt:
+            year = dt0.year
+            if year in year_range:
+                start, end = starts[year], ends[year]
+                if dt0 >= start and dt0 <= end:
+                    # This will be true at most for one year in the range
+                    is_dst_bool.append(True)
+                else:
+                    is_dst_bool.append(False)
+            else:
+                # This is the rare case for which the timestamp is not within
+                # the range of all years considered in `year_range = range(1950, 2080)`
+                is_dst_bool.append(False)
+
+        return is_dst_bool
+
+    return is_dst
+
+
+def build_time_features_df(
+        dt,
+        conti_year_origin,
+        add_dst_info=True):
     """This function gets a datetime-like vector and creates new columns containing temporal
     features useful for time series analysis and forecasting e.g. year, week of year, etc.
 
@@ -84,9 +374,10 @@ def build_time_features_df(dt, conti_year_origin):
     ----------
     dt : array-like (1-dimensional)
         A vector of datetime-like values
-    conti_year_origin : float
-        The origin used for creating continuous time.
-
+    conti_year_origin : `float`
+        The origin used for creating continuous time which is in years unit.
+    add_dst_info : `bool`, default True
+        Determines if daylight saving columns for US and Europe should be added.
     Returns
     -------
     time_features_df : `pandas.DataFrame`
@@ -131,6 +422,9 @@ def build_time_features_df(dt, conti_year_origin):
             * "ct3": float, signed cubic growth, -infinity to infinity
             * "ct_sqrt": float, signed square root growth, -infinity to infinity
             * "ct_root3": float, signed cubic root growth, -infinity to infinity
+            * "us_dst": bool, determines if the time inside the daylight saving time of US
+                This column is only generated if ``add_dst_info=True``
+            * "eu_dst": bool, determines if the time inside the daylight saving time of Europe. This column is only generated if ``add_dst_info=True``
 
     """
     dt = pd.DatetimeIndex(dt)
@@ -210,7 +504,8 @@ def build_time_features_df(dt, conti_year_origin):
     conti_year = year + (doy - 1 + (tod / 24.0)) / year_length
     is_weekend = pd.Series(dow).apply(lambda x: x in [6, 7]).values  # weekend indicator
     # categorical var with levels (Mon-Thu, Fri, Sat, Sun), could help when training data are sparse.
-    dow_grouped = pd.Series(str_dow).apply(lambda x: "1234-MTuWTh" if (x in ["1-Mon", "2-Tue", "3-Wed", "4-Thu"]) else x).values
+    dow_grouped = pd.Series(str_dow).apply(
+        lambda x: "1234-MTuWTh" if (x in ["1-Mon", "2-Tue", "3-Wed", "4-Thu"]) else x).values
 
     # growth terms
     ct1 = conti_year - conti_year_origin
@@ -266,20 +561,47 @@ def build_time_features_df(dt, conti_year_origin):
         cst.TimeFeaturesEnum.ct_root3.value: ct_root3,
     }
     df = pd.DataFrame(features_dict)
+
+    if add_dst_info:
+        df[cst.TimeFeaturesEnum.us_dst.value] = is_dst_fcn("US/Pacific")(
+            df[cst.TimeFeaturesEnum.datetime.value])
+
+        df[cst.TimeFeaturesEnum.eu_dst.value] = is_dst_fcn("Europe/London")(
+            df[cst.TimeFeaturesEnum.datetime.value])
+
     return df
 
 
-def add_time_features_df(df, time_col, conti_year_origin):
-    """Adds a time feature data frame to a data frame
-    :param df: the input data frame
-    :param time_col: the name of the time column of interest
-    :param conti_year_origin: the origin of time for the continuous time variable
-    :return: the same data frame (df) augmented with new columns
+def add_time_features_df(
+        df,
+        time_col,
+        conti_year_origin,
+        add_dst_info=True):
+    """Adds a time feature data frame to a data frame by calling
+    `~greykite.common.features.timeseries_features.build_time_features_df`.
+
+    Parameters
+    ----------
+    df : `pandas.Dataframe`
+        The input data frame
+    time_col: `str`
+        The name of the time column of interest
+    conti_year_origin:
+        The origin of time for the continuous time variable which is in years unit.
+    add_dst_info : `bool`, default True
+        Determines if daylight saving columns for US and Europe should be added.
+
+    Returns
+    -------
+    result : `pandas.Dataframe`
+        The same data frame (df) augmented with new columns generated by
+        `~greykite.common.features.timeseries_features.build_time_features_df`
     """
     df = df.reset_index(drop=True)
     time_df = build_time_features_df(
         dt=df[time_col],
-        conti_year_origin=conti_year_origin)
+        conti_year_origin=conti_year_origin,
+        add_dst_info=add_dst_info)
     time_df = time_df.reset_index(drop=True)
     return pd.concat([df, time_df], axis=1)
 
@@ -324,6 +646,7 @@ def get_holidays(countries, year_start, year_end):
         # "Easter Monday [England, Wales, Northern Ireland]".
         country_df[cst.EVENT_DF_LABEL_COL] = country_df[cst.EVENT_DF_LABEL_COL].str.replace("/", ", ")
         country_df[cst.EVENT_DF_DATE_COL] = pd.to_datetime(country_df[cst.EVENT_DF_DATE_COL])
+
         country_holiday_dict[country] = country_df
 
     return country_holiday_dict
@@ -393,14 +716,27 @@ def add_daily_events(
         df,
         event_df_dict,
         date_col=cst.EVENT_DF_DATE_COL,
-        regular_day_label=cst.EVENT_DEFAULT):
+        regular_day_label=cst.EVENT_DEFAULT,
+        neighbor_impact=None,
+        shifted_effect=None):
     """For each key of event_df_dict, it adds a new column to a data frame (df)
-        with a date column (date_col).
-        Each new column will represent the events given for that key.
+    with a date column (date_col).
+    Each new column will represent the events given for that key.
+    This function also generates 3 binary event flags
+    ``IS_EVENT_EXACT_COL``, ``IS_EVENT_ADJACENT_COL`` and ``IS_EVENT_COL``
+    given the information in ``event_df_dict`` with the following logic:
 
-    Notes
-    -----
-    As a side effect, the columns in ``event_df_dict`` are renamed.
+        (1) If the key contains "_minus_" or "_plus_", that means the event
+        was generated by the ``add_event_window`` function, and it is a
+        neighboring day of some exact event day.
+        In this case, ``IS_EVENT_ADJACENT_COL`` will be 1 for all days in this key.
+
+        (2) Otherwise the key indicates that it is on the exact event day being modeled.
+        In this case, ``IS_EVENT_EXACT_COL`` will be 1 for all days in this key.
+
+        (3) If a date appears in both types of keys, both above columns will be 1.
+
+        (4) ``IS_EVENT_COL`` is 1 for all dates in the provided ``event_df_dict``.
 
     Parameters
     ----------
@@ -421,6 +757,36 @@ def add_daily_events(
         the events in ``event_df_dict``.
     regular_day_label : `str`
         The label used for regular days which are not "events".
+    neighbor_impact : `int`, `list` [`int`], callable or None, default None
+        The impact of neighboring timestamps of the events in ``event_df_dict``.
+        This is for daily events so the units below are all in days.
+
+        For example, if the data is weekly ("W-SUN") and an event is daily,
+        it may not exactly fall on the weekly date.
+        But you can specify for New Year's day on 1-1, it affects all dates
+        in the week, e.g. 12-31, 1-1, ..., 1-6, then it will be mapped to the weekly date.
+        In this case you may want to map a daily event's date to a few dates,
+        and can specify
+        ``neighbor_impact=lambda x: [x-timedelta(days=x.isocalendar()[2]-1) + timedelta(days=i) for i in range(7)]``.
+
+        Another example is that the data is rolling 7 day daily data,
+        thus a holiday may affect the t, t+1, ..., t+6 dates.
+        You can specify ``neighbor_impact=7``.
+
+        If input is `int`, the mapping is t, t+1, ..., t+neighbor_impact-1.
+        If input is `list`, the mapping is [t+x for x in neighbor_impact].
+        If input is a function, it maps each daily event's date to a list of dates.
+    shifted_effect : `list` [`str`] or None, default None
+        Additional neighbor events based on given events.
+        For example, passing ["-1D", "7D"] will add extra daily events which are 1 day before
+        and 7 days after the given events.
+        Offset format is {d}{freq} with any integer plus a frequency string. Must be parsable by pandas ``to_offset``.
+        The new events' names will be the current events' names with suffix "{offset}_before" or "{offset}_after".
+        For example, if we have an event named "US_Christmas Day",
+        a "7D" shift will have name "US_Christmas Day_7D_after".
+        This is useful when you expect an offset of the current holidays also has impact on the
+        time series, or you want to interact the lagged terms with autoregression.
+        If ``neighbor_impact`` is also specified, this will be applied after adding neighboring days.
 
     Returns
     -------
@@ -429,13 +795,72 @@ def add_daily_events(
         one for each key of ``event_df_dict``.
     """
     df[date_col] = pd.to_datetime(df[date_col])
+    get_neighbor_days_func = None
+    new_event_cols = [cst.IS_EVENT_EXACT_COL, cst.IS_EVENT_ADJACENT_COL, cst.IS_EVENT_COL]
+    event_flag_df_list = []
+    if neighbor_impact is not None:
+        if isinstance(neighbor_impact, int):
+            neighbor_impact = sorted([neighbor_impact, 0])
+            neighbor_impact[1] += 1
+
+            def get_neighbor_days_func(date):
+                return [date + timedelta(days=d) for d in range(*neighbor_impact)]
+        elif isinstance(neighbor_impact, list):
+            def get_neighbor_days_func(date):
+                return [date + timedelta(days=d) for d in neighbor_impact]
+        else:
+            get_neighbor_days_func = neighbor_impact
     for label, event_df in event_df_dict.items():
-        event_df = event_df.copy()
+        event_df = event_df.copy().drop_duplicates()  # Makes a copy to avoid modifying input
         new_col = f"{cst.EVENT_PREFIX}_{label}"
         event_df.columns = [date_col, new_col]
         event_df[date_col] = pd.to_datetime(event_df[date_col])
+        # Handles neighboring impact.
+        if get_neighbor_days_func is not None:
+            new_event_df = None
+            for i in range(len(event_df)):
+                mapped_dates = get_neighbor_days_func(event_df["date"].iloc[i])
+                new_event_df = pd.concat([
+                    new_event_df, event_df.iloc[[i] * len(mapped_dates)].assign(**{date_col: mapped_dates})],
+                    axis=0
+                )
+            event_df = new_event_df.drop_duplicates().reset_index(drop=True)
         df = df.merge(event_df, on=date_col, how="left")
         df[new_col] = df[new_col].fillna(regular_day_label)
+        # Adds neighbor events if requested.
+        new_event_dfs = []
+        if shifted_effect is not None:
+            for lag in shifted_effect:
+                num, freq = split_offset_str(lag)
+                num = int(num)
+                if num != 0:
+                    lag_offset = to_offset(lag)
+                    new_event_df = event_df.copy()
+                    new_event_df[date_col] += lag_offset
+                    suffix = cst.EVENT_SHIFTED_SUFFIX_BEFORE if num < 0 else cst.EVENT_SHIFTED_SUFFIX_AFTER
+                    new_col = f"{cst.EVENT_PREFIX}_{label}_{abs(num)}{freq}{suffix}"
+                    new_event_df.columns = [date_col, new_col]
+                    new_event_df[new_col] += f"_{abs(num)}{freq}{suffix}"
+                    df = df.merge(new_event_df, on=date_col, how="left")
+                    df[new_col] = df[new_col].fillna(regular_day_label)
+                    new_event_dfs.append(new_event_df)
+        # Generates event indicators.
+        # `augmented_event_df` contains `date_col` and three event indicator columns to be added to `df`.
+        for event_df_temp in [event_df] + new_event_dfs:
+            augmented_event_df = event_df_temp[[date_col]].drop_duplicates()
+            is_event_adjacent = "_minus_" in label or "_plus_" in label
+            augmented_event_df[cst.IS_EVENT_EXACT_COL] = 0 if is_event_adjacent else 1
+            augmented_event_df[cst.IS_EVENT_ADJACENT_COL] = 1 if is_event_adjacent else 0
+            augmented_event_df[cst.IS_EVENT_COL] = 1  # In either case, `IS_EVENT_COL` is 1.
+            event_flag_df_list.append(augmented_event_df)
+
+    event_flag_df = pd.concat(event_flag_df_list)
+    # Sets a day as 1 if it is marked by any of the keys in `event_df_dict`.
+    event_flag_df = event_flag_df.groupby(by=date_col)[new_event_cols].sum().reset_index(drop=False)
+    event_flag_df[new_event_cols] = 1 * (event_flag_df[new_event_cols] > 0)
+    # Joins the new event indicators to `df`.
+    df = df.merge(event_flag_df, on=date_col, how="left")
+    df[new_event_cols] = df[new_event_cols].fillna(0)
 
     return df
 
@@ -673,13 +1098,20 @@ def get_changepoint_features(
     else:
         time_postfixes = [""] * len(changepoint_values)
 
-    changepoint_df = pd.DataFrame()
+    changepoint_df_list = []
     for i, changepoint in enumerate(changepoint_values):
         time_feature = np.array(df[continuous_time_col]) - changepoint  # shifted time column (t - c_i)
         growth_term = np.array([growth_func(max(x, 0)) for x in time_feature])  # growth as a function of time
         time_feature_ind = time_feature >= 0  # Indicator(t >= c_i), lets changepoint take effect starting at c_i
-        new_col = growth_term * time_feature_ind
-        changepoint_df[f"{cst.CHANGEPOINT_COL_PREFIX}{i}{time_postfixes[i]}"] = new_col
+        new_col = pd.Series(
+            data=growth_term * time_feature_ind,
+            name=f"{cst.CHANGEPOINT_COL_PREFIX}{i}{time_postfixes[i]}"
+        )
+        changepoint_df_list.append(new_col)
+    if len(changepoint_values) > 0:
+        changepoint_df = pd.concat(objs=changepoint_df_list, axis=1, ignore_index=False)
+    else:
+        changepoint_df = pd.DataFrame()
     return changepoint_df
 
 
@@ -1024,7 +1456,7 @@ def fourier_series_fcn(col_name, period=1.0, order=1, seas_name=None):
     """
 
     def fs_func(df):
-        out_df = pd.DataFrame()
+        out_df_list = []
         out_cols = []
 
         if col_name not in df.columns:
@@ -1048,8 +1480,12 @@ def fourier_series_fcn(col_name, period=1.0, order=1, seas_name=None):
             out_cols.append(cos_col_name)
             omega = 2 * math.pi / period
             u = omega * k * x
-            out_df[sin_col_name] = np.sin(u)
-            out_df[cos_col_name] = np.cos(u)
+            out_df_list.append(pd.Series(data=np.sin(u), name=sin_col_name))
+            out_df_list.append(pd.Series(data=np.cos(u), name=cos_col_name))
+        if len(out_df_list) > 0:
+            out_df = pd.concat(objs=out_df_list, axis=1, ignore_index=False)
+        else:
+            out_df = pd.DataFrame()
         return {"df": out_df, "cols": out_cols}
 
     return fs_func
@@ -1134,7 +1570,12 @@ signed_sqrt = signed_pow_fcn(1 / 2)
 signed_sq = signed_pow_fcn(2)
 
 
-def logistic(x, growth_rate=1.0, capacity=1.0, floor=0.0, inflection_point=0.0):
+def logistic(
+        x,
+        growth_rate=1.0,
+        capacity=1.0,
+        floor=0.0,
+        inflection_point=0.0):
     """Evaluates the logistic function at x with the specified growth rate,
         capacity, floor, and inflection point.
 
@@ -1154,7 +1595,11 @@ def logistic(x, growth_rate=1.0, capacity=1.0, floor=0.0, inflection_point=0.0):
     return floor + capacity * expit(growth_rate * (x - inflection_point))
 
 
-def get_logistic_func(growth_rate=1.0, capacity=1.0, floor=0.0, inflection_point=0.0):
+def get_logistic_func(
+        growth_rate=1.0,
+        capacity=1.0,
+        floor=0.0,
+        inflection_point=0.0):
     """Returns a function that evaluates the logistic function at t with the
         specified growth rate, capacity, floor, and inflection point.
 

@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from greykite.common.gen_moving_timeseries_forecast import gen_moving_timeseries_forecast
 from greykite.common.testing_utils import generate_df_for_tests
-from greykite.framework.benchmark.gen_moving_timeseries_forecast import gen_moving_timeseries_forecast
 
 
 def test_gen_moving_timeseries_forecast():

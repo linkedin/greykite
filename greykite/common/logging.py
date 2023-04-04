@@ -22,6 +22,7 @@
 """Logging functions."""
 
 import logging
+import sys
 from enum import Enum
 
 import numpy as np
@@ -29,6 +30,14 @@ import six
 
 from greykite.common.constants import LOGGER_NAME
 
+
+# Add time stamp to logging message
+logging.basicConfig(
+    level=logging.INFO,
+    stream=sys.stdout,
+    format="%(asctime)s %(name)s [%(levelname)s]: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 # Here we name the logger "LOGGER_NAME".
 # We don't want to change the default behaviour of the root logger,
@@ -97,7 +106,7 @@ def pprint(params, offset=0, printer=repr):
     np.set_printoptions(**options)
     lines = ''.join(params_list)
     # Strip trailing space to avoid nightmare in doctests
-    lines = '\n'.join(l.rstrip(' ') for l in lines.split('\n'))
+    lines = '\n'.join(line.rstrip(' ') for line in lines.split('\n'))
     return lines
 
 

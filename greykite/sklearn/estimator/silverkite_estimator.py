@@ -28,7 +28,6 @@ from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteFore
 from greykite.common import constants as cst
 from greykite.common.python_utils import update_dictionary
 from greykite.sklearn.estimator.base_silverkite_estimator import BaseSilverkiteEstimator
-from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 
 
 class SilverkiteEstimator(BaseSilverkiteEstimator):
@@ -101,7 +100,6 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
     def __init__(
             self,
             silverkite: SilverkiteForecast = SilverkiteForecast(),
-            silverkite_diagnostics: SilverkiteDiagnostics = SilverkiteDiagnostics(),
             score_func=mean_squared_error,
             coverage=None,
             null_model_params=None,
@@ -114,6 +112,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             training_fraction=None,
             fit_algorithm_dict=None,
             daily_event_df_dict=None,
+            daily_event_neighbor_impact=None,
+            daily_event_shifted_effect=None,
             fs_components_df=pd.DataFrame({
                 "name": [
                     cst.TimeFeaturesEnum.tod.value,
@@ -138,11 +138,11 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             forecast_horizon=None,
             simulation_based=False,
             simulation_num=10,
-            fast_simulation=False):
+            fast_simulation=False,
+            remove_intercept=False):
         # every subclass of BaseSilverkiteEstimator must call super().__init__
         super().__init__(
             silverkite=silverkite,
-            silverkite_diagnostics=silverkite_diagnostics,
             score_func=score_func,
             coverage=coverage,
             null_model_params=null_model_params,
@@ -162,6 +162,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.fit_algorithm_dict = fit_algorithm_dict
         self.training_fraction = training_fraction
         self.daily_event_df_dict = daily_event_df_dict
+        self.daily_event_neighbor_impact = daily_event_neighbor_impact
+        self.daily_event_shifted_effect = daily_event_shifted_effect
         self.fs_components_df = fs_components_df
         self.autoreg_dict = autoreg_dict
         self.past_df = past_df
@@ -180,6 +182,7 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
         self.simulation_based = simulation_based
         self.simulation_num = simulation_num
         self.fast_simulation = fast_simulation
+        self.remove_intercept = remove_intercept
         self.validate_inputs()
 
     def validate_inputs(self):
@@ -247,6 +250,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             fit_algorithm=self.fit_algorithm_dict["fit_algorithm"],
             fit_algorithm_params=self.fit_algorithm_dict["fit_algorithm_params"],
             daily_event_df_dict=self.daily_event_df_dict,
+            daily_event_neighbor_impact=self.daily_event_neighbor_impact,
+            daily_event_shifted_effect=self.daily_event_shifted_effect,
             fs_components_df=self.fs_components_df,
             autoreg_dict=self.autoreg_dict,
             past_df=self.past_df,
@@ -264,7 +269,8 @@ class SilverkiteEstimator(BaseSilverkiteEstimator):
             forecast_horizon=self.forecast_horizon,
             simulation_based=self.simulation_based,
             simulation_num=self.simulation_num,
-            fast_simulation=self.fast_simulation)
+            fast_simulation=self.fast_simulation,
+            remove_intercept=self.remove_intercept)
         # sets attributes based on ``self.model_dict``
         super().finish_fit()
 

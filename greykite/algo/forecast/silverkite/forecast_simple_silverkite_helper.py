@@ -34,6 +34,7 @@ from greykite.common.constants import EVENT_INDICATOR
 from greykite.common.features.timeseries_features import add_event_window_multi
 from greykite.common.features.timeseries_features import get_fourier_col_name
 from greykite.common.features.timeseries_features import get_holidays
+from greykite.common.python_utils import split_offset_str
 
 
 def cols_interact(
@@ -264,7 +265,9 @@ def patsy_categorical_term(
     return string
 
 
-def get_event_pred_cols(daily_event_df_dict):
+def get_event_pred_cols(
+        daily_event_df_dict,
+        daily_event_shifted_effect=None):
     """Generates the names of internal predictor columns from
     the event dictionary passed to
     `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
@@ -285,6 +288,19 @@ def get_event_pred_cols(daily_event_df_dict):
     daily_event_df_dict : `dict` or None, optional, default None
         A dictionary of data frames, each representing events data for the corresponding key.
         See `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
+    daily_event_shifted_effect : `list` [`str`] or None, default None
+        Additional neighbor events based on given events.
+        For example, passing ["-1D", "7D"] will add extra daily events which are 1 day before
+        and 7 days after the given events.
+        Offset format is {d}{freq} with any integer plus a frequency string.
+        Must be parsable by pandas ``to_offset``.
+        The new events' names will be the current events' names with suffix "{offset}_before" or "{offset}_after".
+        For example, if we have an event named "US_Christmas Day",
+        a "7D" shift will have name "US_Christmas Day_7D_after".
+        This is useful when you expect an offset of the current holidays also has impact on the
+        time series, or you want to interact the lagged terms with autoregression.
+        The interaction can be specified with e.g. ``y_lag7:events_US_Christmas Day_7D_after``.
+        If ``daily_event_neighbor_impact`` is also specified, this will be applied after adding neighboring days.
 
     Returns
     -------
@@ -302,4 +318,17 @@ def get_event_pred_cols(daily_event_df_dict):
             event_levels = [cst.EVENT_DEFAULT]  # reference level for non-event days
             event_levels += list(daily_event_df_dict[key][cst.EVENT_DF_LABEL_COL].unique())  # this event's levels
             event_pred_cols += [patsy_categorical_term(term=term, levels=event_levels)]
+            # Adds columns for additional neighbor events.
+            # Does the above for each additional lagged event.
+            if daily_event_shifted_effect is not None:
+                for lag in daily_event_shifted_effect:
+                    num, freq = split_offset_str(lag)
+                    num = int(num)
+                    suffix = cst.EVENT_SHIFTED_SUFFIX_BEFORE if num < 0 else cst.EVENT_SHIFTED_SUFFIX_AFTER
+                    term = f"{cst.EVENT_PREFIX}_{key}_{abs(num)}{freq}{suffix}"
+                    event_levels = [cst.EVENT_DEFAULT]
+                    levels = list(daily_event_df_dict[key][cst.EVENT_DF_LABEL_COL].unique())
+                    levels = [f"{level}_{abs(num)}{freq}{suffix}" for level in levels]
+                    event_levels += levels
+                    event_pred_cols += [patsy_categorical_term(term=term, levels=event_levels)]
     return event_pred_cols

@@ -5,7 +5,7 @@ from functools import partial
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.util.testing import assert_frame_equal
+from pandas.testing import assert_frame_equal
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 from testfixtures import LogCapture
 
@@ -14,6 +14,7 @@ from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.common.viz.timeseries_plotting import add_groupby_column
 from greykite.common.viz.timeseries_plotting import flexible_grouping_evaluation
 from greykite.common.viz.timeseries_plotting import grouping_evaluation
+from greykite.common.viz.timeseries_plotting import plot_dual_axis_figure
 from greykite.common.viz.timeseries_plotting import plot_forecast_vs_actual
 from greykite.common.viz.timeseries_plotting import plot_multivariate
 from greykite.common.viz.timeseries_plotting import plot_multivariate_grouped
@@ -723,6 +724,7 @@ def test_flexible_grouping_evaluation():
         groupby_col="groups",
         agg_kwargs={"func": agg_list}
     )
+    eval_df = eval_df[[col for col in eval_df.columns if "ts" not in col]]
     agg_dict = {  # equivalent dictionary specification
         "actual": [np.nanmedian, np.nanmean],
         "forecast": [np.nanmedian, np.nanmean],
@@ -825,3 +827,91 @@ def test_flexible_grouping_evaluation():
         agg_kwargs={"func": "mean"},
         extend_col_names=True)
     assert list(eval_df.columns) == ["actual", "forecast"]
+
+
+def test_plot_dual_axis_figure():
+    """Tests `plot_dual_axis_figure` function"""
+
+    # Generates fake data.
+    num_points = 50
+    x_col = "x"
+    y_left_col = "y_left"
+    y_right_col = "y_right"
+    grouping_col = "groups"
+    df = pd.DataFrame({
+        x_col: np.linspace(0, 1, num=num_points),
+        y_left_col: np.linspace(1, 100, num=num_points),
+        y_right_col: np.random.rand(num_points),
+        grouping_col: ["A"]*(num_points // 2) + ["B"]*(num_points // 2)})
+    # Plot params.
+    xlabel = "apples"
+    ylabel_left = "oranges"
+    ylabel_right = "banana"
+    title = "ys vs x"
+
+    # Tests when `grouping_col` is specified.
+    fig = plot_dual_axis_figure(
+        df=df,
+        x_col=x_col,
+        y_left_col=y_left_col,
+        y_right_col=y_right_col,
+        xlabel=xlabel,
+        ylabel_left=ylabel_left,
+        ylabel_right=ylabel_right,
+        title=title,
+        grouping_col=grouping_col,
+        y_left_linestyle="dash",
+        y_right_linestyle="dot")
+    assert len(fig.data) == 4
+    assert fig.layout.xaxis.title.text == xlabel
+    assert fig.layout.yaxis.title.text == ylabel_left
+    assert fig.layout.yaxis2.title.text == ylabel_right
+    assert fig.data[0].line.dash == "dash"
+    assert fig.data[1].line.dash == "dot"
+    assert fig.data[2].line.dash == "dash"
+    assert fig.data[3].line.dash == "dot"
+
+    # Tests when `group_color_dict` is specified.
+    group_color_dict = {"A": "blue", "B": "green"}
+    fig = plot_dual_axis_figure(
+        df=df,
+        x_col=x_col,
+        y_left_col=y_left_col,
+        y_right_col=y_right_col,
+        grouping_col=grouping_col,
+        group_color_dict=group_color_dict)
+    for level, level_color in group_color_dict.items():
+        assert all([curve.line.color == level_color for curve in fig.data if curve.legendgroup == f"{grouping_col} = {level}"])
+
+    # Tests when `grouping_col` is None.
+    fig = plot_dual_axis_figure(
+        df=df,
+        x_col=x_col,
+        y_left_col=y_left_col,
+        y_right_col=y_right_col,
+        xlabel=xlabel,
+        ylabel_left=ylabel_left,
+        ylabel_right=ylabel_right,
+        title=title,
+        grouping_col=None,
+        y_left_linestyle="longdashdot",
+        y_right_linestyle="solid")
+    assert len(fig.data) == 2
+    assert fig.layout.xaxis.title.text == xlabel
+    assert fig.layout.yaxis.title.text == ylabel_left
+    assert fig.layout.yaxis2.title.text == ylabel_right
+    assert fig.data[0].line.dash == "longdashdot"
+    assert fig.data[1].line.dash == "solid"
+
+    # Test for correct data input.
+    with pytest.raises(ValueError, match=r"must contain the columns"):
+        plot_dual_axis_figure(
+            df=df,
+            x_col="x_col_wrong",
+            y_left_col=y_left_col,
+            y_right_col=y_right_col,
+            xlabel=xlabel,
+            ylabel_left=ylabel_left,
+            ylabel_right=ylabel_right,
+            title=title,
+            grouping_col=grouping_col)

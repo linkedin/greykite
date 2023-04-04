@@ -11,4 +11,5 @@ def test_aggregate_function_enum():
     assert AggregationFunctionEnum.nanmean.value(array) == 3
     assert AggregationFunctionEnum.maximum.value(array) == 6
     assert AggregationFunctionEnum.minimum.value(array) == 1
+    assert AggregationFunctionEnum.sum.value(array) == 9
     assert AggregationFunctionEnum.weighted_average.value(array) == 3

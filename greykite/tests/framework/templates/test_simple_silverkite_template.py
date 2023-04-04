@@ -1,11 +1,13 @@
 import dataclasses
 import datetime
 import warnings
+from datetime import timedelta
 from typing import Type
 
 import numpy as np
 import pandas as pd
 import pytest
+from sklearn.exceptions import ConvergenceWarning
 from testfixtures import LogCapture
 
 from greykite.algo.forecast.silverkite.constants.silverkite_constant import SilverkiteConstant
@@ -41,7 +43,6 @@ from greykite.framework.templates.simple_silverkite_template_config import Simpl
 from greykite.framework.utils.framework_testing_utils import assert_basic_pipeline_equal
 from greykite.framework.utils.framework_testing_utils import check_forecast_pipeline_result
 from greykite.framework.utils.result_summary import summarize_grid_search_results
-from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverkiteEstimator
 
 
@@ -51,8 +52,44 @@ def silverkite():
 
 
 @pytest.fixture
-def silverkite_diagnostics():
-    return SilverkiteDiagnostics()
+def forecast_data():
+    """Loads and prepares some real and simulated data sets for performance testing."""
+    dl = DataLoader()
+    df_pt = dl.load_peyton_manning()
+    # This adds a small number to avoid very small observed values in MAPE denominator
+    df_pt["y"] = df_pt["y"] + 1
+
+    agg_func = {"count": "sum", "tmin": "mean", "tmax": "mean", "pn": "mean"}
+    df_bk = dl.load_bikesharing(agg_freq="daily", agg_func=agg_func)
+    # This adds a small number to avoid zeros in MAPE calculation
+    df_bk["count"] += 10
+    # Drops last value as data might be incorrect since the original data is hourly
+    df_bk.drop(df_bk.tail(1).index, inplace=True)
+    df_bk.reset_index(drop=True, inplace=True)
+    df_bk = df_bk[["ts", "count"]]
+    df_bk.columns = ["ts", "y"]
+
+    autoreg_coefs = [0.5] * 15
+    periods = 600
+    np.random.seed(1317)
+    data = generate_df_for_tests(
+        freq="D",
+        periods=periods + len(autoreg_coefs),  # Generates more data to avoid missing at the end
+        train_frac=0.8,
+        train_end_date=None,
+        noise_std=0.5,
+        remove_extra_cols=True,
+        autoreg_coefs=autoreg_coefs,
+        fs_coefs=[0.1, 1, 0.1],
+        growth_coef=2.0,
+        intercept=10.0)
+
+    df_sim = data["df"][:periods]  # Removes last few values which are Nan due to using of lags in the data generation
+    df_dict = {}
+    df_dict["daily_pt"] = df_pt[:periods]
+    df_dict["daily_bk"] = df_bk[:periods]
+    df_dict["sim"] = df_sim
+    return df_dict
 
 
 class MySilverkiteHoliday(SilverkiteHoliday):
@@ -258,6 +295,8 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "auto_growth": False,
@@ -300,6 +339,7 @@ def test_get_single_model_components_param_from_template():
             "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
@@ -325,6 +365,8 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "auto_growth": False,
@@ -367,6 +409,7 @@ def test_get_single_model_components_param_from_template():
             "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
@@ -391,6 +434,8 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "auto_growth": False,
@@ -433,6 +478,7 @@ def test_get_single_model_components_param_from_template():
             "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
@@ -457,6 +503,8 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "auto_growth": False,
@@ -499,6 +547,7 @@ def test_get_single_model_components_param_from_template():
             "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
@@ -524,6 +573,8 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         changepoints={
             "auto_growth": False,
@@ -558,12 +609,13 @@ def test_get_single_model_components_param_from_template():
             "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         }
     )
 
 
-def test_get_model_components_from_model_template(silverkite, silverkite_diagnostics):
+def test_get_model_components_from_model_template(silverkite):
     """Tests get_model_components_from_model_template and get_model_components_and_override_from_model_template."""
     sst = SimpleSilverkiteTemplate()
     model_components = sst.get_model_components_from_model_template("SILVERKITE")[0]
@@ -586,6 +638,8 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     }
     assert model_components.changepoints == {
         "auto_growth": False,
@@ -628,6 +682,7 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "regression_weight_col": None,
         "min_admissible_value": None,
         "max_admissible_value": None,
+        "remove_intercept": False,
         "normalize_method": "zero_to_one"
     }
     assert model_components.hyperparameter_override is None
@@ -695,7 +750,6 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         hyperparameter_override={
             "input__response__null__max_frac": 0.1,
             "estimator__silverkite": silverkite,
-            "estimator__silverkite_diagnostics": silverkite_diagnostics,
         }
     )
     original_components = dataclasses.replace(model_components)  # creates a copy
@@ -721,7 +775,9 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "holiday_pre_num_days": 3,
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": {"New Year's Day": (7, 3)},
-        "daily_event_df_dict": daily_event_df_dict
+        "daily_event_df_dict": daily_event_df_dict,
+        "daily_event_neighbor_impact": None,
+        "daily_event_shifted_effect": None
     })
     assert updated_components.changepoints == {
         "auto_growth": False,
@@ -765,12 +821,12 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
         "regression_weight_col": None,
         "min_admissible_value": None,
         "max_admissible_value": None,
+        "remove_intercept": False,
         "normalize_method": "zero_to_one"
     }
     assert updated_components.hyperparameter_override == {
         "input__response__null__max_frac": 0.1,
         "estimator__silverkite": silverkite,
-        "estimator__silverkite_diagnostics": silverkite_diagnostics
     }
     # test change point features
     model_components = ModelComponentsParam(
@@ -796,7 +852,7 @@ def test_get_model_components_from_model_template(silverkite, silverkite_diagnos
     }
 
 
-def test_override_model_components(silverkite, silverkite_diagnostics):
+def test_override_model_components(silverkite):
     sst = SimpleSilverkiteTemplate()
     default_model_components = ModelComponentsParam(
         seasonality={
@@ -869,7 +925,6 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
         },
         hyperparameter_override={
             "estimator__silverkite": silverkite,
-            "estimator__silverkite_diagnostics": silverkite_diagnostics,
             "estimator__daily_seasonality": 10
         })
     new_model_components = sst._SimpleSilverkiteTemplate__override_model_components(
@@ -936,7 +991,6 @@ def test_override_model_components(silverkite, silverkite_diagnostics):
         },
         hyperparameter_override={
             "estimator__silverkite": silverkite,
-            "estimator__silverkite_diagnostics": silverkite_diagnostics,
             "estimator__daily_seasonality": 10
         })
     # Test None model component.
@@ -1047,6 +1101,8 @@ def test_get_model_components_and_override_from_model_template_single():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "daily_event_neighbor_impact": None,
+            "daily_event_shifted_effect": None
         },
         custom={
             "feature_sets_enabled": "auto",
@@ -1062,6 +1118,7 @@ def test_get_model_components_and_override_from_model_template_single():
             "regression_weight_col": None,
             "min_admissible_value": None,
             "max_admissible_value": None,
+            "remove_intercept": False,
             "normalize_method": "zero_to_one"
         },
         autoregression={
@@ -1281,6 +1338,8 @@ def test_apply_default_model_components_daily_1():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1303,6 +1362,7 @@ def test_apply_default_model_components_daily_1():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None],
             estimator__time_properties=[None],
             estimator__origin_for_time_vars=[None],
@@ -1339,6 +1399,8 @@ def test_apply_default_model_components_daily_1():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1361,6 +1423,7 @@ def test_apply_default_model_components_daily_1():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None],
             estimator__time_properties=[None],
             estimator__origin_for_time_vars=[None],
@@ -1397,6 +1460,8 @@ def test_apply_default_model_components_daily_1():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1419,6 +1484,7 @@ def test_apply_default_model_components_daily_1():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None],
             estimator__time_properties=[None],
             estimator__origin_for_time_vars=[None],
@@ -1470,6 +1536,8 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1492,6 +1560,7 @@ def test_apply_default_model_components_daily_90():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         ),
         # Config 2
@@ -1522,6 +1591,8 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1544,6 +1615,7 @@ def test_apply_default_model_components_daily_90():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         ),
         # Config 3
@@ -1582,6 +1654,8 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1604,6 +1678,7 @@ def test_apply_default_model_components_daily_90():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         ),
         # Config 4
@@ -1642,6 +1717,8 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[4],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=["auto"],
             # Fit algorithm
@@ -1664,6 +1741,7 @@ def test_apply_default_model_components_daily_90():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         )
     ]
@@ -1703,6 +1781,8 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=[False],
             # Fit algorithm
@@ -1725,6 +1805,7 @@ def test_apply_default_model_components_weekly():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         ),
         # Config 2
@@ -1763,6 +1844,8 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=[False],
             # Fit algorithm
@@ -1785,6 +1868,7 @@ def test_apply_default_model_components_weekly():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         ),
         # Config 3
@@ -1823,6 +1907,8 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=[False],
             # Fit algorithm
@@ -1845,6 +1931,7 @@ def test_apply_default_model_components_weekly():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         ),
         # Config 4
@@ -1883,6 +1970,8 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__daily_event_neighbor_impact=[None],
+            estimator__daily_event_shifted_effect=[None],
             # Feature sets
             estimator__feature_sets_enabled=[False],
             # Fit algorithm
@@ -1905,6 +1994,7 @@ def test_apply_default_model_components_weekly():
             estimator__fast_simulation=[False],
             estimator__regressor_cols=[[]],
             estimator__lagged_regressor_dict=[None],
+            estimator__remove_intercept=[False],
             estimator__uncertainty_dict=[None]
         )
     ]
@@ -1923,11 +2013,10 @@ def test_apply_default_model_template_hourly():
     template.get_hyperparameter_grid()
 
 
-def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagnostics):
+def test_get_simple_silverkite_hyperparameter_grid(silverkite):
     """Tests get_silverkite_hyperparameter_grid"""
     # tests default values, unpacking, conversion to list
     silverkite = SimpleSilverkiteForecast()
-    silverkite_diagnostics = SilverkiteDiagnostics()
     template = SimpleSilverkiteTemplate()
     template.config = template.apply_forecast_config_defaults()
     hyperparameter_grid = template.get_hyperparameter_grid()
@@ -1944,6 +2033,8 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagno
         "estimator__holiday_post_num_days": [2],
         "estimator__holiday_pre_post_num_dict": [None],
         "estimator__daily_event_df_dict": [None],
+        "estimator__daily_event_neighbor_impact": [None],
+        "estimator__daily_event_shifted_effect": [None],
         "estimator__auto_growth": [False],
         "estimator__changepoints_dict": [{
             "method": "auto",
@@ -1977,7 +2068,8 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagno
         "estimator__extra_pred_cols": [[]],
         "estimator__drop_pred_cols": [None],
         "estimator__explicit_pred_cols": [None],
-        "estimator__regression_weight_col": [None]
+        "estimator__regression_weight_col": [None],
+        "estimator__remove_intercept": [False]
     }
     assert_equal(hyperparameter_grid, expected_grid)
 
@@ -2009,7 +2101,6 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagno
         hyperparameter_override={
             "input__response__null__max_frac": 0.1,
             "estimator__silverkite": silverkite,
-            "estimator__silverkite_diagnostics": silverkite_diagnostics,
             "estimator__growth_term": ["override_estimator__growth_term"],
             "estimator__extra_pred_cols": ["override_estimator__extra_pred_cols"]
         }
@@ -2035,7 +2126,6 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite, silverkite_diagno
     updated_grid["estimator__weekly_seasonality"] = [False]
     updated_grid["input__response__null__max_frac"] = [0.1]
     updated_grid["estimator__silverkite"] = [silverkite]
-    updated_grid["estimator__silverkite_diagnostics"] = [silverkite_diagnostics]
     updated_grid["estimator__growth_term"] = ["override_estimator__growth_term"]
     updated_grid["estimator__regressor_cols"] = [["reg1", "reg2"]]
     updated_grid["estimator__extra_pred_cols"] = [["override_estimator__extra_pred_cols"]]
@@ -2542,7 +2632,7 @@ def test_run_template_3():
             score_func=metric.name,
             greater_is_better=False)
 
-    # Note that for newer scikit-learn version, needs to add a check for ValueError, matching "model is misconfigured"
+    # Note that for newer scikit-learn (1.1+), we need to add a check for ValueError, matching "model is misconfigured"
     with pytest.raises((ValueError, KeyError)) as exception_info, pytest.warns(
             UserWarning,
             match="Removing the columns from the input list of 'regressor_cols'"
@@ -2626,7 +2716,7 @@ def test_run_template_4():
     assert all(param in list(grid_results["params"]) for param in expected_params)
     assert result.grid_search.best_index_ == 2
     assert result.backtest.test_evaluation[rmse] == pytest.approx(5.425, rel=1e-2)
-    assert result.backtest.test_evaluation[q80] == pytest.approx(1.048, rel=1e-2)
+    assert result.backtest.test_evaluation[q80] == pytest.approx(1.036, rel=1e-2)
     assert result.forecast.train_evaluation[rmse] == pytest.approx(2.526, rel=1e-2)
     assert result.forecast.train_evaluation[q80] == pytest.approx(0.991, rel=1e-2)
     check_forecast_pipeline_result(
@@ -2886,7 +2976,7 @@ def test_run_template_8():
             config=config,
         )
         rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
-        assert result.backtest.test_evaluation[rmse] == pytest.approx(6.691, rel=1e-1)
+        assert result.backtest.test_evaluation[rmse] == pytest.approx(6.123, rel=1e-1)
         check_forecast_pipeline_result(
             result,
             coverage=0.9,
@@ -2981,7 +3071,7 @@ def test_run_template_9():
         rmse = EvaluationMetricEnum.RootMeanSquaredError.get_metric_name()
         q80 = EvaluationMetricEnum.Quantile80.get_metric_name()
         assert result.backtest.test_evaluation[rmse] == pytest.approx(3.360, rel=1e-2)
-        assert result.backtest.test_evaluation[q80] == pytest.approx(1.139, rel=1e-2)
+        assert result.backtest.test_evaluation[q80] == pytest.approx(1.124, rel=1e-2)
         assert result.forecast.train_evaluation[rmse] == pytest.approx(2.069, rel=1e-2)
         assert result.forecast.train_evaluation[q80] == pytest.approx(0.771, rel=1e-2)
         check_forecast_pipeline_result(
@@ -3013,7 +3103,7 @@ def test_run_template_9():
         assert expected_pred_cols.issubset(actual_pred_cols)
         assert expected_x_mat_cols.issubset(actual_x_mat_cols)
 
-    # Note that for newer scikit-learn version, needs to add a check for ValueError, matching "model is misconfigured"
+    # Note that for newer scikit-learn (1.1+), we need to add a check for ValueError, matching "model is misconfigured"
     with pytest.raises((ValueError, KeyError)) as exception_info:
         model_components = ModelComponentsParam(
             regressors={
@@ -3029,7 +3119,7 @@ def test_run_template_9():
     info_str = str(exception_info.value)
     assert "missing_regressor" in info_str or "model is misconfigured" in info_str
 
-    # Note that for newer scikit-learn version, needs to add a check for ValueError, matching "model is misconfigured"
+    # Note that for newer scikit-learn (1.1+), we need to add a check for ValueError, matching "model is misconfigured"
     with pytest.raises((ValueError, KeyError)) as exception_info:
         model_components = ModelComponentsParam(
             lagged_regressors={
@@ -3047,7 +3137,7 @@ def test_run_template_9():
     info_str = str(exception_info.value)
     assert "missing_lagged_regressor" in info_str or "model is misconfigured" in info_str
 
-    # Note that for newer scikit-learn version, needs to add a check for ValueError, matching "model is misconfigured"
+    # Note that for newer scikit-learn (1.1+), we need to add a check for ValueError, matching "model is misconfigured"
     with pytest.raises((ValueError, KeyError)) as exception_info:
         model_components = ModelComponentsParam(
             lagged_regressors={
@@ -3065,6 +3155,137 @@ def test_run_template_9():
             ))
     info_str = str(exception_info.value)
     assert "missing_lagged_regressor" in info_str or "model is misconfigured" in info_str
+
+
+def test_run_template_with_event_indicators():
+    """Tests event indicators (is_event, is_event_exact, is_event_adjacent) and
+    its interactions with daily data."""
+    data = generate_df_with_reg_for_tests(
+        freq="D",
+        periods=365*3,
+        remove_extra_cols=True,
+        mask_test_actuals=True
+    )
+    df = data["df"]  # non-NA values from 2018-07-01 to 2020-11-23
+    time_col = "some_time_col"
+    value_col = "some_value_col"
+    df.rename({
+        TIME_COL: time_col,
+        VALUE_COL: value_col
+    }, axis=1, inplace=True)
+
+    metadata = MetadataParam(
+        time_col=time_col,
+        value_col=value_col,
+        freq="D",
+        date_format="%Y-%m-%d",
+        train_end_date=datetime.datetime(2020, 9, 7)  # 2020-09-07 is Labor Day (Monday)
+    )
+    evaluation_metric = EvaluationMetricParam(
+        cv_selection_metric=EvaluationMetricEnum.MedianAbsolutePercentError.name,
+        cv_report_metrics=None,
+    )
+    evaluation_period = EvaluationPeriodParam(
+        test_horizon=1,
+        periods_between_train_test=0,
+        cv_max_splits=0
+    )
+
+    model_components = ModelComponentsParam(
+        seasonality={
+            "yearly_seasonality": True,
+            "weekly_seasonality": False
+        },
+        growth={
+            "growth_term": "quadratic"
+        },
+        events={
+            "holidays_to_model_separately": "ALL_HOLIDAYS_IN_COUNTRIES",
+            "holiday_lookup_countries": ["UnitedStates"],
+            "holiday_pre_num_days": 1,
+        },
+        changepoints={
+            "changepoints_dict": {
+                "method": "uniform",
+                "n_changepoints": 20,
+            }
+        },
+        autoregression={
+            "autoreg_dict": "auto"
+        },
+        regressors={
+            "regressor_cols": [
+                "regressor1",
+                "regressor2",
+                "regressor3",
+                "regressor_bool",
+                "regressor_categ"
+            ]
+        },
+        lagged_regressors=None,
+        uncertainty={
+            "uncertainty_dict": "auto",
+        },
+        hyperparameter_override=None,
+        custom={
+            "fit_algorithm_dict": {
+                "fit_algorithm": "ridge"
+            },
+            "feature_sets_enabled": "auto",
+            "extra_pred_cols": ["is_event:is_weekend", "is_event_adjacent", "is_event_exact"]
+        }
+    )
+
+    forecast_horizon = 1
+    coverage = 0.9
+    config = ForecastConfig(
+        model_template=ModelTemplateEnum.SILVERKITE.name,
+        metadata_param=metadata,
+        forecast_horizon=forecast_horizon,
+        coverage=coverage,
+        evaluation_metric_param=evaluation_metric,
+        evaluation_period_param=evaluation_period,
+        model_components_param=model_components,
+    )
+
+    forecaster = Forecaster()
+    result = forecaster.run_forecast_config(df=df, config=config)
+
+    # Checks event indicators are correctly modeled
+    model = result.model[-1]
+    x_mat = model.model_dict["x_mat"]
+    expected_event_cols = ["is_event_exact", "is_event_adjacent", "is_event:is_weekend[True]", "is_event:is_weekend[False]"]
+    actual_event_cols = []
+    for col in x_mat.columns:
+        if "is_event" in col:
+            actual_event_cols.append(col)
+    assert set(expected_event_cols) == set(actual_event_cols)
+    # 2020-09-07 is Labor Day and on Monday
+    assert np.array_equal(x_mat[expected_event_cols].iloc[-1].values, [1, 0, 0, 1])
+    assert np.array_equal(x_mat[expected_event_cols].iloc[-2].values, [0, 1, 1, 0])
+
+
+def test_run_template_with_infinite_values():
+    """Tests template with null and infinite values in data"""
+    data = generate_df_for_tests(
+        freq="D",
+        periods=400)
+    df = data["train_df"]
+    # Introduces null and infinity values
+    df[VALUE_COL].iloc[100:110] = np.nan
+    df[VALUE_COL].iloc[150:160] = np.inf
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        result = Forecaster().run_forecast_config(
+            df=df,
+        )
+        check_forecast_pipeline_result(
+            result,
+            coverage=None,
+            strategy=None,
+            score_func=EvaluationMetricEnum.MeanAbsolutePercentError.name,
+            greater_is_better=False)
 
 
 def test_run_template_daily_1():
@@ -3408,5 +3629,121 @@ def test_silverkite_auto_config():
         "order": [3, 1, 1, 6],
         "seas_names": ["weekly", "monthly", "quarterly", "yearly"]
     }))
-    assert len(result.model[-1].model_dict["daily_event_df_dict"]) == 194
+    assert len(result.model[-1].model_dict["daily_event_df_dict"]) == 199
     assert "ct1" in result.model[-1].model_dict["x_mat"].columns
+
+
+def test_holiday_neighbor_impact():
+    """Tests holidays in weekly data."""
+    df = pd.DataFrame({
+        "ts": pd.date_range("2020-01-01", freq="W-SUN", periods=100),
+        "y": np.random.randn(100)
+    })
+    config = ForecastConfig(
+        model_template="SILVERKITE",
+        forecast_horizon=1,
+        metadata_param=MetadataParam(
+            freq="W-SUN"
+        ),
+        evaluation_period_param=EvaluationPeriodParam(
+            test_horizon=0,
+            cv_horizon=0
+        ),
+        model_components_param=ModelComponentsParam(
+            events=dict(
+                daily_event_neighbor_impact=lambda x: [x - timedelta(days=x.isocalendar()[2] - 1)
+                                                       + timedelta(days=i) for i in range(7)]
+            ),
+        )
+    )
+    result = Forecaster().run_forecast_config(
+        df=df,
+        config=config,
+    )
+    # The first day is "2020-01-05".
+    # Because we set the ``daily_event_neighbor_impact`` parameter,
+    # it is marked as New Year's day.
+    assert result.model[-1].model_dict["x_mat"][
+               "C(Q('events_New Years Day'), levels=['', 'event'])[T.event]"].iloc[0] == 1
+
+
+def test_various_models(forecast_data):
+    """This is a light-weight performance check (in terms of forecast accuracy)
+    on the user-facing forecasting layer.
+    This is done across a few algorithms and data sets (two real data sets and one simulated data set).
+    This is not intended to replace, comprehensive benchmarking, rather its there to
+    capture major code changes which might impact the final results.
+    """
+    # Specify dataset information
+    metadata = MetadataParam(
+        time_col="ts",
+        value_col="y",
+        freq="D")
+
+    def fit_forecast(
+            df_label,
+            fit_algorithm):
+        """Fits a forecast and calculates cross validation errors for a given
+        data set and ``fit_algorithm``.
+        It returns a tuple: (Test MAPE, Feature number)
+        """
+        cv_min_train_periods = 500
+        # Let CV use most recent splits for cross-validation.
+        cv_use_most_recent_splits = True
+        # Determine the maximum number of validations.
+        cv_max_splits = 2
+        forecast_horizon = 14
+        evaluation_period_param = EvaluationPeriodParam(
+            test_horizon=forecast_horizon,
+            cv_horizon=forecast_horizon,
+            periods_between_train_test=0,
+            cv_min_train_periods=cv_min_train_periods,
+            cv_expanding_window=True,
+            cv_use_most_recent_splits=cv_use_most_recent_splits,
+            cv_periods_between_splits=13,
+            cv_periods_between_train_test=0,
+            cv_max_splits=cv_max_splits,
+        )
+
+        model_components = ModelComponentsParam(
+            custom=dict(
+                fit_algorithm_dict=dict(
+                    fit_algorithm=fit_algorithm)))
+
+        forecaster = Forecaster()
+        result = forecaster.run_forecast_config(
+            df=forecast_data[df_label],
+            config=ForecastConfig(
+                model_template=ModelTemplateEnum.SILVERKITE.name,
+                forecast_horizon=forecast_horizon,
+                coverage=0.95,
+                evaluation_period_param=evaluation_period_param,
+                metadata_param=metadata,
+                model_components_param=model_components))
+
+        grid_search = result.grid_search
+        cv_results = summarize_grid_search_results(
+            grid_search=grid_search,
+            decimals=2,
+            cv_report_metrics=None)
+        test_mape = cv_results["mean_test_MAPE"].values[0]
+        features_num = len(result.model[-1].model_dict["pred_cols"])
+
+        return (test_mape, features_num)
+
+    err_feature_num_dict = {}
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=ConvergenceWarning)
+        for df_label in forecast_data.keys():
+            for fit_algorithm in ["ridge", "elastic_net"]:
+                err_feature_num_dict[f"{df_label}_{fit_algorithm}"] = fit_forecast(
+                    df_label,
+                    fit_algorithm)
+
+    assert err_feature_num_dict == {
+        "daily_pt_ridge": (1.8, 131),
+        "daily_pt_elastic_net": (1.84, 131),
+        "daily_bk_ridge": (37.2, 124),
+        "daily_bk_elastic_net": (34.41, 124),
+        "sim_ridge": (1.66, 131),
+        "sim_elastic_net": (1.42, 131)}

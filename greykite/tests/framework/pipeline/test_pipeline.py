@@ -359,8 +359,9 @@ def test_train_end_date_gap():
             pipeline=pipeline,
             forecast_horizon=10)
         ts = result.timeseries
-        assert f"{ts.original_value_col} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
+        assert f"{ts.original_value_col} column of the provided time series contains null " \
+               f"values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a " \
                f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
         assert ts.train_end_date == datetime.datetime(2018, 1, 25)
         assert result.forecast.test_evaluation is None
@@ -374,11 +375,10 @@ def test_train_end_date_gap():
             pipeline=pipeline,
             forecast_horizon=5)
         ts = result.timeseries
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains " \
+               f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a non-null value " \
+               f"({datetime.datetime(2018, 1, 25)})." in record[0].message.args[0]
         assert ts.train_end_date == datetime.datetime(2018, 1, 25)
         assert result.forecast.test_evaluation is None
 
@@ -450,9 +450,10 @@ def test_train_end_date_gap_regressors():
             pipeline=get_dummy_pipeline(include_preprocessing=True),
             forecast_horizon=10)
         ts = result.timeseries
-        assert f"{ts.original_value_col} column of the provided TimeSeries contains " \
-               f"null values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
+        assert f"{ts.original_value_col} column of the provided time series contains " \
+               f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a non-null value " \
+               f"({ts.train_end_date})." in record[0].message.args[0]
         assert ts.train_end_date == datetime.datetime(2018, 2, 21)
         assert ts.last_date_for_reg is None
         assert result.forecast.test_evaluation is None
@@ -469,11 +470,10 @@ def test_train_end_date_gap_regressors():
                 regressor_cols=regressor_cols),
             forecast_horizon=5)
         ts = result.timeseries
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
+        assert f"{VALUE_COL} column of the provided time series contains " \
+               f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. " \
+               f"Setting `train_end_date` to the last timestamp with a non-null value " \
+               f"({datetime.datetime(2018, 2, 21)})." in record[0].message.args[0]
         assert ts.train_end_date == datetime.datetime(2018, 2, 21)
         assert ts.last_date_for_reg == datetime.datetime(2018, 3, 1)
         forecast = result.forecast
@@ -493,15 +493,11 @@ def test_train_end_date_gap_regressors():
                 regressor_cols=[]),
             forecast_horizon=5)
         ts = result.timeseries
-        assert f"Input timestamp for the parameter 'train_end_date' " \
-               f"({train_end_date}) either exceeds the last available timestamp or" \
-               f"{VALUE_COL} column of the provided TimeSeries contains null " \
-               f"values at the end. Setting 'train_end_date' to the last timestamp with a " \
-               f"non-null value ({ts.train_end_date})." in record[0].message.args[0]
-        assert ts.train_end_date == datetime.datetime(2018, 2, 21)
+        assert f"{VALUE_COL} column of the provided time series contains trailing NAs" in record[0].message.args[0]
+        assert ts.train_end_date == train_end_date  # Unchanged when `train_end_date` is specified.
         assert ts.last_date_for_reg is None
         forecast = result.forecast
-        assert forecast.df[TIME_COL].max() == datetime.datetime(2018, 2, 26)
+        assert forecast.df[TIME_COL].max() == datetime.datetime(2018, 3, 3)
         assert forecast.test_evaluation is None
 
     # `train_end_date` smaller than last date before null,

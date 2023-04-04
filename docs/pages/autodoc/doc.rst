@@ -95,12 +95,14 @@ EasyConfig
 
 .. autoclass:: greykite.algo.common.holiday_inferrer.HolidayInferrer
 
+.. autoclass:: greykite.algo.common.holiday_grouper.HolidayGrouper
+
 Changepoint Detection
 ---------------------
 .. autoclass:: greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector
 
 Benchmarking
-----------------
+------------
 .. autoclass:: greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig
     :members:
 
@@ -130,19 +132,13 @@ Hierarchical Forecast
 
 Utility Functions
 -----------------
-.. currentmodule:: greykite.common.features.timeseries_features
-.. autofunction:: get_available_holiday_lookup_countries
-.. autofunction:: get_available_holidays_across_countries
-.. autofunction:: build_time_features_df
-.. autofunction:: get_holidays
-.. autofunction:: add_event_window_multi
-.. autofunction:: add_daily_events
-.. autofunction:: convert_date_to_continuous_time
+.. automodule:: greykite.common.features.timeseries_features
 
 .. currentmodule:: greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper
 .. autofunction:: get_event_pred_cols
 
 .. autofunction:: greykite.framework.pipeline.utils.get_basic_pipeline
+.. autofunction:: greykite.framework.utils.exploratory_data_analysis.get_exploratory_plots
 .. autofunction:: greykite.framework.utils.result_summary.summarize_grid_search_results
 .. autofunction:: greykite.framework.utils.result_summary.get_ranks_and_splits
 
@@ -160,6 +156,7 @@ Utility Functions
 
 .. currentmodule:: greykite.common.evaluation
 .. autofunction:: r2_null_model_score
+.. autofunction:: mean_interval_score
 
 .. currentmodule:: greykite.framework.pipeline.utils
 .. autofunction:: get_score_func_with_aggregation
@@ -191,7 +188,7 @@ Internal Functions
 .. autofunction:: greykite.algo.uncertainty.conditional.conf_interval.conf_interval
 .. autofunction:: greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints
 
-.. currentmodule:::: greykite.common.features.timeseries_lags
+.. currentmodule:: greykite.common.features.timeseries_lags
 .. autofunction:: build_autoreg_df
 .. autofunction:: build_agg_lag_df
 .. autofunction:: build_autoreg_df_multi

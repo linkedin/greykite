@@ -106,6 +106,8 @@ SILVERKITE_TWO_STAGE = ModelComponentsParam(
                         "holiday_post_num_days": 1,
                         "holiday_pre_post_num_dict": None,
                         "daily_event_df_dict": None,
+                        "daily_event_neighbor_impact": None,
+                        "daily_event_shifted_effect": None
                     },
                     changepoints={
                         "changepoints_dict": {
@@ -145,7 +147,8 @@ SILVERKITE_TWO_STAGE = ModelComponentsParam(
                         "drop_pred_cols": None,
                         "explicit_pred_cols": None,
                         "regression_weight_col": None,
-                        "normalize_method": "zero_to_one"
+                        "normalize_method": "zero_to_one",
+                        "remove_intercept": False
                     }
                 )
             ),
@@ -176,6 +179,8 @@ SILVERKITE_TWO_STAGE = ModelComponentsParam(
                         "holiday_post_num_days": 0,
                         "holiday_pre_post_num_dict": None,
                         "daily_event_df_dict": None,
+                        "daily_event_neighbor_impact": None,
+                        "daily_event_shifted_effect": None
                     },
                     changepoints={
                         "changepoints_dict": None,
@@ -207,7 +212,8 @@ SILVERKITE_TWO_STAGE = ModelComponentsParam(
                         "drop_pred_cols": None,
                         "explicit_pred_cols": None,
                         "regression_weight_col": None,
-                        "normalize_method": "zero_to_one"
+                        "normalize_method": "zero_to_one",
+                        "remove_intercept": False
                     }
                 )
             )
@@ -268,6 +274,8 @@ SILVERKITE_WOW = ModelComponentsParam(
                         "holiday_post_num_days": 0,             # ignored
                         "holiday_pre_post_num_dict": None,      # ignored
                         "daily_event_df_dict": None,            # ignored
+                        "daily_event_neighbor_impact": None,    # ignored
+                        "daily_event_shifted_effect": None
                     },
                     changepoints={
                         "auto_growth": True,
@@ -300,7 +308,8 @@ SILVERKITE_WOW = ModelComponentsParam(
                         "drop_pred_cols": None,
                         "explicit_pred_cols": None,
                         "regression_weight_col": None,
-                        "normalize_method": "zero_to_one"
+                        "normalize_method": "zero_to_one",
+                        "remove_intercept": False
                     }
                 )
             ),

@@ -1,12 +1,13 @@
 import matplotlib  # isort:skip
 
-matplotlib.use("agg")  # noqa: E402
-import matplotlib.pyplot as plt  # isort:skip
-
 from greykite.algo.forecast.similarity.forecast_similarity_based import forecast_similarity_based
 from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.common.evaluation import calc_pred_err
 from greykite.common.testing_utils import generate_df_for_tests
+
+
+matplotlib.use("agg")  # noqa: E402
+import matplotlib.pyplot as plt  # isort:skip # noqa: E402
 
 
 def test_forecast_similarity_based():

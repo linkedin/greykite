@@ -116,6 +116,8 @@ class HolidayInferrer:
         This is the output from `pypi:holidays-ext`.
         Duplicates are dropped.
         Observed holidays are merged.
+    all_holiday_dates : `list` [`datetime`] or None
+        All holiday dates contained in ``country_holiday_df``.
     holidays : `list` [`str`] or None
         A list of holidays in ``country_holiday_df``.
     score_result : `dict` [`str`, `list` [`float`]] or None
@@ -149,6 +151,7 @@ class HolidayInferrer:
         self.independent_holiday_thres: Optional[float] = None
         self.together_holiday_thres: Optional[float] = None
         self.extra_years: Optional[int] = None
+        self.use_relative_score: Optional[bool] = None
         # Data set info
         self.df: Optional[pd.DataFrame] = None
         self.time_col: Optional[str] = None
@@ -158,6 +161,7 @@ class HolidayInferrer:
         self.ts: Optional[Set[datetime.date]] = None
         # Derived results
         self.country_holiday_df: Optional[pd.DataFrame] = None
+        self.all_holiday_dates: Optional[List[datetime.date]] = None
         self.holidays: Optional[List[str]] = None
         self.score_result: Optional[Dict[str, List[float]]] = None
         self.score_result_avg: Optional[Dict[str, float]] = None
@@ -175,7 +179,8 @@ class HolidayInferrer:
             plot: bool = False,
             independent_holiday_thres: float = 0.8,
             together_holiday_thres: float = 0.99,
-            extra_years: int = 2) -> Optional[Dict[str, any]]:
+            extra_years: int = 2,
+            use_relative_score: bool = False) -> Optional[Dict[str, any]]:
         """Infers significant holidays and holiday configurations.
 
         The class works for daily and sub-daily data.
@@ -235,6 +240,11 @@ class HolidayInferrer:
         extra_years : `int`, default 2
             Extra years after ``self.year_end`` to pull holidays in ``self.country_holiday_df``.
             This can be used to cover the forecast periods.
+        use_relative_score : `bool`, default False
+            Whether the holiday effect is calculated as a relative ratio.
+            If `False`, `~greykite.algo.common.holiday_inferrer.HolidayInferrer._get_score_for_dates`
+            will use absolute difference compared to the baseline as the score.
+            If `True`, it uses relative ratio compared to the baseline as the score.
 
         Returns
         -------
@@ -272,6 +282,7 @@ class HolidayInferrer:
             # At least 1 year for completeness.
             raise ValueError("The parameter 'extra_years' must be a positive integer.")
         self.extra_years = extra_years
+        self.use_relative_score = use_relative_score
 
         # Pre-processes data.
         df = df.copy()
@@ -304,6 +315,7 @@ class HolidayInferrer:
 
         # Gets holiday candidates.
         self.country_holiday_df, self.holidays = self._get_candidate_holidays(countries=countries)
+        self.all_holiday_dates = self.country_holiday_df["ts"].tolist()
         # Gets scores for holidays.
         self.score_result = self._get_scores_for_holidays()
         # Gets the average scores over multiple occurrences for each holiday.
@@ -479,6 +491,7 @@ class HolidayInferrer:
         """
         scores = []
         for date in event_dates:
+            log_message(message=f"Current holiday date: {date}.\n", level=LoggingLevelEnum.DEBUG)
             # Calculates the dates for baseline.
             baseline_dates = []
             for offset in self.baseline_offsets:
@@ -486,14 +499,21 @@ class HolidayInferrer:
                 counter = 1
                 # If a baseline date falls on another holiday, it is moving further.
                 # But the total iterations cannot exceed 3.
-                while new_date in event_dates and counter < 3:
+                while new_date in self.all_holiday_dates and counter <= 3:
+                    log_message(
+                        message=f"Skipping {new_date}, new date is {new_date + timedelta(days=offset)}.\n",
+                        level=LoggingLevelEnum.DEBUG
+                    )
                     counter += 1
                     new_date += timedelta(days=offset)
                 baseline_dates.append(new_date)
+            log_message(message=f"Baseline dates are: {baseline_dates}.\n", level=LoggingLevelEnum.DEBUG)
             # Calculates the average of the baseline observations.
             baseline = self.df[self.df[self.time_col].isin(baseline_dates)][self.value_col].mean()
             # Calculates the score for the current occurrence.
             score = self.df[self.df[self.time_col] == date][self.value_col].values[0] - baseline
+            if self.use_relative_score:
+                score /= baseline
             scores.append(score)
         return scores
 

@@ -25,6 +25,9 @@ import base64
 from io import BytesIO
 
 import matplotlib.pyplot as plt
+from statsmodels.graphics.tsaplots import plot_acf
+from statsmodels.graphics.tsaplots import plot_pacf
+
 from greykite.algo.changepoint.adalasso.changepoint_detector import ChangepointDetector
 from greykite.algo.common.holiday_inferrer import HolidayInferrer
 from greykite.common.constants import TIME_COL
@@ -32,9 +35,6 @@ from greykite.common.constants import VALUE_COL
 from greykite.common.enums import SeasonalityEnum
 from greykite.common.time_properties import min_gap_in_seconds
 from greykite.common.time_properties_forecast import get_simple_time_frequency_from_period
-from statsmodels.graphics.tsaplots import plot_acf
-from statsmodels.graphics.tsaplots import plot_pacf
-
 from greykite.framework.input.univariate_time_series import UnivariateTimeSeries
 
 

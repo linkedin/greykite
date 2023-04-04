@@ -239,7 +239,9 @@ def test_find_trend_changepoints(hourly_data):
             regularization_strength=-1
         )
     # estimator parameter combination not valid warning
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="trend_estimator not in"):
         model = ChangepointDetector()
         model.find_trend_changepoints(
             df=df,
@@ -247,9 +249,9 @@ def test_find_trend_changepoints(hourly_data):
             value_col="y",
             trend_estimator="something"
         )
-        assert "trend_estimator not in ['ridge', 'lasso', 'ols'], " \
-               "estimating using ridge" in record[0].message.args[0]
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="trend_estimator"):
         model = ChangepointDetector()
         model.find_trend_changepoints(
             df=df,
@@ -258,9 +260,9 @@ def test_find_trend_changepoints(hourly_data):
             trend_estimator="ols",
             yearly_seasonality_order=8
         )
-        assert "trend_estimator = 'ols' with year_seasonality_order > 0 may create " \
-               "over-fitting, trend_estimator has been set to 'ridge'." in record[0].message.args[0]
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="adaptive_lasso_initial_estimator"):
         model = ChangepointDetector()
         model.find_trend_changepoints(
             df=df,
@@ -268,8 +270,6 @@ def test_find_trend_changepoints(hourly_data):
             value_col="y",
             adaptive_lasso_initial_estimator="something"
         )
-        assert "adaptive_lasso_initial_estimator not in ['ridge', 'lasso', 'ols'], " \
-               "estimating with ridge" in record[0].message.args[0]
     # df sample size too small
     df = pd.DataFrame(
         data={
@@ -415,16 +415,14 @@ def test_find_seasonality_changepoints(hourly_data):
         time_col="ts",
         value_col="y"
     )
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="Trend changepoints are already identified, using past trend estimation."):
         cd.find_seasonality_changepoints(
             df=df2,
             time_col="ts2",
             value_col="y2"
         )
-        assert ("Trend changepoints are already identified, using past trend estimation. "
-                "If you would like to run trend change point detection again, "
-                "please call ``find_trend_changepoints`` with desired parameters "
-                "before calling ``find_seasonality_changepoints``.") in record[0].message.args[0]
     assert cd.time_col == "ts"
     assert cd.value_col == "y"
     # negative potential_changepoint_n
@@ -446,16 +444,15 @@ def test_find_seasonality_changepoints(hourly_data):
             regularization_strength=-1
         )
     # test regularization_strength == None warning
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="regularization_strength is set to None. This will"):
         model.find_seasonality_changepoints(
             df=df,
             time_col="ts",
             value_col="y",
             regularization_strength=None
         )
-        assert ("regularization_strength is set to None. This will trigger cross-validation to "
-                "select the tuning parameter which might result in too many change points. "
-                "Keep the default value or tuning around it is recommended.") in record[0].message.args[0]
     # test existing trend estimation warning
     model = ChangepointDetector()
     model.find_trend_changepoints(
@@ -463,16 +460,14 @@ def test_find_seasonality_changepoints(hourly_data):
         time_col="ts",
         value_col="y"
     )
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="Trend changepoints are already identified, using past trend estimation."):
         model.find_seasonality_changepoints(
             df=df,
             time_col="ts",
             value_col="y"
         )
-        assert ("Trend changepoints are already identified, using past trend estimation. "
-                "If you would like to run trend change point detection again, "
-                "please call ``find_trend_changepoints`` with desired parameters "
-                "before calling ``find_seasonality_changepoints``.") in record[0].message.args[0]
     # df sample size too small
     df_small = pd.DataFrame(
         data={
@@ -513,7 +508,9 @@ def test_plot(hourly_data):
         value_col="y"
     )
     # test empty plot
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="Figure is empty, at least one component"):
         model.plot(
             observation=False,
             observation_original=False,
@@ -522,9 +519,10 @@ def test_plot(hourly_data):
             yearly_seasonality_estimate=False,
             adaptive_lasso_estimate=False
         )
-        assert "Figure is empty, at least one component has to be true." in record[0].message.args[0]
     # test plotting change without estimation
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="You haven't run trend change point detection "):
         model = ChangepointDetector()
         model.plot(
             observation=False,
@@ -534,10 +532,10 @@ def test_plot(hourly_data):
             yearly_seasonality_estimate=False,
             adaptive_lasso_estimate=False
         )
-        assert "You haven't run trend change point detection algorithm yet. " \
-               "Please call find_trend_changepoints first." in record[0].message.args[0]
     # test plotting seasonality change or estimation without estimation
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="You haven't run seasonality change point detection"):
         model = ChangepointDetector()
         model.plot(
             observation=False,
@@ -548,9 +546,9 @@ def test_plot(hourly_data):
             adaptive_lasso_estimate=False,
             seasonality_change=True
         )
-        assert ("You haven't run seasonality change point detection algorithm yet. "
-                "Please call find_seasonality_changepoints first.") in record[0].message.args[0]
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="You haven't run seasonality change point detection"):
         model = ChangepointDetector()
         model.plot(
             observation=False,
@@ -561,8 +559,6 @@ def test_plot(hourly_data):
             adaptive_lasso_estimate=False,
             seasonality_estimate=True
         )
-        assert ("You haven't run seasonality change point detection algorithm yet. "
-                "Please call find_seasonality_changepoints first.") in record[0].message.args[0]
 
 
 def test_get_changepoints_dict():
@@ -666,15 +662,15 @@ def test_get_changepoints_dict():
         "method": "auto",
         "unused_key": "value"
     }
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(
+            UserWarning,
+            match="The following keys in"):
         get_changepoints_dict(
             df=df_pt,
             time_col="ts",
             value_col="y",
             changepoints_dict=changepoints_dict
         )
-        assert (f"The following keys in ``changepoints_dict`` are not recognized\n"
-                f"{['unused_key']}") in record[0].message.args[0]
 
 
 def test_get_seasonality_changepoints():

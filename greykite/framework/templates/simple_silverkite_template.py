@@ -554,7 +554,6 @@ class SimpleSilverkiteTemplate(BaseTemplate):
 
                     hyperparameter_override={
                         "estimator__silverkite": SimpleSilverkiteForecast(),
-                        "estimator__silverkite_diagnostics": SilverkiteDiagnostics(),
                         "estimator__growth_term": "linear",
                         "input__response__null__impute_algorithm": "ts_interpolate",
                         "input__response__null__impute_params": {"orders": [7, 14]},
@@ -845,7 +844,11 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                 "estimator__holidays_to_model_separately": [None, "auto", self._silverkite_holiday.ALL_HOLIDAYS_IN_COUNTRIES],
                 "estimator__holiday_lookup_countries": [None, "auto"],
                 "estimator__regressor_cols": [None],
-                "estimator__extra_pred_cols": [None]}
+                "estimator__extra_pred_cols": [None],
+                "estimator__drop_pred_cols": [None],
+                "estimator__explicit_pred_cols": [None],
+                "estimator__daily_event_shifted_effect": [None]
+            }
         )
         hyperparameter_grid_result = unique_dict_in_list(hyperparameter_grid_result)
         if len(hyperparameter_grid_result) == 1:
@@ -1127,7 +1130,8 @@ class SimpleSilverkiteTemplate(BaseTemplate):
                 "min_admissible_value": None,
                 "max_admissible_value": None,
                 "regression_weight_col": None,
-                "normalize_method": "zero_to_one"
+                "normalize_method": "zero_to_one",
+                "remove_intercept": False
             },
             autoregression=self.constants.COMMON_MODELCOMPONENTPARAM_PARAMETERS["AR"][components[components.index("AR")+1]],
             regressors={
@@ -1276,6 +1280,8 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             "estimator__holiday_post_num_days": model_components.events["holiday_post_num_days"],
             "estimator__holiday_pre_post_num_dict": model_components.events["holiday_pre_post_num_dict"],
             "estimator__daily_event_df_dict": model_components.events["daily_event_df_dict"],
+            "estimator__daily_event_neighbor_impact": model_components.events["daily_event_neighbor_impact"],
+            "estimator__daily_event_shifted_effect": model_components.events["daily_event_shifted_effect"],
             "estimator__feature_sets_enabled": model_components.custom["feature_sets_enabled"],
             "estimator__fit_algorithm_dict": model_components.custom["fit_algorithm_dict"],
             "estimator__max_daily_seas_interaction_order": model_components.custom["max_daily_seas_interaction_order"],
@@ -1292,6 +1298,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             "estimator__regressor_cols": model_components.regressors["regressor_cols"],
             "estimator__lagged_regressor_dict": model_components.lagged_regressors["lagged_regressor_dict"],
             "estimator__regression_weight_col": model_components.custom["regression_weight_col"],
+            "estimator__remove_intercept": model_components.custom["remove_intercept"],
             "estimator__uncertainty_dict": model_components.uncertainty["uncertainty_dict"]
         }
         return hyperparameter_grid

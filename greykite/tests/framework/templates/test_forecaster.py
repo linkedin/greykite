@@ -515,7 +515,7 @@ def test_run_forecast_config_custom():
             score_func=metric.name,
             greater_is_better=False)
 
-    # Note that for newer scikit-learn version, needs to add a check for ValueError, matching "model is misconfigured"
+    # Note that for newer scikit-learn (1.1+), we need to add a check for ValueError, matching "model is misconfigured"
     with pytest.raises((ValueError, KeyError)) as exception_info:
         model_components = ModelComponentsParam(
             regressors={
@@ -681,6 +681,8 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__holiday_post_num_days": [0],
             "estimator__holiday_pre_post_num_dict": [None],
             "estimator__daily_event_df_dict": [None],
+            "estimator__daily_event_neighbor_impact": [None],
+            "estimator__daily_event_shifted_effect": [None],
             "estimator__auto_growth": [False],
             "estimator__changepoints_dict": [None],
             "estimator__seasonality_changepoints_dict": [None],
@@ -707,6 +709,7 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__drop_pred_cols": [None],
             "estimator__explicit_pred_cols": [None],
             "estimator__regression_weight_col": [None],
+            "estimator__remove_intercept": [False]
         },
         ignore_keys={"estimator__time_properties": None}
     )
@@ -788,8 +791,8 @@ def test_estimator_get_coef_summary_from_forecaster():
 
 def test_auto_model_template():
     df = pd.DataFrame({
-        "ts": pd.date_range("2020-01-01", freq="D", periods=100),
-        "y": range(100)
+        "ts": pd.date_range("2020-01-01", freq="D", periods=60),
+        "y": range(60)
     })
     config = ForecastConfig(
         model_template=ModelTemplateEnum.AUTO.name,
@@ -812,7 +815,7 @@ def test_auto_model_template():
     assert forecaster.config.model_template == ModelTemplateEnum.SILVERKITE_DAILY_1_CONFIG_1.name
 
     # Not able to infer frequency, so the default is SILVERKITE
-    df = df.drop([1])  # drops the second row
+    df = df.drop([1, 24, 55])  # drops rows within every block size of 20
     config.metadata_param.freq = None
     forecaster = Forecaster()
     assert forecaster._Forecaster__get_model_template(df, config) == ModelTemplateEnum.SILVERKITE.name

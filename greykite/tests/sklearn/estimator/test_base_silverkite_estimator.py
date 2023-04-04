@@ -17,6 +17,7 @@ from greykite.common.testing_utils import daily_data_reg
 from greykite.common.testing_utils import generate_df_for_tests
 from greykite.common.testing_utils import generate_df_with_reg_for_tests
 from greykite.sklearn.estimator.base_silverkite_estimator import BaseSilverkiteEstimator
+from greykite.sklearn.estimator.testing_utils import params_component_breakdowns
 from greykite.sklearn.estimator.testing_utils import params_components
 
 
@@ -86,6 +87,65 @@ def df_pt():
     """fetches the Peyton Manning pageview data"""
     dl = DataLoader()
     return dl.load_peyton_manning()
+
+
+@pytest.fixture
+def expected_component_names():
+    return params_component_breakdowns()["expected_component_names"]
+
+
+@pytest.fixture(scope="module")
+def test_params():
+    time_col = "ts"
+    # value_col name is chosen such that it contains keywords "ct" and "sin"
+    # so that we can test patterns specified for each component work correctly
+    value_col = "basin_impact"
+    return dict(
+        time_col=time_col,
+        value_col=value_col,
+        df=pd.DataFrame({
+            time_col: [
+                datetime.datetime(2018, 1, 1),
+                datetime.datetime(2018, 1, 2),
+                datetime.datetime(2018, 1, 3),
+                datetime.datetime(2018, 1, 4),
+                datetime.datetime(2018, 1, 5)],
+            value_col: [10, 10, 10, 10, 10],
+            "dummy_col": [0, 0, 0, 0, 0],
+        }),
+        feature_df=pd.DataFrame({
+            # Trend columns: growth, changepoints and interactions (total 5 columns)
+            "ct1": np.array([1.0, 1.0, 1.0, 1.0, 1.0]),
+            "ct1:tod": np.array([1.0, 1.0, 1.0, 1.0, 1.0]),
+            "ct_sqrt": np.array([1.0, 1.0, 1.0, 1.0, 1.0]),
+            "changepoint0_2018_01_02_00": np.array([1.0, 1.0, 1.0, 1.0, 1.0]),
+            "changepoint1_2018_01_04_00": np.array([1.0, 1.0, 1.0, 1.0, 1.0]),
+            # Lag columns: autoregression, lagged regressor
+            f"{value_col}_lag1": np.array([4.0, 4.0, 4.0, 4.0, 4.0]),
+            f"{value_col}_avglag_3_5": np.array([4.0, 4.0, 4.0, 4.0, 4.0]),
+            "regressor1_lag1": np.array([4.0, 4.0, 4.0, 4.0, 4.0]),
+            "regressor_categ_avglag_4_6": np.array([4.0, 4.0, 4.0, 4.0, 4.0]),
+            # Daily seasonality with interaction (total 4 columns)
+            "sin1_tow_weekly": np.array([2.0, 2.0, 2.0, 2.0, 2.0]),
+            "cos1_tow_weekly": np.array([2.0, 2.0, 2.0, 2.0, 2.0]),
+            "is_weekend[T.True]:sin1_tow_weekly": np.array([2.0, 2.0, 2.0, 2.0, 2.0]),
+            "is_weekend[T.True]:cos1_tow_weekly": np.array([2.0, 2.0, 2.0, 2.0, 2.0]),
+            # Yearly seasonality (total 6 columns)
+            "sin1_ct1_yearly": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+            "cos1_ct1_yearly": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+            "sin2_ct1_yearly": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+            "cos2_ct1_yearly": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+            "sin3_ct1_yearly": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+            "cos3_ct1_yearly": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+            # Holiday with pre and post effect (1 at the where the date and event match)
+            # e.g. New Years Day is 1 at 1st January, 0 rest of the days
+            "Q('events_New Years Day')[T.event]": np.array([1.0, 0.0, 0.0, 0.0, 0.0]),
+            "Q('events_New Years Day_minus_1')[T.event]": np.array([0.0, 0.0, 0.0, 0.0, 0.0]),
+            "Q('events_New Years Day_minus_2')[T.event]": np.array([0.0, 0.0, 0.0, 0.0, 0.0]),
+            "Q('events_New Years Day_plus_1')[T.event]": np.array([0.0, 1.0, 0.0, 0.0, 0.0]),
+            "Q('events_New Years Day_plus_2')[T.event]": np.array([0.0, 0.0, 1.0, 0.0, 0.0]),
+        })
+    )
 
 
 def test_init(params):
@@ -382,13 +442,11 @@ def test_summary(daily_data):
     model.summary()
 
 
-def test_silverkite_with_components_daily_data():
-    """Tests get_components, plot_components, plot_trend,
-    plot_seasonalities with daily data and missing input values.
-    """
+def test_silverkite_with_components_daily_data(expected_component_names):
+    """Tests ``plot_components`` with daily data and missing input values."""
     daily_data = generate_df_with_reg_for_tests(
         freq="D",
-        periods=20,
+        periods=35,
         train_start_date=datetime.datetime(2018, 1, 1),
         conti_year_origin=2018)
     train_df = daily_data["train_df"].copy()
@@ -415,7 +473,7 @@ def test_silverkite_with_components_daily_data():
 
     with pytest.warns(Warning):
         # suppress warnings from conf_interval.py and sklearn
-        # a subclass's fit() method will have these steps
+        # a subclass's `fit()` method will have these steps
         model.fit(
             X=train_df,
             time_col=cst.TIME_COL,
@@ -428,71 +486,61 @@ def test_silverkite_with_components_daily_data():
             **params_daily)
         model.finish_fit()
 
-    # Tests plot_components
-    with pytest.warns(Warning) as record:
-        title = "Custom component plot"
-        model._set_silverkite_diagnostics_params()
-        fig = model.plot_components(names=["trend", "YEARLY_SEASONALITY", "DUMMY"], title=title)
-        expected_rows = 3
-        assert len(fig.data) == expected_rows + 1  # includes changepoints
-        assert [fig.data[i].name for i in range(expected_rows)] == \
-               [cst.VALUE_COL, "trend", "YEARLY_SEASONALITY"]
-
-        assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis2.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis3.title["text"] == "Time of year"
-
-        assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-        assert fig.layout.yaxis2.title["text"] == "trend"
-        assert fig.layout.yaxis3.title["text"] == "yearly"
-
-        assert fig.layout.title["text"] == title
-        assert fig.layout.title["x"] == 0.5
-        assert f"The following components have not been specified in the model: " \
-               f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
-
-    # Missing component error
-    with pytest.raises(
-            ValueError,
-            match="None of the provided components have been specified in the model."):
-        model.plot_components(names=["DUMMY"])
-
-    # Tests plot_trend
-    title = "Custom trend plot"
-    fig = model.plot_trend(title=title)
-    expected_rows = 2
-    assert len(fig.data) == expected_rows + 1  # includes changepoints
-    assert [fig.data[i].name for i in range(expected_rows)] == [cst.VALUE_COL, "trend"]
-
-    assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-    assert fig.layout.xaxis2.title["text"] == cst.TIME_COL
-
-    assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-    assert fig.layout.yaxis2.title["text"] == "trend"
-
+    # Tests `plot_components`
+    title = "Custom component plot"
+    fig = model.plot_components(title=title)
+    expected_rows = 10
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
     assert fig.layout.title["text"] == title
     assert fig.layout.title["x"] == 0.5
 
-    # Tests plot_seasonalities
-    with pytest.warns(Warning):
-        # suppresses the warning on seasonalities removed
-        title = "Custom seasonality plot"
-        fig = model.plot_seasonalities(title=title)
-        expected_rows = 3
-        assert len(fig.data) == expected_rows
-        assert [fig.data[i].name for i in range(expected_rows)] == \
-               [cst.VALUE_COL, "WEEKLY_SEASONALITY", "YEARLY_SEASONALITY"]
+    with pytest.raises(
+            ValueError,
+            match="Call the predict"):
+        model.plot_components(predict_phase=True)
 
-        assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis2.title["text"] == "Day of week"
-        assert fig.layout.xaxis3.title["text"] == "Time of year"
+    # Tests `plot_components(predict_phase=True)`
+    _ = model.predict(X=daily_data['test_df'])
+    fig = model.plot_components(predict_phase=True)
+    expected_rows = 6
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
+    assert fig.layout.title["text"] == "Component Plot - Predicted"
+    assert fig.layout.title["x"] == 0.5
 
-        assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-        assert fig.layout.yaxis2.title["text"] == "weekly"
-        assert fig.layout.yaxis3.title["text"] == "yearly"
+    # Tests `plot_components(predict_phase=True)` with gap
+    _ = model.predict(X=daily_data['test_df'].iloc[4:, :])
+    fig = model.plot_components(predict_phase=True)
+    expected_rows = 6
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
+    assert fig.layout.title["text"] == "Component Plot - Predicted"
+    assert fig.layout.title["x"] == 0.5
 
-        assert fig.layout.title["text"] == title
-        assert fig.layout.title["x"] == 0.5
+    # Tests inputs to `plot_components`
+    with pytest.raises(
+            TypeError,
+            match="center_components must be bool: True/False"):
+        model.plot_components(center_components="Yes please")
+
+    with pytest.raises(
+            ValueError,
+            match="Choose denominator from"):
+        model.plot_components(denominator="Abs_Y")
+
+    with pytest.raises(
+            TypeError,
+            match="grouping_regex_patterns_dict must be"):
+        model.plot_components(grouping_regex_patterns_dict=[])
+
+    with pytest.raises(
+            ValueError,
+            match="grouping_regex_patterns_dict must be"):
+        model.plot_components(grouping_regex_patterns_dict={})
 
     # Component plot error if `fit_algorithm` is "rf" or "gradient_boosting"
     params_daily["fit_algorithm"] = "rf"
@@ -501,7 +549,7 @@ def test_silverkite_with_components_daily_data():
         uncertainty_dict=params_daily["uncertainty_dict"])
     with pytest.warns(Warning):
         # suppress warnings from conf_interval.py and sklearn
-        # a subclass's fit() method will have these steps
+        # a subclass's `fit()` method will have these steps
         model.fit(
             X=train_df,
             time_col=cst.TIME_COL,
@@ -518,28 +566,19 @@ def test_silverkite_with_components_daily_data():
             match="Component plot has only been implemented for additive linear models."):
         model.plot_components()
 
-    with pytest.raises(
-            NotImplementedError,
-            match="Component plot has only been implemented for additive linear models."):
-        model.plot_trend()
 
-    with pytest.raises(
-            NotImplementedError,
-            match="Component plot has only been implemented for additive linear models."):
-        model.plot_seasonalities()
-
-
-def test_silverkite_with_components_hourly_data():
-    """Tests get_components, plot_components, plot_trend,
-    plot_seasonalities with hourly data
-    """
+def test_silverkite_with_components_hourly_data(expected_component_names):
+    """Tests ``plot_components`` with hourly data"""
     hourly_data = generate_df_with_reg_for_tests(
         freq="H",
-        periods=24 * 4,
+        periods=24 * 3,
         train_start_date=datetime.datetime(2018, 1, 1),
         conti_year_origin=2018)
     train_df = hourly_data.get("train_df").copy()
     params_hourly = params_components()
+    # Removes predictor column for dow by hour interaction
+    # "dow_hr" is unique in forecast period otherwise and causes an error
+    params_hourly["extra_pred_cols"].remove('dow_hr')
 
     # converts into parameters for `forecast_silverkite`
     coverage = params_hourly.pop("coverage")
@@ -558,66 +597,35 @@ def test_silverkite_with_components_hourly_data():
         **params_hourly)
     model.finish_fit()
 
-    # Test plot_components
-    with pytest.warns(Warning) as record:
-        title = "Custom component plot"
-        fig = model.plot_components(names=["trend", "DAILY_SEASONALITY", "DUMMY"], title=title)
-        expected_rows = 3 + 1  # includes changepoints
-        assert len(fig.data) == expected_rows
-        assert [fig.data[i].name for i in range(expected_rows)] == \
-               [cst.VALUE_COL, "trend", "DAILY_SEASONALITY", "trend change point"]
-
-        assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis2.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis3.title["text"] == "Hour of day"
-
-        assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-        assert fig.layout.yaxis2.title["text"] == "trend"
-        assert fig.layout.yaxis3.title["text"] == "daily"
-
-        assert fig.layout.title["text"] == title
-        assert fig.layout.title["x"] == 0.5
-        assert f"The following components have not been specified in the model: " \
-               f"{{'DUMMY'}}, plotting the rest." in record[0].message.args[0]
-
-    # Test plot_trend
-    title = "Custom trend plot"
-    fig = model.plot_trend(title=title)
-    expected_rows = 2
-    assert len(fig.data) == expected_rows + 1  # includes changepoints
-    assert [fig.data[i].name for i in range(expected_rows)] == [cst.VALUE_COL, "trend"]
-
-    assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-    assert fig.layout.xaxis2.title["text"] == cst.TIME_COL
-
-    assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-    assert fig.layout.yaxis2.title["text"] == "trend"
-
+    # Tests `plot_components`
+    title = "Custom component plot"
+    fig = model.plot_components(title=title)
+    expected_rows = 10
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
     assert fig.layout.title["text"] == title
     assert fig.layout.title["x"] == 0.5
 
-    # Test plot_seasonalities
-    with pytest.warns(Warning):
-        # suppresses the warning on seasonalities removed
-        title = "Custom seasonality plot"
-        fig = model.plot_seasonalities(title=title)
-        expected_rows = 4
-        assert len(fig.data) == expected_rows
-        assert [fig.data[i].name for i in range(expected_rows)] == \
-               [cst.VALUE_COL, "DAILY_SEASONALITY", "WEEKLY_SEASONALITY", "YEARLY_SEASONALITY"]
+    # Tests `plot_components(predict_phase=True)`
+    _ = model.predict(X=hourly_data['test_df'])
+    fig = model.plot_components(predict_phase=True)
+    expected_rows = 6
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
+    assert fig.layout.title["text"] == "Component Plot - Predicted"
+    assert fig.layout.title["x"] == 0.5
 
-        assert fig.layout.xaxis.title["text"] == cst.TIME_COL
-        assert fig.layout.xaxis2.title["text"] == "Hour of day"
-        assert fig.layout.xaxis3.title["text"] == "Day of week"
-        assert fig.layout.xaxis4.title["text"] == "Time of year"
-
-        assert fig.layout.yaxis.title["text"] == cst.VALUE_COL
-        assert fig.layout.yaxis2.title["text"] == "daily"
-        assert fig.layout.yaxis3.title["text"] == "weekly"
-        assert fig.layout.yaxis4.title["text"] == "yearly"
-
-        assert fig.layout.title["text"] == title
-        assert fig.layout.title["x"] == 0.5
+    # Tests `plot_components(predict_phase=True)` with gap
+    _ = model.predict(X=hourly_data['test_df'].iloc[5:, :])
+    fig = model.plot_components(predict_phase=True)
+    expected_rows = 6
+    assert len(fig.data) == expected_rows  # includes changepoints
+    assert all([fig.data[i].name in expected_component_names for i in range(expected_rows)])
+    assert fig.layout.xaxis.title["text"] == "Date"
+    assert fig.layout.title["text"] == "Component Plot - Predicted"
+    assert fig.layout.title["x"] == 0.5
 
 
 def test_plot_trend_changepoint_detection(df_pt):

@@ -1,5 +1,27 @@
-Changelog
-=========
+0.5.0 (2023-04-03)
+------------------
+
+Python 3.10 support.
+
+* New features and methods
+    * Improvements on modeling holidays
+        * @Yi Su: Added `~greykite.algo.common.holiday_grouper.HolidayGrouper`. Holidays with a similar effect are grouped together to have fewer and more robust coefficients. With this feature, holidays are better modeled with improved forecast accuracy. See instructions in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
+        * @Kaixu Yang: Added support for holiday neighboring impact for data with frequency longer than daily through the ``daily_event_neighbor_impact`` parameter (e.g. this enables modeling holidays on weekly data where the event dates may not fall on the exact timestamps); added holiday neighboring events (i.e. the lags of an actual holiday can be specified in the model) through the ``daily_event_shifted_effect`` parameter. See details at :doc:`/pages/model_components/0400_events`.
+        * @Yi Su: Added holiday indicators. Now users can specify "is_event_exact", "is_event_adjacent", "is_event" (a union of both) as ``extra_pred_cols`` in the model. See details at :doc:`/pages/model_components/0400_events`.
+    * @Reza Hosseini: Added DST indicators. Now users can specify "us_dst" or "eu_dst" in ``extra_pred_cols``. You may also use ``get_us_dst_start/end``, ``get_eu_dst_start/end`` functions in `~greykite.common.features.timeseries_features` to get the dates.
+    * @Yi Su: Theoretical improvements for the volatility model in linear and ridge algorithm for more accurate variance estimate and prediction intervals.
+    * @Phil Gaudreau: Added new evaluation metric: `~greykite.common.evaluation.mean_interval_score`.
+    * @Brian Vegetabile: Enhanced components plot that consolidates previous forecast breakdown functionality. The redesign provides a cleaner visual and allows for flexible breakdowns via regular expressions. See examples in :doc:`/gallery/quickstart/0100_simple_forecast`.
+
+* Library enhancements
+    * @Kaixu Yang: Python 3.10 support. Deprecated support for lower Python versions.
+    * @Sayan Patra: New utility function: `~greykite.framework.utils.exploratory_data_analysis.get_exploratory_plots` to easily generate exploratory data analysis (EDA) plots in HTML.
+    * @Kaixu Yang: Added ``optimize_mape`` option to quantile regression. It uses 1 over y as weights in the loss function. See `~greykite.algo.common.l1_quantile_regression.QuantileRegression` for details.
+
+* Bug fixes
+    * @Qiang Fei: In case of simulation, now ``min_adimissible_value`` and ``max_adimissible_value`` will correctly cap the simulated values. Additionally, errors are propagated through simulation steps to make the intervals more accurate.
+    * @Yi Su, @Sayan Patra: Now ``train_end_date`` is always respected if specified by the user. Previously it got ignored if there are trailing NA’s in training data or ``anomaly_df`` imputes the anomalous points to NA. Also, now ``train_end_date`` accepts a string value.
+    * @Yi Su: The seasonality order now takes `None` without raising an error. It will be treated the same as `False` or zero.
 
 0.4.0 (2022-07-15)
 ------------------
@@ -32,7 +54,6 @@ Changelog
     * @Yi Su: Upgraded holidays to 0.13
     * @Albert Chen @Kaixu Yang @Yi Su: Speed optimization for Silverkite.
     * @Albert Chen @Reza Hosseini @Kaixu Yang @Sayan Patra @Yi Su: Other library enhancements and bug fixes.
-
 
 0.3.0 (2021-12-14)
 ------------------

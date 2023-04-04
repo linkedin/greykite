@@ -1,20 +1,30 @@
+import warnings
+
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.util.testing import assert_frame_equal
+import scipy
+from pandas.testing import assert_frame_equal
+from patsy import dmatrices
 
 from greykite.algo.common.ml_models import breakdown_regression_based_prediction
 from greykite.algo.common.ml_models import design_mat_from_formula
 from greykite.algo.common.ml_models import fit_ml_model
 from greykite.algo.common.ml_models import fit_ml_model_with_evaluation
 from greykite.algo.common.ml_models import fit_model_via_design_matrix
+from greykite.algo.common.ml_models import get_h_mat
+from greykite.algo.common.ml_models import get_intercept_col_from_design_mat
 from greykite.algo.common.ml_models import predict_ml
 from greykite.algo.common.ml_models import predict_ml_with_uncertainty
 from greykite.algo.uncertainty.conditional.conf_interval import predict_ci
 from greykite.common.constants import ERR_STD_COL
 from greykite.common.constants import QUANTILE_SUMMARY_COL
+from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.evaluation import EvaluationMetricEnum
 from greykite.common.evaluation import calc_pred_err
+from greykite.common.features.timeseries_features import build_time_features_df
+from greykite.common.features.timeseries_features import fourier_series_multi_fcn
+from greykite.common.features.timeseries_features import get_fourier_col_name
 from greykite.common.python_utils import assert_equal
 from greykite.common.testing_utils import gen_sliced_df
 
@@ -60,10 +70,149 @@ def data_with_weights():
         "model_formula_str": model_formula_str}
 
 
+@pytest.fixture
+def time_series_data():
+    """Generate some timeseris data which is useful for testing ML models.
+    We do not only rely on functions in ``greykite.common.testing_utils``
+    This function includes some operations which are not necessary in general:
+    e.g. (a) adding many random features (b) including a large number of fourier terms
+    in the features."""
+    np.random.seed(1317)
+
+    data_size = 600
+    train_size = 500
+    date_list = pd.date_range(
+        start="2010-01-01",
+        periods=data_size,
+        freq="D").tolist()
+    time_col = "ts"
+    df0 = pd.DataFrame({time_col: date_list})
+    time_df = build_time_features_df(
+        dt=df0[time_col],
+        conti_year_origin=2010)
+
+    df = pd.concat([df0, time_df], axis=1)
+    df["growth"] = 0.5 * (df[TimeFeaturesEnum.ct1.value] ** 1.05)
+
+    # We generate a large number of Fourier terms (useful to see if regularization works)
+    func = fourier_series_multi_fcn(
+        col_names=[
+            TimeFeaturesEnum.toy.value,
+            TimeFeaturesEnum.tow.value,
+            TimeFeaturesEnum.tod.value],
+        periods=[1.0, 7.0, 24.0],
+        orders=[50, 30, 30],
+        seas_names=None)
+
+    res = func(df)
+    df_seas = res["df"]
+    df = pd.concat([df, df_seas], axis=1)
+
+    fs_coefs = [-1, 3, 4]
+    intercept = 3.0
+    noise_std = 0.1
+
+    df["y"] = abs(
+            intercept
+            + df["growth"]
+            + fs_coefs[0] * df[get_fourier_col_name(1, TimeFeaturesEnum.tod.value, function_name="sin")]
+            + fs_coefs[1] * df[get_fourier_col_name(1, TimeFeaturesEnum.tow.value, function_name="sin")]
+            + fs_coefs[2] * df[get_fourier_col_name(1, TimeFeaturesEnum.toy.value, function_name="sin")]
+            + noise_std * np.random.normal(size=df.shape[0]))
+
+    # Adds 100 variables without predictive power (randomly generated)
+    for i in range(100):
+        df[f"x{i}"] = np.random.normal(size=len(df))
+
+    feature_cols = ["growth"] + list(df_seas.columns) + [f"x{i}" for i in range(100)]
+
+    # Defines train and test sets
+    x_train = df[feature_cols][:train_size]
+    y_train = df["y"][:train_size]
+
+    x_test = df[feature_cols][train_size:]
+    y_test = df["y"][train_size:]
+
+    df_train = df[:train_size]
+    df_test = df[train_size:]
+
+    return {
+        "df": df,
+        "df_train": df_train,
+        "df_test": df_test,
+        "x_train": x_train,
+        "y_train": y_train,
+        "x_test": x_test,
+        "y_test": y_test,
+        "feature_cols": feature_cols
+    }
+
+
+def test_get_intercept_col_from_design_mat():
+    """Tests getting explicit or implicit intercept column."""
+    df = pd.DataFrame({
+        "y": 1,
+        "a": ["a", "b", "c", "a"],
+        "b": ["d", "d", "e", "e"],
+        "c": 2
+    })
+    # With explicit intercept.
+    _, x = dmatrices(
+        "y~c+C(a, levels=['a', 'b', 'c'])+C(b, levels=['d', 'e'])+a:b+a:c",
+        data=df,
+        return_type="dataframe")
+    assert "Intercept" in x.columns
+    assert get_intercept_col_from_design_mat(x) == "Intercept"
+
+    # With implicit intercept.
+    _, x = dmatrices(
+        "y~c+C(a, levels=['a', 'b', 'c'])+C(b, levels=['d', 'e'])+a:b+a:c+0",
+        data=df,
+        return_type="dataframe")
+    assert "Intercept" not in x.columns
+    assert get_intercept_col_from_design_mat(x) == "C(a, levels=['a', 'b', 'c'])[a]"
+
+    # Without intercept.
+    _, x = dmatrices(
+        "y~c+0",
+        data=df,
+        return_type="dataframe")
+    assert "Intercept" not in x.columns
+    assert get_intercept_col_from_design_mat(x) is None
+
+
 def test_design_mat_from_formula(design_mat_info):
     """Tests design_mat_from_formula"""
     assert design_mat_info["x_mat"]["x1"][0] == 1
     assert design_mat_info["y_col"] == "y"
+
+
+def test_design_mat_from_formula_remove_intercept():
+    """Tests `design_mat_from_formula` with removing intercept."""
+    df = pd.DataFrame({
+        "y": 1,
+        "a": ["a", "b", "c", "a"],
+        "b": ["d", "d", "e", "e"],
+        "c": 2
+    })
+    # With explicit intercept.
+    formula = "y~c+C(a, levels=['a', 'b', 'c'])+C(b, levels=['d', 'e'])+a:b+a:c"
+    result = design_mat_from_formula(
+        df=df,
+        model_formula_str=formula,
+        remove_intercept=True
+    )
+    assert "Intercept" not in result["x_mat"].columns
+
+    # With implicit intercept.
+    formula = "y~c+C(a, levels=['a', 'b', 'c'])+C(b, levels=['d', 'e'])+a:b+a:c+0"
+    result = design_mat_from_formula(
+        df=df,
+        model_formula_str=formula,
+        remove_intercept=True
+    )
+    assert "C(a, levels=['a', 'b', 'c'])[a]" not in result["x_mat"].columns
+    assert "C(a, levels=['a', 'b', 'c'])[b]" in result["x_mat"].columns
 
 
 def test_fit_model_via_design_matrix(design_mat_info):
@@ -121,7 +270,88 @@ def test_fit_model_via_design_matrix(design_mat_info):
             sample_weight=sample_weight)
 
 
+def test_fit_model_via_design_matrix_various_algo(time_series_data):
+    """Tests ``fit_model_via_design_matrix`` with various algos.
+    This test is to insure that the implemented algorithms have the expected
+    behaviuor. To that we check for the performance of the algorithms in terms
+    of test error on simulated data."""
+    x_train = time_series_data["x_train"]
+    y_train = time_series_data["y_train"]
+    x_test = time_series_data["x_test"]
+    y_test = time_series_data["y_test"]
+    # Small number of features to be used with unregularized / unstable algorithms
+    feature_cols_minimal = [
+        "growth",
+        "sin1_toy",
+        "cos1_toy",
+        "sin2_toy",
+        "cos2_toy",
+        "sin1_tow",
+        "cos1_tow",
+        "sin2_tow",
+        "cos2_tow"]
+
+    # We consider two cases:
+    # (a) algorithms which are stable (handle large number of features)
+    # (b) algorithms which are unstable (do not handle large number of features)
+    # For (a) we test with large number of features and for (b) a small number of features.
+    # Temporarily removes `lars` and `lasso_lars` since they have unstable performance
+    # under linux and Mac.
+    fit_algorithms = [
+        "rf",
+        "ridge",
+        "lasso",
+        # "lars",
+        "gradient_boosting",
+        # "lasso_lars",
+        "sgd",
+        "elastic_net"
+    ]
+    fit_algorithms_unstable = ["linear", "quantile_regression", "statsmodels_glm"]
+
+    # Expected error for each algo (in terms of R2):
+    expected_r2_dict = {
+        "rf": 0.96,
+        "ridge": 0.92,
+        "lasso": 0.98,
+        # "lars": 0.97,
+        "gradient_boosting": 0.98,
+        # "lasso_lars": 0.98,
+        "sgd": 0.93,
+        "elastic_net": 0.97,
+        "linear": 0.95,
+        "quantile_regression": 0.97,
+        "statsmodels_glm": 0.9}
+
+    # Case (a)
+    for fit_algorithm in fit_algorithms:
+        ml_model = fit_model_via_design_matrix(
+            x_train=x_train,  # A large number of features appear in ``x_train``
+            y_train=y_train,
+            fit_algorithm=fit_algorithm)
+
+        y_test_pred = ml_model.predict(x_test)
+
+        err = calc_pred_err(y_test, y_test_pred)
+        r2 = err[(EvaluationMetricEnum.Correlation.get_metric_name())]
+        assert r2 == pytest.approx(expected_r2_dict[fit_algorithm], rel=2e-2)
+
+    # Case (b)
+    for fit_algorithm in fit_algorithms_unstable:
+        ml_model = fit_model_via_design_matrix(
+            x_train=x_train[feature_cols_minimal],  # A small number of features only
+            y_train=y_train,
+            fit_algorithm=fit_algorithm)
+
+        y_test_pred = ml_model.predict(x_test[feature_cols_minimal])
+
+        err = calc_pred_err(y_test, y_test_pred)
+        r2 = err[(EvaluationMetricEnum.Correlation.get_metric_name())]
+        assert r2 == pytest.approx(expected_r2_dict[fit_algorithm], rel=2e-2)
+
+
 def test_fit_model_via_design_matrix_with_weights(data_with_weights):
+    """Tests ``fit_model_via_design_matrix`` with weights."""
     df = data_with_weights["df"]
     design_mat_info = data_with_weights["design_mat_info"]
     x_train = design_mat_info["x_mat"]
@@ -154,9 +384,9 @@ def test_fit_model_via_design_matrix_with_weights(data_with_weights):
     # we expect to see two trends for y w.r.t x2
     from plotly import graph_objects as go
     trace = go.Scatter(
-                x=df['x2'].values,
-                y=df['y'].values,
-                mode='markers')
+                x=df["x2"].values,
+                y=df["y"].values,
+                mode="markers")
     data = [trace]
     fig = go.Figure(data)
     fig.show()
@@ -167,7 +397,7 @@ def test_fit_model_via_design_matrix_with_weights(data_with_weights):
 
 
 def test_fit_model_via_design_matrix_stats_models():
-    """Testing the model fits via statsmodels module"""
+    """Tests the model fits via statsmodels module"""
     df = generate_test_data_for_fitting(
         n=50,
         seed=41,
@@ -230,7 +460,7 @@ def test_fit_model_via_design_matrix2(design_mat_info):
 
 def test_fit_model_via_design_matrix3(design_mat_info):
     """Tests fit_model_via_design_matrix with
-        elastic_net fit_algorithm and fit_algorithm_params"""
+        "lasso_lars" fit_algorithm and fit_algorithm_params"""
     x_train = design_mat_info["x_mat"]
     y_train = design_mat_info["y"]
 
@@ -346,6 +576,11 @@ def test_fit_ml_model():
         "max_admissible_value",
         "normalize_df_func",
         "regression_weight_col",
+        "drop_intercept_col",
+        "alpha",
+        "h_mat",
+        "p_effective",
+        "sigma_scaler",
         "fitted_df"]
 
     assert (trained_model["y"] == df["y"]).all()
@@ -432,6 +667,100 @@ def test_fit_ml_model():
         ["Intercept", "  -26.5445", "    0.456", "  -58.197", " 0.000", "  -27.440", "  -25.649"])
     assert ml_model_summary_table[2].data == (
         ["x1", "    0.5335", "    0.409", "    1.304", " 0.192", "   -0.269", "    1.336"])
+
+
+def test_fit_ml_model_various_algo(time_series_data):
+    """Tests ``fit_ml_model`` with various algos.
+    This test is to insure that the implemented algorithms have the expected
+    behaviuor. To that we check for the performance of the algorithms in terms
+    of test error on simulated data.
+    """
+    df_train = time_series_data["df_train"]
+    df_test = time_series_data["df_test"]
+    y_test = time_series_data["y_test"]
+    feature_cols = time_series_data["feature_cols"]
+
+    # We consider two cases:
+    # (a) algorithms which are stable (handle large number of features)
+    # (b) algorithms which are unstable (do not handle large number of features)
+    # For (a) we test with large number of features and for (b) a small number of features.
+    # Temporarily removes `lars` and `lasso_lars` since they have unstable performance
+    # under linux and Mac.
+    fit_algorithms = [
+        "rf",
+        "ridge",
+        "lasso",
+        # "lars",
+        "gradient_boosting",
+        # "lasso_lars",
+        "sgd",
+        "elastic_net"]
+    fit_algorithms_unstable = ["linear", "quantile_regression", "statsmodels_glm"]
+
+    # In this case, we add some categorical variables with many levels
+    pred_cols = feature_cols + ["str_dow", "dom", "woy"]
+    model_formula_str = "y ~ " + "+".join(pred_cols)
+    # Small number of features for unstable algorithms
+    pred_cols_minimal = [
+        "growth",
+        "sin1_toy",
+        "cos1_toy",
+        "str_dow"]
+    model_formula_minimal_str = "y ~ " + "+".join(pred_cols_minimal)
+
+    # Expected error for each algo (in terms of R2)
+    expected_r2_dict = {
+        "rf": 0.97,
+        "ridge": 0.96,
+        "lasso": 0.98,
+        # "lars": 0.97,
+        "gradient_boosting": 0.98,
+        # "lasso_lars": 0.97,
+        "sgd": 0.97,
+        "elastic_net": 0.97,
+        "linear": 0.97,
+        "quantile_regression": 0.97,
+        "statsmodels_glm": 0.92}
+
+    # Case (a)
+    for fit_algorithm in fit_algorithms:
+        trained_model = fit_ml_model(
+            df=df_train,
+            model_formula_str=model_formula_str,
+            fit_algorithm=fit_algorithm,
+            fit_algorithm_params=None,
+            y_col=None,
+            pred_cols=None)
+
+        pred_res = predict_ml(
+            fut_df=df_test,
+            trained_model=trained_model)
+
+        y_test_pred = pred_res["fut_df"]["y"]
+
+        err = calc_pred_err(y_test, y_test_pred)
+        r2 = err[(EvaluationMetricEnum.Correlation.get_metric_name())]
+        assert r2 == pytest.approx(expected_r2_dict[fit_algorithm], rel=2e-2)
+
+    # Case (b)
+    for fit_algorithm in fit_algorithms_unstable:
+        trained_model = fit_ml_model(
+            df=df_train,
+            model_formula_str=model_formula_minimal_str,
+            fit_algorithm=fit_algorithm,
+            fit_algorithm_params=None,
+            y_col=None,
+            pred_cols=None)
+
+        pred_res = predict_ml(
+            fut_df=df_test,
+            trained_model=trained_model)
+
+        y_test_pred = pred_res["fut_df"]["y"]
+
+        err = calc_pred_err(y_test, y_test_pred)
+        r2 = err[(EvaluationMetricEnum.Correlation.get_metric_name())]
+        assert r2 == pytest.approx(expected_r2_dict[fit_algorithm], rel=2e-2)
 
 
 def test_fit_ml_model_normalization():
@@ -625,7 +954,7 @@ def test_fit_ml_model_with_uncertainty_heteroscedastic():
     ci_width_avg = ci_info["ci_width_avg"]
     assert round(ci_coverage, 1) == 94.7, (
         "95 percent CI coverage is not as expected")
-    assert round(ci_width_avg, 1) == 22.4, (
+    assert round(ci_width_avg, 1) == 22.6, (
         "95 percent CI coverage average width is not as expected")
 
     # fitting heteroscedastic (with conditioning) uncertainty model
@@ -637,9 +966,9 @@ def test_fit_ml_model_with_uncertainty_heteroscedastic():
     ci_width_avg = ci_info["ci_width_avg"]
     # we observe better coverage is higher and ci width is narrower with
     # heteroscedastic model than before
-    assert round(ci_coverage, 1) == 96.3, (
+    assert round(ci_coverage, 1) == 96.5, (
         "95 percent CI coverage is not as expected")
-    assert round(ci_width_avg, 1) == 20.3, (
+    assert round(ci_width_avg, 1) == 20.5, (
         "95 percent CI coverage average width is not as expected")
 
 
@@ -972,7 +1301,7 @@ def test_fit_ml_model_with_evaluation_sgd():
         df=df,
         model_formula_str=model_formula_str,
         fit_algorithm="sgd",
-        fit_algorithm_params={"penalty": "none"})
+        fit_algorithm_params={"penalty": None})
 
     pred_res = predict_ml(
         fut_df=df_test,
@@ -1012,18 +1341,227 @@ def test_fit_ml_model_with_evaluation_sgd():
     assert err[enum.get_metric_name()] > 0.5
 
 
+def test_fit_ml_model_with_h_mat():
+    """Tests the output of `fit_ml_model` and function `get_h_mat` for different scenarios."""
+    def helper_test_h_mat(const_val, remove_intercept, fit_algorithm, normalize_method):
+        # Does not require a seed since tests only check the correctness / consistency.
+        n_total = 150
+        X = np.random.rand(n_total, 3)
+        X = np.concatenate([const_val * np.ones((n_total, 1)), X], axis=1)
+        beta = np.ones((X.shape[1], 1))
+        y = X @ beta + 1 + np.random.normal(0, 1, n_total).reshape(-1, 1)
+        X_train = X[:100, :]
+        y_train = y[:100, :]
+
+        df = pd.DataFrame(np.concatenate([y_train, X_train], axis=1), columns=["y", "const", "a", "b", "c"])
+        model_formula_str = "y~const+a+b+c"
+
+        uncertainty_dict = {
+            "uncertainty_method": "simple_conditional_residuals",
+            "params": {
+                "conditional_cols": [],
+                "quantiles": [0.025, 0.975],
+                "quantile_estimation_method": "normal_fit",
+                "sample_size_thresh": 5,
+                "small_sample_size_method": "std_quantiles",
+                "small_sample_size_quantile": 0.98}}
+
+        remove_intercept = remove_intercept
+        model = fit_ml_model(
+            df=df,
+            model_formula_str=model_formula_str,
+            fit_algorithm=fit_algorithm,
+            fit_algorithm_params=None,
+            uncertainty_dict=uncertainty_dict,
+            normalize_method=normalize_method,
+            regression_weight_col=None,
+            remove_intercept=remove_intercept)
+
+        ml_model = model["ml_model"]
+        # Prepares different versions of X matrix.
+        X_mat = np.array(model["x_mat"])
+        X_centered = X_mat - X_mat.mean(axis=0)
+        y_centered = y_train - y.mean()
+        ci_model = model["uncertainty_model"]
+        L = ci_model["lu_d_sqrt"]
+        p_effective = model["p_effective"]
+        alpha = ml_model.alpha_ if fit_algorithm == "ridge" else 0
+        # Calls `get_h_mat` with different X to compute H matrix.
+        H = get_h_mat(X_centered, alpha) if fit_algorithm == "ridge" else get_h_mat(X_mat, alpha)
+
+        if fit_algorithm == "linear":
+            # Tests beta_hat.
+            expected_beta_hat = np.array(ml_model.params).reshape(-1, 1)  # No additional intercept.
+            beta_hat = H @ y_train
+            assert_equal(X_mat @ expected_beta_hat, X_mat @ beta_hat)
+
+            # Tests the decomposition of the H matrix.
+            assert np.linalg.norm(H @ H.T - L @ L.T) < 1e-8
+
+            # Tests `p_effective`.
+            assert_equal(p_effective, np.linalg.matrix_rank(X_mat))
+
+            # Tests the values in `ci_model`.
+            assert ci_model["n_train"] is not None
+            assert ci_model["x_train_mean"] is None
+            assert (ci_model["pi_se_scaler"] >= 1).all()
+
+        if fit_algorithm == "ridge":
+            # Tests beta hat.
+            # Using `y_centered` or `y_train` should give the same result,
+            # because `H @ (y_train - y_centered) = 0`.
+            assert_equal(ml_model.coef_, (H @ y_centered).reshape(-1))
+            assert_equal(ml_model.coef_, (H @ y_train).reshape(-1))
+
+            # Tests intercept.
+            beta_hat = H @ y_centered
+            assert_equal(ml_model.intercept_, (y_train - X_mat @ beta_hat).mean())
+
+            # Tests the decomposition of the H matrix.
+            assert np.linalg.norm(H @ H.T - L @ L.T) < 1e-8
+
+            # Tests `p_effective`.
+            assert_equal(p_effective, np.trace(H @ X_centered) + 1)
+
+            # Tests the values in `ci_model`.
+            assert ci_model["n_train"] is not None
+            assert ci_model["x_train_mean"] is not None
+            assert (ci_model["pi_se_scaler"] >= 1).all()
+
+    for const_val in [0, 1, 2]:
+        for remove_intercept in [True, False]:
+            for fit_algorithm in ["linear", "ridge"]:
+                for normalize_method in ["zero_to_one",
+                                         "statistical",
+                                         "minus_half_to_half",
+                                         "zero_at_origin"]:
+                    helper_test_h_mat(const_val, remove_intercept, fit_algorithm, normalize_method)
+
+
+def test_p_effective():
+    """Tests the computation of `p_effective` in `fit_ml_model` for "linear" and "ridge" models."""
+    np.random.seed(123)
+    X = np.random.rand(5, 3)
+    n, p = X.shape
+    beta = np.array([1] * p).reshape((p, 1))
+    y = X @ beta
+
+    # Fits a linear regression.
+    model = fit_model_via_design_matrix(
+        x_train=X,
+        y_train=y,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        sample_weight=None)
+    alpha = 0
+    XTX_alpha = X.T @ X + np.diag([alpha] * p)
+    p_effective = round(np.trace(scipy.linalg.pinvh(XTX_alpha) @ X.T @ X), 3)
+
+    assert p == 3
+    # The `df_model` attribute from `statsmodels` is inconsistent.
+    # The value is supposed to be rank minus 1, i.e. 2.
+    # We add this check so that we're aware of the inconsistency until it is fixed.
+    assert model.df_model == 3
+    assert np.linalg.matrix_rank(X) == 3
+    assert p_effective == 3
+
+    # Duplicates the columns in `X`, result should not change.
+    X = np.concatenate([X, X], axis=1)
+    n, p = X.shape
+    beta = np.array([1] * p).reshape((p, 1))
+    y = X @ beta
+
+    model = fit_model_via_design_matrix(
+        x_train=X,
+        y_train=y,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        sample_weight=None)
+    alpha = 0
+    XTX_alpha = X.T @ X + np.diag([alpha] * p)
+    p_effective = round(np.trace(scipy.linalg.pinvh(XTX_alpha) @ X.T @ X), 3)
+
+    assert p == 6
+    # The `df_model` attribute from `statsmodels` is inconsistent.
+    # The value is supposed to be rank minus 1, i.e. 2.
+    # We add this check so that we're aware of the inconsistency until it is fixed.
+    assert model.df_model == 3
+    assert np.linalg.matrix_rank(X) == 3
+    assert p_effective == 3
+
+    # Adds an intercept column to `X`, `p_effective` and rank should increase by 1.
+    X = np.concatenate([X, np.ones((5, 1))], axis=1)
+    n, p = X.shape
+    beta = np.array([1] * p).reshape((p, 1))
+    y = X @ beta
+
+    model = fit_model_via_design_matrix(
+        x_train=X,
+        y_train=y,
+        fit_algorithm="linear",
+        fit_algorithm_params=None,
+        sample_weight=None)
+    alpha = 0
+    XTX_alpha = X.T @ X + np.diag([alpha] * p)
+    p_effective = round(np.trace(scipy.linalg.pinvh(XTX_alpha) @ X.T @ X), 3)
+
+    assert p == 7
+    assert model.df_model == 3  # This is the expected behavior.
+    assert np.linalg.matrix_rank(X) == 4
+    assert p_effective == 4
+
+    # Fits a ridge regression.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        model = fit_model_via_design_matrix(
+            x_train=X,
+            y_train=y,
+            fit_algorithm="ridge",
+            fit_algorithm_params=None,
+            sample_weight=None)
+    alpha = model.alpha_
+    XTX_alpha = X.T @ X + np.diag([alpha] * p)
+    log_cond = np.log10(np.linalg.cond(XTX_alpha))
+    digits_to_lose = 8
+    if log_cond < digits_to_lose:
+        h_mat = scipy.linalg.solve(XTX_alpha, X.T, assume_a="pos")
+    else:
+        h_mat = scipy.linalg.pinvh(XTX_alpha) @ X.T
+    p_effective = round(np.trace(h_mat @ X), 3)
+
+    assert round(log_cond, 1) == 6.1
+    assert p_effective == 4.0
+
+
 def test_dummy():
+    """Tests a dummy dataset where the design matrix has perfectly correlated columns."""
     df = pd.DataFrame({"a": [1, 2, 1], "b": [1, 3, 1], "c": ["a", "b", "a"]})
     df = pd.get_dummies(df)
-    df["y"] = [1, 5, 4]
+    df["y"] = [1, 6, 1]
     model_formula_str = "y~a+b+c_a+c_b"
     trained_model = fit_ml_model_with_evaluation(
         df=df,
         model_formula_str=model_formula_str,
-        training_fraction=1.0)
-    expected_coefs = np.array([0., 1., 1., -1., 1.])
-    obtained_coefs = np.array(trained_model["ml_model"].coef_).round()
-    np.array_equal(expected_coefs, obtained_coefs)
+        training_fraction=1.0,
+        remove_intercept=False,
+        normalize_method=None
+    )
+    expected_coefs = np.array([0, 1., 1., -1., 1.])
+    obtained_coefs = np.array(trained_model["ml_model"].coef_).round(2)
+    # The fitted coefficients are not the same as expected,
+    # but the fitted values are equal to the actual y since design matrix is singular.
+    assert not np.array_equal(expected_coefs, obtained_coefs)
+    X = np.array(pd.concat([
+        pd.DataFrame({"intercept": [1, 1, 1]}),
+        df[["a", "b", "c_a", "c_b"]]
+    ], axis=1))
+    y_fitted = X @ expected_coefs
+    assert np.array_equal(np.array(df["y"]), y_fitted.round(8))
+
+    n = df.shape[0]
+    p_effective = trained_model["p_effective"]
+    assert round(p_effective, 2) == 2
+    assert trained_model["sigma_scaler"] == np.sqrt((n - 1) / (n - p_effective))
 
 
 def test_fit_ml_model_with_evaluation_nan():
@@ -1045,6 +1583,9 @@ def test_fit_ml_model_with_evaluation_nan():
             training_fraction=1.0)
         assert "The data frame included 1 row(s) with NAs which were removed for model fitting."\
                in record[0].message.args[0]
+        # Since the design matrix is singular, variance scaling is skipped.
+        assert "Zero degrees of freedom" in record[1].message.args[0]
+        assert trained_model["sigma_scaler"] is None
         assert_equal(trained_model["y"], df["y"].loc[(0, 1, 3), ])
 
 
@@ -1132,7 +1673,7 @@ def test_fit_ml_model_with_evaluation_constant_column_sgd():
         df=df,
         model_formula_str=model_formula_str,
         fit_algorithm=fit_algorithm,
-        fit_algorithm_params={"tol": 1e-5, "penalty": "none"})
+        fit_algorithm_params={"tol": 1e-5, "penalty": None})
 
     pred_res = predict_ml(
         fut_df=df_test,

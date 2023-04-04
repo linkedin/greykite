@@ -35,6 +35,7 @@ from greykite.common.evaluation import calc_pred_err
 from greykite.common.evaluation import fraction_outside_tolerance
 from greykite.common.evaluation import r2_null_model_score
 from greykite.common.python_utils import apply_func_to_columns
+from greykite.common.time_properties import infer_freq
 from greykite.common.viz.timeseries_plotting import add_groupby_column
 from greykite.common.viz.timeseries_plotting import flexible_grouping_evaluation
 from greykite.common.viz.timeseries_plotting import grouping_evaluation
@@ -169,7 +170,7 @@ class UnivariateForecast:
 
         if test_start_date is None:
             # This expects no gaps in time column
-            inferred_freq = pd.infer_freq(self.df[self.time_col])
+            inferred_freq = infer_freq(self.df, self.time_col)
             # Uses pd.date_range because pd.Timedelta does not work for complicated frequencies e.g. "W-MON"
             self.test_start_date = pd.date_range(
                 start=self.train_end_date,

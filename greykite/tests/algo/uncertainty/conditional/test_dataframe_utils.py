@@ -1,5 +1,5 @@
 import pandas as pd
-from pandas.util.testing import assert_frame_equal
+from pandas.testing import assert_frame_equal
 
 from greykite.algo.uncertainty.conditional.dataframe_utils import limit_tuple_col
 from greykite.algo.uncertainty.conditional.dataframe_utils import offset_tuple_col

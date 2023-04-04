@@ -16,6 +16,10 @@ Authors
 * Sayan Patra
 * Yi Su
 * Rachit Arora
+* Brian Vegetabile
+* Qiang Fei
+* Phil Gaudreau
+* Yi-Wei Liu
 
 Other Contributors
 ------------------

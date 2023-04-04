@@ -1,5 +1,6 @@
 import datetime
 from datetime import datetime as dt
+from datetime import timedelta
 
 import numpy as np
 import pandas as pd
@@ -9,6 +10,9 @@ from greykite.common.constants import CHANGEPOINT_COL_PREFIX
 from greykite.common.constants import EVENT_DF_DATE_COL
 from greykite.common.constants import EVENT_DF_LABEL_COL
 from greykite.common.constants import EVENT_PREFIX
+from greykite.common.constants import IS_EVENT_ADJACENT_COL
+from greykite.common.constants import IS_EVENT_COL
+from greykite.common.constants import IS_EVENT_EXACT_COL
 from greykite.common.constants import TIME_COL
 from greykite.common.features.timeseries_features import add_daily_events
 from greykite.common.features.timeseries_features import add_event_window
@@ -28,12 +32,18 @@ from greykite.common.features.timeseries_features import get_changepoint_string
 from greykite.common.features.timeseries_features import get_changepoint_values_from_config
 from greykite.common.features.timeseries_features import get_custom_changepoints_values
 from greykite.common.features.timeseries_features import get_default_origin_for_time_vars
+from greykite.common.features.timeseries_features import get_eu_dst_end
+from greykite.common.features.timeseries_features import get_eu_dst_start
 from greykite.common.features.timeseries_features import get_evenly_spaced_changepoints_dates
 from greykite.common.features.timeseries_features import get_evenly_spaced_changepoints_values
 from greykite.common.features.timeseries_features import get_fourier_col_name
 from greykite.common.features.timeseries_features import get_holidays
 from greykite.common.features.timeseries_features import get_logistic_func
+from greykite.common.features.timeseries_features import get_us_dst_end
+from greykite.common.features.timeseries_features import get_us_dst_start
+from greykite.common.features.timeseries_features import is_dst_fcn
 from greykite.common.features.timeseries_features import logistic
+from greykite.common.features.timeseries_features import pytz_is_dst_fcn
 from greykite.common.features.timeseries_features import signed_pow
 from greykite.common.features.timeseries_features import signed_pow_fcn
 from greykite.common.features.timeseries_features import signed_sqrt
@@ -48,14 +58,47 @@ def hourly_data():
     return generate_df_for_tests(freq="H", periods=24 * 500)
 
 
+# Below defines a function to do all tests for daylight saving functions
+def validate_dst_times(is_dst_func, dst_start, dst_end):
+    """Assuming dayligh saving starts on ``dst_start`` and ends on ``dst_end``,
+    it performs a series of assertion to ensure the function
+    ``is_dst_func`` works as expected."""
+    # It must be daylight saving on the start date
+    dt = dst_start
+    assert is_dst_func([dt])[0] is True, "dst start not correct"
+    # It must be still daylight saving an hour after the start date
+    assert is_dst_func([dt + pd.to_timedelta("1H")])[0] is True, "an hour after start of dst"
+    # It must be still daylight saving 2 hours after the start date
+    assert is_dst_func([dt + pd.to_timedelta("2H")])[0] is True, "2 hours after start of dst"
+    # It must be still daylight saving 90 days after the start date
+    assert is_dst_func([dt + pd.to_timedelta("90D")])[0] is True, "90 days after start of dst"
+    # It is not daylight saving an hour before the start date
+    assert is_dst_func([dt - pd.to_timedelta("1H")])[0] is False, "an hour before start of dst"
+
+    # It must be daylight saving right before the end date
+    dt = dst_end
+    assert is_dst_func([dt])[0] is True
+    # It must be still daylight saving an hour before the end date
+    assert is_dst_func([dt - pd.to_timedelta("1H")])[0] is True, "an hour before end of dst"
+    # It must be still daylight saving 2 hours before the end date
+    assert is_dst_func([dt - pd.to_timedelta("2H")])[0] is True, "2 hours before end of dst"
+    # It must be still daylight saving 90 days before the end date
+    assert is_dst_func([dt - pd.to_timedelta("90D")])[0] is True, "90 days before end of dst"
+    # It is not daylight saving an hour after the end date
+    assert is_dst_func([dt + pd.to_timedelta("1H")])[0] is False, "an hour the end of dst"
+
+
 def test_convert_date_to_continuous_time():
     assert convert_date_to_continuous_time(dt(2019, 1, 1)) == 2019.0
     assert convert_date_to_continuous_time(dt(2019, 7, 1)) == 2019 + 181 / 365
     assert convert_date_to_continuous_time(dt(2020, 7, 1)) == 2020 + 182 / 366  # leap year
-    assert convert_date_to_continuous_time(dt(2019, 7, 1, 7, 4, 24)) == 2019 + (181  # day
-                                                                                + 7 / 24  # hour
-                                                                                + 4 / (24 * 60)  # minute
-                                                                                + 24 / (24 * 60 * 60)) / 365  # second
+    assert convert_date_to_continuous_time(dt(2019, 7, 1, 7, 4, 24)) == (
+        2019 + (
+            181  # day
+            + 7 / 24  # hour
+            + 4 / (24 * 60)  # minute
+            + 24 / (24 * 60 * 60)) / 365  # second
+        )
 
 
 def test_get_default_origin_for_time_vars(hourly_data):
@@ -67,6 +110,104 @@ def test_get_default_origin_for_time_vars(hourly_data):
     df = pd.DataFrame({"time": ["2018-07-01", "2018-08-01"]})
     conti_year_origin = get_default_origin_for_time_vars(df, "time")
     assert round(conti_year_origin, 3) == 2018.496
+
+
+def test_pytz_is_dst_fcn():
+    """Tests ``pytz_is_dst_fcn``"""
+    # Tests the function constructed for US
+    # Note that as long as the zone is inside mainland US,
+    # result should be the same
+    us_dst_start = pd.to_datetime("2022-03-13 02:00:00")
+    us_dst_end = pd.to_datetime("2022-11-06 01:59:59")
+    validate_dst_times(
+        is_dst_func=pytz_is_dst_fcn("US/Pacific"),
+        dst_start=us_dst_start,
+        dst_end=us_dst_end)
+
+    # Repeates the US case, with another time zone
+    validate_dst_times(
+        is_dst_func=pytz_is_dst_fcn("US/Central"),
+        dst_start=us_dst_start,
+        dst_end=us_dst_end)
+
+    # Europe case
+    eu_dst_start = pd.to_datetime("2022-03-27 01:00:00")
+    eu_dst_end = pd.to_datetime("2022-10-30 01:59:59")
+    validate_dst_times(
+        is_dst_func=pytz_is_dst_fcn("Europe/London"),
+        dst_start=eu_dst_start,
+        dst_end=eu_dst_end)
+
+
+def test_is_dst_fcn():
+    """Tests ``is_dst_fcn``"""
+    # Tests the function constructed for US
+    # Note that as long as the zone is inside mainland US,
+    # result should be the same
+    us_dst_start = pd.to_datetime("2022-03-13 02:00:00")
+    us_dst_end = pd.to_datetime("2022-11-06 01:59:59")
+    validate_dst_times(
+        is_dst_func=is_dst_fcn("US/Pacific"),
+        dst_start=us_dst_start,
+        dst_end=us_dst_end)
+
+    # Repeates the US case, with another time zone
+    validate_dst_times(
+        is_dst_func=is_dst_fcn("US/Central"),
+        dst_start=us_dst_start,
+        dst_end=us_dst_end)
+
+    # Europe case
+    eu_dst_start = pd.to_datetime("2022-03-27 01:00:00")
+    eu_dst_end = pd.to_datetime("2022-10-30 01:59:59")
+    validate_dst_times(
+        is_dst_func=is_dst_fcn("Europe/London"),
+        dst_start=eu_dst_start,
+        dst_end=eu_dst_end)
+
+
+def test_get_dst_start_end_date():
+    """Tests `get_us_dst_start`, `get_us_dst_end`,
+    `get_eu_dst_start`, `get_eu_dst_end` functions.
+    """
+    years = [2015, 2022, 2023, 2024]
+    expected_us_dst_start_dates = [
+        dt(2015, 3, 8, 2, 0),
+        dt(2022, 3, 13, 2, 0),
+        dt(2023, 3, 12, 2, 0),
+        dt(2024, 3, 10, 2, 0)
+    ]
+    expected_us_dst_end_dates = [
+        dt(2015, 11, 1, 2, 0),
+        dt(2022, 11, 6, 2, 0),
+        dt(2023, 11, 5, 2, 0),
+        dt(2024, 11, 3, 2, 0)
+    ]
+    expected_eu_dst_start_dates = [
+        dt(2015, 3, 29, 1, 0),
+        dt(2022, 3, 27, 1, 0),
+        dt(2023, 3, 26, 1, 0),
+        dt(2024, 3, 31, 1, 0)
+    ]
+    expected_eu_dst_end_dates = [
+        dt(2015, 10, 25, 2, 0),
+        dt(2022, 10, 30, 2, 0),
+        dt(2023, 10, 29, 2, 0),
+        dt(2024, 10, 27, 2, 0)
+    ]
+    us_dst_start_dates = []
+    us_dst_end_dates = []
+    eu_dst_start_dates = []
+    eu_dst_end_dates = []
+    for year in years:
+        us_dst_start_dates.append(get_us_dst_start(year))
+        us_dst_end_dates.append(get_us_dst_end(year))
+        eu_dst_start_dates.append(get_eu_dst_start(year))
+        eu_dst_end_dates.append(get_eu_dst_end(year))
+    assert us_dst_start_dates == expected_us_dst_start_dates
+    assert us_dst_end_dates == expected_us_dst_end_dates
+    assert eu_dst_start_dates == expected_eu_dst_start_dates
+    assert eu_dst_end_dates == expected_eu_dst_end_dates
 
 
 def test_build_time_features_df():
@@ -121,8 +262,32 @@ def test_build_time_features_df():
     assert time_df["dow_grouped"][24 * 4] == "6-Sat"
     assert time_df["dow_grouped"][24 * 5] == "7-Sun"
     # detailed check on dow_hr
-    assert list(time_df["dow_hr"])[::7][:25] == ['2_00', '2_07', '2_14', '2_21', '3_04', '3_11', '3_18', '4_01', '4_08', '4_15', '4_22', '5_05', '5_12', '5_19',
-                                                 '6_02', '6_09', '6_16', '6_23', '7_06', '7_13', '7_20', '1_03', '1_10', '1_17', '2_00']  # noqa: E501
+    assert list(time_df["dow_hr"])[::7][:25] == [
+        "2_00",
+        "2_07",
+        "2_14",
+        "2_21",
+        "3_04",
+        "3_11",
+        "3_18",
+        "4_01",
+        "4_08",
+        "4_15",
+        "4_22",
+        "5_05",
+        "5_12",
+        "5_19",
+        "6_02",
+        "6_09",
+        "6_16",
+        "6_23",
+        "7_06",
+        "7_13",
+        "7_20",
+        "1_03",
+        "1_10",
+        "1_17",
+        "2_00"]  # noqa: E501
 
     assert time_df["ct1"][0] == 0.0
     assert time_df["ct2"][0] == 0.0
@@ -182,6 +347,22 @@ def test_build_time_features_df():
     # Checks for exception
     with pytest.raises(ValueError, match="Length of dt cannot be zero."):
         build_time_features_df(dt=df0.iloc[0:0]["ts"], conti_year_origin=2019)
+
+
+def test_build_time_features_df_with_dst():
+    date_list = pd.date_range(
+        start=dt(2022, 3, 13),
+        periods=5,
+        freq="H").tolist()
+
+    df0 = pd.DataFrame({"ts": date_list})
+    time_df = build_time_features_df(
+        dt=df0["ts"],
+        conti_year_origin=2022,
+        add_dst_info=True)
+
+    assert (time_df["us_dst"] == [False, False, True, True, True]).all()
+    assert (time_df["eu_dst"] == [False]*5).all()
 
 
 def test_build_time_features_df_leap_years():
@@ -318,6 +499,7 @@ def test_get_available_holidays_in_countries():
         "Christmas Day",
         "Christmas Day (Observed)",
         "Columbus Day",
+        "Halloween",
         "Independence Day",
         "Independence Day (Observed)",
         "Juneteenth National Independence Day",
@@ -345,6 +527,7 @@ def test_get_available_holidays_across_countries():
         "Christmas Day (Observed)",
         "Columbus Day",
         "Dragon Boat Festival",
+        "Halloween",
         "Independence Day",
         "Independence Day (Observed)",
         "Juneteenth National Independence Day",
@@ -365,12 +548,13 @@ def test_get_available_holidays_across_countries():
 
 
 def test_add_daily_events():
-    # generate events dictionary
+    """Tests ``add_daily_events`` function."""
+    # Generates events dictionary
     countries = ["US", "India", "UK"]
     event_df_dict = get_holidays(countries, year_start=2015, year_end=2025)
     original_col_names = [event_df_dict[country].columns[1] for country in countries]
 
-    # generate temporal data
+    # Generates temporal data
     date_list = pd.date_range(
         start=dt(2019, 1, 1),
         periods=100,
@@ -383,9 +567,80 @@ def test_add_daily_events():
     assert df_with_events[f"{EVENT_PREFIX}_India"].values[0] == "New Year's Day"
     assert df_with_events[f"{EVENT_PREFIX}_US"].values[25] == ""
 
-    # makes sure the function does not modify the input
+    # Makes sure the function does not modify the input
     new_col_names = [event_df_dict[country].columns[1] for country in countries]
     assert original_col_names == new_col_names
+
+    # Tests event indicators are correctly included
+    expected_new_cols = [f"events_{country}" for country in countries] + \
+                        [IS_EVENT_EXACT_COL, IS_EVENT_ADJACENT_COL, IS_EVENT_COL]  # 6 columns should be added
+    assert set(df_with_events.columns).difference(df.columns) == set(expected_new_cols)
+    num_is_event = df_with_events[IS_EVENT_COL].sum()
+    num_is_event_exact = df_with_events[IS_EVENT_EXACT_COL].sum()
+    num_is_event_adjacent = df_with_events[IS_EVENT_ADJACENT_COL].sum()
+    assert num_is_event == num_is_event_exact
+    assert num_is_event_exact > 0
+    assert num_is_event_adjacent == 0
+    assert num_is_event == num_is_event_exact + num_is_event_adjacent
+
+
+def test_add_daily_events_with_neighbor_impact():
+    """Tests adding daily events with neighbor impact."""
+    # Tests weekly data.
+    df = pd.DataFrame({
+        "date": pd.date_range("2020-01-01", freq="W-SUN", periods=100),
+        "y": 0
+    })
+    countries = ["US"]
+    event_df_dict = get_holidays(countries, year_start=2015, year_end=2025)
+    new_df = add_daily_events(
+        df,
+        event_df_dict,
+        neighbor_impact=lambda x: [x - timedelta(days=x.isocalendar()[2] - 1) + timedelta(days=i) for i in range(7)]
+    )
+    # Checks holidays are mapped to the correct weekly dates.
+    assert new_df.iloc[0].tolist() == [pd.Timestamp("2020-01-05"), 0, "New Year's Day", 1, 0, 1]
+    assert new_df.iloc[-1].tolist() == [pd.Timestamp("2021-11-28"), 0, "Thanksgiving", 1, 0, 1]
+
+    # Tests daily data, assuming rolling 7 day.
+    df = pd.DataFrame({
+        "date": pd.date_range("2020-01-01", freq="D", periods=500),
+        "y": 0
+    })
+    countries = ["US"]
+    event_df_dict = get_holidays(countries, year_start=2015, year_end=2025)
+    new_df = add_daily_events(
+        df,
+        event_df_dict,
+        neighbor_impact=7
+    )
+    # Checks holidays are mapped to the correct weekly dates.
+    assert new_df.iloc[0].tolist() == [pd.Timestamp("2020-01-01"), 0, "Christmas Day", 1, 0, 1]
+    assert new_df.iloc[1].tolist() == [pd.Timestamp("2020-01-01"), 0, "New Year's Day", 1, 0, 1]
+    assert new_df.iloc[2].tolist() == [pd.Timestamp("2020-01-02"), 0, "New Year's Day", 1, 0, 1]
+
+
+def test_add_daily_event_shifted_effect():
+    """Tests adding additional neighbor events.
+    The additional events are added as extra columns rather than extra dates
+    under the same columns as in ``neighbor_effect``.
+    """
+    df = pd.DataFrame({
+        "date": pd.date_range("2020-01-01", freq="W-SUN", periods=100),
+        "y": 0
+    })
+    countries = ["US"]
+    event_df_dict = get_holidays(countries, year_start=2015, year_end=2025)
+    new_df = add_daily_events(
+        df,
+        event_df_dict,
+        neighbor_impact=lambda x: [x - timedelta(days=x.isocalendar()[2] - 1) + timedelta(days=i) for i in range(7)],
+        shifted_effect=["-7D", "7D"]
+    )
+    assert new_df.iloc[0].tolist() == [pd.Timestamp("2020-01-05"), 0, "New Year's Day", "", "Christmas Day_7D_after", 1, 0, 1]
+    assert new_df.iloc[1].tolist() == [pd.Timestamp("2020-01-12"), 0, "", "", "New Year's Day_7D_after", 1, 0, 1]
+    assert new_df.iloc[2].tolist() == [pd.Timestamp("2020-01-19"), 0, "", "Martin Luther King Jr. Day_7D_before", "", 1, 0, 1]
+    assert new_df.iloc[-1].tolist() == [pd.Timestamp("2021-11-28"), 0, "Thanksgiving", "", "", 1, 0, 1]
 
 
 def test_get_evenly_spaced_changepoints():
@@ -521,7 +776,10 @@ def test_get_evenly_spaced_changepoint_values():
 
     df0 = pd.DataFrame({"ts": date_list})
     df = add_time_features_df(df0, time_col="ts", conti_year_origin=2018)
-    changepoints = get_evenly_spaced_changepoints_values(df, "ct1", n_changepoints=n_changepoints)
+    changepoints = get_evenly_spaced_changepoints_values(
+        df,
+        "ct1",
+        n_changepoints=n_changepoints)
     changepoint_dates = get_changepoint_dates_from_changepoints_dict(
         changepoints_dict={
             "method": "uniform",
@@ -553,7 +811,8 @@ def test_get_custom_changepoints():
     df = add_time_features_df(df0, time_col="custom_time_col", conti_year_origin=2018)
 
     # dates as datetime
-    changepoint_dates = pd.to_datetime(["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"])
+    changepoint_dates = pd.to_datetime(
+        ["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"])
     result = get_custom_changepoints_values(
         df=df,
         changepoint_dates=changepoint_dates,
@@ -615,7 +874,8 @@ def test_get_custom_changepoints():
     df = add_time_features_df(df0, time_col="custom_time_col", conti_year_origin=2018)
 
     # dates as datetime
-    changepoint_dates = pd.to_datetime(["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"])
+    changepoint_dates = pd.to_datetime(
+        ["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"])
     result = get_custom_changepoints_values(
         df=df,
         changepoint_dates=changepoint_dates,
@@ -624,7 +884,8 @@ def test_get_custom_changepoints():
     )
     # 2018-01-01 is mapped to 2019-01-01-00. Mapped to -00 if no hour provided
     # Last requested changepoint is not found
-    assert np.all(result == pd.to_datetime(["2019-01-01-00", "2019-01-02-16", "2019-01-03-00"]))
+    assert np.all(result == pd.to_datetime(
+        ["2019-01-01-00", "2019-01-02-16", "2019-01-03-00"]))
 
 
 def test_get_changepoint_values_from_config(hourly_data):
@@ -850,7 +1111,10 @@ def test_get_changepoint_dates_from_changepoints_dict():
 def test_add_event_window():
     """Tests add_event_window"""
     # generate events data
-    event_df_dict = get_holidays(countries=["US", "India", "UK"], year_start=2018, year_end=2019)
+    event_df_dict = get_holidays(
+        countries=["US", "India", "UK"],
+        year_start=2018,
+        year_end=2019)
     df = event_df_dict["US"]
 
     shifted_event_dict = add_event_window(
@@ -884,7 +1148,10 @@ def test_add_event_window():
 
 def test_add_event_window_multi():
     # generating events data
-    event_df_dict = get_holidays(countries=["US", "India", "UK"], year_start=2018, year_end=2019)
+    event_df_dict = get_holidays(
+        countries=["US", "India", "UK"],
+        year_start=2018,
+        year_end=2019)
 
     shifted_event_dict = add_event_window_multi(
         event_df_dict=event_df_dict,

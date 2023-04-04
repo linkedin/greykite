@@ -85,7 +85,7 @@ def test_get_auto_holiday(df_daily):
             custom_event=custom_event
         )
     )
-    assert len(holidays) == 31  # Only United States is used.
+    assert len(holidays) == 34  # Only United States is used.
     assert holidays["custom_event"].equals(custom_event)
     assert "Holiday_positive_group" in holidays
     assert "Holiday_negative_group" in holidays

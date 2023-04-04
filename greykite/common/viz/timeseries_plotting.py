@@ -27,6 +27,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.colors import DEFAULT_PLOTLY_COLORS
+from plotly.subplots import make_subplots
 
 from greykite.common import constants as cst
 from greykite.common.features.timeseries_features import build_time_features_df
@@ -34,6 +35,7 @@ from greykite.common.logging import LoggingLevelEnum
 from greykite.common.logging import log_message
 from greykite.common.python_utils import update_dictionary
 from greykite.common.viz.colors_utils import get_color_palette
+from greykite.common.viz.colors_utils import get_distinct_colors
 
 
 def plot_multivariate(
@@ -1031,3 +1033,224 @@ def flexible_grouping_evaluation(
                               f"{list_cols}.")
 
     return df_transformed
+
+
+def plot_dual_axis_figure(
+        df,
+        x_col,
+        y_left_col,
+        y_right_col,
+        grouping_col=None,
+        xlabel=None,
+        ylabel_left=None,
+        ylabel_right=None,
+        title=None,
+        y_left_linestyle="solid",
+        y_right_linestyle="dash",
+        opacity=0.9,
+        axis_font_size=18,
+        title_font_size=20,
+        x_range=None,
+        y_left_range=None,
+        y_right_range=None,
+        x_tick_format=None,
+        y_left_tick_format=None,
+        y_right_tick_format=None,
+        x_hover_format=None,
+        y_left_hover_format=None,
+        y_right_hover_format=None,
+        group_color_dict=None):
+    """Generic function to plot a dual y-axis plot. The x-axis is specified by ``x_col``.
+    The left and right y-axes are specified by ``y_left_col`` and ``y_right_col`` respectively.
+    If ``grouping_col`` is specified, then multiple pairs of curves are drawn, one for each level in ``grouping_col``.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        The input dataframe. Must contain the columns ``x_col``, ``y_left_col`` and ``y_right_col``.
+        If ``grouping_col`` is not None, it must also contain the ``grouping_col`` column.
+        For example, the dataframe could look like this.
+
+        +-----------+----------------+-----------------+------------------+
+        | ``x_col`` | ``y_left_col`` | ``y_right_col`` | ``grouping_col`` |
+        +===========+================+=================+==================+
+        |   1.10    |     20.12      |      0.21       |       "A"        |
+        +-----------+----------------+-----------------+------------------+
+        |   1.40    |     40.31      |      0.43       |       "A"        |
+        +-----------+----------------+-----------------+------------------+
+        |   1.23    |     63.21      |      NaN        |       "B"        |
+        +-----------+----------------+-----------------+------------------+
+        |   1.54    |     10.31      |      0.12       |       "B"        |
+        +-----------+----------------+-----------------+------------------+
+        |    ...    |      ...       |       ...       |       ...        |
+        +-----------+----------------+-----------------+------------------+
+
+    x_col : `str`
+        The column name of the column in ``df`` to be used for the x-axis.
+    y_left_col : `str`
+        The column name of the column in ``df`` to be used for the left y-axis.
+    y_right_col : `str`
+        The column name of the column in ``df`` to be used for the right y-axis.
+    grouping_col : `str` or None, default None
+        Name of the grouping column in ``df`` to be used for overlaying curves for each level in ``grouping_col``.
+    xlabel : `str` or None, default None
+        Name for the x-axis label. If it is `None`, then it is set to be ``x_col``.
+    ylabel_left : `str` or None, default None
+        Name for the left y-axis label. If it is `None`, then it is set to be ``y_left_col``.
+    ylabel_right : `str` or None, default None
+        Name for the right y-axis label. If it is `None`, then it is set to be ``y_right_col``.
+    title : `str` or None, default None
+        The title for the plot.
+    y_left_linestyle : `str`, default "solid"
+        Line style for the left y-axis curve.
+    y_right_linestyle : `str`, default "dash"
+        Line style for the right y-axis curve.
+    opacity : `float`, default 0.9
+        The opacity of the colors. This has to be a number between 0 and 1.
+    axis_font_size : `int`, default 18
+        The size of the axis fonts.
+    title_font_size : `int`, default 20
+        The size of the title fonts.
+    x_range : `list` or None, default None
+        Range of the x-axis.
+    y_left_range : `list` or None, default None
+        Range of the left y-axis.
+    y_right_range : `list` or None, default None
+        Range of the right y-axis.
+    x_tick_format : `str` or None, default None
+        Format of the ticks on the x-axis.
+    y_left_tick_format : `str` or None, default None
+        Format of the ticks on the left y-axis.
+    y_right_tick_format : `str` or None, default None
+        Format of the ticks on the right y-axis.
+    x_hover_format : `str` or None, default None
+        Format of the values when hovering for the x-axis.
+    y_left_hover_format : `str` or None, default None
+        Format of the values when hovering for the left y-axis.
+    y_right_hover_format : `str` or None, default None
+        Format of the values when hovering for the right y-axis.
+    group_color_dict : `dict` [`str`, `str`] or None, default None.
+        Dictionary with a mapping from levels within the ``grouping_col`` and a specified color.
+        The keys are the levels in ``grouping_col`` and the values are a specified color.
+        If ``group_color_dict`` is `None`, the colors are generated using the function
+        `greykite.common.viz.colors_utils.get_distinct_colors`.
+
+    Returns
+    -------
+    fig : `plotly.graph_objects.Figure`
+        Dual y-axes plot.
+    """
+    if any([col not in df.columns for col in [x_col, y_left_col, y_right_col]]):
+        raise ValueError(f"`df` must contain the columns: '{x_col}', '{y_left_col}' and '{y_right_col}'!")
+
+    # If no custom labels are given, we simply use the names of the passed columns.
+    if xlabel is None:
+        xlabel = x_col
+    if ylabel_left is None:
+        ylabel_left = y_left_col
+    if ylabel_right is None:
+        ylabel_right = y_right_col
+    # Stores the data for the left and right curves.
+    y_left_data = []
+    y_right_data = []
+    # Creates the curve(s).
+    if grouping_col is None:  # No `grouping_col`
+        # In this case, only one color is needed.
+        color = get_distinct_colors(num_colors=1, opacity=opacity)[0]
+        df = df.reset_index(drop=True).sort_values(x_col)
+        # Left lines.
+        line_left = go.Scatter(
+            name=ylabel_left,
+            x=df[x_col].tolist(),
+            y=df[y_left_col].tolist(),
+            showlegend=True,
+            line=dict(
+                dash=y_left_linestyle,
+                color=color))
+        y_left_data.append(line_left)
+        # Right lines.
+        line_right = go.Scatter(
+            name=ylabel_right,
+            x=df[x_col].tolist(),
+            y=df[y_right_col].tolist(),
+            showlegend=True,
+            line=dict(
+                dash=y_right_linestyle,
+                color=color))
+        y_right_data.append(line_right)
+    else:   # `grouping_col` is not None.
+        # Gets the levels for the specified `grouping_col`.
+        levels = df.groupby(grouping_col).groups
+        # Assigns colors to levels if not specified.
+        if group_color_dict is None:
+            color_list = get_distinct_colors(
+                num_colors=len(levels),
+                opacity=opacity)
+            group_color_dict = {level: color_list[i] for i, level in enumerate(levels.keys())}
+        # Generates curves for each level.
+        for level, indices in levels.items():
+            df_subset = df.loc[indices].reset_index(drop=True).sort_values(x_col)
+            # Left lines.
+            line_left = go.Scatter(
+                name=ylabel_left,
+                legendgroup=f"{grouping_col} = {level}",
+                legendgrouptitle_text=f"{grouping_col} = {level}",
+                x=df_subset[x_col].tolist(),
+                y=df_subset[y_left_col].tolist(),
+                showlegend=True,
+                line=dict(
+                    dash=y_left_linestyle,
+                    color=group_color_dict[level]))
+            y_left_data.append(line_left)
+            # Right lines.
+            line_right = go.Scatter(
+                name=ylabel_right,
+                legendgroup=f"{grouping_col} = {level}",
+                legendgrouptitle_text=f"{grouping_col} = {level}",
+                x=df_subset[x_col].tolist(),
+                y=df_subset[y_right_col].tolist(),
+                showlegend=True,
+                line=dict(
+                    dash=y_right_linestyle,
+                    color=group_color_dict[level]))
+            y_right_data.append(line_right)
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    for line_left, line_right in zip(y_left_data, y_right_data):
+        fig.add_trace(line_left, secondary_y=False)
+        fig.add_trace(line_right, secondary_y=True)
+    # Updates figure layout.
+    fig.update_layout(
+        title_text=title,
+        titlefont=dict(size=title_font_size),
+        autosize=False,
+        width=1000,
+        height=800,
+        hovermode="x")
+    # Updates x-axis.
+    fig.update_xaxes(
+        title=xlabel,
+        titlefont=dict(size=axis_font_size),
+        range=x_range,
+        tickfont_size=axis_font_size,
+        tickformat=x_tick_format,
+        hoverformat=x_hover_format),
+    # Updates the left y-axis.
+    fig.update_yaxes(
+        title_text=ylabel_left,
+        secondary_y=False,
+        titlefont=dict(size=axis_font_size),
+        range=y_left_range,
+        tickfont_size=axis_font_size,
+        tickformat=y_left_tick_format,
+        hoverformat=y_left_hover_format)
+    # Updates the right y-axis.
+    fig.update_yaxes(
+        title_text=ylabel_right,
+        secondary_y=True,
+        titlefont=dict(size=axis_font_size),
+        range=y_right_range,
+        tickfont_size=axis_font_size,
+        tickformat=y_right_tick_format,
+        hoverformat=y_right_hover_format)
+    return fig

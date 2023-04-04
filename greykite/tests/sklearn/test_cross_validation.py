@@ -9,10 +9,10 @@ def assert_splits_equal(actual, expected):
     :param actual: np.array of np.arrays
     :param expected: np.array of np.arrays
     """
-    actual = np.array(list(actual))
-    for i in range(expected.shape[0]):
-        for j in range(expected.shape[1]):
-            np.testing.assert_array_equal(actual[i][j], expected[i][j])
+    actual = list(actual)  # A list of tuples of `np.array`: [(np.array:train, np.array:test), ...]
+    for i in range(len(actual)):
+        np.testing.assert_array_equal(actual[i][0], expected[i][0])
+        np.testing.assert_array_equal(actual[i][1], expected[i][1])
 
 
 def test_rolling_time_series_split():
@@ -26,12 +26,12 @@ def test_rolling_time_series_split():
     assert tscv.periods_between_train_test == 0
 
     X = np.random.rand(20, 2)
-    expected = np.array([  # offset applied, first two observations are not used in CV
+    expected = [  # offset applied, first two observations are not used in CV
         (np.array([2, 3, 4, 5, 6, 7]), np.array([8, 9, 10])),
         (np.array([5, 6, 7, 8, 9, 10]), np.array([11, 12, 13])),
         (np.array([8, 9, 10, 11, 12, 13]), np.array([14, 15, 16])),
         (np.array([11, 12, 13, 14, 15, 16]), np.array([17, 18, 19]))
-    ])
+    ]
     assert tscv.get_n_splits(X=X) == 4
     assert_splits_equal(tscv.split(X=X), expected)
 
@@ -55,24 +55,24 @@ def test_rolling_time_series_split2():
     assert tscv.periods_between_train_test == 2
 
     X = np.random.rand(20, 4)
-    expected = np.array([  # no offset
+    expected = [  # no offset
         (np.array([0, 1, 2, 3]), np.array([6, 7])),
         (np.array([0, 1, 2, 3, 4, 5, 6, 7]), np.array([10, 11])),
         (np.array([0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]), np.array([14, 15])),
         (np.array([0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15]), np.array([18, 19]))
-    ])
+    ]
     assert tscv.get_n_splits(X=X) == 4
     assert_splits_equal(tscv.split(X=X), expected)
 
     X = np.random.rand(25, 4)
-    expected = np.array([
+    expected = [
         # offset with expanding window, first training is set larger than min_train_periods to use all data
         (np.arange(5), np.array([7, 8])),
         (np.arange(9), np.array([11, 12])),
         (np.arange(13), np.array([15, 16])),
         (np.arange(17), np.array([19, 20])),
         (np.arange(21), np.array([23, 24]))
-    ])
+    ]
     assert tscv.get_n_splits(X=X) == 5
     assert_splits_equal(tscv.split(X=X), expected)
 
@@ -91,12 +91,12 @@ def test_rolling_time_series_split3():
             max_splits=max_splits)
 
         X = np.random.rand(20, 4)
-        expected = np.array([
+        expected = [
             (np.array([0, 1, 2, 3]), np.array([6, 7])),
             (np.array([0, 1, 2, 3, 4, 5, 6, 7]), np.array([10, 11])),
             (np.array([0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]), np.array([14, 15])),
             (np.array([0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15]), np.array([18, 19]))
-        ])
+        ]
         assert tscv.get_n_splits_without_capping(X=X) == 4
         assert tscv.get_n_splits(X=X) == max_splits
         assert_splits_equal(tscv.split(X=X), expected[-max_splits:])
@@ -130,7 +130,8 @@ def test_rolling_time_series_split3():
         max_splits=max_splits)
     assert tscv.get_n_splits_without_capping(X=X) == 4
     assert tscv.get_n_splits(X=X) == max_splits
-    assert_splits_equal(tscv.split(X=X), expected[[0, 2, 3]])  # picked at random (selection fixed by random seed)
+    expected_to_assert = [expected[i] for i in [0, 2, 3]]
+    assert_splits_equal(tscv.split(X=X), expected_to_assert)  # picked at random (selection fixed by random seed)
 
     # all splits are kept (max_splits == get_n_splits)
     max_splits = 4
@@ -174,7 +175,8 @@ def test_rolling_time_series_split3():
     assert tscv.use_most_recent_splits
     assert tscv.get_n_splits_without_capping(X=X) == 4
     assert tscv.get_n_splits(X=X) == max_splits
-    assert_splits_equal(tscv.split(X=X), expected[[1, 2, 3]])
+    expected_to_assert = [expected[i] for i in [1, 2, 3]]
+    assert_splits_equal(tscv.split(X=X), expected_to_assert)
 
 
 def test_rolling_time_series_split_empty():
@@ -189,9 +191,9 @@ def test_rolling_time_series_split_empty():
 
     with pytest.warns(Warning) as record:
         X = np.random.rand(200, 4)
-        expected = np.array([
+        expected = [
             (np.arange(180), np.arange(start=180, stop=200)),  # 90/10 split
-        ])
+        ]
         assert tscv.get_n_splits(X=X) == 1
         assert_splits_equal(tscv.split(X=X), expected)
         obtained_messages = "--".join([r.message.args[0] for r in record])
@@ -199,9 +201,9 @@ def test_rolling_time_series_split_empty():
 
     with pytest.warns(Warning) as record:
         X = np.random.rand(150, 4)
-        expected = np.array([
+        expected = [
             (np.arange(135), np.arange(start=135, stop=150)),  # 90/10 split
-        ])
+        ]
         assert tscv.get_n_splits(X=X) == 1
         assert_splits_equal(tscv.split(X=X), expected)
         obtained_messages = "--".join([r.message.args[0] for r in record])

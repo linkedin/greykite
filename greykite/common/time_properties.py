@@ -175,7 +175,7 @@ def fill_missing_dates(df, time_col=TIME_COL, freq=None):
         If the timestamps in ``df`` are not evenly spaced,
         irregular timestamps may be removed.
     """
-    freq = freq if freq is not None else pd.infer_freq(df[time_col])
+    freq = freq if freq is not None else infer_freq(df, time_col)
     df = df.reset_index(drop=True)
     complete_dates = pd.DataFrame({
         time_col: pd.date_range(
@@ -207,7 +207,7 @@ def get_canonical_data(
         freq: str = None,
         date_format: str = None,
         tz: str = None,
-        train_end_date: datetime = None,
+        train_end_date: Optional[Union[str, datetime.datetime]] = None,
         regressor_cols: List[str] = None,
         lagged_regressor_cols: List[str] = None,
         anomaly_info: Optional[Union[Dict, List[Dict]]] = None):
@@ -234,7 +234,7 @@ def get_canonical_data(
         If None (recommended), inferred by `pandas.to_datetime`.
     tz : `str` or pytz.timezone object or None, default None
         Passed to `pandas.tz_localize` to localize the timestamp.
-    train_end_date : `datetime.datetime` or None, default None
+    train_end_date : `str` or `datetime.datetime` or None, default None
         Last date to use for fitting the model. Forecasts are generated after this date.
         If None, it is set to the minimum of ``self.last_date_for_val`` and
         ``self.last_date_for_reg``.
@@ -353,7 +353,7 @@ def get_canonical_data(
             UserWarning)
     df = df_standardized.sort_values(by=TIME_COL)
     # Infers data frequency
-    inferred_freq = pd.infer_freq(df[TIME_COL])
+    inferred_freq = infer_freq(df, TIME_COL)
     if freq is None:
         freq = inferred_freq
     elif inferred_freq is not None and freq != inferred_freq:
@@ -377,33 +377,21 @@ def get_canonical_data(
     if tz is not None:
         df = df.tz_localize(tz)
 
-    df_before_adjustment = None
-    if anomaly_info is not None:
-        # Saves values before adjustment.
-        df_before_adjustment = df.copy()
-        # Adjusts columns in df (e.g. `value_col`, `regressor_cols`)
-        # using the anomaly info. One dictionary of parameters
-        # for `adjust_anomalous_data` is provided for each column to adjust.
-        if not isinstance(anomaly_info, (list, tuple)):
-            anomaly_info = [anomaly_info]
-        for single_anomaly_info in anomaly_info:
-            adjusted_df_dict = adjust_anomalous_data(
-                df=df,
-                time_col=TIME_COL,
-                **single_anomaly_info)
-            # `self.df` with values for single_anomaly_info["value_col"] adjusted.
-            df = adjusted_df_dict["adjusted_df"]
+    # Replaces infinity values in `value_col` by `np.nan`
+    df[value_col].replace([np.inf, -np.inf], np.nan, inplace=True)
 
-        # Standardizes `value_col` name
-        df_before_adjustment.rename({
-            value_col: VALUE_COL
-        }, axis=1, inplace=True)
-    # Standardizes `value_col` name
+    # Saves values before adjustment.
+    df_original_value_col = df.copy()
+    # Standardizes `value_col` name.
     df.rename({
         value_col: VALUE_COL
     }, axis=1, inplace=True)
 
-    # Finds date of last available value
+    # Finds date of last available value.
+    # - `last_date_for_val` is the last timestamp with non-null values in `VALUE_COL`.
+    # - `last_date_for_reg` is the last timestamp with non-null values in `regressor_cols`.
+    # - `max_train_end_date` is inferred as the minimum of the above two.
+    # `max_train_end_date` will be used to determine `train_end_date` when the latter is not provided.
     last_date_available = df[TIME_COL].max()
     last_date_for_val = df[df[VALUE_COL].notnull()][TIME_COL].max()
     last_date_for_reg = None
@@ -420,6 +408,59 @@ def get_canonical_data(
         regressor_cols = []
         max_train_end_date = last_date_for_val
 
+    # Chooses appropriate `train_end_date`.
+    # Case 1: if not provided, the last timestamp with a non-null value (`max_train_end_date`) is used.
+    # Case 2: if it is out of the range of the data, raises an error since it should not be allowed.
+    # Case 3: otherwise, we respect the user's input `train_end_date`. NAs are kept and can be imputed in the pipeline.
+    train_end_date = pd.to_datetime(train_end_date)
+    if train_end_date is None:
+        train_end_date = max_train_end_date
+        warnings.warn(
+            f"`train_end_date` is not provided, or {value_col} column of the provided time series contains "
+            f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. "
+            f"Setting `train_end_date` to the last timestamp with a non-null value ({train_end_date}).",
+            UserWarning)
+    elif train_end_date > last_date_available:
+        # TODO: replace the warning with a `ValueError` and bump the version since it changes the behavior.
+        train_end_date = max_train_end_date
+        warnings.warn(
+            f"{value_col} column of the provided time series contains "
+            f"null values at the end, or the input `train_end_date` is beyond the last timestamp available. "
+            f"Setting `train_end_date` to the last timestamp with a non-null value ({train_end_date}).",
+            UserWarning)
+    elif train_end_date > max_train_end_date:
+        # Does not modify the user-input `train_end_date`, but raises a warning.
+        warnings.warn(
+            f"{value_col} column of the provided time series contains trailing NAs. "
+            f"These NA values will be imputed in the pipeline.",
+            UserWarning)
+
+    df_before_adjustment = None
+    if anomaly_info is not None:
+        # Saves values before adjustment.
+        df_before_adjustment = df_original_value_col.copy()
+        # Adjusts columns in df (e.g. `value_col`, `regressor_cols`)
+        # using the anomaly info. One dictionary of parameters
+        # for `adjust_anomalous_data` is provided for each column to adjust.
+        if not isinstance(anomaly_info, (list, tuple)):
+            anomaly_info = [anomaly_info]
+        for single_anomaly_info in anomaly_info:
+            adjusted_df_dict = adjust_anomalous_data(
+                df=df_original_value_col,
+                time_col=TIME_COL,
+                **single_anomaly_info)
+            # `self.df` with values for single_anomaly_info["value_col"] adjusted.
+            df_original_value_col = adjusted_df_dict["adjusted_df"]
+        # Standardizes `value_col` name.
+        df_before_adjustment.rename({
+            value_col: VALUE_COL
+        }, axis=1, inplace=True)
+    # Standardizes `value_col` name.
+    df = df_original_value_col.rename({
+        value_col: VALUE_COL
+    }, axis=1, inplace=False)
+
+    # Processes lagged regressors.
     last_date_for_lag_reg = None
     if lagged_regressor_cols:
         available_regressor_cols = [col for col in df.columns if col not in [TIME_COL, VALUE_COL]]
@@ -431,25 +472,6 @@ def get_canonical_data(
         last_date_for_lag_reg = df[df[lagged_regressor_cols].notnull().any(axis=1)][TIME_COL].max()
     else:
         lagged_regressor_cols = []
-
-    # Chooses appropriate train_end_date
-    if train_end_date is None:
-        train_end_date = max_train_end_date
-        if train_end_date < last_date_available:
-            warnings.warn(
-                f"{value_col} column of the provided TimeSeries contains "
-                f"null values at the end. Setting 'train_end_date' to the last timestamp with a "
-                f"non-null value ({train_end_date}).",
-                UserWarning)
-    elif train_end_date > max_train_end_date:
-        warnings.warn(
-            f"Input timestamp for the parameter 'train_end_date' "
-            f"({train_end_date}) either exceeds the last available timestamp or"
-            f"{value_col} column of the provided TimeSeries contains null "
-            f"values at the end. Setting 'train_end_date' to the last timestamp with a "
-            f"non-null value ({max_train_end_date}).",
-            UserWarning)
-        train_end_date = max_train_end_date
 
     extra_reg_cols = [col for col in df.columns if col not in regressor_cols and col in lagged_regressor_cols]
     fit_cols = [TIME_COL, VALUE_COL] + regressor_cols + extra_reg_cols
@@ -469,3 +491,48 @@ def get_canonical_data(
         "last_date_for_reg": last_date_for_reg,
         "last_date_for_lag_reg": last_date_for_lag_reg,
     }
+
+
+def infer_freq(
+        df,
+        time_col=TIME_COL,
+        window_size=20):
+    """Infers frequency of the timestamps provided in the ``time_col`` of ``df``.
+
+    Notes
+    -----
+    If the timeseries does not have any missing values the
+    ``pandas.infer_freq`` can correctly infer any valid frequency with 20 datapoints.
+    Valid frequencies are listed here:
+    https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        Dataframe with column ``time_col``
+    time_col: `str` or None, default TIME_COL
+        Time column name
+    window_size: `int` or None, default 20
+        Window size to subset ``df`` at each iteration
+
+    Returns
+    -------
+    freq : `str`
+        Inferred frequency of the timestamps provided in the ``time_col`` of ``df``.
+    """
+    df = df.copy()
+    df = df[df[time_col].notna()]
+    df[time_col] = pd.to_datetime(df[time_col])
+    freq = pd.infer_freq(df[time_col])
+    if freq is None:
+        start_index = 0
+        end_index = start_index + window_size
+        while end_index <= df.shape[0]:
+            df_temp = df.iloc[start_index:end_index]
+            freq = pd.infer_freq(df_temp[time_col])
+            if freq is not None:
+                break
+            start_index = end_index
+            end_index = start_index + window_size
+
+    return freq

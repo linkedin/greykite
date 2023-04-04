@@ -22,17 +22,25 @@
 """sklearn estimator with common functionality between
 SilverkiteEstimator and SimpleSilverkiteEstimator.
 """
-
+import re
 from typing import Dict
 from typing import Optional
+from typing import Type
 
 import pandas as pd
+import plotly.express as px
 from pandas.tseries.frequencies import to_offset
+from plotly import graph_objects as go
+from plotly.subplots import make_subplots
 from sklearn.exceptions import NotFittedError
 from sklearn.metrics import mean_squared_error
 
+from greykite.algo.changepoint.adalasso.changepoints_utils import get_trend_changepoint_dates_from_cols
 from greykite.algo.common.col_name_utils import create_pred_category
 from greykite.algo.common.ml_models import breakdown_regression_based_prediction
+from greykite.algo.common.model_summary import ModelSummary
+from greykite.algo.forecast.silverkite.constants.silverkite_component import SilverkiteComponentsEnum
+from greykite.algo.forecast.silverkite.constants.silverkite_constant import default_silverkite_constant
 from greykite.algo.forecast.silverkite.forecast_silverkite import SilverkiteForecast
 from greykite.algo.forecast.silverkite.forecast_silverkite_helper import get_silverkite_uncertainty_dict
 from greykite.common import constants as cst
@@ -40,7 +48,6 @@ from greykite.common.features.timeseries_lags import min_max_lag_order
 from greykite.common.time_properties import min_gap_in_seconds
 from greykite.common.time_properties_forecast import get_simple_time_frequency_from_period
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
-from greykite.sklearn.estimator.silverkite_diagnostics import SilverkiteDiagnostics
 from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
 
 
@@ -92,8 +99,6 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
     ----------
     silverkite : Class or a derived class of `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast`
         The silverkite algorithm instance used for forecasting
-    silverkite_diagnostics : Class or a derived class of `~greykite.sklearn.estimator.silverkite_diagnostics.SilverkiteDiagnostics`
-        The silverkite class used for plotting and generating model summary.
     model_dict : `dict` or None
         A dict with fitted model and its attributes.
         The output of `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.
@@ -144,43 +149,35 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         - ``fs_components_df["seas_names"]`` (e.g. ``daily``, ``weekly``) is appended
           to the column names, if provided.
 
-    `~greykite.sklearn.estimator.silverkite_diagnostics.SilverkiteDiagnostics.plot_silverkite_components` groups
-    based on ``fs_components_df["seas_names"]`` passed to ``forecast_silverkite`` during fit.
-    E.g. any column containing ``daily`` is added to daily seasonality effect. The reason
-    is as follows:
+    `~greykite.sklearn.estimator.base_silverkite_estimator.BaseSilverkiteEstimator.plot_components` relies
+    on a regular expression dictionary to group components together.  There are two available in the library, see
+    `~greykite.common.constants` for the two definitions
 
-        1. User can provide ``tow`` and ``str_dow`` for weekly seasonality.
-        These should be aggregated, and we can do that only based on "seas_names".
-        2. yearly and quarterly seasonality both use ``ct1`` as "names" column.
-        Only way to distinguish those effects is via "seas_names".
-        3. ``ct1`` is also used for growth. If it is interacted with seasonality, the columns become
-        indistinguishable without "seas_names".
-
-    Additionally, the function sets yaxis labels based on ``seas_names``:
-    ``daily`` as ylabel is much more informative than ``tod`` as ylabel in component plots.
+        1. "DEFAULT_COMPONENTS_REGEX_DICT"
+           Grouped seasonality that is the default
+        2. "DETAILED_SEASONALITY_COMPONENTS_REGEX_DICT":
+           A detailed seasonality breakdown where the user can view daily/weekly/monthly/quarterly/yearly seasonality
     """
     def __init__(
             self,
             silverkite: SilverkiteForecast = SilverkiteForecast(),
-            silverkite_diagnostics: SilverkiteDiagnostics = SilverkiteDiagnostics(),
             score_func: callable = mean_squared_error,
             coverage: float = None,
             null_model_params: Optional[Dict] = None,
             uncertainty_dict: Optional[Dict] = None):
-        # initializes null model
+        # Initializes null model
         super().__init__(
             score_func=score_func,
             coverage=coverage,
             null_model_params=null_model_params)
 
-        # required in subclasses __init__
+        # Required in subclasses __init__
         self.uncertainty_dict = uncertainty_dict
 
-        # set by `fit`
+        # Set by `fit`
         # fitted model in dictionary format returned from
         # the `forecast_silverkite` function
         self.silverkite: SilverkiteForecast = silverkite
-        self.silverkite_diagnostics: SilverkiteDiagnostics = silverkite_diagnostics
         self.model_dict = None
         self.pred_cols = None
         self.feature_cols = None
@@ -200,12 +197,16 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         self._pred_category = None
         self.extra_pred_cols = None  # all silverkite estimators should support this.
 
-        # set by the predict method
+        # Set by the predict method
         self.forecast = None
-        # set by predict method
+        # Set by predict method
         self.forecast_x_mat = None
-        # set by the summary method
+        # Set by the summary method
         self.model_summary = None
+
+        # Needed for diagnostics
+        self._silverkite_components_enum: Type[SilverkiteComponentsEnum] = default_silverkite_constant.get_silverkite_components_enum()
+        self.components = None
 
     def __set_uncertainty_dict(self, X, time_col, value_col):
         """Checks if ``coverage`` is consistent with the ``uncertainty_dict``
@@ -311,19 +312,13 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
 
         self.pred_cols = self.model_dict["pred_cols"]
         self.feature_cols = self.model_dict["x_mat"].columns
-        # model coefficients
+        # Model coefficients
         if hasattr(self.model_dict["ml_model"], "coef_"):
             self.coef_ = pd.DataFrame(
                 self.model_dict["ml_model"].coef_,
                 index=self.feature_cols)
 
-        self._set_silverkite_diagnostics_params()
         return self
-
-    def _set_silverkite_diagnostics_params(self):
-        if self.silverkite_diagnostics is None:
-            self.silverkite_diagnostics = SilverkiteDiagnostics()
-        self.silverkite_diagnostics.set_params(self.pred_category, self.time_col_, self.value_col_)
 
     def predict(self, X, y=None):
         """Creates forecast for the dates specified in ``X``.
@@ -391,7 +386,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         self.forecast = pred_df
         self.forecast_x_mat = x_mat
 
-        # renames columns to standardized schema
+        # Renames columns to standardized schema
         output_columns = {
             self.time_col_: cst.TIME_COL}
         if cst.PREDICTED_COL in pred_df.columns:
@@ -445,7 +440,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         ----------
         grouping_regex_patterns_dict : `dict` {`str`: `str`}
             A dictionary with group names as keys and regexes as values.
-            This dictinary is used to partition the columns into various groups
+            This dictionary is used to partition the columns into various groups
         forecast_x_mat : `pd.DataFrame`, default None
             The dataframe of design matrix of regression model.
             If None, this will be extracted from the estimator.
@@ -459,7 +454,7 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
             Therefore we simply create an integer index with size of ``forecast_x_mat``.
         center_components : `bool`, default False
             It determines if components should be centered at their mean and the mean
-            be added to the intercept. More concretely if a componet is "x" then it will
+            be added to the intercept. More concretely if a component is "x" then it will
             be mapped to "x - mean(x)"; and "mean(x)" will be added to the intercept so
             that the sum of the components remains the same.
         denominator : `str`, default None
@@ -588,56 +583,313 @@ class BaseSilverkiteEstimator(BaseForecastEstimator):
         return max_order
 
     def summary(self, max_colwidth=20):
-        if self.silverkite_diagnostics is None:
-            self._set_silverkite_diagnostics_params()
-        return self.silverkite_diagnostics.summary(self.model_dict, max_colwidth)
+        """Creates the model summary for the given model
 
-    def plot_components(self, names=None, title=None):
+        Parameters
+        ----------
+        max_colwidth : `int`
+            The maximum length for predictors to be shown in their original name.
+            If the maximum length of predictors exceeds this parameter, all
+            predictors name will be suppressed and only indices are shown.
+
+        Returns
+        -------
+        model_summary: `ModelSummary`
+            The model summary for this model. See `~greykite.algo.common.model_summary.ModelSummary`
+        """
+        if self.model_dict is not None:
+            self.model_summary = ModelSummary(
+                x=self.model_dict["x_mat"].values,
+                y=self.model_dict["y"].values,
+                pred_cols=list(self.model_dict["x_mat"].columns),
+                pred_category=self.pred_category,
+                fit_algorithm=self.model_dict["fit_algorithm"],
+                ml_model=self.model_dict["ml_model"],
+                max_colwidth=max_colwidth)
+        return self.model_summary
+
+    def plot_components(
+            self,
+            grouping_regex_patterns_dict=None,
+            center_components=True,
+            denominator=None,
+            predict_phase=False,
+            title=None):
+        """Class method to plot the components of a ``Silverkite`` model on datasets passed to either
+        ``fit`` or ``predict``.
+
+        Parameters
+        ----------
+        grouping_regex_patterns_dict : `dict`, optional, default None
+            If None, it is set to `~greykite.common.constants.DEFAULT_COMPONENTS_REGEX_DICT`.
+            An alternative dictionary is available that provides a more detailed breakdown of
+            seasonality components (e.g., weekly, monthly, quarterly, yearly, etc.), See:
+            `~greykite.common.constants.DETAILED_SEASONALITY_COMPONENTS_REGEX_DICT`.
+        center_components : `bool`, optional, default True
+            It determines if components should be centered at their mean and the mean
+            be added to the intercept. More concretely if a component is "x" then it will
+            be mapped to "x - mean(x)"; and "mean(x)" will be added to the intercept so
+            that the sum of the components remains the same.
+            See `~greykite.sklearn.estimator.base_silverkite_estimator.forecast_breakdown`.
+        denominator : `str`, optional, default None
+            If not None, it will specify a way to divide the components. There are
+            two options implemented:
+
+            - "abs_y_mean" : `float`
+                The absolute value of the observed mean of the response
+            - "y_std" : `float`
+                The standard deviation of the observed response
+            See `~greykite.sklearn.estimator.base_silverkite_estimator.forecast_breakdown`.
+        predict_phase: `bool`, optional, default False
+            If False, plots the components of the training data and shows three plots: 1) Component
+            Plot, 2) Trend Plot + Change points, and 3) Residuals + Smoothed Residuals.
+            If set to True, plots the component breakdown of the predicted values. When set to True,
+            it only plots one plot, the component plot, as there are no change points or residuals
+            in this time frame.
+        title: `str`, optional, default None
+            Title of the plot.
+
+        Returns
+        -------
+        fig: `plotly.graph_objects.Figure`
+            Figure plotting components against appropriate time scale. Plot layout includes:
+            - Plot 1, "Component Plot" - breakdown from forecast_breakdown
+            - Plot 2, "Trend + Change Points"
+            - Plot 3, "Residuals + Smoothed Residuals"; smoothing done using exponentially weighted moving average
+        """
         if self.model_dict is None:
             raise NotFittedError("Call `fit` before calling `plot_components`.")
-        if self.silverkite_diagnostics is None:
-            self._set_silverkite_diagnostics_params()
-        return self.silverkite_diagnostics.plot_components(self.model_dict, names, title)
+        if self.forecast_x_mat is None and predict_phase is True:
+            raise ValueError("Call the predict method before calling `plot_components` to generate forecasts")
 
-    def plot_trend(self, title=None):
-        """Convenience function to plot the data and the trend component.
+        if not hasattr(self.model_dict["ml_model"], "coef_"):
+            raise NotImplementedError("Component plot has only been implemented for additive linear models.")
 
-        Parameters
-        ----------
-        title: `str`, optional, default `None`
-            Plot title.
+        if type(center_components) is not bool:
+            raise TypeError("center_components must be bool: True/False")
 
-        Returns
-        -------
-        fig: `plotly.graph_objects.Figure`
-            Figure.
-        """
-        if title is None:
-            title = "Trend plot"
-        return self.plot_components(names=["trend"], title=title)
+        if denominator is not None:
+            if denominator not in ["abs_y_mean", "y_std"]:
+                raise ValueError("Choose denominator from: ['abs_y_mean', 'y_std']")
 
-    def plot_seasonalities(self, title=None):
-        """Convenience function to plot the data and the seasonality components.
+        # Defines regex dictionary to be the default component dictionary:
+        if grouping_regex_patterns_dict is None:
+            grouping_regex_patterns_dict = cst.DEFAULT_COMPONENTS_REGEX_DICT
+        if type(grouping_regex_patterns_dict) is not dict:
+            raise TypeError("grouping_regex_patterns_dict must be type dict")
+        if len(grouping_regex_patterns_dict) == 0:
+            raise ValueError("grouping_regex_patterns_dict must be non-empty")
 
-        Parameters
-        ----------
-        title: `str`, optional, default `None`
-            Plot title.
+        # Chooses `x_mat` and `time_values` to use
+        # Creates default plot title if not user supplied
+        if not predict_phase:
+            x_mat = self.model_dict["x_mat"].reset_index(drop=True)
+            time_values = pd.to_datetime(self.model_dict["df_dropna"][self.model_dict["time_col"]])
+            if title is None:
+                title = "Component Plot - Training"
+        else:
+            train_end_date = self.model_dict["last_date_for_fit"]
+            x_mat = self.forecast_x_mat.reset_index(drop=True)
+            time_values = pd.to_datetime(self.forecast[self.time_col_])
+            if title is None:
+                title = "Component Plot - Predicted"
 
-        Returns
-        -------
-        fig: `plotly.graph_objects.Figure`
-            Figure.
-        """
-        if title is None:
-            title = "Seasonality plot"
-        seas_names = [
-            "DAILY_SEASONALITY",
-            "WEEKLY_SEASONALITY",
-            "MONTHLY_SEASONALITY",
-            "QUARTERLY_SEASONALITY",
-            "YEARLY_SEASONALITY"]
-        return self.plot_components(names=seas_names, title=title)
+        # Builds a forecast breakdown
+        breakdown = self.forecast_breakdown(
+            grouping_regex_patterns_dict=grouping_regex_patterns_dict,
+            forecast_x_mat=x_mat,
+            time_values=time_values,
+            center_components=center_components,
+            denominator=denominator,
+            plt_title=title
+        )
+
+        # Selects results for component dataframe
+        df = breakdown["breakdown_df"]
+        self.fit_components = df
+
+        # Collects change points from estimator
+        changepoint_columns = [x.split(":")[0] for x in self.model_dict["x_mat"].columns if re.match("changepoint", x) is not None]
+        change_points = get_trend_changepoint_dates_from_cols(trend_cols=set(changepoint_columns))
+
+        # Calculates residuals and a smoothed estimate of residuals
+        y_true = self.model_dict["y_train"].values
+        y_pred = self.model_dict["y_train_pred"]
+        residuals = pd.Series(y_true - y_pred)
+        residuals_smoothed = residuals.ewm(int(len(residuals)/50)).mean()
+
+        # Defines a color palette for the figure
+        line_colors = px.colors.qualitative.Bold
+
+        # Creates the figure
+        if predict_phase:
+            num_rows = 1
+            subplot_title_set = ["Component plot"]
+        else:
+            num_rows = 3
+            subplot_title_set = ["Component plot", "Trend and change points", "Residuals"]
+
+        fig = make_subplots(
+            rows=num_rows,
+            cols=1,
+            vertical_spacing=0.5 / num_rows,
+            subplot_titles=subplot_title_set,
+            shared_xaxes=True
+        )
+
+        # Panel 1 - Adds breakdown component traces to the figure
+        for i, column_name in enumerate(df.columns):
+            if column_name != "Trend":
+                fig.add_trace(
+                    go.Scatter(
+                        x=time_values,
+                        y=df[column_name],
+                        name=column_name,
+                        line=go.scatter.Line(
+                            color=line_colors[i]),
+                        opacity=0.8),
+                    row=1,
+                    col=1)
+            else:
+                # If "Trend" line, adds legendgroup so that trend lines toggle on/off together
+                fig.add_trace(
+                    go.Scatter(
+                        x=time_values,
+                        y=df[column_name],
+                        name=column_name,
+                        line=go.scatter.Line(
+                            color=line_colors[i]),
+                        opacity=0.8,
+                        legendgroup="TrendGroup"),
+                    row=1,
+                    col=1)
+
+        # Adds rangeslider under the first panel
+        fig.update_xaxes(
+            rangeslider_visible=True,
+            rangeslider_thickness=0.05,
+            title_text="Date",
+            row=1,
+            col=1
+        )
+        # By default, rangeslider turns off vertical zoom, this turns it back on
+        fig.update_yaxes(fixedrange=False)
+
+        # Only plot second and third panels if not predict_phase
+        if predict_phase:
+            if train_end_date is not None and train_end_date in time_values.to_list():
+                new_layout = dict(
+                    # Adds vertical line
+                    shapes=[dict(
+                        type="line",
+                        xref="x",
+                        yref="paper",  # y-reference is assigned to the plot paper [0,1]
+                        x0=pd.to_datetime(train_end_date),
+                        y0=0,
+                        x1=pd.to_datetime(train_end_date),
+                        y1=1,
+                        line=dict(
+                            color="rgba(100, 100, 100, 0.9)",
+                            width=1.0)
+                    )],
+                    # Adds text annotation
+                    annotations=[dict(
+                        xref="x",
+                        xanchor="right",
+                        yanchor="middle",
+                        x=pd.to_datetime(train_end_date),
+                        yref="paper",
+                        y=.97,
+                        text="Train End Date",
+                        showarrow=True,
+                        arrowhead=0,
+                        ax=-20,
+                        axref="pixel",
+                        ay=0
+                    )]
+                )
+                fig.update_layout(new_layout)
+
+            # Updates title based on user input, centers the title, adjusts spacing, and turns on tick labels for all plots
+            fig.update_layout(
+                title={
+                    "text": title,
+                    "x": 0.5
+                }
+            )
+        else:
+            # Panel 2 - Adds trace for trend plot
+            fig.add_trace(
+                go.Scatter(
+                    x=time_values,
+                    y=df["Trend"],
+                    name="Trend",
+                    line=go.scatter.Line(
+                        color=line_colors[df.columns.to_list().index("Trend")]),
+                    opacity=0.8,
+                    legendgroup="TrendGroup",
+                    showlegend=False),
+                row=2,
+                col=1)
+
+            # Panel 2 - Adds traces for changepoints. All change groups are one group in legend so they toggle on/off together.
+            if change_points is not None:
+                for cp_num, cp in enumerate(change_points):
+                    if cp_num == 0:
+                        in_legend = True
+                    else:
+                        in_legend = False
+
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[pd.to_datetime(cp), pd.to_datetime(cp)],
+                            y=[df["Trend"].min(), df["Trend"].max()],
+                            name="Changepoints",
+                            legendgroup="Changepoints",
+                            mode="lines",
+                            line=go.scatter.Line(
+                                color="#000000",  # black
+                                width=2,
+                                dash="dot"),
+                            opacity=0.75,
+                            showlegend=in_legend),
+                        row=2,
+                        col=1)
+
+            # Panel 3 - Adds traces for the residuals and smoothed residuals
+            fig.add_trace(
+                go.Scatter(
+                    x=pd.to_datetime(self.df[self.model_dict["time_col"]]),
+                    y=residuals,
+                    name="Residuals",
+                    line=go.scatter.Line(
+                        color="rgb(0,0,0)"),
+                    opacity=0.75),
+                row=3,
+                col=1)
+            fig.add_trace(
+                go.Scatter(
+                    x=pd.to_datetime(self.df[self.model_dict["time_col"]]),
+                    y=residuals_smoothed,
+                    name="Smoothed Residuals",
+                    line=go.scatter.Line(
+                        color="rgb(250,237,9)"),
+                    opacity=0.75),
+                row=3,
+                col=1)
+
+            # Updates title based on user input, centers the title, adjusts spacing, and turns on tick labels for all plots
+            fig.update_layout(
+                title={
+                    "text": title,
+                    "x": 0.5
+                },
+                height=350 * num_rows,
+                xaxis_showticklabels=True,
+                xaxis2_showticklabels=True
+            )
+
+        return fig
 
     def plot_trend_changepoint_detection(self, params=None):
         """Convenience function to plot the original trend changepoint detection results.
