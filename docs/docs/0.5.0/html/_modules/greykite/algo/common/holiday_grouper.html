@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.algo.common.holiday_grouper &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.algo.common.holiday_grouper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.algo.common.holiday_grouper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Yi Su</span>
+<span class="sd">&quot;&quot;&quot;Automatically scores and groups holidays of similar effects.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">silhouette_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KernelDensity</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.common.holiday_inferrer</span> <span class="kn">import</span> <span class="n">HolidayInferrer</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.holiday_utils</span> <span class="kn">import</span> <span class="n">HOLIDAY_DATE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.holiday_utils</span> <span class="kn">import</span> <span class="n">HOLIDAY_NAME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.holiday_utils</span> <span class="kn">import</span> <span class="n">get_dow_grouped_suffix</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.holiday_utils</span> <span class="kn">import</span> <span class="n">get_weekday_weekend_suffix</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_DF_DATE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_DF_LABEL_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_multivariate</span>
+
+
+<div class="viewcode-block" id="HolidayGrouper"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper">[docs]</a><span class="k">class</span> <span class="nc">HolidayGrouper</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This module estimates the impact of holidays and their neighboring days</span>
+<span class="sd">    given a raw holiday dataframe ``holiday_df``, and a time series containing</span>
+<span class="sd">    the observed values to construct the baselines.</span>
+<span class="sd">    It groups events with similar effects to several groups using kernel density estimation (KDE)</span>
+<span class="sd">    and generates the grouped events in a dictionary of dataframes that is recognizable by</span>
+<span class="sd">    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Input time series that contains ``time_col`` and ``value_col``.</span>
+<span class="sd">        The values will be used to construct baselines to estimate the holiday impact.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        Name of the time column in ``df``.</span>
+<span class="sd">    value_col : `str`</span>
+<span class="sd">        Name of the value column in ``df``.</span>
+<span class="sd">    holiday_df : `pandas.DataFrame`</span>
+<span class="sd">        Input holiday dataframe that contains the dates and names of the holidays.</span>
+<span class="sd">    holiday_date_col : `str`</span>
+<span class="sd">        Name of the holiday date column in ``holiday_df``.</span>
+<span class="sd">    holiday_name_col : `str`</span>
+<span class="sd">        Name of the holiday name column in ``holiday_df``.</span>
+<span class="sd">    holiday_impact_dict : `Dict` [`str`, Any] or None, default None</span>
+<span class="sd">        A dictionary containing the neighboring impacting days of a certain holiday.</span>
+<span class="sd">        The key is the name of the holiday matching those in the provided ``holiday_df``.</span>
+<span class="sd">        The value is a tuple of two values indicating the number of neighboring days</span>
+<span class="sd">        before and after the holiday. For example, a valid dictionary may look like:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                holiday_impact_dict = {</span>
+<span class="sd">                    &quot;Christmas Day&quot;: [3, 3],</span>
+<span class="sd">                    &quot;Memorial Day&quot;: [0, 0]</span>
+<span class="sd">                }</span>
+
+<span class="sd">    get_suffix_func : Callable or `str` or None, default &quot;wd_we&quot;</span>
+<span class="sd">        A function that generates a suffix (usually a time feature e.g. &quot;_WD&quot; for weekday,</span>
+<span class="sd">        &quot;_WE&quot; for weekend) given an input date.</span>
+<span class="sd">        This can be used to estimate the interaction between floating holidays</span>
+<span class="sd">        and on which day they are getting observed.</span>
+<span class="sd">        We currently support two defaults:</span>
+
+<span class="sd">            - &quot;wd_we&quot; to generate suffixes based on whether the day falls on weekday or weekend.</span>
+<span class="sd">            - &quot;dow_grouped&quot; to generate three categories: [&quot;_WD&quot;, &quot;_Sat&quot;, &quot;_Sun&quot;].</span>
+
+<span class="sd">        If None, no suffix is added.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    expanded_holiday_df : `pandas.DataFrame`</span>
+<span class="sd">        An expansion of ``holiday_df`` after adding the neighboring dates provided in</span>
+<span class="sd">        ``holiday_impact_dict`` and the suffix generated by ``get_suffix_func``.</span>
+<span class="sd">        For example, if ``&quot;Christmas Day&quot;: [3, 3]`` and &quot;wd_we&quot; are used, events</span>
+<span class="sd">        such as &quot;Christmas Day_WD_plus_1_WE&quot; or &quot;Christmas Day_WD_minus_3_WD&quot; will be generated</span>
+<span class="sd">        for a Christmas that falls on Friday.</span>
+<span class="sd">    baseline_offsets : `Tuple`[`int`] or None</span>
+<span class="sd">        The offsets in days to calculate baselines for a given holiday.</span>
+<span class="sd">        By default, the same days of the week before and after are used.</span>
+<span class="sd">    use_relative_score : `bool` or None</span>
+<span class="sd">        Whether to use relative or absolute score when estimating the holiday impact.</span>
+<span class="sd">    clustering_method : `str` or None</span>
+<span class="sd">        Clustering method used to group the holidays.</span>
+<span class="sd">        Since we are doing 1-D clustering, current supported methods include</span>
+<span class="sd">        (1) &quot;kde&quot; for kernel density estimation, and (2) &quot;kmeans&quot; for k-means clustering.</span>
+<span class="sd">    bandwidth : `float` or None</span>
+<span class="sd">        The bandwidth used in the kernel density estimation.</span>
+<span class="sd">        Higher bandwidth results in less clusters.</span>
+<span class="sd">        If None, it is automatically inferred with the ``bandwidth_multiplier`` factor.</span>
+<span class="sd">    bandwidth_multiplier : `float` or None</span>
+<span class="sd">        Multiplier to be multiplied to the kernel density estimation&#39;s default parameter calculated from</span>
+<span class="sd">        `here&lt;https://en.wikipedia.org/wiki/Kernel_density_estimation#A_rule-of-thumb_bandwidth_estimator&gt;_`.</span>
+<span class="sd">        This multiplier has been found useful in adjusting the default bandwidth parameter in many cases.</span>
+<span class="sd">        Only used when ``bandwidth`` is not specified.</span>
+<span class="sd">    kde : `KernelDensity` or None</span>
+<span class="sd">        The `KernelDensity` object if ``clustering_method == &quot;kde&quot;``.</span>
+<span class="sd">    n_clusters : `int` or None</span>
+<span class="sd">        Number of clusters in the k-means algorithm.</span>
+<span class="sd">    kmeans : `KMeans` or None</span>
+<span class="sd">        The `KMeans` object if ``clustering_method == &quot;kmeans&quot;``.</span>
+<span class="sd">    include_diagnostics : `bool` or None</span>
+<span class="sd">        Whether to include ``kmeans_diagnostics`` and ``kmeans_plot`` in the output ``result_dict``.</span>
+<span class="sd">    result_dict : `Dict`[`str`, Any] or None</span>
+<span class="sd">        A dictionary that stores the scores and clustering results, with the following keys.</span>
+
+<span class="sd">            - &quot;holiday_inferrer&quot;: the `~greykite.algo.common.holiday_inferrer.HolidayInferrer`</span>
+<span class="sd">                instance used for calculating the scores.</span>
+<span class="sd">            - &quot;score_result_original&quot;: a dictionary with keys being the names of all holiday events</span>
+<span class="sd">                after expansion (i.e. the keys in ``expanded_holiday_df``), values being a list of scores</span>
+<span class="sd">                of all dates corresponding to this event.</span>
+<span class="sd">            - &quot;score_result_avg_original&quot;: a dictionary with the same key as in</span>
+<span class="sd">                ``result_dict[&quot;score_result_original&quot;]``.</span>
+<span class="sd">                But the values are the average scores of each event across all occurrences.</span>
+<span class="sd">            - &quot;score_result&quot;: same as ``result_dict[&quot;score_result_original&quot;]``, but after removing</span>
+<span class="sd">                holidays with inconsistent / negligible scores.</span>
+<span class="sd">            - &quot;score_result_avg&quot;: same as ``result_dict[&quot;score_result_original&quot;]``, but after removing</span>
+<span class="sd">                holidays with inconsistent / negligible scores.</span>
+<span class="sd">            - &quot;daily_event_df_dict_with_score&quot;: a dictionary of dataframes.</span>
+<span class="sd">                Key is the group name ``&quot;holiday_group_{k}&quot;``.</span>
+<span class="sd">                Value is a dataframe of all holiday events in this group, containing 4 columns:</span>
+<span class="sd">                &quot;date&quot; (``EVENT_DF_DATE_COL``), &quot;event_name&quot; (``EVENT_DF_LABEL_COL``), &quot;original_name&quot;, &quot;avg_score&quot;.</span>
+<span class="sd">            - &quot;daily_event_df_dict&quot;: a dictionary of dataframes that is ready to use in `SilverkiteForecast`.</span>
+<span class="sd">                Contains 2 keys: ``EVENT_DF_DATE_COL`` and ``EVENT_DF_LABEL_COL``.</span>
+<span class="sd">            - &quot;kde_cutoffs&quot;: a list of `float`, the cutoffs returned by the kernel density clustering.</span>
+<span class="sd">            - &quot;kde_res&quot;: a dataframe that contains &quot;score&quot; and &quot;density&quot; from the kernel density estimation.</span>
+<span class="sd">            - &quot;kde_plot&quot;: a plot of the kernel density estimation.</span>
+<span class="sd">            - &quot;kmeans_diagnostics&quot;: a dataframe containing metrics for different number of clusters.</span>
+<span class="sd">                Columns are:</span>
+
+<span class="sd">                    - &quot;k&quot;: number of clusters;</span>
+<span class="sd">                    - &quot;wsse&quot;: within-cluster sum of squared error (lower is better);</span>
+<span class="sd">                    - &quot;sil_score&quot;: Silhouette coefficient, a value between [-1, 1] that describes</span>
+<span class="sd">                        the separation of clusters (higher is better).</span>
+
+<span class="sd">                Only generated when ``include_diagnostics`` is True. See `group_holidays` for details.</span>
+<span class="sd">            - &quot;kmeans_plot&quot;: a plot visualizing how the diagnostic metrics change over K.</span>
+<span class="sd">                Only generated when ``include_diagnostics`` is True. See `group_holidays` for details.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">holiday_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">holiday_date_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">holiday_name_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">holiday_impact_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">get_suffix_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;wd_we&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span> <span class="o">=</span> <span class="n">time_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span> <span class="o">=</span> <span class="n">value_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span> <span class="o">=</span> <span class="n">holiday_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_date_col</span> <span class="o">=</span> <span class="n">holiday_date_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_name_col</span> <span class="o">=</span> <span class="n">holiday_name_col</span>
+        <span class="k">if</span> <span class="n">holiday_impact_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">holiday_impact_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_impact_dict</span> <span class="o">=</span> <span class="n">holiday_impact_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_suffix_func</span> <span class="o">=</span> <span class="n">get_suffix_func</span>
+
+        <span class="c1"># Derived attributes.</span>
+        <span class="c1"># Casts time columns to `datetime`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">[</span><span class="n">holiday_date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">[</span><span class="n">holiday_date_col</span><span class="p">])</span>
+        <span class="c1"># Creates `HOLIDAY_DATE_COL` and `HOLIDAY_NAME_COL` (if not exists) to be recognized by `HolidayInferrer`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_DATE_COL</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">holiday_date_col</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_NAME_COL</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">holiday_name_col</span><span class="p">]</span>
+
+        <span class="c1"># Other attributes that are not needed for initialization.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_offsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_relative_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clustering_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth_multiplier</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kde</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">KernelDensity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kmeans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">KMeans</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include_diagnostics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Result dictionary will be populated after the scoring and grouping functions are run.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Expands `holiday_df` to include neighboring days</span>
+        <span class="c1"># and suffixes (e.g. &quot;_WD&quot; for weekdays, &quot;_Sat&quot; for Saturdays).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand_holiday_df_with_suffix</span><span class="p">(</span>
+            <span class="n">holiday_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">holiday_df</span><span class="p">,</span>
+            <span class="n">holiday_date_col</span><span class="o">=</span><span class="n">HOLIDAY_DATE_COL</span><span class="p">,</span>
+            <span class="n">holiday_name_col</span><span class="o">=</span><span class="n">HOLIDAY_NAME_COL</span><span class="p">,</span>
+            <span class="n">holiday_impact_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">holiday_impact_dict</span><span class="p">,</span>
+            <span class="n">get_suffix_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_suffix_func</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="HolidayGrouper.group_holidays"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper.group_holidays">[docs]</a>    <span class="k">def</span> <span class="nf">group_holidays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">baseline_offsets</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+            <span class="n">use_relative_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">min_n_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">min_same_sign_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.66</span><span class="p">,</span>
+            <span class="n">min_abs_avg_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">clustering_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;kde&quot;</span><span class="p">,</span>
+            <span class="n">bandwidth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">bandwidth_multiplier</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+            <span class="n">n_clusters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="n">include_diagnostics</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Estimates the impact of holidays and their neighboring days and</span>
+<span class="sd">        groups events with similar effects to several groups using kernel density estimation (KDE).</span>
+<span class="sd">        Then generates the grouped events and stores the results in ``self.result_dict``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        baseline_offsets : `Tuple`[`int`], default (-7, 7)</span>
+<span class="sd">            The offsets in days to calculate baselines for a given holiday.</span>
+<span class="sd">            By default, the same days of the week before and after are used.</span>
+<span class="sd">        use_relative_score : `bool`, default True</span>
+<span class="sd">            Whether to use relative or absolute score when estimating the holiday impact.</span>
+<span class="sd">        min_n_days : `int`, default 1</span>
+<span class="sd">            Minimal number of occurrences for a holiday event to be kept before grouping.</span>
+<span class="sd">        min_same_sign_ratio : `float`, default 0.66</span>
+<span class="sd">            Threshold of the ratio of the same-sign scores for an event&#39;s occurrences.</span>
+<span class="sd">            For example, if an event has two occurrences, they both need to have positive or negative</span>
+<span class="sd">            scores for the ratio to achieve 0.66.</span>
+<span class="sd">            Similarly, if an event has 3 occurrences, at least 2 of them must have the same directional impact.</span>
+<span class="sd">            This parameter is intended to rule out holidays that have indefinite effects.</span>
+<span class="sd">        min_abs_avg_score : `float`, default 0.05</span>
+<span class="sd">            The minimal average score of an event (across all its occurrences) to be kept</span>
+<span class="sd">            before grouping.</span>
+<span class="sd">            When ``use_relative_score = True``, 0.05 means the effect must be greater than 5%.</span>
+<span class="sd">        clustering_method : `str`, default &quot;kde&quot;</span>
+<span class="sd">            Clustering method used to group the holidays.</span>
+<span class="sd">            Since we are doing 1-D clustering, current supported methods include</span>
+<span class="sd">            (1) &quot;kde&quot; for kernel density estimation, and (2) &quot;kmeans&quot; for k-means clustering.</span>
+<span class="sd">        bandwidth : `float` or None, default None</span>
+<span class="sd">            The bandwidth used in the kernel density estimation.</span>
+<span class="sd">            Higher bandwidth results in less clusters.</span>
+<span class="sd">            If None, it is automatically inferred with the ``bandwidth_multiplier`` factor.</span>
+<span class="sd">            Only used when ``clustering_method == &quot;kde&quot;``.</span>
+<span class="sd">        bandwidth_multiplier : `float` or None, default 0.2</span>
+<span class="sd">            Multiplier to be multiplied to the kernel density estimation&#39;s default parameter calculated from</span>
+<span class="sd">            `here&lt;https://en.wikipedia.org/wiki/Kernel_density_estimation#A_rule-of-thumb_bandwidth_estimator&gt;_`.</span>
+<span class="sd">            This multiplier has been found useful in adjusting the default bandwidth parameter in many cases.</span>
+<span class="sd">            Only used when ``bandwidth`` is not specified and ``clustering_method == &quot;kde&quot;``.</span>
+<span class="sd">        n_clusters : `int` or None, default 5</span>
+<span class="sd">            Number of clusters in the k-means algorithm.</span>
+<span class="sd">            Only used when ``clustering_method == &quot;kmeans&quot;``.</span>
+<span class="sd">        include_diagnostics : `bool`, default False</span>
+<span class="sd">            Whether to include ``kmeans_diagnostics`` and ``kmeans_plot`` in the output ``result_dict``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Saves the results in the ``result_dict`` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Parameters should have already been set during initialization.</span>
+        <span class="c1"># If new values are provided, they will override the original values.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_offsets</span> <span class="o">=</span> <span class="n">baseline_offsets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_relative_score</span> <span class="o">=</span> <span class="n">use_relative_score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clustering_method</span> <span class="o">=</span> <span class="n">clustering_method</span>
+
+        <span class="c1"># Runs baselines to get scores on holiday events.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_holiday_scores</span><span class="p">(</span>
+            <span class="n">baseline_offsets</span><span class="o">=</span><span class="n">baseline_offsets</span><span class="p">,</span>
+            <span class="n">use_relative_score</span><span class="o">=</span><span class="n">use_relative_score</span><span class="p">,</span>
+            <span class="n">min_n_days</span><span class="o">=</span><span class="n">min_n_days</span><span class="p">,</span>
+            <span class="n">min_same_sign_ratio</span><span class="o">=</span><span class="n">min_same_sign_ratio</span><span class="p">,</span>
+            <span class="n">min_abs_avg_score</span><span class="o">=</span><span class="n">min_abs_avg_score</span>
+        <span class="p">)</span>
+        <span class="c1"># Extracts results and prepares data for kernel density estimation.</span>
+        <span class="n">score_result_avg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;score_result_avg&quot;</span><span class="p">]</span>
+        <span class="n">scores_df_original</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">score_result_avg</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="s2">&quot;event_name&quot;</span><span class="p">})</span>
+        <span class="p">)</span>
+        <span class="c1"># In rare cases some holiday events may fall on exactly the same day, hence the same score.</span>
+        <span class="c1"># We drop duplicated average scores before clustering, for example,</span>
+        <span class="c1"># Halloween (10/31) plus 1 always has the same scores as All Saints Day (11/1).</span>
+        <span class="n">scores_df</span> <span class="o">=</span> <span class="n">scores_df_original</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s2">&quot;avg_score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;avg_score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">scores_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores_df</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># The following parameters are set to None unless the clustering method is called to populate them.</span>
+        <span class="n">kde_res</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">kde_plot</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">kde_cutoffs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">kmeans_diagnostics</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">kmeans_plot</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">clustering_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;kde&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bandwidth</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">bandwidth_multiplier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;At least one of `bandwidth` or `bandwidth_multiplier` must be provided!&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">bandwidth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Automatically infers the best `bandwidth`.</span>
+                <span class="n">std</span> <span class="o">=</span> <span class="n">scores_x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+                <span class="n">iqr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">scores_x</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">scores_x</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+                <span class="n">sigma</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">iqr</span> <span class="o">/</span> <span class="mf">1.34</span><span class="p">)</span>
+                <span class="n">bandwidth</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores_x</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span> <span class="o">*</span> <span class="n">bandwidth_multiplier</span>
+
+            <span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="n">bandwidth</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">scores_x</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">scores_x</span><span class="p">))</span>
+            <span class="n">kde_res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">scores_df</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">],</span> <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">tolist</span><span class="p">()})</span>
+            <span class="n">kde_res</span> <span class="o">=</span> <span class="n">kde_res</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">kde_plot</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">kde_res</span><span class="p">,</span>
+                <span class="n">x_col</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Kernel density of the holiday scores&quot;</span><span class="p">,</span>
+                <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Holiday impact&quot;</span><span class="p">,</span>
+                <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Kernel density&quot;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Performs holiday clustering based on the kernel densities.</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="n">kde_res</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+            <span class="n">densities</span> <span class="o">=</span> <span class="n">kde_res</span><span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+            <span class="c1"># Find the cutoffs such that scores &lt;= each cutoff are grouped together.</span>
+            <span class="n">kde_cutoffs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">densities</span><span class="p">):</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">densities</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">densities</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">densities</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">kde_cutoffs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="c1"># The group around 0 may contain mixed signs, hence we manually add 0 as a cutoff.</span>
+            <span class="c1"># This might introduce an extra group with no scores - we will remove it later.</span>
+            <span class="c1"># Note that there are no scores smaller than `min_abs_avg_score`.</span>
+            <span class="n">kde_cutoffs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">kde_cutoffs</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="c1"># Constructs `daily_event_df_dict` for all groups.</span>
+            <span class="n">daily_event_df_dict_raw</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                    <span class="n">EVENT_DF_DATE_COL</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="n">EVENT_DF_LABEL_COL</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;original_name&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;avg_score&quot;</span><span class="p">:</span> <span class="p">[]</span>
+                <span class="p">})</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kde_cutoffs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">score_result_avg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># Gets group assignment.</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cutoff</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kde_cutoffs</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="n">cutoff</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># If `value` &gt; the largest cutoff, assigns it to the last group.</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># Now, `i` is the group this holiday belongs to.</span>
+
+                <span class="c1"># Gets the dates for each event.</span>
+                <span class="c1"># Since holiday inferrer automatically adds &quot;+0&quot; to all events, here we remove it.</span>
+                <span class="n">key_without_plus_minus</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_NAME_COL</span><span class="p">]</span> <span class="o">==</span> <span class="n">key_without_plus_minus</span>
+                <span class="n">dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">HOLIDAY_DATE_COL</span><span class="p">]</span>
+
+                <span class="c1"># Creates `event_df`.</span>
+                <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                    <span class="n">EVENT_DF_DATE_COL</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span>
+                    <span class="n">EVENT_DF_LABEL_COL</span><span class="p">:</span> <span class="n">group_name</span><span class="p">,</span>
+                    <span class="s2">&quot;original_name&quot;</span><span class="p">:</span> <span class="n">key_without_plus_minus</span><span class="p">,</span>
+                    <span class="s2">&quot;avg_score&quot;</span><span class="p">:</span> <span class="n">value</span>
+                <span class="p">})</span>
+                <span class="n">daily_event_df_dict_raw</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">daily_event_df_dict_raw</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">event_df</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Removes potential empty groups.</span>
+            <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">new_idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">daily_event_df_dict_raw</span><span class="p">)):</span>
+                <span class="n">event_df</span> <span class="o">=</span> <span class="n">daily_event_df_dict_raw</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">daily_event_df_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">new_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">event_df</span>
+                        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">,</span> <span class="n">EVENT_DF_DATE_COL</span><span class="p">])</span>
+                        <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">new_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">del</span> <span class="n">daily_event_df_dict_raw</span>
+            <span class="c1"># Overrides the attributes in the end.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">=</span> <span class="n">bandwidth</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth_multiplier</span> <span class="o">=</span> <span class="n">bandwidth_multiplier</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kde</span> <span class="o">=</span> <span class="n">kde</span>
+
+        <span class="k">elif</span> <span class="n">clustering_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;kmeans&quot;</span><span class="p">:</span>
+            <span class="c1"># Runs K-means ++ to generate group assignments.</span>
+            <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_clusters</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;k-means++&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">scores_x</span><span class="p">)</span>
+            <span class="c1"># Predicts on the original `scores_df` since two different events may fall on the</span>
+            <span class="c1"># same dates where the score was calculated, but they may have different dates in the future.</span>
+            <span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores_df_original</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">scores_df_with_label</span> <span class="o">=</span> <span class="n">scores_df_original</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">scores_df_with_label</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">predicted_labels</span><span class="p">)</span>
+            <span class="c1"># Since `predicted_labels` is not ordered, we sort the groups according to the average score.</span>
+            <span class="n">group_rank_df</span> <span class="o">=</span> <span class="n">scores_df_with_label</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;labels&quot;</span><span class="p">)[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+            <span class="n">group_rank_df</span><span class="p">[</span><span class="s2">&quot;group_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">group_rank_df</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">]</span>
+                <span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;dense&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Group indices start from 0.</span>
+            <span class="c1"># Merges back to the original scores dataframe.</span>
+            <span class="n">scores_df_with_label</span> <span class="o">=</span> <span class="n">scores_df_with_label</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="n">group_rank_df</span><span class="p">[[</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="s2">&quot;group_id&quot;</span><span class="p">]],</span>
+                <span class="n">on</span><span class="o">=</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+            <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                    <span class="n">EVENT_DF_DATE_COL</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="n">EVENT_DF_LABEL_COL</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;original_name&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;avg_score&quot;</span><span class="p">:</span> <span class="p">[]</span>
+                <span class="p">})</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">)}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">score_result_avg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># Gets group assignment.</span>
+                <span class="n">group_id</span> <span class="o">=</span> <span class="n">scores_df_with_label</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">scores_df_with_label</span><span class="p">[</span><span class="s2">&quot;event_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;group_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">group_id</span><span class="si">}</span><span class="s2">&quot;</span>
+
+                <span class="c1"># Gets the dates for each event.</span>
+                <span class="c1"># Since holiday inferrer automatically adds &quot;+0&quot; to all events, here we remove it.</span>
+                <span class="n">key_without_plus_minus</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_NAME_COL</span><span class="p">]</span> <span class="o">==</span> <span class="n">key_without_plus_minus</span>
+                <span class="n">dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">HOLIDAY_DATE_COL</span><span class="p">]</span>
+
+                <span class="c1"># Creates `event_df`.</span>
+                <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                    <span class="n">EVENT_DF_DATE_COL</span><span class="p">:</span> <span class="n">dates</span><span class="p">,</span>
+                    <span class="n">EVENT_DF_LABEL_COL</span><span class="p">:</span> <span class="n">group_name</span><span class="p">,</span>
+                    <span class="s2">&quot;original_name&quot;</span><span class="p">:</span> <span class="n">key_without_plus_minus</span><span class="p">,</span>
+                    <span class="s2">&quot;avg_score&quot;</span><span class="p">:</span> <span class="n">value</span>
+                <span class="p">})</span>
+                <span class="n">daily_event_df_dict</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">daily_event_df_dict</span><span class="p">[</span><span class="n">group_name</span><span class="p">],</span> <span class="n">event_df</span><span class="p">])</span>
+            <span class="c1"># Sorts the output dataframes.</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">daily_event_df_dict</span><span class="p">)):</span>
+                <span class="n">event_df</span> <span class="o">=</span> <span class="n">daily_event_df_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="n">daily_event_df_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">event_df</span>
+                    <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;avg_score&quot;</span><span class="p">,</span> <span class="n">EVENT_DF_DATE_COL</span><span class="p">])</span>
+                    <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Generates diagnostics for K means to help choose the optimal K (`n_clusters`).</span>
+            <span class="k">if</span> <span class="n">include_diagnostics</span><span class="p">:</span>
+                <span class="n">kmeans_diagnostics</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;wsse&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;sil_score&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+                <span class="k">for</span> <span class="n">candidate_k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores_df</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">tmp_model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">candidate_k</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">scores_x</span><span class="p">)</span>
+                    <span class="c1"># Gets Silhouette score.</span>
+                    <span class="n">kmeans_diagnostics</span><span class="p">[</span><span class="s2">&quot;k&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate_k</span><span class="p">)</span>
+                    <span class="n">kmeans_diagnostics</span><span class="p">[</span><span class="s2">&quot;sil_score&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">silhouette_score</span><span class="p">(</span>
+                        <span class="n">X</span><span class="o">=</span><span class="n">scores_x</span><span class="p">,</span>
+                        <span class="n">labels</span><span class="o">=</span><span class="n">tmp_model</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span>
+                        <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span>
+                    <span class="p">))</span>
+                    <span class="c1"># Gets within-cluster sum of squared errors.</span>
+                    <span class="n">centroids</span> <span class="o">=</span> <span class="n">tmp_model</span><span class="o">.</span><span class="n">cluster_centers_</span>
+                    <span class="n">pred_clusters</span> <span class="o">=</span> <span class="n">tmp_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">scores_x</span><span class="p">)</span>
+                    <span class="n">curr_sse</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores_x</span><span class="p">)):</span>
+                        <span class="n">curr_center</span> <span class="o">=</span> <span class="n">centroids</span><span class="p">[</span><span class="n">pred_clusters</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                        <span class="n">curr_sse</span> <span class="o">+=</span> <span class="p">(</span><span class="n">scores_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">curr_center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+                    <span class="n">kmeans_diagnostics</span><span class="p">[</span><span class="s2">&quot;wsse&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr_sse</span><span class="p">)</span>
+                <span class="n">kmeans_diagnostics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">kmeans_diagnostics</span><span class="p">)</span>
+                <span class="n">kmeans_plot</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+                    <span class="n">df</span><span class="o">=</span><span class="n">kmeans_diagnostics</span><span class="p">,</span>
+                    <span class="n">x_col</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+                    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;n_clusters&quot;</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;K-means diagnostics&lt;br&gt;&quot;</span>
+                          <span class="s2">&quot;(1) Within-cluster SSE: lower is better&lt;br&gt;&quot;</span>
+                          <span class="s2">&quot;(2) Silhouette scores: higher is better&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Overrides the attributes in the end.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kmeans</span> <span class="o">=</span> <span class="n">kmeans</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">include_diagnostics</span> <span class="o">=</span> <span class="n">include_diagnostics</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`clustering_method` </span><span class="si">{</span><span class="n">clustering_method</span><span class="si">}</span><span class="s2"> is not supported! &quot;</span>
+                                      <span class="sa">f</span><span class="s2">&quot;Must be one of </span><span class="se">\&quot;</span><span class="s2">kde</span><span class="se">\&quot;</span><span class="s2"> (kernel density estimation) or &quot;</span>
+                                      <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">kmeans</span><span class="se">\&quot;</span><span class="s2"> (k-means).&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Cleans up and removes duplicate dates.</span>
+        <span class="n">new_daily_event_df_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">,</span> <span class="n">EVENT_DF_LABEL_COL</span><span class="p">]]</span>
+                  <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">)</span>
+                  <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">daily_event_df_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;daily_event_df_dict_with_score&quot;</span><span class="p">:</span> <span class="n">daily_event_df_dict</span><span class="p">,</span>
+            <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="n">new_daily_event_df_dict</span><span class="p">,</span>
+            <span class="s2">&quot;kde_cutoffs&quot;</span><span class="p">:</span> <span class="n">kde_cutoffs</span><span class="p">,</span>
+            <span class="s2">&quot;kde_res&quot;</span><span class="p">:</span> <span class="n">kde_res</span><span class="p">,</span>
+            <span class="s2">&quot;kde_plot&quot;</span><span class="p">:</span> <span class="n">kde_plot</span><span class="p">,</span>
+            <span class="s2">&quot;kmeans_diagnostics&quot;</span><span class="p">:</span> <span class="n">kmeans_diagnostics</span><span class="p">,</span>
+            <span class="s2">&quot;kmeans_plot&quot;</span><span class="p">:</span> <span class="n">kmeans_plot</span>
+        <span class="p">})</span></div>
+
+<div class="viewcode-block" id="HolidayGrouper.get_holiday_scores"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper.get_holiday_scores">[docs]</a>    <span class="k">def</span> <span class="nf">get_holiday_scores</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">baseline_offsets</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+            <span class="n">use_relative_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">min_n_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">min_same_sign_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.66</span><span class="p">,</span>
+            <span class="n">min_abs_avg_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes the score of all holiday events and their neighboring days</span>
+<span class="sd">        in ``self.expanded_holiday_df``, by comparing their observed values with a baseline</span>
+<span class="sd">        value that is an average of the values on the days specified in ``baseline_offsets``.</span>
+<span class="sd">        If a baseline date falls on another holiday, the algorithm looks for the next</span>
+<span class="sd">        value with the same step size as the given offset, up to 3 extra iterations.</span>
+<span class="sd">        Please see more details in</span>
+<span class="sd">        `~greykite.algo.common.holiday_inferrer.HolidayInferrer._get_scores_for_holidays`.</span>
+<span class="sd">        An additional pruning step is done to remove holidays with inconsistent / negligible scores.</span>
+<span class="sd">        Both the results before and after the pruning are returned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        baseline_offsets : `Tuple`[`int`], default (-7, 7)</span>
+<span class="sd">            The offsets in days to calculate baselines for a given holiday.</span>
+<span class="sd">            By default, the same days of the week before and after are used.</span>
+<span class="sd">        use_relative_score : `bool`, default True</span>
+<span class="sd">            Whether to use relative or absolute score when estimating the holiday impact.</span>
+<span class="sd">        min_n_days : `int`, default 1</span>
+<span class="sd">            Minimal number of occurrences for a holiday event to be kept before grouping.</span>
+<span class="sd">        min_same_sign_ratio : `float`, default 0.66</span>
+<span class="sd">            Threshold of the ratio of the same-sign scores for an event&#39;s occurrences.</span>
+<span class="sd">            For example, if an event has two occurrences, they both need to have positive or negative</span>
+<span class="sd">            scores for the ratio to achieve 0.66.</span>
+<span class="sd">            Similarly, if an event has 3 occurrences, at least 2 of them must have the same directional impact.</span>
+<span class="sd">            This parameter is intended to rule out holidays that have indefinite effects.</span>
+<span class="sd">        min_abs_avg_score : `float`, default 0.05</span>
+<span class="sd">            The minimal average score of an event (across all its occurrences) to be kept</span>
+<span class="sd">            before grouping.</span>
+<span class="sd">            When ``use_relative_score = True``, 0.05 means the effect must be greater than 5%.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result_dict : `Dict` [`str`, Any]</span>
+<span class="sd">            A dictionary containing the scoring results.</span>
+<span class="sd">            In particular the following keys are set: &quot;holiday_inferrer&quot;, &quot;score_result_original&quot;,</span>
+<span class="sd">            &quot;score_result_avg_original&quot;, &quot;score_result&quot;, and &quot;score_result_avg&quot;.</span>
+<span class="sd">            Please refer to the docstring of the ``self.result_dict`` attribute of `HolidayGrouper`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initializes `HolidayInferrer` and sets the parameters.</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="n">HolidayInferrer</span><span class="p">()</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># In `HolidayInferrer._get_scores_for_holidays`, `time_col` must be of `datetime.date` or `str` type.</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">hi</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hi</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">time_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">value_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">baseline_offsets</span> <span class="o">=</span> <span class="n">baseline_offsets</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">use_relative_score</span> <span class="o">=</span> <span class="n">use_relative_score</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">pre_search_days</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">post_search_days</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">country_holiday_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">all_holiday_dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_DATE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">holidays</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_NAME_COL</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># Gets the scores for each single date in `self.expanded_holiday_df`.</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">score_result</span> <span class="o">=</span> <span class="n">hi</span><span class="o">.</span><span class="n">_get_scores_for_holidays</span><span class="p">()</span>
+        <span class="c1"># Gets the average scores over multiple occurrences for each holiday in `self.expanded_holiday_df`.</span>
+        <span class="n">hi</span><span class="o">.</span><span class="n">score_result_avg</span> <span class="o">=</span> <span class="n">hi</span><span class="o">.</span><span class="n">_get_averaged_scores</span><span class="p">()</span>
+
+        <span class="c1"># Prunes holiday that has too few datapoints or inconsistent / negligible scores.</span>
+        <span class="n">pruned_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prune_holiday_by_score</span><span class="p">(</span>
+            <span class="n">score_result</span><span class="o">=</span><span class="n">hi</span><span class="o">.</span><span class="n">score_result</span><span class="p">,</span>
+            <span class="n">score_result_avg</span><span class="o">=</span><span class="n">hi</span><span class="o">.</span><span class="n">score_result_avg</span><span class="p">,</span>
+            <span class="n">min_n_days</span><span class="o">=</span><span class="n">min_n_days</span><span class="p">,</span>
+            <span class="n">min_same_sign_ratio</span><span class="o">=</span><span class="n">min_same_sign_ratio</span><span class="p">,</span>
+            <span class="n">min_abs_avg_score</span><span class="o">=</span><span class="n">min_abs_avg_score</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Returns result both before and after pruning.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;holiday_inferrer&quot;</span><span class="p">:</span> <span class="n">hi</span><span class="p">,</span>
+            <span class="s2">&quot;score_result_original&quot;</span><span class="p">:</span> <span class="n">hi</span><span class="o">.</span><span class="n">score_result</span><span class="p">,</span>
+            <span class="s2">&quot;score_result_avg_original&quot;</span><span class="p">:</span> <span class="n">hi</span><span class="o">.</span><span class="n">score_result_avg</span><span class="p">,</span>
+            <span class="s2">&quot;score_result&quot;</span><span class="p">:</span> <span class="n">pruned_result</span><span class="p">[</span><span class="s2">&quot;score_result&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;score_result_avg&quot;</span><span class="p">:</span> <span class="n">pruned_result</span><span class="p">[</span><span class="s2">&quot;score_result_avg&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span></div>
+
+<div class="viewcode-block" id="HolidayGrouper.check_scores"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper.check_scores">[docs]</a>    <span class="k">def</span> <span class="nf">check_scores</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">holiday_name_pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">show_pruned</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Spot checks the score of certain holidays containing pattern ``holiday_name_pattern``.</span>
+<span class="sd">        Prints out the dates, individual day scores of all occurrences,</span>
+<span class="sd">        and the average scores of all matching holiday events.</span>
+<span class="sd">        Note that it only checks the keys in ``self.expanded_holiday_df``,</span>
+<span class="sd">        and it assumes `get_holiday_scores` is already run.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holiday_name_pattern : `str`</span>
+<span class="sd">            Any substring of the holiday event names (``self.expanded_holiday_df[self.holiday_name_col]``).</span>
+<span class="sd">        show_pruned : `bool`, default True</span>
+<span class="sd">            Whether to show pruned holidays along with the remaining holidays.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Prints out the dates, individual day scores of all occurrences,</span>
+<span class="sd">        and the average scores of all matching holiday events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span>
+        <span class="k">if</span> <span class="n">result_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">show_pruned</span><span class="p">:</span>
+            <span class="n">score_result</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;score_result&quot;</span><span class="p">]</span>
+            <span class="n">score_result_avg</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;score_result_avg&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">score_result</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;score_result_original&quot;</span><span class="p">]</span>
+            <span class="n">score_result_avg</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;score_result_avg_original&quot;</span><span class="p">]</span>
+        <span class="n">res_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">score_result_avg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">holiday_name_pattern</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="c1"># `HolidayInferrer` automatically adds &quot;+&quot; and &quot;-&quot; to the end, we remove them.</span>
+                <span class="n">key_without_plus_minus</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expanded_holiday_df</span><span class="p">[</span><span class="n">HOLIDAY_NAME_COL</span><span class="p">]</span> <span class="o">==</span> <span class="n">key_without_plus_minus</span><span class="p">,</span>  <span class="c1"># Uses exact matching.</span>
+                    <span class="n">HOLIDAY_DATE_COL</span>
+                <span class="p">]</span>
+                <span class="n">dates</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+                <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">dates</span> <span class="k">if</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+                <span class="c1"># Prints out the date and impact of each day.</span>
+                <span class="n">impacts</span> <span class="o">=</span> <span class="n">score_result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key_without_plus_minus</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;Dates: </span><span class="si">{</span><span class="n">dates</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;Scores: </span><span class="si">{</span><span class="n">impacts</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># Extracts average score.</span>
+                <span class="n">res_dict</span><span class="p">[</span><span class="n">key_without_plus_minus</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average impact:&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">res_dict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HolidayGrouper.check_holiday_group"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper.check_holiday_group">[docs]</a>    <span class="k">def</span> <span class="nf">check_holiday_group</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">holiday_name_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">holiday_groups</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints out the holiday groups that contain holidays matching ``holiday_name_pattern`` and their scores.</span>
+<span class="sd">        The searching is limited to the given ``holiday_groups``.</span>
+<span class="sd">        Note that it assumes `group_holidays` has already been run.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holiday_name_pattern : `str`</span>
+<span class="sd">            Any substring of the holiday event names (``self.expanded_holiday_df[self.holiday_name_col]``).</span>
+<span class="sd">        holiday_groups : `List`[`int`] or `int`, default None</span>
+<span class="sd">            The indices of holiday groups that the searching is limited in.</span>
+<span class="sd">            If None, all groups are available to search.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Prints out all qualifying holiday groups and their scores.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_dict</span>
+        <span class="k">if</span> <span class="n">result_dict</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s2">&quot;daily_event_df_dict_with_score&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method `group_holidays` must be run before using the `check_holiday_group` method.&quot;</span><span class="p">)</span>
+
+        <span class="n">daily_event_df_dict_with_score</span> <span class="o">=</span> <span class="n">result_dict</span><span class="p">[</span><span class="s2">&quot;daily_event_df_dict_with_score&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">holiday_groups</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">holiday_groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">daily_event_df_dict_with_score</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">holiday_groups</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">holiday_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">holiday_groups</span><span class="p">]</span>
+
+        <span class="n">is_found</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">group_id</span> <span class="ow">in</span> <span class="n">holiday_groups</span><span class="p">:</span>
+            <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;holiday_group_</span><span class="si">{</span><span class="n">group_id</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">event_df</span> <span class="o">=</span> <span class="n">daily_event_df_dict_with_score</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">event_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">event_df</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">holiday_name_pattern</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">is_found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">group_name</span><span class="si">}</span><span class="s2">` contains events matching the provided pattern.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;This group includes </span><span class="si">{</span><span class="n">event_df</span><span class="p">[</span><span class="s1">&#39;original_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2"> distinct events.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">pd</span><span class="o">.</span><span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;display.max_rows&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="n">display</span><span class="p">(</span><span class="n">event_df</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_found</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No matching records found given pattern </span><span class="si">{</span><span class="n">holiday_name_pattern</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+                  <span class="sa">f</span><span class="s2">&quot;and holiday groups </span><span class="si">{</span><span class="n">holiday_groups</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_prune_holiday_by_score</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">score_result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+            <span class="n">score_result_avg</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+            <span class="n">min_n_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">min_same_sign_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.66</span><span class="p">,</span>
+            <span class="n">min_abs_avg_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes events that have too few datapoints or inconsistent / negligible scores</span>
+<span class="sd">        given ``score_result`` and ``score_result_avg``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        score_result : `Dict`[`str`, `List`[`float`]]</span>
+<span class="sd">            A dictionary with keys being the names of all holiday events,</span>
+<span class="sd">            values being a list of scores of all dates corresponding to this event.</span>
+<span class="sd">        score_result_avg : `Dict`[`str`, `float`]</span>
+<span class="sd">            A dictionary with the same key as in ``result_dict[&quot;score_result_original&quot;]``.</span>
+<span class="sd">            But the values are the average scores of each event across all occurrences.</span>
+<span class="sd">        min_n_days : `int`, default 1</span>
+<span class="sd">            Minimal number of occurrences for a holiday event to be kept before grouping.</span>
+<span class="sd">        min_same_sign_ratio : `float`, default 0.66</span>
+<span class="sd">            Threshold of the ratio of the same-sign scores for an event&#39;s occurrences.</span>
+<span class="sd">            For example, if an event has two occurrences, they both need to have positive or negative</span>
+<span class="sd">            scores for the ratio to achieve 0.66.</span>
+<span class="sd">            Similarly, if an event has 3 occurrences, at least 2 of them must have the same directional impact.</span>
+<span class="sd">            This parameter is intended to rule out holidays that have indefinite effects.</span>
+<span class="sd">        min_abs_avg_score : `float`, default 0.05</span>
+<span class="sd">            The minimal average score of an event (across all its occurrences) to be kept</span>
+<span class="sd">            before grouping.</span>
+<span class="sd">            When ``use_relative_score = True``, 0.05 means the effect must be greater than 5%.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `Dict`[`str`, Any]</span>
+<span class="sd">            A dictionary with two keys: &quot;score_result&quot;, &quot;score_result_avg&quot;, values being</span>
+<span class="sd">            the same dictionary as the input ``score_result``, ``score_result_avg``,</span>
+<span class="sd">            but only with the remaining events after pruning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res_score</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res_score_avg</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">score_result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># `key` is the name of the event.</span>
+            <span class="c1"># `value` is a list of scores, we need to check the following.</span>
+            <span class="c1"># (1) It has minimum length `min_n_days`.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_n_days</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># (2) The ratio of same-sign scores is at least `min_same_sign_ratio`.</span>
+            <span class="n">signs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+            <span class="n">n_pos</span><span class="p">,</span> <span class="n">n_neg</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">signs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">signs</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">signs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">n_pos</span><span class="p">,</span> <span class="n">n_neg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">min_same_sign_ratio</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_pos</span> <span class="o">+</span> <span class="n">n_neg</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># (3) The average score needs to meet `min_abs_avg_score` to be included.</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">score_result_avg</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">min_abs_avg_score</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># (4) The average score is not NaN.</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">score_result_avg</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+                <span class="k">continue</span>
+
+            <span class="n">res_score</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">res_score_avg</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">score_result_avg</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">log_message</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Holidays before pruning: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">score_result</span><span class="p">)</span><span class="si">}</span><span class="s2">; after pruning: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">res_score</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;score_result&quot;</span><span class="p">:</span> <span class="n">res_score</span><span class="p">,</span>
+            <span class="s2">&quot;score_result_avg&quot;</span><span class="p">:</span> <span class="n">res_score_avg</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="HolidayGrouper.expand_holiday_df_with_suffix"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper.expand_holiday_df_with_suffix">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">expand_holiday_df_with_suffix</span><span class="p">(</span>
+            <span class="n">holiday_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">holiday_date_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">holiday_name_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">holiday_impact_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">get_suffix_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;wd_we&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expands an input holiday dataframe ``holiday_df`` to include the neighboring days</span>
+<span class="sd">        specified in ``holiday_impact_dict``.</span>
+<span class="sd">        Also adds suffixes generated by ``get_suffix_func`` to better model the effects</span>
+<span class="sd">        of events falling on different days of week.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holiday_df : `pandas.DataFrame`</span>
+<span class="sd">            Input holiday dataframe that contains the dates and names of the holidays.</span>
+<span class="sd">        holiday_date_col : `str`</span>
+<span class="sd">            Name of the holiday date column in ``holiday_df``.</span>
+<span class="sd">        holiday_name_col : `str`</span>
+<span class="sd">            Name of the holiday name column in ``holiday_df``.</span>
+<span class="sd">        holiday_impact_dict : `Dict` [`str`, Any] or None, default None</span>
+<span class="sd">            A dictionary containing the neighboring impacting days of a certain holiday.</span>
+<span class="sd">            The key is the name of the holiday matching those in the provided ``holiday_df``.</span>
+<span class="sd">            The value is a tuple of two values indicating the number of neighboring days</span>
+<span class="sd">            before and after the holiday. For example, a valid dictionary may look like:</span>
+
+<span class="sd">                .. code-block:: python</span>
+
+<span class="sd">                    holiday_impact_dict = {</span>
+<span class="sd">                        &quot;Christmas Day&quot;: [3, 3],</span>
+<span class="sd">                        &quot;Memorial Day&quot;: [0, 0]</span>
+<span class="sd">                    }</span>
+
+<span class="sd">        get_suffix_func : Callable or `str` or None, default &quot;wd_we&quot;</span>
+<span class="sd">            A function that generates a suffix (usually a time feature e.g. &quot;_WD&quot; for weekday,</span>
+<span class="sd">            &quot;_WE&quot; for weekend) given an input date.</span>
+<span class="sd">            This can be used to estimate the interaction between floating holidays</span>
+<span class="sd">            and on which day they are getting observed.</span>
+<span class="sd">            We currently support two defaults:</span>
+
+<span class="sd">                - &quot;wd_we&quot; to generate suffixes based on whether the day falls on weekday or weekend.</span>
+<span class="sd">                - &quot;dow_grouped&quot; to generate three categories: [&quot;_WD&quot;, &quot;_Sat&quot;, &quot;_Sun&quot;].</span>
+
+<span class="sd">            If None, no suffix is added.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        expanded_holiday_df : `pandas.DataFrame`</span>
+<span class="sd">            An expansion of ``holiday_df`` after adding the neighboring dates provided in</span>
+<span class="sd">            ``holiday_impact_dict`` and the suffix generated by ``get_suffix_func``.</span>
+<span class="sd">            For example, if ``&quot;Christmas Day&quot;: [3, 3]`` and &quot;wd_we&quot; are used, events</span>
+<span class="sd">            such as &quot;Christmas Day_WD_plus_1_WE&quot; or &quot;Christmas Day_WD_minus_3_WD&quot; will be generated</span>
+<span class="sd">            for a Christmas that falls on Friday.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;`get_suffix_func` </span><span class="si">{</span><span class="n">get_suffix_func</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="si">}</span><span class="s2"> is not supported! &quot;</span> \
+                        <span class="sa">f</span><span class="s2">&quot;Only supports None, Callable, </span><span class="se">\&quot;</span><span class="s2">dow_grouped</span><span class="se">\&quot;</span><span class="s2"> or </span><span class="se">\&quot;</span><span class="s2">wd_we</span><span class="se">\&quot;</span><span class="s2">.&quot;</span>
+        <span class="k">if</span> <span class="n">get_suffix_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">get_suffix_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">get_suffix_func</span> <span class="o">==</span> <span class="s2">&quot;wd_we&quot;</span><span class="p">:</span>
+            <span class="n">get_suffix_func</span> <span class="o">=</span> <span class="n">get_weekday_weekend_suffix</span>
+        <span class="k">elif</span> <span class="n">get_suffix_func</span> <span class="o">==</span> <span class="s2">&quot;dow_grouped&quot;</span><span class="p">:</span>
+            <span class="n">get_suffix_func</span> <span class="o">=</span> <span class="n">get_dow_grouped_suffix</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">get_suffix_func</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+            <span class="n">get_suffix_func</span> <span class="o">=</span> <span class="n">get_suffix_func</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">holiday_impact_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">holiday_impact_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">expanded_holiday_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">holiday_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="c1"># Handles different holidays differently.</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">holiday_name_col</span><span class="p">]</span> <span class="ow">in</span> <span class="n">holiday_impact_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">pre_search_days</span><span class="p">,</span> <span class="n">post_search_days</span> <span class="o">=</span> <span class="n">holiday_impact_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">holiday_name_col</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pre_search_days</span><span class="p">,</span> <span class="n">post_search_days</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">pre_search_days</span><span class="p">,</span> <span class="n">post_search_days</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">original_dow_flag</span> <span class="o">=</span> <span class="n">get_suffix_func</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">holiday_date_col</span><span class="p">])</span>
+                <span class="n">new_ts</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">holiday_date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">new_dow_flag</span> <span class="o">=</span> <span class="n">get_suffix_func</span><span class="p">(</span><span class="n">new_ts</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original_dow_flag</span><span class="si">}</span><span class="s2">_minus_</span><span class="si">{</span><span class="o">-</span><span class="n">i</span><span class="si">}{</span><span class="n">new_dow_flag</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original_dow_flag</span><span class="si">}</span><span class="s2">_plus_</span><span class="si">{</span><span class="n">i</span><span class="si">}{</span><span class="n">new_dow_flag</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original_dow_flag</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">new_row</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">holiday_date_col</span><span class="p">:</span> <span class="n">new_ts</span><span class="p">,</span>
+                    <span class="n">holiday_name_col</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">holiday_name_col</span><span class="p">]</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">expanded_holiday_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+                    <span class="n">expanded_holiday_df</span><span class="p">,</span>
+                    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_row</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+                <span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">expanded_holiday_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">holiday_date_col</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reconcile Forecasts &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Model store and load" href="store_model.html" />
+    <link rel="prev" title="Benchmarking" href="../benchmarking/benchmarking.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reconcile Forecasts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#intuition">Intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimization-problem">Optimization problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#objective">Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tuning-parameters">Tuning parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-methods">Related methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Reconcile Forecasts</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reconcile-forecasts">
+<h1>Reconcile Forecasts<a class="headerlink" href="#reconcile-forecasts" title="Permalink to this heading"></a></h1>
+<p>In many real-world scenarios, we need a set of forecasts
+that satisfy inter-forecast additivity constraints. For example, the forecast
+of total company revenue must be consistent with the
+sum of forecasts for each business unit. The forecast of total population
+must match the sum of forecasts for each geographic region.</p>
+<p>To generate consistent forecasts, we could either use an algorithm that produces
+consistent forecasts by design, or we could use a post-hoc forecast reconciliation
+method that takes forecasts and makes them consistent.</p>
+<p><a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+takes the latter approach. You can use any algorithm to generate the base forecasts, and then use
+<a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+to reconcile them.</p>
+<p>This page explains the method details. For usage and examples,
+see the tutorial (<a class="reference internal" href="../../gallery/quickstart/04_postprocessing/0100_reconcile_forecasts.html"><span class="doc">Reconcile Forecasts</span></a>).</p>
+<section id="intuition">
+<h2>Intuition<a class="headerlink" href="#intuition" title="Permalink to this heading"></a></h2>
+<p>In <a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>,
+adjusted forecasts are computed as a linear transformation of the base forecasts. This allows
+the adjusted forecasts to satisfy the linear constraints.</p>
+<p>Let <span class="math notranslate nohighlight">\(F_{base}\)</span> be an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix containing forecasts for <span class="math notranslate nohighlight">\(m\)</span> time series
+over <span class="math notranslate nohighlight">\(n\)</span> time steps (wide format, each row is a time series).</p>
+<p>The adjustment function is a linear operator defined by <span class="math notranslate nohighlight">\(T\)</span>, an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix.
+Applying <span class="math notranslate nohighlight">\(T\)</span> to <span class="math notranslate nohighlight">\(F_{base}\)</span> produces adjusted forecasts <span class="math notranslate nohighlight">\(F_{adj}\)</span>,
+an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix:</p>
+<div class="math notranslate nohighlight">
+\[F_{adj} = T F_{base}.\]</div>
+<p>Let <span class="math notranslate nohighlight">\(C\)</span> be a <span class="math notranslate nohighlight">\(c \times m\)</span> matrix encoding <span class="math notranslate nohighlight">\(c\)</span> constraints
+for the <span class="math notranslate nohighlight">\(m\)</span> forecasts. <span class="math notranslate nohighlight">\(C\)</span> defines linear constraints as follows:</p>
+<div class="math notranslate nohighlight">
+\[C F_{adj} = C T F_{base} = 0.\]</div>
+<p>The constraints are satisfied for all <span class="math notranslate nohighlight">\(F_{base}\)</span> if every
+column of <span class="math notranslate nohighlight">\(T\)</span> is in the nullspace of <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p>For a given <span class="math notranslate nohighlight">\(C\)</span>, there could be multiple possible transforms <span class="math notranslate nohighlight">\(T\)</span>.
+Our goal is to find the <span class="math notranslate nohighlight">\(T\)</span> that returns the best adjusted forecasts.
+<a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+tries to find a <span class="math notranslate nohighlight">\(T\)</span> that minimizes the mean squared error (MSE).</p>
+<p>We have two ways to estimate MSE:</p>
+<ol class="arabic simple">
+<li><p>Empirical MSE (error of <span class="math notranslate nohighlight">\(F_{adj}\)</span> on the training set)</p></li>
+<li><p>Decomposed MSE (estimated squared bias + variance from the adjustment)</p></li>
+</ol>
+<p>Using empirical MSE alone could result in overfitting to the training set.
+In addition to measuring decomposed MSE, we could mitigate this by:</p>
+<ul class="simple">
+<li><p>Requiring <span class="math notranslate nohighlight">\(T\)</span> to be unbiased (details below). This results in a more stable adjustment,
+which is useful when extrapolating into the future. Unbiasedness is especially
+appropriate if the base forecasts are unbiased to start with.</p></li>
+<li><p>Introducing a regularization term on the adjustment size. This is appropriate if the
+base forecasts are good. We want to make a small adjustment to satisfy the constraints.</p></li>
+</ul>
+</section>
+<section id="optimization-problem">
+<h2>Optimization problem<a class="headerlink" href="#optimization-problem" title="Permalink to this heading"></a></h2>
+<p>With this intuition,
+<a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+defines <span class="math notranslate nohighlight">\(T\)</span> as the solution to the following convex optimization problem:</p>
+<p><span class="math notranslate nohighlight">\(\begin{align} &amp; \text{minimize (w.r.t. $T$)}  &amp;&amp; \frac{1}{m} \lambda_{var}  \left\lVert W_{var} T \sqrt{W_{h}} \right\rVert _{F}^{2} &amp; \text{variance} \\ &amp; \quad &amp;&amp; + \frac{1}{mn} \lambda_{bias}  \left\lVert W_{bias} (TA-A) \right\rVert _{F}^{2} &amp; \text{squared bias}\\ &amp; \quad &amp;&amp; + \frac{1}{mn} \lambda_{train}  \left\lVert W_{train} (TF_{base}-A) \right\rVert _{F}^{2}  &amp; \text{train MSE}\\ &amp; \quad&amp;&amp; + \frac{1}{mn} \lambda_{adj}  \left\lVert W_{adj} (TF_{base}-F_{base}) \right\rVert _{F}^{2}  &amp; \text{regularization}\\ &amp; \text{subject to} \quad &amp;&amp; CT = 0 &amp; \text{inter-forecast constraints}\\ &amp; \quad&amp;&amp; TA = A &amp; \text{optional, unbiasedness}\\ &amp; \quad&amp;&amp; T \geq b_{lower} &amp; \text{optional, lower bound}\\ &amp; \quad&amp;&amp; T \leq b_{upper} &amp; \text{optional, upper bound}\\ \end{align}\)</span></p>
+<p>Notation:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Variable</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(T\)</span>, the <span class="math notranslate nohighlight">\(m \times m\)</span> transform</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Constraint</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(C\)</span>, the <span class="math notranslate nohighlight">\(c \times m\)</span> linear constraints</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Inputs</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(F_{base}\)</span>, the <span class="math notranslate nohighlight">\(m \times n\)</span> base forecasts</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span>, the <span class="math notranslate nohighlight">\(m \times n\)</span> actual values (corresponding to the base forecasts)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Tuning parameters</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(\lambda_{var}\)</span>, <span class="math notranslate nohighlight">\(\lambda_{bias}\)</span>, <span class="math notranslate nohighlight">\(\lambda_{train}\)</span>, <span class="math notranslate nohighlight">\(\lambda_{adj}\)</span>,
+scalars that define the relative weight of each objective term</p></li>
+<li><p><span class="math notranslate nohighlight">\(W_{h}\)</span>, the <span class="math notranslate nohighlight">\(m \times m\)</span> variance-covariance matrix of base forecast errors</p></li>
+<li><p><span class="math notranslate nohighlight">\(W_{var}\)</span>, <span class="math notranslate nohighlight">\(W_{bias}\)</span>, <span class="math notranslate nohighlight">\(W_{train}\)</span>, <span class="math notranslate nohighlight">\(W_{adj}\)</span>,
+diagonal <span class="math notranslate nohighlight">\(m \times m\)</span> weight matrices that define the relative weight of each
+time series for the penalty</p></li>
+<li><p><span class="math notranslate nohighlight">\(b_{lower}\)</span>, optional lower bound for the entries in <span class="math notranslate nohighlight">\(T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b_{upper}\)</span>, optional upper bound for the entries in <span class="math notranslate nohighlight">\(T\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\left\lVert \cdot \right\rVert _{F}^{2}\)</span>, the squared Frobenius norm</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+pre-scales forecasts and actuals so that the actuals have mean 1 before fitting the optimization.
+This makes the optimization more stable.</p>
+<p><a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+pre-scales the weight matrices so they have the same norm as the identity matrix of the same size.</p>
+</div>
+<p>Let’s unpack this a bit.</p>
+</section>
+<section id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this heading"></a></h2>
+<p>There are four terms (penalties) in the objective:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Var</span></code> (for decomposed MSE)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bias</span></code> (for decomposed MSE)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Train</span></code> (train MSE)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Adj</span></code> (regularization)</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">var</span></code> term estimates the variance of the adjusted forecast errors,
+assuming base forecasts and transform are unbiased. The derivation comes from
+Wickramasuriya, Athanasopoulos &amp; Hyndman 2019, lemma 1
+(<a class="reference external" href="https://robjhyndman.com/papers/mint.pdf">link</a>).</p>
+<p><span class="math notranslate nohighlight">\(W_h\)</span> is positive semidefinite and symmetric, so its square root is symmetric.
+Thus, the first term can be rewritten:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left\lVert W_{var} T \sqrt{W_{h}} \right\rVert _{F}^{2}
+&amp; = \mathrm{Tr}({W_{var}T\sqrt{W_{h}}\sqrt{W_{h}}'T'W_{var}'})\\
+&amp; = \mathrm{Tr}({W_{var}TW_{h}T'W_{var}'})\\
+&amp; = \mathrm{Tr}({W_{var}^{2}TW_{h}T'})\end{split}\]</div>
+<p>Modulo the tuning parameter <span class="math notranslate nohighlight">\(W_{var}\)</span>, this is the variance of reconciled
+forecast errors by Wickramasuriya et al. (<span class="math notranslate nohighlight">\(T\)</span> here is equivalent to
+<span class="math notranslate nohighlight">\(SP\)</span> in their notation).</p>
+<p>The normalizing constant <span class="math notranslate nohighlight">\(\frac{1}{m}\)</span> on the variance term gives the average
+for a single forecast.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">bias</span></code> term estimates the squared bias of the transform.
+Because actuals satisfy the constraints, we use actuals to assess bias,
+computed as the difference between actuals and transformed actuals.
+For unbiased transforms, <span class="math notranslate nohighlight">\(TA=A\)</span>, so this term is 0.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">train</span></code> term measures the MSE of the adjusted forecast on the training set.
+Since the base forecast MSE is constant, it can also be interpreted as the change in
+training MSE after adjustment.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">adj</span></code> term adds regularization to prevent overfitting. It penalizes differences
+between the forecasts and adjusted forecasts.</p>
+<p>For the bias, train, and adj terms, the normalizing constant <span class="math notranslate nohighlight">\(\frac{1}{mn}\)</span>
+gives the average over the observed distribution.</p>
+</section>
+<section id="constraints">
+<h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this heading"></a></h2>
+<p>1. <span class="math notranslate nohighlight">\(CT = 0\)</span> requires the inter-forecast additivity constraints to be satisfied,
+represented as a system of linear equations. For example, <span class="math notranslate nohighlight">\(C\)</span> could require
+<span class="math notranslate nohighlight">\(X_{1}=X_{2}+X_{3}\)</span> and <span class="math notranslate nohighlight">\(X_{2}=X_{4}+X_{5}\)</span>.</p>
+<p>2. <span class="math notranslate nohighlight">\(TA = A\)</span> is an optional constraint that enforces unbiasedness. This is helpful
+to prevent overfitting. Additionally, the variance term in the objective assumes the
+tranform is unbiased, so this is needed for a better variance estimate.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><span class="math notranslate nohighlight">\(TA = A\)</span> represents unbiasedness for a particular <span class="math notranslate nohighlight">\(A\)</span>.
+If the constraints are derived from a hierarchy (where each node’s value is the sum of
+its children’s), the unbiasedness constraint is <span class="math notranslate nohighlight">\(TS = S\)</span>, where <span class="math notranslate nohighlight">\(S\)</span> is
+the summing matrix for the tree (see <code class="docutils literal notranslate"><span class="pre">sum_matrix</span></code> in
+<a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.hierarchical_relationship.HierarchicalRelationship" title="greykite.algo.reconcile.hierarchical_relationship.HierarchicalRelationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HierarchicalRelationship</span></code></a>
+for a definition). <a class="reference internal" href="../autodoc/doc.html#greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts" title="greykite.algo.reconcile.convex.reconcile_forecasts.ReconcileAdditiveForecasts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReconcileAdditiveForecasts</span></code></a>
+represents the constraint as <span class="math notranslate nohighlight">\(TS = S\)</span> when possible and <span class="math notranslate nohighlight">\(TA = A\)</span> otherwise.</p>
+</div>
+<p>3. Because large elements in <span class="math notranslate nohighlight">\(T\)</span> can result in unstable forecasts, we allow
+optional constraints on its entries, <span class="math notranslate nohighlight">\(T \geq b_{lower}\)</span> and <span class="math notranslate nohighlight">\(T \leq b_{upper}\)</span>.
+For example, we could have <span class="math notranslate nohighlight">\(-1.5 \leq T \leq 1.5\)</span>. In practice, these constraints are
+often superfluous. Note that negative values in <span class="math notranslate nohighlight">\(T\)</span> should be allowed; for hierarchical
+constraints, this allows information to propagate “down” the tree from parent to children.</p>
+</section>
+<section id="tuning-parameters">
+<h2>Tuning parameters<a class="headerlink" href="#tuning-parameters" title="Permalink to this heading"></a></h2>
+<p>Depending on the data, some terms in the objective may be more useful than others.
+<span class="math notranslate nohighlight">\(\lambda_{var}\)</span>, <span class="math notranslate nohighlight">\(\lambda_{bias}\)</span>, <span class="math notranslate nohighlight">\(\lambda_{train}\)</span>, <span class="math notranslate nohighlight">\(\lambda_{adj}\)</span>,
+allow you to tune these relative weight of each term.</p>
+<p>Sometimes, it is more important to be accurate for some timeseries than for others.
+If so, <span class="math notranslate nohighlight">\(W_{var}\)</span>, <span class="math notranslate nohighlight">\(W_{bias}\)</span>, <span class="math notranslate nohighlight">\(W_{train}\)</span>, <span class="math notranslate nohighlight">\(W_{adj}\)</span> can be used
+to weigh the timeseries by their relative importance. If not, the weights
+can still be used to fine tune the adjustment:</p>
+<ul class="simple">
+<li><p>Setting <span class="math notranslate nohighlight">\(W_{var}\)</span>, <span class="math notranslate nohighlight">\(W_{bias}\)</span>, <span class="math notranslate nohighlight">\(W_{train}\)</span> proportional
+to the base forecast error for each time series can improve the result
+for base forecasts that start with high error.</p></li>
+<li><p>Setting <span class="math notranslate nohighlight">\(W_{adj}\)</span> inversely proportional to the base forecast error for each
+time series puts greater penalty on adjustments to base forecasts that are already accurate.</p></li>
+</ul>
+<p>See the tutorial (<a class="reference internal" href="../../gallery/quickstart/04_postprocessing/0100_reconcile_forecasts.html"><span class="doc">Reconcile Forecasts</span></a>)
+for details and suggested settings.</p>
+</section>
+<section id="related-methods">
+<h2>Related methods<a class="headerlink" href="#related-methods" title="Permalink to this heading"></a></h2>
+<p>The <strong>bottom up method</strong> is equivalent to setting <span class="math notranslate nohighlight">\(\lambda_{adj}=1\)</span>, other <span class="math notranslate nohighlight">\(\lambda\text{'s}\)</span> to 0,
+<span class="math notranslate nohighlight">\(W_{adj}\)</span> to only penalize adjustments to the leaf nodes, and adding
+the unbiasedness constraint. This generalizes the “bottom up” method to work with multiple
+overlapping trees, such as for constraints <span class="math notranslate nohighlight">\(X_{1}=X_{2}+X_{3}\)</span>
+and <span class="math notranslate nohighlight">\(X_{1}=X_{4}+X_{5}+X_{6}\)</span>.</p>
+<p>The <strong>OLS method</strong> from Hyndman et al. (<a class="reference external" href="https://robjhyndman.com/papers/Hierarchical6.pdf">link</a>)
+is equivalent to setting <span class="math notranslate nohighlight">\(\lambda_{var}=1\)</span>, the other <span class="math notranslate nohighlight">\(\lambda\text{'s}\)</span> to 0,
+<span class="math notranslate nohighlight">\(W_{h}\)</span> to the identity matrix, <span class="math notranslate nohighlight">\(W_{var}\)</span> to the identity matrix,
+and adding the unbiasedness constraint.</p>
+<p>The <strong>MinT method</strong> with sample covariance from Wickramasuriya et al.
+(<a class="reference external" href="https://robjhyndman.com/papers/mint.pdf">link</a>)
+is equivalent to setting <span class="math notranslate nohighlight">\(\lambda_{var}=1\)</span>, the other <span class="math notranslate nohighlight">\(\lambda\text{'s}\)</span> to 0,
+<span class="math notranslate nohighlight">\(W_{h}\)</span> to the sample covariance, <span class="math notranslate nohighlight">\(W_{var}\)</span> to the identity matrix,
+and adding the unbiasedness constraint.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../benchmarking/benchmarking.html" class="btn btn-neutral float-left" title="Benchmarking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="store_model.html" class="btn btn-neutral float-right" title="Model store and load" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

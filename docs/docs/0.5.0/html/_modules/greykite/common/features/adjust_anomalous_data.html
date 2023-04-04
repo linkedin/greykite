@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.common.features.adjust_anomalous_data &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.common.features.adjust_anomalous_data</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.common.features.adjust_anomalous_data</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Reza Hosseini</span>
+<span class="sd">&quot;&quot;&quot;Preprocessing function to handle anomalies in input data</span>
+<span class="sd">before forecasting.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">ANOMALY_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">END_TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">START_TIME_COL</span>
+
+
+<div class="viewcode-block" id="adjust_anomalous_data"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.adjust_anomalous_data.adjust_anomalous_data">[docs]</a><span class="k">def</span> <span class="nf">adjust_anomalous_data</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">anomaly_df</span><span class="p">,</span>
+        <span class="n">start_time_col</span><span class="o">=</span><span class="n">START_TIME_COL</span><span class="p">,</span>
+        <span class="n">end_time_col</span><span class="o">=</span><span class="n">END_TIME_COL</span><span class="p">,</span>
+        <span class="n">adjustment_delta_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_by_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_by_value_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">adjustment_method</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function takes:</span>
+
+<span class="sd">        - a time series, in the form of a dataframe: ``df``</span>
+<span class="sd">        - the anomaly information, in the form of a dataframe: ``anomaly_df``.</span>
+
+<span class="sd">    It then adjusts the values of the time series based on the perceived impact</span>
+<span class="sd">    of the anomalies given in the column ``adjustment_delta_col`` and</span>
+<span class="sd">    assigns `np.nan` if the impact is not given.</span>
+
+<span class="sd">    Note that ``anomaly_df`` can contain the anomaly information for many</span>
+<span class="sd">    different timeseries. This is enabled by allowing multiple metrics and</span>
+<span class="sd">    dimensions to be listed in the same anomaly dataframe. Columns can indicate</span>
+<span class="sd">    the metric name and dimension value.</span>
+
+<span class="sd">    This function first subsets the ``anomaly_df`` to the relevant rows for the</span>
+<span class="sd">    ``value_col`` as specified by ``filter_by_dict``, then makes the specified</span>
+<span class="sd">    adjustments to ``df``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        A data frame which includes the timestamp column</span>
+<span class="sd">        as well as the value column.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name in ``df`` representing time for the time series data.</span>
+<span class="sd">        The time column can be anything that can be parsed by `pandas.DatetimeIndex`.</span>
+<span class="sd">    value_col: `str`</span>
+<span class="sd">        The column name which has the value of interest to be forecasted.</span>
+<span class="sd">    anomaly_df : `pandas.DataFrame`</span>
+<span class="sd">        A dataframe which includes the anomaly information for</span>
+<span class="sd">        the input series (``df``) but potentially for multiple series and dimensions.</span>
+
+<span class="sd">        This dataframe must include these two columns:</span>
+
+<span class="sd">            - ``start_time_col``</span>
+<span class="sd">            - ``end_time_col``</span>
+
+<span class="sd">        and include</span>
+
+<span class="sd">             - ``adjustment_delta_col`` if it is not None in the function call.</span>
+
+<span class="sd">         Moreover if dimensions are requested by passing the</span>
+<span class="sd">         ``filter_by_dict`` argument (not None), all of this dictionary</span>
+<span class="sd">         keys must also appear in ``anomaly_df``.</span>
+
+<span class="sd">        Here is an example::</span>
+
+<span class="sd">            anomaly_df = pd.DataFrame({</span>
+<span class="sd">                &quot;start_time&quot;: [&quot;1/1/2018&quot;, &quot;1/4/2018&quot;, &quot;1/8/2018&quot;, &quot;1/10/2018&quot;],</span>
+<span class="sd">                &quot;end_time&quot;: [&quot;1/2/2018&quot;, &quot;1/6/2018&quot;, &quot;1/9/2018&quot;, &quot;1/10/2018&quot;],</span>
+<span class="sd">                &quot;adjustment_delta&quot;: [np.nan, 3, -5, np.nan],</span>
+<span class="sd">                # extra columns for filtering</span>
+<span class="sd">                &quot;metric&quot;: [&quot;y&quot;, &quot;y&quot;, &quot;z&quot;, &quot;z&quot;],</span>
+<span class="sd">                &quot;dimension1&quot;: [&quot;level_1&quot;, &quot;level_1&quot;, &quot;level_2&quot;, &quot;level_2&quot;],</span>
+<span class="sd">                &quot;dimension2&quot;: [&quot;level_1&quot;, &quot;level_2&quot;, &quot;level_1&quot;, &quot;level_1&quot;],</span>
+<span class="sd">            })</span>
+
+<span class="sd">        In the above example,</span>
+
+<span class="sd">            - &quot;start_time&quot; is the start date of the anomaly, which is provided using the argument ``start_time_col``.</span>
+<span class="sd">            - &quot;end_time&quot; is the end date of the anomaly, which is provided using the argument ``end_time_col``.</span>
+<span class="sd">            - &quot;adjustment_delta&quot; is the column which includes the delta if it is known. The name of this</span>
+<span class="sd">              column is provided using the argument ``adjustment_delta_col``. Use `numpy.nan` if the</span>
+<span class="sd">              adjustment size is not known, and the adjusted value will be set to `numpy.nan`.</span>
+<span class="sd">            - &quot;metric&quot;, &quot;dimension1&quot;, and &quot;dimension2&quot; are example columns for filtering. They</span>
+<span class="sd">              contain the metric name and dimensions for which the anomaly is applicable.</span>
+<span class="sd">              ``filter_by_dict` is used to filter on these columns to get the relevant</span>
+<span class="sd">              anomalies for the timeseries represented by ``df[value_col]``.</span>
+
+<span class="sd">    start_time_col : `str`, default ``START_TIME_COL``</span>
+<span class="sd">        The column name in ``anomaly_df`` representing the start timestamp of</span>
+<span class="sd">        the anomalous period, inclusive.</span>
+<span class="sd">        The format can be anything that can be parsed by pandas DatetimeIndex.</span>
+<span class="sd">    end_time_col : `str`, default ``END_TIME_COL``</span>
+<span class="sd">        The column name in anomaly_df representing the start timestamp of</span>
+<span class="sd">        the anomalous period, inclusive.</span>
+<span class="sd">        The format can be anything that can be parsed by pandas DatetimeIndex.</span>
+<span class="sd">    adjustment_delta_col : `str` or None, default None</span>
+<span class="sd">        The column name in ``anomaly_df`` for the impact delta of the anomalies</span>
+<span class="sd">        on the values of the series.</span>
+
+<span class="sd">        If the value is available, it will be used to adjust the timeseries values</span>
+<span class="sd">        in the given period by adding or subtracting this value to the raw series</span>
+<span class="sd">        values in that period. Whether to add or subtract is specified by</span>
+<span class="sd">        ``adjustment_method``.</span>
+<span class="sd">        If the value for a row is &quot;&quot; or np.nan, the adjusted value is set to np.nan.</span>
+
+<span class="sd">        If ``adjustment_delta_col`` is None, all adjusted values are set to np.nan.</span>
+<span class="sd">    filter_by_dict : `dict` [`str`, `any`] or None, default None</span>
+<span class="sd">        A dictionary whose keys are column names of ``anomaly_df``,</span>
+<span class="sd">        and values are the desired value for that column (e.g. a string or int).</span>
+<span class="sd">        If the value is an iterable (list, tuple, set), then it enumerates</span>
+<span class="sd">        all allowed values for that column.</span>
+
+<span class="sd">        This dictionary is used to filter ``anomaly_df`` to the matching anomalies.</span>
+<span class="sd">        This helps when the ``anomaly_df`` includes the anomalies for various metrics</span>
+<span class="sd">        and dimensions, so matching is needed to get the relevant anomalies for ``df``.</span>
+
+<span class="sd">        Columns in ``anomaly_df`` can contain information on metric name,</span>
+<span class="sd">        metric dimension (e.g. mobile/desktop), issue severity, etc. for filtering.</span>
+<span class="sd">    filter_by_value_col: `str` or None, default None</span>
+<span class="sd">        If provided, ``{filter_by_value_col: value_col}`` is added to ``filter_by_dict``</span>
+<span class="sd">        for filtering. This filters ``anomaly_df`` to rows where</span>
+<span class="sd">        ``anomaly_df[filter_by_value_col] == value_col``.</span>
+
+<span class="sd">        If ``value_col`` is the metric name, this is a convenient way to find anomalies</span>
+<span class="sd">        matching the metric name.</span>
+<span class="sd">    adjustment_method : `str` (&quot;add&quot; or &quot;subtract&quot;), default &quot;add&quot;</span>
+<span class="sd">        How the adjustment in ``anomaly_df`` should be used to adjust</span>
+<span class="sd">        the value in ``df``.</span>
+
+<span class="sd">            - If &quot;add&quot;, the value in ``adjustment_delta_col`` is added to the original value.</span>
+<span class="sd">            - If &quot;subtract&quot;, it is subtracted from the original value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Result : `dict`</span>
+<span class="sd">        A dictionary with the following items (specified by key):</span>
+
+<span class="sd">        - &quot;adjusted_df&quot;: `pandas.DataFrame`</span>
+<span class="sd">            A dataframe identical to the input dataframe ``df``, but with</span>
+<span class="sd">            ``value_col`` updated to the adjusted values.</span>
+<span class="sd">        - &quot;augmented_df&quot;: `pandas.DataFrame`</span>
+<span class="sd">            A dataframe identical to the input dataframe ``df``, with</span>
+<span class="sd">            two extra columns</span>
+
+<span class="sd">            - ANOMALY_COL: Anomaly labels for the time series.</span>
+<span class="sd">            1 and 0 indicates anomalous and non-anomalous points, respectively.</span>
+<span class="sd">            - ``f&quot;adjusted_{value_col}&quot;``: Adjusted values.</span>
+
+<span class="sd">            ``value_col`` retains the original values.</span>
+<span class="sd">            This is useful to inspect which values have changed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">augmented_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">augmented_df</span><span class="p">[</span><span class="n">ANOMALY_COL</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">anomaly_df</span> <span class="o">=</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">new_value_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;adjusted_</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Gets min and max timestamps from the input time series</span>
+    <span class="n">min_ts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">max_ts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">new_value_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`df` cannot include this column name: </span><span class="si">{</span><span class="n">new_value_col</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;This is because </span><span class="si">{</span><span class="n">new_value_col</span><span class="si">}</span><span class="s2"> will be autogenerated to include&quot;</span>
+            <span class="s2">&quot;adjusted values in `augmented_df`.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">adjustment_method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;subtract&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`adjustment_method` &#39;</span><span class="si">{</span><span class="n">adjustment_method</span><span class="si">}</span><span class="s2">&#39; is not recognized, &quot;</span>
+                         <span class="sa">f</span><span class="s2">&quot;must be one of [&#39;add&#39;, &#39;subtract&#39;]&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">adjustment_delta_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">adjustment_method</span> <span class="o">==</span> <span class="s2">&quot;subtract&quot;</span><span class="p">:</span>
+        <span class="n">anomaly_df</span><span class="p">[</span><span class="n">adjustment_delta_col</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="k">if</span> <span class="n">filter_by_value_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filter_by_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filter_by_dict</span><span class="p">[</span><span class="n">filter_by_value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">value_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filter_by_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">filter_by_value_col</span><span class="p">:</span> <span class="n">value_col</span><span class="p">}</span>
+    <span class="c1"># If `filter_by_dict` is passed, we subset the anomaly dataframe</span>
+    <span class="c1"># to filter on additional column values as specified.</span>
+    <span class="c1"># Allows columns in `anomaly_df` indicating the metric name and dimension value</span>
+    <span class="c1"># to be used to filter the rows.</span>
+    <span class="k">if</span> <span class="n">filter_by_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">relevant_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">filter_col</span><span class="p">,</span> <span class="n">allowed_value</span> <span class="ow">in</span> <span class="n">filter_by_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">filter_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Column &#39;</span><span class="si">{</span><span class="n">filter_col</span><span class="si">}</span><span class="s2">&#39; was requested by `filter_by_dict`, &quot;</span>
+                    <span class="s2">&quot;but the corresponding column name in `anomaly_df` is not found.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">allowed_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
+                <span class="n">relevant_rows</span> <span class="o">&amp;=</span> <span class="n">anomaly_df</span><span class="p">[</span><span class="n">filter_col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">allowed_value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">relevant_rows</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">anomaly_df</span><span class="p">[</span><span class="n">filter_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">allowed_value</span><span class="p">)</span>
+        <span class="n">anomaly_df</span> <span class="o">=</span> <span class="n">anomaly_df</span><span class="p">[</span><span class="n">relevant_rows</span><span class="p">]</span>
+
+    <span class="c1"># Adjusts the values of the series using the anomaly information given</span>
+    <span class="c1"># in the i-th column of the ``anomaly_df`` (after all the subsetting is done).</span>
+    <span class="n">augmented_df</span><span class="p">[</span><span class="n">new_value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">augmented_df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">time_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">augmented_df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="n">anomaly_df</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">anomaly_df</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">])</span>
+        <span class="n">anomaly_df</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">anomaly_df</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dates could not be parsed by `pandas.to_datetime`, using string comparison &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;for dates instead. Error message:</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">time_values</span> <span class="o">=</span> <span class="n">augmented_df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">anomaly_df</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">anomaly_df</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">anomaly_df</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">anomaly_df</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">min_ts</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">min_ts</span><span class="p">)</span>
+        <span class="n">max_ts</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_ts</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">anomaly_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">]</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t1</span> <span class="o">&gt;</span> <span class="n">max_ts</span> <span class="ow">or</span> <span class="n">t2</span> <span class="o">&lt;</span> <span class="n">min_ts</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">min_ts</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_ts</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">t2</span> <span class="o">&lt;</span> <span class="n">t1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;End Time: </span><span class="si">{</span><span class="n">t2</span><span class="si">}</span><span class="s2"> cannot be before Start Time: </span><span class="si">{</span><span class="n">t1</span><span class="si">}</span><span class="s2">, in ``anomaly_df``.&quot;</span><span class="p">)</span>
+        <span class="n">bool_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">time_values</span> <span class="o">&gt;=</span> <span class="n">t1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">time_values</span> <span class="o">&lt;=</span> <span class="n">t2</span><span class="p">)</span>
+        <span class="n">augmented_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bool_index</span><span class="p">,</span> <span class="n">ANOMALY_COL</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">adjustment_delta_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">adjustment_delta_col</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">delta</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
+                <span class="n">augmented_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bool_index</span><span class="p">,</span> <span class="n">new_value_col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">augmented_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bool_index</span><span class="p">,</span> <span class="n">new_value_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">augmented_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bool_index</span><span class="p">,</span> <span class="n">new_value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">augmented_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bool_index</span><span class="p">,</span> <span class="n">new_value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># Rewrites `df` values with the adjusted values</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">augmented_df</span><span class="p">[</span><span class="n">new_value_col</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;adjusted_df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span>
+        <span class="s2">&quot;augmented_df&quot;</span><span class="p">:</span> <span class="n">augmented_df</span><span class="p">}</span></div>
+
+
+<span class="k">def</span> <span class="nf">label_anomalies_multi_metric</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_cols</span><span class="p">,</span>
+        <span class="n">anomaly_df</span><span class="p">,</span>
+        <span class="n">anomaly_df_grouping_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">start_time_col</span><span class="o">=</span><span class="n">START_TIME_COL</span><span class="p">,</span>
+        <span class="n">end_time_col</span><span class="o">=</span><span class="n">END_TIME_COL</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function operates on a given data frame (``df``) which includes time (given in ``time_col``) and</span>
+<span class="sd">    metrics.</span>
+<span class="sd">    For each metric (given in ``value_cols``), it augments the data with a</span>
+
+<span class="sd">        - a new column which determines if a value is an anomaly (``f&quot;{metric}_is_anomaly&quot;``)</span>
+<span class="sd">        - a new column which is not NA (`np.nan`) when the value is an anomaly (``f&quot;{metric}_anomaly_value&quot;``)</span>
+<span class="sd">        - a new column which is not NA (`np.nan`) when the value is non-anomalous / &quot;normal&quot; (``f&quot;{metric}_normal_value&quot;``)</span>
+
+<span class="sd">    The information regarding the anomalies is stored in the input argument ``anomaly_df`` and ``anomaly_df_grouping_col`` determines</span>
+<span class="sd">    which anomaly rows in ``anomaly_df`` correspond to each metric.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        A data frame which at least inludes a timestamp column (``TIME_COL``) and</span>
+<span class="sd">        ``value_cols`` which represent the metrics.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name in ``df`` representing time for the time series data.</span>
+<span class="sd">        The time column can be anything that can be parsed by `pandas.DatetimeIndex`.</span>
+<span class="sd">    value_cols : `list` [`str`]</span>
+<span class="sd">        The columns which include the metrics.</span>
+<span class="sd">    anomaly_df : `pandas.DataFrame`</span>
+<span class="sd">        Data frame with ``start_time_col`` and ``end_time_col`` and ``grouping_col``</span>
+<span class="sd">        (if provided). This contains the anomaly periods for each metric</span>
+<span class="sd">        (one of the ``value_cols``). Each row of this dataframe corresponds</span>
+<span class="sd">        to an anomaly occurring between the times given in ``row[start_time_col]``</span>
+<span class="sd">        and ``row[end_time_col]``.</span>
+<span class="sd">        The ``grouping_col`` (if not None) determines which metric that</span>
+<span class="sd">        anomaly corresponds too (otherwise we assume all anomalies apply to all metrics).</span>
+<span class="sd">    anomaly_df_grouping_col : `str` or None, default None</span>
+<span class="sd">        The column name for grouping the list of the anomalies which is to appear</span>
+<span class="sd">        in ``anomaly_df``.</span>
+<span class="sd">        This column should include some of the metric names</span>
+<span class="sd">        specified in ``value_cols``. The ``grouping_col`` (if not None) determines which metric that</span>
+<span class="sd">        anomaly corresponds too (otherwise we assume all anomalies apply to all metrics).</span>
+<span class="sd">    start_time_col : `str`, default ``START_TIME_COL``</span>
+<span class="sd">        The column name in ``anomaly_df`` representing the start timestamp of</span>
+<span class="sd">        the anomalous period, inclusive.</span>
+<span class="sd">        The format can be anything that can be parsed by pandas DatetimeIndex.</span>
+<span class="sd">    end_time_col : `str`, default ``END_TIME_COL``</span>
+<span class="sd">        The column name in ``anomaly_df`` representing the start timestamp of</span>
+<span class="sd">        the anomalous period, inclusive.</span>
+<span class="sd">        The format can be anything that can be parsed by pandas DatetimeIndex.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    result : `dict`</span>
+<span class="sd">        A dictionary with following items:</span>
+
+<span class="sd">        - &quot;augmented_df&quot;: `pandas.DataFrame`</span>
+<span class="sd">            This is a dataframe obtained by augmenting the input ``df`` with new</span>
+<span class="sd">            columns determining if the metrics appearing in ``df`` are anomaly</span>
+<span class="sd">            or not and the new columns denoting anomaly values and normal values</span>
+<span class="sd">            (described below).</span>
+<span class="sd">        - &quot;is_anomaly_cols&quot;: `list` [`str`]</span>
+<span class="sd">            The list of add boolean columns to determine if a value is an anomaly for</span>
+<span class="sd">            a given metric. The format of the columns is ``f&quot;{metric}_is_anomaly&quot;``.</span>
+<span class="sd">        - &quot;anomaly_value_cols&quot;: `list` [`str`]</span>
+<span class="sd">            The list of columns containing only anomaly values (`np.nan` otherwise) for each corresponding</span>
+<span class="sd">            metric. The format of the columns is ``f&quot;{metric}_anomaly_value&quot;``.</span>
+<span class="sd">        - &quot;normal_value_cols&quot;: `list` [`str`]</span>
+<span class="sd">            The list of columns containing only non-anomalous / normal values (`np.nan` otherwise)</span>
+<span class="sd">            for each corresponding metric. The format of the columns is ``f&quot;{metric}_normal_value&quot;``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">anomaly_df</span> <span class="o">=</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">time_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;time_col: </span><span class="si">{</span><span class="n">time_col</span><span class="si">}</span><span class="s2"> wasn&#39;t found in data frame which has columns </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">value_col</span> <span class="ow">in</span> <span class="n">value_cols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;value_col: </span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2"> wasn&#39;t found in data frame which has columns </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">start_time_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;start_time_col: </span><span class="si">{</span><span class="n">start_time_col</span><span class="si">}</span><span class="s2"> wasn&#39;t found in data frame which has columns </span><span class="si">{</span><span class="n">anomaly_df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">end_time_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">anomaly_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;end_time_col: </span><span class="si">{</span><span class="n">end_time_col</span><span class="si">}</span><span class="s2"> wasn&#39;t found in data frame which has columns </span><span class="si">{</span><span class="n">anomaly_df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">anomaly_df</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">anomaly_df</span><span class="p">[</span><span class="n">start_time_col</span><span class="p">])</span>
+    <span class="n">anomaly_df</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">anomaly_df</span><span class="p">[</span><span class="n">end_time_col</span><span class="p">])</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+
+    <span class="n">is_anomaly_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">anomaly_value_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">normal_value_cols</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">add_anomaly_cols_one_metric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_col</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function adds the new anomaly columns for each metric.</span>
+<span class="sd">        This will be applied to ``df`` once for each metric below.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            A data frame which at least inludes a timestamp column (``TIME_COL``) and</span>
+<span class="sd">            ``value_col`` which represent the metric.</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            The column which includes the metric of interest.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            A dataframe which has these new columns added to input ``df``:</span>
+
+<span class="sd">                - a new column which determines if a value is an anomaly (``f&quot;{value_col}_is_anomaly&quot;``)</span>
+<span class="sd">                - a new column which is not NA (`np.nan`) when the value is an anomaly (``f&quot;{value_col}_anomaly_value&quot;``)</span>
+<span class="sd">                - a new column which is not NA (`np.nan`) when the value is non-anomalous / &quot;normal&quot; (``f&quot;{value_col}_normal_value&quot;``)</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">adj_df_info</span> <span class="o">=</span> <span class="n">adjust_anomalous_data</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">anomaly_df</span><span class="o">=</span><span class="n">anomaly_df</span><span class="p">,</span>
+            <span class="n">start_time_col</span><span class="o">=</span><span class="n">start_time_col</span><span class="p">,</span>
+            <span class="n">end_time_col</span><span class="o">=</span><span class="n">end_time_col</span><span class="p">,</span>
+            <span class="n">filter_by_value_col</span><span class="o">=</span><span class="n">anomaly_df_grouping_col</span><span class="p">)</span>
+
+        <span class="n">df0</span> <span class="o">=</span> <span class="n">adj_df_info</span><span class="p">[</span><span class="s2">&quot;augmented_df&quot;</span><span class="p">]</span>
+        <span class="n">df0</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_is_anomaly&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df0</span><span class="p">[</span><span class="n">ANOMALY_COL</span><span class="p">]</span>
+        <span class="n">df0</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_anomaly_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">anomaly_ind</span> <span class="o">=</span> <span class="p">(</span><span class="n">df0</span><span class="p">[</span><span class="n">ANOMALY_COL</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">normal_ind</span> <span class="o">=</span> <span class="p">(</span><span class="n">df0</span><span class="p">[</span><span class="n">ANOMALY_COL</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">df0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">anomaly_ind</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_anomaly_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">anomaly_ind</span><span class="p">,</span> <span class="n">value_col</span><span class="p">]</span>
+        <span class="n">df0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">normal_ind</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_normal_value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df0</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">normal_ind</span><span class="p">,</span> <span class="n">value_col</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">df0</span><span class="p">[</span><span class="n">ANOMALY_COL</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">df0</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;adjusted_</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+        <span class="n">is_anomaly_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_is_anomaly&quot;</span><span class="p">)</span>
+        <span class="n">anomaly_value_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_anomaly_value&quot;</span><span class="p">)</span>
+        <span class="n">normal_value_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_normal_value&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df0</span>
+
+    <span class="k">for</span> <span class="n">value_col</span> <span class="ow">in</span> <span class="n">value_cols</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">add_anomaly_cols_one_metric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_col</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;augmented_df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span>
+        <span class="s2">&quot;is_anomaly_cols&quot;</span><span class="p">:</span> <span class="n">is_anomaly_cols</span><span class="p">,</span>
+        <span class="s2">&quot;anomaly_value_cols&quot;</span><span class="p">:</span> <span class="n">anomaly_value_cols</span><span class="p">,</span>
+        <span class="s2">&quot;normal_value_cols&quot;</span><span class="p">:</span> <span class="n">normal_value_cols</span><span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

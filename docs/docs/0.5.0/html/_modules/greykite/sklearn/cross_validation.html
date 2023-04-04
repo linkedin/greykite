@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.sklearn.cross_validation &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.sklearn.cross_validation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.sklearn.cross_validation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Cross validator for time series cross validation,</span>
+<span class="sd">compatible with sklearn.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">BaseCrossValidator</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">get_integer</span>
+
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit">[docs]</a><span class="k">class</span> <span class="nc">RollingTimeSeriesSplit</span><span class="p">(</span><span class="n">BaseCrossValidator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flexible splitter for time-series cross validation and rolling window evaluation.</span>
+<span class="sd">    Suitable for use in GridSearchCV.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    min_splits : int</span>
+<span class="sd">        Guaranteed min number of splits. This is always set to 1. If provided configuration results in 0 splits,</span>
+<span class="sd">        the cross validator will yield a default split.</span>
+
+<span class="sd">    __starting_test_index : int</span>
+<span class="sd">        Test end index of the first CV split. Actual offset = __starting_test_index + _get_offset(X), for a particular</span>
+<span class="sd">        dataset X.</span>
+<span class="sd">        Cross validator ensures the last test split contains the last observation in X.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from greykite.sklearn.cross_validation import RollingTimeSeriesSplit</span>
+<span class="sd">    &gt;&gt;&gt; X = np.random.rand(20, 4)</span>
+<span class="sd">    &gt;&gt;&gt; tscv = RollingTimeSeriesSplit(forecast_horizon=3, max_splits=4)</span>
+<span class="sd">    &gt;&gt;&gt; tscv.get_n_splits(X=X)</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; for train, test in tscv.split(X=X):</span>
+<span class="sd">    ...     print(train, test)</span>
+<span class="sd">    [2 3 4 5 6 7] [ 8  9 10]</span>
+<span class="sd">    [ 5  6  7  8  9 10] [11 12 13]</span>
+<span class="sd">    [ 8  9 10 11 12 13] [14 15 16]</span>
+<span class="sd">    [11 12 13 14 15 16] [17 18 19]</span>
+<span class="sd">    &gt;&gt;&gt; X = np.random.rand(20, 4)</span>
+<span class="sd">    &gt;&gt;&gt; tscv = RollingTimeSeriesSplit(forecast_horizon=2,</span>
+<span class="sd">    ...                               min_train_periods=4,</span>
+<span class="sd">    ...                               expanding_window=True,</span>
+<span class="sd">    ...                               periods_between_splits=4,</span>
+<span class="sd">    ...                               periods_between_train_test=2,</span>
+<span class="sd">    ...                               max_splits=None)</span>
+<span class="sd">    &gt;&gt;&gt; tscv.get_n_splits(X=X)</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; for train, test in tscv.split(X=X):</span>
+<span class="sd">    ...     print(train, test)</span>
+<span class="sd">    [0 1 2 3] [6 7]</span>
+<span class="sd">    [0 1 2 3 4 5 6 7] [10 11]</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11] [14 15]</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15] [18 19]</span>
+<span class="sd">    &gt;&gt;&gt; X = np.random.rand(5, 4)  # default split if there is not enough data</span>
+<span class="sd">    &gt;&gt;&gt; for train, test in tscv.split(X=X):</span>
+<span class="sd">    ...     print(train, test)</span>
+<span class="sd">    [0 1 2 3] [4]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="p">,</span>
+            <span class="n">min_train_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">expanding_window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">use_most_recent_splits</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">periods_between_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">max_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes attributes of RollingTimeSeriesSplit</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forecast_horizon : `int`</span>
+<span class="sd">            How many periods in each CV test set</span>
+
+<span class="sd">        min_train_periods : `int` or None, optional</span>
+<span class="sd">            Minimum number of periods for training.</span>
+<span class="sd">            If ``expanding_window`` is False, every training period has this size.</span>
+
+<span class="sd">        expanding_window : `bool`, default False</span>
+<span class="sd">            If True, training window for each CV split is fixed to the first available date.</span>
+<span class="sd">            Otherwise, train start date is sliding, determined by ``min_train_periods``.</span>
+
+<span class="sd">        use_most_recent_splits: `bool`, default False</span>
+<span class="sd">            If True, splits from the end of the dataset are used.</span>
+<span class="sd">            Else a sampling strategy is applied. Check</span>
+<span class="sd">            `~greykite.sklearn.cross_validation.RollingTimeSeriesSplit._sample_splits`</span>
+<span class="sd">            for details.</span>
+
+<span class="sd">        periods_between_splits : `int` or None</span>
+<span class="sd">            Number of periods to slide the test window</span>
+
+<span class="sd">        periods_between_train_test : `int`</span>
+<span class="sd">            Number of periods gap between train and test within a CV split</span>
+
+<span class="sd">        max_splits : `int` or None</span>
+<span class="sd">            Maximum number of CV splits. Given the above configuration, samples up to max_splits train/test splits,</span>
+<span class="sd">            preferring splits toward the end of available data. If None, uses all splits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span><span class="n">forecast_horizon</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># by default, use at least twice the forecast horizon for training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_train_periods</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span><span class="n">min_train_periods</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;min_train_periods&quot;</span><span class="p">,</span>
+                                             <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">)</span>
+
+        <span class="c1"># by default, use fixed size training window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expanding_window</span> <span class="o">=</span> <span class="n">expanding_window</span>
+
+        <span class="c1"># by default, does not force most recent splits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_most_recent_splits</span> <span class="o">=</span> <span class="n">use_most_recent_splits</span>
+
+        <span class="c1"># by default, use non-overlapping test sets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_splits</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span><span class="n">periods_between_splits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;periods_between_splits&quot;</span><span class="p">,</span>
+                                                  <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">)</span>
+
+        <span class="c1"># by default, use test set immediately following train set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_train_test</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span><span class="n">periods_between_train_test</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">,</span>
+                                                      <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_train_periods</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`min_train_periods` is too small for your `forecast_horizon`. Should be at least&quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">forecast_horizon</span><span class="o">*</span><span class="mi">2</span><span class="si">}</span><span class="s2">=2*`forecast_horizon`.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="o">=</span> <span class="n">max_splits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_splits</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># CV ensures there is always at least one split</span>
+        <span class="c1"># test end index for the first CV split, before applying offset to ensure last data point in X is used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__starting_test_index</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span>
+                                      <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_train_periods</span>
+                                      <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_train_test</span>
+                                      <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit.split"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates indices to split data into training and test CV folds according to rolling</span>
+<span class="sd">          window time series cross validation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where n_samples is the number of samples</span>
+<span class="sd">            and n_features is the number of features.</span>
+<span class="sd">            Must have `shape` method.</span>
+
+<span class="sd">        y : array-like, shape (n_samples,), optional</span>
+<span class="sd">            The target variable for supervised learning problems. Always ignored, exists for compatibility.</span>
+
+<span class="sd">        groups : array-like, with shape (n_samples,), optional</span>
+<span class="sd">            Group labels for the samples used while splitting the dataset into</span>
+<span class="sd">            train/test set. Always ignored, exists for compatibility.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        train : `numpy.array`</span>
+<span class="sd">            The training set indices for that split.</span>
+
+<span class="sd">        test : `numpy.array`</span>
+<span class="sd">            The testing set indices for that split.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)</span>
+
+        <span class="n">n_splits_without_capping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_splits_without_capping</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">n_splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_splits</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_splits_without_capping</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;There are no CV splits under the requested settings. Decrease `forecast_horizon` and/or&quot;</span>
+                          <span class="s2">&quot; `min_train_periods`. Using default 90/10 CV split&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">n_splits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;There is only one CV split&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">n_splits</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There is a high number of CV splits (</span><span class="si">{</span><span class="n">n_splits</span><span class="si">}</span><span class="s2">). If training is slow, increase &quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot;`periods_between_splits` or `min_train_periods`, or decrease `max_splits`&quot;</span><span class="p">)</span>
+
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="n">n_splits</span><span class="si">}</span><span class="s2"> CV splits.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n_splits_without_capping</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># uses default split</span>
+            <span class="n">default_split_ratio</span> <span class="o">=</span> <span class="mf">0.9</span>
+            <span class="n">train_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">num_samples</span> <span class="o">*</span> <span class="n">default_split_ratio</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">indices</span><span class="p">[:</span><span class="n">train_samples</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="n">train_samples</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># determines which splits to keep so that up to max_splits are returned</span>
+            <span class="n">splits_to_keep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_splits</span><span class="p">(</span><span class="n">n_splits_without_capping</span><span class="p">)</span>
+
+            <span class="n">last_index</span> <span class="o">=</span> <span class="n">num_samples</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">test_end_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__starting_test_index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_offset</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">current_split_index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">test_end_index</span> <span class="o">&lt;=</span> <span class="n">last_index</span><span class="p">:</span>
+                <span class="n">test_start_index</span> <span class="o">=</span> <span class="n">test_end_index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">train_end_index</span> <span class="o">=</span> <span class="n">test_start_index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_train_test</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">train_start_index</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expanding_window</span> <span class="k">else</span> <span class="n">train_end_index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_train_periods</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">assert</span> <span class="n">train_start_index</span> <span class="o">&gt;=</span> <span class="mi">0</span>  <span class="c1"># guaranteed by n_splits &gt; 0</span>
+
+                <span class="k">if</span> <span class="n">current_split_index</span> <span class="ow">in</span> <span class="n">splits_to_keep</span><span class="p">:</span>
+                    <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CV split: Train </span><span class="si">{</span><span class="n">train_start_index</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">train_end_index</span><span class="si">}</span><span class="s2">. &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;Test </span><span class="si">{</span><span class="n">test_start_index</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">test_end_index</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="n">indices</span><span class="p">[</span><span class="n">train_start_index</span><span class="p">:</span><span class="n">train_end_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="n">test_start_index</span><span class="p">:</span><span class="n">test_end_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">test_end_index</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_splits</span>
+                <span class="n">current_split_index</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit.get_n_splits"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit.get_n_splits">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of splitting iterations yielded by the cross-validator</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            Input data to split</span>
+
+<span class="sd">        y : object</span>
+<span class="sd">            Always ignored, exists for compatibility.</span>
+
+<span class="sd">        groups : object</span>
+<span class="sd">            Always ignored, exists for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_splits : int</span>
+<span class="sd">            The number of splitting iterations yielded by the cross-validator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_n_splits_without_capping</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_splits</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span><span class="p">:</span>
+            <span class="n">num_splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span>  <span class="c1"># num_splits is set to max limit</span>
+        <span class="k">if</span> <span class="n">num_splits</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">num_splits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_splits</span>  <span class="c1"># not enough observations to create split, uses default</span>
+        <span class="k">return</span> <span class="n">num_splits</span></div>
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit.get_n_splits_without_capping"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit.get_n_splits_without_capping">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_splits_without_capping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of splitting iterations in the cross-validator as configured, ignoring</span>
+<span class="sd">            self.max_splits and self.min_splits</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            Input data to split</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_splits : int</span>
+<span class="sd">            The number of splitting iterations in the cross-validator as configured, ignoring</span>
+<span class="sd">            self.max_splits and self.min_splits</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_index</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">starting_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__starting_test_index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_offset</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">starting_index</span> <span class="o">&gt;</span> <span class="n">last_index</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">last_index</span> <span class="o">-</span> <span class="n">starting_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_splits</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit._get_offset"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit._get_offset">[docs]</a>    <span class="k">def</span> <span class="nf">_get_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an offset to add to test set indices when creating CV splits</span>
+<span class="sd">        CV splits are shifted so that the last test observation is the last point in X.</span>
+<span class="sd">        This shift does not affect the total number of splits.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            Input data to split</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        offset : int</span>
+<span class="sd">            The number of observations to ignore at the beginning of X when creating CV splits</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_index</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">starting_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__starting_test_index</span>
+        <span class="k">if</span> <span class="n">starting_index</span> <span class="o">&gt;</span> <span class="n">last_index</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">last_index</span> <span class="o">-</span> <span class="n">starting_index</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_splits</span></div>
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit._sample_splits"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit._sample_splits">[docs]</a>    <span class="k">def</span> <span class="nf">_sample_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_splits</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">48912</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Samples up to ``max_splits`` items from list(range(`num_splits`)).</span>
+
+<span class="sd">        If ``use_most_recent_splits`` is True, highest split indices up to ``max_splits``</span>
+<span class="sd">        are retained. Otherwise, the following sampling scheme is implemented:</span>
+
+<span class="sd">            - takes the last 2 splits</span>
+<span class="sd">            - samples from the rest uniformly at random</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        num_splits : `int`</span>
+<span class="sd">            Number of splits before sampling.</span>
+
+<span class="sd">        seed : `int`</span>
+<span class="sd">            Seed for random sampling.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_splits : `list`</span>
+<span class="sd">            Indices of splits to keep (subset of `list(range(num_splits))`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">split_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_splits</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_splits</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_most_recent_splits</span><span class="p">:</span>
+                <span class="c1"># keep indices from the end up to max_splits</span>
+                <span class="n">keep_split_indices</span> <span class="o">=</span> <span class="n">split_indices</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span><span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># applies sampling scheme to take up to max_splits</span>
+                <span class="n">keep_split_indices</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># first takes the last split</span>
+                    <span class="n">keep_split_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">split_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># then takes the second to last split</span>
+                    <span class="n">keep_split_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">split_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># then randomly samples the remaining splits</span>
+                    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+                    <span class="n">keep_split_indices</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">split_indices</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_splits</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">split_indices</span> <span class="o">=</span> <span class="n">keep_split_indices</span>
+        <span class="k">return</span> <span class="n">split_indices</span></div>
+
+<div class="viewcode-block" id="RollingTimeSeriesSplit._iter_test_indices"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.sklearn.cross_validation.RollingTimeSeriesSplit._iter_test_indices">[docs]</a>    <span class="k">def</span> <span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Class directly implements `split` instead of providing this function&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

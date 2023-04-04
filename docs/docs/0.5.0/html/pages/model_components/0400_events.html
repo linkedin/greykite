@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Holidays and Events &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Changepoints" href="0500_changepoints.html" />
+    <link rel="prev" title="Seasonality" href="0300_seasonality.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Holidays and Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#holidays">Holidays</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#silverkite-holidays">Silverkite Holidays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#holiday-indicators-and-neighboring-effect">Holiday Indicators and Neighboring Effect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auto-holiday-and-holiday-grouper">Auto Holiday and Holiday Grouper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prophet">Prophet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#one-time-events">One-time events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Holidays and Events</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="holidays-and-events">
+<h1>Holidays and Events<a class="headerlink" href="#holidays-and-events" title="Permalink to this heading"></a></h1>
+<p>Use <code class="docutils literal notranslate"><span class="pre">model_components.events</span></code> to specify the holidays and events.</p>
+<p>Events indicate times of expected deviations from the usual growth and seasonality pattern.
+These may be repeated (e.g. holidays), or one-time (Olympic for a city).</p>
+<p>Repeated events are allowed to fall on a different day each year (e.g. Lunar New Year, Thanksgiving).
+The model assumes the event has similar effect each time it occurs.</p>
+<section id="holidays">
+<h2>Holidays<a class="headerlink" href="#holidays" title="Permalink to this heading"></a></h2>
+<p>Silverkite provides a standard set of holidays by country (imported from <code class="docutils literal notranslate"><span class="pre">pypi:holidays-ext</span></code>).</p>
+<p>Each holiday is mapped to a list of calendar dates where it occurs. For modeling, you can choose to
+extend the holiday window to include days before and after the holiday. A separate effect is modeled for each
+offset from the actual holiday.</p>
+<p>For example, you can choose to model offsets (-2, -1, 0, 1) to capture effects
+two days before, and one day after the holiday, by setting <code class="docutils literal notranslate"><span class="pre">holiday_pre_num_days=-2</span></code>
+and <code class="docutils literal notranslate"><span class="pre">holiday_post_num_days=1</span></code> below.</p>
+<p>If you are not sure which holidays to use, start with our defaults and create a forecast.
+Plot forecasts against actuals, and look for large errors. If these happen on holidays,
+include relevant countries in <code class="docutils literal notranslate"><span class="pre">holiday_lookup_countries</span></code> list.</p>
+<section id="silverkite-holidays">
+<h3>Silverkite Holidays<a class="headerlink" href="#silverkite-holidays" title="Permalink to this heading"></a></h3>
+<p>Options (defaults shown for <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> template):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>events : `dict` [`str`, `any`] or None
+    Holiday/events configuration dictionary with the following optional keys:
+
+    holiday_lookup_countries : `list` [`str`] or &quot;auto&quot; or None or a list of such values for grid search, optional, default &quot;auto&quot;
+        The countries that contain the holidays you intend to model
+        (``holidays_to_model_separately``).
+
+        * If &quot;auto&quot;, uses a default list of countries
+          that contain the default ``holidays_to_model_separately``.
+          See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO`.
+        * If a list, must be a list of country names.
+        * If None or an empty list, no holidays are modeled.
+
+    holidays_to_model_separately : `list` [`str`] or &quot;auto&quot; or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None or a list of such values for grid search, optional, default &quot;auto&quot;
+        Which holidays to include in the model.
+        The model creates a separate key, value for each item in ``holidays_to_model_separately``.
+        The other holidays in the countries are grouped together as a single effect.
+
+        * If &quot;auto&quot;, uses a default list of important holidays. See
+          `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.
+        * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,
+          uses all available holidays in ``holiday_lookup_countries``. This can often
+          create a model that has too many parameters, and should typically be avoided.
+        * If a list, must be a list of holiday names.
+        * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together
+          as a single effect.
+
+        Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.
+    holiday_pre_num_days: `int` or a list of such values for grid search, default 2
+        model holiday effects for pre_num days before the holiday.
+        The unit is days, not periods. It does not depend on input data frequency.
+    holiday_post_num_days: `int` or a list of such values for grid search, default 2
+        model holiday effects for post_num days after the holiday.
+        The unit is days, not periods. It does not depend on input data frequency.
+    holiday_pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None
+        Overrides ``pre_num`` and ``post_num`` for each holiday in
+        ``holidays_to_model_separately``.
+        For example, if ``holidays_to_model_separately`` contains &quot;Thanksgiving&quot; and &quot;Labor Day&quot;,
+        this parameter can be set to ``{&quot;Thanksgiving&quot;: [1, 3], &quot;Labor Day&quot;: [1, 2]}``,
+        denoting that the &quot;Thanksgiving&quot; ``pre_num`` is 1 and ``post_num`` is 3, and &quot;Labor Day&quot;
+        ``pre_num`` is 1 and ``post_num`` is 2.
+        Holidays not specified use the default given by ``pre_num`` and ``post_num``.
+    daily_event_df_dict : `dict` [`str`, `pandas.DataFrame`] or None, default None
+        A dictionary of data frames, each representing events data for the corresponding key.
+        Specifies additional events to include besides the holidays specified above. The format
+        is the same as in `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.
+        The DataFrame has two columns:
+
+            - The first column contains event dates. Must be in a format
+              recognized by `pandas.to_datetime`. Must be at daily
+              frequency for proper join. It is joined against the time
+              in ``df``, converted to a day:
+              ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.
+            - the second column contains the event label for each date
+
+        The column order is important; column names are ignored.
+        The event dates must span their occurrences in both the training
+        and future prediction period.
+
+        During modeling, each key in the dictionary is mapped to a categorical variable
+        named ``f&quot;{EVENT_PREFIX}_{key}&quot;``, whose value at each timestamp is specified
+        by the corresponding DataFrame.
+
+        For example, to manually specify a yearly event on September 1
+        during a training/forecast period that spans 2020-2022::
+
+            daily_event_df_dict = {
+                &quot;custom_event&quot;: pd.DataFrame({
+                    &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;, &quot;2022-09-01&quot;],
+                    &quot;label&quot;: [&quot;is_event&quot;, &quot;is_event&quot;, &quot;is_event&quot;]
+                })
+            }
+
+        It&#39;s possible to specify multiple events in the same df. Two events,
+        ``&quot;sep&quot;`` and ``&quot;oct&quot;`` are specified below for 2020-2021::
+
+            daily_event_df_dict = {
+                &quot;custom_event&quot;: pd.DataFrame({
+                    &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2020-10-01&quot;, &quot;2021-09-01&quot;, &quot;2021-10-01&quot;],
+                    &quot;event_name&quot;: [&quot;sep&quot;, &quot;oct&quot;, &quot;sep&quot;, &quot;oct&quot;]
+                })
+            }
+
+        Use multiple keys if two events may fall on the same date. These events
+        must be in separate DataFrames::
+
+            daily_event_df_dict = {
+                &quot;fixed_event&quot;: pd.DataFrame({
+                    &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;, &quot;2022-09-01&quot;],
+                    &quot;event_name&quot;: [&quot;is_event&quot;, &quot;is_event&quot;, &quot;is_event&quot;]
+                }),
+                &quot;moving_event&quot;: pd.DataFrame({
+                    &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-08-28&quot;, &quot;2022-09-03&quot;],
+                    &quot;event_name&quot;: [&quot;is_event&quot;, &quot;is_event&quot;, &quot;is_event&quot;]
+                }),
+            }
+
+        The multiple event specification can be used even if events never overlap. An
+        equivalent specification of the second example::
+
+            daily_event_df_dict = {
+                &quot;sep&quot;: pd.DataFrame({
+                    &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;],
+                    &quot;event_name&quot;: &quot;is_event&quot;
+                }),
+                &quot;oct&quot;: pd.DataFrame({
+                    &quot;date&quot;: [&quot;2020-10-01&quot;, &quot;2021-10-01&quot;],
+                    &quot;event_name&quot;: &quot;is_event&quot;
+                }),
+            }
+
+        Note: All these events are automatically added to the model. There is no need
+        to specify them in ``extra_pred_cols`` as you would for
+        `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.
+
+        Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
+        in the second column. This is reserved to indicate dates that do not
+        correspond to an event.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># silverkite defaults</span>
+<span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holidays_to_model_separately</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">holiday_pre_num_days</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">holiday_post_num_days</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">holiday_pre_post_num_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+
+<span class="c1"># Two letter country code is also accepted.</span>
+<span class="c1"># Sets holiday_pre_num_days=holiday_post_num_days=0 to only capture effects on the holiday itself.</span>
+<span class="c1"># Uses holiday_pre_post_num_dict to customize pre_num and post_num for New Year&#39;s Day</span>
+<span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holidays_to_model_separately</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;New Year&#39;s Day&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Thanksgiving&quot;</span><span class="p">],</span>
+    <span class="n">holiday_lookup_countries</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># containing countries to lookup holiday dates</span>
+        <span class="s2">&quot;US&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CA&quot;</span><span class="p">],</span>
+    <span class="n">holiday_pre_num_days</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">holiday_post_num_days</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">holiday_pre_post_num_dict</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;New Year&#39;s Day&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="p">)</span>
+
+<span class="c1"># See the docstring above for examples of ``daily_event_df_dict``.</span>
+<span class="c1"># You can use it to add your own events or specify a</span>
+<span class="c1"># fully custom holiday configuration.</span>
+
+<span class="c1"># Grid search is possible</span>
+<span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holidays_to_model_separately</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;New Year&#39;s Day&quot;</span><span class="p">,</span> <span class="s2">&quot;Thanksgiving&quot;</span><span class="p">],</span>
+        <span class="kc">None</span><span class="p">],</span>
+    <span class="n">holiday_lookup_countries</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">],</span>
+    <span class="n">holiday_pre_num_days</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">holiday_post_num_days</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If you are not sure which holidays to use, start with our defaults and create a forecast.
+Plot forecasts against actuals, and look for large errors. If these happen on holidays,
+include them in the model.</p>
+<p>To customize this, you will want to see the available holidays.</p>
+<ul class="simple">
+<li><p>How to check the available <code class="docutils literal notranslate"><span class="pre">holiday_lookup_countries</span></code>:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_available_holiday_lookup_countries</span>
+
+<span class="c1"># See all available countries</span>
+<span class="n">get_available_holiday_lookup_countries</span><span class="p">()</span>
+
+<span class="c1"># Filter the full list to your countries of interest</span>
+<span class="n">get_available_holiday_lookup_countries</span><span class="p">([</span><span class="s2">&quot;US&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="s2">&quot;EuropeanCentralBank&quot;</span><span class="p">])</span>
+
+<span class="c1"># Full list for `holidays-ext` 0.0.7, `holidays` 0.13</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">get_available_holiday_lookup_countries</span><span class="p">()</span>
+<span class="p">[</span><span class="s1">&#39;ABW&#39;</span><span class="p">,</span> <span class="s1">&#39;AE&#39;</span><span class="p">,</span> <span class="s1">&#39;AGO&#39;</span><span class="p">,</span> <span class="s1">&#39;AO&#39;</span><span class="p">,</span> <span class="s1">&#39;AR&#39;</span><span class="p">,</span> <span class="s1">&#39;ARE&#39;</span><span class="p">,</span> <span class="s1">&#39;ARG&#39;</span><span class="p">,</span> <span class="s1">&#39;AT&#39;</span><span class="p">,</span> <span class="s1">&#39;AU&#39;</span><span class="p">,</span> <span class="s1">&#39;AUS&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;AUT&#39;</span><span class="p">,</span> <span class="s1">&#39;AW&#39;</span><span class="p">,</span> <span class="s1">&#39;AZ&#39;</span><span class="p">,</span> <span class="s1">&#39;AZE&#39;</span><span class="p">,</span> <span class="s1">&#39;Angola&#39;</span><span class="p">,</span> <span class="s1">&#39;Argentina&#39;</span><span class="p">,</span> <span class="s1">&#39;Aruba&#39;</span><span class="p">,</span> <span class="s1">&#39;Australia&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Austria&#39;</span><span class="p">,</span> <span class="s1">&#39;Azerbaijan&#39;</span><span class="p">,</span> <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;BDI&#39;</span><span class="p">,</span> <span class="s1">&#39;BE&#39;</span><span class="p">,</span> <span class="s1">&#39;BEL&#39;</span><span class="p">,</span> <span class="s1">&#39;BG&#39;</span><span class="p">,</span> <span class="s1">&#39;BGD&#39;</span><span class="p">,</span> <span class="s1">&#39;BI&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;BLG&#39;</span><span class="p">,</span> <span class="s1">&#39;BLR&#39;</span><span class="p">,</span> <span class="s1">&#39;BR&#39;</span><span class="p">,</span> <span class="s1">&#39;BRA&#39;</span><span class="p">,</span> <span class="s1">&#39;BW&#39;</span><span class="p">,</span> <span class="s1">&#39;BWA&#39;</span><span class="p">,</span> <span class="s1">&#39;BY&#39;</span><span class="p">,</span> <span class="s1">&#39;Bangladesh&#39;</span><span class="p">,</span> <span class="s1">&#39;Belarus&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Belgium&#39;</span><span class="p">,</span> <span class="s1">&#39;Botswana&#39;</span><span class="p">,</span> <span class="s1">&#39;Brazil&#39;</span><span class="p">,</span> <span class="s1">&#39;Bulgaria&#39;</span><span class="p">,</span> <span class="s1">&#39;Burundi&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="s1">&#39;CAN&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;CH&#39;</span><span class="p">,</span> <span class="s1">&#39;CHE&#39;</span><span class="p">,</span> <span class="s1">&#39;CHL&#39;</span><span class="p">,</span> <span class="s1">&#39;CHN&#39;</span><span class="p">,</span> <span class="s1">&#39;CL&#39;</span><span class="p">,</span> <span class="s1">&#39;CN&#39;</span><span class="p">,</span> <span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="s1">&#39;COL&#39;</span><span class="p">,</span> <span class="s1">&#39;CUW&#39;</span><span class="p">,</span> <span class="s1">&#39;CW&#39;</span><span class="p">,</span> <span class="s1">&#39;CZ&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;CZE&#39;</span><span class="p">,</span> <span class="s1">&#39;Canada&#39;</span><span class="p">,</span> <span class="s1">&#39;Chile&#39;</span><span class="p">,</span> <span class="s1">&#39;China&#39;</span><span class="p">,</span> <span class="s1">&#39;Colombia&#39;</span><span class="p">,</span> <span class="s1">&#39;Croatia&#39;</span><span class="p">,</span> <span class="s1">&#39;Curacao&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Czechia&#39;</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">,</span> <span class="s1">&#39;DEU&#39;</span><span class="p">,</span> <span class="s1">&#39;DJ&#39;</span><span class="p">,</span> <span class="s1">&#39;DJI&#39;</span><span class="p">,</span> <span class="s1">&#39;DK&#39;</span><span class="p">,</span> <span class="s1">&#39;DNK&#39;</span><span class="p">,</span> <span class="s1">&#39;DO&#39;</span><span class="p">,</span> <span class="s1">&#39;DOM&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Denmark&#39;</span><span class="p">,</span> <span class="s1">&#39;Djibouti&#39;</span><span class="p">,</span> <span class="s1">&#39;DominicanRepublic&#39;</span><span class="p">,</span> <span class="s1">&#39;ECB&#39;</span><span class="p">,</span> <span class="s1">&#39;EE&#39;</span><span class="p">,</span> <span class="s1">&#39;EG&#39;</span><span class="p">,</span> <span class="s1">&#39;EGY&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;ES&#39;</span><span class="p">,</span> <span class="s1">&#39;ESP&#39;</span><span class="p">,</span> <span class="s1">&#39;EST&#39;</span><span class="p">,</span> <span class="s1">&#39;ET&#39;</span><span class="p">,</span> <span class="s1">&#39;ETH&#39;</span><span class="p">,</span> <span class="s1">&#39;Egypt&#39;</span><span class="p">,</span> <span class="s1">&#39;England&#39;</span><span class="p">,</span> <span class="s1">&#39;Estonia&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Ethiopia&#39;</span><span class="p">,</span> <span class="s1">&#39;EuropeanCentralBank&#39;</span><span class="p">,</span> <span class="s1">&#39;FI&#39;</span><span class="p">,</span> <span class="s1">&#39;FIN&#39;</span><span class="p">,</span> <span class="s1">&#39;FR&#39;</span><span class="p">,</span> <span class="s1">&#39;FRA&#39;</span><span class="p">,</span> <span class="s1">&#39;Finland&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;France&#39;</span><span class="p">,</span> <span class="s1">&#39;GB&#39;</span><span class="p">,</span> <span class="s1">&#39;GBR&#39;</span><span class="p">,</span> <span class="s1">&#39;GE&#39;</span><span class="p">,</span> <span class="s1">&#39;GEO&#39;</span><span class="p">,</span> <span class="s1">&#39;GR&#39;</span><span class="p">,</span> <span class="s1">&#39;GRC&#39;</span><span class="p">,</span> <span class="s1">&#39;Georgia&#39;</span><span class="p">,</span> <span class="s1">&#39;Germany&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Greece&#39;</span><span class="p">,</span> <span class="s1">&#39;HK&#39;</span><span class="p">,</span> <span class="s1">&#39;HKG&#39;</span><span class="p">,</span> <span class="s1">&#39;HN&#39;</span><span class="p">,</span> <span class="s1">&#39;HND&#39;</span><span class="p">,</span> <span class="s1">&#39;HR&#39;</span><span class="p">,</span> <span class="s1">&#39;HRV&#39;</span><span class="p">,</span> <span class="s1">&#39;HU&#39;</span><span class="p">,</span> <span class="s1">&#39;HUN&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;HolidaySum&#39;</span><span class="p">,</span> <span class="s1">&#39;Honduras&#39;</span><span class="p">,</span> <span class="s1">&#39;HongKong&#39;</span><span class="p">,</span> <span class="s1">&#39;Hungary&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;IE&#39;</span><span class="p">,</span> <span class="s1">&#39;IL&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;IM&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;IND&#39;</span><span class="p">,</span> <span class="s1">&#39;IRL&#39;</span><span class="p">,</span> <span class="s1">&#39;IS&#39;</span><span class="p">,</span> <span class="s1">&#39;ISL&#39;</span><span class="p">,</span> <span class="s1">&#39;ISR&#39;</span><span class="p">,</span> <span class="s1">&#39;IT&#39;</span><span class="p">,</span> <span class="s1">&#39;ITA&#39;</span><span class="p">,</span> <span class="s1">&#39;Iceland&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;India&#39;</span><span class="p">,</span> <span class="s1">&#39;Indonesia&#39;</span><span class="p">,</span> <span class="s1">&#39;Ireland&#39;</span><span class="p">,</span> <span class="s1">&#39;IsleOfMan&#39;</span><span class="p">,</span> <span class="s1">&#39;Israel&#39;</span><span class="p">,</span> <span class="s1">&#39;Italy&#39;</span><span class="p">,</span> <span class="s1">&#39;JAM&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;JM&#39;</span><span class="p">,</span> <span class="s1">&#39;JP&#39;</span><span class="p">,</span> <span class="s1">&#39;JPN&#39;</span><span class="p">,</span> <span class="s1">&#39;Jamaica&#39;</span><span class="p">,</span> <span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;KAZ&#39;</span><span class="p">,</span> <span class="s1">&#39;KE&#39;</span><span class="p">,</span> <span class="s1">&#39;KEN&#39;</span><span class="p">,</span> <span class="s1">&#39;KOR&#39;</span><span class="p">,</span> <span class="s1">&#39;KR&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;KZ&#39;</span><span class="p">,</span> <span class="s1">&#39;Kazakhstan&#39;</span><span class="p">,</span> <span class="s1">&#39;Kenya&#39;</span><span class="p">,</span> <span class="s1">&#39;Korea&#39;</span><span class="p">,</span> <span class="s1">&#39;LS&#39;</span><span class="p">,</span> <span class="s1">&#39;LSO&#39;</span><span class="p">,</span> <span class="s1">&#39;LT&#39;</span><span class="p">,</span> <span class="s1">&#39;LTU&#39;</span><span class="p">,</span> <span class="s1">&#39;LU&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;LUX&#39;</span><span class="p">,</span> <span class="s1">&#39;LV&#39;</span><span class="p">,</span> <span class="s1">&#39;LVA&#39;</span><span class="p">,</span> <span class="s1">&#39;Latvia&#39;</span><span class="p">,</span> <span class="s1">&#39;Lesotho&#39;</span><span class="p">,</span> <span class="s1">&#39;Lithuania&#39;</span><span class="p">,</span> <span class="s1">&#39;Luxembourg&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;MA&#39;</span><span class="p">,</span> <span class="s1">&#39;MEX&#39;</span><span class="p">,</span> <span class="s1">&#39;MK&#39;</span><span class="p">,</span> <span class="s1">&#39;MKD&#39;</span><span class="p">,</span> <span class="s1">&#39;MOR&#39;</span><span class="p">,</span> <span class="s1">&#39;MOZ&#39;</span><span class="p">,</span> <span class="s1">&#39;MW&#39;</span><span class="p">,</span> <span class="s1">&#39;MWI&#39;</span><span class="p">,</span> <span class="s1">&#39;MX&#39;</span><span class="p">,</span> <span class="s1">&#39;MY&#39;</span><span class="p">,</span> <span class="s1">&#39;MYS&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;MZ&#39;</span><span class="p">,</span> <span class="s1">&#39;Malawi&#39;</span><span class="p">,</span> <span class="s1">&#39;Malaysia&#39;</span><span class="p">,</span> <span class="s1">&#39;Mexico&#39;</span><span class="p">,</span> <span class="s1">&#39;Morocco&#39;</span><span class="p">,</span> <span class="s1">&#39;Mozambique&#39;</span><span class="p">,</span> <span class="s1">&#39;NA&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;NAM&#39;</span><span class="p">,</span> <span class="s1">&#39;NG&#39;</span><span class="p">,</span> <span class="s1">&#39;NGA&#39;</span><span class="p">,</span> <span class="s1">&#39;NI&#39;</span><span class="p">,</span> <span class="s1">&#39;NIC&#39;</span><span class="p">,</span> <span class="s1">&#39;NL&#39;</span><span class="p">,</span> <span class="s1">&#39;NLD&#39;</span><span class="p">,</span> <span class="s1">&#39;NO&#39;</span><span class="p">,</span> <span class="s1">&#39;NOR&#39;</span><span class="p">,</span> <span class="s1">&#39;NZ&#39;</span><span class="p">,</span> <span class="s1">&#39;NZL&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Namibia&#39;</span><span class="p">,</span> <span class="s1">&#39;Netherlands&#39;</span><span class="p">,</span> <span class="s1">&#39;NewZealand&#39;</span><span class="p">,</span> <span class="s1">&#39;Nicaragua&#39;</span><span class="p">,</span> <span class="s1">&#39;Nigeria&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;NorthMacedonia&#39;</span><span class="p">,</span> <span class="s1">&#39;NorthernIreland&#39;</span><span class="p">,</span> <span class="s1">&#39;Norway&#39;</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">,</span> <span class="s1">&#39;PER&#39;</span><span class="p">,</span> <span class="s1">&#39;PH&#39;</span><span class="p">,</span> <span class="s1">&#39;PK&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;PL&#39;</span><span class="p">,</span> <span class="s1">&#39;POL&#39;</span><span class="p">,</span> <span class="s1">&#39;PRT&#39;</span><span class="p">,</span> <span class="s1">&#39;PRTE&#39;</span><span class="p">,</span> <span class="s1">&#39;PRY&#39;</span><span class="p">,</span> <span class="s1">&#39;PT&#39;</span><span class="p">,</span> <span class="s1">&#39;PTE&#39;</span><span class="p">,</span> <span class="s1">&#39;PY&#39;</span><span class="p">,</span> <span class="s1">&#39;Pakistan&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Paraguay&#39;</span><span class="p">,</span> <span class="s1">&#39;Peru&#39;</span><span class="p">,</span> <span class="s1">&#39;Philippines&#39;</span><span class="p">,</span> <span class="s1">&#39;Poland&#39;</span><span class="p">,</span> <span class="s1">&#39;Portugal&#39;</span><span class="p">,</span> <span class="s1">&#39;PortugalExt&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;RO&#39;</span><span class="p">,</span> <span class="s1">&#39;ROU&#39;</span><span class="p">,</span> <span class="s1">&#39;RS&#39;</span><span class="p">,</span> <span class="s1">&#39;RU&#39;</span><span class="p">,</span> <span class="s1">&#39;RUS&#39;</span><span class="p">,</span> <span class="s1">&#39;Romania&#39;</span><span class="p">,</span> <span class="s1">&#39;Russia&#39;</span><span class="p">,</span> <span class="s1">&#39;SA&#39;</span><span class="p">,</span> <span class="s1">&#39;SAU&#39;</span><span class="p">,</span> <span class="s1">&#39;SE&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;SG&#39;</span><span class="p">,</span> <span class="s1">&#39;SGP&#39;</span><span class="p">,</span> <span class="s1">&#39;SI&#39;</span><span class="p">,</span> <span class="s1">&#39;SK&#39;</span><span class="p">,</span> <span class="s1">&#39;SRB&#39;</span><span class="p">,</span> <span class="s1">&#39;SVK&#39;</span><span class="p">,</span> <span class="s1">&#39;SVN&#39;</span><span class="p">,</span> <span class="s1">&#39;SWE&#39;</span><span class="p">,</span> <span class="s1">&#39;SZ&#39;</span><span class="p">,</span> <span class="s1">&#39;SZW&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;SaudiArabia&#39;</span><span class="p">,</span> <span class="s1">&#39;Scotland&#39;</span><span class="p">,</span> <span class="s1">&#39;Serbia&#39;</span><span class="p">,</span> <span class="s1">&#39;Singapore&#39;</span><span class="p">,</span> <span class="s1">&#39;Slovakia&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Slovenia&#39;</span><span class="p">,</span> <span class="s1">&#39;SouthAfrica&#39;</span><span class="p">,</span> <span class="s1">&#39;Spain&#39;</span><span class="p">,</span> <span class="s1">&#39;Swaziland&#39;</span><span class="p">,</span> <span class="s1">&#39;Sweden&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Switzerland&#39;</span><span class="p">,</span> <span class="s1">&#39;TAR&#39;</span><span class="p">,</span> <span class="s1">&#39;TH&#39;</span><span class="p">,</span> <span class="s1">&#39;TN&#39;</span><span class="p">,</span> <span class="s1">&#39;TR&#39;</span><span class="p">,</span> <span class="s1">&#39;TUN&#39;</span><span class="p">,</span> <span class="s1">&#39;TUR&#39;</span><span class="p">,</span> <span class="s1">&#39;TW&#39;</span><span class="p">,</span> <span class="s1">&#39;TWN&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Taiwan&#39;</span><span class="p">,</span> <span class="s1">&#39;Thailand&#39;</span><span class="p">,</span> <span class="s1">&#39;Tunisia&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkey&#39;</span><span class="p">,</span> <span class="s1">&#39;UA&#39;</span><span class="p">,</span> <span class="s1">&#39;UK&#39;</span><span class="p">,</span> <span class="s1">&#39;UKR&#39;</span><span class="p">,</span> <span class="s1">&#39;URY&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="s1">&#39;UY&#39;</span><span class="p">,</span> <span class="s1">&#39;UZ&#39;</span><span class="p">,</span> <span class="s1">&#39;UZB&#39;</span><span class="p">,</span> <span class="s1">&#39;Ukraine&#39;</span><span class="p">,</span> <span class="s1">&#39;UnitedArabEmirates&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;UnitedKingdom&#39;</span><span class="p">,</span> <span class="s1">&#39;UnitedStates&#39;</span><span class="p">,</span> <span class="s1">&#39;Uruguay&#39;</span><span class="p">,</span> <span class="s1">&#39;Uzbekistan&#39;</span><span class="p">,</span> <span class="s1">&#39;VE&#39;</span><span class="p">,</span> <span class="s1">&#39;VEN&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;VN&#39;</span><span class="p">,</span> <span class="s1">&#39;VNM&#39;</span><span class="p">,</span> <span class="s1">&#39;Venezuela&#39;</span><span class="p">,</span> <span class="s1">&#39;Vietnam&#39;</span><span class="p">,</span> <span class="s1">&#39;Wales&#39;</span><span class="p">,</span> <span class="s1">&#39;ZA&#39;</span><span class="p">,</span> <span class="s1">&#39;ZAF&#39;</span><span class="p">,</span> <span class="s1">&#39;ZM&#39;</span><span class="p">,</span> <span class="s1">&#39;ZMB&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;ZW&#39;</span><span class="p">,</span> <span class="s1">&#39;ZWE&#39;</span><span class="p">,</span> <span class="s1">&#39;Zambia&#39;</span><span class="p">,</span> <span class="s1">&#39;Zimbabwe&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>To check the available <code class="docutils literal notranslate"><span class="pre">holidays_to_model_separately</span></code> in those countries,
+run <code class="docutils literal notranslate"><span class="pre">get_available_holidays_across_countries</span></code>:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_available_holidays_across_countries</span>
+
+<span class="c1"># Select your countries</span>
+<span class="n">holiday_lookup_countries</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;US&quot;</span><span class="p">,</span> <span class="s2">&quot;IN&quot;</span><span class="p">,</span> <span class="s2">&quot;EuropeanCentralBank&quot;</span><span class="p">]</span>
+<span class="c1"># List the holidays</span>
+<span class="n">get_available_holidays_across_countries</span><span class="p">(</span>
+    <span class="n">countries</span><span class="o">=</span><span class="n">holiday_lookup_countries</span><span class="p">,</span>
+    <span class="n">year_start</span><span class="o">=</span><span class="mi">2017</span><span class="p">,</span>
+    <span class="n">year_end</span><span class="o">=</span><span class="mi">2025</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While holidays are specified at a daily level, you can use interactions with seasonality to capture
+sub-daily holiday effects. For more information, see <a class="reference internal" href="0600_custom.html"><span class="doc">Custom Parameters</span></a>.</p>
+</div>
+</section>
+<section id="holiday-indicators-and-neighboring-effect">
+<h3>Holiday Indicators and Neighboring Effect<a class="headerlink" href="#holiday-indicators-and-neighboring-effect" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>When holidays are present in the model, we allow for using holiday indicators:</p></li>
+</ol>
+<ul class="simple">
+<li><p>“is_event”: an indicator column which is 1 when the timestamp is either the exact holiday dates or its
+adjacent days.</p></li>
+<li><p>“is_event_exact”: an indicator of whether the timestamp is exactly on the holiday date.</p></li>
+<li><p>“is_event_adjacent”: an indicator of whether the timestamp is adjacent to a holiday if <code class="docutils literal notranslate"><span class="pre">holiday_pre_num_days</span></code>
+or <code class="docutils literal notranslate"><span class="pre">holiday_post_num_days</span></code> is not 0.</p></li>
+</ul>
+<p>You may include the interactions between such indicators and other features in <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code> like
+<code class="docutils literal notranslate"><span class="pre">extra_pred_col</span> <span class="pre">=</span> <span class="pre">[&quot;is_event:y_lag1&quot;]</span></code>.
+See more at <a class="reference internal" href="0600_custom.html"><span class="doc">Custom Parameters</span></a>.</p>
+<p>Or you may use it as a conditional column in the uncertainty model <code class="docutils literal notranslate"><span class="pre">conditional_cols</span> <span class="pre">=</span> <span class="pre">[&quot;dow&quot;,</span> <span class="pre">&quot;is_event&quot;]</span></code>.</p>
+<p>2. Sometimes you may have a weekly time series or the response is daily rolling sum.
+In such cases, the whole week, or the whole rolling window is impacted by a holiday within it.
+We allow for modeling such holiday neighboring effect by specifying <code class="docutils literal notranslate"><span class="pre">daily_event_neighbor_event</span></code> in <code class="docutils literal notranslate"><span class="pre">events</span></code>.
+For example, you may use <code class="docutils literal notranslate"><span class="pre">daily_event_neighbor_event</span> <span class="pre">=</span> <span class="pre">6</span></code> to model rolling 7-day sum holiday effect
+in a daily time series. Or you may use
+<code class="docutils literal notranslate"><span class="pre">daily_event_neighbor_impact</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">[x</span> <span class="pre">-</span> <span class="pre">timedelta(days=x.isocalendar()[2]</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">+</span> <span class="pre">timedelta(days=i)</span> <span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(7)]</span></code>
+to model a holiday effect in weekly time series.</p>
+<p>Note that this feature works as adding extra dates with the same event name to the holiday model,
+therefore the number of events does not increase.</p>
+<p>3. There are also cases where you need additional events that are shifted based on existing events.
+For example, if we model the week-over-week changes as response, the week after a holiday has a counter effect.
+We support an easy way of adding such events using <code class="docutils literal notranslate"><span class="pre">daily_event_shifted_effect</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">events</span></code>.
+For example, if we have an event called “Christmas Day”, <code class="docutils literal notranslate"><span class="pre">daily_event_shifted_effect=[&quot;7D&quot;]</span></code> will add a new
+event called “Christmas Day_7D_after” which is 7 days after the Christmas Day.</p>
+</section>
+<section id="auto-holiday-and-holiday-grouper">
+<h3>Auto Holiday and Holiday Grouper<a class="headerlink" href="#auto-holiday-and-holiday-grouper" title="Permalink to this heading"></a></h3>
+<p>Silverkite models support automatically inferring significant holidays and generate holiday configurations.
+It utilizes the <a class="reference internal" href="../autodoc/doc.html#greykite.algo.common.holiday_inferrer.HolidayInferrer" title="greykite.algo.common.holiday_inferrer.HolidayInferrer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HolidayInferrer</span></code></a> method to infer holidays.
+For more details, see Holiday Inferrer in <a class="reference internal" href="../../gallery/quickstart/01_exploration/0200_auto_configuration_tools.html"><span class="doc">Auto Configuration Tools</span></a>.</p>
+<p>It’s easy to use auto holiday in model components.
+In the event dictionary, specify <code class="docutils literal notranslate"><span class="pre">auto_holiday</span> <span class="pre">=</span> <span class="pre">True</span></code>,
+and the model will automatically pull significant holidays or neighboring days from <code class="docutils literal notranslate"><span class="pre">holiday_lookup_countries</span></code>
+by checking their individual effects from the training data.
+All other parameters will be ignored except <code class="docutils literal notranslate"><span class="pre">daily_event_df_dict</span></code>, which will be
+added to any inferred significant holiday and neighboring day events.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">events</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="n">auto_holiday</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;US&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We also provide a Holiday Grouper tool to help you group holidays based on their estimated impact inferred from
+the training data. The smart grouping makes sure to not create too many parameters to each holiday while making
+sure that holidays that are different enough will be modeled separately.
+For more details, see Holiday Grouper in <a class="reference internal" href="../../gallery/quickstart/01_exploration/0200_auto_configuration_tools.html"><span class="doc">Auto Configuration Tools</span></a>.</p>
+<p>The Holiday Grouper returns a curated <code class="docutils literal notranslate"><span class="pre">daily_event_df_dict</span></code> which can be directly specified in events.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">events</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="prophet">
+<h3>Prophet<a class="headerlink" href="#prophet" title="Permalink to this heading"></a></h3>
+<p>Options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>events : `dict` [`str`, `any`] or None
+    Holiday/events configuration dictionary with the following optional keys:
+
+    holiday_lookup_countries: `list` [`str`] or &quot;auto&quot; or None, optional.
+        default (&quot;auto&quot;) uses a default list of countries with a good coverage of global holidays.
+        If None or an empty list, no holidays are modeled.
+        Must include all countries, for which you want to model holidays.
+        Grid search is not supported.
+    holidays_prior_scale: `float` or None or list of such values for grid search, default 10.0
+        Modulates the strength of the holiday effect.
+    holiday_pre_num_days: `list` [`int`] or None, default 2
+        Model holiday effects for holiday_pre_num_days days before the holiday
+        Grid search is not supported. Must be a list with one element or None.
+    holiday_post_num_days: `list` [`int`] or None, default 2
+        Model holiday effects for holiday_post_num_days days after the holiday.
+        Grid search is not supported. Must be a list with one element or None.
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prophet template defaults</span>
+<span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">holiday_pre_num_days</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">holiday_post_num_days</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Set holiday_pre_num_days=holiday_post_num_days=0 to only capture effects on the holiday itself</span>
+<span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="p">[</span>
+    <span class="c1"># Use two letter country code or full country name to look up holiday dates</span>
+        <span class="s2">&quot;US&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Canada&quot;</span><span class="p">],</span>
+    <span class="n">holiday_pre_num_days</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">holiday_post_num_days</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Grid search is possible</span>
+<span class="n">events</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="n">holiday_pre_num_days</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">holiday_post_num_days</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">holidays_prior_scale</span><span class="o">=</span><span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">]</span> <span class="c1"># grid search over variety of holiday effect strength</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We do not currently allow custom events for Prophet.
+As a workaround, you can specify custom events (one-time or recurring)
+as a binary regressor whose value is 1 on the event, and 0 otherwise.
+See <a class="reference internal" href="0700_regressors.html"><span class="doc">Regressors</span></a>.</p>
+</div>
+</section>
+</section>
+<section id="one-time-events">
+<h2>One-time events<a class="headerlink" href="#one-time-events" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Handle anomalies by classifying them as outliers. The model will smooth
+the value before fitting and should consider it in the volatility model.
+See <a class="reference internal" href="1000_override.html"><span class="doc">Pre-processing, Selective Grid Search</span></a>. The volatility model
+does not yet do so; if volatility is important to you now, do not mark
+the point as an outlier.</p>
+<p>For data issues, set the value to np.nan. The model will smooth the value before fitting
+and consider any residual in the volatility model.</p>
+<p>For expected one-time events that will not repeat, label the point using a custom event. The
+model will fit to the original value and consider any residual in the volatility model.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0300_seasonality.html" class="btn btn-neutral float-left" title="Seasonality" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0500_changepoints.html" class="btn btn-neutral float-right" title="Changepoints" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

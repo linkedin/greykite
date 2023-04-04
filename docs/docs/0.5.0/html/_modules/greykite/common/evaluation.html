@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.common.evaluation &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.common.evaluation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.common.evaluation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Reza Hosseini, Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Evaluation functions.</span>
+<span class="sd">Valid input processing is done within these evaluation functions</span>
+<span class="sd">so they can be called from anywhere without error checks.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">median_absolute_error</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">ACTUAL_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">COVERAGE_VS_INTENDED_DIFF</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">LOWER_BAND_COVERAGE</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_LOWER_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_UPPER_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTION_BAND_COVERAGE</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTION_BAND_WIDTH</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">UPPER_BAND_COVERAGE</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+
+
+<span class="k">def</span> <span class="nf">all_equal_length</span><span class="p">(</span><span class="o">*</span><span class="n">arrays</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks whether input arrays have equal length.</span>
+
+<span class="sd">    :param arrays: one or more lists/numpy arrays/pd.Series</span>
+<span class="sd">    :return: true if lengths are all equal, otherwise false</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">!=</span> <span class="n">length</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># continue if `arr` has no len method. constants and None are excluded from length check</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]],</span>
+        <span class="n">arrays</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]]],</span>
+        <span class="n">reference_array_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Keeps finite elements from reference_array, and corresponding elements in *arrays.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    reference_arrays : `list` [`numpy.array`, `pandas.Series` or `list` [`int`, `float`]]</span>
+<span class="sd">        The reference arrays where the indices of NA/infs are populated.</span>
+<span class="sd">        If length is longer than 1, a logical and will be used to choose valid elements.</span>
+<span class="sd">    arrays : `list` [`int`, `float`, `numpy.array`, `pandas.Series` or `list` [`int`, `float`]]</span>
+<span class="sd">        The arrays with the indices of NA/infs in ``reference_array`` to be dropped.</span>
+<span class="sd">    reference_array_names : `str`</span>
+<span class="sd">        The reference array name to be printed in the warning.</span>
+<span class="sd">    drop_leading_only : `bool`</span>
+<span class="sd">        True means dropping the leading NA/infs only</span>
+<span class="sd">        (drop the leading indices whose values are not valid in any reference array).</span>
+<span class="sd">        False means dropping all NA/infs regardless of where they are.</span>
+<span class="sd">    keep_inf : `bool`</span>
+<span class="sd">        True means dropping NA only.</span>
+<span class="sd">        False means dropping both NA and INF.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    arrays_valid_elements : `list` [`numpy.array`]</span>
+<span class="sd">        List of numpy arrays with valid indices [*reference_arrays, *arrays]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">all_equal_length</span><span class="p">(</span><span class="o">*</span><span class="n">reference_arrays</span><span class="p">,</span> <span class="o">*</span><span class="n">arrays</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;length of arrays do not match&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_arrays</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reference_arrays</span> <span class="o">+</span> <span class="n">arrays</span>
+
+    <span class="n">reference_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reference_array</span><span class="p">)</span> <span class="k">for</span> <span class="n">reference_array</span> <span class="ow">in</span> <span class="n">reference_arrays</span><span class="p">]</span>
+    <span class="n">array_length</span> <span class="o">=</span> <span class="n">reference_arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Defines a function to perform the opposite of `numpy.isnan`.</span>
+    <span class="k">def</span> <span class="nf">is_not_nan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the True/False for elements that are not/are NANs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : array-like</span>
+<span class="sd">            The input array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        is_not_nan : `numpy.array`</span>
+<span class="sd">            True/False array indicating whethere the elements are not NAN/ are NAN.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">validation_func</span> <span class="o">=</span> <span class="n">is_not_nan</span> <span class="k">if</span> <span class="n">keep_inf</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span>
+    <span class="c1"># Finds the indices of finite elements in reference array</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">validation_func</span><span class="p">(</span><span class="n">reference_array</span><span class="p">)</span> <span class="k">for</span> <span class="n">reference_array</span> <span class="ow">in</span> <span class="n">reference_arrays</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">drop_leading_only</span><span class="p">:</span>
+        <span class="c1"># Gets the index where the first True is.</span>
+        <span class="c1"># All the False after this True will not be heading False</span>
+        <span class="c1"># and shouldn&#39;t be dropped.</span>
+        <span class="c1"># If multiple arrays in ``reference_arrays``,</span>
+        <span class="c1"># this will be the minimum.</span>
+        <span class="n">valid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">]</span>
+        <span class="n">heading_lengths</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">length</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">length</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">array_length</span> <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">valid_indices</span><span class="p">]</span>
+        <span class="n">heading_length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">heading_lengths</span><span class="p">)</span>
+        <span class="c1"># Generates arrays with the is_heading flag.</span>
+        <span class="n">is_not_heading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="p">[</span><span class="n">heading_length</span><span class="p">,</span> <span class="n">array_length</span> <span class="o">-</span> <span class="n">heading_length</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">is_not_heading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="p">[</span><span class="n">array_length</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="n">is_not_heading</span><span class="p">)</span>
+    <span class="n">num_remaining</span> <span class="o">=</span> <span class="n">keep</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">num_removed</span> <span class="o">=</span> <span class="n">array_length</span> <span class="o">-</span> <span class="n">num_remaining</span>
+    <span class="n">removed_elements</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span> <span class="k">if</span> <span class="n">keep_inf</span> <span class="k">else</span> <span class="s2">&quot;NA or infinite&quot;</span>
+    <span class="k">if</span> <span class="n">num_remaining</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;There are 0 non-null elements for evaluation.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num_removed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_removed</span><span class="si">}</span><span class="s2"> value(s) in </span><span class="si">{</span><span class="n">reference_array_names</span><span class="si">}</span><span class="s2"> were </span><span class="si">{</span><span class="n">removed_elements</span><span class="si">}</span><span class="s2"> and are omitted in error calc.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Keeps these indices in all arrays. Leaves float, int, and None as-is</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">array</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">reference_arrays</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">)[</span><span class="n">keep</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span>
+            <span class="n">array</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)))</span>
+                                                          <span class="k">else</span> <span class="n">array</span>
+                                                          <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">aggregate_array</span><span class="p">(</span><span class="n">ts_values</span><span class="p">,</span> <span class="n">agg_periods</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates input array.</span>
+<span class="sd">    Divides array from left to right into bins of size agg_periods, and applies agg_func to each block.</span>
+<span class="sd">    Drops records from the left if needed to ensure all bins are full.</span>
+
+<span class="sd">    :param ts_values: list, np.array, or pd.Series to aggregate</span>
+<span class="sd">    :param agg_periods: number of periods to combine in aggregation</span>
+<span class="sd">    :param agg_func: aggregation function, e.g. np.max, np.sum. Must take an array and returns a number</span>
+<span class="sd">    :return: array, aggregated so that every agg_periods periods are combined into one</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    &gt;&gt;&gt; aggregate_array([1.0, 2.0, 3.0, 4.0], 2, np.sum)</span>
+<span class="sd">    array([3., 7.])</span>
+<span class="sd">    &gt;&gt;&gt; aggregate_array(pd.Series([1.0, 2.0, 3.0, 4.0, 5.0]), 2, np.sum)</span>
+<span class="sd">    array([5., 9.])</span>
+<span class="sd">    &gt;&gt;&gt; aggregate_array(np.array([1.0, 2.0, 3.0, 4.0, 5.0]), 2, np.max)</span>
+<span class="sd">    array([3., 5.])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ts_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts_values</span><span class="p">)</span>
+    <span class="n">n_periods</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts_values</span><span class="p">)</span>
+
+    <span class="n">drop_first_periods</span> <span class="o">=</span> <span class="n">n_periods</span> <span class="o">%</span> <span class="n">agg_periods</span>  <span class="c1"># drop these periods from the front, to ensure all bins are full</span>
+    <span class="k">if</span> <span class="n">drop_first_periods</span> <span class="o">==</span> <span class="n">n_periods</span><span class="p">:</span>
+        <span class="n">drop_first_periods</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Requested agg_periods=</span><span class="si">{</span><span class="n">agg_periods</span><span class="si">}</span><span class="s2">, but there are only </span><span class="si">{</span><span class="n">n_periods</span><span class="si">}</span><span class="s2">. Using all for aggregation&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">drop_first_periods</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Requested agg_periods=</span><span class="si">{</span><span class="n">agg_periods</span><span class="si">}</span><span class="s2"> for data of length </span><span class="si">{</span><span class="n">n_periods</span><span class="si">}</span><span class="s2">. Dropping first&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">drop_first_periods</span><span class="si">}</span><span class="s2"> records before aggregation&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="c1"># creates dummy time index for aggregation</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">n_periods</span> <span class="o">-</span> <span class="n">drop_first_periods</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;1D&quot;</span><span class="p">)</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ts_values</span><span class="p">[</span><span class="n">drop_first_periods</span><span class="p">:],</span> <span class="n">index</span><span class="o">=</span><span class="n">dates</span><span class="p">)</span>
+    <span class="n">aggregated_array</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">agg_periods</span><span class="si">}</span><span class="s2">D&quot;</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">agg_func</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> \
+        <span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">aggregated_array</span>
+
+
+<span class="k">def</span> <span class="nf">add_preaggregation_to_scorer</span><span class="p">(</span><span class="n">score_func</span><span class="p">,</span> <span class="n">agg_periods</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes a scorer and returns a scorer that pre-aggregates input.</span>
+
+<span class="sd">    :param score_func: function that maps two arrays to a number. E.g. (y_true, y_pred) -&gt; error</span>
+<span class="sd">    :param agg_periods: number of periods to combine in aggregation</span>
+<span class="sd">    :param agg_func: function that takes an array and returns a number, e.g. np.max, np.sum. This function should</span>
+<span class="sd">        handle np.nan without error</span>
+<span class="sd">    :return: scorer that applies agg_func to data before calling score_func</span>
+
+<span class="sd">    For example, if have daily data and want to evaluate MSE on weekly totals, the appropriate scorer is:</span>
+<span class="sd">        add_preaggregation_to_scorer(mean_squared_error, agg_periods=7, agg_func=np.max)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">score_func_preagg</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">y_true_agg</span> <span class="o">=</span> <span class="n">aggregate_array</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">agg_periods</span><span class="p">,</span> <span class="n">agg_func</span><span class="p">)</span>
+        <span class="n">y_pred_agg</span> <span class="o">=</span> <span class="n">aggregate_array</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">agg_periods</span><span class="p">,</span> <span class="n">agg_func</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">score_func</span><span class="p">(</span><span class="n">y_true_agg</span><span class="p">,</span> <span class="n">y_pred_agg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">score_func_preagg</span>
+
+
+<span class="k">def</span> <span class="nf">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">score_func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes a scorer and returns a scorer that ignores NA / infinite elements in y_true.</span>
+
+<span class="sd">    sklearn scorers (and others) don&#39;t handle arrays with 0 length. In that case, return None</span>
+
+<span class="sd">    :param score_func: function that maps two arrays to a number. E.g. (y_true, y_pred) -&gt; error</span>
+<span class="sd">    :return: scorer that drops records where y_true is not finite</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">score_func_finite</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+            <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+            <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
+            <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+            <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># The Silverkite Multistage model has NANs at the beginning</span>
+        <span class="c1"># when predicting on the training data.</span>
+        <span class="c1"># We only drop the leading NANs/infs from ``y_pred``,</span>
+        <span class="c1"># since they are not supposed to appear in the middle.</span>
+        <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+            <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
+            <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+            <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_pred&quot;</span><span class="p">,</span>
+            <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">keep_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># returns None if there are no elements</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">score_func</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">score_func_finite</span>
+
+
+<div class="viewcode-block" id="r2_null_model_score"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.evaluation.r2_null_model_score">[docs]</a><span class="k">def</span> <span class="nf">r2_null_model_score</span><span class="p">(</span>
+        <span class="n">y_true</span><span class="p">,</span>
+        <span class="n">y_pred</span><span class="p">,</span>
+        <span class="n">y_pred_null</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">y_train</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">loss_func</span><span class="o">=</span><span class="n">mean_squared_error</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates improvement in the loss function compared</span>
+<span class="sd">    to the predictions of a null model. Can be used to evaluate</span>
+<span class="sd">    model quality with respect to a simple baseline model.</span>
+
+<span class="sd">    The score is defined as::</span>
+
+<span class="sd">        R2_null_model_score = 1.0 - loss_func(y_true, y_pred) / loss_func(y_true, y_pred_null)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_true : `list` [`float`] or `numpy.array`</span>
+<span class="sd">        Observed response (usually on a test set).</span>
+<span class="sd">    y_pred : `list` [`float`] or `numpy.array`</span>
+<span class="sd">        Model predictions (usually on a test set).</span>
+<span class="sd">    y_pred_null : `list` [`float`] or `numpy.array` or None</span>
+<span class="sd">        A baseline prediction model to compare against.</span>
+<span class="sd">        If None, derived from ``y_train`` or ``y_true``.</span>
+<span class="sd">    y_train : `list` [`float`] or `numpy.array` or None</span>
+<span class="sd">        Response values in the training data.</span>
+<span class="sd">        If ``y_pred_null`` is None, then ``y_pred_null`` is set to the mean of ``y_train``.</span>
+<span class="sd">        If ``y_train`` is also None, then ``y_pred_null`` is set to the mean of ``y_true``.</span>
+<span class="sd">    loss_func : callable, default `sklearn.metrics.mean_squared_error`</span>
+<span class="sd">        The error loss function with signature (true_values, predicted_values).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r2_null_model : `float`</span>
+<span class="sd">        A value within (-\\infty, 1.0]. Higher scores are better.</span>
+<span class="sd">        Can be interpreted as the improvement in the loss function</span>
+<span class="sd">        compared to the predictions of the null model.</span>
+<span class="sd">        For example, a score of 0.74 means the loss is 74% lower</span>
+<span class="sd">        than for the null model.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    There is a connection between ``R2_null_model_score`` and ``R2``.</span>
+<span class="sd">    ``R2_null_model_score`` can be interpreted as the additional improvement in the</span>
+<span class="sd">    coefficient of determination (i.e. ``R2``, see `sklearn.metrics.r2_score`) with</span>
+<span class="sd">    respect to a null model.</span>
+
+<span class="sd">    Under the default settings of this function, where ``loss_func`` is</span>
+<span class="sd">    mean squared error and ``y_pred_null`` is the average of</span>
+<span class="sd">    ``y_true``, the scores are equivalent::</span>
+
+<span class="sd">        # simplified definition of R2_score, where SSE is sum of squared error</span>
+<span class="sd">        y_true_avg = np.repeat(np.average(y_true), y_true.shape[0])</span>
+<span class="sd">        R2_score := 1.0 - SSE(y_true, y_pred) / SSE(y_true, y_true_avg)</span>
+<span class="sd">        R2_score := 1.0 - MSE(y_true, y_pred) / VAR(y_true)  # equivalent definition</span>
+
+<span class="sd">        r2_null_model_score(y_true, y_pred) == r2_score(y_true, y_pred)</span>
+
+<span class="sd">    ``r2_score`` is 0 if simply predicting the mean (y_pred = y_true_avg).</span>
+
+<span class="sd">    If ``y_pred_null`` is passed, and if ``loss_func`` is mean squared error</span>
+<span class="sd">    and ``y_true`` has nonzero variance, this function measures how much &quot;r2_score of the</span>
+<span class="sd">    predictions (``y_pred``)&quot; closes the gap between &quot;r2_score of the null model (``y_pred``)&quot;</span>
+<span class="sd">    and the &quot;r2_score of the best possible model (``y_true``)&quot;, which is 1.0::</span>
+
+<span class="sd">        R2_pred = r2_score(y_true, y_pred)       # R2 of predictions</span>
+<span class="sd">        R2_null = r2_score(y_pred_null, y_pred)  # R2 of null model</span>
+<span class="sd">        r2_null_model_score(y_true, y_pred, y_pred_null) == (R2_pred - R2_null) / (1.0 - R2_null)</span>
+
+<span class="sd">    When ``y_pred_null=y_true_avg``, ``R2_null`` is 0 and this reduces to the formula above.</span>
+
+<span class="sd">    Summary (for ``loss_func=mean_squared_error``):</span>
+
+<span class="sd">        - If ``R2_null&gt;0`` (good null model), then ``R2_null_model_score &lt; R2_score``</span>
+<span class="sd">        - If ``R2_null=0`` (uninformative null model), then ``R2_null_model_score = R2_score``</span>
+<span class="sd">        - If ``R2_null&lt;0`` (poor null model), then ``R2_null_model_score &gt; R2_score``</span>
+
+<span class="sd">    For other loss functions, ``r2_null_model_score`` has the same connection to pseudo R2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_pred_null</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_pred_null</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">r2_null_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># determines null model</span>
+        <span class="k">if</span> <span class="n">y_pred_null</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">y_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># from training data</span>
+            <span class="n">y_pred_null</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">y_pred_null</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># from test data</span>
+            <span class="n">y_pred_null</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">y_true</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y_pred_null</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)):</span>  <span class="c1"># constant null model</span>
+            <span class="n">y_pred_null</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">y_pred_null</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+        <span class="c1"># otherwise, y_pred_null is an array, used directly</span>
+
+        <span class="n">model_loss</span> <span class="o">=</span> <span class="n">loss_func</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="n">null_loss</span> <span class="o">=</span> <span class="n">loss_func</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred_null</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">null_loss</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">r2_null_model</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">model_loss</span> <span class="o">/</span> <span class="n">null_loss</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r2_null_model</span></div>
+
+
+<span class="k">def</span> <span class="nf">calc_pred_err</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the basic error measures in</span>
+<span class="sd">    `~greykite.common.evaluation.EvaluationMetricEnum`</span>
+<span class="sd">    and returns them in a dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_true : `list` [`float`] or `numpy.array`</span>
+<span class="sd">        Observed values.</span>
+<span class="sd">    y_pred : `list` [`float`] or `numpy.array`</span>
+<span class="sd">        Model predictions.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    error : `dict` [`str`, `float` or None]</span>
+<span class="sd">        Dictionary mapping</span>
+<span class="sd">        `~greykite.common.evaluation.EvaluationMetricEnum`</span>
+<span class="sd">        metric names to their values for the given ``y_true``</span>
+<span class="sd">        and ``y_pred``.</span>
+
+<span class="sd">        The dictionary is empty is there are no finite elements</span>
+<span class="sd">        in ``y_true``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># The Silverkite Multistage model has NANs at the beginning</span>
+    <span class="c1"># when predicting on the training data.</span>
+    <span class="c1"># We only drop the leading NANs/infs from ``y_pred``,</span>
+    <span class="c1"># since they are not supposed to appear in the middle.</span>
+    <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_pred&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">enum</span> <span class="ow">in</span> <span class="n">EvaluationMetricEnum</span><span class="p">:</span>
+            <span class="n">metric_name</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">()</span>
+            <span class="n">metric_func</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+            <span class="n">error</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">metric_name</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">error</span>
+
+
+<span class="nd">@add_finite_filter_to_scorer</span>
+<span class="k">def</span> <span class="nf">mean_absolute_percent_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates mean absolute percentage error.</span>
+
+<span class="sd">    :param y_true: observed values given in a list (or numpy array)</span>
+<span class="sd">    :param y_pred: predicted values given in a list (or numpy array)</span>
+<span class="sd">    :return: mean absolute percent error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smallest_denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">smallest_denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;y_true contains 0. MAPE is undefined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">smallest_denominator</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;y_true contains very small values. MAPE is likely highly volatile.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+
+<span class="nd">@add_finite_filter_to_scorer</span>
+<span class="k">def</span> <span class="nf">median_absolute_percent_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates median absolute percentage error.</span>
+
+<span class="sd">    :param y_true: observed values given in a list (or numpy array)</span>
+<span class="sd">    :param y_pred: predicted values given in a list (or numpy array)</span>
+<span class="sd">    :return: median absolute percent error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smallest_denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">smallest_denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;y_true contains 0. MedAPE is undefined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">smallest_denominator</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="n">num_small</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">[</span><span class="n">y_true</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">num_small</span> <span class="o">&gt;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># if too many very small values, median is affected</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;y_true contains very small values. MedAPE is likely highly volatile.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span><span class="p">)))</span>
+
+
+<span class="nd">@add_finite_filter_to_scorer</span>
+<span class="k">def</span> <span class="nf">symmetric_mean_absolute_percent_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates symmetric mean absolute percentage error</span>
+<span class="sd">    Note that we do not include a factor of 2 in the denominator, so the range is 0% to 100%.</span>
+
+<span class="sd">    :param y_true: observed values given in a list (or numpy array)</span>
+<span class="sd">    :param y_pred: predicted values given in a list (or numpy array)</span>
+<span class="sd">    :return: symmetric mean absolute percent error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smallest_denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_pred</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">smallest_denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;denominator contains 0. sMAPE is undefined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">smallest_denominator</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;denominator contains very small values. sMAPE is likely highly volatile.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+
+<span class="nd">@add_finite_filter_to_scorer</span>
+<span class="k">def</span> <span class="nf">root_mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates root mean square error.</span>
+
+<span class="sd">    :param y_true: observed values given in a list (or numpy array)</span>
+<span class="sd">    :param y_pred: predicted values given in a list (or numpy array)</span>
+<span class="sd">    :return: mean absolute percent error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+
+<span class="nd">@add_finite_filter_to_scorer</span>
+<span class="k">def</span> <span class="nf">correlation</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates correlation.</span>
+
+<span class="sd">    :param y_true: observed values given in a list (or numpy array)</span>
+<span class="sd">    :param y_pred: predicted values given in a list (or numpy array)</span>
+<span class="sd">    :return: correlation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;y_true is constant. Correlation is not defined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;y_pred is constant. Correlation is not defined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pearsonr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="nd">@add_finite_filter_to_scorer</span>
+<span class="k">def</span> <span class="nf">quantile_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the quantile (pinball) loss with quantile q of y_true and y_pred.</span>
+
+<span class="sd">    :param y_true: one column of true values.</span>
+<span class="sd">    :type y_true: list or numpy array</span>
+<span class="sd">    :param y_pred: one column of predicted values.</span>
+<span class="sd">    :type y_pred: list or numpy array.</span>
+<span class="sd">    :param q: the quantile.</span>
+<span class="sd">    :type q: float</span>
+<span class="sd">    :return: quantile loss.</span>
+<span class="sd">    :returns: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_true</span> <span class="o">&lt;</span> <span class="n">y_pred</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">),</span> <span class="n">q</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">quantile_loss_q</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns quantile loss function for the specified quantile&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">quantile_loss_wrapper</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">quantile_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quantile_loss_wrapper</span>
+
+
+<span class="k">def</span> <span class="nf">fraction_within_bands</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the fraction of observed values between lower and upper.</span>
+
+<span class="sd">    :param observed: pd.Series or np.array, numeric, observed values</span>
+<span class="sd">    :param lower: pd.Series or np.array, numeric, lower bound</span>
+<span class="sd">    :param upper: pd.Series or np.array, numeric, upper bound</span>
+<span class="sd">    :return: float between 0.0 and 1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;lower/upper bound&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">num_reversed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">upper</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num_reversed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_reversed</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span><span class="si">}</span><span class="s2"> upper bound values are smaller than the lower bound&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">((</span><span class="n">observed</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">observed</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">fraction_outside_tolerance</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the fraction of predicted values whose relative difference</span>
+<span class="sd">    from the true value is strictly greater than ``rtol``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_true : `list` or `numpy.array`</span>
+<span class="sd">        True values.</span>
+<span class="sd">    y_pred : `list` or `numpy.array`</span>
+<span class="sd">        Predicted values.</span>
+<span class="sd">    rtol : `float`, default 0.05</span>
+<span class="sd">        Relative error tolerance.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    frac_outside_tolerance : float</span>
+<span class="sd">        Fraction of values outside tolerance. (0.0 to 1.0)</span>
+<span class="sd">        A value is outside tolerance if `numpy.isclose`</span>
+<span class="sd">        with the specified ``rtol`` and ``atol=0.0`` returns False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_pred</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_pred&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Keeps inf from prediction.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">prediction_band_width</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the prediction band width, expressed as a % relative to observed.</span>
+<span class="sd">    Width is defined as average ratio of (upper-lower)/observed.</span>
+
+<span class="sd">    :param observed: pd.Series or np.array, numeric, observed values</span>
+<span class="sd">    :param lower: pd.Series or np.array, numeric, lower bound</span>
+<span class="sd">    :param upper: pd.Series or np.array, numeric, upper bound</span>
+<span class="sd">    :return: float, average percentage width</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;lower/upper bound&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Keeps inf from prediction.</span>
+    <span class="n">observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span>
+    <span class="n">num_reversed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">upper</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num_reversed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_reversed</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span><span class="si">}</span><span class="s2"> upper bound values are smaller than the lower bound&quot;</span><span class="p">)</span>
+    <span class="c1"># if there are 0s in observed, relative size is undefined</span>
+    <span class="k">return</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">/</span> <span class="n">observed</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">observed</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="mean_interval_score"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.evaluation.mean_interval_score">[docs]</a><span class="k">def</span> <span class="nf">mean_interval_score</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">coverage</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the mean interval score.</span>
+<span class="sd">    If an observed value falls within the interval, the score is simply the width of the interval.</span>
+<span class="sd">    If an observed value falls outside the interval, the score is the width of the interval plus an error term</span>
+<span class="sd">    proportional to distance between the actual and its closest interval boundary.</span>
+<span class="sd">    The proportionality constant is 2.0 / (1.0 - `coverage`).</span>
+<span class="sd">    See `Strictly Proper Scoring Rules, Prediction, and Estimation, Tilmann Gneiting and Adrian E. Raftery, 2007,</span>
+<span class="sd">    Journal of the American Statistical Association, Volume 102, 2007 - Issue 477`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    observed: `pandas.Series` or `numpy.array`</span>
+<span class="sd">        Numeric, observed values.</span>
+<span class="sd">    lower: `pandas.Series` or `numpy.array`</span>
+<span class="sd">        Numeric, lower bound.</span>
+<span class="sd">    upper: `pandas.Series` or `numpy.array`</span>
+<span class="sd">        Numeric, upper bound.</span>
+<span class="sd">    coverage: `float`</span>
+<span class="sd">        Intended coverage of the prediction bands (0.0 to 1.0)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mean_interval_score: `float`</span>
+<span class="sd">        The mean interval score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;lower/upper bounds&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">interval_width</span> <span class="o">=</span> <span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span>
+    <span class="n">error_lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">observed</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">lower</span> <span class="o">-</span> <span class="n">observed</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">coverage</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">error_upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">observed</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">observed</span> <span class="o">-</span> <span class="n">upper</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">coverage</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">interval_score</span> <span class="o">=</span> <span class="n">interval_width</span> <span class="o">+</span> <span class="n">error_lower</span> <span class="o">+</span> <span class="n">error_upper</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">interval_score</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">calc_pred_coverage</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">predicted</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">coverage</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the prediction coverages:</span>
+<span class="sd">    prediction band width, prediction band coverage etc.</span>
+
+<span class="sd">    :param observed: pd.Series or np.array, numeric, observed values</span>
+<span class="sd">    :param predicted: pd.Series or np.array, numeric, predicted values</span>
+<span class="sd">    :param lower: pd.Series or np.array, numeric, lower bound</span>
+<span class="sd">    :param upper: pd.Series or np.array, numeric, upper bound</span>
+<span class="sd">    :param coverage: float, intended coverage of the prediction bands (0.0 to 1.0)</span>
+<span class="sd">    :return: prediction band width, prediction band coverage etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">observed</span><span class="p">,</span> <span class="n">predicted</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">predicted</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_true&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">predicted</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">observed</span> <span class="o">=</span> <span class="n">valid_elements_for_evaluation</span><span class="p">(</span>
+        <span class="n">reference_arrays</span><span class="o">=</span><span class="p">[</span><span class="n">predicted</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">],</span>
+        <span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">observed</span><span class="p">],</span>
+        <span class="n">reference_array_names</span><span class="o">=</span><span class="s2">&quot;y_pred and lower/upper bounds&quot;</span><span class="p">,</span>
+        <span class="n">drop_leading_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">keep_inf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Relative size of prediction bands vs actual, as a percent.</span>
+        <span class="n">enum</span> <span class="o">=</span> <span class="n">ValidationMetricEnum</span><span class="o">.</span><span class="n">BAND_WIDTH</span>
+        <span class="n">metric_func</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">PREDICTION_BAND_WIDTH</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)})</span>
+
+        <span class="n">enum</span> <span class="o">=</span> <span class="n">ValidationMetricEnum</span><span class="o">.</span><span class="n">BAND_COVERAGE</span>
+        <span class="n">metric_func</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+        <span class="c1"># Fraction of observations within the bands.</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">PREDICTION_BAND_COVERAGE</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)})</span>
+        <span class="c1"># Fraction of observations within the lower band.</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">LOWER_BAND_COVERAGE</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)})</span>
+        <span class="c1"># Fraction of observations within the upper band.</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">UPPER_BAND_COVERAGE</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">predicted</span><span class="p">,</span> <span class="n">upper</span><span class="p">)})</span>
+        <span class="c1"># Difference between actual and intended coverage.</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">COVERAGE_VS_INTENDED_DIFF</span><span class="p">:</span> <span class="p">(</span><span class="n">metrics</span><span class="p">[</span><span class="n">PREDICTION_BAND_COVERAGE</span><span class="p">]</span> <span class="o">-</span> <span class="n">coverage</span><span class="p">)})</span>
+
+        <span class="c1"># Mean interval score.</span>
+        <span class="n">enum</span> <span class="o">=</span> <span class="n">ValidationMetricEnum</span><span class="o">.</span><span class="n">MEAN_INTERVAL_SCORE</span>
+        <span class="n">metric_func</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+        <span class="n">metric_name</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">()</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">metric_name</span><span class="p">:</span> <span class="p">(</span><span class="n">metric_func</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">coverage</span><span class="p">))})</span>
+    <span class="k">return</span> <span class="n">metrics</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_residual</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The residual between a single true and predicted value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    pred_val : float</span>
+<span class="sd">        Predicted value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    residual : float</span>
+<span class="sd">        The residual, true minus predicted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">true_val</span> <span class="o">-</span> <span class="n">pred_val</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_absolute_error</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The absolute error between a single true and predicted value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    pred_val : float</span>
+<span class="sd">        Predicted value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    residual : float</span>
+<span class="sd">        Absolute error, |true_val - pred_val|</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">true_val</span> <span class="o">-</span> <span class="n">pred_val</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_squared_error</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The absolute error between a single true and predicted value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    pred_val : float</span>
+<span class="sd">        Predicted value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    residual : float</span>
+<span class="sd">        Squared error, (true_val - pred_val)^2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">true_val</span> <span class="o">-</span> <span class="n">pred_val</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_absolute_percent_error</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The absolute percent error between a single true and predicted value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    pred_val : float</span>
+<span class="sd">        Predicted value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    percent_error : float</span>
+<span class="sd">        Percent error, pred_val / true_val - 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">true_val</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;true_val is 0. Percent error is undefined.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">true_val</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;true_val is less than 1e-8. Percent error is very likely highly volatile.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">true_val</span> <span class="o">-</span> <span class="n">pred_val</span><span class="p">)</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">true_val</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_quantile</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The quantile loss between a single true and predicted value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    pred_val : float</span>
+<span class="sd">        Predicted value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    quantile_loss : float</span>
+<span class="sd">        Quantile loss, absolute error weighed by ``q``</span>
+<span class="sd">        for underpredictions and ``1-q`` for overpredictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">q</span> <span class="k">if</span> <span class="n">true_val</span> <span class="o">&lt;</span> <span class="n">pred_val</span> <span class="k">else</span> <span class="n">q</span>
+    <span class="k">return</span> <span class="n">weight</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">true_val</span> <span class="o">-</span> <span class="n">pred_val</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_outside_tolerance</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether the relative difference between ``pred_val`` and</span>
+<span class="sd">    ``true_val`` is strictly greater than ``rtol``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    pred_val : float</span>
+<span class="sd">        Predicted value.</span>
+<span class="sd">    rtol : float, default 0.05</span>
+<span class="sd">        Relative error tolerance.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    is_outside_tolerance : float</span>
+<span class="sd">        1.0 if the error is outside tolerance, else 0.0.</span>
+<span class="sd">        A value is outside tolerance if `numpy.isclose`</span>
+<span class="sd">        with the specified ``rtol`` and ``atol=0.0`` returns False.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">pred_val</span><span class="p">,</span> <span class="n">true_val</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span> <span class="k">else</span> <span class="mf">1.0</span>
+
+
+<span class="k">def</span> <span class="nf">elementwise_within_bands</span><span class="p">(</span><span class="n">true_val</span><span class="p">,</span> <span class="n">lower_val</span><span class="p">,</span> <span class="n">upper_val</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether ``true_val`` is strictly between ``lower_val`` and ``upper_val``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    true_val : float</span>
+<span class="sd">        True value.</span>
+<span class="sd">    lower_val : float</span>
+<span class="sd">        Lower bound.</span>
+<span class="sd">    upper_val : float</span>
+<span class="sd">        Upper bound.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    is_within_band : float</span>
+<span class="sd">        1.0 if error is strictly within the limits, else 0.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">lower_val</span> <span class="o">&lt;</span> <span class="n">true_val</span> <span class="o">&lt;</span> <span class="n">upper_val</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+
+<span class="k">class</span> <span class="nc">ElementwiseEvaluationMetricEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluation metrics for a single element.</span>
+<span class="sd">    This is the function computed on each row, before aggregation across records.</span>
+<span class="sd">    The aggregation function can be mean, median, quantile, max, sqrt of the mean, etc.</span>
+
+<span class="sd">    For example, AbsoluteError followed by mean aggregation gives MeanAbsoluteError.</span>
+<span class="sd">    EvaluationMetricEnum is more efficient if it can be used directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ElementwiseEvaluationMetric</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ElementwiseEvaluationMetric&quot;</span><span class="p">,</span> <span class="s2">&quot;func, name, args&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The elementwise evaluation function and associated metadata.</span>
+
+<span class="sd">        ``&quot;func&quot;`` : `callable`</span>
+<span class="sd">            Elementwise function.</span>
+<span class="sd">        ``&quot;name&quot;`` : `str`</span>
+<span class="sd">            Short name for the metric.</span>
+<span class="sd">        ``&quot;args&quot;`` : `list` [`str`]</span>
+<span class="sd">            Description of function arguments.</span>
+<span class="sd">            e.g. [actual, predicted]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Residual</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">elementwise_residual</span><span class="p">,</span>
+        <span class="s2">&quot;residual&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Residual, true-pred&quot;&quot;&quot;</span>
+    <span class="n">AbsoluteError</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">elementwise_absolute_error</span><span class="p">,</span>
+        <span class="s2">&quot;absolute_error&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Absolute error, abs(true-pred)&quot;&quot;&quot;</span>
+    <span class="n">SquaredError</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">elementwise_squared_error</span><span class="p">,</span>
+        <span class="s2">&quot;squared_error&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Squared error, (true-pred)^2&quot;&quot;&quot;</span>
+    <span class="n">AbsolutePercentError</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">elementwise_absolute_percent_error</span><span class="p">,</span>
+        <span class="s2">&quot;absolute_percent_error&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Percent error, abs(true-pred)/abs(true)&quot;&quot;&quot;</span>
+    <span class="n">Quantile80</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">partial</span><span class="p">(</span><span class="n">elementwise_quantile</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.80</span><span class="p">),</span>
+        <span class="s2">&quot;quantile_loss_80&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.80&quot;&quot;&quot;</span>
+    <span class="n">Quantile90</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">partial</span><span class="p">(</span><span class="n">elementwise_quantile</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.90</span><span class="p">),</span>
+        <span class="s2">&quot;quantile_loss_90&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.90&quot;&quot;&quot;</span>
+    <span class="n">Quantile95</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">partial</span><span class="p">(</span><span class="n">elementwise_quantile</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.95</span><span class="p">),</span>
+        <span class="s2">&quot;quantile_loss_95&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.95&quot;&quot;&quot;</span>
+    <span class="n">Quantile99</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">partial</span><span class="p">(</span><span class="n">elementwise_quantile</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.99</span><span class="p">),</span>
+        <span class="s2">&quot;quantile_loss_99&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.99&quot;&quot;&quot;</span>
+    <span class="n">OutsideTolerance5</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">partial</span><span class="p">(</span><span class="n">elementwise_outside_tolerance</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span>
+        <span class="s2">&quot;outside_tolerance_5p&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether the predicted value deviates more than 5% from the true value&quot;&quot;&quot;</span>
+    <span class="n">Coverage</span> <span class="o">=</span> <span class="n">ElementwiseEvaluationMetric</span><span class="p">(</span>
+        <span class="n">elementwise_within_bands</span><span class="p">,</span>
+        <span class="s2">&quot;coverage&quot;</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">ACTUAL_COL</span><span class="p">,</span> <span class="n">PREDICTED_LOWER_COL</span><span class="p">,</span> <span class="n">PREDICTED_UPPER_COL</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether the actual value is within the prediction interval&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_metric_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the metric function&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">get_metric_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the short name&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">get_metric_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the expected argument list&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">args</span>
+
+
+<div class="viewcode-block" id="EvaluationMetricEnum"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.evaluation.EvaluationMetricEnum">[docs]</a><span class="k">class</span> <span class="nc">EvaluationMetricEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Valid evaluation metrics.</span>
+<span class="sd">    The values tuple is ``(score_func: callable, greater_is_better: boolean, short_name: str)``</span>
+
+<span class="sd">    ``add_finite_filter_to_scorer`` is added to the metrics that are directly imported from</span>
+<span class="sd">    ``sklearn.metrics`` (e.g. ``mean_squared_error``) to ensure that the metric gets calculated</span>
+<span class="sd">    even when inputs have missing values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Correlation</span> <span class="o">=</span> <span class="p">(</span><span class="n">correlation</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;CORR&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pearson correlation coefficient between forecast and actuals. Higher is better.&quot;&quot;&quot;</span>
+    <span class="n">CoefficientOfDetermination</span> <span class="o">=</span> <span class="p">(</span><span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">r2_score</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;R2&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coefficient of determination. See `sklearn.metrics.r2_score`. Higher is better. Equals `1.0 - mean_squared_error / variance(actuals)`.&quot;&quot;&quot;</span>
+    <span class="n">MeanSquaredError</span> <span class="o">=</span> <span class="p">(</span><span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;MSE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mean squared error, the average of squared differences,</span>
+<span class="sd">    see `sklearn.metrics.mean_squared_error`.&quot;&quot;&quot;</span>
+    <span class="n">RootMeanSquaredError</span> <span class="o">=</span> <span class="p">(</span><span class="n">root_mean_squared_error</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;RMSE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Root mean squared error, the square root of `sklearn.metrics.mean_squared_error`&quot;&quot;&quot;</span>
+    <span class="n">MeanAbsoluteError</span> <span class="o">=</span> <span class="p">(</span><span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">mean_absolute_error</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;MAE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mean absolute error, average of absolute differences,</span>
+<span class="sd">    see `sklearn.metrics.mean_absolute_error`.&quot;&quot;&quot;</span>
+    <span class="n">MedianAbsoluteError</span> <span class="o">=</span> <span class="p">(</span><span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">median_absolute_error</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;MedAE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Median absolute error, median of absolute differences,</span>
+<span class="sd">    see `sklearn.metrics.median_absolute_error`.&quot;&quot;&quot;</span>
+    <span class="n">MeanAbsolutePercentError</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean_absolute_percent_error</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;MAPE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mean absolute percent error, error relative to actuals expressed as a %,</span>
+<span class="sd">    see `wikipedia MAPE &lt;https://en.wikipedia.org/wiki/Mean_absolute_percentage_error&gt;`_.&quot;&quot;&quot;</span>
+    <span class="n">MedianAbsolutePercentError</span> <span class="o">=</span> <span class="p">(</span><span class="n">median_absolute_percent_error</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;MedAPE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Median absolute percent error, median of error relative to actuals expressed as a %,</span>
+<span class="sd">    a median version of the MeanAbsolutePercentError, less affected by extreme values.&quot;&quot;&quot;</span>
+    <span class="n">SymmetricMeanAbsolutePercentError</span> <span class="o">=</span> <span class="p">(</span><span class="n">symmetric_mean_absolute_percent_error</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;sMAPE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Symmetric mean absolute percent error, error relative to (actuals+forecast) expressed as a %.</span>
+<span class="sd">    Note that we do not include a factor of 2 in the denominator, so the range is 0% to 100%,</span>
+<span class="sd">    see `wikipedia sMAPE &lt;https://en.wikipedia.org/wiki/Symmetric_mean_absolute_percentage_error&gt;`_.&quot;&quot;&quot;</span>
+    <span class="n">Quantile80</span> <span class="o">=</span> <span class="p">(</span><span class="n">quantile_loss_q</span><span class="p">(</span><span class="mf">0.80</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Q80&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.80::</span>
+
+<span class="sd">        np.where(y_true &lt; y_pred, (1 - q) * (y_pred - y_true), q * (y_true - y_pred)).mean()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Quantile95</span> <span class="o">=</span> <span class="p">(</span><span class="n">quantile_loss_q</span><span class="p">(</span><span class="mf">0.95</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Q95&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.95::</span>
+
+<span class="sd">        np.where(y_true &lt; y_pred, (1 - q) * (y_pred - y_true), q * (y_true - y_pred)).mean()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Quantile99</span> <span class="o">=</span> <span class="p">(</span><span class="n">quantile_loss_q</span><span class="p">(</span><span class="mf">0.99</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Q99&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantile loss with q=0.99::</span>
+
+<span class="sd">        np.where(y_true &lt; y_pred, (1 - q) * (y_pred - y_true), q * (y_true - y_pred)).mean()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FractionOutsideTolerance1</span> <span class="o">=</span> <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">fraction_outside_tolerance</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;OutsideTolerance1p&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of forecasted values that deviate more than 1% from the actual&quot;&quot;&quot;</span>
+    <span class="n">FractionOutsideTolerance2</span> <span class="o">=</span> <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">fraction_outside_tolerance</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.02</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;OutsideTolerance2p&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of forecasted values that deviate more than 2% from the actual&quot;&quot;&quot;</span>
+    <span class="n">FractionOutsideTolerance3</span> <span class="o">=</span> <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">fraction_outside_tolerance</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.03</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;OutsideTolerance3p&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of forecasted values that deviate more than 3% from the actual&quot;&quot;&quot;</span>
+    <span class="n">FractionOutsideTolerance4</span> <span class="o">=</span> <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">fraction_outside_tolerance</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.04</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;OutsideTolerance4p&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of forecasted values that deviate more than 4% from the actual&quot;&quot;&quot;</span>
+    <span class="n">FractionOutsideTolerance5</span> <span class="o">=</span> <span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">fraction_outside_tolerance</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;OutsideTolerance5p&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fraction of forecasted values that deviate more than 5% from the actual&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EvaluationMetricEnum.get_metric_func"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.evaluation.EvaluationMetricEnum.get_metric_func">[docs]</a>    <span class="k">def</span> <span class="nf">get_metric_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the metric function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EvaluationMetricEnum.get_metric_greater_is_better"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.evaluation.EvaluationMetricEnum.get_metric_greater_is_better">[docs]</a>    <span class="k">def</span> <span class="nf">get_metric_greater_is_better</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the greater_is_better boolean.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EvaluationMetricEnum.get_metric_name"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.evaluation.EvaluationMetricEnum.get_metric_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_metric_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the short name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">ValidationMetricEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Valid diagnostic metrics.</span>
+<span class="sd">    The values tuple is ``(score_func: callable, greater_is_better: boolean, short_name: str)``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">BAND_WIDTH</span> <span class="o">=</span> <span class="p">(</span><span class="n">prediction_band_width</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;band_width&quot;</span><span class="p">)</span>
+    <span class="n">BAND_COVERAGE</span> <span class="o">=</span> <span class="p">(</span><span class="n">fraction_within_bands</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;band_coverage&quot;</span><span class="p">)</span>
+    <span class="n">MEAN_INTERVAL_SCORE</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean_interval_score</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;MIS&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mean interval score&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_metric_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the metric function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_metric_greater_is_better</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the greater_is_better boolean.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_metric_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the short name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

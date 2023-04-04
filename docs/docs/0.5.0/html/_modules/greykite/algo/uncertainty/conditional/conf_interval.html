@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.algo.uncertainty.conditional.conf_interval &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.algo.uncertainty.conditional.conf_interval</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.algo.uncertainty.conditional.conf_interval</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Reza Hosseini, Sayan Patra, Yi Su</span>
+<span class="sd">&quot;&quot;&quot;Calculates uncertainty intervals from the conditional</span>
+<span class="sd">empirical distribution of the residual.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.uncertainty.conditional.dataframe_utils</span> <span class="kn">import</span> <span class="n">limit_tuple_col</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.uncertainty.conditional.dataframe_utils</span> <span class="kn">import</span> <span class="n">offset_tuple_col</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.uncertainty.conditional.estimate_distribution</span> <span class="kn">import</span> <span class="n">estimate_empirical_distribution</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.uncertainty.conditional.normal_quantiles</span> <span class="kn">import</span> <span class="n">normal_quantiles_df</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">ERR_STD_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">QUANTILE_SUMMARY_COL</span>
+
+
+<div class="viewcode-block" id="conf_interval"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.algo.uncertainty.conditional.conf_interval.conf_interval">[docs]</a><span class="k">def</span> <span class="nf">conf_interval</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">distribution_col</span><span class="p">,</span>
+        <span class="n">offset_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sigma_scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">h_mat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">x_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">conditional_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">quantiles</span><span class="o">=</span><span class="p">(</span><span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">,</span> <span class="mf">0.995</span><span class="p">),</span>
+        <span class="n">quantile_estimation_method</span><span class="o">=</span><span class="s2">&quot;normal_fit&quot;</span><span class="p">,</span>
+        <span class="n">sample_size_thresh</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">small_sample_size_method</span><span class="o">=</span><span class="s2">&quot;std_quantiles&quot;</span><span class="p">,</span>
+        <span class="n">small_sample_size_quantile</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">min_admissible_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_admissible_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function to calculate confidence intervals (CI) for values given</span>
+<span class="sd">    in ``distribution_col``. We allow for calculating as many quantiles as</span>
+<span class="sd">    needed (specified by ``quantiles``) as opposed to only two quantiles</span>
+<span class="sd">    representing a typical CI.</span>
+
+<span class="sd">    Two methods are available for quantiles calculation for</span>
+<span class="sd">    each slice of data (given in ``conditional_cols``).</span>
+<span class="sd">         - &quot;normal_fit&quot; : CI is calculated using quantiles of a normal</span>
+<span class="sd">         distribution fit.</span>
+<span class="sd">        - &quot;ecdf&quot; : CI is calculated using quantiles of empirical cumulative</span>
+<span class="sd">        distribution function.</span>
+
+<span class="sd">    ``offset_col`` is used in the prediction phase to shift the calculated quantiles</span>
+<span class="sd">    appropriately.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.Dataframe`</span>
+<span class="sd">        The dataframe with the following columns:</span>
+
+<span class="sd">            - distribution_col,</span>
+<span class="sd">            - conditional_cols (optional),</span>
+<span class="sd">            - offset_col (optional column)</span>
+
+<span class="sd">    distribution_col : `str`</span>
+<span class="sd">        The column containing the values for the variable for which confidence</span>
+<span class="sd">        interval is needed.</span>
+<span class="sd">    offset_col : `str` or None, default None</span>
+<span class="sd">        The column containing the values by which the computed quantiles for</span>
+<span class="sd">        ``distribution_col`` are shifted. Only used during prediction phase.</span>
+<span class="sd">        If None, quantiles are not shifted.</span>
+<span class="sd">    sigma_scaler : `float` or None, default None</span>
+<span class="sd">        Scaling factor that is applied to the estimated standard deviation ``sigma`` in regression setting.</span>
+<span class="sd">        Used to take into account the degrees of freedom in the fitted model, otherwise</span>
+<span class="sd">        `sigma` is under-estimated by just using the distribution of the residuals.</span>
+<span class="sd">        The formula is ``sigma_scaler = np.sqrt((n_train - 1) / (n_train - p_effective))``.</span>
+<span class="sd">        Only useful in linear and ridge regression models.</span>
+<span class="sd">        If `None`, no scaling will be done.</span>
+<span class="sd">    h_mat : `np.ndarray` or None, default None</span>
+<span class="sd">        The H matrix ``np.linalg.pinv(X.T @ X + alpha * np.eye(p)) @ X.T`` in regression setting.</span>
+<span class="sd">        Dimension is ``p`` (number of parameters) by ``n_train``, and</span>
+<span class="sd">        ``alpha`` is the regularization term extracted from ``ml_model``.</span>
+<span class="sd">        See `~greykite.algo.common.ml_models.fit_ml_model` for details.</span>
+<span class="sd">    x_mean : `np.ndarray` or None, default None</span>
+<span class="sd">        Column mean of ``x_mat`` as a row vector.</span>
+<span class="sd">        This is stored and used in ridge regression to compute the prediction intervals.</span>
+<span class="sd">        In other methods, it is set to `None`.</span>
+<span class="sd">    conditional_cols : `list` [`str`] or None, default None</span>
+<span class="sd">        These columns are used to slice the data first then calculate quantiles</span>
+<span class="sd">        for each slice.</span>
+<span class="sd">    quantiles : `list` [`float`], default (0.005, 0.025, 0.975, 0.995)</span>
+<span class="sd">        The quantiles calculated for each slice.</span>
+<span class="sd">        These quantiles can be then used to construct the desired CIs.</span>
+<span class="sd">        The default values [0.005, 0.025, 0.0975, 0.995] can be used to construct</span>
+<span class="sd">        99 and 95 percent CIs.</span>
+<span class="sd">    quantile_estimation_method : `str`, default &quot;normal_fit&quot;</span>
+<span class="sd">        There are two options implemented for the quantile estimation method</span>
+<span class="sd">        (conditional on slice):</span>
+
+<span class="sd">            - &quot;normal_fit&quot;: Uses the standard deviation of the values in each</span>
+<span class="sd">            slice to compute normal distribution quantiles.</span>
+<span class="sd">            - &quot;ecdf&quot;: Uses the empirical cumulative distribution function</span>
+<span class="sd">            to calculate sample quantiles.</span>
+
+<span class="sd">    sample_size_thresh : `int`, default 5</span>
+<span class="sd">        The minimum sample size for each slice where we allow for using the conditional</span>
+<span class="sd">        distribution (conditioned on the &quot;conditional_cols&quot; argument).</span>
+<span class="sd">        If sample size for that slice is smaller than this,</span>
+<span class="sd">        we use the fallback method.</span>
+<span class="sd">    small_sample_size_method : `str`, default &quot;std_quantiles&quot;</span>
+<span class="sd">        The method to use for slices with small sample size</span>
+
+<span class="sd">            - &quot;std_quantile&quot; method is implemented and it looks at the response</span>
+<span class="sd">              std for each slice with</span>
+<span class="sd">              sample size &gt;= &quot;sample_size_thresh&quot;</span>
+<span class="sd">              and takes the row which has  its std being closest</span>
+<span class="sd">              to &quot;small_sample_size_quantile&quot; quantile.</span>
+<span class="sd">              It assigns that row to act as fall-back for calculating conf</span>
+<span class="sd">              intervals.</span>
+
+<span class="sd">    small_sample_size_quantile : `float`, default 0.95</span>
+<span class="sd">        Quantile to calculate for small sample size.</span>
+<span class="sd">    min_admissible_value : Union[float, double, int], default None</span>
+<span class="sd">        This is the lowest admissible value for the obtained ci limits</span>
+<span class="sd">        and any value below this will be mapped back to this value.</span>
+<span class="sd">    max_admissible_value : Union[float, double, int], default None</span>
+<span class="sd">        This is the highest admissible value for the obtained ci limits</span>
+<span class="sd">        and any higher value will be mapped back to this value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    uncertainty_model : `dict`</span>
+<span class="sd">        Dictionary with following items (main component is the ``predict`` function).</span>
+
+<span class="sd">            - &quot;ecdf_df&quot; : `pandas.DataFrame`</span>
+<span class="sd">                ecdf_df generated by &quot;estimate_empirical_distribution&quot;</span>
+<span class="sd">            - &quot;ecdf_df_overall&quot; : `pandas.DataFrame`</span>
+<span class="sd">                ecdf_df_overall generated by &quot;estimate_empirical_distribution&quot;</span>
+<span class="sd">            - &quot;ecdf_df_fallback&quot; : `pandas.DataFrame`</span>
+<span class="sd">                ecdf_df_fallback, a fall back data to get the CI quantiles</span>
+<span class="sd">                when the sample size for that slice is small or that slice</span>
+<span class="sd">                is unobserved in that case.</span>
+
+<span class="sd">                    - if small_sample_size_method = &quot;std_quantiles&quot;,</span>
+<span class="sd">                      we use std quantiles to pick a slice which has a std close</span>
+<span class="sd">                      to that quantile and fall-back to that slice.</span>
+<span class="sd">                    - otherwise we fallback to &quot;ecdf_overall&quot;</span>
+<span class="sd">            - &quot;distribution_col&quot; : `str`</span>
+<span class="sd">                Input ``distribution_col``</span>
+<span class="sd">            - &quot;offset_col&quot;: `str`</span>
+<span class="sd">                Input ``offset_col``</span>
+<span class="sd">            - &quot;quantiles&quot; : `list` [`float`]</span>
+<span class="sd">                Input ``quantiles``</span>
+<span class="sd">            - &quot;min_admissible_value&quot;: `float`</span>
+<span class="sd">                Input ``min_admissible_value``</span>
+<span class="sd">            - &quot;max_admissible_value&quot;: `float`</span>
+<span class="sd">                Input ``max_admissible_value``</span>
+<span class="sd">            - &quot;conditional_cols&quot;: `list` [`str`]</span>
+<span class="sd">                Input ``conditional_cols``</span>
+<span class="sd">            - &quot;std_col&quot;: `str`</span>
+<span class="sd">                The column name with standard deviations.</span>
+<span class="sd">            - &quot;quantile_summary_col&quot;: `str`</span>
+<span class="sd">                The column name with computed quantiles.</span>
+<span class="sd">            - &quot;fall_back_for_all&quot;: `bool`</span>
+<span class="sd">                Indicates if fallback method should be used for the</span>
+<span class="sd">                whole dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">std_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">distribution_col</span><span class="si">}</span><span class="s2">_std&quot;</span>
+    <span class="n">sample_size_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">distribution_col</span><span class="si">}</span><span class="s2">_count&quot;</span>
+
+    <span class="n">model_dict</span> <span class="o">=</span> <span class="n">estimate_empirical_distribution</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">distribution_col</span><span class="o">=</span><span class="n">distribution_col</span><span class="p">,</span>
+        <span class="n">quantile_grid_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">quantiles</span><span class="o">=</span><span class="n">quantiles</span><span class="p">,</span>
+        <span class="n">conditional_cols</span><span class="o">=</span><span class="n">conditional_cols</span><span class="p">,</span>
+        <span class="n">remove_conditional_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ecdf_df</span> <span class="o">=</span> <span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;ecdf_df&quot;</span><span class="p">]</span>
+    <span class="n">ecdf_df_overall</span> <span class="o">=</span> <span class="n">model_dict</span><span class="p">[</span><span class="s2">&quot;ecdf_df_overall&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Two methods are implemented: ecdf; normal_fit.</span>
+    <span class="k">if</span> <span class="n">quantile_estimation_method</span> <span class="o">==</span> <span class="s2">&quot;ecdf&quot;</span><span class="p">:</span>
+        <span class="n">quantile_summary_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">distribution_col</span><span class="si">}</span><span class="s2">_ecdf_quantile_summary&quot;</span>
+    <span class="k">elif</span> <span class="n">quantile_estimation_method</span> <span class="o">==</span> <span class="s2">&quot;normal_fit&quot;</span><span class="p">:</span>
+        <span class="n">quantile_summary_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">distribution_col</span><span class="si">}</span><span class="s2">_normal_quantile_summary&quot;</span>
+        <span class="n">ecdf_df</span> <span class="o">=</span> <span class="n">normal_quantiles_df</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">ecdf_df</span><span class="p">,</span>
+            <span class="n">std_col</span><span class="o">=</span><span class="n">std_col</span><span class="p">,</span>
+            <span class="n">mean_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">fixed_mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">quantiles</span><span class="o">=</span><span class="n">quantiles</span><span class="p">,</span>
+            <span class="n">quantile_summary_col</span><span class="o">=</span><span class="n">quantile_summary_col</span><span class="p">)</span>
+        <span class="n">ecdf_df_fallback</span> <span class="o">=</span> <span class="n">normal_quantiles_df</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">ecdf_df_overall</span><span class="p">,</span>
+            <span class="n">std_col</span><span class="o">=</span><span class="n">std_col</span><span class="p">,</span>
+            <span class="n">mean_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">fixed_mean</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">quantiles</span><span class="o">=</span><span class="n">quantiles</span><span class="p">,</span>
+            <span class="n">quantile_summary_col</span><span class="o">=</span><span class="n">quantile_summary_col</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;CI calculation method </span><span class="si">{</span><span class="n">quantile_estimation_method</span><span class="si">}</span><span class="s2"> is not either of: normal_fit; ecdf&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Handles slices with small sample size.</span>
+    <span class="c1"># If a method is provided via the argument `small_sample_size_method`, then it is used here.</span>
+    <span class="c1"># The idea is to take a relatively high volatility</span>
+    <span class="c1"># when the new point does not have enough (as specified by `sample_size_thresh`)</span>
+    <span class="c1"># similar points in the past.</span>
+    <span class="n">fall_back_for_all</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">small_sample_size_method</span> <span class="o">==</span> <span class="s2">&quot;std_quantiles&quot;</span><span class="p">:</span>
+        <span class="n">ecdf_df_large_ss</span> <span class="o">=</span> <span class="n">ecdf_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ecdf_df</span><span class="p">[</span><span class="n">sample_size_col</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">sample_size_thresh</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ecdf_df_large_ss</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">([</span><span class="s2">&quot;std_quantile&quot;</span><span class="p">,</span> <span class="s2">&quot;std_quantile_diff&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(),</span> <span class="p">(</span>
+            <span class="s2">&quot;column names: std_quantile, std_quantile_diff should not appear in ecdf_df&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ecdf_df_large_ss</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No slice had sufficient sample size. We fall back to the overall distribution.&quot;</span><span class="p">)</span>
+            <span class="c1"># If ``ecdf_df_large_ss`` is empty it means we do not have any sufficient</span>
+            <span class="c1"># samples for any slices.</span>
+            <span class="c1"># Therefore we have to fall back in all cases and we set ``ecdf_df``</span>
+            <span class="c1"># to ``ecdf_df_fall_back``</span>
+            <span class="n">ecdf_df</span> <span class="o">=</span> <span class="n">ecdf_df_fallback</span>
+            <span class="n">fall_back_for_all</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="s2">&quot;std_quantile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="n">std_col</span><span class="p">])</span> <span class="o">/</span> <span class="n">ecdf_df_large_ss</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Calculates the distance between &quot;std_quantile&quot; column values and ``small_sample_size_quantile``</span>
+            <span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="s2">&quot;std_quantile_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="s2">&quot;std_quantile&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">small_sample_size_quantile</span><span class="p">)</span>
+            <span class="c1"># Chooses the row with closes value in &quot;std_quantile&quot; column to ``small_sample_size_quantile``</span>
+            <span class="c1"># Note the resulting dataframe below ``ecdf_df_fallback`` will have one row</span>
+            <span class="n">ecdf_df_fallback</span> <span class="o">=</span> <span class="p">(</span><span class="n">ecdf_df_large_ss</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="s2">&quot;std_quantile_diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()]]</span>
+                                <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="k">del</span> <span class="n">ecdf_df_fallback</span><span class="p">[</span><span class="s2">&quot;std_quantile&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">ecdf_df_fallback</span><span class="p">[</span><span class="s2">&quot;std_quantile_diff&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="s2">&quot;std_quantile&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">ecdf_df_large_ss</span><span class="p">[</span><span class="s2">&quot;std_quantile_diff&quot;</span><span class="p">]</span>
+            <span class="c1"># we re-assign ecdf_df by removing the combinations with small sample size</span>
+            <span class="c1"># this is done so that in predict phase those values are not populated from</span>
+            <span class="c1"># small sample sizes and use ``ecdf_fallback``</span>
+            <span class="n">ecdf_df</span> <span class="o">=</span> <span class="n">ecdf_df_large_ss</span>
+    <span class="k">elif</span> <span class="n">small_sample_size_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;small_sample_size_method </span><span class="si">{</span><span class="n">small_sample_size_method</span><span class="si">}</span><span class="s2"> is not implemented.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Pre-calculates the quantities needed in `predict_ci`.</span>
+    <span class="n">lu_d_sqrt</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The L matrix (p by p) decomposed from `H @ H.T`, where `H = inv(X.T @ X + alpha * np.eye(p)) @ X.T`.</span>
+<span class="sd">    We decompose `H @ H.T` into `L @ L.T` where L is a square p by p matrix.</span>
+<span class="sd">    This matrix is pre-calculated and stored in the trained model for fast inference in a later step.</span>
+<span class="sd">    Cholesky decomposition does not apply because H is not a full-rank matrix, albeit positive semi-definite.</span>
+<span class="sd">    We could use eigenvalue decomposition (`numpy.linalg.eigh`) or the LDL decomposition (`scipy.linalg.ldl`)</span>
+<span class="sd">    of a Hermitian matrix for this purpose.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_train</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">h_mat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_train</span> <span class="o">=</span> <span class="n">h_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># If `h_mat` (H) is obtained successfully, computes `lu_d_sqrt` (L, p x p)</span>
+        <span class="c1"># s.t. `h_mat = lu_d_sqrt @ lu_d_sqrt.T`.</span>
+        <span class="n">hht_mat</span> <span class="o">=</span> <span class="n">h_mat</span> <span class="o">@</span> <span class="n">h_mat</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">lu</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">ldl</span><span class="p">(</span><span class="n">hht_mat</span><span class="p">)</span>  <span class="c1"># LDL decomposition.</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Due to floating precision issue, there could be near-zero negative eigenvalues.</span>
+        <span class="n">lu_d_sqrt</span> <span class="o">=</span> <span class="n">lu</span> <span class="o">@</span> <span class="p">(</span><span class="n">d</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="c1"># Asserts a check for the approximation. If it fails, falls back to the original `h_mat`.</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-8</span>
+        <span class="n">relative_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">lu_d_sqrt</span> <span class="o">@</span> <span class="n">lu_d_sqrt</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">hht_mat</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">hht_mat</span><span class="p">)</span>
+        <span class="c1"># Note that if adding `assert relative_err &lt; 1e-12`, all unit tests still passed.</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lu_d_sqrt</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">or</span> <span class="n">relative_err</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Re-constructing `h_mat @ h_mat.T` by `lu_d_sqrt @ lu_d_sqrt.T` has a bigger relative error &quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">relative_err</span><span class="si">}</span><span class="s2"> than tolerance </span><span class="si">{</span><span class="n">tolerance</span><span class="si">}</span><span class="s2">. Falling back to `h_mat` for more &quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot;accurate variance estimation.&quot;</span><span class="p">)</span>
+            <span class="n">lu_d_sqrt</span> <span class="o">=</span> <span class="n">h_mat</span>
+
+    <span class="n">uncertainty_model</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ecdf_df&quot;</span><span class="p">:</span> <span class="n">ecdf_df</span><span class="p">,</span>
+        <span class="s2">&quot;ecdf_df_overall&quot;</span><span class="p">:</span> <span class="n">ecdf_df_overall</span><span class="p">,</span>
+        <span class="s2">&quot;ecdf_df_fallback&quot;</span><span class="p">:</span> <span class="n">ecdf_df_fallback</span><span class="p">,</span>
+        <span class="s2">&quot;distribution_col&quot;</span><span class="p">:</span> <span class="n">distribution_col</span><span class="p">,</span>
+        <span class="s2">&quot;offset_col&quot;</span><span class="p">:</span> <span class="n">offset_col</span><span class="p">,</span>
+        <span class="s2">&quot;quantiles&quot;</span><span class="p">:</span> <span class="n">quantiles</span><span class="p">,</span>
+        <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="n">min_admissible_value</span><span class="p">,</span>
+        <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="n">max_admissible_value</span><span class="p">,</span>
+        <span class="s2">&quot;conditional_cols&quot;</span><span class="p">:</span> <span class="n">conditional_cols</span><span class="p">,</span>
+        <span class="s2">&quot;std_col&quot;</span><span class="p">:</span> <span class="n">std_col</span><span class="p">,</span>
+        <span class="s2">&quot;quantile_summary_col&quot;</span><span class="p">:</span> <span class="n">quantile_summary_col</span><span class="p">,</span>
+        <span class="s2">&quot;fall_back_for_all&quot;</span><span class="p">:</span> <span class="n">fall_back_for_all</span><span class="p">,</span>
+        <span class="s2">&quot;sigma_scaler&quot;</span><span class="p">:</span> <span class="n">sigma_scaler</span><span class="p">,</span>
+        <span class="s2">&quot;lu_d_sqrt&quot;</span><span class="p">:</span> <span class="n">lu_d_sqrt</span><span class="p">,</span>
+        <span class="s2">&quot;n_train&quot;</span><span class="p">:</span> <span class="n">n_train</span><span class="p">,</span>
+        <span class="s2">&quot;x_train_mean&quot;</span><span class="p">:</span> <span class="n">x_mean</span><span class="p">}</span>
+
+    <span class="c1"># Scales `std_col` and `quantile_summary_col` columns in returned quantile dataframes:</span>
+    <span class="c1"># (1) `ecdf_df` (2) `ecdf_df_fallback`.</span>
+    <span class="k">def</span> <span class="nf">scale_std_quantile_summary_inplace</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">sigma_scaler</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scales ``std_col`` and ``quantile_summary_col`` of ``df`` by ``sigma_scaler`` in-place.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sigma_scaler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sigma_scaler</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">std_col</span><span class="p">]</span> <span class="o">*=</span> <span class="n">sigma_scaler</span>
+        <span class="c1"># Since values in `quantile_summary_col` are tuples, we need to convert it to `np.array` first.</span>
+        <span class="n">quantile_summary</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">quantile_summary_col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">value_tuple</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value_tuple</span><span class="p">))</span>
+        <span class="n">quantile_summary</span> <span class="o">*=</span> <span class="n">sigma_scaler</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">quantile_summary_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantile_summary</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">array</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">sigma_scaler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ecdf_df_original</span> <span class="o">=</span> <span class="n">ecdf_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">scale_std_quantile_summary_inplace</span><span class="p">(</span><span class="n">ecdf_df</span><span class="p">,</span> <span class="n">sigma_scaler</span><span class="p">)</span>
+        <span class="n">ecdf_df_fallback_original</span> <span class="o">=</span> <span class="n">ecdf_df_fallback</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">scale_std_quantile_summary_inplace</span><span class="p">(</span><span class="n">ecdf_df_fallback</span><span class="p">,</span> <span class="n">sigma_scaler</span><span class="p">)</span>
+        <span class="c1"># Adds the original dataframes to `uncertainty_model`.</span>
+        <span class="n">uncertainty_model</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s2">&quot;ecdf_df_original&quot;</span><span class="p">:</span> <span class="n">ecdf_df_original</span><span class="p">,</span>
+            <span class="s2">&quot;ecdf_df_fallback_original&quot;</span><span class="p">:</span> <span class="n">ecdf_df_fallback_original</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">uncertainty_model</span></div>
+
+
+<span class="k">def</span> <span class="nf">predict_ci</span><span class="p">(</span>
+        <span class="n">new_df</span><span class="p">,</span>
+        <span class="n">ci_model</span><span class="p">,</span>
+        <span class="n">x_mat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predicts the quantiles of the ``offset_col`` (defined in ``ci_model``) in ``new_df``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    new_df : `pd.Dataframe`</span>
+<span class="sd">        Prediction dataframe which minimally includes ``offset_col``</span>
+<span class="sd">        and ``conditional_cols`` defined in the ``ci_model``.</span>
+<span class="sd">    ci_model : `dict`</span>
+<span class="sd">        Returned CI model from ``conf_interval``.</span>
+<span class="sd">    x_mat : `np.ndarray` or None, default None</span>
+<span class="sd">        The design matrix from the model fitted on ``new_df``.</span>
+<span class="sd">        ``x_mat.shape[0]`` must match that of ``new_df``, and</span>
+<span class="sd">        ``x_mat.shape[1]`` must match the number of features in ``ml_model`` where ``ci_model`` is fitted.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pred_df : `pd.Dataframe`</span>
+<span class="sd">        A dataframe which includes ``new_df`` and new columns containing</span>
+<span class="sd">        the quantiles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ecdf_df</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;ecdf_df&quot;</span><span class="p">]</span>
+    <span class="n">ecdf_df_fallback</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;ecdf_df_fallback&quot;</span><span class="p">]</span>
+    <span class="n">offset_col</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;offset_col&quot;</span><span class="p">]</span>
+    <span class="n">min_admissible_value</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;min_admissible_value&quot;</span><span class="p">]</span>
+    <span class="n">max_admissible_value</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;max_admissible_value&quot;</span><span class="p">]</span>
+    <span class="n">conditional_cols</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;conditional_cols&quot;</span><span class="p">]</span>
+    <span class="n">std_col</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;std_col&quot;</span><span class="p">]</span>
+    <span class="n">quantile_summary_col</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;quantile_summary_col&quot;</span><span class="p">]</span>
+    <span class="n">fall_back_for_all</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;fall_back_for_all&quot;</span><span class="p">]</span>
+    <span class="n">lu_d_sqrt</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;lu_d_sqrt&quot;</span><span class="p">]</span>
+    <span class="n">n_train</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;n_train&quot;</span><span class="p">]</span>
+    <span class="n">x_mean</span> <span class="o">=</span> <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;x_train_mean&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Computes the scaling factor for prediction interval standard errors.</span>
+    <span class="c1"># We will use `pi_se_scaler` to scale `quantile_summary_col` and `std_col` columns.</span>
+    <span class="n">pi_se_scaler</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># If `x_mat` is provided in case of linear or ridge regression,</span>
+    <span class="c1"># we know the closed form expression of the prediction intervals.</span>
+    <span class="c1"># Therefore, we need to scale the prediction intervals, regardless of train / test.</span>
+    <span class="k">if</span> <span class="n">x_mat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lu_d_sqrt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">new_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;In `predict_ci`, `new_df` need to be the same length as `x_mat`.&quot;</span>
+        <span class="c1"># `h_mat @ h_mat.T = lu_d_sqrt @ lu_d_sqrt.T`, where `lu_d_sqrt` is p by p and is pre-calculated.</span>
+        <span class="k">assert</span> <span class="n">lu_d_sqrt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;Feature dimension p must match `lu_d_sqrt` and `x_mat`.&quot;</span>
+        <span class="n">n_pred</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">x_mat</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">X_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_mat</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_pred</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+        <span class="c1"># Variance from coefficients contains 3 terms.</span>
+        <span class="c1"># The first term is true for both linear and ridge regression, while the other two terms are for ridge only.</span>
+        <span class="c1"># Let&#39;s use `L @ L.T` to replace `H @ H.T`,</span>
+        <span class="c1"># and denote `x_mean_mat = np.repeat(x_mean, repeats=n_pred, axis=0)` (`n_pred` by `p`),</span>
+        <span class="c1"># then we have the following formulas.</span>
+        <span class="c1"># Term 1: `X_pred @ L @ L.T @ X_pred.T`.</span>
+        <span class="c1"># Term 2: `x_mean_mat @ L @ L.T @ X_pred.T` plus its transpose.</span>
+        <span class="c1"># Term 3: `(1 / n_train + x_mean @ L @ L.T @ x_mean.T) * np.ones((n_pred, n_pred))`.</span>
+        <span class="c1"># (1) In ridge case, three terms can be simplified to a quadratic form plus a constant matrix:</span>
+        <span class="c1">#     `(X_pred - x_mean_mat) @ L @ L.T @ (X_pred - x_mean_mat).T + (1 / n_train) * np.ones((n_pred, n_pred))`.</span>
+        <span class="c1"># (2) In linear case, we only keep term 1: `X_pred @ L @ L.T @ X_pred.T`.</span>
+        <span class="c1"># Since we only need the diagonal elements, they can be obtained in the following ways.</span>
+        <span class="c1"># Define `A = L.T @ X_pred.T` (`p` by `n_pred`), then the diagonal of `A.T @ A` is equivalent</span>
+        <span class="c1"># to `(A ** 2).sum(axis=0)`, length `n_pred`, which is much more efficient to compute.</span>
+        <span class="k">if</span> <span class="n">x_mean</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Ridge.</span>
+            <span class="c1"># In case of ridge regression, we use `x_mean` to center `X_pred` first.</span>
+            <span class="n">X_pred</span> <span class="o">=</span> <span class="n">X_pred</span> <span class="o">-</span> <span class="n">x_mean</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">lu_d_sqrt</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_pred</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># `p` by `n_pred`.</span>
+        <span class="c1"># We are ready to compute the variance scaler,</span>
+        <span class="c1"># The last term of 1 below is from `np.ones((n_pred,))`, assuming i.i.d. errors with constant variance.</span>
+        <span class="k">if</span> <span class="n">x_mean</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Ridge.</span>
+            <span class="n">pi_variance</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n_train</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Linear.</span>
+            <span class="n">pi_variance</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">pi_se_scaler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi_variance</span><span class="p">)</span>
+
+    <span class="c1"># Copies ``pred_df`` so that input df to predict is not altered</span>
+    <span class="n">pred_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pred_df</span><span class="p">[</span><span class="s2">&quot;temporary_overall_dummy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ecdf_df_fallback_dummy</span> <span class="o">=</span> <span class="n">ecdf_df_fallback</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">ecdf_df_fallback_dummy</span><span class="p">[</span><span class="s2">&quot;temporary_overall_dummy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pred_df_fallback</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">pred_df</span><span class="p">,</span>
+        <span class="n">ecdf_df_fallback_dummy</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;temporary_overall_dummy&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">pred_df</span><span class="p">[</span><span class="s2">&quot;temporary_overall_dummy&quot;</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">pred_df_fallback</span><span class="p">[</span><span class="s2">&quot;temporary_overall_dummy&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">conditional_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">conditional_cols</span> <span class="o">==</span> <span class="p">[])</span> <span class="ow">or</span> <span class="n">fall_back_for_all</span><span class="p">:</span>
+        <span class="n">pred_df_conditional</span> <span class="o">=</span> <span class="n">pred_df_fallback</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pred_df_conditional</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">pred_df</span><span class="p">,</span>
+            <span class="n">ecdf_df</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="n">conditional_cols</span><span class="p">,</span>
+            <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+    <span class="c1"># When we have missing in the grouped case (which can happen if a level</span>
+    <span class="c1"># in ``conditional_cols`` didn&#39;t appear in train dataset),</span>
+    <span class="c1"># we fall back to the overall case.</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="n">quantile_summary_col</span><span class="p">,</span> <span class="n">std_col</span><span class="p">]:</span>
+        <span class="n">na_index</span> <span class="o">=</span> <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="n">pred_df_conditional</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">na_index</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pred_df_fallback</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">na_index</span><span class="p">,</span> <span class="n">col</span><span class="p">])</span>
+
+    <span class="c1"># Before offsetting, applies `pi_se_scaler` to all rows in `quantile_summary_col` and `std_col` columns.</span>
+    <span class="c1"># This scaling only happens in uncertainty model&#39;s predict phase (`predict_ci`).</span>
+    <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">std_col</span><span class="p">]</span> <span class="o">*=</span> <span class="n">pi_se_scaler</span>
+    <span class="c1"># Since values in `quantile_summary_col` are tuples, we need to convert it to `np.array` first.</span>
+    <span class="n">quantile_summary</span> <span class="o">=</span> <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">quantile_summary_col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">value_tuple</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value_tuple</span><span class="p">))</span>
+    <span class="n">quantile_summary</span> <span class="o">*=</span> <span class="n">pi_se_scaler</span>
+    <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">quantile_summary_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantile_summary</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">array</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+    <span class="n">ci_model</span><span class="p">[</span><span class="s2">&quot;pi_se_scaler&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pi_se_scaler</span>
+
+    <span class="c1"># Offsets the values in `distribution_col` by `offset_col`.</span>
+    <span class="k">if</span> <span class="n">offset_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">QUANTILE_SUMMARY_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">quantile_summary_col</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">QUANTILE_SUMMARY_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset_tuple_col</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">pred_df_conditional</span><span class="p">,</span>
+            <span class="n">offset_col</span><span class="o">=</span><span class="n">offset_col</span><span class="p">,</span>
+            <span class="n">tuple_col</span><span class="o">=</span><span class="n">quantile_summary_col</span><span class="p">)</span>
+
+    <span class="n">pred_df_conditional</span> <span class="o">=</span> <span class="n">limit_tuple_col</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">pred_df_conditional</span><span class="p">,</span>
+        <span class="n">tuple_col</span><span class="o">=</span><span class="n">QUANTILE_SUMMARY_COL</span><span class="p">,</span>
+        <span class="n">lower</span><span class="o">=</span><span class="n">min_admissible_value</span><span class="p">,</span>
+        <span class="n">upper</span><span class="o">=</span><span class="n">max_admissible_value</span><span class="p">)</span>
+
+    <span class="c1"># Only returns needed cols.</span>
+    <span class="n">returned_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">QUANTILE_SUMMARY_COL</span><span class="p">,</span> <span class="n">std_col</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">conditional_cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">returned_cols</span> <span class="o">=</span> <span class="n">conditional_cols</span> <span class="o">+</span> <span class="n">returned_cols</span>
+
+    <span class="n">pred_df</span><span class="p">[</span><span class="n">returned_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_df_conditional</span><span class="p">[</span><span class="n">returned_cols</span><span class="p">]</span>
+    <span class="c1"># Standardizes `std_col` column name.</span>
+    <span class="n">pred_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+        <span class="n">std_col</span><span class="p">:</span> <span class="n">ERR_STD_COL</span>
+    <span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pred_df</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
