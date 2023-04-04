@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.pipeline.utils &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.pipeline.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.pipeline.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Utility functions for</span>
+<span class="sd">`~greykite.framework.pipeline.pipeline`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ParameterGrid</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RandomizedSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">FRACTION_OUTSIDE_TOLERANCE</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">add_finite_filter_to_scorer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">add_preaggregation_to_scorer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">fraction_outside_tolerance</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">get_integer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">unique_elements_in_list</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties_forecast</span> <span class="kn">import</span> <span class="n">get_default_horizon_from_period</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">CUSTOM_SCORE_FUNC_NAME</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">CV_REPORT_METRICS_ALL</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">FRACTION_OUTSIDE_TOLERANCE_NAME</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.output.univariate_forecast</span> <span class="kn">import</span> <span class="n">UnivariateForecast</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.simple_silverkite_estimator</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.sklearn_scorer</span> <span class="kn">import</span> <span class="n">make_scorer_df</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.column_selector</span> <span class="kn">import</span> <span class="n">ColumnSelector</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.drop_degenerate_transformer</span> <span class="kn">import</span> <span class="n">DropDegenerateTransformer</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.dtype_column_selector</span> <span class="kn">import</span> <span class="n">DtypeColumnSelector</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.normalize_transformer</span> <span class="kn">import</span> <span class="n">NormalizeTransformer</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.null_transformer</span> <span class="kn">import</span> <span class="n">NullTransformer</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.pandas_feature_union</span> <span class="kn">import</span> <span class="n">PandasFeatureUnion</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.transform.zscore_outlier_transformer</span> <span class="kn">import</span> <span class="n">ZscoreOutlierTransformer</span>
+
+
+<div class="viewcode-block" id="get_best_index"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.utils.get_best_index">[docs]</a><span class="k">def</span> <span class="nf">get_best_index</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Suitable for use as the `refit` parameter to</span>
+<span class="sd">    `~sklearn.model_selection.RandomizedSearchCV`, after wrapping</span>
+<span class="sd">    with `functools.partial`.</span>
+
+<span class="sd">    Callable that takes ``cv_results_`` from grid search</span>
+<span class="sd">    and returns the best index.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    results : `dict` [`str`, `numpy.array`]</span>
+<span class="sd">        Results from CV grid search.</span>
+<span class="sd">        See `~sklearn.model_selection.RandomizedSearchCV`</span>
+<span class="sd">        ``cv_results_`` attribute for the format.</span>
+<span class="sd">    metric : `str`, default &quot;score&quot;</span>
+<span class="sd">        Which metric to use to select the best parameters.</span>
+<span class="sd">        In single metric evaluation, the metric name should be &quot;score&quot;.</span>
+<span class="sd">        For multi-metric evaluation, the ``scoring`` parameter to</span>
+<span class="sd">        `~sklearn.model_selection.RandomizedSearchCV` is a dictionary,</span>
+<span class="sd">        and ``metric`` must be a key of ``scoring``.</span>
+<span class="sd">    greater_is_better : `bool`, default False</span>
+<span class="sd">        If True, selects the parameters with highest test values</span>
+<span class="sd">        for ``metric``. Otherwise, selects those with the lowest</span>
+<span class="sd">        test values for ``metric``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    best_index : `int`</span>
+<span class="sd">        Best index to use for refitting the model.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from functools import partial</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.model_selection import RandomizedSearchCV</span>
+<span class="sd">    &gt;&gt;&gt; refit = partial(get_best_index, metric=&quot;score&quot;, greater_is_better=False)</span>
+<span class="sd">    &gt;&gt;&gt; # RandomizedSearchCV(..., refit=refit)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">greater_is_better</span><span class="p">:</span>
+        <span class="c1"># Note: in case of ties, the index corresponds to the first</span>
+        <span class="c1">#   optimal value. But the order during CV may not match the order</span>
+        <span class="c1">#   in fitted grid search ``.cv_results_`` attribute.</span>
+        <span class="c1"># Note: &quot;rank_test_{metric}&quot; is ranked assuming greater_is_better=True,</span>
+        <span class="c1">#   so these ranks are the opposite of the true ranks if greater_is_better=False.</span>
+        <span class="n">best_index</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;mean_test_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">best_index</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;mean_test_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">best_index</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_default_time_parameters</span><span class="p">(</span>
+        <span class="n">period</span><span class="p">,</span>
+        <span class="n">num_observations</span><span class="p">,</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">periods_between_train_test</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_expanding_window</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cv_max_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns default forecast horizon, backtest, and cross-validation parameters,</span>
+<span class="sd">    given the input frequency, size, and user requested values.</span>
+
+<span class="sd">    This function is called from the `~greykite.framework.pipeline.pipeline.forecast_pipeline`</span>
+<span class="sd">    directly, to provide suitable default to users of forecast_pipeline, and because the default</span>
+<span class="sd">    should not depend on model configuration (the template).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    period: `float`</span>
+<span class="sd">        Period of each observation (i.e. average time between observations, in seconds).</span>
+<span class="sd">    num_observations: `int`</span>
+<span class="sd">        Number of observations in the input data.</span>
+<span class="sd">    forecast_horizon: `int` or None, default None</span>
+<span class="sd">        Number of periods to forecast into the future. Must be &gt; 0.</span>
+<span class="sd">        If None, default is determined from input data frequency.</span>
+<span class="sd">    test_horizon: `int` or None, default None</span>
+<span class="sd">        Numbers of periods held back from end of df for test.</span>
+<span class="sd">        The rest is used for cross validation.</span>
+<span class="sd">        If None, default is ``forecast_horizon``. Set to 0 to skip backtest.</span>
+<span class="sd">    periods_between_train_test : `int` or None, default None</span>
+<span class="sd">        Number of periods gap between train and test in a CV split.</span>
+<span class="sd">        If None, default is 0.</span>
+<span class="sd">    cv_horizon: `int` or None, default None</span>
+<span class="sd">        Number of periods in each CV test set.</span>
+<span class="sd">        If None, default is ``forecast_horizon``. Set to 0 to skip CV.</span>
+<span class="sd">    cv_min_train_periods: `int` or None, default None</span>
+<span class="sd">        Minimum number of periods for training each CV fold.</span>
+<span class="sd">        If ``cv_expanding_window`` is False, every training period is this size.</span>
+<span class="sd">        If None, default is 2 * ``cv_horizon``.</span>
+<span class="sd">    cv_expanding_window: `bool`, default False</span>
+<span class="sd">        If True, training window for each CV split is fixed to the first available date.</span>
+<span class="sd">        Otherwise, train start date is sliding, determined by ``cv_min_train_periods``.</span>
+<span class="sd">    cv_periods_between_splits: `int` or None, default None</span>
+<span class="sd">        Number of periods to slide the test window between CV splits</span>
+<span class="sd">        If None, default is ``cv_horizon``.</span>
+<span class="sd">    cv_periods_between_train_test: `int` or None, default None</span>
+<span class="sd">        Number of periods gap between train and test in a CV split.</span>
+<span class="sd">        If None, default is ``periods_between_train_test``.</span>
+<span class="sd">    cv_max_splits: `int` or None, default 3</span>
+<span class="sd">        Maximum number of CV splits. Given the above configuration, samples up to max_splits train/test splits,</span>
+<span class="sd">        preferring splits toward the end of available data. If None, uses all splits.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    time_params : `dict` [`str`, `int`]</span>
+<span class="sd">        keys are parameter names, values are their default values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">forecast_horizon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">get_default_horizon_from_period</span><span class="p">(</span>
+            <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span>
+            <span class="n">num_observations</span><span class="o">=</span><span class="n">num_observations</span><span class="p">)</span>
+    <span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">test_horizon</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span>
+        <span class="n">val</span><span class="o">=</span><span class="n">test_horizon</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test_horizon&quot;</span><span class="p">,</span>
+        <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">default_value</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">)</span>
+    <span class="c1"># reduces test_horizon to default 80/20 split if there is not enough data</span>
+    <span class="k">if</span> <span class="n">test_horizon</span> <span class="o">&gt;=</span> <span class="n">num_observations</span><span class="p">:</span>
+        <span class="n">test_horizon</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">num_observations</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="n">cv_horizon</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span>
+        <span class="n">val</span><span class="o">=</span><span class="n">cv_horizon</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cv_horizon&quot;</span><span class="p">,</span>
+        <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">default_value</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">)</span>
+    <span class="c1"># RollingTimeSeriesSplit handles the case of no CV splits, not handled in detail here</span>
+    <span class="c1"># temporary patch to avoid the case where cv_horizon==num_observations, which throws an error</span>
+    <span class="c1"># in RollingTimeSeriesSplit</span>
+    <span class="k">if</span> <span class="n">cv_horizon</span> <span class="o">&gt;=</span> <span class="n">num_observations</span><span class="p">:</span>
+        <span class="n">cv_horizon</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">num_observations</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="n">periods_between_train_test</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span>
+        <span class="n">val</span><span class="o">=</span><span class="n">periods_between_train_test</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">,</span>
+        <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">cv_periods_between_train_test</span> <span class="o">=</span> <span class="n">get_integer</span><span class="p">(</span>
+        <span class="n">val</span><span class="o">=</span><span class="n">cv_periods_between_train_test</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cv_periods_between_train_test&quot;</span><span class="p">,</span>
+        <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">default_value</span><span class="o">=</span><span class="n">periods_between_train_test</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;forecast_horizon&quot;</span><span class="p">:</span> <span class="n">forecast_horizon</span><span class="p">,</span>
+        <span class="s2">&quot;test_horizon&quot;</span><span class="p">:</span> <span class="n">test_horizon</span><span class="p">,</span>
+        <span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">:</span> <span class="n">periods_between_train_test</span><span class="p">,</span>
+        <span class="s2">&quot;cv_horizon&quot;</span><span class="p">:</span> <span class="n">cv_horizon</span><span class="p">,</span>
+        <span class="s2">&quot;cv_min_train_periods&quot;</span><span class="p">:</span> <span class="n">cv_min_train_periods</span><span class="p">,</span>
+        <span class="s2">&quot;cv_periods_between_train_test&quot;</span><span class="p">:</span> <span class="n">cv_periods_between_train_test</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="get_basic_pipeline"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.utils.get_basic_pipeline">[docs]</a><span class="k">def</span> <span class="nf">get_basic_pipeline</span><span class="p">(</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="n">SimpleSilverkiteEstimator</span><span class="p">(),</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">agg_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">null_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">regressor_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a basic pipeline for univariate forecasting.</span>
+<span class="sd">    Allows for outlier detection, normalization, null imputation,</span>
+<span class="sd">    degenerate column removal, and forecast model fitting. By default,</span>
+<span class="sd">    only null imputation is enabled. See source code for the pipeline steps.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    While ``score_func`` is used to define the estimator&#39;s score function, the</span>
+<span class="sd">    the ``scoring`` parameter of `~sklearn.model_selection.RandomizedSearchCV`</span>
+<span class="sd">    should be provided when using this pipeline in grid search.</span>
+<span class="sd">    Otherwise, grid search assumes higher values are better for ``score_func``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    estimator : instance of an estimator that implements `greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`, default SimpleSilverkiteEstimator()  # noqa: E501</span>
+<span class="sd">        Estimator to use as the final step in the pipeline.</span>
+<span class="sd">    score_func : `str` or callable, default ``EvaluationMetricEnum.MeanAbsolutePercentError.name``</span>
+<span class="sd">        Score function used to select optimal model in CV.</span>
+<span class="sd">        If a callable, takes arrays ``y_true``, ``y_pred`` and returns a float.</span>
+<span class="sd">        If a string, must be either a</span>
+<span class="sd">        `~greykite.common.evaluation.EvaluationMetricEnum` member name</span>
+<span class="sd">        or `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+<span class="sd">    score_func_greater_is_better : `bool`, default False</span>
+<span class="sd">        True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        Must be provided if ``score_func`` is a callable (custom function).</span>
+<span class="sd">        Ignored if ``score_func`` is a string, because the direction is known.</span>
+<span class="sd">    agg_periods : `int` or None, default None</span>
+<span class="sd">        Number of periods to aggregate before evaluation.</span>
+<span class="sd">        Model is fit at original frequency, and forecast is</span>
+<span class="sd">        aggregated according to ``agg_periods``</span>
+<span class="sd">        E.g. fit model on hourly data, and evaluate performance at daily level</span>
+<span class="sd">        If None, does not apply aggregation</span>
+<span class="sd">    agg_func : callable or None, default None</span>
+<span class="sd">        Takes an array and returns a number, e.g. np.max, np.sum</span>
+<span class="sd">        Used to aggregate data prior to evaluation (applied to actual and predicted)</span>
+<span class="sd">        Ignored if ``agg_periods`` is None</span>
+<span class="sd">    relative_error_tolerance : `float` or None, default None</span>
+<span class="sd">        Threshold to compute the</span>
+<span class="sd">        `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`</span>
+<span class="sd">        metric, defined as the fraction of forecasted values whose relative</span>
+<span class="sd">        error is strictly greater than ``relative_error_tolerance``.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+<span class="sd">        Required if ``score_func`` is</span>
+<span class="sd">        `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+<span class="sd">    coverage : `float` or None, default=0.95</span>
+<span class="sd">        Intended coverage of the prediction bands (0.0 to 1.0)</span>
+<span class="sd">        If None, the upper/lower predictions are not returned</span>
+<span class="sd">        Ignored if `pipeline` is provided. Uses coverage of the ``pipeline`` estimator instead.</span>
+<span class="sd">    null_model_params : `dict` or None, default None</span>
+<span class="sd">        Defines baseline model to compute ``R2_null_model_score`` evaluation metric.</span>
+<span class="sd">        ``R2_null_model_score`` is the improvement in the loss function relative</span>
+<span class="sd">        to a null model. It can be used to evaluate model quality with respect to</span>
+<span class="sd">        a simple baseline. For details, see</span>
+<span class="sd">        `~greykite.common.evaluation.r2_null_model_score`.</span>
+
+<span class="sd">        The null model is a `~sklearn.dummy.DummyRegressor`,</span>
+<span class="sd">        which returns constant predictions.</span>
+
+<span class="sd">        Valid keys are &quot;strategy&quot;, &quot;constant&quot;, &quot;quantile&quot;.</span>
+<span class="sd">        See `~sklearn.dummy.DummyRegressor`. For example::</span>
+
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;mean&quot;,</span>
+<span class="sd">            }</span>
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;median&quot;,</span>
+<span class="sd">            }</span>
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;quantile&quot;,</span>
+<span class="sd">                &quot;quantile&quot;: 0.8,</span>
+<span class="sd">            }</span>
+<span class="sd">            null_model_params = {</span>
+<span class="sd">                &quot;strategy&quot;: &quot;constant&quot;,</span>
+<span class="sd">                &quot;constant&quot;: 2.0,</span>
+<span class="sd">            }</span>
+
+<span class="sd">        If None, ``R2_null_model_score`` is not calculated.</span>
+
+<span class="sd">        Note: CV model selection always optimizes ``score_func`, not</span>
+<span class="sd">        the ``R2_null_model_score``.</span>
+<span class="sd">    regressor_cols : `list` [`str`] or None, default None</span>
+<span class="sd">        A list of regressor columns used in the training and prediction DataFrames.</span>
+<span class="sd">        It should contain only the regressors that are being used in the grid search.</span>
+<span class="sd">        If None, no regressor columns are used.</span>
+<span class="sd">        Regressor columns that are unavailable in ``df`` are dropped.</span>
+<span class="sd">    lagged_regressor_cols: `list` [`str`] or None, default None</span>
+<span class="sd">        A list of additional columns needed for lagged regressors in the training and prediction DataFrames.</span>
+<span class="sd">        This list can have overlap with ``regressor_cols``.</span>
+<span class="sd">        If None, no additional columns are added to the DataFrame.</span>
+<span class="sd">        Lagged regressor columns that are unavailable in ``df`` are dropped.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pipeline : `sklearn.pipeline.Pipeline`</span>
+<span class="sd">        sklearn Pipeline for univariate forecasting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">score_func</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_score_func_with_aggregation</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+        <span class="n">greater_is_better</span><span class="o">=</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+        <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">regressor_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">lagged_regressor_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lagged_regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_reg_cols</span> <span class="o">=</span> <span class="n">unique_elements_in_list</span><span class="p">(</span><span class="n">regressor_cols</span> <span class="o">+</span> <span class="n">lagged_regressor_cols</span><span class="p">)</span>
+
+    <span class="c1"># A new unfitted estimator with the same parameters</span>
+    <span class="n">estimator_clone</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+    <span class="c1"># Sets parameters common to all `BaseForecastEstimator`</span>
+    <span class="n">estimator_clone</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+        <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+        <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">)</span>
+
+    <span class="c1"># Note:</span>
+    <span class="c1">#   Unlike typical ML, &quot;y&quot; (target values) is part of &quot;X&quot; (training data).</span>
+    <span class="c1">#   Some forecasting models require that all historical values are available</span>
+    <span class="c1">#   (no gaps in the timeseries). By including &quot;y&quot; values as part of &quot;X&quot;, they</span>
+    <span class="c1">#   can be transformed prior to fitting the estimator. This allows outlier removal and</span>
+    <span class="c1">#   null imputation that respects train/test boundaries, to avoid leaking future</span>
+    <span class="c1">#   information into the past. Evaluation is always done against original &quot;y&quot;.</span>
+    <span class="c1">#   Parameters for this pipeline are set via `hyperparameter_grid`.</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+        <span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">PandasFeatureUnion</span><span class="p">([</span>
+            <span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+                <span class="p">(</span><span class="s2">&quot;select_date&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">([</span><span class="n">TIME_COL</span><span class="p">]))</span>  <span class="c1"># leaves time column unmodified</span>
+            <span class="p">])),</span>
+            <span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>  <span class="c1"># applies outlier and null transformation to value column</span>
+                <span class="p">(</span><span class="s2">&quot;select_val&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">([</span><span class="n">VALUE_COL</span><span class="p">])),</span>
+                <span class="p">(</span><span class="s2">&quot;outlier&quot;</span><span class="p">,</span> <span class="n">ZscoreOutlierTransformer</span><span class="p">(</span><span class="n">z_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>
+                <span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">NullTransformer</span><span class="p">(</span><span class="n">impute_algorithm</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">))</span>
+            <span class="p">])),</span>
+            <span class="p">(</span><span class="s2">&quot;regressors_numeric&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+                <span class="p">(</span><span class="s2">&quot;select_reg&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">(</span><span class="n">all_reg_cols</span><span class="p">)),</span>
+                <span class="p">(</span><span class="s2">&quot;select_reg_numeric&quot;</span><span class="p">,</span> <span class="n">DtypeColumnSelector</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">)),</span>
+                <span class="p">(</span><span class="s2">&quot;outlier&quot;</span><span class="p">,</span> <span class="n">ZscoreOutlierTransformer</span><span class="p">(</span><span class="n">z_cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>
+                <span class="p">(</span><span class="s2">&quot;normalize&quot;</span><span class="p">,</span> <span class="n">NormalizeTransformer</span><span class="p">(</span><span class="n">normalize_algorithm</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>  <span class="c1"># no normalization by default</span>
+                <span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="n">NullTransformer</span><span class="p">(</span><span class="n">impute_algorithm</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">))</span>
+            <span class="p">])),</span>
+            <span class="p">(</span><span class="s2">&quot;regressors_other&quot;</span><span class="p">,</span> <span class="n">Pipeline</span><span class="p">([</span>
+                <span class="p">(</span><span class="s2">&quot;select_reg&quot;</span><span class="p">,</span> <span class="n">ColumnSelector</span><span class="p">(</span><span class="n">all_reg_cols</span><span class="p">)),</span>
+                <span class="p">(</span><span class="s2">&quot;select_reg_non_numeric&quot;</span><span class="p">,</span> <span class="n">DtypeColumnSelector</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">))</span>
+            <span class="p">]))</span>
+        <span class="p">])),</span>
+        <span class="p">(</span><span class="s2">&quot;degenerate&quot;</span><span class="p">,</span> <span class="n">DropDegenerateTransformer</span><span class="p">()),</span>  <span class="c1"># default `drop_degenerate=False`</span>
+        <span class="c1"># Sets BaseForecastEstimator parameters (`score_func`, etc.).</span>
+        <span class="c1"># Other parameters of the estimator are set by `hyperparameter_grid` later.</span>
+        <span class="p">(</span><span class="s2">&quot;estimator&quot;</span><span class="p">,</span> <span class="n">estimator_clone</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">pipeline</span></div>
+
+
+<div class="viewcode-block" id="get_score_func_with_aggregation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.utils.get_score_func_with_aggregation">[docs]</a><span class="k">def</span> <span class="nf">get_score_func_with_aggregation</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="p">,</span>
+        <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a score function that pre-aggregates inputs according to ``agg_func``,</span>
+<span class="sd">    and filters out invalid true values before evaluation. This allows fitting</span>
+<span class="sd">    the model at a granular level, yet evaluating at a coarser level.</span>
+
+<span class="sd">    Also returns the proper direction and short name for the score function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    score_func : `str` or callable</span>
+<span class="sd">        If callable, a function that maps two arrays to a number:</span>
+<span class="sd">        ``(true, predicted) -&gt; score``.</span>
+<span class="sd">    greater_is_better : `bool`, default False</span>
+<span class="sd">        True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        Must be provided if ``score_func`` is a callable (custom function).</span>
+<span class="sd">        Ignored if ``score_func`` is a string, because the direction is known.</span>
+<span class="sd">    agg_periods : `int` or None, default None</span>
+<span class="sd">        Number of periods to aggregate before evaluation.</span>
+<span class="sd">        Model is fit at original frequency, and forecast is</span>
+<span class="sd">        aggregated according to ``agg_periods``</span>
+<span class="sd">        E.g. fit model on hourly data, and evaluate performance at daily level</span>
+<span class="sd">        If None, does not apply aggregation</span>
+<span class="sd">    agg_func : callable or None, default None</span>
+<span class="sd">        Takes an array and returns a number, e.g. np.max, np.sum</span>
+<span class="sd">        Used to aggregate data prior to evaluation (applied to actual and predicted)</span>
+<span class="sd">        Ignored if ``agg_periods`` is None</span>
+<span class="sd">    relative_error_tolerance : `float` or None, default None</span>
+<span class="sd">        Threshold to compute the</span>
+<span class="sd">        `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`</span>
+<span class="sd">        metric, defined as the fraction of forecasted values whose relative</span>
+<span class="sd">        error is strictly greater than ``relative_error_tolerance``.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+<span class="sd">        Required if ``score_func`` is</span>
+<span class="sd">        `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    score_func : callable</span>
+<span class="sd">        scorer with pre-aggregation function and filter,</span>
+<span class="sd">    greater_is_better : `bool`</span>
+<span class="sd">        Whether ``greater_is_better`` for the scorer.</span>
+<span class="sd">        Uses the provided ``greater_is_better`` if the</span>
+<span class="sd">        provided ``score_func`` is a callable.</span>
+<span class="sd">        Otherwise, looks up the direction.</span>
+<span class="sd">    short_name : `str`</span>
+<span class="sd">        Canonical short name for the ``score_func``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">score_func</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># If a string is provided, looks up the callable score_func and greater_is_better.</span>
+        <span class="c1"># Otherwise, uses the args directly</span>
+        <span class="k">if</span> <span class="n">score_func</span> <span class="o">==</span> <span class="n">FRACTION_OUTSIDE_TOLERANCE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">relative_error_tolerance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must specify `relative_error_tolerance` to request &quot;</span>
+                                 <span class="s2">&quot;FRACTION_OUTSIDE_TOLERANCE as a metric.&quot;</span><span class="p">)</span>
+            <span class="n">score_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+                <span class="n">fraction_outside_tolerance</span><span class="p">,</span>
+                <span class="n">rtol</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+            <span class="n">greater_is_better</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">short_name</span> <span class="o">=</span> <span class="n">FRACTION_OUTSIDE_TOLERANCE_NAME</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">enum</span> <span class="o">=</span> <span class="n">EvaluationMetricEnum</span><span class="p">[</span><span class="n">score_func</span><span class="p">]</span>
+                <span class="n">score_func</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+                <span class="n">greater_is_better</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_greater_is_better</span><span class="p">()</span>
+                <span class="n">short_name</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">get_metric_name</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">valid_names</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">])</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Evaluation metric </span><span class="si">{</span><span class="n">score_func</span><span class="si">}</span><span class="s2"> is not available. Must be one of: </span><span class="si">{</span><span class="n">valid_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">score_func</span><span class="p">):</span>
+        <span class="c1"># Uses the score_func and greater_is_better passed to the function</span>
+        <span class="n">short_name</span> <span class="o">=</span> <span class="n">CUSTOM_SCORE_FUNC_NAME</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`score_func` must be an `EvaluationMetricEnum` member name, &quot;</span>
+                         <span class="s2">&quot;FRACTION_OUTSIDE_TOLERANCE, or callable.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">agg_periods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">score_func</span> <span class="o">=</span> <span class="n">add_preaggregation_to_scorer</span><span class="p">(</span><span class="n">score_func</span><span class="p">,</span> <span class="n">agg_periods</span><span class="p">,</span> <span class="n">agg_func</span><span class="p">)</span>
+
+    <span class="c1"># Filters out elements that can&#39;t be compared in ``y_true``</span>
+    <span class="n">score_func</span> <span class="o">=</span> <span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">score_func</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">score_func</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="p">,</span> <span class="n">short_name</span></div>
+
+
+<div class="viewcode-block" id="get_scoring_and_refit"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.utils.get_scoring_and_refit">[docs]</a><span class="k">def</span> <span class="nf">get_scoring_and_refit</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="n">MeanAbsolutePercentError</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cv_report_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides ``scoring`` and ``refit`` parameters for</span>
+<span class="sd">    `~sklearn.model_selection.RandomizedSearchCV`.</span>
+
+<span class="sd">    Together, ``scoring`` and ``refit`` specify how what metrics to evaluate and how</span>
+<span class="sd">    to evaluate the predictions on the test set to identify the optimal model.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Sets ``greater_is_better=True`` in `scoring` for all metrics to report them with their</span>
+<span class="sd">    original sign, and properly accounts for this in ``refit`` to extract the best index.</span>
+
+<span class="sd">    Pass both `scoring` and `refit` to `~sklearn.model_selection.RandomizedSearchCV`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    score_func : `str` or callable, default ``EvaluationMetricEnum.MeanAbsolutePercentError.name``</span>
+<span class="sd">        Score function used to select optimal model in CV.</span>
+<span class="sd">        If a callable, takes arrays ``y_true``, ``y_pred`` and returns a float.</span>
+<span class="sd">        If a string, must be either a</span>
+<span class="sd">        `~greykite.common.evaluation.EvaluationMetricEnum` member name</span>
+<span class="sd">        or `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+<span class="sd">    score_func_greater_is_better : `bool`, default False</span>
+<span class="sd">        True if ``score_func`` is a score function, meaning higher is better,</span>
+<span class="sd">        and False if it is a loss function, meaning lower is better.</span>
+<span class="sd">        Must be provided if ``score_func`` is a callable (custom function).</span>
+<span class="sd">        Ignored if ``score_func`` is a string, because the direction is known.</span>
+<span class="sd">    cv_report_metrics : `~greykite.common.constants.CV_REPORT_METRICS_ALL`, or `list` [`str`], or None, default None  # noqa: E501</span>
+<span class="sd">        Additional metrics to compute during CV, besides the one specified by ``score_func``.</span>
+
+<span class="sd">            - If the string constant `greykite.common.constants.CV_REPORT_METRICS_ALL`,</span>
+<span class="sd">              computes all metrics in ``EvaluationMetricEnum``. Also computes</span>
+<span class="sd">              ``FRACTION_OUTSIDE_TOLERANCE`` if ``relative_error_tolerance`` is not None.</span>
+<span class="sd">              The results are reported by the short name (``.get_metric_name()``) for ``EvaluationMetricEnum``</span>
+<span class="sd">              members and ``FRACTION_OUTSIDE_TOLERANCE_NAME`` for ``FRACTION_OUTSIDE_TOLERANCE``.</span>
+<span class="sd">            - If a list of strings, each of the listed metrics is computed. Valid strings are</span>
+<span class="sd">              `greykite.common.evaluation.EvaluationMetricEnum` member names</span>
+<span class="sd">              and `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`.</span>
+
+<span class="sd">              For example::</span>
+
+<span class="sd">                [&quot;MeanSquaredError&quot;, &quot;MeanAbsoluteError&quot;, &quot;MeanAbsolutePercentError&quot;, &quot;MedianAbsolutePercentError&quot;, &quot;FractionOutsideTolerance2&quot;]</span>
+
+<span class="sd">            - If None, no additional metrics are computed.</span>
+<span class="sd">    agg_periods : `int` or None, default None</span>
+<span class="sd">        Number of periods to aggregate before evaluation.</span>
+<span class="sd">        Model is fit at original frequency, and forecast is</span>
+<span class="sd">        aggregated according to ``agg_periods``</span>
+<span class="sd">        E.g. fit model on hourly data, and evaluate performance at daily level</span>
+<span class="sd">        If None, does not apply aggregation</span>
+<span class="sd">    agg_func : callable or None, default None</span>
+<span class="sd">        Takes an array and returns a number, e.g. np.max, np.sum</span>
+<span class="sd">        Used to aggregate data prior to evaluation (applied to actual and predicted)</span>
+<span class="sd">        Ignored if ``agg_periods`` is None</span>
+<span class="sd">    relative_error_tolerance : `float` or None, default None</span>
+<span class="sd">        Threshold to compute the</span>
+<span class="sd">        `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`</span>
+<span class="sd">        metric, defined as the fraction of forecasted values whose relative</span>
+<span class="sd">        error is strictly greater than ``relative_error_tolerance``.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+<span class="sd">        If `None`, the metric is not computed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    scoring : `dict`</span>
+<span class="sd">        A dictionary of metrics to evaluate for each CV split.</span>
+<span class="sd">        The key is the metric name, the value is an instance</span>
+<span class="sd">        of `~greykite.common.evaluation_PredictScorerDF` generated</span>
+<span class="sd">        by :func:`~greykite.common.evaluation.make_scorer_df`.</span>
+
+<span class="sd">        The value has a score method that takes actual and predicted values</span>
+<span class="sd">        and returns a single number.</span>
+
+<span class="sd">        There is one item in the dictionary for ``score_func``</span>
+<span class="sd">        and an additional item for each additional element in</span>
+<span class="sd">        ``cv_report_metrics``.</span>
+
+<span class="sd">            - The key for ``score_func`` if it is a callable is</span>
+<span class="sd">              `~greykite.common.constants.CUSTOM_SCORE_FUNC_NAME`.</span>
+<span class="sd">            - The key for ``EvaluationMetricEnum`` member name is the short name</span>
+<span class="sd">              from ``.get_metric_name()``.</span>
+<span class="sd">            - The key for `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE`</span>
+<span class="sd">              is `~greykite.common.constants.FRACTION_OUTSIDE_TOLERANCE_NAME`.</span>
+
+<span class="sd">        See `~sklearn.model_selection.RandomizedSearchCV`.</span>
+
+<span class="sd">    refit : callable</span>
+<span class="sd">        Callable that takes ``cv_results_`` from grid search</span>
+<span class="sd">        and returns the best index.</span>
+
+<span class="sd">        See `~sklearn.model_selection.RandomizedSearchCV`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cv_report_metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cv_report_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">elif</span> <span class="n">cv_report_metrics</span> <span class="o">==</span> <span class="n">CV_REPORT_METRICS_ALL</span><span class="p">:</span>
+        <span class="n">cv_report_metrics</span> <span class="o">=</span> <span class="n">EvaluationMetricEnum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Computes `FRACTION_OUTSIDE_TOLERANCE` if `relative_error_tolerance` is specified</span>
+        <span class="k">if</span> <span class="n">relative_error_tolerance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cv_report_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FRACTION_OUTSIDE_TOLERANCE</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cv_report_metrics</span> <span class="o">=</span> <span class="n">cv_report_metrics</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Defines scoring metrics to evaluate on each CV split.</span>
+    <span class="c1"># The results in .cv_results_ attribute are reported as</span>
+    <span class="c1"># ``f&quot;mean_test_{name}&quot;``, ``f&quot;mean_train_{name}&quot;``, etc.,</span>
+    <span class="c1"># where `name` is a key in the `scoring` dictionary.</span>
+    <span class="n">scoring</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Adds all recognized metrics in `cv_report_metrics` to `scoring`</span>
+    <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">cv_report_metrics</span><span class="p">:</span>
+        <span class="c1"># Adds aggregation to the metric function and gets the short name</span>
+        <span class="n">func</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">short_name</span> <span class="o">=</span> <span class="n">get_score_func_with_aggregation</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+        <span class="c1"># Strings/functions typically accepted by</span>
+        <span class="c1">#   `sklearn.model_selection.RandomizedSearchCV`</span>
+        <span class="c1">#   are not compatible with the predictions returned by</span>
+        <span class="c1">#   `~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`</span>
+        <span class="c1">#   because predictions are returned as a dataframe.</span>
+        <span class="c1">#   Thus, instead of ``&quot;neg_median_absolute_error&quot;``,</span>
+        <span class="c1">#   use ``make_scorer_df(median_absolute_error, greater_is_better=False)``</span>
+        <span class="c1">#   See `~greykite.common.evaluation.make_scorer_df` for details.</span>
+        <span class="c1"># Uses `greater_is_better=True` to avoid flipping the metric sign in CV results.</span>
+        <span class="n">scoring</span><span class="p">[</span><span class="n">short_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_scorer_df</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+            <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Adds `score_func` to `scoring`</span>
+    <span class="n">func</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="p">,</span> <span class="n">short_name</span> <span class="o">=</span> <span class="n">get_score_func_with_aggregation</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>  <span class="c1"># string or callable</span>
+        <span class="n">greater_is_better</span><span class="o">=</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+        <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+    <span class="n">scoring</span><span class="p">[</span><span class="n">short_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_scorer_df</span><span class="p">(</span>
+        <span class="n">score_func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+        <span class="c1"># Uses `greater_is_better=True` to avoid flipping the metric sign in CV results.</span>
+        <span class="c1"># The `refit` parameter defined below should be passed to grid search to ensure proper</span>
+        <span class="c1"># extraction of the optimal result, accounting for `greater_is_better` of the metric.</span>
+        <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Defines `refit` function with the true `greater_is_better` to pick the best result from CV.</span>
+    <span class="n">refit</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">get_best_index</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">short_name</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="n">greater_is_better</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scoring</span><span class="p">,</span> <span class="n">refit</span></div>
+
+
+<div class="viewcode-block" id="get_hyperparameter_searcher"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.utils.get_hyperparameter_searcher">[docs]</a><span class="k">def</span> <span class="nf">get_hyperparameter_searcher</span><span class="p">(</span>
+        <span class="n">hyperparameter_grid</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RandomizedSearchCV</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns RandomizedSearchCV object for hyperparameter tuning via cross validation</span>
+
+<span class="sd">    `sklearn.model_selection.RandomizedSearchCV` runs a full grid search if</span>
+<span class="sd">    ``hyperparameter_budget`` is sufficient to exhaust the full</span>
+<span class="sd">    ``hyperparameter_grid``, otherwise it samples uniformly at random from the space.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hyperparameter_grid : `dict` or `list` [`dict`]</span>
+<span class="sd">        Dictionary with parameters names (string) as keys and distributions</span>
+<span class="sd">        or lists of parameters to try. Distributions must provide a ``rvs``</span>
+<span class="sd">        method for sampling (such as those from scipy.stats.distributions).</span>
+<span class="sd">        Lists of parameters are sampled uniformly.</span>
+
+<span class="sd">        May also be a list of such dictionaries to avoid undesired combinations of parameters.</span>
+<span class="sd">        Passed as ``param_distributions`` to `sklearn.model_selection.RandomizedSearchCV`,</span>
+<span class="sd">        see docs for more info.</span>
+<span class="sd">    model: estimator object</span>
+<span class="sd">        A object of that type is instantiated for each grid point. This is assumed to implement</span>
+<span class="sd">        the scikit-learn estimator interface.</span>
+<span class="sd">    cv: `int`, cross-validation generator, iterable, or None, default None</span>
+<span class="sd">        Determines the cross-validation splitting strategy.</span>
+<span class="sd">        See `sklearn.model_selection.RandomizedSearchCV`.</span>
+<span class="sd">    hyperparameter_budget: `int` or None, default None</span>
+<span class="sd">        max number of hyperparameter sets to try within the hyperparameter_grid search space</span>
+<span class="sd">        If None, uses defaults:</span>
+
+<span class="sd">            * exhaustive grid search if all values are constant</span>
+<span class="sd">            * 10 if any value is a distribution to sample from</span>
+
+<span class="sd">    n_jobs : `int` or None, default 1</span>
+<span class="sd">        Number of jobs to run in parallel</span>
+<span class="sd">        (the maximum number of concurrently running workers).</span>
+<span class="sd">        ``-1`` uses all CPUs. ``-2`` uses all CPUs but one.</span>
+<span class="sd">        ``None`` is treated as 1 unless in a `joblib.Parallel` backend context</span>
+<span class="sd">        that specifies otherwise.</span>
+<span class="sd">    verbose : `int`, default 1</span>
+<span class="sd">        Verbosity level during CV.</span>
+
+<span class="sd">        * if &gt; 0, prints number of fits</span>
+<span class="sd">        * if &gt; 1, prints fit parameters, total score + fit time</span>
+<span class="sd">        * if &gt; 2, prints train/test scores</span>
+<span class="sd">    kwargs : additional parameters</span>
+<span class="sd">        Keyword arguments to pass to `~greykite.framework.pipeline.utils.get_scoring_and_refit`.</span>
+<span class="sd">        Accepts the following parameters:</span>
+
+<span class="sd">            - ``&quot;score_func&quot;``</span>
+<span class="sd">            - ``&quot;score_func_greater_is_better&quot;``</span>
+<span class="sd">            - ``&quot;cv_report_metrics&quot;``</span>
+<span class="sd">            - ``&quot;agg_periods&quot;``</span>
+<span class="sd">            - ``&quot;agg_func&quot;``</span>
+<span class="sd">            - ``&quot;relative_error_tolerance&quot;``</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    grid_search : `sklearn.model_selection.RandomizedSearchCV`</span>
+<span class="sd">        Object that can run randomized search on hyper parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">hyperparameter_budget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># sets reasonable defaults when hyperparameter_budget is not provided</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># exhaustive search if explicit values are provided</span>
+            <span class="n">hyperparameter_budget</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="n">hyperparameter_grid</span><span class="p">))</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting hyperparameter_budget to </span><span class="si">{</span><span class="n">hyperparameter_budget</span><span class="si">}</span><span class="s2"> for full grid search.&quot;</span><span class="p">,</span>
+                        <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># parameter value is not iterable</span>
+            <span class="c1"># sets budget to 10 if distribution for randomized search is provided</span>
+            <span class="n">hyperparameter_budget</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setting hyperparameter_budget to </span><span class="si">{</span><span class="n">hyperparameter_budget</span><span class="si">}</span><span class="s2"> to sample from&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; provided distributions (and lists).&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+    <span class="n">scoring</span><span class="p">,</span> <span class="n">refit</span> <span class="o">=</span> <span class="n">get_scoring_and_refit</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># note: RandomizedSearchCV operates like GridSearchCV when hyperparameter_grid contains no distributions</span>
+    <span class="n">grid_search</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+        <span class="n">param_distributions</span><span class="o">=</span><span class="n">hyperparameter_grid</span><span class="p">,</span>  <span class="c1"># a fixed list or distribution to sample from</span>
+        <span class="n">n_iter</span><span class="o">=</span><span class="n">hyperparameter_budget</span><span class="p">,</span>             <span class="c1"># samples uniformly, up to hyperparameter_budget</span>
+        <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">,</span>                          <span class="c1"># model evaluation criteria (note: if None, uses the score function of the estimator)</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>                            <span class="c1"># parallelism</span>
+        <span class="n">refit</span><span class="o">=</span><span class="n">refit</span><span class="p">,</span>                              <span class="c1"># selects the best model</span>
+        <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">pre_dispatch</span><span class="o">=</span><span class="s2">&quot;2*n_jobs&quot;</span><span class="p">,</span>                  <span class="c1"># controls memory consumption</span>
+        <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span>                   <span class="c1"># NB: could be False for speedup</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">grid_search</span></div>
+
+
+<div class="viewcode-block" id="get_forecast"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.pipeline.utils.get_forecast">[docs]</a><span class="k">def</span> <span class="nf">get_forecast</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">trained_model</span><span class="p">:</span> <span class="n">Pipeline</span><span class="p">,</span>
+        <span class="n">train_end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnivariateForecast</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs model predictions on ``df`` and creates a</span>
+<span class="sd">    `~greykite.framework.output.univariate_forecast.UnivariateForecast` object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: `pandas.DataFrame`</span>
+<span class="sd">        Has columns cst.TIME_COL, cst.VALUE_COL, to forecast.</span>
+<span class="sd">    trained_model: `sklearn.pipeline`</span>
+<span class="sd">        A fitted Pipeline with ``estimator`` step and predict function.</span>
+<span class="sd">    train_end_date: `datetime.datetime`, default `None`</span>
+<span class="sd">        Train end date. Passed to</span>
+<span class="sd">        `~greykite.framework.output.univariate_forecast.UnivariateForecast`.</span>
+<span class="sd">    test_start_date: `datetime.datetime`, default `None`</span>
+<span class="sd">        Test start date. Passed to</span>
+<span class="sd">        `~greykite.framework.output.univariate_forecast.UnivariateForecast`.</span>
+<span class="sd">    forecast_horizon : `int` or None, default None</span>
+<span class="sd">        Number of periods forecasted into the future. Must be &gt; 0. Passed to</span>
+<span class="sd">        `~greykite.framework.output.univariate_forecast.UnivariateForecast`.</span>
+<span class="sd">    xlabel: `str`</span>
+<span class="sd">        Time column to use in representing forecast (e.g. x-axis in plots).</span>
+<span class="sd">    ylabel: `str`</span>
+<span class="sd">        Time column to use in representing forecast (e.g. y-axis in plots).</span>
+<span class="sd">    relative_error_tolerance : `float` or None, default None</span>
+<span class="sd">        Threshold to compute the ``Outside Tolerance`` metric,</span>
+<span class="sd">        defined as the fraction of forecasted values whose relative</span>
+<span class="sd">        error is strictly greater than ``relative_error_tolerance``.</span>
+<span class="sd">        For example, 0.05 allows for 5% relative error.</span>
+<span class="sd">        If `None`, the metric is not computed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    univariate_forecast : `~greykite.framework.output.univariate_forecast.UnivariateForecast`</span>
+<span class="sd">        Forecasts represented as a ``UnivariateForecast`` object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">predicted_df</span> <span class="o">=</span> <span class="n">trained_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="c1"># This is more robust than using trained_model.named_steps[&quot;estimator&quot;] e.g.</span>
+    <span class="c1"># if the user calls forecast_pipeline with a custom pipeline, where the last</span>
+    <span class="c1"># step isn&#39;t named &quot;estimator&quot;.</span>
+    <span class="n">trained_estimator</span> <span class="o">=</span> <span class="n">trained_model</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">coverage</span> <span class="o">=</span> <span class="n">trained_estimator</span><span class="o">.</span><span class="n">coverage</span>
+
+    <span class="c1"># combines actual with predictions</span>
+    <span class="n">union_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="c1"># .values here, since df and predicted_df have different indexes</span>
+        <span class="n">cst</span><span class="o">.</span><span class="n">ACTUAL_COL</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="c1"># evaluation and plots are done on the values *before* any transformations</span>
+        <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">:</span> <span class="n">predicted_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="p">})</span>
+
+    <span class="n">predicted_lower_col</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">predicted_upper_col</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">null_model_predicted_col</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># adds lower bound if available</span>
+    <span class="k">if</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span> <span class="ow">in</span> <span class="n">predicted_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">predicted_lower_col</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span>
+        <span class="n">union_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;coverage must be provided&quot;</span><span class="p">)</span>
+
+    <span class="c1"># adds upper bound if available</span>
+    <span class="k">if</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span> <span class="ow">in</span> <span class="n">predicted_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">predicted_upper_col</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span>
+        <span class="n">union_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">predicted_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;coverage must be provided&quot;</span><span class="p">)</span>
+
+    <span class="c1"># adds null prediction if available</span>
+    <span class="k">if</span> <span class="n">trained_estimator</span><span class="o">.</span><span class="n">null_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">null_model_predicted_col</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">NULL_PREDICTED_COL</span>
+        <span class="n">null_predicted_df</span> <span class="o">=</span> <span class="n">trained_estimator</span><span class="o">.</span><span class="n">null_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">union_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">NULL_PREDICTED_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">null_predicted_df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="k">return</span> <span class="n">UnivariateForecast</span><span class="p">(</span>
+        <span class="n">union_df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">actual_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">ACTUAL_COL</span><span class="p">,</span>
+        <span class="n">predicted_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">,</span>
+        <span class="n">predicted_lower_col</span><span class="o">=</span><span class="n">predicted_lower_col</span><span class="p">,</span>
+        <span class="n">predicted_upper_col</span><span class="o">=</span><span class="n">predicted_upper_col</span><span class="p">,</span>
+        <span class="n">null_model_predicted_col</span><span class="o">=</span><span class="n">null_model_predicted_col</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+        <span class="n">train_end_date</span><span class="o">=</span><span class="n">train_end_date</span><span class="p">,</span>
+        <span class="n">test_start_date</span><span class="o">=</span><span class="n">test_start_date</span><span class="p">,</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>
+        <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+        <span class="n">r2_loss_function</span><span class="o">=</span><span class="n">trained_estimator</span><span class="o">.</span><span class="n">score_func</span><span class="p">,</span>  <span class="c1"># this score_func includes preaggregation if requested</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="n">trained_estimator</span><span class="p">,</span>
+        <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

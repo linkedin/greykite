@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forecasting Process &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Choose a Model" href="0100_choose_model.html" />
+    <link rel="prev" title="Forecast One By One" href="../../gallery/templates/0400_forecast_one_by_one.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Forecasting Process</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="forecasting-process">
+<h1>Forecasting Process<a class="headerlink" href="#forecasting-process" title="Permalink to this heading"></a></h1>
+<p>It shouldn’t take long to get a basic forecast working
+(see <a class="reference internal" href="../../gallery/quickstart/0100_simple_forecast.html"><span class="doc">Simple Forecast</span></a>). Once you have
+an initial forecast, follow these steps to
+tune the parameters until satisfied.
+A full example of the forecast process can be found at
+<a class="reference internal" href="../../gallery/tutorials/0100_forecast_tutorial.html"><span class="doc">Tune your first forecast model</span></a>.</p>
+<p>Typical steps to get a basic forecast working with Greykite includes:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="0100_choose_model.html"><span class="doc">Choose a Model</span></a></p></li>
+<li><p><a class="reference internal" href="0200_choose_template.html"><span class="doc">Choose a Model Template</span></a></p></li>
+<li><p><a class="reference internal" href="0300_input.html"><span class="doc">Examine Input Data</span></a></p></li>
+<li><p><a class="reference internal" href="0400_configuration.html"><span class="doc">Configure a Forecast</span></a></p></li>
+<li><p><a class="reference internal" href="0500_output.html"><span class="doc">Check Forecast Result</span></a></p></li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../gallery/templates/0400_forecast_one_by_one.html" class="btn btn-neutral float-left" title="Forecast One By One" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0100_choose_model.html" class="btn btn-neutral float-right" title="Choose a Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

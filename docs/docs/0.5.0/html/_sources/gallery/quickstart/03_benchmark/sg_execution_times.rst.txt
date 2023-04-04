@@ -1,0 +1,14 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_quickstart_03_benchmark_sg_execution_times:
+
+Computation times
+=================
+**06:59.137** total execution time for **gallery_quickstart_03_benchmark** files:
+
++-----------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_03_benchmark_0200_benchmark.py` (``0200_benchmark.py``)     | 04:27.289 | 0.0 MB |
++-----------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_03_benchmark_0100_grid_search.py` (``0100_grid_search.py``) | 02:31.848 | 0.0 MB |
++-----------------------------------------------------------------------------------------------+-----------+--------+

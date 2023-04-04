@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Simple Forecast" href="0100_simple_forecast.html" />
+    <link rel="prev" title="Overview" href="../../pages/greykite/overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="0100_simple_forecast.html">Simple Forecast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-exploration">Data exploration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="01_exploration/0100_changepoint_detection.html">Changepoint Detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_exploration/0200_auto_configuration_tools.html">Auto Configuration Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="01_exploration/0300_seasonality_plots.html">Seasonality Plots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interpretability">Interpretability</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="02_interpretability/0100_model_summary.html">Model Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02_interpretability/0200_interpretability.html">Interpretability</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#grid-search-and-benchmarking">Grid Search and Benchmarking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="03_benchmark/0100_grid_search.html">Grid Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03_benchmark/0200_benchmark.html">Benchmarking</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reconciliation">Reconciliation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="04_postprocessing/0100_reconcile_forecasts.html">Reconcile Forecasts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quickstart">
+<span id="sphx-glr-gallery-quickstart"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h1>
+<p>Here are some examples to get you started with core library functionality,
+starting with a simple forecast.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="You can create and evaluate a forecast with just a few lines of code."><figure class="align-default" id="id1">
+<img alt="Simple Forecast" src="../../_images/sphx_glr_0100_simple_forecast_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="0100_simple_forecast.html#sphx-glr-gallery-quickstart-0100-simple-forecast-py"><span class="std std-ref">Simple Forecast</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div><section id="data-exploration">
+<span id="sphx-glr-gallery-quickstart-01-exploration"></span><h2>Data exploration<a class="headerlink" href="#data-exploration" title="Permalink to this heading"></a></h2>
+<p>Here are some library features for data exploration.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="You can detect trend and seasonality changepoints with just a few lines of code."><figure class="align-default" id="id2">
+<img alt="Changepoint Detection" src="../../_images/sphx_glr_0100_changepoint_detection_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="01_exploration/0100_changepoint_detection.html#sphx-glr-gallery-quickstart-01-exploration-0100-changepoint-detection-py"><span class="std std-ref">Changepoint Detection</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The Silverkite model has many hyperparameters to tune. Besides domain knowledge, we also have t..."><figure class="align-default" id="id3">
+<img alt="Auto Configuration Tools" src="../../_images/sphx_glr_0200_auto_configuration_tools_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="01_exploration/0200_auto_configuration_tools.html#sphx-glr-gallery-quickstart-01-exploration-0200-auto-configuration-tools-py"><span class="std std-ref">Auto Configuration Tools</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Forecast models learn seasonal (cyclical) patterns and project them into the future. Understand..."><figure class="align-default" id="id4">
+<img alt="Seasonality Plots" src="../../_images/sphx_glr_0300_seasonality_plots_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="01_exploration/0300_seasonality_plots.html#sphx-glr-gallery-quickstart-01-exploration-0300-seasonality-plots-py"><span class="std std-ref">Seasonality Plots</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></section>
+<section id="interpretability">
+<span id="sphx-glr-gallery-quickstart-02-interpretability"></span><h2>Interpretability<a class="headerlink" href="#interpretability" title="Permalink to this heading"></a></h2>
+<p>Here are some library features for forecast interpretation.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="For every forecast model trained with the Silverkite algorithm, you can print the model summary..."><figure class="align-default" id="id5">
+<img alt="Model Summary" src="../../_images/sphx_glr_0100_model_summary_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="02_interpretability/0100_model_summary.html#sphx-glr-gallery-quickstart-02-interpretability-0100-model-summary-py"><span class="std std-ref">Model Summary</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Silverkite generates easily interpretable forecasting models when using its default ML algorith..."><figure class="align-default" id="id6">
+<img alt="Interpretability" src="../../_images/sphx_glr_0200_interpretability_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="02_interpretability/0200_interpretability.html#sphx-glr-gallery-quickstart-02-interpretability-0200-interpretability-py"><span class="std std-ref">Interpretability</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></section>
+<section id="grid-search-and-benchmarking">
+<span id="sphx-glr-gallery-quickstart-03-benchmark"></span><h2>Grid Search and Benchmarking<a class="headerlink" href="#grid-search-and-benchmarking" title="Permalink to this heading"></a></h2>
+<p>Here are some library features for grid search and benchmarking.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Forecast models have many hyperparameters that could significantly affect the accuracy. These h..."><figure class="align-default" id="id7">
+<img alt="Grid Search" src="../../_images/sphx_glr_0100_grid_search_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="03_benchmark/0100_grid_search.html#sphx-glr-gallery-quickstart-03-benchmark-0100-grid-search-py"><span class="std std-ref">Grid Search</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="You can easily compare predictive performance of multiple algorithms such as Silverkite and Pro..."><figure class="align-default" id="id8">
+<img alt="Benchmarking" src="../../_images/sphx_glr_0200_benchmark_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="03_benchmark/0200_benchmark.html#sphx-glr-gallery-quickstart-03-benchmark-0200-benchmark-py"><span class="std std-ref">Benchmarking</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></section>
+<section id="reconciliation">
+<span id="sphx-glr-gallery-quickstart-04-postprocessing"></span><h2>Reconciliation<a class="headerlink" href="#reconciliation" title="Permalink to this heading"></a></h2>
+<p>Here are some library features for reconciliation of multiple time series forecasts.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="This tutorial explains how use the ~greykite.algo.reconcile.convex.reconcile_forecasts.Reconcil..."><figure class="align-default" id="id9">
+<img alt="Reconcile Forecasts" src="../../_images/sphx_glr_0100_reconcile_forecasts_thumb.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="04_postprocessing/0100_reconcile_forecasts.html#sphx-glr-gallery-quickstart-04-postprocessing-0100-reconcile-forecasts-py"><span class="std std-ref">Reconcile Forecasts</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../pages/greykite/overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0100_simple_forecast.html" class="btn btn-neutral float-right" title="Simple Forecast" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.benchmark.benchmark_class &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.benchmark.benchmark_class</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.benchmark.benchmark_class</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;Class for benchmarking model templates.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">plotly.colors</span> <span class="kn">import</span> <span class="n">DEFAULT_PLOTLY_COLORS</span>
+<span class="kn">from</span> <span class="nn">tqdm.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">ACTUAL_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_LOWER_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_UPPER_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">EvaluationMetricEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.evaluation</span> <span class="kn">import</span> <span class="n">add_finite_filter_to_scorer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">get_pattern_cols</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_multivariate</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_multivariate_grouped</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.benchmark.benchmark_class_helper</span> <span class="kn">import</span> <span class="n">forecast_pipeline_rolling_evaluation</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">FORECAST_STEP_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">RollingTimeSeriesSplit</span>
+
+
+<div class="viewcode-block" id="BenchmarkForecastConfig"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig">[docs]</a><span class="k">class</span> <span class="nc">BenchmarkForecastConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for benchmarking multiple ForecastConfig on a rolling window basis.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Timeseries data to forecast.</span>
+<span class="sd">        Contains columns [`time_col`, `value_col`], and optional regressor columns.</span>
+<span class="sd">        Regressor columns should include future values for prediction.</span>
+
+<span class="sd">    configs : `Dict` [`str`,  `ForecastConfig`]</span>
+<span class="sd">        Dictionary of model configurations.</span>
+<span class="sd">        A model configuration is a ``ForecastConfig``.</span>
+<span class="sd">        See :class:`~greykite.framework.templates.autogen.forecast_config.ForecastConfig` for details on</span>
+<span class="sd">        valid ``ForecastConfig``.</span>
+<span class="sd">        Validity of the ``configs`` for benchmarking is checked via the ``validate`` method.</span>
+
+<span class="sd">    tscv : `~greykite.sklearn.cross_validation.RollingTimeSeriesSplit`</span>
+<span class="sd">        Cross-validation object that determines the rolling window evaluation.</span>
+<span class="sd">        See :class:`~greykite.sklearn.cross_validation.RollingTimeSeriesSplit` for details.</span>
+<span class="sd">        The ``forecast_horizon`` and ``periods_between_train_test`` parameters of ``configs`` are</span>
+<span class="sd">        matched against that of ``tscv``. A ValueError is raised if there is a mismatch.</span>
+
+<span class="sd">    forecaster : `~greykite.framework.templates.forecaster.Forecaster`</span>
+<span class="sd">        Forecaster used to create the forecasts.</span>
+
+<span class="sd">    is_run : bool, default False</span>
+<span class="sd">        Indicator of whether the `run` method is executed.</span>
+<span class="sd">        After executing `run`, this indicator is set to True.</span>
+<span class="sd">        Some class methods like ``get_forecast`` requires ``is_run`` to be True</span>
+<span class="sd">        to be executed.</span>
+
+<span class="sd">    result : `dict`</span>
+<span class="sd">        Stores the benchmarking results. Has the same keys as ``configs``.</span>
+
+<span class="sd">    forecasts : `pandas.DataFrame`, default None</span>
+<span class="sd">        Merged DataFrame of forecasts, upper and lower confidence interval for all</span>
+<span class="sd">        input ``configs``. Also stores train end date and forecast step for each prediction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">configs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ForecastConfig</span><span class="p">],</span>
+            <span class="n">tscv</span><span class="p">:</span> <span class="n">RollingTimeSeriesSplit</span><span class="p">,</span>
+            <span class="n">forecaster</span><span class="p">:</span> <span class="n">Forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="o">=</span> <span class="n">configs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tscv</span> <span class="o">=</span> <span class="n">tscv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecaster</span> <span class="o">=</span> <span class="n">forecaster</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_run</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">configs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.validate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates the inputs to the class for the method ``run``.</span>
+
+<span class="sd">        Raises a ValueError if there is a mismatch between the following parameters</span>
+<span class="sd">        of ``configs`` and ``tscv``:</span>
+
+<span class="sd">         - ``forecast_horizon``</span>
+<span class="sd">         - ``periods_between_train_test``</span>
+
+<span class="sd">        Raises ValueError if all the ``configs`` do not have the same ``coverage`` parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coverage_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">config_name</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Computes pipeline parameters</span>
+            <span class="n">pipeline_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecaster</span><span class="o">.</span><span class="n">apply_forecast_config</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+            <span class="c1"># Checks forecast_horizon</span>
+            <span class="k">if</span> <span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">&#39;s &#39;forecast_horizon&#39; (</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="si">}</span><span class="s2">) does &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;not match that of &#39;tscv&#39; (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Checks periods_between_train_test</span>
+            <span class="k">if</span> <span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="o">.</span><span class="n">periods_between_train_test</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">&#39;s &#39;periods_between_train_test&#39; (</span><span class="si">{</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s1">&#39;periods_between_train_test&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">) &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;does not match that of &#39;tscv&#39; (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="o">.</span><span class="n">periods_between_train_test</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">config_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pipeline_params</span><span class="o">=</span><span class="n">pipeline_params</span><span class="p">)</span>
+            <span class="n">coverage_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+
+        <span class="c1"># Checks all coverages are same</span>
+        <span class="k">if</span> <span class="n">coverage_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">coverage_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All forecast configs must have same coverage.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.run"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs every config and stores the output of the</span>
+<span class="sd">        :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        This function runs only if the ``configs`` and ``tscv`` are jointly valid.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : Returns self. Stores pipeline output of every config in ``self.result``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">config_name</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> <span class="ow">in</span> <span class="n">progress_bar</span><span class="p">:</span>
+                <span class="c1"># Description will be displayed on the left of progress bar</span>
+                <span class="n">progress_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Benchmarking &#39;</span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">&#39; &quot;</span><span class="p">)</span>
+                <span class="n">rolling_evaluation</span> <span class="o">=</span> <span class="n">forecast_pipeline_rolling_evaluation</span><span class="p">(</span>
+                    <span class="n">pipeline_params</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;pipeline_params&quot;</span><span class="p">],</span>
+                    <span class="n">tscv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="p">)</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rolling_evaluation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rolling_evaluation</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_run</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.extract_forecasts"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.extract_forecasts">[docs]</a>    <span class="k">def</span> <span class="nf">extract_forecasts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts forecasts, upper and lower confidence interval for each individual</span>
+<span class="sd">        config. This is saved as a ``pandas.DataFrame`` with the name</span>
+<span class="sd">        ``rolling_forecast_df`` within the corresponding config of ``self.result``.</span>
+<span class="sd">        e.g. if config key is &quot;silverkite&quot;, then the forecasts are stored in</span>
+<span class="sd">        ``self.result[&quot;silverkite&quot;][&quot;rolling_forecast_df&quot;]``.</span>
+
+<span class="sd">        This method also constructs a merged DataFrame of forecasts,</span>
+<span class="sd">        upper and lower confidence interval for all input ``configs``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_run</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please execute &#39;run&#39; method to create forecasts.&quot;</span><span class="p">)</span>
+
+        <span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">config_name</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">rolling_evaluation</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rolling_evaluation&quot;</span><span class="p">]</span>
+            <span class="n">rolling_forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="p">(</span><span class="n">split_key</span><span class="p">,</span> <span class="n">split_value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rolling_evaluation</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">forecast</span> <span class="o">=</span> <span class="n">split_value</span><span class="p">[</span><span class="s2">&quot;pipeline_result&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">forecast</span>
+                <span class="c1"># Subsets forecast_horizon rows from the end of forecast dataframe</span>
+                <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">forecast</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="n">forecast</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">:]</span>
+                <span class="n">forecast_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;train_end_date&quot;</span><span class="p">,</span> <span class="n">forecast</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">)</span>
+                <span class="n">forecast_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">FORECAST_STEP_COL</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">forecast</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">forecast_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;split_num&quot;</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+                <span class="n">rolling_forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">rolling_forecast_df</span><span class="p">,</span> <span class="n">forecast_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">rolling_forecast_df</span> <span class="o">=</span> <span class="n">rolling_forecast_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">config_name</span><span class="p">][</span><span class="s2">&quot;rolling_forecast_df&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rolling_forecast_df</span>
+
+            <span class="c1"># Merges the forecasts of individual config</span>
+            <span class="c1"># Augments prediction columns with config name</span>
+            <span class="n">pred_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">PREDICTED_COL</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">PREDICTED_LOWER_COL</span> <span class="ow">in</span> <span class="n">rolling_forecast_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">pred_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PREDICTED_LOWER_COL</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">PREDICTED_UPPER_COL</span> <span class="ow">in</span> <span class="n">rolling_forecast_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">pred_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PREDICTED_UPPER_COL</span><span class="p">)</span>
+            <span class="n">mapper</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">col</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">pred_cols</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="n">temp_df</span> <span class="o">=</span> <span class="n">rolling_forecast_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">mapper</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">temp_df</span> <span class="o">=</span> <span class="n">rolling_forecast_df</span><span class="p">[</span><span class="n">pred_cols</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">mapper</span><span class="p">)</span>
+
+            <span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">merged_df</span><span class="p">,</span> <span class="n">temp_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span> <span class="o">=</span> <span class="n">merged_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.plot_forecasts_by_step"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.plot_forecasts_by_step">[docs]</a>    <span class="k">def</span> <span class="nf">plot_forecasts_by_step</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">forecast_step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a ``forecast_step`` ahead rolling forecast plot.</span>
+<span class="sd">        The plot consists one line for each valid. ``config_names``.</span>
+<span class="sd">        If available, the corresponding actual values are also plotted.</span>
+
+<span class="sd">        For a more customizable plot, see</span>
+<span class="sd">        :func:`~greykite.common.viz.timeseries_plotting.plot_multivariate`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        forecast_step : `int`</span>
+<span class="sd">            Which forecast step to plot. A forecast step is an integer between 1 and the</span>
+<span class="sd">            forecast horizon, inclusive, indicating the number of periods from train end date</span>
+<span class="sd">            to the prediction date (# steps ahead).</span>
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+<span class="sd">        xlabel : `str` or None, default TIME_COL</span>
+<span class="sd">            x-axis label.</span>
+<span class="sd">        ylabel : `str` or None, default VALUE_COL</span>
+<span class="sd">            y-axis label.</span>
+<span class="sd">        title : `str` or None, default None</span>
+<span class="sd">            Plot title. If None, default is based on ``forecast_step``.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            Interactive plotly graph.</span>
+<span class="sd">            Plots multiple column(s) in ``self.forecasts`` against ``TIME_COL``.</span>
+
+<span class="sd">            See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">            return value for how to plot the figure and add customization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extract_forecasts</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">forecast_step</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`forecast_step` (</span><span class="si">{</span><span class="n">forecast_step</span><span class="si">}</span><span class="s2">) must be less than or equal to &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;forecast horizon (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tscv</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
+
+        <span class="n">config_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_config_names</span><span class="p">(</span><span class="n">config_names</span><span class="p">)</span>
+        <span class="n">y_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">TIME_COL</span><span class="p">,</span> <span class="n">ACTUAL_COL</span><span class="p">]</span> <span class="o">+</span> \
+                 <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">PREDICTED_COL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">config_name</span> <span class="ow">in</span> <span class="n">config_names</span><span class="p">]</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span><span class="p">[</span><span class="n">FORECAST_STEP_COL</span><span class="p">]</span> <span class="o">==</span> <span class="n">forecast_step</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">y_cols</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">forecast_step</span><span class="si">}</span><span class="s2">-step ahead rolling forecasts&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="s2">&quot;plotly&quot;</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.plot_forecasts_by_config"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.plot_forecasts_by_config">[docs]</a>    <span class="k">def</span> <span class="nf">plot_forecasts_by_config</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">config_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">colors</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">DEFAULT_PLOTLY_COLORS</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a rolling plot of the forecasts by ``config_name`` against ``TIME_COL``.</span>
+<span class="sd">        The plot consists of one line for each available split. Some lines may overlap if test</span>
+<span class="sd">        period in corresponding splits intersect. Hence every line is given a different color.</span>
+<span class="sd">        If available, the corresponding actual values are also plotted.</span>
+
+<span class="sd">        For a more customizable plot, see</span>
+<span class="sd">        :func:`~greykite.common.viz.timeseries_plotting.plot_multivariate_grouped`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config_name : `str`</span>
+<span class="sd">            Which config result to plot.</span>
+<span class="sd">            The name must match the name of one of the input ``configs``.</span>
+<span class="sd">        colors : [`str`, `List` [`str`]], default ``DEFAULT_PLOTLY_COLORS``</span>
+<span class="sd">            Which colors to use to build the color palette.</span>
+<span class="sd">            This can be a list of RGB colors or a `str` from ``PLOTLY_SCALES``.</span>
+<span class="sd">            To use a single color for all lines, pass a `List` with a single color.</span>
+<span class="sd">        xlabel : `str` or None, default TIME_COL</span>
+<span class="sd">            x-axis label.</span>
+<span class="sd">        ylabel : `str` or None, default VALUE_COL</span>
+<span class="sd">            y-axis label.</span>
+<span class="sd">        title : `str` or None, default None</span>
+<span class="sd">            Plot title. If None, default is based on ``config_name``.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            Interactive plotly graph.</span>
+<span class="sd">            Plots multiple column(s) in ``self.forecasts`` against ``TIME_COL``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extract_forecasts</span><span class="p">()</span>
+
+        <span class="n">config_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_config_names</span><span class="p">([</span><span class="n">config_name</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Rolling forecast for </span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate_grouped</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">forecasts</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">ACTUAL_COL</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="s2">&quot;dash&quot;</span><span class="p">:</span> <span class="s2">&quot;solid&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="n">grouping_x_col</span><span class="o">=</span><span class="s2">&quot;split_num&quot;</span><span class="p">,</span>
+            <span class="n">grouping_x_col_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">grouping_y_col_style_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">PREDICTED_COL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;split&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="s2">&quot;dash&quot;</span><span class="p">:</span> <span class="s2">&quot;solid&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.get_evaluation_metrics"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_evaluation_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_evaluation_metrics</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">metric_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns rolling train and test evaluation metric values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric_dict : `dict` [`str`, `callable`]</span>
+<span class="sd">            Evaluation metrics to compute.</span>
+
+<span class="sd">                - key: evaluation metric name, used to create column name in output.</span>
+<span class="sd">                - value: metric function to apply to forecast df in each split to generate the column value.</span>
+<span class="sd">                        Signature (y_true: `str`, y_pred: `str`) -&gt; transformed value: `float`.</span>
+
+<span class="sd">            For example::</span>
+
+<span class="sd">                metric_dict = {</span>
+<span class="sd">                    &quot;median_residual&quot;: lambda y_true, y_pred: np.median(y_true - y_pred),</span>
+<span class="sd">                    &quot;mean_squared_error&quot;: lambda y_true, y_pred: np.mean((y_true - y_pred)**2)</span>
+<span class="sd">                }</span>
+
+<span class="sd">            Some predefined functions are available in</span>
+<span class="sd">            `~greykite.common.evaluation`. For example::</span>
+
+<span class="sd">                metric_dict = {</span>
+<span class="sd">                    &quot;correlation&quot;: lambda y_true, y_pred: correlation(y_true, y_pred),</span>
+<span class="sd">                    &quot;RMSE&quot;: lambda y_true, y_pred: root_mean_squared_error(y_true, y_pred),</span>
+<span class="sd">                    &quot;Q_95&quot;: lambda y_true, y_pred: partial(quantile_loss(y_true, y_pred, q=0.95))</span>
+<span class="sd">                }</span>
+
+<span class="sd">            As shorthand, it is sufficient to provide the corresponding ``EvaluationMetricEnum``</span>
+<span class="sd">            member.  These are auto-expanded into the appropriate function.</span>
+<span class="sd">            So the following is equivalent::</span>
+
+<span class="sd">                metric_dict = {</span>
+<span class="sd">                    &quot;correlation&quot;: EvaluationMetricEnum.Correlation,</span>
+<span class="sd">                    &quot;RMSE&quot;: EvaluationMetricEnum.RootMeanSquaredError,</span>
+<span class="sd">                    &quot;Q_95&quot;: EvaluationMetricEnum.Quantile95</span>
+<span class="sd">                }</span>
+
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        evaluation_metrics_df : pd.DataFrame</span>
+<span class="sd">            A DataFrame containing splitwise train and test evaluation metrics for ``metric_dict``</span>
+<span class="sd">            and ``config_names``.</span>
+
+<span class="sd">            For example. Let&#39;s assume::</span>
+
+<span class="sd">                metric_dict = {</span>
+<span class="sd">                    &quot;RMSE&quot;: EvaluationMetricEnum.RootMeanSquaredError,</span>
+<span class="sd">                    &quot;Q_95&quot;: EvaluationMetricEnum.Quantile95</span>
+<span class="sd">                }</span>
+
+<span class="sd">                config_names = [&quot;default_prophet&quot;, &quot;custom_silverkite&quot;]</span>
+<span class="sd">                These are valid ``config_names`` and there are 2 splits for each.</span>
+
+<span class="sd">                Then evaluation_metrics_df =</span>
+
+<span class="sd">                config_name     split_num   train_RMSE  test_RMSE   train_Q_95  test_Q_95</span>
+<span class="sd">                default_prophet      0          *           *           *           *</span>
+<span class="sd">                default_prophet      1          *           *           *           *</span>
+<span class="sd">                custom_silverkite    0          *           *           *           *</span>
+<span class="sd">                custom_silverkite    1          *           *           *           *</span>
+
+<span class="sd">                where * represents computed values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_run</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please execute the &#39;run&#39; method before computing evaluation metrics.&quot;</span><span class="p">)</span>
+
+        <span class="n">metric_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autocomplete_metric_dict</span><span class="p">(</span>
+            <span class="n">metric_dict</span><span class="o">=</span><span class="n">metric_dict</span><span class="p">,</span>
+            <span class="n">enum_class</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="p">)</span>
+
+        <span class="n">config_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_config_names</span><span class="p">(</span><span class="n">config_names</span><span class="o">=</span><span class="n">config_names</span><span class="p">)</span>
+
+        <span class="n">evaluation_metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">config_name</span> <span class="ow">in</span> <span class="n">config_names</span><span class="p">:</span>
+            <span class="n">rolling_evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">config_name</span><span class="p">][</span><span class="s2">&quot;rolling_evaluation&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="p">(</span><span class="n">split_key</span><span class="p">,</span> <span class="n">split_value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rolling_evaluation</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">forecast</span> <span class="o">=</span> <span class="n">split_value</span><span class="p">[</span><span class="s2">&quot;pipeline_result&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">forecast</span>
+                <span class="n">split_metrics</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;config_name&quot;</span><span class="p">:</span> <span class="n">config_name</span><span class="p">,</span>
+                    <span class="s2">&quot;split_num&quot;</span><span class="p">:</span> <span class="n">num</span><span class="p">}</span>
+                <span class="c1"># Updates train metrics</span>
+                <span class="n">df_train</span> <span class="o">=</span> <span class="n">forecast</span><span class="o">.</span><span class="n">df_train</span>
+                <span class="n">split_metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                    <span class="sa">f</span><span class="s2">&quot;train_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span>
+                        <span class="n">df_train</span><span class="p">[</span><span class="n">forecast</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span>
+                        <span class="n">df_train</span><span class="p">[</span><span class="n">forecast</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">]</span>
+                    <span class="p">)</span> <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_func</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">})</span>
+                <span class="c1"># Updates test metrics</span>
+                <span class="n">df_test</span> <span class="o">=</span> <span class="n">forecast</span><span class="o">.</span><span class="n">df_test</span>
+                <span class="k">if</span> <span class="n">df_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">forecast</span><span class="o">.</span><span class="n">test_na_count</span> <span class="o">&lt;</span> <span class="n">df_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">split_metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                        <span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metric_func</span><span class="p">(</span>
+                            <span class="n">df_test</span><span class="p">[</span><span class="n">forecast</span><span class="o">.</span><span class="n">actual_col</span><span class="p">],</span>
+                            <span class="n">df_test</span><span class="p">[</span><span class="n">forecast</span><span class="o">.</span><span class="n">predicted_col</span><span class="p">]</span>
+                        <span class="p">)</span> <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_func</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="p">})</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">split_metrics</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                        <span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                        <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_func</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="p">})</span>
+
+                <span class="n">split_metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">split_metrics</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">num</span><span class="p">])</span>
+                <span class="n">evaluation_metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">evaluation_metrics_df</span><span class="p">,</span> <span class="n">split_metrics_df</span><span class="p">])</span>
+        <span class="c1"># Resets index and fills missing values (e.g. when correlation is not defined) with np.nan</span>
+        <span class="n">evaluation_metrics_df</span> <span class="o">=</span> <span class="n">evaluation_metrics_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">temp_df</span> <span class="o">=</span> <span class="n">evaluation_metrics_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Rearranges columns so that train and test error of a config are side by side</span>
+        <span class="n">evaluation_metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="n">evaluation_metrics_df</span><span class="p">[</span><span class="s2">&quot;config_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="s2">&quot;config_name&quot;</span><span class="p">]</span>
+        <span class="n">evaluation_metrics_df</span><span class="p">[</span><span class="s2">&quot;split_num&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="s2">&quot;split_num&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">evaluation_metrics_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;train_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;train_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="n">evaluation_metrics_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">evaluation_metrics_df</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.plot_evaluation_metrics"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.plot_evaluation_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">plot_evaluation_metrics</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">metric_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Metric value&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a barplot of the train and test values of ``metric_dict`` of ``config_names``.</span>
+<span class="sd">        Value of a metric for all ``config_names`` are plotted as a grouped bar.</span>
+<span class="sd">        Train and test values of a metric are plot side-by-side for easy comparison.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric_dict : `dict` [`str`, `callable`]</span>
+<span class="sd">            Evaluation metrics to compute. Same as</span>
+<span class="sd">            `~greykite.framework.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_evaluation_metrics`.</span>
+<span class="sd">            To get the best visualization, keep number of metrics &lt;= 2.</span>
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+<span class="sd">        xlabel : `str` or None, default None</span>
+<span class="sd">            x-axis label.</span>
+<span class="sd">        ylabel : `str` or None, default &quot;Metric value&quot;</span>
+<span class="sd">            y-axis label.</span>
+<span class="sd">        title : `str` or None, default None</span>
+<span class="sd">            Plot title.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">         fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            Interactive plotly bar plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">evaluation_metrics_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_evaluation_metrics</span><span class="p">(</span>
+            <span class="n">metric_dict</span><span class="o">=</span><span class="n">metric_dict</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="o">=</span><span class="n">config_names</span><span class="p">)</span>
+
+        <span class="c1"># This function groups by config name</span>
+        <span class="n">evaluation_metrics_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">evaluation_metrics_df</span>
+                                 <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;split_num&quot;</span><span class="p">])</span>
+                                 <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;config_name&quot;</span><span class="p">)</span>
+                                 <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                                 <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Rearranges columns so that train and test error of a config are side by side</span>
+        <span class="n">plot_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">plot_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;train_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluation_metrics_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;train_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="n">plot_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluation_metrics_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;test_</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Average evaluation metric across rolling windows&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Each row (index) is a config. Adds each row to the bar plot.</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">plot_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">plot_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">plot_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+            <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">xlabel</span><span class="p">),</span>
+            <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">ylabel</span><span class="p">),</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+            <span class="n">barmode</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.get_grouping_evaluation_metrics"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_grouping_evaluation_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_grouping_evaluation_metrics</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">metric_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns splitwise rolling evaluation metric values.</span>
+<span class="sd">         These values are grouped by the grouping method chosen by ``groupby_time_feature``,</span>
+<span class="sd">         ``groupby_sliding_window_size`` and ``groupby_custom_column``.</span>
+<span class="sd">        See `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_grouping_evaluation`</span>
+<span class="sd">        for details on grouping method.</span>
+
+<span class="sd">         Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric_dict : `dict` [`str`, `callable`]</span>
+<span class="sd">            Evaluation metrics to compute. Same as</span>
+<span class="sd">            `~greykite.framework.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_evaluation_metrics`.</span>
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+<span class="sd">        which: `str`</span>
+<span class="sd">            &quot;train&quot; or &quot;test&quot;. Which dataset to evaluate.</span>
+<span class="sd">        groupby_time_feature : `str` or None, default None</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, default None</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, default None</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        grouped_evaluation_df : `pandas.DataFrame`</span>
+<span class="sd">            A DataFrame containing splitwise train and test evaluation metrics for ``metric_dict``</span>
+<span class="sd">            and ``config_names``. The evaluation metrics are grouped by the grouping method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_run</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please execute the &#39;run&#39; method before computing &quot;</span>
+                             <span class="s2">&quot;grouped evaluation metrics.&quot;</span><span class="p">)</span>
+
+        <span class="n">metric_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autocomplete_metric_dict</span><span class="p">(</span>
+            <span class="n">metric_dict</span><span class="o">=</span><span class="n">metric_dict</span><span class="p">,</span>
+            <span class="n">enum_class</span><span class="o">=</span><span class="n">EvaluationMetricEnum</span><span class="p">)</span>
+
+        <span class="n">config_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_config_names</span><span class="p">(</span><span class="n">config_names</span><span class="o">=</span><span class="n">config_names</span><span class="p">)</span>
+
+        <span class="n">grouped_evaluation_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">config_name</span> <span class="ow">in</span> <span class="n">config_names</span><span class="p">:</span>
+            <span class="n">rolling_evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">config_name</span><span class="p">][</span><span class="s2">&quot;rolling_evaluation&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="p">(</span><span class="n">split_key</span><span class="p">,</span> <span class="n">split_value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rolling_evaluation</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">forecast</span> <span class="o">=</span> <span class="n">split_value</span><span class="p">[</span><span class="s2">&quot;pipeline_result&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">forecast</span>
+                <span class="n">split_evaluation_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_func</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">forecast</span><span class="o">.</span><span class="n">get_grouping_evaluation</span><span class="p">(</span>
+                        <span class="n">score_func</span><span class="o">=</span><span class="n">metric_func</span><span class="p">,</span>
+                        <span class="n">score_func_name</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+                        <span class="n">which</span><span class="o">=</span><span class="n">which</span><span class="p">,</span>
+                        <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+                        <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+                        <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+                    <span class="c1"># Adds grouped_df to split_evaluation_df, handling the case if split_evaluation_df is empty</span>
+                    <span class="c1"># If the actual values are missing, grouped_df.shape[0] might be 0</span>
+                    <span class="k">if</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">split_evaluation_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                            <span class="n">split_evaluation_df</span> <span class="o">=</span> <span class="n">grouped_df</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">groupby_col</span> <span class="o">=</span> <span class="n">split_evaluation_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">split_evaluation_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">split_evaluation_df</span><span class="p">,</span> <span class="n">grouped_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">groupby_col</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># This column name is the same as that obtained from</span>
+                        <span class="c1"># `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_grouping_evaluation`</span>
+                        <span class="n">split_evaluation_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">split_evaluation_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;config_name&quot;</span><span class="p">,</span> <span class="n">config_name</span><span class="p">)</span>
+                <span class="n">split_evaluation_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;split_num&quot;</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+                <span class="n">grouped_evaluation_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">grouped_evaluation_df</span><span class="p">,</span> <span class="n">split_evaluation_df</span><span class="p">])</span>
+        <span class="n">grouped_evaluation_df</span> <span class="o">=</span> <span class="n">grouped_evaluation_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">grouped_evaluation_df</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.plot_grouping_evaluation_metrics"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.plot_grouping_evaluation_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">plot_grouping_evaluation_metrics</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">metric_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Metric value&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a line plot of the grouped evaluation values of ``metric_dict`` of ``config_names``.</span>
+<span class="sd">        These values are grouped by the grouping method chosen by ``groupby_time_feature``,</span>
+<span class="sd">         ``groupby_sliding_window_size`` and ``groupby_custom_column``.</span>
+<span class="sd">        See `~greykite.framework.output.univariate_forecast.UnivariateForecast.get_grouping_evaluation`</span>
+<span class="sd">        for details on grouping method.</span>
+
+<span class="sd">         Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric_dict : `dict` [`str`, `callable`]</span>
+<span class="sd">            Evaluation metrics to compute. Same as</span>
+<span class="sd">            `~greykite.framework.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_evaluation_metrics`.</span>
+<span class="sd">            To get the best visualization, keep number of metrics &lt;= 2.</span>
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+<span class="sd">        which: `str`</span>
+<span class="sd">            &quot;train&quot; or &quot;test&quot;. Which dataset to evaluate.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        xlabel : `str` or None, default None</span>
+<span class="sd">            x-axis label. If None, label is determined by the groupby column name.</span>
+<span class="sd">        ylabel : `str` or None, default &quot;Metric value&quot;</span>
+<span class="sd">            y-axis label.</span>
+<span class="sd">        title : `str` or None, default None</span>
+<span class="sd">            Plot title. If None, default is based on ``config_name``.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">         fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            Interactive plotly graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grouped_evaluation_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grouping_evaluation_metrics</span><span class="p">(</span>
+            <span class="n">metric_dict</span><span class="o">=</span><span class="n">metric_dict</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="o">=</span><span class="n">config_names</span><span class="p">,</span>
+            <span class="n">which</span><span class="o">=</span><span class="n">which</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+
+        <span class="c1"># Figures out groupby_col name by process of elimination</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">grouped_evaluation_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;config_name&quot;</span><span class="p">,</span> <span class="s2">&quot;split_num&quot;</span><span class="p">]]</span>
+        <span class="n">groupby_col</span> <span class="o">=</span> <span class="n">get_pattern_cols</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">pos_pattern</span><span class="o">=</span><span class="s2">&quot;.*&quot;</span><span class="p">,</span> <span class="n">neg_pattern</span><span class="o">=</span><span class="n">which</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">plot_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">grouped_evaluation_df</span>
+                   <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;split_num&quot;</span><span class="p">])</span>            <span class="c1"># Drops redundant column</span>
+                   <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;config_name&quot;</span><span class="p">,</span> <span class="n">groupby_col</span><span class="p">])</span>  <span class="c1"># Averages values across splits</span>
+                   <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                   <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>                      <span class="c1"># Drops rows with all NA values</span>
+                   <span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>                       <span class="c1"># Moves config_name from multiindex rows to multiindex columns</span>
+                   <span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                     <span class="c1"># Sorts on groupby_col to plot groups in logical order</span>
+                   <span class="p">)</span>
+
+        <span class="c1"># Flattens and renames multiindex columns</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">groupby_col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">plot_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="n">plot_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">plot_df</span><span class="o">.</span><span class="n">to_records</span><span class="p">())</span>
+        <span class="n">plot_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
+
+        <span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xlabel</span> <span class="o">=</span> <span class="n">groupby_col</span>
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2"> performance by </span><span class="si">{</span><span class="n">xlabel</span><span class="si">}</span><span class="s2"> across rolling windows&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">plot_df</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">groupby_col</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="s2">&quot;plotly&quot;</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.get_runtimes"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_runtimes">[docs]</a>    <span class="k">def</span> <span class="nf">get_runtimes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns rolling average runtime in seconds for ``config_names``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        runtimes_df : pd.DataFrame</span>
+<span class="sd">            A DataFrame containing splitwise runtime in seconds for ``config_names``.</span>
+
+<span class="sd">            For example. Let&#39;s assume::</span>
+
+<span class="sd">                config_names = [&quot;default_prophet&quot;, &quot;custom_silverkite&quot;]</span>
+<span class="sd">                These are valid ``config_names`` and there are 2 splits for each.</span>
+
+<span class="sd">                Then runtimes_df =</span>
+
+<span class="sd">                config_name     split_num   runtime_sec</span>
+<span class="sd">                default_prophet      0          *</span>
+<span class="sd">                default_prophet      1          *</span>
+<span class="sd">                custom_silverkite    0          *</span>
+<span class="sd">                custom_silverkite    1          *</span>
+
+<span class="sd">                where * represents computed values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_run</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please execute the &#39;run&#39; method to obtain runtimes.&quot;</span><span class="p">)</span>
+
+        <span class="n">config_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_valid_config_names</span><span class="p">(</span><span class="n">config_names</span><span class="o">=</span><span class="n">config_names</span><span class="p">)</span>
+        <span class="n">runtimes_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">config_name</span> <span class="ow">in</span> <span class="n">config_names</span><span class="p">:</span>
+            <span class="n">rolling_evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">config_name</span><span class="p">][</span><span class="s2">&quot;rolling_evaluation&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="p">(</span><span class="n">split_key</span><span class="p">,</span> <span class="n">split_value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rolling_evaluation</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="n">split_runtime_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                    <span class="s2">&quot;config_name&quot;</span><span class="p">:</span> <span class="n">config_name</span><span class="p">,</span>
+                    <span class="s2">&quot;split_num&quot;</span><span class="p">:</span> <span class="n">num</span><span class="p">,</span>
+                    <span class="s2">&quot;runtime_sec&quot;</span><span class="p">:</span> <span class="n">split_value</span><span class="p">[</span><span class="s2">&quot;runtime_sec&quot;</span><span class="p">]</span>
+                <span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">num</span><span class="p">])</span>
+                <span class="n">runtimes_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">runtimes_df</span><span class="p">,</span> <span class="n">split_runtime_df</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">runtimes_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.plot_runtimes"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.plot_runtimes">[docs]</a>    <span class="k">def</span> <span class="nf">plot_runtimes</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Mean runtime in seconds&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Average runtime across rolling windows&quot;</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a barplot of the runtimes of ``config_names``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+<span class="sd">        xlabel : `str` or None, default None</span>
+<span class="sd">            x-axis label.</span>
+<span class="sd">        ylabel : `str` or None, default &quot;Mean runtime in seconds&quot;</span>
+<span class="sd">            y-axis label.</span>
+<span class="sd">        title : `str` or None, default &quot;Average runtime across rolling windows&quot;</span>
+<span class="sd">            Plot title.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">         fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            Interactive plotly bar plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">runtimes_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_runtimes</span><span class="p">(</span><span class="n">config_names</span><span class="o">=</span><span class="n">config_names</span><span class="p">)</span>
+
+        <span class="n">plot_df</span> <span class="o">=</span> <span class="n">runtimes_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;split_num&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;config_name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">plot_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">plot_df</span><span class="p">[</span><span class="s2">&quot;runtime_sec&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Runtime&quot;</span><span class="p">)]</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+            <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">xlabel</span><span class="p">),</span>
+            <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">ylabel</span><span class="p">),</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.get_valid_config_names"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_valid_config_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_valid_config_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_names</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate ``config_names`` against keys of ``configs``.</span>
+<span class="sd">        Raises a ValueError in case of a mismatch.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">         config_names : `list` [`str`], default None</span>
+<span class="sd">            Which config results to plot. A list of config names.</span>
+<span class="sd">            If None, uses all the available config keys.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        config_names : `list`</span>
+<span class="sd">            List of valid config names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">available_config_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">config_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config_names</span> <span class="o">=</span> <span class="n">available_config_names</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">missing_config_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">config_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">available_config_names</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_config_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The following config keys are missing: </span><span class="si">{</span><span class="n">missing_config_names</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">config_names</span></div>
+
+<div class="viewcode-block" id="BenchmarkForecastConfig.autocomplete_metric_dict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.benchmark.benchmark_class.BenchmarkForecastConfig.autocomplete_metric_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">autocomplete_metric_dict</span><span class="p">(</span><span class="n">metric_dict</span><span class="p">,</span> <span class="n">enum_class</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sweeps through ``metric_dict``, converting members of ``enum_class`` to</span>
+<span class="sd">        their corresponding evaluation function.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            metric_dict = {</span>
+<span class="sd">                &quot;correlation&quot;: EvaluationMetricEnum.Correlation,</span>
+<span class="sd">                &quot;RMSE&quot;: EvaluationMetricEnum.RootMeanSquaredError,</span>
+<span class="sd">                &quot;Q_95&quot;: EvaluationMetricEnum.Quantile95</span>
+<span class="sd">                &quot;custom_metric&quot;: custom_function</span>
+<span class="sd">            }</span>
+
+<span class="sd">            is converted to</span>
+
+<span class="sd">            metric_dict = {</span>
+<span class="sd">                &quot;correlation&quot;: correlation(y_true, y_pred),</span>
+<span class="sd">                &quot;RMSE&quot;: root_mean_squared_error(y_true, y_pred),</span>
+<span class="sd">                &quot;Q_95&quot;: quantile_loss_q(y_true, y_pred, q=0.95),</span>
+<span class="sd">                &quot;custom_function&quot;: custom_function</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metric_dict : `dict` [`str`, `callable`]</span>
+<span class="sd">            Evaluation metrics to compute. Same as</span>
+<span class="sd">            `~greykite.framework.framework.benchmark.benchmark_class.BenchmarkForecastConfig.get_evaluation_metrics`.</span>
+<span class="sd">        enum_class : Enum</span>
+<span class="sd">            The enum class ``metric_dict`` elements might be member of.</span>
+<span class="sd">            It must have a method ``get_metric_func``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        updated_metric_dict : `dict`</span>
+<span class="sd">            Autocompleted metric dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">updated_metric_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_value</span> <span class="ow">in</span> <span class="n">metric_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metric_value</span><span class="p">,</span> <span class="n">enum_class</span><span class="p">):</span>
+                <span class="n">updated_metric_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_value</span><span class="o">.</span><span class="n">get_metric_func</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">updated_metric_dict</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_finite_filter_to_scorer</span><span class="p">(</span><span class="n">metric_value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">metric_value</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value of &#39;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&#39; should be a callable or a member of </span><span class="si">{</span><span class="n">enum_class</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">updated_metric_dict</span></div>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Benchmark save is not implemented yet.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Benchmark summary is not implemented yet.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.templates.model_templates &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.templates.model_templates</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.templates.model_templates</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;This file applies and runs pre-packaged model templates.</span>
+
+<span class="sd">A model template provides a wrapper around</span>
+<span class="sd">:func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`</span>
+<span class="sd">that provides suitable parameters for modeling different types of input data</span>
+<span class="sd">(frequency, forecast horizon, etc.).</span>
+
+<span class="sd">Each model template provides default parameters to call</span>
+<span class="sd">:func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">most importantly:</span>
+
+<span class="sd">    * ``estimator_name``,</span>
+<span class="sd">    * ``hyperparameter_grid``,</span>
+<span class="sd">    * ``pipeline``</span>
+
+<span class="sd">These defaults can be customized by the other parameters of a</span>
+<span class="sd">:class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">Thus, a model template defines a model, whereas</span>
+<span class="sd">:func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`</span>
+<span class="sd">takes a model through the training and validation steps.</span>
+
+<span class="sd">Thus, model templates make it easy to create and tune a forecast.</span>
+<span class="sd">Users are advised to start with the provided templates and tune the</span>
+<span class="sd">model component parameters as necessary.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.auto_arima_template</span> <span class="kn">import</span> <span class="n">AutoArimaTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.lag_based_template</span> <span class="kn">import</span> <span class="n">LagBasedTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.multistage_forecast_template</span> <span class="kn">import</span> <span class="n">MultistageForecastTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.prophet_template</span> <span class="kn">import</span> <span class="n">ProphetTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.silverkite_template</span> <span class="kn">import</span> <span class="n">SilverkiteTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.simple_silverkite_template</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.template_interface</span> <span class="kn">import</span> <span class="n">TemplateInterface</span>
+
+
+<div class="viewcode-block" id="ModelTemplate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.model_templates.ModelTemplate">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ModelTemplate</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A model template consists of a template class,</span>
+<span class="sd">    a description, and a name.</span>
+
+<span class="sd">    This class holds the template class and description.</span>
+<span class="sd">    The model template name is the member name in</span>
+<span class="sd">    `greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">template_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">TemplateInterface</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that implements the template interface.&quot;&quot;&quot;</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A description of the model template.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ModelTemplateEnum"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.model_templates.ModelTemplateEnum">[docs]</a><span class="k">class</span> <span class="nc">ModelTemplateEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Available model templates.</span>
+
+<span class="sd">    Enumerates the possible values for the ``model_template`` attribute of</span>
+<span class="sd">    :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">    The value has type `~greykite.framework.templates.model_templates.ModelTemplate` which contains:</span>
+
+<span class="sd">        - the template class that recognizes the model_template. Template classes implement the</span>
+<span class="sd">          `~greykite.framework.templates.template_interface.TemplateInterface` interface.</span>
+<span class="sd">        - a plain-text description of what the model_template is for,</span>
+
+<span class="sd">    The description should be unique across enum members. The template class</span>
+<span class="sd">    can be shared, because a template class can recognize multiple model templates.</span>
+<span class="sd">    For example, the same template class may use different default values for</span>
+<span class="sd">    ``ForecastConfig.model_components_param`` depending on ``ForecastConfig.model_template``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The template classes</span>
+<span class="sd">    `~greykite.framework.templates.silverkite_template.SilverkiteTemplate`</span>
+<span class="sd">    and `~greykite.framework.templates.prophet_template.ProphetTemplate`</span>
+<span class="sd">    recognize only the model templates explicitly enumerated here.</span>
+
+<span class="sd">    However, the `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`</span>
+<span class="sd">    template class allows additional model templates to be specified generically.</span>
+<span class="sd">    Any object of type `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`</span>
+<span class="sd">    can be used as the model_template.</span>
+<span class="sd">    These generic model templates are valid but not enumerated here.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model with automatic growth, seasonality, holidays, &quot;</span>
+                    <span class="s2">&quot;automatic autoregression, normalization &quot;</span>
+                    <span class="s2">&quot;and interactions. Best for hourly and daily frequencies.&quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model with automatic growth, seasonality, holidays,</span>
+<span class="sd">    automatic autoregression, normalization</span>
+<span class="sd">    and interactions. Best for hourly and daily frequencies.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1_CONFIG_1</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Config 1 in template ``SILVERKITE_DAILY_1``. &quot;</span>
+                    <span class="s2">&quot;Compared to ``SILVERKITE``, it uses parameters &quot;</span>
+                    <span class="s2">&quot;specifically tuned for daily data and 1-day forecast.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config 1 in template ``SILVERKITE_DAILY_1``.</span>
+<span class="sd">    Compared to ``SILVERKITE``, it uses parameters</span>
+<span class="sd">    specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1_CONFIG_2</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Config 2 in template ``SILVERKITE_DAILY_1``. &quot;</span>
+                    <span class="s2">&quot;Compared to ``SILVERKITE``, it uses parameters &quot;</span>
+                    <span class="s2">&quot;specifically tuned for daily data and 1-day forecast.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config 2 in template ``SILVERKITE_DAILY_1``.</span>
+<span class="sd">    Compared to ``SILVERKITE``, it uses parameters</span>
+<span class="sd">    specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1_CONFIG_3</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Config 3 in template ``SILVERKITE_DAILY_1``. &quot;</span>
+                    <span class="s2">&quot;Compared to ``SILVERKITE``, it uses parameters &quot;</span>
+                    <span class="s2">&quot;specifically tuned for daily data and 1-day forecast.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config 3 in template ``SILVERKITE_DAILY_1``.</span>
+<span class="sd">    Compared to ``SILVERKITE``, it uses parameters</span>
+<span class="sd">    specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_1</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for daily data and 1-day forecast. &quot;</span>
+                    <span class="s2">&quot;Contains 3 candidate configs for grid search, &quot;</span>
+                    <span class="s2">&quot;optimized the seasonality and changepoint parameters.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for daily data and 1-day forecast.</span>
+<span class="sd">    Contains 3 candidate configs for grid search,</span>
+<span class="sd">    optimized the seasonality and changepoint parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_DAILY_90</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for daily data with 90 days forecast horizon. &quot;</span>
+                    <span class="s2">&quot;Contains 4 hyperparameter combinations for grid search. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for daily data with 90 days forecast horizon.</span>
+<span class="sd">    Contains 4 hyperparameter combinations for grid search.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_WEEKLY</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for weekly data. &quot;</span>
+                    <span class="s2">&quot;Contains 4 hyperparameter combinations for grid search. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for weekly data.</span>
+<span class="sd">    Contains 4 hyperparameter combinations for grid search.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_MONTHLY</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for monthly data. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for monthly data.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_HOURLY_1</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for hourly data with 1 hour forecast horizon. &quot;</span>
+                    <span class="s2">&quot;Contains 3 hyperparameter combinations for grid search. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for hourly data with 1 hour forecast horizon.</span>
+<span class="sd">    Contains 4 hyperparameter combinations for grid search.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.&quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_HOURLY_24</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for hourly data with 24 hours (1 day) forecast horizon. &quot;</span>
+                    <span class="s2">&quot;Contains 4 hyperparameter combinations for grid search. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for hourly data with 24 hours (1 day) forecast horizon.</span>
+<span class="sd">    Contains 4 hyperparameter combinations for grid search.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.&quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_HOURLY_168</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for hourly data with 168 hours (1 week) forecast horizon. &quot;</span>
+                    <span class="s2">&quot;Contains 4 hyperparameter combinations for grid search. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for hourly data with 168 hours (1 week) forecast horizon.</span>
+<span class="sd">    Contains 4 hyperparameter combinations for grid search.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.&quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_HOURLY_336</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model specifically tuned for hourly data with 336 hours (2 weeks) forecast horizon. &quot;</span>
+                    <span class="s2">&quot;Contains 4 hyperparameter combinations for grid search. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model specifically tuned for hourly data with 336 hours (2 weeks) forecast horizon.</span>
+<span class="sd">    Contains 4 hyperparameter combinations for grid search.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_EMPTY</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model with no component included by default. Fits only a constant intercept. &quot;</span>
+                    <span class="s2">&quot;Select and customize this template to add only the terms you want. &quot;</span>
+                    <span class="s2">&quot;Uses `SimpleSilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model with no component included by default. Fits only a constant intercept.</span>
+<span class="sd">    Select and customize this template to add only the terms you want.</span>
+<span class="sd">    Uses `SimpleSilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SK</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Silverkite model with low-level interface. For flexible model tuning &quot;</span>
+                    <span class="s2">&quot;if SILVERKITE template is not flexible enough. Not for use out-of-the-box: &quot;</span>
+                    <span class="s2">&quot;customization is needed for good performance. Uses `SilverkiteEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silverkite model with low-level interface. For flexible model tuning</span>
+<span class="sd">    if SILVERKITE template is not flexible enough. Not for use out-of-the-box:</span>
+<span class="sd">    customization is needed for good performance. Uses `SilverkiteEstimator`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">PROPHET</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">ProphetTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Prophet model with growth, seasonality, holidays, additional regressors &quot;</span>
+                    <span class="s2">&quot;and prediction intervals. Uses `ProphetEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prophet model with growth, seasonality, holidays, additional regressors</span>
+<span class="sd">    and prediction intervals. Uses `ProphetEstimator`.&quot;&quot;&quot;</span>
+    <span class="n">AUTO_ARIMA</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">AutoArimaTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Auto ARIMA model with fit and prediction intervals. &quot;</span>
+                    <span class="s2">&quot;Uses `AutoArimaEstimator`.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ARIMA model with automatic order selection. Uses `AutoArimaEstimator`.&quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_TWO_STAGE</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">MultistageForecastTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;MultistageForecastTemplate&#39;s default model template. A two-stage model. &quot;</span>
+                    <span class="s2">&quot;The first step takes a longer history and learns the long-term effects, &quot;</span>
+                    <span class="s2">&quot;while the second step takes a shorter history and learns the short-term residuals.&quot;</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Multistage forecast model&#39;s default model template. A two-stage model. &quot;</span>
+<span class="sd">    &quot;The first step takes a longer history and learns the long-term effects, &quot;</span>
+<span class="sd">    &quot;while the second step takes a shorter history and learns the short-term residuals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MULTISTAGE_EMPTY</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">MultistageForecastTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Empty configuration for Multistage Forecast. &quot;</span>
+                    <span class="s2">&quot;All parameters will be exactly what user inputs. &quot;</span>
+                    <span class="s2">&quot;Not to be used without overriding.&quot;&quot;&quot;</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty configuration for Multistage Forecast.</span>
+<span class="sd">    All parameters will be exactly what user inputs.</span>
+<span class="sd">    Not to be used without overriding.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">AUTO</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">SimpleSilverkiteTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Automatically selects the SimpleSilverkite model template that corresponds to the forecast &quot;</span>
+                    <span class="s2">&quot;problem. Selection is based on data frequency, forecast horizon, and CV configuration.&quot;</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Automatically selects the SimpleSilverkite model template that corresponds to the forecast problem.</span>
+<span class="sd">    Selection is based on data frequency, forecast horizon, and CV configuration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LAG_BASED</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">LagBasedTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Uses aggregated past observations as predictions. Examples are &quot;</span>
+                    <span class="s2">&quot;past day, week-over-week, week-over-3-week median, etc.&quot;</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uses aggregated past observations as predictions. Examples are</span>
+<span class="sd">    past day, week-over-week, week-over-3-week median, etc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SILVERKITE_WOW</span> <span class="o">=</span> <span class="n">ModelTemplate</span><span class="p">(</span>
+        <span class="n">template_class</span><span class="o">=</span><span class="n">MultistageForecastTemplate</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The Silverkite+WOW model uses Silverkite to model yearly/quarterly/monthly seasonality, &quot;</span>
+                    <span class="s2">&quot;growth and holiday effects first, then uses week over week to estimate the residuals. &quot;</span>
+                    <span class="s2">&quot;The final prediction is the total of the two models. &quot;</span>
+                    <span class="s2">&quot;This avoids the normal week over week (WOW) estimation&#39;s weakness in capturing &quot;</span>
+                    <span class="s2">&quot;growth and holidays.&quot;</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Silverkite+WOW model uses Silverkite to model yearly/quarterly/monthly seasonality,</span>
+<span class="sd">    growth and holiday effects first, then uses week over week to estimate the residuals.</span>
+<span class="sd">    The final prediction is the total of the two models.</span>
+<span class="sd">    This avoids the normal week over week (WOW) estimation&#39;s weakness in capturing growth and holidays.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

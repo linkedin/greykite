@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.sklearn.estimator.prophet_estimator &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Greykite Info</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/greykite/overview.html">Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.sklearn.estimator.prophet_estimator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.sklearn.estimator.prophet_estimator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen, Rachit Kumar, Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;sklearn estimator for prophet&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">prophet</span>
+    <span class="kn">from</span> <span class="nn">prophet.plot</span> <span class="kn">import</span> <span class="n">plot_components</span>
+<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="kn">import</span> <span class="n">NotFittedError</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_LOWER_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">PREDICTED_UPPER_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+
+
+<div class="viewcode-block" id="ProphetEstimator"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator">[docs]</a><span class="k">class</span> <span class="nc">ProphetEstimator</span><span class="p">(</span><span class="n">BaseForecastEstimator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for Facebook Prophet model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    score_func : callable</span>
+<span class="sd">        see BaseForecastEstimator</span>
+
+<span class="sd">    coverage : float between [0.0, 1.0]</span>
+<span class="sd">        see BaseForecastEstimator</span>
+
+<span class="sd">    null_model_params : dict with arguments to define DummyRegressor null model, optional, default=None</span>
+<span class="sd">        see BaseForecastEstimator</span>
+
+<span class="sd">    add_regressor_dict: dictionary of extra regressors to be added to the model, optional, default=None</span>
+<span class="sd">        These should be available for training and entire prediction interval.</span>
+
+<span class="sd">        Dictionary format::</span>
+
+<span class="sd">            add_regressor_dict={  # we can add as many regressors as we want, in the following format</span>
+<span class="sd">                &quot;reg_col1&quot;: {</span>
+<span class="sd">                    &quot;prior_scale&quot;: 10,</span>
+<span class="sd">                    &quot;standardize&quot;: True,</span>
+<span class="sd">                    &quot;mode&quot;: &#39;additive&#39;</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;reg_col2&quot;: {</span>
+<span class="sd">                    &quot;prior_scale&quot;: 20,</span>
+<span class="sd">                    &quot;standardize&quot;: True,</span>
+<span class="sd">                    &quot;mode&quot;: &#39;multiplicative&#39;</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">    add_seasonality_dict: dict of custom seasonality parameters to be added to the model, optional, default=None</span>
+<span class="sd">        parameter details: https://github.com/facebook/prophet/blob/main/python/prophet/forecaster.py - refer to</span>
+<span class="sd">        add_seasonality() function.</span>
+<span class="sd">        Key is the seasonality component name e.g. &#39;monthly&#39;; parameters are specified via dict.</span>
+
+<span class="sd">        Dictionary format::</span>
+
+<span class="sd">            add_seasonality_dict={</span>
+<span class="sd">                &#39;monthly&#39;: {</span>
+<span class="sd">                    &#39;period&#39;: 30.5,</span>
+<span class="sd">                    &#39;fourier_order&#39;: 5</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;weekly&#39;: {</span>
+<span class="sd">                    &#39;period&#39;: 7,</span>
+<span class="sd">                    &#39;fourier_order&#39;: 20,</span>
+<span class="sd">                    &#39;prior_scale&#39;: 0.6,</span>
+<span class="sd">                    &#39;mode&#39;: &#39;additive&#39;,</span>
+<span class="sd">                    &#39;condition_name&#39;: &#39;condition_col&#39;  # takes a bool column in df with True/False values. This means that</span>
+<span class="sd">                    # the seasonality will only be applied to dates where the condition_name column is True.</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;yearly&#39;: {</span>
+<span class="sd">                    &#39;period&#39;: 365.25,</span>
+<span class="sd">                    &#39;fourier_order&#39;: 10,</span>
+<span class="sd">                    &#39;prior_scale&#39;: 0.2,</span>
+<span class="sd">                    &#39;mode&#39;: &#39;additive&#39;</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Note: If there is a conflict in built-in and custom seasonality e.g. both have &quot;yearly&quot;, then custom seasonality</span>
+<span class="sd">        will be used and Model will throw a warning such as:</span>
+<span class="sd">        &quot;INFO:prophet:Found custom seasonality named &quot;yearly&quot;, disabling built-in yearly seasonality.&quot;</span>
+
+<span class="sd">    kwargs : additional parameters</span>
+<span class="sd">        Other parameters are the same as Prophet model, with one exception:</span>
+<span class="sd">        ``interval_width`` is specified by ``coverage``.</span>
+
+<span class="sd">        See source code ``__init__`` for the parameter names, and refer to</span>
+<span class="sd">        Prophet documentation for a description:</span>
+
+<span class="sd">            * https://facebook.github.io/prophet/docs/quick_start.html</span>
+<span class="sd">            * https://github.com/facebook/prophet/blob/main/python/prophet/forecaster.py</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : ``Prophet`` object</span>
+<span class="sd">        Prophet model object</span>
+<span class="sd">    forecast : `pandas.DataFrame`</span>
+<span class="sd">        Output of predict method of ``Prophet``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">mean_squared_error</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="mf">0.80</span><span class="p">,</span>  <span class="c1"># to specify interval_width in Prophet</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">growth</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+            <span class="n">changepoints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">n_changepoints</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+            <span class="n">changepoint_range</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+            <span class="n">yearly_seasonality</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">weekly_seasonality</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">daily_seasonality</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">holidays</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">seasonality_mode</span><span class="o">=</span><span class="s2">&quot;additive&quot;</span><span class="p">,</span>
+            <span class="n">seasonality_prior_scale</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">holidays_prior_scale</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+            <span class="n">changepoint_prior_scale</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">mcmc_samples</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">uncertainty_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">add_regressor_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">add_seasonality_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;prophet&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The module &#39;prophet&#39; is not installed. Please install manually.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># every subclass of BaseForecastEstimator must call super().__init__</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">)</span>
+
+        <span class="c1"># necessary to set parameters, to ensure get_params() works (used in grid search)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_func</span> <span class="o">=</span> <span class="n">score_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="o">=</span> <span class="n">coverage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">null_model_params</span> <span class="o">=</span> <span class="n">null_model_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">growth</span> <span class="o">=</span> <span class="n">growth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changepoints</span> <span class="o">=</span> <span class="n">changepoints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_changepoints</span> <span class="o">=</span> <span class="n">n_changepoints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changepoint_range</span> <span class="o">=</span> <span class="n">changepoint_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yearly_seasonality</span> <span class="o">=</span> <span class="n">yearly_seasonality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weekly_seasonality</span> <span class="o">=</span> <span class="n">weekly_seasonality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">daily_seasonality</span> <span class="o">=</span> <span class="n">daily_seasonality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holidays</span> <span class="o">=</span> <span class="n">holidays</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seasonality_mode</span> <span class="o">=</span> <span class="n">seasonality_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seasonality_prior_scale</span> <span class="o">=</span> <span class="n">seasonality_prior_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holidays_prior_scale</span> <span class="o">=</span> <span class="n">holidays_prior_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changepoint_prior_scale</span> <span class="o">=</span> <span class="n">changepoint_prior_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mcmc_samples</span> <span class="o">=</span> <span class="n">mcmc_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_samples</span> <span class="o">=</span> <span class="n">uncertainty_samples</span>
+        <span class="c1"># additional regressor names and optimization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span> <span class="o">=</span> <span class="n">add_regressor_dict</span>
+        <span class="c1"># additional seasonality parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_seasonality_dict</span> <span class="o">=</span> <span class="n">add_seasonality_dict</span>
+        <span class="c1"># set by the fit method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># set by the predict method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ProphetEstimator.fit"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span> <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fits prophet model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries, with timestamp column,</span>
+<span class="sd">            value column, and any additional regressors.</span>
+<span class="sd">            The value column is the response, included in</span>
+<span class="sd">            X to allow transformation by `sklearn.pipeline.Pipeline`</span>
+<span class="sd">        y : ignored</span>
+<span class="sd">            The original timeseries values, ignored.</span>
+<span class="sd">            (The y for fitting is included in ``X``.)</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            Time column name in ``X``</span>
+<span class="sd">        value_col : `str`</span>
+<span class="sd">            Value column name in ``X``</span>
+<span class="sd">        fit_params : `dict`</span>
+<span class="sd">            additional parameters for null model</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : self</span>
+<span class="sd">            Fitted model is stored in ``self.model``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span> <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fit_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">time_col</span><span class="p">,</span> <span class="n">value_col</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reg_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">fit_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">time_col</span><span class="p">,</span> <span class="n">value_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">reg_cols</span>
+
+        <span class="n">fit_df</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">fit_columns</span><span class="p">]</span>
+        <span class="n">fit_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">time_col</span><span class="p">:</span> <span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">value_col</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Prophet expects these column names. Other estimators can use TIME_COL, etc.</span>
+        <span class="c1"># uses coverage instead of interval_width to set prediction band width. This ensures a common</span>
+        <span class="c1"># interface for parameters common to every BaseForecastEstimator, usually also needed for forecast evaluation</span>
+        <span class="c1"># model must be initialized here, not in __init__, to update parameters in grid search</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">prophet</span><span class="o">.</span><span class="n">Prophet</span><span class="p">(</span>
+            <span class="n">growth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">growth</span><span class="p">,</span>
+            <span class="n">changepoints</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">changepoints</span><span class="p">,</span>
+            <span class="n">n_changepoints</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_changepoints</span><span class="p">,</span>
+            <span class="n">changepoint_range</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">changepoint_range</span><span class="p">,</span>
+            <span class="n">yearly_seasonality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">yearly_seasonality</span><span class="p">,</span>
+            <span class="n">weekly_seasonality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weekly_seasonality</span><span class="p">,</span>
+            <span class="n">daily_seasonality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">daily_seasonality</span><span class="p">,</span>
+            <span class="n">holidays</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">holidays</span><span class="p">,</span>
+            <span class="n">seasonality_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seasonality_mode</span><span class="p">,</span>
+            <span class="n">seasonality_prior_scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seasonality_prior_scale</span><span class="p">,</span>
+            <span class="n">holidays_prior_scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">holidays_prior_scale</span><span class="p">,</span>
+            <span class="n">changepoint_prior_scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">changepoint_prior_scale</span><span class="p">,</span>
+            <span class="n">mcmc_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mcmc_samples</span><span class="p">,</span>
+            <span class="n">interval_width</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="ow">or</span> <span class="mf">0.8</span><span class="p">),</span>  <span class="c1"># Prophet can&#39;t take None for this param.</span>
+            <span class="n">uncertainty_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_samples</span>
+        <span class="p">)</span>
+        <span class="c1"># if extra regressors are given, we add them to temporal features data</span>
+        <span class="c1"># This implementation assumes that the regressor(s) are provided in time series df, alongside target column.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">reg_col</span><span class="p">,</span> <span class="n">reg_params</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_regressor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">reg_col</span><span class="p">,</span> <span class="o">**</span><span class="n">reg_params</span><span class="p">)</span>
+
+        <span class="c1"># if custom seasonality is provided, we supply it to Prophet model</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_seasonality_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">seasonality_type</span><span class="p">,</span> <span class="n">seasonality_params</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_seasonality_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_seasonality</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">seasonality_type</span><span class="p">,</span> <span class="o">**</span><span class="n">seasonality_params</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fit_df</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ProphetEstimator.predict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates forecast for dates specified in ``X``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries with timestamp column and any additional regressors.</span>
+<span class="sd">            Timestamps are the dates for prediction.</span>
+<span class="sd">            Value column, if provided in X, is ignored.</span>
+<span class="sd">        y : ignored</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions : `pandas.DataFrame`</span>
+<span class="sd">            Forecasted values for the dates in ``X``. Columns:</span>
+
+<span class="sd">                * TIME_COL dates</span>
+<span class="sd">                * PREDICTED_COL predictions</span>
+<span class="sd">                * PREDICTED_LOWER_COL lower bound of predictions, optional</span>
+<span class="sd">                * PREDICTED_UPPER_COL upper bound of predictions, optional</span>
+<span class="sd">                * [other columns], optional</span>
+
+<span class="sd">            PREDICTED_LOWER_COL and PREDICTED_UPPER_COL are present iff coverage is not None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Returns the cached result if applicable</span>
+        <span class="n">cached_predictions</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cached_predictions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cached_predictions</span>
+
+        <span class="c1"># if regressors are not provided, then use time column to predict future. Else, use regressor from predict df</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">predict_columns</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reg_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_regressor_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">predict_columns</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">+</span> <span class="n">reg_cols</span>
+
+        <span class="n">fut_df</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">predict_columns</span><span class="p">]</span>
+        <span class="c1"># prophet expects time_col name to be &quot;ds&quot;</span>
+        <span class="n">fut_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">:</span> <span class="s2">&quot;ds&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">pred_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fut_df</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">=</span> <span class="n">pred_df</span>     <span class="c1"># This is used by the plot_components</span>
+
+        <span class="c1"># renames columns to standardized schema</span>
+        <span class="n">output_columns</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ds&quot;</span><span class="p">:</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="s2">&quot;yhat&quot;</span><span class="p">:</span> <span class="n">PREDICTED_COL</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="s2">&quot;yhat_lower&quot;</span> <span class="ow">in</span> <span class="n">pred_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">output_columns</span><span class="p">[</span><span class="s2">&quot;yhat_lower&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PREDICTED_LOWER_COL</span>
+        <span class="k">if</span> <span class="s2">&quot;yhat_upper&quot;</span> <span class="ow">in</span> <span class="n">pred_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">output_columns</span><span class="p">[</span><span class="s2">&quot;yhat_upper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PREDICTED_UPPER_COL</span>
+
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">(</span><span class="n">pred_df</span><span class="p">[</span><span class="n">output_columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+                       <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">output_columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Caches the predictions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span> <span class="o">=</span> <span class="n">predictions</span>
+        <span class="k">return</span> <span class="n">predictions</span></div>
+
+<div class="viewcode-block" id="ProphetEstimator.summary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prints input parameters and Prophet model parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        log_message : str</span>
+<span class="sd">            log message printed to logging.info()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="p">),</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ProphetEstimator.plot_components"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator.plot_components">[docs]</a>    <span class="k">def</span> <span class="nf">plot_components</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">uncertainty</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">plot_cap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">weekly_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">yearly_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the ``Prophet`` forecast components on the dataset passed</span>
+<span class="sd">        to ``predict``.</span>
+
+<span class="sd">        Will plot whichever are available of: trend, holidays, weekly</span>
+<span class="sd">        seasonality, and yearly seasonality.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        uncertainty : `bool`, optional, default True</span>
+<span class="sd">            Boolean to plot uncertainty intervals.</span>
+<span class="sd">        plot_cap : `bool`, optional, default True</span>
+<span class="sd">            Boolean indicating if the capacity should be shown</span>
+<span class="sd">            in the figure, if available.</span>
+<span class="sd">        weekly_start : `int`, optional, default 0</span>
+<span class="sd">            Specifying the start day of the weekly seasonality plot.</span>
+<span class="sd">            0 (default) starts the week on Sunday.</span>
+<span class="sd">            1 shifts by 1 day to Jan 2, and so on.</span>
+<span class="sd">        yearly_start : `int`, optional, default 0</span>
+<span class="sd">            Specifying the start day of the yearly seasonality plot.</span>
+<span class="sd">            0 (default) starts the year on Jan 1.</span>
+<span class="sd">            1 shifts by 1 day to Jan 2, and so on.</span>
+<span class="sd">        figsize : `tuple` , optional, default None</span>
+<span class="sd">            Width, height in inches.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig: `matplotlib.figure.Figure`</span>
+<span class="sd">            A matplotlib figure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;The fit method has not been run yet.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The predict method has not been run yet.&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">plot_components</span><span class="p">(</span>
+                <span class="n">m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+                <span class="n">fcst</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span>
+                <span class="n">uncertainty</span><span class="o">=</span><span class="n">uncertainty</span><span class="p">,</span>
+                <span class="n">plot_cap</span><span class="o">=</span><span class="n">plot_cap</span><span class="p">,</span>
+                <span class="n">weekly_start</span><span class="o">=</span><span class="n">weekly_start</span><span class="p">,</span>
+                <span class="n">yearly_start</span><span class="o">=</span><span class="n">yearly_start</span><span class="p">,</span>
+                <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;&#39;DatetimeIndex&#39;&quot;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                <span class="c1"># &#39;DatetimeIndex&#39; object has no attribute &#39;weekday_name&#39;</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Prophet 0.5 component plots are incompatible with pandas 1.*. &quot;</span>
+                                <span class="s2">&quot;Upgrade to Prophet 0.6 or higher.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
