@@ -12,6 +12,7 @@ with open("README_PYPI.rst") as readme_file:
 requirements = [
     "cvxpy>=1.2.1",
     "dill>=0.3.1.1",
+    "holidays<0.25",
     "holidays-ext>=0.0.7",
     "ipython>=7.31.1",
     "matplotlib>=3.4.1",
