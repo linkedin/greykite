@@ -28,6 +28,11 @@ statistical significance is to bake in material/ business impact into the detect
     * @Reza Hosseini @Sayan Patra @Yi Su @Qiang Fei @Kaixu Yang @Phil Gaudreau: Other library enhancements and bug fixes.
 
 
+0.5.1 (2023-06-01)
+------------------
+
+Loosen dill package requirements.
+
 
 0.5.0 (2023-04-03)
 ------------------
