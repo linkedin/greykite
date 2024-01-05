@@ -11,6 +11,7 @@ from greykite.common.python_utils import assert_equal
 from greykite.sklearn.estimator.null_model import DummyEstimator
 from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverkiteEstimator
 from greykite.sklearn.transform.column_selector import ColumnSelector
+from greykite.sklearn.transform.difference_based_outlier_transformer import DifferenceBasedOutlierTransformer
 from greykite.sklearn.transform.null_transformer import NullTransformer
 from greykite.sklearn.transform.pandas_feature_union import PandasFeatureUnion
 from greykite.sklearn.transform.zscore_outlier_transformer import ZscoreOutlierTransformer
@@ -42,6 +43,21 @@ def fs():
     ])
 
 
+@pytest.fixture
+def fs_diff():
+    """feature transformation pipeline for test cases"""
+    return PandasFeatureUnion([
+        ("date", Pipeline([
+            ("select_date", ColumnSelector([TIME_COL]))  # leaves time column unmodified
+        ])),
+        ("response", Pipeline([  # applies outlier and null transformation to value column
+            ("select_val", ColumnSelector([VALUE_COL])),
+            ("outlier", DifferenceBasedOutlierTransformer()),
+            ("null", NullTransformer())
+        ]))
+    ])
+
+
 def test_feature_union(X):
     """Tests PandasFeatureUnion on simple projection
     Inspired by sklearn/tests/test_pipeline.py"""
@@ -68,7 +84,7 @@ def test_feature_union(X):
     ], axis=1))
 
 
-def test_transformer_union(X, fs):
+def test_transformer_union(X, fs, fs_diff):
     """Tests PandasFeatureUnion on a pipeline of transformers, with custom parameters"""
     # sets parameters and fits model
     z_cutoff = 2.0
@@ -83,6 +99,24 @@ def test_transformer_union(X, fs):
     # checks output result
     X_after_column_select = ColumnSelector([VALUE_COL]).fit_transform(X)
     X_after_z_score = ZscoreOutlierTransformer(z_cutoff=z_cutoff).fit_transform(X_after_column_select)
+    X_after_null = NullTransformer().fit_transform(X_after_z_score)
+
+    assert_equal(X_transformed[TIME_COL], X[TIME_COL])
+    assert_equal(X_transformed[VALUE_COL], X_after_null[VALUE_COL])
+
+    # adds new test for `DifferenceBasedOutlierTransformer`.
+    params = dict(z_cutoff=2.0)
+    fs_diff.set_params(response__outlier__params=params)
+    fs_diff.fit(X)
+    X_transformed = fs_diff.transform(X)
+
+    # checks shape
+    assert X_transformed.shape == (X.shape[0], 2)
+    assert list(X_transformed.columns) == [TIME_COL, VALUE_COL]
+
+    # checks output result
+    X_after_column_select = ColumnSelector([VALUE_COL]).fit_transform(X)
+    X_after_z_score = DifferenceBasedOutlierTransformer(params=params).fit_transform(X_after_column_select)
     X_after_null = NullTransformer().fit_transform(X_after_z_score)
 
     assert_equal(X_transformed[TIME_COL], X[TIME_COL])

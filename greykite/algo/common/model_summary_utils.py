@@ -1639,7 +1639,7 @@ def create_title_section():
     content : `str`
         Title section.
     """
-    content = " Model Summary ".center(80, "=") + "\n\n"
+    content = " Forecast Model Summary ".center(80, "=") + "\n\n"
     return content
 
 

@@ -1282,6 +1282,7 @@ class SimpleSilverkiteTemplate(BaseTemplate):
             "estimator__daily_event_df_dict": model_components.events["daily_event_df_dict"],
             "estimator__daily_event_neighbor_impact": model_components.events["daily_event_neighbor_impact"],
             "estimator__daily_event_shifted_effect": model_components.events["daily_event_shifted_effect"],
+            "estimator__auto_holiday_params": model_components.events["auto_holiday_params"],
             "estimator__feature_sets_enabled": model_components.custom["feature_sets_enabled"],
             "estimator__fit_algorithm_dict": model_components.custom["fit_algorithm_dict"],
             "estimator__max_daily_seas_interaction_order": model_components.custom["max_daily_seas_interaction_order"],

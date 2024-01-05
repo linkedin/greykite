@@ -1409,15 +1409,18 @@ def test_auto_config_params(daily_data_reg):
         value_col=VALUE_COL,
         forecast_horizon=7,
         auto_holiday=True,
-        holidays_to_model_separately="auto",
+        holidays_to_model_separately=["custom_event"],
         holiday_lookup_countries="auto",
-        holiday_pre_num_days=2,
-        holiday_post_num_days=2,
+        holiday_pre_num_days=0,
+        holiday_post_num_days=0,
         daily_event_df_dict=dict(
             custom_event=pd.DataFrame({
                 EVENT_DF_DATE_COL: pd.to_datetime(["2010-03-03", "2011-03-03", "2012-03-03"]),
                 EVENT_DF_LABEL_COL: "threethree"
             })
+        ),
+        auto_holiday_params=dict(
+            n_clusters=5
         ),
         auto_growth=True,
         growth_term="quadratic",
@@ -1445,9 +1448,9 @@ def test_auto_config_params(daily_data_reg):
     assert "ct1" in params["extra_pred_cols"]
     assert params["changepoints_dict"]["method"] == "custom"
     # Holidays is overridden by auto seasonality.
-    assert len(params["daily_event_df_dict"]) == 203
+    assert len(params["daily_event_df_dict"]) == 6
     assert "custom_event" in params["daily_event_df_dict"]
-    assert "China_Chinese New Year" in params["daily_event_df_dict"]
+    assert "holiday_group_0" in params["daily_event_df_dict"]
 
 
 def test_config_run_with_dst_features(daily_data_reg):
@@ -1466,6 +1469,7 @@ def test_config_run_with_dst_features(daily_data_reg):
         holiday_lookup_countries="auto",
         holiday_pre_num_days=2,
         holiday_post_num_days=2,
+        auto_holiday_params=None,
         extra_pred_cols=["eu_dst"],
         auto_seasonality=True,
         yearly_seasonality=0,
@@ -1505,6 +1509,7 @@ def test_auto_config_run(daily_data_reg):
                 EVENT_DF_LABEL_COL: "event"
             })
         ),
+        auto_holiday_params=None,
         auto_growth=True,
         growth_term="quadratic",
         changepoints_dict=dict(

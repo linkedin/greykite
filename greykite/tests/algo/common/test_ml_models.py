@@ -581,6 +581,7 @@ def test_fit_ml_model():
         "h_mat",
         "p_effective",
         "sigma_scaler",
+        "x_mean",
         "fitted_df"]
 
     assert (trained_model["y"] == df["y"]).all()
@@ -1562,6 +1563,8 @@ def test_dummy():
     p_effective = trained_model["p_effective"]
     assert round(p_effective, 2) == 2
     assert trained_model["sigma_scaler"] == np.sqrt((n - 1) / (n - p_effective))
+    assert trained_model["x_mean"] is None  # When the model is linear, `"x_mean"` is `None`.
+    assert trained_model["h_mat"].shape == trained_model["x_mat"].shape[::-1]
 
 
 def test_fit_ml_model_with_evaluation_nan():
@@ -1586,6 +1589,8 @@ def test_fit_ml_model_with_evaluation_nan():
         # Since the design matrix is singular, variance scaling is skipped.
         assert "Zero degrees of freedom" in record[1].message.args[0]
         assert trained_model["sigma_scaler"] is None
+        assert trained_model["x_mean"] is None  # When the model is linear, `"x_mean"` is `None`.
+        assert trained_model["h_mat"].shape == trained_model["x_mat"].shape[::-1]
         assert_equal(trained_model["y"], df["y"].loc[(0, 1, 3), ])
 
 

@@ -47,6 +47,8 @@ def test_expand_holiday_df_with_suffix(holiday_df):
         holiday_df=holiday_df,
         holiday_date_col=EVENT_DF_DATE_COL,
         holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=0,
+        holiday_impact_post_num_days=0,
         holiday_impact_dict=None,
         get_suffix_func=None
     ).sort_values(by=[EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]).reset_index(drop=True)
@@ -58,17 +60,41 @@ def test_expand_holiday_df_with_suffix(holiday_df):
         holiday_df=holiday_df,
         holiday_date_col=EVENT_DF_DATE_COL,
         holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=0,
+        holiday_impact_post_num_days=0,
         holiday_impact_dict={"unknown": [1, 1]},
         get_suffix_func=None
     ).sort_values(by=[EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]).reset_index(drop=True)
 
     assert_equal(expanded_holiday_df, holiday_df)
 
-    # Tests the case when only neighboring days are added.
+    # Tests the case when only neighboring days are added and only through `holiday_impact_pre_num_days` and
+    # `holiday_impact_post_num_days`.
     expanded_holiday_df = HolidayGrouper.expand_holiday_df_with_suffix(
         holiday_df=holiday_df,
         holiday_date_col=EVENT_DF_DATE_COL,
         holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=1,
+        holiday_impact_post_num_days=2,
+        holiday_impact_dict=None,
+        get_suffix_func=None
+    ).sort_values(by=[EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]).reset_index(drop=True)
+
+    # Spot checks a few events are being correctly added.
+    assert "Christmas Day_minus_1" in expanded_holiday_df[EVENT_DF_LABEL_COL].tolist()
+    assert "New Year's Day_plus_2" in expanded_holiday_df[EVENT_DF_LABEL_COL].tolist()
+
+    # Checks the expected total number of events.
+    expected_diff = len(holiday_df) * (1+2)
+    assert len(expanded_holiday_df) - len(holiday_df) == expected_diff
+
+    # Tests the case when only neighboring days are added and only through `holiday_impact_dict`.
+    expanded_holiday_df = HolidayGrouper.expand_holiday_df_with_suffix(
+        holiday_df=holiday_df,
+        holiday_date_col=EVENT_DF_DATE_COL,
+        holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=0,
+        holiday_impact_post_num_days=0,
         holiday_impact_dict=HOLIDAY_IMPACT_DICT,
         get_suffix_func=None
     ).sort_values(by=[EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]).reset_index(drop=True)
@@ -85,11 +111,39 @@ def test_expand_holiday_df_with_suffix(holiday_df):
         expected_diff += additional_days
     assert len(expanded_holiday_df) - len(holiday_df) == expected_diff
 
+    # Tests the case when neighboring days are added through `holiday_impact_pre_num_days`,
+    # `holiday_impact_post_num_days` and `holiday_impact_dict`.
+    expanded_holiday_df = HolidayGrouper.expand_holiday_df_with_suffix(
+        holiday_df=holiday_df,
+        holiday_date_col=EVENT_DF_DATE_COL,
+        holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=8,
+        holiday_impact_post_num_days=0,
+        holiday_impact_dict=HOLIDAY_IMPACT_DICT,
+        get_suffix_func=None
+    ).sort_values(by=[EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]).reset_index(drop=True)
+
+    # Spot checks a few events are being correctly added or not added.
+    assert "Veterans Day_minus_8" in expanded_holiday_df[EVENT_DF_LABEL_COL].tolist()
+    assert "Veterans Day_plus_1" not in expanded_holiday_df[EVENT_DF_LABEL_COL].tolist()
+    assert "New Year's Day_plus_4" in expanded_holiday_df[EVENT_DF_LABEL_COL].tolist()
+    assert "New Year's Day_minus_8" not in expanded_holiday_df[EVENT_DF_LABEL_COL].tolist()
+
+    # Checks the expected total number of events.
+    expected_diff = len(holiday_df[~holiday_df[EVENT_DF_LABEL_COL].isin(HOLIDAY_IMPACT_DICT.keys())]) * 8
+    for event, (pre, post) in HOLIDAY_IMPACT_DICT.items():
+        count = (holiday_df[EVENT_DF_LABEL_COL] == event).sum()
+        additional_days = (pre + post) * count
+        expected_diff += additional_days
+    assert len(expanded_holiday_df) - len(holiday_df) == expected_diff
+
     # Tests the case when both neighboring days and suffixes are added.
     expanded_holiday_df = HolidayGrouper.expand_holiday_df_with_suffix(
         holiday_df=holiday_df,
         holiday_date_col=EVENT_DF_DATE_COL,
         holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=0,
+        holiday_impact_post_num_days=0,
         holiday_impact_dict=HOLIDAY_IMPACT_DICT,
         get_suffix_func=get_weekday_weekend_suffix
     ).sort_values(by=[EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]).reset_index(drop=True)
@@ -114,6 +168,8 @@ def test_expand_holiday_df_with_suffix(holiday_df):
             holiday_df=holiday_df,
             holiday_date_col=EVENT_DF_DATE_COL,
             holiday_name_col=EVENT_DF_LABEL_COL,
+            holiday_impact_pre_num_days=0,
+            holiday_impact_post_num_days=0,
             holiday_impact_dict=None,
             get_suffix_func="unknown"
         )
@@ -129,6 +185,8 @@ def test_holiday_grouper_init(daily_df, holiday_df):
         holiday_df=holiday_df,
         holiday_date_col=EVENT_DF_DATE_COL,
         holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=0,
+        holiday_impact_post_num_days=0,
         holiday_impact_dict=None,
         get_suffix_func=None
     )
@@ -152,6 +210,8 @@ def test_group_holidays(daily_df, holiday_df):
         holiday_df=holiday_df,
         holiday_date_col=EVENT_DF_DATE_COL,
         holiday_name_col=EVENT_DF_LABEL_COL,
+        holiday_impact_pre_num_days=0,
+        holiday_impact_post_num_days=0,
         holiday_impact_dict=HOLIDAY_IMPACT_DICT,
         get_suffix_func=default_get_suffix_func
     )

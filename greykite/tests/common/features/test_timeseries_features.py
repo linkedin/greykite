@@ -614,10 +614,27 @@ def test_add_daily_events_with_neighbor_impact():
         event_df_dict,
         neighbor_impact=7
     )
-    # Checks holidays are mapped to the correct weekly dates.
+    # Checks holidays are mapped to the correct daily dates.
     assert new_df.iloc[0].tolist() == [pd.Timestamp("2020-01-01"), 0, "Christmas Day", 1, 0, 1]
     assert new_df.iloc[1].tolist() == [pd.Timestamp("2020-01-01"), 0, "New Year's Day", 1, 0, 1]
     assert new_df.iloc[2].tolist() == [pd.Timestamp("2020-01-02"), 0, "New Year's Day", 1, 0, 1]
+
+    # Tests daily data, assuming a list of customized neighboring effect.
+    df = pd.DataFrame({
+        "date": pd.date_range("2020-01-01", freq="D", periods=500),
+        "y": 0
+    })
+    countries = ["US"]
+    event_df_dict = get_holidays(countries, year_start=2015, year_end=2025)
+    new_df = add_daily_events(
+        df,
+        event_df_dict,
+        neighbor_impact=[1, 4]
+    )
+    # Checks holidays are mapped to the correct daily dates.
+    assert new_df.iloc[0].tolist() == [pd.Timestamp("2020-01-01"), 0, "New Year's Day", 1, 0, 1]
+    assert new_df.iloc[1].tolist() == [pd.Timestamp("2020-01-02"), 0, "New Year's Day", 1, 0, 1]
+    assert new_df.iloc[4].tolist() == [pd.Timestamp("2020-01-05"), 0, "New Year's Day", 1, 0, 1]
 
 
 def test_add_daily_event_shifted_effect():

@@ -31,6 +31,7 @@ from greykite.common.evaluation import elementwise_outside_tolerance
 from greykite.common.evaluation import elementwise_quantile
 from greykite.common.evaluation import elementwise_residual
 from greykite.common.evaluation import elementwise_squared_error
+from greykite.common.evaluation import elementwise_symmetric_absolute_percent_error
 from greykite.common.evaluation import elementwise_within_bands
 from greykite.common.evaluation import fraction_outside_tolerance
 from greykite.common.evaluation import fraction_within_bands
@@ -774,6 +775,19 @@ def test_elementwise_absolute_percent_error():
     with pytest.warns(Warning) as record:
         elementwise_absolute_percent_error(1e-9, 1.0)
         assert "true_val is less than 1e-8. Percent error is very likely highly volatile." in record[0].message.args[0]
+
+
+def test_elementwise_symmetric_absolute_percent_error():
+    """Tests elementwise_symmetric_absolute_percent_error function."""
+    assert elementwise_symmetric_absolute_percent_error(1.0, 3.0) == pytest.approx(50.0, 0.1)
+    assert elementwise_symmetric_absolute_percent_error(3.0, 1.0) == elementwise_symmetric_absolute_percent_error(1.0, 3.0)
+
+    with pytest.warns(UserWarning, match="Symmetric absolute percent error is undefined"):
+        assert elementwise_symmetric_absolute_percent_error(0.0, 0.0) is None
+
+    with pytest.warns(Warning) as record:
+        elementwise_symmetric_absolute_percent_error(1e-9, 1e-9)
+        assert "denominator contains very small values. Symmetric absolute percent error is very likely highly volatile." in record[0].message.args[0]
 
 
 def test_elementwise_quantile():

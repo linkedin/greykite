@@ -91,6 +91,8 @@ CHANGEPOINT_COL_PREFIX = "changepoint"
 """Prefix for naming changepoint features."""
 CHANGEPOINT_COL_PREFIX_SHORT = "cp"
 """Short prefix for naming changepoint features."""
+LEVELSHIFT_COL_PREFIX_SHORT = "ctp"
+"""Short prefix for naming levelshift features."""
 
 # Column names used by
 # `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`.

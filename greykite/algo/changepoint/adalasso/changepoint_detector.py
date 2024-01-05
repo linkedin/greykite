@@ -48,6 +48,7 @@ from greykite.algo.changepoint.adalasso.changepoints_utils import get_seasonalit
 from greykite.algo.changepoint.adalasso.changepoints_utils import get_trend_changes_from_adaptive_lasso
 from greykite.algo.changepoint.adalasso.changepoints_utils import get_yearly_seasonality_changepoint_dates_from_freq
 from greykite.algo.changepoint.adalasso.changepoints_utils import plot_change
+from greykite.algo.changepoint.shift_detection.shift_detector import ShiftDetection
 from greykite.common.constants import TimeFeaturesEnum
 from greykite.common.features.timeseries_features import get_evenly_spaced_changepoints_dates
 from greykite.common.logging import LoggingLevelEnum
@@ -133,6 +134,8 @@ class ChangepointDetector:
         self.seasonality_df: Optional[pd.DataFrame] = None
         self.seasonality_changepoints: Optional[dict] = None
         self.seasonality_estimation: Optional[pd.Series] = None
+        self.shift_detector: Optional[ShiftDetection] = None
+        self.level_shift_df: Optional[pd.DataFrame] = None
 
     @ignore_warnings(category=ConvergenceWarning)
     def find_trend_changepoints(
@@ -140,6 +143,7 @@ class ChangepointDetector:
             df,
             time_col,
             value_col,
+            shift_detector=None,
             yearly_seasonality_order=8,
             yearly_seasonality_change_freq=None,
             resample_freq="D",
@@ -190,6 +194,9 @@ class ChangepointDetector:
             Time column name in ``df``
         value_col : `str`
             Value column name in ``df``
+        shift_detector: `greykite.algo.changepoint.shift_detection.shift_detector.ShiftDetection`
+            An instance of ShiftDetection for identifying level shifts and computing regressors. Level
+            shift points will be considered as regressors when selecting change points by adaptive lasso.
         yearly_seasonality_order : `int`, default 8
             Fourier series order to capture yearly seasonality.
         yearly_seasonality_change_freq : `DateOffset`, `Timedelta` or `str` or `None`, default `None`
@@ -347,6 +354,18 @@ class ChangepointDetector:
         self.time_col = time_col
         self.value_col = value_col
         self.original_df = df
+        self.shift_detector = shift_detector
+
+        # If a shift detector object is passed to the constructor, we're making Changepoint cognizant of level shifts
+        # and it will handle the level shifts as independent regressors.
+        if self.shift_detector is not None:
+            self.level_shift_cols, self.level_shift_df = self.shift_detector.detect(
+                df.copy(),
+                time_col=time_col,
+                value_col=value_col,
+                forecast_horizon=0
+            )
+
         # Resamples df to get a coarser granularity to get rid of shorter seasonality.
         # The try except below speeds up unnecessary datetime transformation.
         if resample_freq is not None:
@@ -408,6 +427,25 @@ class ChangepointDetector:
                     "seas_names": ["yearly"]})
             )
             trend_df = pd.concat([trend_df, long_seasonality_df], axis=1)
+        # Augment the trend_df with the additional level shift regressors.
+        if self.shift_detector is not None and len(self.level_shift_cols) > 0:
+            # Rename each column to have level shift prefixed in name.
+            pad_char, pad_size = 0, 4  # Left pad the levelshift regressors with 0s for sorting.
+            new_col_names = {col_name: f"levelshift_{ndx:{pad_char}{pad_size}}_{col_name}" for ndx, col_name in enumerate(self.level_shift_cols)}
+            self.level_shift_df.rename(columns=new_col_names, inplace=True)
+            # Save regressors for concatenation to trend_df.
+            time_col_and_regressor_cols = [time_col] + sorted(new_col_names.values())
+            levelshift_regressors_df = self.level_shift_df[time_col_and_regressor_cols]
+            # Resample level shift df according to resample frequency
+            levelshift_regressors_df_copy = levelshift_regressors_df.copy()
+            if resample_freq is not None:
+                levelshift_regressors_df_resample = levelshift_regressors_df_copy.resample(resample_freq, on=time_col).mean().reset_index()
+            else:
+                levelshift_regressors_df_resample = levelshift_regressors_df_copy
+            # Set time column to be the index of the dataframe for level shift regressors.
+            levelshift_regressors_df_resample.set_index(time_col, inplace=True)
+            # Concatenate regressors column-wise.
+            trend_df = pd.concat([trend_df, levelshift_regressors_df_resample], axis=1)
         trend_df.index = df_resample[time_col]
         self.trend_df = trend_df
         # Estimates trend.
@@ -1083,7 +1121,8 @@ def get_changepoints_dict(df, time_col, value_col, changepoints_dict):
             "no_changepoint_distance_from_begin",
             "no_changepoint_proportion_from_end",
             "no_changepoint_distance_from_end",
-            "no_changepoint_proportion_from_end"
+            "no_changepoint_proportion_from_end",
+            "shift_detector"
         ]
         changepoints_dict_keys = [
             "continuous_time_col",

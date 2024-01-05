@@ -195,6 +195,7 @@ def test_multistage_forecast_silverkite_wow():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },

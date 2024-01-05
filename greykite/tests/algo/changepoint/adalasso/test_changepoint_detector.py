@@ -10,9 +10,11 @@ from testfixtures import LogCapture
 from greykite.algo.changepoint.adalasso.changepoint_detector import ChangepointDetector
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_changepoints_dict
 from greykite.algo.changepoint.adalasso.changepoint_detector import get_seasonality_changepoints
+from greykite.algo.changepoint.shift_detection.shift_detector import ShiftDetection
 from greykite.common.data_loader import DataLoader
 from greykite.common.logging import LOGGER_NAME
 from greykite.common.testing_utils import generate_df_for_tests
+from greykite.common.testing_utils import generate_df_with_arbitrary_trends_and_shifts
 from greykite.common.testing_utils import generate_test_changepoint_df
 
 
@@ -309,6 +311,131 @@ def test_find_trend_changepoints(hourly_data):
         yearly_seasonality_change_freq="365D"
     )
     assert model.trend_df.shape[1] > 100 + 1 + 8 * 2  # checks extra columns are created for varying yearly seasonality
+
+
+def test_find_trend_changepoints_with_shift_detector(hourly_data):
+    df = generate_df_with_arbitrary_trends_and_shifts(
+        start_date="2015-01-01",
+        length=365*4,
+        freq="D",
+        seed=10,
+        trend_slopes=[-1., 1.],
+        trend_intervals=[.5, 1.],
+        level_shifts=[(.05, .15), (.25, .35), (.65, .75), (.85, .95)],
+        level_shift_magnitudes=[100, -100, -100, 100]
+    )
+
+    model = ChangepointDetector()
+    # test class variables are initialized as None
+    assert model.trend_model is None
+    assert model.trend_coef is None
+    assert model.trend_intercept is None
+    assert model.trend_changepoints is None
+    assert model.trend_potential_changepoint_n is None
+    assert model.trend_df is None
+    assert model.y is None
+    assert model.original_df is None
+    assert model.value_col is None
+    assert model.time_col is None
+    assert model.adaptive_lasso_coef is None
+    # model training with default values
+    model.find_trend_changepoints(
+        df=df,
+        time_col="timestamp",
+        value_col="y"
+    )
+    trend_df_shape = model.trend_df.shape
+    assert isinstance(model.trend_model, RegressorMixin)
+    assert model.trend_model.coef_.shape[0] == 100 + 1 + 8 * 2
+    assert model.trend_coef.shape[0] == 100 + 1 + 8 * 2
+    assert model.trend_intercept is not None
+    assert model.trend_changepoints is not None
+    assert model.trend_potential_changepoint_n == 100
+    assert model.trend_df.shape[1] == 100 + 1 + 8 * 2
+    assert model.original_df.shape == df.shape
+    assert model.time_col is not None
+    assert model.value_col is not None
+    assert model.adaptive_lasso_coef[1].shape[0] == 100 + 1 + 8 * 2
+    assert model.y.index[0] not in model.trend_changepoints
+    # model training with default values and shift detector
+    model.find_trend_changepoints(
+        df=df,
+        time_col="timestamp",
+        value_col="y",
+        shift_detector=ShiftDetection()
+    )
+    trend_df_with_shifts_shape = model.trend_df.shape
+    assert isinstance(model.trend_model, RegressorMixin)
+    assert model.trend_model.coef_.shape[0] >= 100 + 1 + 8 * 2
+    assert model.trend_coef.shape[0] >= 100 + 1 + 8 * 2
+    assert model.trend_intercept is not None
+    assert model.trend_changepoints is not None
+    assert model.trend_potential_changepoint_n == 100
+    assert model.trend_df.shape[1] >= 100 + 1 + 8 * 2
+    assert model.original_df.shape == df.shape
+    assert model.time_col is not None
+    assert model.value_col is not None
+    assert model.adaptive_lasso_coef[1].shape[0] >= 100 + 1 + 8 * 2
+    assert model.y.index[0] not in model.trend_changepoints
+    trend_df_with_shifts_shape = model.trend_df.shape
+    # check that the found changepoints are <= to changepoints with level shift regressors
+    assert trend_df_shape[1] <= trend_df_with_shifts_shape[1]
+    # check that trend_df has more columns, check column names for levelshift regressors
+    assert any("levelshift" in column for column in model.trend_df.columns)
+    # test a given ``regularization_strength``
+    model = ChangepointDetector()
+    model.find_trend_changepoints(
+        df=df,
+        time_col="timestamp",
+        value_col="y",
+        regularization_strength=1.0,
+        shift_detector=ShiftDetection()
+    )
+    assert isinstance(model.trend_model, RegressorMixin)
+    assert model.trend_model.coef_.shape[0] >= 100 + 1 + 8 * 2
+    assert model.trend_coef.shape[0] >= 100 + 1 + 8 * 2
+    assert model.trend_intercept is not None
+    assert model.trend_changepoints is not None
+    assert model.trend_potential_changepoint_n == 100
+    assert model.trend_df.shape[1] >= 100 + 1 + 8 * 2
+    assert model.original_df.shape == df.shape
+    assert model.time_col is not None
+    assert model.value_col is not None
+    assert model.adaptive_lasso_coef[1].shape[0] >= 100 + 1 + 8 * 2
+    assert model.y.index[0] not in model.trend_changepoints
+    assert model.trend_changepoints == []
+    model.find_trend_changepoints(
+        df=df,
+        time_col="timestamp",
+        value_col="y",
+        regularization_strength=0.5,
+        shift_detector=ShiftDetection()
+    )
+    # ``regularization_strength`` between 0 and 1 indicates at least one change point
+    assert len(model.trend_changepoints) > 0
+    model.find_trend_changepoints(
+        df=df,
+        time_col="timestamp",
+        value_col="y",
+        actual_changepoint_min_distance="D",
+        regularization_strength=0.0,
+        shift_detector=ShiftDetection()
+    )
+    # ``regularization_strength`` == 0.0 indicates all potential change points are present
+    assert len(model.trend_changepoints) == 100
+    with pytest.raises(ValueError,
+                       match="In potential_changepoint_distance, the maximal unit is 'D', "
+                             "i.e., you may use units no more than 'D' such as"
+                             "'10D', '5H', '100T', '200S'. The reason is that 'W', 'M' "
+                             "or higher has either cycles or indefinite number of days, "
+                             "thus is not parsable by pandas as timedelta."):
+        model.find_trend_changepoints(
+            df=df,
+            time_col="timestamp",
+            value_col="y",
+            potential_changepoint_distance="2M",
+            shift_detector=ShiftDetection()
+        )
 
 
 def test_find_trend_changepoints_slow(hourly_data):

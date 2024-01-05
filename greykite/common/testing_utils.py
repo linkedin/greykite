@@ -501,3 +501,113 @@ def assert_eval_function_equal(f1, f2):
     y_true = np.random.random(42)
     y_pred = np.random.random(42)
     assert_equal(f1(y_true, y_pred), f2(y_true, y_pred))
+
+
+def generate_df_with_arbitrary_trends_and_shifts(
+        start_date="2015-01-01",
+        length=365,
+        freq="D",
+        seed=10,
+        trend_slopes=None,
+        trend_intervals=None,
+        level_shifts=None,
+        level_shift_magnitudes=None):
+    """Generates a Pandas DataFrame that represents time series data with arbitrary trends and level shifts.
+    Example Usage: Calling `generate_df_with_arbitrary_trends_and_shifts(trend_slopes=[-1., 1.], trend_intervals=[.3, 1.],
+    level_shifts=[(.3, .6)], level_shift_magnitudes=[100.])` produces a time series with a slope of -1 for the first 30%
+    of the interval. The next 70% ((1. - .3)*100 = 70) of the interval has a slope of 1. The time series across the interval
+    .3 to .6, of the entire length, will have a positive level shift of magnitude 100.
+
+    Parameters
+    ----------
+    start_date : `str`
+        The start date of the time series data in "YYYY-MM-DD" format. Defaults to '2015-01-01'.
+    length : `int`
+        The number of data points in the time series. Defaults to 365.
+    freq : `str`
+        Frequency of the timestamps (based on pandas date_range frequencies). Defaults to "D" for daily.
+    seed : `int`
+        The seed for the random number generator. Defaults to 10.
+    trend_slopes : `Optional[List[float]]`
+        A list of slopes representing trends in the time series. Each slope applies to a corresponding
+        interval from 'trend_intervals'. Defaults to None and  the series produced has a slope of 1.
+    trend_intervals : `Optional[List[float]]`
+        A list of values between 0 and 1 that represent the intervals of the corresponding trends in
+        'trend_slopes'. The start of a new interval indicates the end of the previous one. The final
+        interval must end at 1. Defaults to None.
+    level_shifts : `Optional[List[Tuple[float, float]]]`
+        A list of tuples where each tuple contains two float values between 0 and 1. Each tuple
+        represents the start and end of a level shift in the time series. Defaults to None.
+    level_shift_magnitudes : `Optional[List[float]]`
+        A list of magnitudes for each level shift. Each magnitude corresponds to a tuple from
+        'level_shifts'. Defaults to None.
+
+    Returns
+    -------
+        df : `pandas.DataFrame`
+            A DataFrame representing the generated time series with columns:
+                `"timestamp"` : time column.
+                `"y"` : value column.
+
+    Raises
+    ------
+    ValueError: If the first trend interval does not have a positive value.
+    ValueError: If the last trend interval does not end at 1.
+    ValueError: If the trend intervals are not strictly monotonically increasing.
+    ValueError: If each level shift does not have a start and end specified for its duration.
+    ValueError: If the start and end points of a level shift are not valid fractions of the time series duration.
+    ValueError: If the number of trend slopes is not equal to the number of trend intervals.
+    ValueError: If the number of level shifts is not equal to the number of level shift magnitudes.
+    """
+    if len(trend_slopes) != len(trend_intervals):
+        raise ValueError("Each trend needs an interval specified for its duration.")
+
+    def _verify_intervals(intervals):
+        if intervals[0] <= 0:
+            raise ValueError("The beginning trend must have a positive value")
+        if float(intervals[-1]) != 1.:
+            raise ValueError("The final interval must end at 1.")
+        for i in range(len(intervals) - 1):
+            if intervals[i+1] <= intervals[i]:
+                raise ValueError("The intervals must be strictly monotonically increasing.")
+
+    def _verify_level_shifts(level_shift_starts, level_shift_ends):
+        if len(level_shift_starts) != len(level_shift_ends):
+            raise ValueError("Each level shift needs a start and end specified for its duration.")
+        for ls_start, ls_end in zip(level_shift_starts, level_shift_ends):
+            if ls_end <= ls_start or ls_start < 0 or ls_end > 1:
+                raise ValueError("Level shift start and end points should be valid fractions of the time series duration, with end > start.")
+    np.random.seed(seed)
+    if trend_slopes and trend_intervals:
+        _verify_intervals(trend_intervals)
+
+    if level_shifts and level_shift_magnitudes:
+        level_shift_starts, level_shift_ends = zip(*level_shifts)
+        _verify_level_shifts(level_shift_starts, level_shift_ends)
+        if len(level_shifts) != len(level_shift_magnitudes):
+            raise ValueError("Each level shift needs a magnitude specified.")
+    ts = pd.date_range(start_date, freq=freq, periods=length)
+    trend_slopes = trend_slopes or [1.]
+    trend_intervals = trend_intervals or [1.]
+    level_shifts = level_shifts or []
+    level_shift_magnitudes = level_shift_magnitudes or []
+    hop_size = length / len(trend_slopes)
+    trend_intervals_indices = [0] + [int(hop_size * (i + 1)) for i in range(len(trend_slopes) - 1)] + [length]
+    base_value_with_trend_changes = np.array([])
+    for i in range(len(trend_intervals_indices) - 1):
+        cur_trend_magnitude = trend_slopes[i]
+        begin, end = trend_intervals_indices[i], trend_intervals_indices[i+1] - 1
+        interval_length = end - begin + 1
+        prev_endpoint = base_value_with_trend_changes[-1] if len(base_value_with_trend_changes) > 0 else 0.
+        base_value_with_trend_changes = np.concatenate(
+            (
+                base_value_with_trend_changes,
+                cur_trend_magnitude * np.arange(interval_length, dtype=np.float64) + prev_endpoint
+            )
+        )
+    for (ls_start, ls_end), ls_magnitude in zip(level_shifts, level_shift_magnitudes):
+        ls_start_index = int(ls_start * length)
+        ls_end_index = int(ls_end * length)
+        base_value_with_trend_changes[ls_start_index:ls_end_index] += ls_magnitude
+    df = pd.DataFrame({"timestamp": ts, "y": base_value_with_trend_changes})
+    return df

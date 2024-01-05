@@ -1,8 +1,5 @@
-Overview
-========
-
-The Greykite model
-------------------
+The Greykite Forecast model
+---------------------------
 Greykite is a forecast library developed by LinkedIn.
 Its flagship algorithm, Silverkite, provides interpretable, fast, and highly flexible
 univariate forecasts that capture effects such as time-varying growth and seasonality,

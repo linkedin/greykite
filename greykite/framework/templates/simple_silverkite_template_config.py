@@ -513,6 +513,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 1,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -524,6 +525,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -535,6 +537,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 4,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -546,6 +549,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 3,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -557,6 +561,7 @@ COMMON_MODELCOMPONENTPARAM_PARAMETERS = dict(
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         }),
@@ -655,6 +660,7 @@ SILVERKITE = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     },
@@ -739,6 +745,7 @@ SILVERKITE_DAILY_1_CONFIG_1 = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     },
@@ -808,6 +815,7 @@ SILVERKITE_DAILY_1_CONFIG_2 = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     },
@@ -877,6 +885,7 @@ SILVERKITE_DAILY_1_CONFIG_3 = ModelComponentsParam(
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     },
@@ -947,6 +956,7 @@ SILVERKITE_MONTHLY = ModelComponentsParam(
         "holiday_post_num_days": 0,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     },

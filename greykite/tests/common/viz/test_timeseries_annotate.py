@@ -229,10 +229,10 @@ def test_plot_lines_markers():
     assert fig.data[2].marker.color == "rgba(31, 119, 180, 1.0)"
     assert fig.data[3].marker.color == "rgba(255, 127, 14, 1.0)"
 
-    # Length of ``line_cols`` must be the same as ``line_cols`` if passed.
+    # Length of `line_colors` must be larger than or equal to length of `line_cols` if passed.
     with pytest.raises(
             ValueError,
-            match="If `line_colors` is passed, its length must be equal to `line_cols`"):
+            match="If `line_colors` is passed"):
         plot_lines_markers(
             df=df,
             x_col="ts",
@@ -241,7 +241,8 @@ def test_plot_lines_markers():
             line_colors=line_colors[:1],
             marker_colors=marker_colors)
 
-    # At least one of ``line_cols`` or ``marker_cols`` must be provided (not None).
+    # At least one of `line_cols` or `marker_cols` or `band_cols`
+    # must be provided (not None).
     with pytest.raises(
             ValueError,
             match="At least one of"):
@@ -250,8 +251,98 @@ def test_plot_lines_markers():
             x_col="ts",
             line_cols=None,
             marker_cols=None,
+            band_cols=None,
             line_colors=None,
             marker_colors=None)
+
+
+def test_plot_lines_markers_with_bands():
+    """Tests ``plot_lines_markers`` with bands."""
+    df = pd.DataFrame({
+        "x": range(4),
+        "y": range(4),
+        "z1": range(1, 5),
+        "z2": range(-1, 3),
+        "w": [(0, 1), (1, 3), (1, 5), (3, 5)],
+        "u": [(2, 3), (3, 3), (4, 4), (6, 8)]})
+
+    fig = plot_lines_markers(
+        df=df,
+        x_col="x",
+        line_cols=["y", "z1"],
+        band_cols=["u", "w"])
+
+    assert len(fig.data) == 6
+    assert fig.data[0].line.color is None
+    assert fig.data[1].line.color is None
+    assert fig.data[2].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[3].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[4].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[5].line.color == "rgba(0, 0, 0, 0)"
+
+    assert fig.data[3].name == "u"
+    assert fig.data[5].name == "w"
+    assert fig.data[3].fillcolor == "rgba(31, 119, 180, 0.2)"
+    assert fig.data[5].fillcolor == "rgba(255, 127, 14, 0.2)"
+    assert fig.layout.title.text is None
+
+    # Bands with custom colors and a title for the plot.
+    fig = plot_lines_markers(
+        df=df,
+        x_col="x",
+        line_cols=["y", "z1"],
+        band_cols=["u", "w"],
+        band_colors=["rgba(0, 255, 0, 0.2)", "rgba(255, 0, 0, 0.2)"],
+        title="custom band colors")
+
+    assert len(fig.data) == 6
+    assert fig.data[0].line.color is None
+    assert fig.data[1].line.color is None
+    assert fig.data[2].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[3].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[4].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[5].line.color == "rgba(0, 0, 0, 0)"
+
+    assert fig.data[3].name == "u"
+    assert fig.data[5].name == "w"
+
+    assert fig.data[3].fillcolor == "rgba(0, 255, 0, 0.2)"
+    assert fig.data[5].fillcolor == "rgba(255, 0, 0, 0.2)"
+    assert fig.layout.title.text == "custom band colors"
+
+    # Bands specified by dictionary.
+    df = pd.DataFrame({
+        "x": range(4),
+        "y": [2, 3, 4, 5],
+        "z1": [4, 5, 6, 8],
+        "z2": range(-1, 3),
+        "w1": [5, 6, 6, 8],
+        "w2": [7, 8, 9, 9],
+        "u1": [2, 3, 5, 7],
+        "u3": [4, 5, 8, 8]})
+
+    fig = plot_lines_markers(
+        df=df,
+        x_col="x",
+        line_cols=["y", "z1"],
+        band_cols_dict={"u": ["u1", "u3"], "w": ["w1", "w2"]},
+        band_colors=["rgba(0, 255, 0, 0.2)", "rgba(255, 0, 0, 0.2)"],
+        title="bands via dict")
+
+    assert len(fig.data) == 6
+    assert fig.data[0].line.color is None
+    assert fig.data[1].line.color is None
+    assert fig.data[2].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[3].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[4].line.color == "rgba(0, 0, 0, 0)"
+    assert fig.data[5].line.color == "rgba(0, 0, 0, 0)"
+
+    assert fig.data[3].name == "u"
+    assert fig.data[5].name == "w"
+
+    assert fig.data[3].fillcolor == "rgba(0, 255, 0, 0.2)"
+    assert fig.data[5].fillcolor == "rgba(255, 0, 0, 0.2)"
+    assert fig.layout.title.text == "bands via dict"
 
 
 def test_plot_event_periods_multi():

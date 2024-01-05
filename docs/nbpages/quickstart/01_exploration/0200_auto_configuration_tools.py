@@ -367,7 +367,8 @@ year_end = df[cst.TIME_COL].dt.year.max() + 1
 holiday_df = get_holidays(countries=["US"], year_start=year_start, year_end=year_end)["US"]
 
 # Defines the number of pre / post days that a holiday has impact on.
-# If not specified, (0, 0) will be used.
+# If not specified, numbers specified by ``holiday_impact_pre_num_days`` and
+# ``holiday_impact_post_num_days`` will be used.
 holiday_impact_dict = {
     "Christmas Day": (4, 3),  # 12/25.
     "Independence Day": (4, 4),  # 7/4.
@@ -390,8 +391,10 @@ hg = HolidayGrouper(
     holiday_df=holiday_df,
     holiday_date_col="date",
     holiday_name_col="event_name",
+    holiday_impact_pre_num_days=0,
+    holiday_impact_post_num_days=0,
     holiday_impact_dict=holiday_impact_dict,
-    get_suffix_func="dow_grouped"
+    get_suffix_func="wd_we"
 )
 
 # Runs holiday grouper using k-means with diagnostics.

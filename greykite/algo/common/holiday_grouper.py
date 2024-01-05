@@ -72,8 +72,15 @@ class HolidayGrouper:
         Name of the holiday date column in ``holiday_df``.
     holiday_name_col : `str`
         Name of the holiday name column in ``holiday_df``.
+    holiday_impact_pre_num_days: `int`, default 0
+        Default number of days before the holiday that will be modeled for holiday effect if the given holiday
+        is not specified in ``holiday_impact_dict``.
+    holiday_impact_post_num_days: `int`, default 0
+        Default number of days after the holiday that will be modeled for holiday effect if the given holiday
+        is not specified in ``holiday_impact_dict``.
     holiday_impact_dict : `Dict` [`str`, Any] or None, default None
-        A dictionary containing the neighboring impacting days of a certain holiday.
+        A dictionary containing the neighboring impacting days of a certain holiday. This overrides the
+        default ``pre_num`` and ``post_num`` for each holiday specified here.
         The key is the name of the holiday matching those in the provided ``holiday_df``.
         The value is a tuple of two values indicating the number of neighboring days
         before and after the holiday. For example, a valid dictionary may look like:
@@ -175,6 +182,8 @@ class HolidayGrouper:
             holiday_df: pd.DataFrame,
             holiday_date_col: str,
             holiday_name_col: str,
+            holiday_impact_pre_num_days: int = 0,
+            holiday_impact_post_num_days: int = 0,
             holiday_impact_dict: Optional[Dict[str, Tuple[int, int]]] = None,
             get_suffix_func: Optional[Union[Callable, str]] = "wd_we"):
         self.df = df.copy()
@@ -183,6 +192,8 @@ class HolidayGrouper:
         self.holiday_df = holiday_df.copy()
         self.holiday_date_col = holiday_date_col
         self.holiday_name_col = holiday_name_col
+        self.holiday_impact_pre_num_days = holiday_impact_pre_num_days
+        self.holiday_impact_post_num_days = holiday_impact_post_num_days
         if holiday_impact_dict is None:
             holiday_impact_dict = {}
         self.holiday_impact_dict = holiday_impact_dict.copy()
@@ -215,6 +226,8 @@ class HolidayGrouper:
             holiday_df=self.holiday_df,
             holiday_date_col=HOLIDAY_DATE_COL,
             holiday_name_col=HOLIDAY_NAME_COL,
+            holiday_impact_pre_num_days=self.holiday_impact_pre_num_days,
+            holiday_impact_post_num_days=self.holiday_impact_post_num_days,
             holiday_impact_dict=self.holiday_impact_dict,
             get_suffix_func=self.get_suffix_func
         )
@@ -225,8 +238,8 @@ class HolidayGrouper:
             use_relative_score: bool = True,
             min_n_days: int = 1,
             min_same_sign_ratio: float = 0.66,
-            min_abs_avg_score: float = 0.05,
-            clustering_method: str = "kde",
+            min_abs_avg_score: float = 0.03,
+            clustering_method: str = "kmeans",
             bandwidth: Optional[float] = None,
             bandwidth_multiplier: Optional[float] = 0.2,
             n_clusters: Optional[int] = 5,
@@ -250,11 +263,11 @@ class HolidayGrouper:
             scores for the ratio to achieve 0.66.
             Similarly, if an event has 3 occurrences, at least 2 of them must have the same directional impact.
             This parameter is intended to rule out holidays that have indefinite effects.
-        min_abs_avg_score : `float`, default 0.05
+        min_abs_avg_score : `float`, default 0.03
             The minimal average score of an event (across all its occurrences) to be kept
             before grouping.
-            When ``use_relative_score = True``, 0.05 means the effect must be greater than 5%.
-        clustering_method : `str`, default "kde"
+            When ``use_relative_score = True``, 0.03 means the effect must be greater than 3%.
+        clustering_method : `str`, default "kmeans"
             Clustering method used to group the holidays.
             Since we are doing 1-D clustering, current supported methods include
             (1) "kde" for kernel density estimation, and (2) "kmeans" for k-means clustering.
@@ -623,11 +636,11 @@ class HolidayGrouper:
             return
 
         if show_pruned:
-            score_result = result_dict["score_result"]
-            score_result_avg = result_dict["score_result_avg"]
-        else:
             score_result = result_dict["score_result_original"]
             score_result_avg = result_dict["score_result_avg_original"]
+        else:
+            score_result = result_dict["score_result"]
+            score_result_avg = result_dict["score_result_avg"]
         res_dict = {}
         for key, value in score_result_avg.items():
             if holiday_name_pattern in key:
@@ -737,12 +750,14 @@ class HolidayGrouper:
         for key, value in score_result.items():
             # `key` is the name of the event.
             # `value` is a list of scores, we need to check the following.
+            # First removes NAs before the following filtering.
+            value_non_na = [val for val in value if not np.isnan(val)]
             # (1) It has minimum length `min_n_days`.
-            if len(value) < min_n_days:
+            if len(value_non_na) < min_n_days:
                 continue
 
             # (2) The ratio of same-sign scores is at least `min_same_sign_ratio`.
-            signs = [(score > 0) * 1 for score in value]
+            signs = [(score > 0) * 1 for score in value_non_na]
             n_pos, n_neg = sum(signs), len(signs) - sum(signs)
             if max(n_pos, n_neg) < min_same_sign_ratio * (n_pos + n_neg):
                 continue
@@ -771,10 +786,13 @@ class HolidayGrouper:
             holiday_df: pd.DataFrame,
             holiday_date_col: str,
             holiday_name_col: str,
+            holiday_impact_pre_num_days: int = 0,
+            holiday_impact_post_num_days: int = 0,
             holiday_impact_dict: Optional[Dict[str, Tuple[int, int]]] = None,
             get_suffix_func: Optional[Union[Callable, str]] = "wd_we") -> pd.DataFrame:
         """Expands an input holiday dataframe ``holiday_df`` to include the neighboring days
-        specified in ``holiday_impact_dict``.
+        specified in ``holiday_impact_dict`` or through ``holiday_impact_pre_num_days`` and
+        `holiday_impact_post_num_days`.
         Also adds suffixes generated by ``get_suffix_func`` to better model the effects
         of events falling on different days of week.
 
@@ -786,8 +804,15 @@ class HolidayGrouper:
             Name of the holiday date column in ``holiday_df``.
         holiday_name_col : `str`
             Name of the holiday name column in ``holiday_df``.
+        holiday_impact_pre_num_days: `int`, default 0
+            Default number of days before the holiday that will be modeled for holiday effect if the given holiday
+            is not specified in ``holiday_impact_dict``.
+        holiday_impact_post_num_days: `int`, default 0
+            Default number of days after the holiday that will be modeled for holiday effect if the given holiday
+            is not specified in ``holiday_impact_dict``.
         holiday_impact_dict : `Dict` [`str`, Any] or None, default None
-            A dictionary containing the neighboring impacting days of a certain holiday.
+            A dictionary containing the neighboring impacting days of a certain holiday. This overrides the
+            default ``pre_num`` and ``post_num`` for each holiday specified here.
             The key is the name of the holiday matching those in the provided ``holiday_df``.
             The value is a tuple of two values indicating the number of neighboring days
             before and after the holiday. For example, a valid dictionary may look like:
@@ -842,7 +867,7 @@ class HolidayGrouper:
             if row[holiday_name_col] in holiday_impact_dict.keys():
                 pre_search_days, post_search_days = holiday_impact_dict[row[holiday_name_col]]
             else:
-                pre_search_days, post_search_days = 0, 0
+                pre_search_days, post_search_days = holiday_impact_pre_num_days, holiday_impact_post_num_days
 
             for i in range(-pre_search_days, post_search_days + 1):
                 original_dow_flag = get_suffix_func(row[holiday_date_col])

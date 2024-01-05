@@ -362,12 +362,21 @@ def plot_lines_markers(
         x_col,
         line_cols=None,
         marker_cols=None,
+        band_cols=None,
+        band_cols_dict=None,
         line_colors=None,
-        marker_colors=None):
+        marker_colors=None,
+        band_colors=None,
+        title=None):
     """A lightweight, easy-to-use function to create a plotly figure of given
-    lines (curves) and markers (points) from the columns of a dataframe with a
-    legend which matches the column names.
-    This can be used for example to annotate multiple curves with markers
+
+    - lines (curves)
+    - markers (points)
+    - filled bands (e.g. error bands)
+
+    from the columns of a dataframe with a legend which matches the column names.
+
+    This can be used for example to annotate multiple curves,  markers and bands
     with an easy function call.
 
     Parameters
@@ -380,12 +389,33 @@ def plot_lines_markers(
         The list of y-axis variables to be plotted as lines / curves.
     marker_cols : `list` [`str`] or None, default None
         The list of y-axis variables to be plotted as markers / points.
+    band_cols : `list` [`str`] or None, default None
+        The list of y-axis variables to be plotted as bands.
+        Each column is expected to have tuples, each of which denote the upper
+        and lower bounds.
+    band_cols_dict : `dict` [`str`: [`str`]] or None, default None
+        This is another way to specify bands.
+        In this case:
+
+            - each key will be the name for the band
+            - the value contains the two bound colums of `df` for the band.
+
+        For example `{
+            "forecast": ["forecast_upper", "forecast_lower"],
+            "w": ["w1", "w2"]}`
+        Specifies two bands, one is based on the forecast prediction intervals
+        and one is based on a variables denoted by "w" which has two corresponding
+        columns in df: `"w1"` and `"w2"`.
+
     line_colors : `list` [`str`] or None, default None
-        The list of colors to be used for each corresponding line given in ``line_cols``
+        The list of colors to be used for each corresponding line column given in ``line_cols``.
     marker_colors : `list` [`str`] or None, default None
-        The list of colors to be used for each corresponding line given in ``line_cols``
+        The list of colors to be used for each corresponding marker column given in ``line_cols``.
+    band_colors : `list` [`str`] or None, default None
+        The list of colors to be used for each corresponding band column given in ``band_cols``.
+        Each of these colors are used as filler for each band.
     title : `str` or None, default None
-        Plot title. If None, default is based on axis labels.
+        Plot title. If None, no title will appear.
 
     Returns
     -------
@@ -393,22 +423,37 @@ def plot_lines_markers(
         Interactive plotly graph of one or more columns in ``df`` against ``x_col``.
     """
 
-    if line_colors is not None:
-        if len(line_colors) != len(line_cols):
+    if line_colors is not None and line_cols is not None:
+        if len(line_colors) < len(line_cols):
             raise ValueError(
-                "If `line_colors` is passed, its length must be equal to `line_cols`")
+                "If `line_colors` is passed, its length must be at least `len(line_cols)`")
 
-    if marker_colors is not None:
-        if len(marker_colors) != len(marker_cols):
+    if marker_colors is not None and marker_cols is not None:
+        if len(marker_colors) < len(marker_cols):
             raise ValueError(
-                "If `line_colors` is passed, its length must be equal to `line_cols`")
+                "If `marker_colors` is passed, its length must be at least `len(marker_cols)`")
 
-    if line_cols is None and marker_cols is None:
+    if band_colors is not None and band_cols is not None:
+        if len(band_colors) < len(band_cols):
+            raise ValueError(
+                "If `band_colors` is passed, its length must be at least `len(band_cols)`")
+
+    if band_colors is not None and band_cols_dict is not None:
+        if len(band_colors) < len(band_cols_dict):
+            raise ValueError(
+                "If `band_colors` is passed, its length must be at least `len(band_cols_dict)`")
+
+    if (
+            line_cols is None and
+            marker_cols is None and
+            band_cols is None and
+            band_cols_dict is None):
         raise ValueError(
-                "At least one of `line_cols` or `marker_cols` must be passed as a list of strings (not None).")
+                "At least one of `line_cols` or `marker_cols` or `band_cols`"
+                " or `band_cols_dict` must be passed as a list (not None).")
 
     fig = go.Figure()
-    # Below we count the number of figure components to assign proper labels to legends
+    # Below we count the number of figure components to assign proper labels to legends.
     count_fig_data = -1
     if line_cols is not None:
         for i, col in enumerate(line_cols):
@@ -441,6 +486,79 @@ def plot_lines_markers(
             count_fig_data += 1
             fig["data"][count_fig_data]["name"] = col
 
+    if band_cols is not None:
+        if band_colors is None:
+            band_colors = get_distinct_colors(
+                num_colors=len(band_cols),
+                opacity=0.2)
+
+        for i, col in enumerate(band_cols):
+            fig.add_traces([
+                go.Scatter(
+                    x=df[x_col],
+                    y=df[col].map(lambda b: b[1]),
+                    mode="lines",
+                    line=line,
+                    line_color="rgba(0, 0, 0, 0)",
+                    showlegend=True),
+                go.Scatter(
+                    x=df[x_col],
+                    y=df[col].map(lambda b: b[0]),
+                    mode="lines",
+                    line_color="rgba(0, 0, 0, 0)",
+                    line=line,
+                    fill="tonexty",
+                    fillcolor=band_colors[i],
+                    showlegend=True)
+            ])
+
+            # The code below adds legend for each band.
+            # We increment the count by two this time because each band comes with the
+            # inner filling and lines around it.
+            # In this case, we have made the lines around each band to be invisible.
+            # However, they do appear in the figure data and we want to only include
+            # one legend for each band.
+            count_fig_data += 2
+            # This adds the legend corresponding to the band filler color.
+            fig["data"][len(fig["data"]) - 1]["name"] = col
+            # The name for this added data is the empty string,
+            # because we do not want to add a legend for the empty lines
+            # around the bands.
+            fig["data"][len(fig["data"]) - 2]["name"] = ""
+
+    if band_cols_dict is not None:
+        if band_colors is None:
+            band_colors = get_distinct_colors(
+                num_colors=len(band_cols_dict),
+                opacity=0.2)
+
+        for i, name in enumerate(band_cols_dict):
+            col1 = band_cols_dict[name][0]
+            col2 = band_cols_dict[name][1]
+            fig.add_traces([
+                go.Scatter(
+                    x=df[x_col],
+                    y=df[col2],
+                    mode="lines",
+                    line=line,
+                    line_color="rgba(0, 0, 0, 0)",
+                    showlegend=True),
+                go.Scatter(
+                    x=df[x_col],
+                    y=df[col1],
+                    mode="lines",
+                    line_color="rgba(0, 0, 0, 0)",
+                    line=line,
+                    fill="tonexty",
+                    fillcolor=band_colors[i],
+                    showlegend=True)
+            ])
+
+            count_fig_data += 2
+            fig["data"][len(fig["data"]) - 1]["name"] = name
+            fig["data"][len(fig["data"]) - 2]["name"] = ""
+
+    fig.update_layout(title=title)
     return fig
 
 
@@ -1084,9 +1202,9 @@ def plot_anomalies_over_forecast_vs_actual(
         predicted_col=PREDICTED_COL,
         predicted_anomaly_col=PREDICTED_ANOMALY_COL,
         anomaly_col=ANOMALY_COL,
-        marker_opacity=0.7,
-        predicted_anomaly_marker_color="green",
-        anomaly_marker_color="red",
+        marker_opacity=1,
+        predicted_anomaly_marker_color="rgba(0, 90, 181, 0.9)",
+        anomaly_marker_color="rgba(250, 43, 20, 0.7)",
         **kwargs):
     """Utility function which overlayes the predicted anomalies or anomalies on the forecast vs actual plot.
     The function calls the internal function `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`
@@ -1129,22 +1247,27 @@ def plot_anomalies_over_forecast_vs_actual(
         actual_col=actual_col,
         predicted_col=predicted_col,
         **kwargs)
-    if predicted_anomaly_col is not None:
-        fig.add_trace(go.Scatter(
-            x=df.loc[df[predicted_anomaly_col].apply(lambda val: val is True), time_col],
-            y=df.loc[df[predicted_anomaly_col].apply(lambda val: val is True), predicted_col],
-            mode="markers",
-            marker=go.scatter.Marker(color=predicted_anomaly_marker_color),
-            name=predicted_anomaly_col.title(),
-            showlegend=True,
-            opacity=marker_opacity))
     if anomaly_col is not None:
         fig.add_trace(go.Scatter(
             x=df.loc[df[anomaly_col].apply(lambda val: val is True), time_col],
             y=df.loc[df[anomaly_col].apply(lambda val: val is True), actual_col],
             mode="markers",
+            marker_size=10,
+            marker_symbol="square",
             marker=go.scatter.Marker(color=anomaly_marker_color),
             name=anomaly_col.title(),
             showlegend=True,
             opacity=marker_opacity))
+    if predicted_anomaly_col is not None:
+        fig.add_trace(go.Scatter(
+            x=df.loc[df[predicted_anomaly_col].apply(lambda val: val is True), time_col],
+            y=df.loc[df[predicted_anomaly_col].apply(lambda val: val is True), actual_col],
+            mode="markers",
+            marker_size=7,
+            marker_symbol="diamond",
+            marker=go.scatter.Marker(color=predicted_anomaly_marker_color),
+            name=predicted_anomaly_col.title(),
+            showlegend=True,
+            opacity=marker_opacity))
+
     return fig

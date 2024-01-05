@@ -65,6 +65,7 @@ def describe_timeseries(df, time_col):
 
     """
     df = df.copy(deep=True)
+    df[time_col] = pd.to_datetime(df[time_col])
     if df.shape[0] < 2:
         raise Exception("dataframe needs to have at least two rows")
     df["delta"] = (

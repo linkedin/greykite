@@ -275,7 +275,8 @@ SILVERKITE_WOW = ModelComponentsParam(
                         "holiday_pre_post_num_dict": None,      # ignored
                         "daily_event_df_dict": None,            # ignored
                         "daily_event_neighbor_impact": None,    # ignored
-                        "daily_event_shifted_effect": None
+                        "daily_event_shifted_effect": None,
+                        "auto_holiday_params": None
                     },
                     changepoints={
                         "auto_growth": True,
