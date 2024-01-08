@@ -18,15 +18,15 @@ statistical significance is to bake in material/ business impact into the detect
     * @Sayan Patra: Added ``GreykiteDetector`` module that builds anomaly detection based on Greykite forecasting.
     * @Sayan Patra: Added tutorials for Greykite anomaly detection.
 
-* New features and methodss
+* New features and methods
     * @Reza Hosseini: Added `~greykite.common.features.outlier.ZScoreOutlierDetector` and `~greykite.common.features.outlier.TukeyOutlierDetector`, improved outlier detection modules. 
     * @Sayan Patra: Added `~greykite.detection.common.pickler.GreykitePickler`. This improves the pickling function for Greykite models and allows to store the model in a single file.
     * @Yi-Wei Lu: Added ``DifferenceBasedOutlierTransformer`` that can identify outliers in the ``sklearn`` pipeline.
 
-* Library Enhancements
+* Library enhancements
     * @Kaixu Yang: Added ``scipy`` solver to make quantile regression more stable.
     * @Qiang Fei: Updated ``auto_holiday`` functionality to use holiday groupers for improved forecast performance in holiday periods.
-    * @Katherine Li: Improved changepoint detection method that can identify level shift.
+    * @Katherine Li: Improved changepoint detection method that can identify level shifts.
 
 * Bug fixes
     * @Reza Hosseini @Sayan Patra @Yi Su @Qiang Fei @Kaixu Yang @Phil Gaudreau: Other library enhancements and bug fixes.
