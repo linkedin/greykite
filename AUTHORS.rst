@@ -24,3 +24,4 @@ Other Contributors
 * Qiang Fei
 * Phil Gaudreau
 * Yi-Wei Liu
+* Katherine Li
