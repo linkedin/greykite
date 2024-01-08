@@ -19,9 +19,9 @@ Authors
 
 Other Contributors
 ------------------
+* Qiang Fei
 * Saad Eddin Al Orjany
 * Rachit Kumar
-* Qiang Fei
 * Phil Gaudreau
 * Yi-Wei Liu
 * Katherine Li
