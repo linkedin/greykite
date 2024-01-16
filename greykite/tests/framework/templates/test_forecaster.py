@@ -681,6 +681,7 @@ def test_run_forecast_config_with_single_simple_silverkite_template():
             "estimator__holiday_post_num_days": [0],
             "estimator__holiday_pre_post_num_dict": [None],
             "estimator__daily_event_df_dict": [None],
+            'estimator__auto_holiday_params': [None],
             "estimator__daily_event_neighbor_impact": [None],
             "estimator__daily_event_shifted_effect": [None],
             "estimator__auto_growth": [False],

@@ -52,12 +52,12 @@ from greykite.framework.output.univariate_forecast import UnivariateForecast
 from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverkiteEstimator
 from greykite.sklearn.sklearn_scorer import make_scorer_df
 from greykite.sklearn.transform.column_selector import ColumnSelector
+from greykite.sklearn.transform.difference_based_outlier_transformer import DifferenceBasedOutlierTransformer
 from greykite.sklearn.transform.drop_degenerate_transformer import DropDegenerateTransformer
 from greykite.sklearn.transform.dtype_column_selector import DtypeColumnSelector
 from greykite.sklearn.transform.normalize_transformer import NormalizeTransformer
 from greykite.sklearn.transform.null_transformer import NullTransformer
 from greykite.sklearn.transform.pandas_feature_union import PandasFeatureUnion
-from greykite.sklearn.transform.zscore_outlier_transformer import ZscoreOutlierTransformer
 
 
 def get_best_index(results, metric="score", greater_is_better=False):
@@ -361,13 +361,13 @@ def get_basic_pipeline(
             ])),
             ("response", Pipeline([  # applies outlier and null transformation to value column
                 ("select_val", ColumnSelector([VALUE_COL])),
-                ("outlier", ZscoreOutlierTransformer(z_cutoff=None)),
+                ("outlier", DifferenceBasedOutlierTransformer()),
                 ("null", NullTransformer(impute_algorithm="interpolate"))
             ])),
             ("regressors_numeric", Pipeline([
                 ("select_reg", ColumnSelector(all_reg_cols)),
                 ("select_reg_numeric", DtypeColumnSelector(include="number")),
-                ("outlier", ZscoreOutlierTransformer(z_cutoff=None)),
+                ("outlier", DifferenceBasedOutlierTransformer()),
                 ("normalize", NormalizeTransformer(normalize_algorithm=None)),  # no normalization by default
                 ("null", NullTransformer(impute_algorithm="interpolate"))
             ])),

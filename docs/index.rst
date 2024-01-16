@@ -12,11 +12,11 @@ Welcome to Greykite! View the contents to get started.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Greykite Info
+   :caption: Overview
    :hidden:
    :glob:
 
-   pages/greykite/overview
+   pages/overview/*
 
 .. toctree::
    :maxdepth: 2

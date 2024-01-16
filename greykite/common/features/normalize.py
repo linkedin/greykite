@@ -50,10 +50,10 @@ def normalize_df(
         - "statistical" method removes the "mean" and divides by "std" for each column.
         - "zero_to_one" method removes the "min" and divides by the "max - min"
             for each column.
-        - "minus_half_to_half" method will remove the "(min + max)/2" and divides by the "max - min"
+        - "minus_half_to_half" method removes the "(min + max)/2" and divides by the "max - min"
             for each column.
-        - "zero_at_origin" method will remove the first data point and divides by the "max - min"
-            for each column.
+        - "zero_at_origin" method removes a constant equal to the first data point and divides
+            by the "max - min" for each column.
 
     drop_degenerate_cols : `bool`, default True
         A boolean to determine if columns with only one possible value should be

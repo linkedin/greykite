@@ -90,6 +90,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             holiday_post_num_days: int = 2,
             holiday_pre_post_num_dict: Optional[Dict] = None,
             daily_event_df_dict: Optional[Dict] = None,
+            auto_holiday_params: Optional[Dict] = None,
             daily_event_neighbor_impact: Optional[Union[int, List[int], callable]] = None,
             daily_event_shifted_effect: Optional[List[str]] = None,
             auto_growth: bool = False,
@@ -232,19 +233,19 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             If None, uses the defaults in `~greykite.algo.common.ml_models.fit_model_via_design_matrix`.
         auto_holiday : `bool`, default False
             Whether to automatically infer holiday configuration based on the input timeseries.
-            The candidate lookup countries are specified by ``holiday_lookup_countries``.
-            If True, the following parameters will be ignored:
+            If True, holiday groups will be constructed through estimated holiday effects. If False,
+            the other specified holiday configuration will be used to generate holiday features.
+            Notice that the following parameters serve different uses in two case:
 
-                * "holidays_to_model_separately"
-                * "holiday_pre_num_days"
-                * "holiday_post_num_days"
-                * "holiday_pre_post_num_dict"
+                * "Daily_event_df_dict": When ``auto_holiday = False``, this specifies additional events that are
+                  ready for use in modeling; when ``auto_holiday = True``, this provides a list of holidays that
+                  can be processed and used as inputs for ``HolidayGrouper``.
+                * "auto_holiday_params": It contains customized parameter values that can be used for ``HolidayGrouper``.
+                 When ``auto_holiday = False``, this will not be used.
 
-            For details, see `~greykite.algo.common.holiday_inferrer.HolidayInferrer`.
-            Extra events specified in ``daily_event_df_dict`` will be added to the inferred holidays.
+            For details, see `~greykite.algo.common.holiday_grouper.HolidayGrouper`.
         holiday_lookup_countries : `list` [`str`] or "auto" or None, optional, default "auto"
-            The countries that contain the holidays you intend to model
-            (``holidays_to_model_separately``).
+            The countries that contain the holidays you intend to model.
 
                 * If "auto", uses a default list of countries
                   that contain the default ``holidays_to_model_separately``.
@@ -254,23 +255,28 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
         holidays_to_model_separately : `list` [`str`] or "auto" or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None, optional, default "auto"  # noqa: E501
             Which holidays to include in the model.
-            The model creates a separate key, value for each item in ``holidays_to_model_separately``.
-            The other holidays in the countries are grouped together as a single effect.
+            The model creates a separate key, value for each item in ``holidays_to_model_separately`` and their neighboring
+            days. If ``auto_holiday = False``, the other holidays in the countries are grouped together as a single effect.
+            If ``auto_holiday = True``, the other holidays will be processed by ``HolidayGrouper`` and assigned to
+            holiday groups based on their estimated impact.
 
                 * If "auto", uses a default list of important holidays.
                   See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.
                 * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,
-                  uses all available holidays in ``holiday_lookup_countries``. This can often
-                  create a model that has too many parameters, and should typically be avoided.
+                  uses all available holidays in ``holiday_lookup_countries``. This can often create a model that has too many parameters,
+                  and should typically be avoided. This argument is only valid when ``auto_holiday = False``. When ``auto_holiday`` is
+                  set to `True`, a `ValueError` would be raised.
                 * If a list, must be a list of holiday names.
                 * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together
                   as a single effect.
 
             Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.
         holiday_pre_num_days : `int`, default 2
-            Model holiday effects for ``holiday_pre_num_days`` days before the holiday.
+            Model holiday effects for ``holiday_pre_num_days`` days before the holiday. When ``auto_holiday = False``,
+            this also applies to the holidays passed in through `daily_event_df_dict`.
         holiday_post_num_days : `int`, default 2
-            Model holiday effects for ``holiday_post_num_days`` days after the holiday.
+            Model holiday effects for ``holiday_post_num_days`` days after the holiday. When ``auto_holiday = False``,
+            this also applies to the holidays passed in through `daily_event_df_dict`.
         holiday_pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None
             Overrides ``pre_num`` and ``post_num`` for each holiday in
             ``holidays_to_model_separately``.
@@ -281,8 +287,16 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             Holidays not specified use the default given by ``pre_num`` and ``post_num``.
         daily_event_df_dict : `dict` [`str`, `pandas.DataFrame`] or None, default None
             A dictionary of data frames, each representing events data for the corresponding key.
-            Specifies additional events to include besides the holidays specified above. The format
-            is the same as in `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.
+            Specifies additional events to include besides the holidays specified above.
+            The usage and format requirement of `daily_event_df_dict` is different based on whether
+            ``auto_holiday`` is enabled.  When ``auto_holiday = False``, these events will be
+            directly appended in the return and used in modeling. When ``auto_holiday = True``, this
+            will be used as sources of holidays, together with holidays constructed through
+            `holiday_lookup_countries`. Holiday grouper will be run on all these holidays and their
+            neighboring days unless they are specified in `holidays_to_model_separately`.
+
+            When ``auto_holiday = False``, the format is the same as in
+            `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.
             The DataFrame has two columns:
 
                 - The first column contains event dates. Must be in a format
@@ -290,7 +304,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
                   frequency for proper join. It is joined against the time
                   in ``df``, converted to a day:
                   ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.
-                - the second column contains the event label for each date
+                - The second column contains the event label for each date.
 
             The column order is important; column names are ignored.
             The event dates must span their occurrences in both the training
@@ -355,6 +369,25 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`
             in the second column. This is reserved to indicate dates that do not
             correspond to an event.
+
+            When ``auto_holiday = True``, this dictionary is used to pass in holidays that will
+            be used by `HolidayGrouper`. Each key corresponds to a holiday name, and the
+            Dataframe has at least one column that contains event dates:
+
+                - The event date column used will be the first column in each data frame
+                  that can be recognized by `pandas.to_datetime`. Must be at daily
+                  frequency for proper join. It is joined against the time in ``df``,
+                  converted to a day:
+                  ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.
+                - The other columns in the dataframe will be ignored.
+
+            The event dates must span their occurrences in both the training
+            and future prediction period.
+        auto_holiday_params : `dict` or None, default None
+            This dictionary takes in parameters that can be passed in and used by holiday grouper when
+            ``auto_holiday`` is set to `True`. When ``auto_holiday = False``, this will not be used. Please see
+            `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast.__get_silverkite_holidays`
+            for more details.
         daily_event_neighbor_impact : `int`, `list` [`int`], callable or None, default None
             The impact of neighboring timestamps of the events in ``event_df_dict``.
             This is for daily events so the units below are all in days.
@@ -738,7 +771,7 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
         # Specifies events (via ``daily_event_df_dict``, ``extra_pred_cols``).
         # Constant daily effect.
-        holiday_df_dict = self.__get_silverkite_holidays(
+        daily_event_df_dict = self.__get_silverkite_holidays(
             auto_holiday=auto_holiday,
             holiday_lookup_countries=holiday_lookup_countries,
             holidays_to_model_separately=holidays_to_model_separately,
@@ -747,21 +780,11 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             pre_num=holiday_pre_num_days,
             post_num=holiday_post_num_days,
             pre_post_num_dict=holiday_pre_post_num_dict,
+            auto_holiday_params=auto_holiday_params,
             df=df,
             time_col=time_col,
             value_col=value_col,
-            forecast_horizon=forecast_horizon)
-        if holiday_df_dict is not None:
-            # Adds holidays to the user-specified events,
-            # giving preference to user events
-            # if there are conflicts
-            daily_event_df_dict = update_dictionary(
-                holiday_df_dict,
-                overwrite_dict=daily_event_df_dict)
-
-        if not daily_event_df_dict:
-            # Sets empty dictionary to None
-            daily_event_df_dict = None
+            daily_event_df_dict=daily_event_df_dict)
 
         extra_pred_cols += get_event_pred_cols(
             daily_event_df_dict,
@@ -1353,23 +1376,23 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             pre_num=2,
             post_num=2,
             pre_post_num_dict=None,
+            auto_holiday_params=None,
             df=None,
             time_col=cst.TIME_COL,
             value_col=cst.VALUE_COL,
-            forecast_horizon=None):
+            daily_event_df_dict=None):
         """Generates holidays dictionary for input to daily_event_df_dict parameter of silverkite model.
         The main purpose is to provide reasonable defaults for the holiday names and countries
 
         Parameters
         ----------
         auto_holiday : `bool`, default False
-            If True, the other holiday configurations will be ignored.
-            An algorithm is used to automatically infer the holiday configuration.
-            For details, see `~greykite.algo.common.holiday_inferrer.HolidayInferrer`.
-            If False, the specified holiday configuration will be used to generate holiday features.
+            If `True`, an algorithm is used to automatically infer the holiday configuration. Holiday groups will be constructed through
+            estimated holiday effects for holidays and their neighboring days.
+            For details, see `~greykite.algo.common.holiday_grouper.HolidayGrouper`.
+            If `False`, the specified holiday configuration will be used to generate holiday features.
         holiday_lookup_countries : `list` [`str`] or "auto" or None, optional, default "auto"
-            The countries that contain the holidays you intend to model
-            (``holidays_to_model_separately``).
+            The countries that contain the holidays you intend to model.
 
             * If "auto", uses a default list of countries
               that contain the default ``holidays_to_model_separately``.
@@ -1379,27 +1402,32 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
 
         holidays_to_model_separately : `list` [`str`] or "auto" or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None, optional, default "auto"  # noqa: E501
             Which holidays to include in the model.
-            The model creates a separate key, value for each item in ``holidays_to_model_separately``.
-            The other holidays in the countries are grouped together as a single effect.
+            The model creates a separate key, value for each item in ``holidays_to_model_separately`` and their neighboring
+            days. If ``auto_holiday = False``, the other holidays in the countries are grouped together as a single effect.
+            If ``auto_holiday = True``, the other holidays will be processed by ``HolidayGrouper`` and assigned to
+            holiday groups based on their estimated impact.
 
-            * If "auto", uses a default list of important holidays.
-              See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.
-            * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,
-              uses all available holidays in ``holiday_lookup_countries``. This can often
-              create a model that has too many parameters, and should typically be avoided.
-            * If a list, must be a list of holiday names.
-            * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together
-              as a single effect.
+                * If "auto", uses a default list of important holidays.
+                  See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.
+                * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,
+                  uses all available holidays in ``holiday_lookup_countries``. This can often create a model that has too many parameters,
+                  and should typically be avoided. This argument is only valid when ``auto_holiday = False``. When ``auto_holiday`` is
+                  set to `True`, a `ValueError` would be raised.
+                * If a list, must be a list of holiday names.
+                * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together
+                  as a single effect.
 
             Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.
-        start_year : `int`
+        start_year : `int`, default 2015
             Year of first training data point, used to generate holiday events.
-        end_year : `int`
+        end_year : `int`, default 2030
             Year of last forecast data point, used to generate holiday events.
-        pre_num : `int`
-            Model holiday effects for ``pre_num`` days before the holiday.
-        post_num : `int`
-            Model holiday effects for ``post_num`` days after the holiday.
+        pre_num : `int`, default 2
+            Model holiday effects for ``pre_num`` days before the holiday. When ``auto_holiday = False``,
+            this also applies to the holidays passed in through ``daily_event_df_dict``.
+        post_num : `int`, default 2
+            Model holiday effects for ``post_num`` days after the holiday. When ``auto_holiday = False``,
+            this also applies to the holidays passed in through ``daily_event_df_dict``.
         pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None
             Overrides ``pre_num`` and ``post_num`` for each holiday in
             ``holidays_to_model_separately``.
@@ -1408,22 +1436,35 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
             denoting that the "Thanksgiving" ``pre_num`` is 1 and ``post_num`` is 3, and "Labor Day"
             ``pre_num`` is 1 and ``post_num`` is 2.
             Holidays not specified use the default given by ``pre_num`` and ``post_num``.
+        auto_holiday_params : `dict` or None, default None
+            This dictionary takes in parameters that can be passed in and used by holiday grouper when
+            ``auto_holiday`` is set to `True`. When ``auto_holiday = False``, this will not be used. Please see
+            `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast.__get_silverkite_holidays`
+            for more details.
         df : `pandas.DataFrame` or None, default None.
-            The timeseries data needed for automatically inferring holiday configuration.
-            This is not used when ``auto_holiday`` is False.
+            The timeseries data that will be used by default for automatically inferring holiday configuration. This
+             will not be used if external ``df`` is specified through ``auto_holiday_params``.
+            This is not used when ``auto_holiday`` is `False`.
         time_col : `str`, default `cst.TIME_COL`
-            The column name for timestamps in ``df``.
-            This is not used when ``auto_holiday`` is False.
+            The column name for timestamps in ``df``. This will not be used if ``time_col`` is specified through
+            ``auto_holiday_params``.
+            This is not used when ``auto_holiday`` is `False`.
         value_col : `str`, default `cst.VALUE_COL`
-            The column name for values in ``df``.
-            This is not used when ``auto_holiday`` is False.
-        forecast_horizon : `int` or None, default None
-            The forecast horizon, used to calculate the year list for "auto" option.
+            The column name for values in ``df``. This will not be used if ``value_col`` is specified through
+            ``auto_holiday_params``.
+            This is not used when ``auto_holiday`` is `False`.
+        daily_event_df_dict : `dict` [`str`, `pandas.DataFrame`] or None, default None
+            A dictionary of data frames, each representing events data for the corresponding key.
+            Specifies additional events to include besides the holidays specified by other holiday configurations.
+            If ``auto_holiday`` is set to `False`, it will be directly appended to the returned result, and the
+            format is the same as in `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.
+            If ``auto_holiday`` is set to `True`, it provides a list of holidays that will be processed and
+            passed in as inputs for ``HolidayGrouper``.
 
         Returns
         -------
         daily_event_df_dict : `dict` [`str`, `pandas.DataFrame` [EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]]
-            Suitable for use as `daily_event_df_dict` parameter in `forecast_silverkite`.
+            Suitable for use as ``daily_event_df_dict`` parameter in ``forecast_silverkite``.
             Each holiday is modeled as its own effect (not specific to each country).
 
         See Also
@@ -1434,30 +1475,39 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
         `~greykite.common.features.timeseries_features.get_available_holidays_across_countries`
         to see available holidays in those countries.
         """
+        # Processes `holiday_lookup_countries`.
         if holiday_lookup_countries is None:
-            # `None` will not model any holidays
+            # `None` will not model any holidays when `auto_holiday` is `False`. When `auto_holiday` is `True`, holidays
+            # has to be passed in through `holiday_lookup_countries` and/or `daily_event_df_dict`.
             holiday_lookup_countries = []
         elif holiday_lookup_countries == "auto":
-            # countries that contain the default `holidays_to_model_separately`
+            # Countries that contain the default `holidays_to_model_separately`.
             holiday_lookup_countries = self._silverkite_holiday.HOLIDAY_LOOKUP_COUNTRIES_AUTO
         elif not isinstance(holiday_lookup_countries, (list, tuple)):
             raise ValueError(
                 f"`holiday_lookup_countries` should be a list, found {holiday_lookup_countries}")
+
         if auto_holiday:
-            if df is None:
-                raise ValueError("Automatically inferring holidays is turned on. Dataframe must be provided.")
             return get_auto_holidays(
                 df=df,
                 time_col=time_col,
                 value_col=value_col,
-                countries=holiday_lookup_countries,
-                forecast_horizon=forecast_horizon,
-                daily_event_dict_override=None)  # ``daily_event_dict`` is handled in `convert_params` with other cases.
+                start_year=start_year,
+                end_year=end_year,
+                pre_num=pre_num,
+                post_num=post_num,
+                pre_post_num_dict=pre_post_num_dict,
+                holiday_lookup_countries=holiday_lookup_countries,
+                holidays_to_model_separately=holidays_to_model_separately,
+                daily_event_df_dict=daily_event_df_dict,
+                auto_holiday_params=auto_holiday_params
+            )
         else:
+            # Processes `holidays_to_model_separately`.
             if holidays_to_model_separately is None:
                 holidays_to_model_separately = []
             elif holidays_to_model_separately == "auto":
-                # important holidays
+                # important holidays.
                 holidays_to_model_separately = self._silverkite_holiday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO
             elif holidays_to_model_separately == self._silverkite_holiday.ALL_HOLIDAYS_IN_COUNTRIES:
                 holidays_to_model_separately = get_available_holidays_across_countries(
@@ -1468,11 +1518,24 @@ class SimpleSilverkiteForecast(SilverkiteForecast):
                 raise ValueError(
                     f"`holidays_to_model_separately` should be a list, found {holidays_to_model_separately}")
 
-            return generate_holiday_events(
+            holiday_df_dict = generate_holiday_events(
                 countries=holiday_lookup_countries,
                 holidays_to_model_separately=holidays_to_model_separately,
-                year_start=start_year - 1,  # subtract 1 just in case, to ensure coverage of all holidays
-                year_end=end_year + 1,  # add 1 just in case, to ensure coverage of all holidays
+                year_start=start_year - 1,  # subtract 1 just in case, to ensure coverage of all holidays.
+                year_end=end_year + 1,  # add 1 just in case, to ensure coverage of all holidays.
                 pre_num=pre_num,
                 post_num=post_num,
                 pre_post_num_dict=pre_post_num_dict)
+
+            if holiday_df_dict is not None:
+                # Adds holidays to the user-specified events,
+                # giving preference to user events if there are conflicts.
+                daily_event_df_dict = update_dictionary(
+                    holiday_df_dict,
+                    overwrite_dict=daily_event_df_dict)
+
+            if not daily_event_df_dict:
+                # Sets empty dictionary to 'None'.
+                daily_event_df_dict = None
+
+            return daily_event_df_dict

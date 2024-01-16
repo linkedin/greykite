@@ -451,7 +451,8 @@ and regularization is used.
 
     normalize_method : `str` or None, default None
         The normalization method for the feature matrix.
-        Available values are "statistical", "zero_to_one" and "minus_half_to_half".
+        Available values are "zero_to_one", "statistical", "minus_half_to_half", "zero_at_origin".
+        If None, no normalization will be performed.
 
 Examples:
 
@@ -465,6 +466,9 @@ Examples:
     )
 
 The ``statistical`` method removes the "mean" and divides by "std" for each column.
-The ``zero_to_one`` method removes the "min" and divides by the "max - min"
-The ````minus_half_to_half```` method removes the "(min + max)/2" and divides by the "max - min"
-for each column. For details, see `~greykite.common.features.normalize.normalize_df`.
+The ``zero_to_one`` method removes the "min" and divides by the "max - min" for each column.
+The ``minus_half_to_half`` method removes the "(min + max)/2" and divides by the "max - min"
+for each column.
+The ``zero_at_origin`` method removes a constant equal to the first data point and divides
+by the "max - min" for each column.
+For details, see `~greykite.common.features.normalize.normalize_df`.

@@ -1,6 +1,8 @@
 import json
+from copy import deepcopy
 from typing import Optional
 
+import pandas as pd
 import pytest
 from pytest import fail
 
@@ -17,9 +19,12 @@ from greykite.framework.templates.autogen.forecast_config import EvaluationPerio
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import MetadataParam
 from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
+from greykite.framework.templates.autogen.forecast_config import assert_equal_forecast_config
 from greykite.framework.templates.autogen.forecast_config import forecast_config_from_dict
 from greykite.framework.templates.autogen.forecast_config import from_list_dict
 from greykite.framework.templates.autogen.forecast_config import from_list_dict_or_none
+from greykite.framework.templates.autogen.forecast_config_utils import FORECAST_CONFIG_JSON_COMPLETE
+from greykite.framework.templates.autogen.forecast_config_utils import FORECAST_CONFIG_JSON_DEFAULT
 from greykite.framework.templates.forecast_config_defaults import ForecastConfigDefaults
 from greykite.framework.templates.model_templates import ModelTemplateEnum
 
@@ -468,3 +473,61 @@ def test_forecast_one_by_one():
     assert config.to_dict()["forecast_one_by_one"] == [1, 2, 3]
     config = ForecastConfig().from_dict({"forecast_one_by_one": [1, 2, 3]})
     assert config.forecast_one_by_one == [1, 2, 3]
+
+
+def test_forecast_config_from_json():
+    """Tests `from_json` method in `ForecastConfig."""
+    for param in [FORECAST_CONFIG_JSON_DEFAULT, FORECAST_CONFIG_JSON_COMPLETE]:
+        forecast_config = param.get("forecast_config")
+        forecast_json = param.get("forecast_json")
+        translated_forecast_config = ForecastConfig.from_json(forecast_json)
+        assert_equal_forecast_config(forecast_config, translated_forecast_config)
+
+        # Raises error when input is not a string
+    with pytest.raises(ValueError, match="is not a json string."):
+        ForecastConfig.from_json(5)
+
+    # Raises error when input is not a json string
+    with pytest.raises(ValueError, match="not a json string"):
+        json_str = "This is not a json str"
+        ForecastConfig.from_json(json_str)
+
+
+def test_assert_equal_forecast_config():
+    """Tests `assert_equal_forecast_config`."""
+    forecast_config_default = FORECAST_CONFIG_JSON_DEFAULT.get("forecast_config")
+    assert_equal_forecast_config(forecast_config_default, forecast_config_default)
+
+    forecast_config_complete = FORECAST_CONFIG_JSON_COMPLETE.get("forecast_config")
+    assert_equal_forecast_config(forecast_config_complete, forecast_config_complete)
+
+    # Raises error when the `ForecastConfig`s do not match
+    with pytest.raises(AssertionError, match="Actual should be a dict, found None."):
+        assert_equal_forecast_config(forecast_config_default, forecast_config_complete)
+
+    # Raises error when anomaly dataframe is different, this is not captured by dataclass equality check
+    with pytest.raises(AssertionError, match="\\(column name=\"start\"\\) values are different"):
+        anomaly_df = pd.DataFrame({
+            "start": ["2020-01-01", "2020-02-02"],
+            "end": ["2020-01-10", "2020-02-05"]
+        })
+        config1 = deepcopy(forecast_config_complete)
+        config1.metadata_param.anomaly_info = {
+            "value_col": "value",
+            "anomaly_df": anomaly_df,
+        }
+
+        anomaly_df = pd.DataFrame({
+            "start": ["2020-01-05", "2020-02-02"],
+            "end": ["2020-01-10", "2020-02-10"]
+        })
+        config2 = deepcopy(forecast_config_complete)
+        config2.metadata_param.anomaly_info = {
+            "value_col": "value",
+            "anomaly_df": anomaly_df,
+        }
+        assert_equal_forecast_config(config1, config2)
+
+    # Raises error when one of the input is not an `ADConfig`
+    with pytest.raises(ValueError, match="is not a member of 'ForecastConfig' class."):
+        assert_equal_forecast_config(forecast_config_default, 4)

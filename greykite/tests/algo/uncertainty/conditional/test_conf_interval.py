@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 from greykite.algo.uncertainty.conditional.conf_interval import conf_interval
@@ -17,12 +18,11 @@ def data():
 
 
 def test_conf_interval_ecdf_method(data):
-    """Testing "conf_interval" function with "ecdf" method
-    """
+    """Testing `conf_interval` function with "ecdf" method"""
     df = data["df"]
     new_df = data["new_df"]
 
-    # ``quantile_estimation_method = "ecdf"``
+    # `quantile_estimation_method = "ecdf"`
     ci_model = conf_interval(
         df=df,
         distribution_col="residual",
@@ -51,6 +51,72 @@ def test_conf_interval_ecdf_method(data):
     expected_stds = [0.29, 0.42, 0.42, 0.42, 0.42, 0.58, 0.58, 0.58, 0.58, 0.58,
                      0.58, 0.42]
     assert list(pred_df[ERR_STD_COL].values) == expected_stds
+
+
+def test_conf_interval_ecdf_method_no_large_segments_remove_mean_false(data):
+    """Testing `conf_interval` function with "ecdf" method.
+    Two things are tested:
+        (a) the case where no segment has enough samples.
+        (b) the case where conditional mean isn't removed.
+    """
+    df = data["df"]
+
+    # `quantile_estimation_method = "ecdf"`
+    # We test for all segments being smaller than `sample_size_thresh`.
+    # Note that we are almost calculating min/median/max by passing `quantiles=[0, 0.5, 1]`.
+    ci_model = conf_interval(
+        df=df,
+        distribution_col="residual",
+        offset_col="y_hat",
+        conditional_cols=["x"],
+        quantiles=[0, 0.5, 1],
+        quantile_estimation_method="ecdf",
+        sample_size_thresh=len(df) + 1,  # delibrately forcing no segment to have enough samples
+        small_sample_size_method="std_quantiles",
+        small_sample_size_quantile=0.95,
+        min_admissible_value=None,
+        max_admissible_value=None)
+
+    # It is expected that we get only one row in `"ecdf_df"` item
+    assert len(ci_model["ecdf_df"]) == 1
+    estim_quantiles = ci_model["ecdf_df"]["residual_ecdf_quantile_summary"].values[0]
+    estim_quantiles = np.array(estim_quantiles)
+    expected_quantiles = np.array([-1.180189405360272, 0.03387456098249153, 0.893547644053081])
+    assert np.allclose(estim_quantiles, expected_quantiles)
+    # Stores the values for comparing with the next case
+    expected_quantiles_mean_removed = expected_quantiles
+
+    # Here we test for the case where the conditional mean is not removed.
+    # Still all segments being smaller than `sample_size_thresh`.
+    # Note that we are almost calculating min/median/max by passing `quantiles=[0, 0.5, 1]`.
+    ci_model = conf_interval(
+        df=df,
+        distribution_col="residual",
+        offset_col="y_hat",
+        conditional_cols=["x"],
+        quantiles=[0, 0.5, 1],
+        quantile_estimation_method="ecdf",
+        remove_conditional_mean=False,
+        sample_size_thresh=len(df) + 1,  # delibrately forcing no segment to have enough samples
+        small_sample_size_method="std_quantiles",
+        small_sample_size_quantile=0.95,
+        min_admissible_value=None,
+        max_admissible_value=None)
+
+    # It is still expected that we get only one row in `"ecdf_df"` item.
+    assert len(ci_model["ecdf_df"]) == 1
+    estim_quantiles = ci_model["ecdf_df"]["residual_ecdf_quantile_summary"].values[0]
+    estim_quantiles = np.array(estim_quantiles)
+    # This time we expect the quantiles to not be centered around zero
+    expected_quantiles = np.array([-2.08197503, -0.86791106, -0.00823798])
+    assert np.allclose(estim_quantiles, expected_quantiles)
+    expected_quantiles_mean_not_removed = expected_quantiles
+
+    # Comparing the two cases to ensure that the quantiles are simply shifted by the mean
+    mean_value = df["residual"].mean()
+    assert np.allclose(
+        expected_quantiles_mean_removed,
+        expected_quantiles_mean_not_removed - mean_value)
 
 
 def test_conf_interval_normal_method(data):

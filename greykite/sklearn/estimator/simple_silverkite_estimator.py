@@ -117,6 +117,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             holiday_post_num_days: int = 2,
             holiday_pre_post_num_dict: Optional[Dict] = None,
             daily_event_df_dict: Optional[Dict] = None,
+            auto_holiday_params: Optional[Dict] = None,
             daily_event_neighbor_impact: Optional[Union[int, List[int], callable]] = None,
             daily_event_shifted_effect: Optional[List[str]] = None,
             auto_growth: bool = False,
@@ -175,6 +176,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
         self.holiday_post_num_days = holiday_post_num_days
         self.holiday_pre_post_num_dict = holiday_pre_post_num_dict
         self.daily_event_df_dict = daily_event_df_dict
+        self.auto_holiday_params = auto_holiday_params
         self.daily_event_neighbor_impact = daily_event_neighbor_impact
         self.daily_event_shifted_effect = daily_event_shifted_effect
         self.auto_growth = auto_growth
@@ -290,6 +292,7 @@ class SimpleSilverkiteEstimator(BaseSilverkiteEstimator):
             holiday_post_num_days=self.holiday_post_num_days,
             holiday_pre_post_num_dict=self.holiday_pre_post_num_dict,
             daily_event_df_dict=self.daily_event_df_dict,
+            auto_holiday_params=self.auto_holiday_params,
             daily_event_neighbor_impact=self.daily_event_neighbor_impact,
             daily_event_shifted_effect=self.daily_event_shifted_effect,
             auto_growth=self.auto_growth,

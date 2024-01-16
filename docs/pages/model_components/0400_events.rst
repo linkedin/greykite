@@ -295,8 +295,8 @@ Or you may use it as a conditional column in the uncertainty model ``conditional
 
 2. Sometimes you may have a weekly time series or the response is daily rolling sum.
 In such cases, the whole week, or the whole rolling window is impacted by a holiday within it.
-We allow for modeling such holiday neighboring effect by specifying ``daily_event_neighbor_event`` in ``events``.
-For example, you may use ``daily_event_neighbor_event = 6`` to model rolling 7-day sum holiday effect
+We allow for modeling such holiday neighboring effect by specifying ``daily_event_neighbor_impact`` in ``events``.
+For example, you may use ``daily_event_neighbor_impact = 6`` to model rolling 7-day sum holiday effect
 in a daily time series. Or you may use
 ``daily_event_neighbor_impact = lambda x: [x - timedelta(days=x.isocalendar()[2] - 1) + timedelta(days=i) for i in range(7)]``
 to model a holiday effect in weekly time series.
@@ -313,36 +313,130 @@ event called "Christmas Day_7D_after" which is 7 days after the Christmas Day.
 Auto Holiday and Holiday Grouper
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Silverkite models support automatically inferring significant holidays and generate holiday configurations.
-It utilizes the `~greykite.algo.common.holiday_inferrer.HolidayInferrer` method to infer holidays.
-For more details, see Holiday Inferrer in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
+Silverkite models support automatically grouped holiday features.
+It utilizes the `~greykite.algo.common.holiday_grouper.HolidayGrouper` method to group
+holidays based on their estimated impact inferred from the training data. This method avoids creating too many
+parameters for each holiday while making sure that holidays
+that are different enough will be modeled separately. For more details, see Holiday Inferer and
+Holiday Grouper in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
 
 It's easy to use auto holiday in model components.
-In the event dictionary, specify ``auto_holiday = True``,
-and the model will automatically pull significant holidays or neighboring days from ``holiday_lookup_countries``
-by checking their individual effects from the training data.
-All other parameters will be ignored except ``daily_event_df_dict``, which will be
-added to any inferred significant holiday and neighboring day events.
+In the ``events`` dictionary, specify ``auto_holiday=True``, and the model will automatically pull
+holidays from ``holiday_lookup_countries``. Additional events can be passed in through ``daily_event_df_dict``,
+which get combined with holidays from ``holiday_lookup_countries`` and used as sources of holidays for grouping. Their
+neighboring days will be pulled based on ``holiday_pre_num_days``, ``holiday_post_num_days`` and
+``holiday_pre_post_num_dict`` if provided. Each holiday and their neighboring days (e.g. Christmas, Christmas +1 Day,
+Christmas +2 Days) will have their holiday impact estimated. The holiday grouper checks their individual effects from
+the training data and generates holiday groups. Each holiday and its neighboring day in ``holidays_to_model_separately``
+will be modeled separately regardless of whether ``auto_holiday`` is on. Generally, it is recommended to leave
+``holidays_to_model_separately`` as ``None`` here unless there is prior knowledge that some holidays or events have
+different behaviors as other ones. The ``auto_holiday_params`` can take in additional parameters used by holiday grouper.
 
 .. code-block:: python
 
-    events=dict(
-        auto_holiday=True,
-        holiday_lookup_countries=["US"]
+    events = dict(
+        auto_holiday=True,  # Turns on auto holiday config.
+        holidays_to_model_separately=None,  # No holiday is modeled separately.
+        holiday_lookup_countries="auto",  # A default list of countries to search.
+        holiday_pre_num_days=2,  # Considers 2 days before each holiday.
+        holiday_post_num_days=2,  # Considers 2 days after each holiday.
+        holiday_pre_post_num_dict=None,  # Specifies if any holiday needs a different count of neighboring days.
+        daily_event_df_dict=None,  # Additional events added to holidays from `holiday_lookup_countries`.
+        auto_holiday_params=None  # Additional parameters for holiday groupers.
     )
 
-We also provide a Holiday Grouper tool to help you group holidays based on their estimated impact inferred from
-the training data. The smart grouping makes sure to not create too many parameters to each holiday while making
-sure that holidays that are different enough will be modeled separately.
-For more details, see Holiday Grouper in :doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools`.
+In the example here, by default there will be 5 feature groups generated based on holiday grouping results:
+``"events_holiday_group_0"``, ``"events_holiday_group_1"``, ``"events_holiday_group_2"``, ``"events_holiday_group_3"``,
+``"events_holiday_group_4"``.
 
-The Holiday Grouper returns a curated ``daily_event_df_dict`` which can be directly specified in events.
+By contrast, if ``auto_holiday=False``, there will also be  5 feature groups generated:
+``"events_Other"``, ``"events_Other-1"``, ``"events_Other-2"``, ``"events_Other+1"``, ``"events_Other+2"``.
+All holidays will be modeled as one whole group named ``"events_Other"``. Their neighboring days will be modeled in
+groups based on their relations to the holidays.
+
+To extend from default settings, additional parameters for holiday groupers can be passed in through
+``auto_holiday_params``. The following code lists out all parameters that can be specified and tuned with their
+current defaults. Please refer to Holiday Grouper in
+:doc:`/gallery/quickstart/01_exploration/0200_auto_configuration_tools` for more information on how it works.
 
 .. code-block:: python
 
-    events=dict(
-        holiday_lookup_countries=[],
-        daily_event_df_dict=daily_event_df_dict
+    # The `auto_holiday_params` to pass in for events.
+    auto_holiday_params = dict(
+        df=None,  # Time series to infer holiday impact.
+        time_col=None,  # Time column in `df`.
+        value_col=None,  # Value column in `df`.
+        holiday_df=None,  # User specified holidays, will replace holidays from `holiday_lookup_countries` and `daily_event_df_dict`.
+        holiday_date_col=None,  # Holiday date column in `holiday_df`.
+        holiday_name_col=None,  # Holiday name column in `holiday_df`.
+        get_suffix_func="wd_we",  # Extended feature group added as suffix, please see `HolidayGrouper`.
+        baseline_offsets=[-7, 7],  # The baseline is the average of -7/+7 observations.
+        use_relative_score=True,  # Whether to use relative or absolute score when estimating impact.
+        min_n_days=1,  # Minimal number of occurrences of an event to be included in grouping.
+        min_abs_avg_score=0.03,  # Minimal average score of an event to be kept in consideration.
+        clustering_method="kmeans",  # Clustering methods.
+        n_clusters=5,  # Number of clusters in k-means clustering.
+        bandwidth=None,  # Only used if "kde" is selected for `clustering_method`.
+        bandwidth_multiplier=None,  # Only used if "kde" is selected for `clustering_method` and `bandwidth` is `None`.
+    )
+
+Example 1: User-specified Time Series for Learning Holiday Impact
+
+By default, the same time series used for training is used to learn holiday impact and generate holiday
+groups. The library also allows users to import external time series to train holiday impact. This can be useful when
+the training data is too short to learn holiday impact. The external time series
+used for generating holiday groups needs at least one time column and one value column.
+
+For example, if we have a time series ``external_df`` in the format below (values are made up):
+
+.. csv-table:: external_df
+    :header: dates,values
+
+    2020-01-01,5.22
+    2020-01-02,8.88
+    2020-01-03,8.72
+    ...,...
+
+The input for ``auto_holiday_params`` can then be specified as below:
+
+.. code-block:: python
+
+    # The `auto_holiday_params` to pass in for events.
+    auto_holiday_params = dict(
+        df=external_df,
+        time_col="dates",
+        value_col="values"
+    )
+
+Example 2: Customized Holiday List
+
+By default, holidays pulled from ``holiday_lookup_countries`` will be combined with events imported from
+``daily_event_df_dict`` and serve as the source of holidays for grouping.
+When users want to use a completely customized list of holidays, they can specify that through ``holiday_df``.  In
+this case, holidays fetched from ``holiday_lookup_countries`` and ``daily_event_df_dict`` will be ignored. Only
+holidays included in ``holiday_df`` will be used for grouping.
+
+The ``holiday_df``
+should be a `pandas.DataFrame` with at least two columns: one column for dates and one for holiday names. The holiday
+dates should cover both training and forecasting periods. For example, assuming that the input ``holiday_df`` looks
+like below:
+
+.. csv-table:: holiday_df
+    :header: date, event_name
+
+    2020-12-25,Christmas
+    2021-01-01,New Year
+    ...,...
+
+The input for ``auto_holiday_params`` can then be specified as:
+
+.. code-block:: python
+
+    # The `auto_holiday_params` to pass in for events.
+    auto_holiday_params = dict(
+        holiday_df=holiday_df,
+        holiday_date_col="date",
+        holiday_name_col="event_name"
     )
 
 Prophet

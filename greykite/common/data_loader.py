@@ -201,7 +201,7 @@ class DataLoader:
 
         This dataset contains log daily page views for the Wikipedia page for Peyton Manning.
         One of the primary datasets used for demonstrations by Facebook ``Prophet`` algorithm.
-        Source: https://github.com/facebook/prophet/blob/master/examples/example_wp_log_peyton_manning.csv
+        Source: https://github.com/facebook/prophet/blob/main/examples/example_wp_log_peyton_manning.csv
 
         Below is the dataset attribute information:
 

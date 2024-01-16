@@ -16,8 +16,8 @@ requirements = [
     "holidays-ext>=0.0.7",
     "ipython>=7.31.1",
     "matplotlib>=3.4.1",
-    "numpy>=1.22.0",  # support for Python 3.10
-    "osqp>=0.6.1",
+    "numpy>=1.22.0, <1.25.0",  # support for Python 3.10
+    "osqp>=0.6.2",
     "overrides>=2.8.0",
     "pandas>=1.5.0, <2.0.0",
     "patsy>=0.5.1",
@@ -25,7 +25,7 @@ requirements = [
     "pmdarima>=1.8.0, <=1.8.5",
     "pytest>=4.6.5",
     "pytest-runner>=5.1",
-    "scipy>=1.5.4",
+    "scipy>=1.5.4, <1.11.0",
     "six>=1.15.0",
     "scikit-learn>=0.24.1",
     "statsmodels>=0.12.2",
@@ -64,6 +64,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/linkedin/greykite",
-    version="0.5.1",
+    version="1.0.0",
     zip_safe=False,
 )

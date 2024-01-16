@@ -474,7 +474,21 @@ def fit_ml_model(
             - "max_admissible_value" : maximum acceptable value
             - "normalize_df_func" : normalization function
             - "regression_weight_col" : regression weight column
-
+            - "alpha" : the regularization term from the linear / ridge regression.
+                Note that the OLS (ridge) estimator is ``inv(X.T @ X + alpha * np.eye(p)) @ X.T @ Y =: H @ Y``.
+            - "p_effective" : effective number of parameters.
+                In linear regressions, it is also equal to ``trace(X @ H)``, where H is defined above.
+                ``X @ H`` is also called the hat matrix.
+            - "h_mat" : the H matrix (p by n) in linear regression estimator, as defined above.
+                Note that H is not necessarily of full-rank p even in ridge regression.
+                ``H = inv(X.T @ X + alpha * np.eye(p)) @ X.T``.
+            - "sigma_scaler" : theoretical scaler of the estimated sigma.
+                Volatility model estimates sigma by taking the sample standard deviation, and
+                we need to scale it by ``np.sqrt((n_train - 1) / (n_train - p_effective))`` to obtain
+                an unbiased estimator.
+            - "x_mean" : column mean of ``x_mat`` as a row vector.
+                This is stored and used in ridge regression to compute the prediction intervals.
+                In other methods, it is set to `None`.
     """
 
     # Builds model matrices.
@@ -668,7 +682,8 @@ def fit_ml_model(
         "alpha": alpha,
         "h_mat": h_mat,
         "p_effective": p_effective,
-        "sigma_scaler": sigma_scaler}
+        "sigma_scaler": sigma_scaler,
+        "x_mean": x_mean}
 
     if uncertainty_dict is None:
         fitted_df = predict_ml(

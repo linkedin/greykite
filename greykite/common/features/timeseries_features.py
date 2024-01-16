@@ -806,6 +806,9 @@ def add_daily_events(
             def get_neighbor_days_func(date):
                 return [date + timedelta(days=d) for d in range(*neighbor_impact)]
         elif isinstance(neighbor_impact, list):
+            if 0 not in neighbor_impact:
+                neighbor_impact = sorted(neighbor_impact + [0])
+
             def get_neighbor_days_func(date):
                 return [date + timedelta(days=d) for d in neighbor_impact]
         else:

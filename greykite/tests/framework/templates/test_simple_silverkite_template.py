@@ -295,6 +295,7 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -365,6 +366,7 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -434,6 +436,7 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -503,6 +506,7 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 2,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -573,6 +577,7 @@ def test_get_single_model_components_param_from_template():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -638,6 +643,7 @@ def test_get_model_components_from_model_template(silverkite):
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": None,
         "daily_event_df_dict": None,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     }
@@ -776,6 +782,7 @@ def test_get_model_components_from_model_template(silverkite):
         "holiday_post_num_days": 2,
         "holiday_pre_post_num_dict": {"New Year's Day": (7, 3)},
         "daily_event_df_dict": daily_event_df_dict,
+        "auto_holiday_params": None,
         "daily_event_neighbor_impact": None,
         "daily_event_shifted_effect": None
     })
@@ -1101,6 +1108,7 @@ def test_get_model_components_and_override_from_model_template_single():
             "holiday_post_num_days": 0,
             "holiday_pre_post_num_dict": None,
             "daily_event_df_dict": None,
+            "auto_holiday_params": None,
             "daily_event_neighbor_impact": None,
             "daily_event_shifted_effect": None
         },
@@ -1338,6 +1346,7 @@ def test_apply_default_model_components_daily_1():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1399,6 +1408,7 @@ def test_apply_default_model_components_daily_1():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1460,6 +1470,7 @@ def test_apply_default_model_components_daily_1():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1536,6 +1547,7 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1591,6 +1603,7 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1654,6 +1667,7 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[2],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1717,6 +1731,7 @@ def test_apply_default_model_components_daily_90():
             estimator__holiday_post_num_days=[4],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1781,6 +1796,7 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1844,6 +1860,7 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1907,6 +1924,7 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -1970,6 +1988,7 @@ def test_apply_default_model_components_weekly():
             estimator__holiday_post_num_days=[0],
             estimator__holiday_pre_post_num_dict=[None],
             estimator__daily_event_df_dict=[None],
+            estimator__auto_holiday_params=[None],
             estimator__daily_event_neighbor_impact=[None],
             estimator__daily_event_shifted_effect=[None],
             # Feature sets
@@ -2033,6 +2052,7 @@ def test_get_simple_silverkite_hyperparameter_grid(silverkite):
         "estimator__holiday_post_num_days": [2],
         "estimator__holiday_pre_post_num_dict": [None],
         "estimator__daily_event_df_dict": [None],
+        "estimator__auto_holiday_params": [None],
         "estimator__daily_event_neighbor_impact": [None],
         "estimator__daily_event_shifted_effect": [None],
         "estimator__auto_growth": [False],
@@ -3629,7 +3649,7 @@ def test_silverkite_auto_config():
         "order": [3, 1, 1, 6],
         "seas_names": ["weekly", "monthly", "quarterly", "yearly"]
     }))
-    assert len(result.model[-1].model_dict["daily_event_df_dict"]) == 199
+    assert len(result.model[-1].model_dict["daily_event_df_dict"]) == 5
     assert "ct1" in result.model[-1].model_dict["x_mat"].columns
 
 
