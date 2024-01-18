@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.templates.simple_silverkite_template &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.templates.simple_silverkite_template</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.templates.simple_silverkite_template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Template for `greykite.sklearn.estimator.simple_silverkite_estimator`.</span>
+<span class="sd">Takes input data and forecast config,</span>
+<span class="sd">and returns parameters to call</span>
+<span class="sd">:func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_holiday</span> <span class="kn">import</span> <span class="n">SilverkiteHoliday</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_lags</span> <span class="kn">import</span> <span class="n">build_autoreg_df_multi</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">dictionaries_values_to_lists</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">unique_dict_in_list</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">unique_in_list</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionaries</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.base_template</span> <span class="kn">import</span> <span class="n">BaseTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.simple_silverkite_template_config</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteTemplateConstants</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.simple_silverkite_estimator</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteEstimator</span>
+
+
+<div class="viewcode-block" id="SimpleSilverkiteTemplate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate">[docs]</a><span class="k">class</span> <span class="nc">SimpleSilverkiteTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A template for :class:`~greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator`.</span>
+
+<span class="sd">    Takes input data and optional configuration parameters</span>
+<span class="sd">    to customize the model. Returns a set of parameters to call</span>
+<span class="sd">    :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The attributes of a `~greykite.framework.templates.autogen.forecast_config.ForecastConfig` for</span>
+<span class="sd">    :class:`~greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator` are:</span>
+
+<span class="sd">        computation_param: `ComputationParam` or None, default None</span>
+<span class="sd">            How to compute the result. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ComputationParam`.</span>
+<span class="sd">        coverage: `float` or None, default None</span>
+<span class="sd">            Intended coverage of the prediction bands (0.0 to 1.0).</span>
+<span class="sd">            Same as coverage in ``forecast_pipeline``.</span>
+<span class="sd">            You may tune how the uncertainty is computed</span>
+<span class="sd">            via `model_components.uncertainty[&quot;uncertainty_dict&quot;]`.</span>
+<span class="sd">        evaluation_metric_param: `EvaluationMetricParam` or None, default None</span>
+<span class="sd">            What metrics to evaluate. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam`.</span>
+<span class="sd">        evaluation_period_param: `EvaluationPeriodParam` or None, default None</span>
+<span class="sd">            How to split data for evaluation. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`.</span>
+<span class="sd">        forecast_horizon: `int` or None, default None</span>
+<span class="sd">            Number of periods to forecast into the future. Must be &gt; 0</span>
+<span class="sd">            If None, default is determined from input data frequency</span>
+<span class="sd">            Same as forecast_horizon in `forecast_pipeline`</span>
+<span class="sd">        metadata_param: `MetadataParam` or None, default None</span>
+<span class="sd">            Information about the input data. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.MetadataParam`.</span>
+<span class="sd">        model_components_param: `ModelComponentsParam`, `list` [`ModelComponentsParam`] or None, default None</span>
+<span class="sd">            Parameters to tune the model. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">            The fields are dictionaries with the following items.</span>
+
+<span class="sd">            See inline comments on which values accept lists for grid search.</span>
+
+<span class="sd">            seasonality: `dict` [`str`, `any`] or None, optional</span>
+<span class="sd">                Seasonality configuration dictionary, with the following optional keys.</span>
+<span class="sd">                (keys are SilverkiteSeasonalityEnum members in lower case).</span>
+
+<span class="sd">                The keys are parameters of</span>
+<span class="sd">                `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.forecast_simple_silverkite`.</span>
+<span class="sd">                Refer to that function for more details.</span>
+
+<span class="sd">                ``&quot;auto_seasonality&quot;`` : `bool`, default False</span>
+<span class="sd">                        Whether to automatically infer seasonality orders.</span>
+<span class="sd">                        If True, the seasonality orders will be automatically inferred from input timeseries</span>
+<span class="sd">                        and the following parameters will be ignored:</span>
+
+<span class="sd">                            * ``&quot;yearly_seasonality&quot;``</span>
+<span class="sd">                            * ``&quot;quarterly_seasonality&quot;``</span>
+<span class="sd">                            * ``&quot;monthly_seasonality&quot;``</span>
+<span class="sd">                            * ``&quot;weekly_seasonality&quot;``</span>
+<span class="sd">                            * ``&quot;daily_seasonality&quot;``</span>
+
+<span class="sd">                        For detail, see `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer`.</span>
+<span class="sd">                ``&quot;yearly_seasonality&quot;``: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the yearly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;quarterly_seasonality&quot;``: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the quarterly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;monthly_seasonality&quot;``: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the monthly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;weekly_seasonality&quot;``: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the weekly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;daily_seasonality&quot;``: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;</span>
+<span class="sd">                    Determines the daily seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+
+<span class="sd">            growth: `dict` [`str`, `any`] or None, optional</span>
+<span class="sd">                Growth configuration dictionary with the following optional key:</span>
+
+<span class="sd">                ``&quot;growth_term&quot;``: `str` or None or a list of such values for grid search</span>
+<span class="sd">                    How to model the growth.</span>
+<span class="sd">                    Valid options are &quot;linear&quot;, &quot;quadratic&quot;, &quot;sqrt&quot;, &quot;cubic&quot;, &quot;cuberoot&quot;.</span>
+<span class="sd">                    See `~greykite.common.constants.GrowthColEnum`.</span>
+<span class="sd">                    All these terms have their origin at the train start date.</span>
+
+<span class="sd">            events: `dict` [`str`, `any`] or None, optional</span>
+<span class="sd">                Holiday/events configuration dictionary with the following optional keys:</span>
+
+<span class="sd">                ``&quot;auto_holiday&quot;`` : `bool`, default False</span>
+<span class="sd">                    Whether to automatically infer holiday configuration based on the input timeseries.</span>
+<span class="sd">                    If True, the following keys will be ignored:</span>
+
+<span class="sd">                        * ``&quot;holiday_lookup_countries&quot;``</span>
+<span class="sd">                        * ``&quot;holidays_to_model_separately&quot;``</span>
+<span class="sd">                        * ``&quot;holiday_pre_num_days&quot;``</span>
+<span class="sd">                        * ``&quot;holiday_post_num_days&quot;``</span>
+<span class="sd">                        * ``&quot;holiday_pre_post_num_dict&quot;``</span>
+
+<span class="sd">                    For details, see `~greykite.algo.common.holiday_inferrer.HolidayInferrer`.</span>
+<span class="sd">                    Extra events specified in ``daily_event_df_dict`` will be added to the inferred holidays.</span>
+
+<span class="sd">                ``&quot;holiday_lookup_countries&quot;``: `list` [`str`] or &quot;auto&quot; or None or a list of such values for grid search, default &quot;auto&quot;</span>
+<span class="sd">                    The countries that contain the holidays you intend to model</span>
+<span class="sd">                    (``holidays_to_model_separately``).</span>
+
+<span class="sd">                    * If &quot;auto&quot;, uses a default list of countries</span>
+<span class="sd">                      that contain the default ``holidays_to_model_separately``.</span>
+<span class="sd">                      See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO`.</span>
+<span class="sd">                    * If a list, must be a list of country names.</span>
+<span class="sd">                    * If None or an empty list, no holidays are modeled.</span>
+
+<span class="sd">                ``&quot;holidays_to_model_separately&quot;``: `list` [`str`] or &quot;auto&quot; or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None or a list of such values for grid search, default &quot;auto&quot;  # noqa: E501</span>
+<span class="sd">                    Which holidays to include in the model.</span>
+<span class="sd">                    The model creates a separate key, value for each item in ``holidays_to_model_separately``.</span>
+<span class="sd">                    The other holidays in the countries are grouped together as a single effect.</span>
+
+<span class="sd">                    * If &quot;auto&quot;, uses a default list of important holidays.</span>
+<span class="sd">                      See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.</span>
+<span class="sd">                    * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,</span>
+<span class="sd">                      uses all available holidays in ``holiday_lookup_countries``. This can often</span>
+<span class="sd">                      create a model that has too many parameters, and should typically be avoided.</span>
+<span class="sd">                    * If a list, must be a list of holiday names.</span>
+<span class="sd">                    * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together</span>
+<span class="sd">                      as a single effect.</span>
+
+<span class="sd">                    Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.</span>
+
+<span class="sd">                ``&quot;holiday_pre_num_days&quot;``: `int` or a list of such values for grid search, default 2</span>
+<span class="sd">                    model holiday effects for pre_num days before the holiday.</span>
+<span class="sd">                    The unit is days, not periods. It does not depend on input data frequency.</span>
+<span class="sd">                ``&quot;holiday_post_num_days&quot;``: `int` or a list of such values for grid search, default 2</span>
+<span class="sd">                    model holiday effects for post_num days after the holiday.</span>
+<span class="sd">                    The unit is days, not periods. It does not depend on input data frequency.</span>
+
+<span class="sd">                ``&quot;holiday_pre_post_num_dict&quot;``: `dict` [`str`, (`int`, `int`)] or None, default None</span>
+<span class="sd">                    Overrides ``pre_num`` and ``post_num`` for each holiday in</span>
+<span class="sd">                    ``holidays_to_model_separately``.</span>
+<span class="sd">                    For example, if ``holidays_to_model_separately`` contains &quot;Thanksgiving&quot; and &quot;Labor Day&quot;,</span>
+<span class="sd">                    this parameter can be set to ``{&quot;Thanksgiving&quot;: [1, 3], &quot;Labor Day&quot;: [1, 2]}``,</span>
+<span class="sd">                    denoting that the &quot;Thanksgiving&quot; ``pre_num`` is 1 and ``post_num`` is 3, and &quot;Labor Day&quot;</span>
+<span class="sd">                    ``pre_num`` is 1 and ``post_num`` is 2.</span>
+<span class="sd">                    Holidays not specified use the default given by ``pre_num`` and ``post_num``.</span>
+<span class="sd">                ``&quot;daily_event_df_dict&quot;``: `dict` [`str`, `pandas.DataFrame`] or None, default None</span>
+<span class="sd">                    A dictionary of data frames, each representing events data for the corresponding key.</span>
+<span class="sd">                    Specifies additional events to include besides the holidays specified above. The format</span>
+<span class="sd">                    is the same as in `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">                    The DataFrame has two columns:</span>
+
+<span class="sd">                        - The first column contains event dates. Must be in a format</span>
+<span class="sd">                          recognized by `pandas.to_datetime`. Must be at daily</span>
+<span class="sd">                          frequency for proper join. It is joined against the time</span>
+<span class="sd">                          in ``df``, converted to a day:</span>
+<span class="sd">                          ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.</span>
+<span class="sd">                        - the second column contains the event label for each date</span>
+
+<span class="sd">                    The column order is important; column names are ignored.</span>
+<span class="sd">                    The event dates must span their occurrences in both the training</span>
+<span class="sd">                    and future prediction period.</span>
+
+<span class="sd">                    During modeling, each key in the dictionary is mapped to a categorical variable</span>
+<span class="sd">                    named ``f&quot;{EVENT_PREFIX}_{key}&quot;``, whose value at each timestamp is specified</span>
+<span class="sd">                    by the corresponding DataFrame.</span>
+
+<span class="sd">                    For example, to manually specify a yearly event on September 1</span>
+<span class="sd">                    during a training/forecast period that spans 2020-2022::</span>
+
+<span class="sd">                        daily_event_df_dict = {</span>
+<span class="sd">                            &quot;custom_event&quot;: pd.DataFrame({</span>
+<span class="sd">                                &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;, &quot;2022-09-01&quot;],</span>
+<span class="sd">                                &quot;label&quot;: [&quot;is_event&quot;, &quot;is_event&quot;, &quot;is_event&quot;]</span>
+<span class="sd">                            })</span>
+<span class="sd">                        }</span>
+
+<span class="sd">                    It&#39;s possible to specify multiple events in the same df. Two events,</span>
+<span class="sd">                    ``&quot;sep&quot;`` and ``&quot;oct&quot;`` are specified below for 2020-2021::</span>
+
+<span class="sd">                        daily_event_df_dict = {</span>
+<span class="sd">                            &quot;custom_event&quot;: pd.DataFrame({</span>
+<span class="sd">                                &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2020-10-01&quot;, &quot;2021-09-01&quot;, &quot;2021-10-01&quot;],</span>
+<span class="sd">                                &quot;event_name&quot;: [&quot;sep&quot;, &quot;oct&quot;, &quot;sep&quot;, &quot;oct&quot;]</span>
+<span class="sd">                            })</span>
+<span class="sd">                        }</span>
+
+<span class="sd">                    Use multiple keys if two events may fall on the same date. These events</span>
+<span class="sd">                    must be in separate DataFrames::</span>
+
+<span class="sd">                        daily_event_df_dict = {</span>
+<span class="sd">                            &quot;fixed_event&quot;: pd.DataFrame({</span>
+<span class="sd">                                &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;, &quot;2022-09-01&quot;],</span>
+<span class="sd">                                &quot;event_name&quot;: &quot;fixed_event&quot;</span>
+<span class="sd">                            }),</span>
+<span class="sd">                            &quot;moving_event&quot;: pd.DataFrame({</span>
+<span class="sd">                                &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-08-28&quot;, &quot;2022-09-03&quot;],</span>
+<span class="sd">                                &quot;event_name&quot;: &quot;moving_event&quot;</span>
+<span class="sd">                            }),</span>
+<span class="sd">                        }</span>
+
+<span class="sd">                    The multiple event specification can be used even if events never overlap. An</span>
+<span class="sd">                    equivalent specification to the second example::</span>
+
+<span class="sd">                        daily_event_df_dict = {</span>
+<span class="sd">                            &quot;sep&quot;: pd.DataFrame({</span>
+<span class="sd">                                &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;],</span>
+<span class="sd">                                &quot;event_name&quot;: &quot;is_event&quot;</span>
+<span class="sd">                            }),</span>
+<span class="sd">                            &quot;oct&quot;: pd.DataFrame({</span>
+<span class="sd">                                &quot;date&quot;: [&quot;2020-10-01&quot;, &quot;2021-10-01&quot;],</span>
+<span class="sd">                                &quot;event_name&quot;: &quot;is_event&quot;</span>
+<span class="sd">                            }),</span>
+<span class="sd">                        }</span>
+
+<span class="sd">                    Note: All these events are automatically added to the model. There is no need</span>
+<span class="sd">                    to specify them in ``extra_pred_cols`` as you would for</span>
+<span class="sd">                    `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast.forecast`.</span>
+
+<span class="sd">                    Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`</span>
+<span class="sd">                    in the second column. This is reserved to indicate dates that do not</span>
+<span class="sd">                    correspond to an event.</span>
+<span class="sd">            changepoints: `dict` [`str`, `dict`] or None, optional</span>
+<span class="sd">                Specifies the changepoint configuration. Dictionary with the following</span>
+<span class="sd">                optional key:</span>
+
+<span class="sd">                ``&quot;auto_growth&quot;`` : `bool`, default False</span>
+<span class="sd">                    Whether to automatically infer growth configuration.</span>
+<span class="sd">                    If True, the growth term and automatically changepoint detection configuration</span>
+<span class="sd">                    will be inferred from input timeseries,</span>
+<span class="sd">                    and the following parameters will be ignored:</span>
+
+<span class="sd">                        * ``&quot;growth_term&quot;`` in ``growth`` dictionary</span>
+<span class="sd">                        * ``&quot;changepoints_dict&quot;`` (All parameters but custom changepoint parameters</span>
+<span class="sd">                          to be combined with automatically detected changepoints.)</span>
+
+<span class="sd">                    For detail, see</span>
+<span class="sd">                    `~greykite.algo.changepoint.adalasso.auto_changepoint_params.generate_trend_changepoint_detection_params`.</span>
+
+<span class="sd">                ``&quot;changepoints_dict&quot;``: `dict` or None or a list of such values for grid search</span>
+<span class="sd">                    Changepoints dictionary passed to ``forecast_simple_silverkite``. A dictionary</span>
+<span class="sd">                    with the following optional keys:</span>
+
+<span class="sd">                    ``&quot;method&quot;``: `str`</span>
+<span class="sd">                        The method to locate changepoints. Valid options:</span>
+
+<span class="sd">                            - &quot;uniform&quot;. Places n_changepoints evenly spaced changepoints to allow growth to change.</span>
+<span class="sd">                            - &quot;custom&quot;. Places changepoints at the specified dates.</span>
+<span class="sd">                            - &quot;auto&quot;. Automatically detects change points.</span>
+
+<span class="sd">                        Additional keys to provide parameters for each particular method are described below.</span>
+<span class="sd">                    ``&quot;continuous_time_col&quot;``: `str` or None</span>
+<span class="sd">                        Column to apply `growth_func` to, to generate changepoint features</span>
+<span class="sd">                        Typically, this should match the growth term in the model</span>
+<span class="sd">                    ``&quot;growth_func&quot;``: callable or None</span>
+<span class="sd">                        Growth function (`numeric` -&gt; `numeric`). Changepoint features are created</span>
+<span class="sd">                        by applying `growth_func` to &quot;continuous_time_col&quot; with offsets.</span>
+<span class="sd">                        If None, uses identity function to use `continuous_time_col` directly</span>
+<span class="sd">                        as growth term</span>
+
+<span class="sd">                    If changepoints_dict[&quot;method&quot;] == &quot;uniform&quot;, this other key is required:</span>
+
+<span class="sd">                        ``&quot;n_changepoints&quot;``: `int`</span>
+<span class="sd">                            number of changepoints to evenly space across training period</span>
+
+<span class="sd">                    If changepoints_dict[&quot;method&quot;] == &quot;custom&quot;, this other key is required:</span>
+
+<span class="sd">                        ``&quot;dates&quot;``: `list` [`int` or `float` or `str` or `datetime`]</span>
+<span class="sd">                            Changepoint dates. Must be parsable by pd.to_datetime.</span>
+<span class="sd">                            Changepoints are set at the closest time on or after these dates</span>
+<span class="sd">                            in the dataset.</span>
+
+<span class="sd">                    If changepoints_dict[&quot;method&quot;] == &quot;auto&quot;, optional keys can be passed that match the parameters in</span>
+<span class="sd">                    `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_trend_changepoints`</span>
+<span class="sd">                    (except ``df``, ``time_col`` and ``value_col``, which are already known).</span>
+<span class="sd">                    To add manually specified changepoints to the automatically detected ones, the keys ``dates``,</span>
+<span class="sd">                    ``combine_changepoint_min_distance`` and ``keep_detected`` can be specified, which correspond to the</span>
+<span class="sd">                    three parameters ``custom_changepoint_dates``, ``min_distance`` and ``keep_detected`` in</span>
+<span class="sd">                    `~greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints`.</span>
+
+<span class="sd">                ``&quot;seasonality_changepoints_dict&quot;``: `dict` or None or a list of such values for grid search</span>
+<span class="sd">                        seasonality changepoints dictionary passed to ``forecast_simple_silverkite``. The optional</span>
+<span class="sd">                        keys are the parameters in</span>
+<span class="sd">                        `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`.</span>
+<span class="sd">                        You don&#39;t need to provide ``df``, ``time_col``, ``value_col`` or ``trend_changepoints``, since they</span>
+<span class="sd">                        are passed with the class automatically.</span>
+
+<span class="sd">            autoregression: `dict` [`str`, `dict`] or None, optional</span>
+<span class="sd">                Specifies the autoregression configuration. Dictionary with the following optional keys:</span>
+
+<span class="sd">                ``&quot;autoreg_dict&quot;``: `dict` or `str` or None or a list of such values for grid search</span>
+<span class="sd">                    If a `dict`: A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df`.</span>
+<span class="sd">                    That function&#39;s parameter ``value_col`` is inferred from the input of</span>
+<span class="sd">                    current function ``self.forecast``. Other keys are:</span>
+
+<span class="sd">                        ``&quot;lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                        ``&quot;agg_lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                        ``&quot;series_na_fill_func&quot;`` : callable</span>
+
+<span class="sd">                    If a `str`: The string will represent a method and a dictionary will be</span>
+<span class="sd">                    constructed using that `str`.</span>
+<span class="sd">                    Currently only implemented method is &quot;auto&quot; which uses</span>
+<span class="sd">                    `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_autoreg_dict`</span>
+<span class="sd">                    to create a dictionary.</span>
+<span class="sd">                    See more details for above parameters in</span>
+<span class="sd">                    `~greykite.common.features.timeseries_lags.build_autoreg_df`.</span>
+
+<span class="sd">                ``&quot;simulation_num&quot;`` :  `int`, default 10</span>
+<span class="sd">                    The number of simulations to use. Applies only if any of the lags in ``autoreg_dict``</span>
+<span class="sd">                    are smaller than ``forecast_horizon``. In that case, simulations are needed to generate</span>
+<span class="sd">                    forecasts and prediction intervals.</span>
+
+<span class="sd">                ``&quot;fast_simulation&quot;`` : `bool`, default False</span>
+<span class="sd">                    Deterimes if fast simulations are to be used. This only impacts models</span>
+<span class="sd">                    which include auto-regression. This method will only generate one simulation</span>
+<span class="sd">                    without any error being added and then add the error using the volatility</span>
+<span class="sd">                    model. The advantage is a major boost in speed during inference and the</span>
+<span class="sd">                    disadvantage is potentially less accurate prediction intervals.</span>
+
+<span class="sd">            regressors: `dict` [`str`, `any`] or None, optional</span>
+<span class="sd">                Specifies the regressors to include in the model (e.g. macro-economic factors).</span>
+<span class="sd">                Dictionary with the following optional keys:</span>
+
+<span class="sd">                ``&quot;regressor_cols&quot;``: `list` [`str`] or None or a list of such values for grid search</span>
+<span class="sd">                    The columns in ``df`` to use as regressors.</span>
+<span class="sd">                    Note that regressor values must be available in ``df`` for all prediction dates.</span>
+<span class="sd">                    Thus, ``df`` will contain timestamps for both training and future prediction.</span>
+
+<span class="sd">                    * regressors must be available on all dates</span>
+<span class="sd">                    * the response must be available for training dates (metadata[&quot;value_col&quot;])</span>
+
+<span class="sd">                Use ``extra_pred_cols`` to specify interactions of any model terms with the regressors.</span>
+
+<span class="sd">            lagged_regressors: `dict` [`str`, `dict`] or None, optional</span>
+<span class="sd">                Specifies the lagged regressors configuration. Dictionary with the following optional key:</span>
+
+<span class="sd">                ``&quot;lagged_regressor_dict&quot;``: `dict` or None or a list of such values for grid search</span>
+<span class="sd">                    A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`.</span>
+<span class="sd">                    The keys of the dictionary are the target lagged regressor column names.</span>
+<span class="sd">                    It can leverage the regressors included in ``df``.</span>
+<span class="sd">                    The value of each key is either a `dict` or `str`.</span>
+<span class="sd">                    If `dict`, it has the following keys:</span>
+
+<span class="sd">                        ``&quot;lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                        ``&quot;agg_lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                        ``&quot;series_na_fill_func&quot;`` : callable</span>
+
+<span class="sd">                    If `str`, it represents a method and a dictionary will be constructed using that `str`.</span>
+<span class="sd">                    Currently the only implemented method is &quot;auto&quot; which uses ``SilverkiteForecast``&#39;s</span>
+<span class="sd">                    `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_lagged_regressor_dict`</span>
+<span class="sd">                    to create a dictionary for each lagged regressor.</span>
+<span class="sd">                    An example::</span>
+
+<span class="sd">                        lagged_regressor_dict = {</span>
+<span class="sd">                            &quot;regressor1&quot;: {</span>
+<span class="sd">                                &quot;lag_dict&quot;: {&quot;orders&quot;: [1, 2, 3]},</span>
+<span class="sd">                                &quot;agg_lag_dict&quot;: {</span>
+<span class="sd">                                    &quot;orders_list&quot;: [[7, 7 * 2, 7 * 3]],</span>
+<span class="sd">                                    &quot;interval_list&quot;: [(8, 7 * 2)]},</span>
+<span class="sd">                                &quot;series_na_fill_func&quot;: lambda s: s.bfill().ffill()},</span>
+<span class="sd">                            &quot;regressor2&quot;: &quot;auto&quot;}</span>
+
+<span class="sd">                    Check the docstring of `~greykite.common.features.timeseries_lags.build_autoreg_df_multi`</span>
+<span class="sd">                    for more details for each argument.</span>
+
+<span class="sd">            uncertainty: `dict` [`str`, `dict`] or None, optional</span>
+<span class="sd">                Along with ``coverage``, specifies the uncertainty interval configuration. Use ``coverage``</span>
+<span class="sd">                to set interval size. Use ``uncertainty`` to tune the calculation.</span>
+
+<span class="sd">                ``&quot;uncertainty_dict&quot;``: `str` or `dict` or None or a list of such values for grid search</span>
+<span class="sd">                    &quot;auto&quot; or a dictionary on how to fit the uncertainty model.</span>
+<span class="sd">                    If a dictionary, valid keys are:</span>
+
+<span class="sd">                        ``&quot;uncertainty_method&quot;``: `str`</span>
+<span class="sd">                            The title of the method.</span>
+<span class="sd">                            Only ``&quot;simple_conditional_residuals&quot;`` is implemented</span>
+<span class="sd">                            in `~greykite.algo.common.ml_models.fit_ml_model`</span>
+<span class="sd">                            which calculates intervals using residuals.</span>
+
+<span class="sd">                        ``&quot;params&quot;``: `dict`</span>
+<span class="sd">                            A dictionary of parameters needed for</span>
+<span class="sd">                            the requested ``uncertainty_method``. For example, for</span>
+<span class="sd">                            ``uncertainty_method=&quot;simple_conditional_residuals&quot;``, see</span>
+<span class="sd">                            parameters of `~greykite.algo.uncertainty.conditional.conf_interval.conf_interval`:</span>
+
+<span class="sd">                                * ``&quot;conditional_cols&quot;``</span>
+<span class="sd">                                * ``&quot;quantiles&quot;``</span>
+<span class="sd">                                * ``&quot;quantile_estimation_method&quot;``</span>
+<span class="sd">                                * ``&quot;sample_size_thresh&quot;``</span>
+<span class="sd">                                * ``&quot;small_sample_size_method&quot;``</span>
+<span class="sd">                                * ``&quot;small_sample_size_quantile&quot;``</span>
+
+<span class="sd">                            The default value for ``quantiles`` is inferred from coverage.</span>
+
+<span class="sd">                    If &quot;auto&quot;, see</span>
+<span class="sd">                    `~greykite.algo.forecast.silverkite.forecast_silverkite_helper.get_silverkite_uncertainty_dict`</span>
+<span class="sd">                    for the default value. If ``coverage`` is not None and ``uncertainty_dict`` is not provided,</span>
+<span class="sd">                    then the &quot;auto&quot; setting is used.</span>
+
+<span class="sd">                    If ``coverage`` is None and ``uncertainty_dict`` is None, then no intervals are returned.</span>
+
+<span class="sd">            custom: `dict` [`str`, `any`] or None, optional</span>
+<span class="sd">                Custom parameters that don&#39;t fit the categories above. Dictionary</span>
+<span class="sd">                with the following optional keys:</span>
+
+<span class="sd">                ``&quot;fit_algorithm_dict&quot;``: `dict` or a list of such values for grid search</span>
+<span class="sd">                    How to fit the model. A dictionary with the following optional keys.</span>
+
+<span class="sd">                        ``&quot;fit_algorithm&quot;``: `str`, optional, default &quot;ridge&quot;</span>
+<span class="sd">                            The type of predictive model used in fitting.</span>
+
+<span class="sd">                            See `~greykite.algo.common.ml_models.fit_model_via_design_matrix`</span>
+<span class="sd">                            for available options and their parameters.</span>
+<span class="sd">                        ``&quot;fit_algorithm_params&quot;``: `dict` or None, optional, default None</span>
+<span class="sd">                            Parameters passed to the requested fit_algorithm.</span>
+<span class="sd">                            If None, uses the defaults in `~greykite.algo.common.ml_models.fit_model_via_design_matrix`.</span>
+
+<span class="sd">                ``&quot;feature_sets_enabled&quot;``: `dict` [`str`, `bool` or &quot;auto&quot; or None] or `bool` or &quot;auto&quot; or None; or a list of such values for grid search</span>
+<span class="sd">                    Whether to include interaction terms and categorical variables to increase model flexibility.</span>
+
+<span class="sd">                    If a `dict`, boolean values indicate whether include various sets of features in the model.</span>
+<span class="sd">                    The following keys are recognized</span>
+<span class="sd">                    (from `~greykite.algo.forecast.silverkite.constants.silverkite_column.SilverkiteColumn`):</span>
+
+<span class="sd">                        ``&quot;COLS_HOUR_OF_WEEK&quot;``: `str`</span>
+<span class="sd">                            Constant hour of week effect</span>
+<span class="sd">                        ``&quot;COLS_WEEKEND_SEAS&quot;``: `str`</span>
+<span class="sd">                            Daily seasonality interaction with is_weekend</span>
+<span class="sd">                        ``&quot;COLS_DAY_OF_WEEK_SEAS&quot;``: `str`</span>
+<span class="sd">                            Daily seasonality interaction with day of week</span>
+<span class="sd">                        ``&quot;COLS_TREND_DAILY_SEAS&quot;``: `str`</span>
+<span class="sd">                            Allow daily seasonality to change over time by is_weekend</span>
+<span class="sd">                        ``&quot;COLS_EVENT_SEAS&quot;``: `str`</span>
+<span class="sd">                            Allow sub-daily event effects</span>
+<span class="sd">                        ``&quot;COLS_EVENT_WEEKEND_SEAS&quot;``: `str`</span>
+<span class="sd">                            Allow sub-daily event effect to interact with is_weekend</span>
+<span class="sd">                        ``&quot;COLS_DAY_OF_WEEK&quot;``: `str`</span>
+<span class="sd">                            Constant day of week effect</span>
+<span class="sd">                        ``&quot;COLS_TREND_WEEKEND&quot;``: `str`</span>
+<span class="sd">                            Allow trend (growth, changepoints) to interact with is_weekend</span>
+<span class="sd">                        ``&quot;COLS_TREND_DAY_OF_WEEK&quot;``: `str`</span>
+<span class="sd">                            Allow trend to interact with day of week</span>
+<span class="sd">                        ``&quot;COLS_TREND_WEEKLY_SEAS&quot;``: `str`</span>
+<span class="sd">                            Allow weekly seasonality to change over time</span>
+
+<span class="sd">                    The following dictionary values are recognized:</span>
+
+<span class="sd">                        - True: include the feature set in the model</span>
+<span class="sd">                        - False: do not include the feature set in the model</span>
+<span class="sd">                        - None: do not include the feature set in the model</span>
+<span class="sd">                        - &quot;auto&quot; or not provided: use the default setting based on data frequency and size</span>
+
+<span class="sd">                    If not a `dict`:</span>
+
+<span class="sd">                        - if a boolean, equivalent to a dictionary with all values set to the boolean.</span>
+<span class="sd">                        - if None, equivalent to a dictionary with all values set to False.</span>
+<span class="sd">                        - if &quot;auto&quot;, equivalent to a dictionary with all values set to &quot;auto&quot;.</span>
+
+<span class="sd">                ``&quot;max_daily_seas_interaction_order&quot;``: `int` or None or a list of such values for grid search, default 5</span>
+<span class="sd">                    Max fourier order to use for interactions with daily seasonality.</span>
+<span class="sd">                    (COLS_EVENT_SEAS, COLS_EVENT_WEEKEND_SEAS, COLS_WEEKEND_SEAS, COLS_DAY_OF_WEEK_SEAS, COLS_TREND_DAILY_SEAS).</span>
+
+<span class="sd">                    Model includes interactions terms specified by ``feature_sets_enabled``</span>
+<span class="sd">                    up to the order limited by this value and the available order from ``seasonality``.</span>
+<span class="sd">                ``&quot;max_weekly_seas_interaction_order&quot;`` : `int` or None or a list of such values for grid search, default 2</span>
+<span class="sd">                    Max fourier order to use for interactions with weekly seasonality (COLS_TREND_WEEKLY_SEAS).</span>
+
+<span class="sd">                    Model includes interactions terms specified by ``feature_sets_enabled``</span>
+<span class="sd">                    up to the order limited by this value and the available order from ``seasonality``.</span>
+<span class="sd">                ``&quot;extra_pred_cols&quot;``: `list` [`str`] or None or a list of such values for grid search, default None</span>
+<span class="sd">                    Names of extra predictor columns to pass to ``forecast_silverkite``.</span>
+<span class="sd">                    The standard interactions can be controlled via ``feature_sets_enabled`` parameter.</span>
+<span class="sd">                    Accepts any valid patsy model formula term. Can be used to model complex interactions</span>
+<span class="sd">                    of time features, events, seasonality, changepoints, regressors. Columns should be</span>
+<span class="sd">                    generated by ``build_silverkite_features`` or included with input data.</span>
+<span class="sd">                    These are added to any features already included by ``feature_sets_enabled`` and</span>
+<span class="sd">                    terms specified by ``model``.</span>
+<span class="sd">                ``&quot;drop_pred_cols&quot;`` : `list` [`str`] or None, default None</span>
+<span class="sd">                    Names of predictor columns to be dropped from the final model.</span>
+<span class="sd">                    Ignored if None.</span>
+<span class="sd">                ``&quot;explicit_pred_cols&quot;`` : `list` [`str`] or None, default None</span>
+<span class="sd">                    Names of the explicit predictor columns which will be</span>
+<span class="sd">                    the only variables in the final model. Note that this overwrites</span>
+<span class="sd">                    the generated predictors in the model and may include new</span>
+<span class="sd">                    terms not appearing in the predictors (e.g. interaction terms).</span>
+<span class="sd">                    Ignored if None.</span>
+<span class="sd">                ``&quot;min_admissible_value&quot;``: `float` or `double` or `int` or None, default None</span>
+<span class="sd">                    The lowest admissible value for the forecasts and prediction</span>
+<span class="sd">                    intervals. Any value below this will be mapped back to this value.</span>
+<span class="sd">                    If None, there is no lower bound.</span>
+<span class="sd">                ``&quot;max_admissible_value&quot;``: `float` or `double` or `int` or None, default None</span>
+<span class="sd">                    The highest admissible value for the forecasts and prediction</span>
+<span class="sd">                    intervals. Any value above this will be mapped back to this value.</span>
+<span class="sd">                    If None, there is no upper bound.</span>
+<span class="sd">                ``&quot;normalize_method&quot;``: `str` or None, default None</span>
+<span class="sd">                    The normalization method for feature matrix.</span>
+<span class="sd">                    If a string is provided, it will be used as the normalization method</span>
+<span class="sd">                    in `~greykite.common.features.normalize.normalize_df`,</span>
+<span class="sd">                    passed via the argument ``method``.</span>
+<span class="sd">                    Available values are &quot;statistical&quot;, &quot;zero_to_one&quot;, &quot;minus_half_to_half&quot;</span>
+<span class="sd">                    and &quot;zero_at_origin&quot;. See that function for more details.</span>
+
+<span class="sd">            hyperparameter_override: `dict` [`str`, `any`] or None or `list` [`dict` [`str`, `any`] or None], optional</span>
+<span class="sd">                After the above model components are used to create a hyperparameter grid, the result is</span>
+<span class="sd">                updated by this dictionary, to create new keys or override existing ones.</span>
+<span class="sd">                Allows for complete customization of the grid search.</span>
+
+<span class="sd">                Keys should have format ``{named_step}__{parameter_name}`` for the named steps of the</span>
+<span class="sd">                `sklearn.pipeline.Pipeline` returned by this function. See `sklearn.pipeline.Pipeline`.</span>
+
+<span class="sd">                For example::</span>
+
+<span class="sd">                    hyperparameter_override={</span>
+<span class="sd">                        &quot;estimator__silverkite&quot;: SimpleSilverkiteForecast(),</span>
+<span class="sd">                        &quot;estimator__growth_term&quot;: &quot;linear&quot;,</span>
+<span class="sd">                        &quot;input__response__null__impute_algorithm&quot;: &quot;ts_interpolate&quot;,</span>
+<span class="sd">                        &quot;input__response__null__impute_params&quot;: {&quot;orders&quot;: [7, 14]},</span>
+<span class="sd">                        &quot;input__regressors_numeric__normalize__normalize_algorithm&quot;: &quot;RobustScaler&quot;,</span>
+<span class="sd">                    }</span>
+
+<span class="sd">                If a list of dictionaries, grid search will be done for each dictionary in the list.</span>
+<span class="sd">                Each dictionary in the list override the defaults. This enables grid search</span>
+<span class="sd">                over specific combinations of parameters to reduce the search space.</span>
+
+<span class="sd">                * For example, the first dictionary could define combinations of parameters for a</span>
+<span class="sd">                  &quot;complex&quot; model, and the second dictionary could define combinations of parameters</span>
+<span class="sd">                  for a &quot;simple&quot; model, to prevent mixed combinations of simple and complex.</span>
+<span class="sd">                * Or the first dictionary could grid search over fit algorithm, and the second dictionary</span>
+<span class="sd">                  could use a single fit algorithm and grid search over seasonality.</span>
+
+<span class="sd">                The result is passed as the ``param_distributions`` parameter</span>
+<span class="sd">                to `sklearn.model_selection.RandomizedSearchCV`.</span>
+
+<span class="sd">        model_template: `str`, `list`[`str`] or None, default None</span>
+<span class="sd">            The simple silverkite template support single templates, multi templates or a list of single/multi templates.</span>
+<span class="sd">            A valid single template must be one of ``SILVERKITE``, ``SILVERKITE_MONTHLY``,</span>
+<span class="sd">            ``SILVERKITE_DAILY_1_CONFIG_1``, ``SILVERKITE_DAILY_1_CONFIG_2``, ``SILVERKITE_DAILY_1_CONFIG_3``,</span>
+<span class="sd">            ``SILVERKITE_EMPTY``, or that consists of</span>
+
+<span class="sd">                {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}</span>
+
+<span class="sd">            For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL</span>
+<span class="sd">            can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,</span>
+<span class="sd">            growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in</span>
+<span class="sd">            `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in</span>
+<span class="sd">            `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to</span>
+
+<span class="sd">                - Omit any number of component-value pairs, and the omitted will be filled with default values.</span>
+<span class="sd">                - Switch the order of different component-value pairs.</span>
+
+<span class="sd">            A valid multi template must belong to</span>
+<span class="sd">            `~greykite.framework.templates.simple_silverkite_template_config.MULTI_TEMPLATES`</span>
+<span class="sd">            or must be a list of single or multi template names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;SILVERKITE&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The default model template. See `~greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+<span class="sd">    Uses a string to avoid circular imports.</span>
+<span class="sd">    Overrides the value from `~greykite.framework.templates.forecast_config_defaults.ForecastConfigDefaults`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">constants</span><span class="p">:</span> <span class="n">SimpleSilverkiteTemplateConstants</span> <span class="o">=</span> <span class="n">SimpleSilverkiteTemplateConstants</span><span class="p">(),</span>
+            <span class="n">estimator</span><span class="p">:</span> <span class="n">BaseForecastEstimator</span> <span class="o">=</span> <span class="n">SimpleSilverkiteEstimator</span><span class="p">()):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constants</span> <span class="o">=</span> <span class="n">constants</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constants used by the template class. Includes the model templates and their default values.&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_template_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;SimpleSilverkiteTemplate allows config.model_template to be a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_components_param_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;SilverkiteTemplate allows `config.model_components_param` to be a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimpleSilverkiteTemplateConstants</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constants used by the template class. Includes the model templates and their default values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constants</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_silverkite_holiday</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">SilverkiteHoliday</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Holiday constants used by the estimator.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">silverkite</span><span class="o">.</span><span class="n">_silverkite_holiday</span>
+
+<div class="viewcode-block" id="SimpleSilverkiteTemplate.get_regressor_cols"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_regressor_cols">[docs]</a>    <span class="k">def</span> <span class="nf">get_regressor_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns regressor column names from the model components.</span>
+
+<span class="sd">        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Uses these attributes:</span>
+
+<span class="sd">            model_components: :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`,</span>
+<span class="sd">            `list` [`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`] or None, default None</span>
+<span class="sd">                Configuration of model growth, seasonality, holidays, etc.</span>
+<span class="sd">                See :func:`~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`</span>
+<span class="sd">                for details.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        regressor_cols : `list` [`str`] or None</span>
+<span class="sd">            The names of regressor columns used in any hyperparameter set</span>
+<span class="sd">            requested by ``model_components``.</span>
+<span class="sd">            None if there are no regressors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span>
+        <span class="k">if</span> <span class="n">model_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_components</span><span class="p">,</span> <span class="n">ModelComponentsParam</span><span class="p">)</span> <span class="ow">and</span> <span class="n">model_components</span><span class="o">.</span><span class="n">regressors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># ``regressor_cols`` is a list of strings to initialize</span>
+            <span class="c1"># SimpleSilverkiteEstimator.regressor_cols, or a list of</span>
+            <span class="c1"># such lists.</span>
+            <span class="n">regressor_cols</span> <span class="o">=</span> <span class="n">model_components</span><span class="o">.</span><span class="n">regressors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regressor_cols&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">elif</span> <span class="n">model_components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_components</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">regressors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">model_components</span><span class="p">]):</span>
+            <span class="c1"># Provides a list of ``model_components_param``.</span>
+            <span class="c1"># ``regressor_cols`` is the union of each single ``regressor_cols``.</span>
+            <span class="n">regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">model_components</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">regressors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">regressor_cols</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">regressors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regressor_cols&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">unique_in_list</span><span class="p">(</span>
+            <span class="n">array</span><span class="o">=</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">ignored_elements</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span></div>
+
+<div class="viewcode-block" id="SimpleSilverkiteTemplate.get_lagged_regressor_info"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_lagged_regressor_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_lagged_regressor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns lagged regressor column names and minimal/maximal lag order. The lag order</span>
+<span class="sd">        can be used to check potential imputation in the computation of lags.</span>
+
+<span class="sd">        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lagged_regressor_info : `dict`</span>
+<span class="sd">            A dictionary that includes the lagged regressor column names and maximal/minimal lag order</span>
+<span class="sd">            The keys are:</span>
+
+<span class="sd">                lagged_regressor_cols : `list` [`str`] or None</span>
+<span class="sd">                    See `~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">                overall_min_lag_order : `int` or None</span>
+<span class="sd">                overall_max_lag_order : `int` or None</span>
+
+<span class="sd">            For example::</span>
+
+<span class="sd">                self.config.model_components_param.lagged_regressors[&quot;lagged_regressor_dict&quot;] = [</span>
+<span class="sd">                    {&quot;regressor1&quot;: {</span>
+<span class="sd">                        &quot;lag_dict&quot;: {&quot;orders&quot;: [7]},</span>
+<span class="sd">                        &quot;agg_lag_dict&quot;: {</span>
+<span class="sd">                            &quot;orders_list&quot;: [[7, 7 * 2, 7 * 3]],</span>
+<span class="sd">                            &quot;interval_list&quot;: [(8, 7 * 2)]},</span>
+<span class="sd">                        &quot;series_na_fill_func&quot;: lambda s: s.bfill().ffill()}</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {&quot;regressor2&quot;: {</span>
+<span class="sd">                        &quot;lag_dict&quot;: {&quot;orders&quot;: [2]},</span>
+<span class="sd">                        &quot;agg_lag_dict&quot;: {</span>
+<span class="sd">                            &quot;orders_list&quot;: [[7, 7 * 2]],</span>
+<span class="sd">                            &quot;interval_list&quot;: [(8, 7 * 2)]},</span>
+<span class="sd">                        &quot;series_na_fill_func&quot;: lambda s: s.bfill().ffill()}</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {&quot;regressor3&quot;: &quot;auto&quot;}</span>
+<span class="sd">                ]</span>
+
+<span class="sd">            Then the function returns::</span>
+
+<span class="sd">                lagged_regressor_info = {</span>
+<span class="sd">                    &quot;lagged_regressor_cols&quot;: [&quot;regressor1&quot;, &quot;regressor2&quot;, &quot;regressor3&quot;],</span>
+<span class="sd">                    &quot;overall_min_lag_order&quot;: 2,</span>
+<span class="sd">                    &quot;overall_max_lag_order&quot;: 21</span>
+<span class="sd">                }</span>
+
+<span class="sd">            Note that &quot;regressor3&quot; is skipped as the &quot;auto&quot; option makes sure the lag order is proper.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lagged_regressor_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">lagged_regressors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">lagged_regressor_info</span>
+
+        <span class="n">lag_reg_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">lagged_regressors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lag_reg_dict</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">lag_reg_dict</span> <span class="o">==</span> <span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">lagged_regressor_info</span>
+
+        <span class="n">lag_reg_dict_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">lag_reg_dict</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lag_reg_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">lag_reg_dict</span>
+        <span class="n">lagged_regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">overall_min_lag_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">overall_max_lag_order</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">lag_reg_dict_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">lagged_regressor_cols</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="c1"># Also gets the minimal lag order for each lagged_regressor_dict.</span>
+                <span class="c1"># Looks at each individual regressor column, &quot;auto&quot; is skipped because</span>
+                <span class="c1"># &quot;auto&quot; always makes sure that minimal lag order is at least forecast horizon.</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">d_tmp</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+                        <span class="n">lag_reg_components</span> <span class="o">=</span> <span class="n">build_autoreg_df_multi</span><span class="p">(</span><span class="n">value_lag_info_dict</span><span class="o">=</span><span class="n">d_tmp</span><span class="p">)</span>
+                        <span class="n">overall_min_lag_order</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                            <span class="n">lag_reg_components</span><span class="p">[</span><span class="s2">&quot;min_order&quot;</span><span class="p">],</span>
+                            <span class="n">overall_min_lag_order</span><span class="p">)</span>
+                        <span class="n">overall_max_lag_order</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                            <span class="n">lag_reg_components</span><span class="p">[</span><span class="s2">&quot;max_order&quot;</span><span class="p">],</span>
+                            <span class="n">overall_max_lag_order</span><span class="p">)</span>
+        <span class="n">lagged_regressor_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lagged_regressor_cols</span><span class="p">))</span>
+
+        <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lagged_regressor_cols</span>
+        <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overall_min_lag_order</span>
+        <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overall_max_lag_order</span>
+        <span class="k">return</span> <span class="n">lagged_regressor_info</span></div>
+
+<div class="viewcode-block" id="SimpleSilverkiteTemplate.get_hyperparameter_grid"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_hyperparameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns hyperparameter grid.</span>
+
+<span class="sd">        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Converts model components, time properties, and model template into</span>
+<span class="sd">        :class:`~greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator`</span>
+<span class="sd">        hyperparameters.</span>
+
+<span class="sd">        Uses these attributes:</span>
+
+<span class="sd">            model_components: :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`,</span>
+<span class="sd">            `list` [`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`] or None, default None</span>
+<span class="sd">                Configuration of model growth, seasonality, events, etc.</span>
+<span class="sd">                See :func:`~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`</span>
+<span class="sd">                for details.</span>
+
+<span class="sd">            time_properties: `dict` [`str`, `any`] or None, default None</span>
+<span class="sd">                Time properties dictionary (likely produced by</span>
+<span class="sd">                `~greykite.common.time_properties_forecast.get_forecast_time_properties`)</span>
+<span class="sd">                with keys:</span>
+
+<span class="sd">                ``&quot;period&quot;``: `int`</span>
+<span class="sd">                    Period of each observation (i.e. minimum time between observations, in seconds).</span>
+<span class="sd">                ``&quot;simple_freq&quot;``: `SimpleTimeFrequencyEnum`</span>
+<span class="sd">                    ``SimpleTimeFrequencyEnum`` member corresponding to data frequency.</span>
+<span class="sd">                ``&quot;num_training_points&quot;``: `int`</span>
+<span class="sd">                    Number of observations for training.</span>
+<span class="sd">                ``&quot;num_training_days&quot;``: `int`</span>
+<span class="sd">                    Number of days for training.</span>
+<span class="sd">                ``&quot;start_year&quot;``: `int`</span>
+<span class="sd">                    Start year of the training period.</span>
+<span class="sd">                ``&quot;end_year&quot;``: `int`</span>
+<span class="sd">                    End year of the forecast period.</span>
+<span class="sd">                ``&quot;origin_for_time_vars&quot;``: `float`</span>
+<span class="sd">                    Continuous time representation of the first date in ``df``.</span>
+
+<span class="sd">            model_template: `str`, default &quot;SILVERKITE&quot;</span>
+<span class="sd">                The name of model template, must be one of the valid templates defined in</span>
+<span class="sd">                `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`</span>
+<span class="sd">        handles the train/test splits according to ``EvaluationPeriodParam``,</span>
+<span class="sd">        so ``estimator__train_test_thresh`` and ``estimator__training_fraction`` are always None.</span>
+
+<span class="sd">        Similarly, ``estimator__origin_for_time_vars`` is set to None.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hyperparameter_grid : `dict` [`str`, `list` [`any`]] or `list` [ `dict` [`str`, `list` [`any`]] ]</span>
+<span class="sd">            hyperparameter_grid for grid search in :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">            The output dictionary values are lists, combined in grid search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">,</span> <span class="n">ModelComponentsParam</span><span class="p">):</span>
+            <span class="n">model_components_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">model_components_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span>
+        <span class="n">model_components_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_model_components_and_override_from_model_template</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">,</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="n">model_components_list</span><span class="p">)</span>
+        <span class="n">hyperparameter_grid_result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">model_components</span> <span class="ow">in</span> <span class="n">model_components_list</span><span class="p">:</span>
+            <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_hyperparameter_grid_from_model_components</span><span class="p">(</span><span class="n">model_components</span><span class="p">)</span>
+            <span class="c1"># Adds time/training information to `hyperparameter_grid`.</span>
+            <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+                <span class="n">default_dict</span><span class="o">=</span><span class="n">hyperparameter_grid</span><span class="p">,</span>
+                <span class="n">overwrite_dicts</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;estimator__time_properties&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_properties</span><span class="p">],</span>
+                    <span class="s2">&quot;estimator__origin_for_time_vars&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+                    <span class="s2">&quot;estimator__train_test_thresh&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+                    <span class="s2">&quot;estimator__training_fraction&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]})</span>
+            <span class="c1"># Update values with `hyperparameter_override`.</span>
+            <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+                <span class="n">default_dict</span><span class="o">=</span><span class="n">hyperparameter_grid</span><span class="p">,</span>
+                <span class="n">overwrite_dicts</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hyperparameter_grid</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">[</span><span class="n">hyperparameter_grid</span><span class="p">]</span>
+            <span class="n">hyperparameter_grid_result</span> <span class="o">+=</span> <span class="n">hyperparameter_grid</span>
+        <span class="c1"># Ensures all items have the proper type for</span>
+        <span class="c1"># `sklearn.model_selection.RandomizedSearchCV`.</span>
+        <span class="c1"># List-type hyperparameters are specified below</span>
+        <span class="c1"># with their accepted non-list type values.</span>
+        <span class="n">hyperparameter_grid_result</span> <span class="o">=</span> <span class="n">dictionaries_values_to_lists</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid_result</span><span class="p">,</span>
+            <span class="n">hyperparameters_list_type</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;estimator__holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_holiday</span><span class="o">.</span><span class="n">ALL_HOLIDAYS_IN_COUNTRIES</span><span class="p">],</span>
+                <span class="s2">&quot;estimator__holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;estimator__regressor_cols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+                <span class="s2">&quot;estimator__extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+                <span class="s2">&quot;estimator__drop_pred_cols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+                <span class="s2">&quot;estimator__explicit_pred_cols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+                <span class="s2">&quot;estimator__daily_event_shifted_effect&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">hyperparameter_grid_result</span> <span class="o">=</span> <span class="n">unique_dict_in_list</span><span class="p">(</span><span class="n">hyperparameter_grid_result</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hyperparameter_grid_result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">hyperparameter_grid_result</span> <span class="o">=</span> <span class="n">hyperparameter_grid_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">hyperparameter_grid_result</span></div>
+
+    <span class="c1"># Additional helper functions for `get_hyperparameter_grid` are below.</span>
+    <span class="c1"># Their behavior is customized by `self.constants`.</span>
+
+    <span class="c1"># Uses `self.constants`.</span>
+    <span class="k">def</span> <span class="nf">__template_name_from_dataclass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_dataclass</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decodes the string format single template name from the ``name_dataclass`` dataclass.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name_dataclass : `SimpleSilverkiteTemplateName`, default None.</span>
+<span class="sd">            The dataclass that contains the simple silverkite template string-type name values.</span>
+<span class="sd">            If None, the default values will be used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        full_name : `str`</span>
+<span class="sd">            The processed template name. For example, the input above will become</span>
+<span class="sd">            `DAILY_SEAS_LT_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_ON`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name_dataclass</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name_dataclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SimpleSilverkiteTemplateOptions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">SEAS</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">seas</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">GR</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">gr</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">CP</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">cp</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">HOL</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">hol</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">FEASET</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">feaset</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">ALGO</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">algo</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">AR</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">ar</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">DSI</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">dsi</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">WSI</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name_dataclass</span><span class="o">.</span><span class="n">wsi</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Uses `self.constants`.</span>
+    <span class="k">def</span> <span class="nf">__decode_single_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a single simple silverkite template&#39;s name, preprocess the name order and fill in default values.</span>
+
+<span class="sd">        The naming of a simple silverkite template is either ``SILVERKITE`` or consists of</span>
+
+<span class="sd">            {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}</span>
+
+<span class="sd">        For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL</span>
+<span class="sd">        can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,</span>
+<span class="sd">        growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in</span>
+<span class="sd">        `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in</span>
+<span class="sd">        `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to</span>
+
+<span class="sd">            - Omit any number of component-value pairs, and the omitted will be filled with default values.</span>
+<span class="sd">            - Switch the order of different component-value pairs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str` or `SimpleSilverkiteTemplateName`</span>
+<span class="sd">            A template name. For example, `DAILY_CP_LT_HOL_NONE_AR_ON`.</span>
+<span class="sd">            You could also define the name throught the `SimpleSilverkiteTemplateName` class.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        full_name : `str`</span>
+<span class="sd">            The processed template name. For example, the input above will become</span>
+<span class="sd">            `DAILY_SEAS_LT_GR_LINEAR_CP_LT_HOL_NONE_FEASET_OFF_ALGO_LINEAR_AR_ON`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;SILVERKITE&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;SILVERKITE_MONTHLY&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_1&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_2&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_3&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">template</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;SILVERKITE_EMPTY&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_EMPTY</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="n">freq</span><span class="p">,</span> <span class="n">components</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">freq</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">VALID_FREQ</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Template not recognized. Please make sure the frequency belongs to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">VALID_FREQ</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">new_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">freq</span><span class="p">]</span>
+            <span class="c1"># No keyword in the template name, try to decode it with the default order.</span>
+            <span class="c1"># If `components` is empty, then all values are filled with default.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">__members__</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">])</span> <span class="ow">and</span> <span class="n">components</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No keyword found in the template name. Please make sure your template name &quot;</span>
+                                 <span class="s2">&quot;consists of keyword + value pairs.&quot;</span><span class="p">)</span>
+            <span class="c1"># At least one keyword in the template name. Try to fill the others with default values.</span>
+            <span class="c1"># In this case the order of the components does not matter, so we iterate the OrderedDict.</span>
+            <span class="n">used_components</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">default_components</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Fills component names and values in the default order.</span>
+            <span class="c1"># Uses the input value if exists.</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="o">.</span><span class="n">__members__</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;FREQ&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">components</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">__members__</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is not recognized for </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. &quot;</span>
+                                             <span class="sa">f</span><span class="s2">&quot;The valid values are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">__members__</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Template name is not valid. It must be either keyword + value or purely values.&quot;</span><span class="p">)</span>
+                    <span class="n">used_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">used_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_COMPONENT_KEYWORDS</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">DEFAULT</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">default_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+                <span class="n">new_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+                <span class="n">new_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">unused_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">component</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">components</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used_components</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">unused_components</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The following words are not used because they are neither a component keyword&quot;</span>
+                              <span class="sa">f</span><span class="s2">&quot; nor following a component keyword, or because you have duplicate keywords. </span><span class="si">{</span><span class="n">unused_components</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">default_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">default_components</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;DSI&quot;</span><span class="p">,</span> <span class="s2">&quot;WSI&quot;</span><span class="p">]]</span>  <span class="c1"># These two keywords are not exposed to users.</span>
+            <span class="k">if</span> <span class="n">default_components</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The following component keywords are not found in the template name, &quot;</span>
+                              <span class="s2">&quot;thus the default values will be used. For default values, please check the doc. &quot;</span>
+                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">default_components</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SimpleSilverkiteTemplateOptions</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__template_name_from_dataclass</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The template type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">template</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not recognized. It must be str or `SimpleSilverkiteTemplateStringName`.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Uses `self.constants`, and called by `forecaster.py`</span>
+<div class="viewcode-block" id="SimpleSilverkiteTemplate.check_template_type"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.check_template_type">[docs]</a>    <span class="k">def</span> <span class="nf">check_template_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks the template name is valid and whether it is single or multi template.</span>
+<span class="sd">        Raises an error if the template is not recognized.</span>
+
+<span class="sd">        A valid single template must be one of ``SILVERKITE``, ``SILVERKITE_MONTHLY``,</span>
+<span class="sd">        ``SILVERKITE_DAILY_1_CONFIG_1``, ``SILVERKITE_DAILY_1_CONFIG_2``, ``SILVERKITE_DAILY_1_CONFIG_3``,</span>
+<span class="sd">        ``SILVERKITE_EMPTY``, or that consists of</span>
+
+<span class="sd">            {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}</span>
+
+<span class="sd">        For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL</span>
+<span class="sd">        can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,</span>
+<span class="sd">        growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in</span>
+<span class="sd">        `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in</span>
+<span class="sd">        `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to</span>
+
+<span class="sd">            - Omit any number of component-value pairs, and the omitted will be filled with default values.</span>
+<span class="sd">            - Switch the order of different component-value pairs.</span>
+
+<span class="sd">        A valid multi template must belong to</span>
+<span class="sd">        `~greykite.framework.templates.simple_silverkite_template_config.MULTI_TEMPLATES`</span>
+<span class="sd">        or must be a list of single or multi template names.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str`, `SimpleSilverkiteTemplateName` or `list`[`str`, `SimpleSilverkiteTemplateName`]</span>
+<span class="sd">            The ``model_template`` parameter fed into</span>
+<span class="sd">            `~greykite.framework.templates.autogen.forecast_config.ForecastConfig`.</span>
+<span class="sd">            for simple silverkite templates.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        template_type : `str`</span>
+<span class="sd">            &quot;single&quot; or &quot;multi&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SILVERKITE&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;SILVERKITE_MONTHLY&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_1&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_2&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_3&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;SILVERKITE_EMPTY&quot;</span><span class="p">]</span>
+                <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SimpleSilverkiteTemplateOptions</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">VALID_FREQ</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;single&quot;</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">MULTI_TEMPLATES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;multi&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The template name </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2"> is not recognized. It must be &#39;SILVERKITE&#39;, &quot;</span>
+                         <span class="sa">f</span><span class="s2">&quot;&#39;SILVERKITE_DAILY_1_CONFIG_1&#39;, &#39;SILVERKITE_DAILY_1_CONFIG_2&#39;, &#39;SILVERKITE_DAILY_1_CONFIG_3&#39;, &#39;SILVERKITE_EMPTY&#39;, &quot;</span>
+                         <span class="sa">f</span><span class="s2">&quot;a `SimpleSilverkiteTemplateOptions` data class, of the type&quot;</span>
+                         <span class="s2">&quot; &#39;</span><span class="si">{FREQ}</span><span class="s2">_SEAS_</span><span class="si">{VAL}</span><span class="s2">_GR_</span><span class="si">{VAL}</span><span class="s2">_CP_</span><span class="si">{VAL}</span><span class="s2">_HOL_</span><span class="si">{VAL}</span><span class="s2">_FEASET_</span><span class="si">{VAL}</span><span class="s2">_ALGO_</span><span class="si">{VAL}</span><span class="s2">_AR_</span><span class="si">{VAL}</span><span class="s2">&#39; or&quot;</span>
+                         <span class="sa">f</span><span class="s2">&quot; belong to </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">MULTI_TEMPLATES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># Depends on a function that uses `self.constants`.</span>
+    <span class="k">def</span> <span class="nf">__get_name_string_from_model_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the name string(s) from model template.</span>
+
+<span class="sd">        The template could be a name string, a `SimpleSilverkiteTemplateOptions` dataclass,</span>
+<span class="sd">        or a list of such strings and/or dataclasses.</span>
+<span class="sd">        If a list is given, a list of `ModelComponentsParam` is returned.</span>
+
+<span class="sd">        The naming of a simple silverkite template is either ``SILVERKITE`` or consists of</span>
+
+<span class="sd">            {FREQ}_SEAS_{VAL}_GR_{VAL}_CP_{VAL}_HOL_{VAL}_FEASET_{VAL}_ALGO_{VAL}_AR_{VAL}</span>
+
+<span class="sd">        For example, we have DAILY_SEAS_NM_GR_LINEAR_CP_LT_HOL_NONE_FEASET_ON_ALGO_RIDGE_AR_ON. The valid FREQ and VAL</span>
+<span class="sd">        can be found at `~greykite.framework.templates.simple_silverkite_template_config`. The components stand for seasonality,</span>
+<span class="sd">        growth, changepoints_dict, events, feature_sets_enabled, fit_algorithm and autoregression in</span>
+<span class="sd">        `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`, which is used in</span>
+<span class="sd">        `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`. Users are allowed to</span>
+
+<span class="sd">            - Omit any number of component-value pairs, and the omitted will be filled with default values.</span>
+<span class="sd">            - Switch the order of different component-value pairs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str`, `SimpleSilverkiteTemplateOptions` or `list` [`str`, `SimpleSilverkiteTemplateOptions`]</span>
+<span class="sd">            The ``model_template`` in `ForecastConfig`, could be a name string, a `SimpleSilverkiteTemplateOptions` dataclass,</span>
+<span class="sd">            or a list of such strings and/or dataclasses.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        name_string: `list` [`str`]</span>
+<span class="sd">            The list of name string(s) that corresponds to ``template``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">get_name_string_from_single_or_multi_template</span><span class="p">(</span><span class="n">model_template</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Gets the name string when model template type is single or multi.&quot;&quot;&quot;</span>
+            <span class="n">template_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_template_type</span><span class="p">(</span><span class="n">model_template</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">template_type</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__decode_single_template</span><span class="p">(</span><span class="n">model_template</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">template_type</span> <span class="o">==</span> <span class="s2">&quot;multi&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__decode_single_template</span><span class="p">(</span><span class="n">single_template</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">single_template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">MULTI_TEMPLATES</span><span class="p">[</span><span class="n">model_template</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">name_strings</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">template</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> is not recognized as a valid single or multi template name.&quot;</span><span class="p">)</span>
+                <span class="n">current_item_name_string</span> <span class="o">=</span> <span class="n">get_name_string_from_single_or_multi_template</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">name_strings</span> <span class="o">+=</span> <span class="n">current_item_name_string</span>
+            <span class="k">return</span> <span class="n">name_strings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name_strings</span> <span class="o">=</span> <span class="n">get_name_string_from_single_or_multi_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">name_strings</span>
+
+    <span class="c1"># Uses `self.constants`.</span>
+    <span class="k">def</span> <span class="nf">__get_single_model_components_param_from_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the `ModelComponentsParam` class from a single simple silverkite template name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str`</span>
+<span class="sd">            The full template name output by</span>
+<span class="sd">            `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.__decode_single_template`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_components_param : `ModelComponentsParam`</span>
+<span class="sd">            The corresponding `ModelComponentsParam`, see `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;SILVERKITE&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;SILVERKITE_MONTHLY&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_MONTHLY</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_1&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_DAILY_1_CONFIG_1</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_2&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_DAILY_1_CONFIG_2</span>
+        <span class="k">if</span> <span class="n">template</span> <span class="o">==</span> <span class="s2">&quot;SILVERKITE_DAILY_1_CONFIG_3&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SILVERKITE_DAILY_1_CONFIG_3</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">freq</span><span class="p">,</span> <span class="n">components</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="c1"># The value of a keyword is supposed to follow it.</span>
+        <span class="c1"># For each keyword, we extract the next substring (index + 1) as its value.</span>
+        <span class="n">model_components_param</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+            <span class="n">seasonality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;SEAS&quot;</span><span class="p">][</span><span class="n">freq</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;SEAS&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">growth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;GR&quot;</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;GR&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;CP&quot;</span><span class="p">][</span><span class="n">freq</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;CP&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="n">events</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;HOL&quot;</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;HOL&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;FEASET&quot;</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;FEASET&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;ALGO&quot;</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ALGO&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;DSI&quot;</span><span class="p">][</span><span class="n">freq</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;DSI&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;WSI&quot;</span><span class="p">][</span><span class="n">freq</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;WSI&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;regression_weight_col&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;remove_intercept&quot;</span><span class="p">:</span> <span class="kc">False</span>
+            <span class="p">},</span>
+            <span class="n">autoregression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span><span class="p">[</span><span class="s2">&quot;AR&quot;</span><span class="p">][</span><span class="n">components</span><span class="p">[</span><span class="n">components</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;AR&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+            <span class="p">},</span>
+            <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">},</span>
+            <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="p">})</span>
+        <span class="k">return</span> <span class="n">model_components_param</span>
+
+    <span class="c1"># Public interface, useful for debugging.</span>
+<div class="viewcode-block" id="SimpleSilverkiteTemplate.get_model_components_from_model_template"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_model_components_from_model_template">[docs]</a>    <span class="k">def</span> <span class="nf">get_model_components_from_model_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the `ModelComponentsParam` class from model template.</span>
+
+<span class="sd">        The template could be a name string, a `SimpleSilverkiteTemplateOptions` dataclass,</span>
+<span class="sd">        or a list of such strings and/or dataclasses.</span>
+<span class="sd">        If a list is given, a list of `ModelComponentsParam` is returned.</span>
+<span class="sd">        If a single element is given, a list of length 1 is returned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str`, `SimpleSilverkiteTemplateOptions` or `list` [`str`, `SimpleSilverkiteTemplateOptions`]</span>
+<span class="sd">            The ``model_template`` in `ForecastConfig`, could be a name string, a `SimpleSilverkiteTemplateOptions` dataclass,</span>
+<span class="sd">            or a list of such strings and/or dataclasses.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_components_param: `list` [`ModelComponentsParam`]</span>
+<span class="sd">            The list of `ModelComponentsParam` class(es) that correspond to ``template``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name_strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_name_string_from_model_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="n">model_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_single_model_components_param_from_template</span><span class="p">(</span><span class="n">single_template</span><span class="p">)</span> <span class="k">for</span> <span class="n">single_template</span> <span class="ow">in</span> <span class="n">name_strings</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">model_components</span></div>
+
+    <span class="c1"># Depends on a function that uses `self.constants`.</span>
+    <span class="k">def</span> <span class="nf">__override_model_components</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">default_model_components</span><span class="p">,</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Uses the values in ``model_components`` to update the corresponding values in ``default_model_components``.</span>
+
+<span class="sd">        If a value is not set in model_components, i.e., the value is None, then the default value is not updated.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        default_model_components : `ModelComponentsParam`</span>
+<span class="sd">            The default model components to be updated.</span>
+<span class="sd">        model_components : `ModelComponentsParam`, default None</span>
+<span class="sd">            The new model components used to update ``default_model_components``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        updated_model_components : `ModelComponentsParam`</span>
+<span class="sd">            The updated model components.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">default_model_components</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">default_model_components</span><span class="p">)</span>  <span class="c1"># Returns a copy.</span>
+        <span class="k">if</span> <span class="n">default_model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">default_model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">model_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default_model_components</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;seasonality&quot;</span><span class="p">,</span> <span class="s2">&quot;growth&quot;</span><span class="p">,</span> <span class="s2">&quot;changepoints&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;autoregression&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;regressors&quot;</span><span class="p">,</span> <span class="s2">&quot;lagged_regressors&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">,</span> <span class="s2">&quot;hyperparameter_override&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="n">allow_unknown_keys</span> <span class="o">=</span> <span class="p">(</span><span class="n">component</span> <span class="o">==</span> <span class="s2">&quot;hyperparameter_override&quot;</span><span class="p">)</span>  <span class="c1"># Allows unknown keys for hyperparameter_override.</span>
+            <span class="n">updated_value</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+                <span class="n">default_dict</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">default_model_components</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="p">{}),</span>
+                <span class="n">overwrite_dicts</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">model_components</span><span class="p">,</span> <span class="n">component</span><span class="p">),</span>
+                <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="n">allow_unknown_keys</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">default_model_components</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">updated_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">default_model_components</span>
+
+    <span class="c1"># Depends on a function that uses `self.constants`.</span>
+    <span class="k">def</span> <span class="nf">__get_model_components_and_override_from_model_template</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">template</span><span class="p">,</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the `ModelComponentsParam` class from model template, and overridden by ``model_components``.</span>
+
+<span class="sd">        The template could be a name string, a `SimpleSilverkiteTemplateOptions` dataclass,</span>
+<span class="sd">        or a list of such strings and/or dataclasses.</span>
+<span class="sd">        If a list is given, a list of `ModelComponentsParam` is returned.</span>
+<span class="sd">        If a single element is give, a list of length 1 is returned.</span>
+
+<span class="sd">        The full cross product of all templates overridden by all provided model components is returned.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str`, `SimpleSilverkiteTemplateOptions` or `list` [`str`, `SimpleSilverkiteTemplateOptions`]</span>
+<span class="sd">            The ``model_template`` in `ForecastConfig`, could be a name string, a `SimpleSilverkiteTemplateOptions` dataclass,</span>
+<span class="sd">            or a list of such strings and/or dataclasses.</span>
+
+<span class="sd">        model_components : `ModelComponentsParam` or `list` [`ModelComponentsParam`], default None.</span>
+<span class="sd">            The `ModelComponentsParam` in `ForecastConfig`, used to override the default values provided by ``template``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_components_param: `list` [`ModelComponentsParam`]</span>
+<span class="sd">            The list of `ModelComponentsParam` class(es) that correspond to ``template``, overridden by ``model_components``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">model_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_components</span><span class="p">,</span> <span class="n">ModelComponentsParam</span><span class="p">):</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_components</span><span class="p">]</span>
+        <span class="n">default_model_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model_components_from_model_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="n">new_model_components</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__override_model_components</span><span class="p">(</span><span class="n">single_default_model_components</span><span class="p">,</span> <span class="n">single_model_components</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">single_model_components</span> <span class="ow">in</span> <span class="n">model_components</span> <span class="k">for</span> <span class="n">single_default_model_components</span> <span class="ow">in</span> <span class="n">default_model_components</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">new_model_components</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__get_hyperparameter_grid_from_model_components</span><span class="p">(</span><span class="n">model_components</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the hyperparameter grid from the `ModelComponentsParam` class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_components : `class`</span>
+<span class="sd">            The `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam` class.</span>
+<span class="sd">            Configuration of model growth, seasonality, events, etc.</span>
+<span class="sd">            See :func:`~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`</span>
+<span class="sd">            for details.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hyperparameter_grid : `dict`</span>
+<span class="sd">            hyperparameter_grid for hyperparameter_override in</span>
+<span class="sd">             `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam.hyperparameter_override`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;estimator__auto_seasonality&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;auto_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__yearly_seasonality&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__quarterly_seasonality&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__monthly_seasonality&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__weekly_seasonality&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__daily_seasonality&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">seasonality</span><span class="p">[</span><span class="s2">&quot;daily_seasonality&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__auto_growth&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;auto_growth&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__growth_term&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">growth</span><span class="p">[</span><span class="s2">&quot;growth_term&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__changepoints_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoints_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__auto_holiday&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;auto_holiday&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__holiday_post_num_days&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__daily_event_df_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__daily_event_neighbor_impact&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;daily_event_neighbor_impact&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__daily_event_shifted_effect&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;daily_event_shifted_effect&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__auto_holiday_params&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;auto_holiday_params&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__feature_sets_enabled&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__extra_pred_cols&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__drop_pred_cols&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__explicit_pred_cols&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__min_admissible_value&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;min_admissible_value&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_admissible_value&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_admissible_value&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__normalize_method&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;normalize_method&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__autoreg_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">autoregression</span><span class="p">[</span><span class="s2">&quot;autoreg_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__simulation_num&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">autoregression</span><span class="p">[</span><span class="s2">&quot;simulation_num&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__fast_simulation&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">autoregression</span><span class="p">[</span><span class="s2">&quot;fast_simulation&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__regressor_cols&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">regressors</span><span class="p">[</span><span class="s2">&quot;regressor_cols&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">lagged_regressors</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__regression_weight_col&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;regression_weight_col&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__remove_intercept&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;remove_intercept&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__uncertainty_dict&quot;</span><span class="p">:</span> <span class="n">model_components</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">[</span><span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">hyperparameter_grid</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

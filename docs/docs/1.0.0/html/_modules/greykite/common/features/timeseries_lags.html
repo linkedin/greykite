@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.common.features.timeseries_lags &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.common.features.timeseries_lags</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.common.features.timeseries_lags</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Reza Hosseini</span>
+<span class="sd">&quot;&quot;&quot;Functions to construct lagged time series features.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+
+
+<span class="k">def</span> <span class="nf">build_lag_df</span><span class="p">(</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">orders</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function which builds a dataframe including time series lags</span>
+<span class="sd">    (in the form of data frame columns)</span>
+<span class="sd">    for a given value column (value_col) from an input dataframe (df)</span>
+
+<span class="sd">    :param value_col: str</span>
+<span class="sd">        the column name for the column which includes the values</span>
+<span class="sd">    :param df: Optional[pd.DataFrame]</span>
+<span class="sd">        data frame which include the value column of interest</span>
+<span class="sd">        df could be passed as None if col_names are desired only</span>
+<span class="sd">        in the output dictionary</span>
+<span class="sd">    :param max_order: Optional[int]</span>
+<span class="sd">        if lag orders are not specified then max_order is used.</span>
+<span class="sd">        max_order is a natural number specifying</span>
+<span class="sd">        the orders needed. e.g. if &quot;max_order = 5&quot;</span>
+<span class="sd">        then we add these lag orders 1, 2, 3, 4, 5</span>
+<span class="sd">    :param orders: List[int]</span>
+<span class="sd">        a list of the lag orders needed.</span>
+<span class="sd">        e.g. if orders = [1, 2, 7] for a given time series</span>
+<span class="sd">        denoted in mathematical notation by Y(t), we calculate</span>
+<span class="sd">        Y(t-1), Y(t-2), Y(t-7) and store them in the returned data frame</span>
+<span class="sd">    :return: dict</span>
+<span class="sd">        dictionary with these items:</span>
+
+<span class="sd">            - &quot;col_names&quot;: List[str]</span>
+<span class="sd">                the generated column names</span>
+<span class="sd">            - &quot;lag_df&quot;: Optional[pd.DataFrame]</span>
+<span class="sd">                a data frame consisting of the lagged values of the given orders.</span>
+<span class="sd">                For example, if the value_col = &quot;y&quot; and the orders = [1, 2, 7],</span>
+<span class="sd">                then the returned data frame</span>
+<span class="sd">                include the following columns: &quot;y_lag_1&quot;, &quot;y_lag_2&quot; and &quot;y_lag_7&quot;.</span>
+<span class="sd">                These correspond to the 1st lag, the 2nd lag and the 7th lag</span>
+<span class="sd">                respectively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># initializes the returned items</span>
+    <span class="n">lag_df</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">col_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">orders</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;at least one of &#39;max_order&#39; or &#39;orders&#39; must be provided&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">orders</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lag_df_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}{</span><span class="n">cst</span><span class="o">.</span><span class="n">LAG_INFIX</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">col_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lag_df_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">col_name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lag_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">objs</span><span class="o">=</span><span class="n">lag_df_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;lag_df&quot;</span><span class="p">:</span> <span class="n">lag_df</span><span class="p">,</span>
+        <span class="s2">&quot;col_names&quot;</span><span class="p">:</span> <span class="n">col_names</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">min_max_lag_order</span><span class="p">(</span>
+        <span class="n">lag_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_lag_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculating min and max lag order needed given the prescribed lags</span>
+<span class="sd">    in the model.</span>
+
+<span class="sd">    :param lag_dict: dict</span>
+<span class="sd">        dictionary with these fields:</span>
+
+<span class="sd">            - &quot;orders&quot;: Optional[List(int)]</span>
+<span class="sd">             a list of positive integers or None</span>
+<span class="sd">            - &quot;max_order&quot;: Optional[int]</span>
+
+<span class="sd">        see function &quot;build_lag_df&quot; arguments with same names</span>
+<span class="sd">        to understand use case</span>
+<span class="sd">    :param agg_lag_dict: dict</span>
+<span class="sd">        dictionary with these items</span>
+
+<span class="sd">            - &quot;orders_list&quot;: List[List[int]], default: []</span>
+<span class="sd">                a list of lists of integers</span>
+<span class="sd">            - &quot;interval_list&quot;: List[tuple[int]], default: []</span>
+<span class="sd">                a list of int tuples of each with length 2</span>
+
+<span class="sd">        see function &quot;build_agg_lag_df&quot; arguments with same names</span>
+<span class="sd">        to understand use-case</span>
+
+<span class="sd">    :return: dict[str, float]</span>
+<span class="sd">        dictionary with two items with keys:</span>
+
+<span class="sd">            - &quot;max_order&quot;: the maximum lag used</span>
+<span class="sd">            - &quot;min_order&quot;: the mimimum lag used</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_order</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">min_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="k">if</span> <span class="n">lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">lag_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">max_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">lag_dict</span><span class="p">[</span><span class="s2">&quot;orders&quot;</span><span class="p">])</span>
+            <span class="n">min_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">lag_dict</span><span class="p">[</span><span class="s2">&quot;orders&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">lag_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_order&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">max_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">([</span><span class="n">lag_dict</span><span class="p">[</span><span class="s2">&quot;max_order&quot;</span><span class="p">],</span> <span class="n">max_order</span><span class="p">])</span>
+            <span class="c1"># if max_order is not None in `lag_dict`</span>
+            <span class="c1"># then lags 1, 2, ..., `max_order` are used</span>
+            <span class="c1"># Therfore `min_order` is 1</span>
+            <span class="n">min_order</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">agg_lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">orders_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">agg_lag_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;orders_list&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">orders_list</span> <span class="o">=</span> <span class="n">orders_list</span> <span class="o">+</span> <span class="n">agg_lag_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;orders_list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">agg_lag_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;interval_list&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">orders_list</span> <span class="o">=</span> <span class="n">orders_list</span> <span class="o">+</span> <span class="n">agg_lag_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;interval_list&quot;</span><span class="p">)</span>
+        <span class="n">flatten_orders</span> <span class="o">=</span> <span class="p">[</span><span class="n">order</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">orders_list</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
+        <span class="n">max_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">flatten_orders</span> <span class="o">+</span> <span class="p">[</span><span class="n">max_order</span><span class="p">])</span>
+        <span class="n">min_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">flatten_orders</span> <span class="o">+</span> <span class="p">[</span><span class="n">min_order</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;max_order&quot;</span><span class="p">:</span> <span class="n">max_order</span><span class="p">,</span>
+        <span class="s2">&quot;min_order&quot;</span><span class="p">:</span> <span class="n">min_order</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="build_agg_lag_df"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_lags.build_agg_lag_df">[docs]</a><span class="k">def</span> <span class="nf">build_agg_lag_df</span><span class="p">(</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">orders_list</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">interval_list</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+        <span class="n">agg_name</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">AGG_LAG_INFIX</span><span class="p">,</span>
+        <span class="n">max_order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function which returns a dataframe including aggregated</span>
+<span class="sd">    (e.g. averaged) time series lags in the form of dataframe columns.</span>
+<span class="sd">    By &quot;aggregated lags&quot;, we mean an aggregate of several lags using an</span>
+<span class="sd">    aggregation function given in &quot;agg_func&quot;.</span>
+<span class="sd">    The advantage of &quot;aggregated lags&quot; over regular lags is we can aggregate</span>
+<span class="sd">    (e.g. average) many lags in the past instead of using a large number of lags.</span>
+<span class="sd">    This is useful in many applications and avoids over-fitting.</span>
+
+<span class="sd">    For a time series mathematically denoted by Y(t),</span>
+<span class="sd">    one could consider the average lag processes as follows:</span>
+<span class="sd">        the average of last 3 values:</span>
+<span class="sd">            &quot;avg(t) = (Y(t-1) + Y(t-2) + Y(t-3)) / 3&quot;</span>
+<span class="sd">        the average of 7th, 14th and 21st lags:</span>
+<span class="sd">            &quot;avg(t) = (Y(t-7) + Y(t-14) + Y(t-21)) / 3&quot;</span>
+
+<span class="sd">    See following references:</span>
+<span class="sd">        Reza Hosseini et al. (2014)</span>
+<span class="sd">        Non-linear time-varying stochastic models for agroclimate risk assessment,</span>
+<span class="sd">        Environmental and Ecological Statistics</span>
+<span class="sd">        https://link.springer.com/article/10.1007/s10651-014-0295-2</span>
+
+<span class="sd">        Alireza Hosseini et al. (2017)</span>
+<span class="sd">        Capturing the time-dependence in the precipitation process for weather risk assessment,</span>
+<span class="sd">        Stochastic Environmental Research and Risk Assessment</span>
+<span class="sd">        https://link.springer.com/article/10.1007/s00477-016-1285-8</span>
+
+<span class="sd">    :param value_col: str</span>
+<span class="sd">        the column name for the values of interest</span>
+<span class="sd">    :param df: Optional[pd.DataFrame]</span>
+<span class="sd">        the data frame which includes the time series of interest</span>
+<span class="sd">    :param orders_list: List[int]</span>
+<span class="sd">        a list including the order range for the average lags. For example if</span>
+<span class="sd">        agg_func = np.mean and orders_list = [[1, 2, 3], [7, 14, 21]]</span>
+<span class="sd">        then we construct two averaged lags:</span>
+<span class="sd">            avg(t) = (Y(t-1) + Y(t-2) + Y(t-3)) / 3 and</span>
+<span class="sd">            avg(t) = (Y(t-7) + Y(t-14) + Y(t-21)) / 3</span>
+<span class="sd">    :param interval_list: List[tuple[int]]</span>
+<span class="sd">        a list of (lag) intervals</span>
+<span class="sd">        where interval is a tuple of length 2 with</span>
+<span class="sd">            - first element denoting the lower bound and</span>
+<span class="sd">            - second is the upper</span>
+<span class="sd">        For example if interval_list = [(1, 3), (8, 11)]</span>
+<span class="sd">        then we construct two &quot;average lagged&quot; variables:</span>
+<span class="sd">            avg(t) = (Y(t-1) + Y(t-2) + Y(t-3)) / 3 and</span>
+<span class="sd">            avg(t) = (Y(t-8) + Y(t-9) + Y(t-10) + Y(t-11)) / 4</span>
+<span class="sd">    :param agg_func: &quot;mean&quot; or callable, default: &quot;mean&quot;</span>
+<span class="sd">        the function used to aggregate the lag orders for each of</span>
+<span class="sd">        orders specified in either of order_list or interval_list.</span>
+<span class="sd">        Typically this function is an averaging function such as</span>
+<span class="sd">        np.mean or np.median but more sophisticated functions are allowed.</span>
+<span class="sd">        If &quot;mean&quot;, uses `pandas.DataFrame.mean`.</span>
+<span class="sd">    :param agg_name: str, default: &quot;avglag&quot;</span>
+<span class="sd">        the aggregate function name used in constructing the column names for</span>
+<span class="sd">        the output data frame.</span>
+<span class="sd">        For example if</span>
+<span class="sd">            - value_col = &quot;y&quot;</span>
+<span class="sd">            - orders = [7 , 14, 21]</span>
+<span class="sd">            - agg_name = &quot;avglag&quot;</span>
+<span class="sd">        then the column name appearing in the output data frame</span>
+<span class="sd">        will be &quot;y_avglag_7_14_21&quot;.</span>
+<span class="sd">    :param max_order: Optional[int]</span>
+<span class="sd">        maximum order of lags needed in calculations of lag aggregates</span>
+<span class="sd">        this is usually calculated/inferred from these arguments:</span>
+<span class="sd">            orders_list, interval_list</span>
+<span class="sd">        unless the max_order is already pre-calculated before calling</span>
+<span class="sd">        this function. Hence this argument is optional and only included for</span>
+<span class="sd">        computational efficiency gains.</span>
+<span class="sd">    :return: dict</span>
+<span class="sd">        dictionary with following items:</span>
+<span class="sd">            - &quot;col_names&quot;: List[str]</span>
+<span class="sd">                the generated column names</span>
+<span class="sd">            - &quot;agg_lag_df&quot;: Optional[pd.DataFrame]</span>
+<span class="sd">                a data frame with the average lag columns.</span>
+<span class="sd">                The column names are constructed in a way</span>
+<span class="sd">                that reflects what lags are averaged. For example if</span>
+<span class="sd">                    - value_col = &quot;y&quot;</span>
+<span class="sd">                    - agg_name = &quot;avglag&quot;</span>
+<span class="sd">                    - orders_list = [[1, 2, 3], [7, 14, 21]]</span>
+<span class="sd">                Then the column names are</span>
+<span class="sd">                &quot;y_avglag_1_2_3&quot;, &quot;y_avglag_7_14_21&quot;</span>
+<span class="sd">                and if</span>
+<span class="sd">                    - interval_list = [(1, 3), (8, 11)]</span>
+<span class="sd">                Then the column names are</span>
+<span class="sd">                &quot;y_avglag_1_to_3&quot;, &quot;y_avglag_8_to_11&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">orders_list</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">interval_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;at least one of &#39;orders_list&#39; or &#39;interval_list&#39; must be provided&quot;</span><span class="p">)</span>
+    <span class="c1"># Finds out which lags we need by finding the maximum lag used.</span>
+    <span class="c1"># Note that `max_order` should be usually passed as None (default)</span>
+    <span class="c1"># unless it is pre-calculated before calling this function.</span>
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">max_order</span> <span class="o">=</span> <span class="n">min_max_lag_order</span><span class="p">(</span>
+            <span class="n">lag_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">agg_lag_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;orders_list&quot;</span><span class="p">:</span> <span class="n">orders_list</span><span class="p">,</span>
+                <span class="s2">&quot;interval_list&quot;</span><span class="p">:</span> <span class="n">interval_list</span><span class="p">})[</span><span class="s2">&quot;max_order&quot;</span><span class="p">]</span>
+
+    <span class="c1"># intializes the returned items</span>
+    <span class="n">agg_lag_df</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">col_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lag_info</span> <span class="o">=</span> <span class="n">build_lag_df</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">max_order</span><span class="o">=</span><span class="n">max_order</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">lag_df</span> <span class="o">=</span> <span class="n">lag_info</span><span class="p">[</span><span class="s2">&quot;lag_df&quot;</span><span class="p">]</span>
+        <span class="n">agg_lag_df_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">orders</span> <span class="ow">in</span> <span class="n">orders_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">orders</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">&quot;a list of orders in orders_list contains a duplicate element&quot;</span><span class="p">)</span>
+        <span class="n">col_suffix</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">])</span>
+        <span class="n">orders_col_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">]</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">agg_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">col_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">agg_func</span> <span class="o">==</span> <span class="s2">&quot;mean&quot;</span><span class="p">:</span>
+                <span class="c1"># uses vectorized mean for speed</span>
+                <span class="n">agg_lag_df_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">lag_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">orders_col_index</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># generic aggregation</span>
+                <span class="n">agg_lag_df_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">lag_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">orders_col_index</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">agg_func</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+                <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">interval_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;interval must be a tuple of length 2&quot;</span><span class="p">)</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">upper</span> <span class="o">=</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">lower</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">&quot;we must have interval[0] &lt;= interval[1], &quot;</span>
+                <span class="s2">&quot;for each interval in interval_list&quot;</span><span class="p">)</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">col_suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2">_to_</span><span class="si">{</span><span class="n">upper</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">orders_col_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">]</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">agg_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">col_suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">col_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">agg_lag_df_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">lag_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">orders_col_index</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">agg_func</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">col_name</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">agg_lag_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">objs</span><span class="o">=</span><span class="n">agg_lag_df_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;agg_lag_df&quot;</span><span class="p">:</span> <span class="n">agg_lag_df</span><span class="p">,</span>
+        <span class="s2">&quot;col_names&quot;</span><span class="p">:</span> <span class="n">col_names</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="build_autoreg_df"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_lags.build_autoreg_df">[docs]</a><span class="k">def</span> <span class="nf">build_autoreg_df</span><span class="p">(</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">lag_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">agg_lag_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">series_na_fill_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span><span class="o">.</span><span class="n">ffill</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function generates a function (&quot;build_lags_func&quot; in the returned dict)</span>
+<span class="sd">        which when called builds a lag data frame and an aggregated lag data frame using</span>
+<span class="sd">        &quot;build_lag_df&quot; and &quot;build_agg_lag_df&quot; functions.</span>
+<span class="sd">        Note: In case of training, validation and testing (e.g. cross-validation)</span>
+<span class="sd">        for forecasting, this function needs to be applied after the data split is done.</span>
+<span class="sd">        This is especially important if &quot;series_na_fill_func&quot; is using future values</span>
+<span class="sd">        in interpolation - that is the case for the default which is</span>
+<span class="sd">        lambda s: s.bfill().ffill()</span>
+
+<span class="sd">   :param value_col: str</span>
+<span class="sd">        the column name for the values of interest</span>
+<span class="sd">   :param lag_dict: Optional[dict]</span>
+<span class="sd">        A dictionary which encapsulates the needed params to be passed to the</span>
+<span class="sd">        function &quot;build_lag_df&quot;</span>
+<span class="sd">        Expected items are:</span>
+
+<span class="sd">            - &quot;max_order&quot;: Optional[int]</span>
+<span class="sd">                the max_order for creating lags</span>
+<span class="sd">            - &quot;orders&quot;: Optional[List[int]]</span>
+<span class="sd">                the orders for which lag is needed</span>
+
+<span class="sd">    :param agg_lag_dict: Optional[dict]</span>
+<span class="sd">        A dictionary encapsulating the needed params to be passed to the function</span>
+<span class="sd">        &quot;build_agg_lag_df&quot;</span>
+<span class="sd">        Expected items are:</span>
+
+<span class="sd">            - &quot;orders_list&quot;: List[List[int]]</span>
+<span class="sd">                A list of list of integers.</span>
+<span class="sd">                Each int list is to be used as order of lags to be aggregated</span>
+<span class="sd">                See build_lag_df arguments for more details</span>
+<span class="sd">            - &quot;interval_list&quot;: List[tuple]</span>
+<span class="sd">                A list of tuples each of length 2.</span>
+<span class="sd">                Each tuple is used to construct an aggregated lag using all orders within that range</span>
+<span class="sd">                See build_agg_lag_df arguments for more details</span>
+<span class="sd">            - &quot;agg_func&quot;: &quot;mean&quot; or func (pd.Dataframe -&gt; pd.Dataframe)</span>
+<span class="sd">                The function used for aggregation in &quot;build_agg_lag_df&quot;</span>
+<span class="sd">                If this key is not passed, the default of &quot;build_agg_lag_df&quot; will be used.</span>
+<span class="sd">                If &quot;mean&quot;, uses `pandas.DataFrame.mean`.</span>
+
+<span class="sd">    :param series_na_fill_func: (pd.Series -&gt; pd.Series)</span>
+<span class="sd">        default: lambda s: s.bfill.ffill()</span>
+<span class="sd">        This function is used to fill in the missing data</span>
+<span class="sd">        The default works by first back-filling and then forward-filling</span>
+<span class="sd">        This function should not be applied to data before CV split is done.</span>
+<span class="sd">    :return: dict</span>
+<span class="sd">        a dictionary with following items</span>
+
+<span class="sd">            - &quot;build_lags_func&quot;: func</span>
+<span class="sd">                pd.Daframe -&gt; dict(lag_df=pd.DataFrame, agg_lag_df=pd.DataFrame)</span>
+<span class="sd">                A function which takes a df (need to have value_col) as input</span>
+<span class="sd">                calculates the lag_df and agg_lag_df and returns them</span>
+<span class="sd">            - &quot;lag_col_names&quot;: Optional[List[str]]</span>
+<span class="sd">                The list of generated column names for the returned lag_df</span>
+<span class="sd">                when &quot;build_lags_func&quot; is applied</span>
+<span class="sd">            - &quot;agg_lag_col_names&quot;: Optional[List[str]]</span>
+<span class="sd">                The list of generated column names for returned agg_lag_df when</span>
+<span class="sd">                &quot;build_lags_func&quot; is applied</span>
+<span class="sd">            - &quot;max_order&quot;: int</span>
+<span class="sd">                the maximum lag order needed in the calculation of &quot;build_lags_func&quot;</span>
+<span class="sd">            - &quot;min_order&quot;: int</span>
+<span class="sd">                the minimum lag order needed in the calculation of &quot;build_lags_func&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># building arguments for passing to build_lag_df</span>
+    <span class="c1"># when lag_dict is not None</span>
+    <span class="n">build_lag_df_args</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">build_lag_df_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value_col&quot;</span><span class="p">:</span> <span class="n">value_col</span><span class="p">}</span>
+        <span class="n">build_lag_df_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">lag_dict</span><span class="p">)</span>
+
+    <span class="c1"># building arguments for passing to build_agg_lag_df</span>
+    <span class="c1"># when agg_lag_dict is not None</span>
+    <span class="n">build_agg_lag_df_args</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">agg_lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">build_agg_lag_df_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value_col&quot;</span><span class="p">:</span> <span class="n">value_col</span><span class="p">}</span>
+        <span class="n">build_agg_lag_df_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">agg_lag_dict</span><span class="p">)</span>
+
+    <span class="c1"># we get the col_names for lag_df</span>
+    <span class="n">lag_col_names</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lag_info</span> <span class="o">=</span> <span class="n">build_lag_df</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">build_lag_df_args</span><span class="p">)</span>
+        <span class="n">lag_col_names</span> <span class="o">=</span> <span class="n">lag_info</span><span class="p">[</span><span class="s2">&quot;col_names&quot;</span><span class="p">]</span>
+
+    <span class="c1"># we get col_names for agg_lag_df</span>
+    <span class="n">agg_lag_col_names</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">agg_lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">agg_lag_info</span> <span class="o">=</span> <span class="n">build_agg_lag_df</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">build_agg_lag_df_args</span><span class="p">)</span>
+        <span class="n">agg_lag_col_names</span> <span class="o">=</span> <span class="n">agg_lag_info</span><span class="p">[</span><span class="s2">&quot;col_names&quot;</span><span class="p">]</span>
+
+    <span class="c1"># we find out the max_order needed</span>
+    <span class="c1"># outside the internal function: build_lags_func</span>
+    <span class="n">min_max_order</span> <span class="o">=</span> <span class="n">min_max_lag_order</span><span class="p">(</span>
+        <span class="n">lag_dict</span><span class="o">=</span><span class="n">build_lag_df_args</span><span class="p">,</span>
+        <span class="n">agg_lag_dict</span><span class="o">=</span><span class="n">build_agg_lag_df_args</span><span class="p">)</span>
+    <span class="n">max_order</span> <span class="o">=</span> <span class="n">min_max_order</span><span class="p">[</span><span class="s2">&quot;max_order&quot;</span><span class="p">]</span>
+    <span class="n">min_order</span> <span class="o">=</span> <span class="n">min_max_order</span><span class="p">[</span><span class="s2">&quot;min_order&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">build_lags_func</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">past_df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A function which uses:</span>
+<span class="sd">            df (pd.Dataframe), past_df (pd.DataFrame)</span>
+<span class="sd">            and returns lag_df and agg_lag_df for df.</span>
+<span class="sd">            This function infers some parameters</span>
+<span class="sd">            e.g. value_col, max_order, series_na_fill_func from its environment.</span>
+<span class="sd">        :param df: pd.DataFrame</span>
+<span class="sd">             The input dataframe which is expected to have value_col as a column</span>
+<span class="sd">             The returned lag_df and agg_lag_df are generated for df</span>
+<span class="sd">             (past_df will be used in calculation if provided)</span>
+<span class="sd">        :param past_df: Optional[pd.DataFrame]</span>
+<span class="sd">            When provided it will be appended to df (from left)</span>
+<span class="sd">            in order for the lags to be calculated.</span>
+<span class="sd">            past_df is considered to include the past values for the time series</span>
+<span class="sd">            leading up to df values. So if df values start at time t0:</span>
+<span class="sd">                Y(t0), ..., Y(t0 + len(df))</span>
+<span class="sd">            past_df will include these values</span>
+<span class="sd">                Y(t-len(past_df)), ..., Y(t0-1)</span>
+<span class="sd">            Note that the last value in past_df is the immediate value in time</span>
+<span class="sd">            before t0 which is the first time in df.</span>
+<span class="sd">            Also note that we do not require a timestamp column in df and past_df</span>
+<span class="sd">            as that is not needed in the logic.</span>
+<span class="sd">            If past_df is None, and series_na_fill_func is also None.</span>
+<span class="sd">            Therefore lag_df and agg_lag_df will include NULLs at the beginning</span>
+<span class="sd">            depending on how many lags are calculated</span>
+<span class="sd">        :return: dict</span>
+<span class="sd">            A dictionary including lag_df and agg_lag_df for the input df</span>
+<span class="sd">            The dictionary includes following items:</span>
+<span class="sd">                - &quot;lag_df&quot;: Optional[pd.DataFrame]</span>
+<span class="sd">                - &quot;agg_lag_df&quot;: Optional[pd.DataFrame]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">value_col</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># if past_df is None, we create one with np.nan</span>
+        <span class="c1"># also if it is shorter than max_order we expand it with np.nan</span>
+        <span class="k">if</span> <span class="n">past_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">past_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">value_col</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span><span class="o">*</span><span class="n">max_order</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">past_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2"> must appear in past_df if past_df is not None&quot;</span><span class="p">)</span>
+            <span class="n">past_df</span> <span class="o">=</span> <span class="n">past_df</span><span class="p">[[</span><span class="n">value_col</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># if past_df length (number of rows) is smaller than max_order</span>
+            <span class="c1"># we expand it to avoid NULLs</span>
+            <span class="k">if</span> <span class="n">past_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">max_order</span><span class="p">:</span>
+                <span class="n">past_df_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                    <span class="p">{</span><span class="n">value_col</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">max_order</span> <span class="o">-</span> <span class="n">past_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])}),</span> <span class="n">past_df</span><span class="p">]</span>
+                <span class="n">past_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">past_df_list</span><span class="p">)</span>
+
+        <span class="c1"># df is expanded by adding past_df as the past data for df</span>
+        <span class="c1"># this will help in avoiding NULLs to appear in lag_df and agg_lag_df</span>
+        <span class="c1"># as long as past_df has data in it or expanded df is interpolated</span>
+        <span class="n">df_expanded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">past_df</span><span class="p">,</span> <span class="n">df</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">series_na_fill_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df_expanded</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">series_na_fill_func</span><span class="p">(</span><span class="n">df_expanded</span><span class="p">[</span><span class="n">value_col</span><span class="p">])</span>
+
+        <span class="c1"># we get the col_names for lag_df</span>
+        <span class="n">lag_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lag_info</span> <span class="o">=</span> <span class="n">build_lag_df</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df_expanded</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">build_lag_df_args</span><span class="p">)</span>
+            <span class="c1"># since the lag calculation is done on expanded dataframe (`df_expanded`)</span>
+            <span class="c1"># we need to pick only the relevant rows which match original</span>
+            <span class="c1"># dataframe (via `iloc`)</span>
+            <span class="n">lag_df</span> <span class="o">=</span> <span class="n">lag_info</span><span class="p">[</span><span class="s2">&quot;lag_df&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
+                <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># cast dtype to &#39;bool&#39; if original dtype is &#39;bool&#39;, need to make sure there is no NaN</span>
+            <span class="c1"># there is an edge case where ``df[value_col]`` is NaN but ``past_df[value_col]`` is not</span>
+            <span class="c1"># e.g., in predict phase with autoregression, ``df_fut[value_col]`` would be NaN</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;bool&#39;</span> <span class="ow">or</span> <span class="n">past_df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;bool&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lag_df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lag_df</span> <span class="o">=</span> <span class="n">lag_df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">)</span>
+
+        <span class="c1"># we get col_names for agg_lag_df</span>
+        <span class="n">agg_lag_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">agg_lag_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">agg_lag_info</span> <span class="o">=</span> <span class="n">build_agg_lag_df</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df_expanded</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">build_agg_lag_df_args</span><span class="p">)</span>
+            <span class="c1"># since the lag calculation is done on expanded dataframe (`df_expanded`)</span>
+            <span class="c1"># we need to pick only the relevant rows which match original</span>
+            <span class="c1"># dataframe (via `iloc`)</span>
+            <span class="n">agg_lag_df</span> <span class="o">=</span> <span class="n">agg_lag_info</span><span class="p">[</span><span class="s2">&quot;agg_lag_df&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span>
+                <span class="o">-</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;lag_df&quot;</span><span class="p">:</span> <span class="n">lag_df</span><span class="p">,</span>
+            <span class="s2">&quot;agg_lag_df&quot;</span><span class="p">:</span> <span class="n">agg_lag_df</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;build_lags_func&quot;</span><span class="p">:</span> <span class="n">build_lags_func</span><span class="p">,</span>
+        <span class="s2">&quot;lag_col_names&quot;</span><span class="p">:</span> <span class="n">lag_col_names</span><span class="p">,</span>
+        <span class="s2">&quot;agg_lag_col_names&quot;</span><span class="p">:</span> <span class="n">agg_lag_col_names</span><span class="p">,</span>
+        <span class="s2">&quot;min_order&quot;</span><span class="p">:</span> <span class="n">min_order</span><span class="p">,</span>
+        <span class="s2">&quot;max_order&quot;</span><span class="p">:</span> <span class="n">max_order</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="build_autoreg_df_multi"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_lags.build_autoreg_df_multi">[docs]</a><span class="k">def</span> <span class="nf">build_autoreg_df_multi</span><span class="p">(</span>
+        <span class="n">value_lag_info_dict</span><span class="p">,</span>
+        <span class="n">series_na_fill_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span><span class="o">.</span><span class="n">ffill</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function which returns a function to build autoregression</span>
+<span class="sd">    dataframe for multiple value columns.</span>
+<span class="sd">    This function should not be applied to data before CV split is done.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value_lag_info_dict : `dict` [`str`, `dict`]</span>
+<span class="sd">        A dictionary with keys being the target value columns: `value_col`</span>
+<span class="sd">        For each of these value columns, a dictionary with following keys</span>
+
+<span class="sd">            `lag_dict`,</span>
+<span class="sd">            `agg_lag_dict`,</span>
+<span class="sd">            `series_na_fill_func`</span>
+
+<span class="sd">        The `value_col` and the above three variables are then passed to the</span>
+<span class="sd">        following function:</span>
+
+<span class="sd">            build_autoreg_df(</span>
+<span class="sd">                value_col,</span>
+<span class="sd">                lag_dict,</span>
+<span class="sd">                agg_lag_dict,</span>
+<span class="sd">                series_na_fill_func)</span>
+
+<span class="sd">        Check the</span>
+<span class="sd">        `greykite.common.features.timeseries_lags.build_autoreg_df`</span>
+<span class="sd">        docstring for more details for each argument.</span>
+<span class="sd">    series_na_fill_func : callable, (pd.Series -&gt; pd.Series)</span>
+<span class="sd">        default: `lambda s: s.bfill.ffill()`</span>
+<span class="sd">        This function is used to fill in the missing data</span>
+<span class="sd">        The default works by first back-filling and then forward-filling</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A dictionary with following items</span>
+
+<span class="sd">        &quot;autoreg_func&quot; : callable, (pd.DataFrame -&gt; pd.DataFrame)</span>
+<span class="sd">            A function which can be applied to a dataframe and return a dataframe</span>
+<span class="sd">            which has the lagged values for all the relevant columns</span>
+<span class="sd">        &quot;autoreg_col_names&quot; : List[str]</span>
+<span class="sd">            A list of all the generated columns</span>
+<span class="sd">        &quot;autoreg_orig_col_names&quot; : List[str]</span>
+<span class="sd">            A list of all the original target value columns</span>
+<span class="sd">        &quot;max_order&quot; : int</span>
+<span class="sd">            Maximum lag order for all target value columns</span>
+<span class="sd">        &quot;min_order&quot; : int</span>
+<span class="sd">            Minimum lag order for all target value columns</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">multi_autoreg_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">autoreg_col_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">autoreg_orig_col_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value_lag_info_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">min_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">max_order</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">value_col</span><span class="p">,</span> <span class="n">lag_info</span> <span class="ow">in</span> <span class="n">value_lag_info_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># we assign the interpolation function to be the default specified above</span>
+        <span class="c1"># in this function</span>
+        <span class="c1"># if a custom interpolation function is made available for that</span>
+        <span class="c1"># `value_col`, we replace the default</span>
+        <span class="n">series_na_fill_func0</span> <span class="o">=</span> <span class="n">lag_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;series_na_fill_func&quot;</span><span class="p">,</span>
+            <span class="n">series_na_fill_func</span><span class="p">)</span>
+
+        <span class="n">autoreg_info</span> <span class="o">=</span> <span class="n">build_autoreg_df</span><span class="p">(</span>
+            <span class="n">value_col</span><span class="p">,</span>
+            <span class="n">lag_dict</span><span class="o">=</span><span class="n">lag_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lag_dict&quot;</span><span class="p">),</span>
+            <span class="n">agg_lag_dict</span><span class="o">=</span><span class="n">lag_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;agg_lag_dict&quot;</span><span class="p">),</span>
+            <span class="n">series_na_fill_func</span><span class="o">=</span><span class="n">series_na_fill_func0</span><span class="p">)</span>
+
+        <span class="c1"># store the result (`autoreg_info`) for each `value_col` in a dictionary</span>
+        <span class="c1"># the result for each `value_col` will be</span>
+        <span class="c1"># a dictionary with following keys:</span>
+        <span class="c1"># &quot;build_lags_func&quot;</span>
+        <span class="c1"># &quot;lag_col_names&quot;</span>
+        <span class="c1"># &quot;agg_lag_col_names&quot;</span>
+        <span class="c1"># &quot;min_order&quot;</span>
+        <span class="c1"># &quot;max_order&quot;</span>
+        <span class="n">multi_autoreg_info</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">autoreg_info</span>
+
+        <span class="c1"># extract column names for lagged variables and add to the full list of</span>
+        <span class="c1"># all lagged variable column names: `autoreg_col_names`</span>
+        <span class="n">lag_col_names</span> <span class="o">=</span> <span class="n">autoreg_info</span><span class="p">[</span><span class="s2">&quot;lag_col_names&quot;</span><span class="p">]</span>
+        <span class="n">agg_lag_col_names</span> <span class="o">=</span> <span class="n">autoreg_info</span><span class="p">[</span><span class="s2">&quot;agg_lag_col_names&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">lag_col_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">autoreg_col_names</span> <span class="o">+=</span> <span class="n">lag_col_names</span>
+        <span class="k">if</span> <span class="n">agg_lag_col_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">autoreg_col_names</span> <span class="o">+=</span> <span class="n">agg_lag_col_names</span>
+
+        <span class="c1"># extract the min_order and max_order for each col and update the overall lagged_regressor_order</span>
+        <span class="n">min_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">([</span><span class="n">min_order</span><span class="p">,</span> <span class="n">autoreg_info</span><span class="p">[</span><span class="s2">&quot;min_order&quot;</span><span class="p">]])</span>
+        <span class="n">max_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">([</span><span class="n">max_order</span><span class="p">,</span> <span class="n">autoreg_info</span><span class="p">[</span><span class="s2">&quot;max_order&quot;</span><span class="p">]])</span>
+
+    <span class="k">def</span> <span class="nf">build_lags_func_multi</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">past_df</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A function which generates a lagged dataframe</span>
+<span class="sd">        for a given dataframe with potentially multiple value columns</span>
+<span class="sd">        to be lagged. Note `df` and `past_df` must have the same extract</span>
+<span class="sd">        columns. However time column is not needed as the function assumes</span>
+<span class="sd">        `past_df` is the data which precedes `df` (without gaps).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pd.DataFrame`</span>
+<span class="sd">            The dataframe which includes the value columns for which lagged</span>
+<span class="sd">            data is needed</span>
+<span class="sd">        past_df : `pandas.DataFrame` or None, default None</span>
+<span class="sd">            The past data which is immediately before `df` with same</span>
+<span class="sd">            value columns.</span>
+
+
+<span class="sd">        Returns :</span>
+<span class="sd">        -------</span>
+<span class="sd">        autoreg_df : `pandas.DataFrame`</span>
+<span class="sd">            A DataFrame which includes the lagged values as columns</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">autoreg_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">lag_dfs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value_col</span><span class="p">,</span> <span class="n">lag_info</span> <span class="ow">in</span> <span class="n">multi_autoreg_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">build_lags_func</span> <span class="o">=</span> <span class="n">lag_info</span><span class="p">[</span><span class="s2">&quot;build_lags_func&quot;</span><span class="p">]</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">build_lags_func</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[[</span><span class="n">value_col</span><span class="p">]],</span>
+                <span class="n">past_df</span><span class="o">=</span><span class="n">past_df</span><span class="p">)</span>
+            <span class="n">lag_df</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;lag_df&quot;</span><span class="p">]</span>
+            <span class="n">agg_lag_df</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;agg_lag_df&quot;</span><span class="p">]</span>
+            <span class="n">lag_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lag_df</span><span class="p">)</span>
+            <span class="n">lag_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agg_lag_df</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Concatenates the columns to the result</span>
+            <span class="c1"># dataframe in column-wise fashion</span>
+            <span class="n">autoreg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">lag_dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c1"># All objects passed are None</span>
+            <span class="n">autoreg_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">autoreg_df</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;autoreg_func&quot;</span><span class="p">:</span> <span class="n">build_lags_func_multi</span><span class="p">,</span>
+        <span class="s2">&quot;autoreg_col_names&quot;</span><span class="p">:</span> <span class="n">autoreg_col_names</span><span class="p">,</span>
+        <span class="s2">&quot;autoreg_orig_col_names&quot;</span><span class="p">:</span> <span class="n">autoreg_orig_col_names</span><span class="p">,</span>
+        <span class="s2">&quot;min_order&quot;</span><span class="p">:</span> <span class="n">min_order</span><span class="p">,</span>
+        <span class="s2">&quot;max_order&quot;</span><span class="p">:</span> <span class="n">max_order</span>
+    <span class="p">}</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

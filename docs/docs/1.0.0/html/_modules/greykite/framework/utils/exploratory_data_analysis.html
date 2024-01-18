@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.utils.exploratory_data_analysis &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.utils.exploratory_data_analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.utils.exploratory_data_analysis</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Sayan Patra</span>
+<span class="sd">&quot;&quot;&quot;Exploratory Data Analysis plots.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">statsmodels.graphics.tsaplots</span> <span class="kn">import</span> <span class="n">plot_acf</span>
+<span class="kn">from</span> <span class="nn">statsmodels.graphics.tsaplots</span> <span class="kn">import</span> <span class="n">plot_pacf</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.changepoint.adalasso.changepoint_detector</span> <span class="kn">import</span> <span class="n">ChangepointDetector</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.holiday_inferrer</span> <span class="kn">import</span> <span class="n">HolidayInferrer</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.enums</span> <span class="kn">import</span> <span class="n">SeasonalityEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">min_gap_in_seconds</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties_forecast</span> <span class="kn">import</span> <span class="n">get_simple_time_frequency_from_period</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.input.univariate_time_series</span> <span class="kn">import</span> <span class="n">UnivariateTimeSeries</span>
+
+
+<div class="viewcode-block" id="get_exploratory_plots"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.utils.exploratory_data_analysis.get_exploratory_plots">[docs]</a><span class="k">def</span> <span class="nf">get_exploratory_plots</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">anomaly_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes multiple exploratory data analysis (EDA) plots to visualize the</span>
+<span class="sd">    metric in ``value_col``and aid in modeling. The EDA plots are written in</span>
+<span class="sd">    an `html` file at ``output_path``.</span>
+
+<span class="sd">    For details on how to interpret these EDA plots, check the tutorials.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Input timeseries. A data frame which includes the timestamp column</span>
+<span class="sd">        as well as the value column.</span>
+<span class="sd">    time_col : `str`</span>
+<span class="sd">        The column name in ``df`` representing time for the time series data.</span>
+<span class="sd">        The time column can be anything that can be parsed by pandas DatetimeIndex.</span>
+<span class="sd">    value_col: `str`</span>
+<span class="sd">        The column name which has the value of interest to be forecasted.</span>
+<span class="sd">    freq : `str` or None, default None</span>
+<span class="sd">        Timeseries frequency, DateOffset alias, If None automatically inferred.</span>
+<span class="sd">    anomaly_info : `dict` or `list` [`dict`] or None, default None</span>
+<span class="sd">        Anomaly adjustment info. Anomalies in ``df``</span>
+<span class="sd">        are corrected before any plotting is done.</span>
+<span class="sd">    output_path : `str` or None, default None</span>
+<span class="sd">        Path where the `html` file is written.</span>
+<span class="sd">        If None, it is set to &quot;EDA_{value_col}.html&quot;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    eda.html : `html` file</span>
+<span class="sd">        An html file containing the EDA plots is written at ``output_path``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># General styles</span>
+    <span class="n">style</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    &lt;style&gt;</span>
+<span class="s2">        caption {</span>
+<span class="s2">            text-align: left;</span>
+<span class="s2">            margin-top: 5px;</span>
+<span class="s2">            margin-bottom: 0px;</span>
+<span class="s2">            font-size: 120%;</span>
+<span class="s2">            padding: 5px;</span>
+<span class="s2">            font-weight: bold;</span>
+<span class="s2">        }</span>
+<span class="s2">        td, th {</span>
+<span class="s2">            border: 1px solid black;</span>
+<span class="s2">            padding: 3px;</span>
+<span class="s2">            text-align: left;</span>
+<span class="s2">        }</span>
+<span class="s2">        div {</span>
+<span class="s2">            white-space: pre-wrap;</span>
+<span class="s2">        }</span>
+<span class="s2">    &lt;/style&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Generates the HTML</span>
+    <span class="n">html_header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Exploratory plots for </span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">html_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;h1&gt;</span><span class="si">{</span><span class="n">html_header</span><span class="si">}</span><span class="s2">&lt;/h1&gt;&lt;body&gt;&quot;</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="n">style</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Please see the &quot;</span> \
+                <span class="s2">&quot;&lt;a href=&#39;https://linkedin.github.io/greykite/docs/0.4.0/html/gallery/tutorials/0100_forecast_tutorial.html#sphx-glr-gallery-tutorials-0100-forecast-tutorial-py&#39;&gt;tutorials&lt;/a&gt; to learn how to interpret these plots.&lt;/h3&gt;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h4&gt;Most of these plots have multiple overlays and traces. Feel free to toggle these on and off by &quot;</span> \
+                <span class="s2">&quot;clicking the legends to the right of the plots.&lt;/h4&gt;&quot;</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">UnivariateTimeSeries</span><span class="p">()</span>
+    <span class="n">ts</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+        <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
+        <span class="n">anomaly_info</span><span class="o">=</span><span class="n">anomaly_info</span>
+    <span class="p">)</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="n">min_gap_in_seconds</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">)</span>
+    <span class="n">simple_freq</span> <span class="o">=</span> <span class="n">get_simple_time_frequency_from_period</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+    <span class="n">valid_seas</span> <span class="o">=</span> <span class="n">simple_freq</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">valid_seas</span>
+
+    <span class="c1"># Metric plot</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;We first plot the raw timeseries. If &#39;anomaly_info&#39; is provided, the anomalous data &quot;</span> \
+                <span class="s2">&quot;is removed before plotting. Be careful of anomalies and missing values, as these can lead &quot;</span> \
+                <span class="s2">&quot;to sharp drop(s) in the plots.&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Raw metric value&quot;</span><span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Changepoints</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h2&gt;Changepoints&lt;/h2&gt;&quot;</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;Let&#39;s look at few changepoint plots to identify significant systemic changes in the metric value. Please see &quot;</span> \
+                <span class="s2">&quot;&lt;a href=&#39;https://linkedin.github.io/greykite/docs/0.4.0/html/gallery/quickstart/0200_changepoint_detection.html#sphx-glr-gallery-quickstart-0200-changepoint-detection-py&#39;&gt;Changepoint tutorial&lt;/a&gt; to learn more.&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ChangepointDetector</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">find_trend_changepoints</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span>
+    <span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;changepoints - default configuration&quot;</span><span class="p">,</span> <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Custom changepoints with less regularization</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">find_trend_changepoints</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span><span class="p">,</span>
+        <span class="n">yearly_seasonality_order</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">regularization_strength</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">resample_freq</span><span class="o">=</span><span class="s2">&quot;7D&quot;</span><span class="p">,</span>
+        <span class="n">potential_changepoint_n</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+        <span class="n">no_changepoint_distance_from_end</span><span class="o">=</span><span class="s2">&quot;60D&quot;</span>
+    <span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="s2">&quot;changepoints - less regularization&quot;</span><span class="p">,</span> <span class="n">title_x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Holidays</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h2&gt;Holiday Effects&lt;/h2&gt;&quot;</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;Now let&#39;s look at how different holidays affect the metric value.&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">HolidayInferrer</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">infer_holidays</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">countries</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;US&quot;</span><span class="p">,),</span>
+        <span class="n">pre_search_days</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">post_search_days</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">baseline_offsets</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+        <span class="n">plot</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;fig&quot;</span><span class="p">]</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Trend</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h2&gt;Trend&lt;/h2&gt;&quot;</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;If trend exists, expect to see a gentle upward / downward slope in the plot. &quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+        <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;year_woy&quot;</span><span class="p">,</span>
+        <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_overlays</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+        <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+        <span class="n">center_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span>
+    <span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Seasonalities</span>
+    <span class="k">if</span> <span class="n">valid_seas</span><span class="p">:</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h2&gt;Seasonalities&lt;/h2&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;To assess seasonal patterns we&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;ol&gt;&quot;</span> \
+                    <span class="s2">&quot;&lt;li&gt; Start with the longest seasonal cycles to see the big picture, then proceed to shorter &quot;</span> \
+                    <span class="s2">&quot;cycles e.g. yearly -&gt; quarterly -&gt; monthly -&gt; weekly -&gt; daily.&quot;</span> \
+                    <span class="s2">&quot;&lt;li&gt; First check for seasonal effect over the entire timeseries (main effect).&quot;</span> \
+                    <span class="s2">&quot;&lt;li&gt; If the quantiles are large in the overlay plots we check for interaction effects.&quot;</span> \
+                    <span class="s2">&quot;&lt;/ol&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;Seasonality overlay plots are centered to remove the effect of trend and longer seasonal cycles. &quot;</span> \
+                    <span class="s2">&quot;This helps in isolating the effect against the selected groupby feature. Please see &quot;</span> \
+                    <span class="s2">&quot;&lt;a href=&#39;https://linkedin.github.io/greykite/docs/0.4.0/html/gallery/quickstart/0300_seasonality.html#sphx-glr-gallery-quickstart-0300-seasonality-py&#39;&gt;Seasonality tutorial&lt;/a&gt; to learn more.&quot;</span>  <span class="c1"># noqa: E501</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h4&gt;Note that partial (incomplete) seasonal periods can throw off the mean and should be ignored.&lt;/h4&gt;&quot;</span>
+
+    <span class="c1"># Yearly Seasonality</span>
+    <span class="k">if</span> <span class="n">SeasonalityEnum</span><span class="o">.</span><span class="n">YEARLY_SEASONALITY</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">valid_seas</span><span class="p">:</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Yearly Seasonality (main effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;To check for overall yearly seasonality, we group by day of year (`doy`). Different years are overlaid &quot;</span> \
+                    <span class="s2">&quot;to provide a sense of consistency in the seasonal pattern between years.&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;doy&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of year&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;yearly seasonality for each year (centered)&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Yearly Seasonality (interaction effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;month_dom&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;month_day of month&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;yearly and monthly seasonality for each year&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;woy_dow&quot;</span><span class="p">,</span>  <span class="c1"># week of year and day of week</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;week of year_day of week&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;yearly and weekly seasonality for each year&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Quarterly Seasonality</span>
+    <span class="k">if</span> <span class="n">SeasonalityEnum</span><span class="o">.</span><span class="n">QUARTERLY_SEASONALITY</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">valid_seas</span><span class="p">:</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Quarterly Seasonality (main effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;To check for overall quarterly seasonality, we group by day of quarter (`doq`). &quot;</span> \
+                    <span class="s2">&quot;Quarterly pattern for up to 20 randomly selected quarters are shown. In the legend, each overlay &quot;</span> \
+                    <span class="s2">&quot;is labeled by the first date in the sliding window.&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># randomly selects up to 20 overlays</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;quarter_start&quot;</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of quarter&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;quarterly seasonality with overlays&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Quarterly Seasonality (interaction effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of quarter&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;quarterly seasonality by year&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Monthly Seasonality</span>
+    <span class="k">if</span> <span class="n">SeasonalityEnum</span><span class="o">.</span><span class="n">MONTHLY_SEASONALITY</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">valid_seas</span><span class="p">:</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Monthly Seasonality (main effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;To check overall monthly seasonality, we group by day of month (`dom`). &quot;</span> \
+                    <span class="s2">&quot;Monthly pattern for up to 20 randomly selected months are shown. In the legend, each overlay &quot;</span> \
+                    <span class="s2">&quot;is labeled by the first date in the sliding window.&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;dom&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year_month&quot;</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of month&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;monthly seasonality with overlays&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Monthly Seasonality (interaction effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;dom&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of month&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;monthly seasonality by year&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Weekly Seasonality</span>
+    <span class="k">if</span> <span class="n">SeasonalityEnum</span><span class="o">.</span><span class="n">WEEKLY_SEASONALITY</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">valid_seas</span><span class="p">:</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Weekly Seasonality (main effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;To check overall weekly seasonality, we group by day of week (`str_dow`). &quot;</span> \
+                    <span class="s2">&quot;Weekly pattern for up to 20 randomly selected weeks are shown. In the legend, each overlay &quot;</span> \
+                    <span class="s2">&quot;is labeled by the first date in the sliding window.&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;str_dow&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># randomly selects up to 20 overlays</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year_woy&quot;</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of week&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;weekly seasonality with overlays&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Weekly Seasonality (interaction effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;str_dow&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of week&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;weekly seasonality by year&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;str_dow&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;day of week&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;weekly seasonality by month&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Daily Seasonality</span>
+    <span class="k">if</span> <span class="n">SeasonalityEnum</span><span class="o">.</span><span class="n">DAILY_SEASONALITY</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">valid_seas</span><span class="p">:</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Daily Seasonality (main effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;To check overall daily seasonality, we group by time of day (`tod`). &quot;</span> \
+                    <span class="s2">&quot;Daily pattern for up to 20 randomly selected days are shown.&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;tod&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year_woy_dow&quot;</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;time of day&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;daily seasonality with overlays&quot;</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h3&gt;Daily Seasonality (interaction effect)&lt;/h3&gt;&quot;</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;tod&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;time of day&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;daily seasonality by year&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;tod&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;time of day&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;daily seasonality by month&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;tod&quot;</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="s2">&quot;week&quot;</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;time of day&quot;</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;daily seasonality by week&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">html_str</span> <span class="o">+=</span> <span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Auto-correlation</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;h2&gt;Auto-correlation&lt;/h2&gt;&quot;</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s2">&quot;Partial auto-correlation plot can be a good guide to choose appropriate auto-regression lag terms. &quot;</span> \
+                <span class="s2">&quot;Use large spikes to model individual lag terms (`lag_dict`). &quot;</span> \
+                <span class="s2">&quot;Smaller but significant spikes can be grouped under `agg_lag_dict`.&quot;</span>
+    <span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">plot_pacf</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">plot_acf</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">tmpfile</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">tmpfile</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="n">html_str</span> <span class="o">+=</span> <span class="s1">&#39;&lt;img src=</span><span class="se">\&#39;</span><span class="s1">data:image/png;base64,</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+
+    <span class="c1"># Writes the HTML</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output_path</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;EDA_</span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">.html&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_str</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

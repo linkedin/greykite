@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.algo.common.model_summary &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.algo.common.model_summary</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.algo.common.model_summary</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Provides summaries of sklearn and statsmodels</span>
+<span class="sd">regression models.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.common.col_name_utils</span> <span class="kn">import</span> <span class="n">filter_coef_summary</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.model_summary_utils</span> <span class="kn">import</span> <span class="n">format_summary_df</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.model_summary_utils</span> <span class="kn">import</span> <span class="n">get_info_dict_lm</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.model_summary_utils</span> <span class="kn">import</span> <span class="n">get_info_dict_tree</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.model_summary_utils</span> <span class="kn">import</span> <span class="n">print_summary</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.common.model_summary_utils</span> <span class="kn">import</span> <span class="n">process_intercept</span>
+
+
+<div class="viewcode-block" id="ModelSummary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary">[docs]</a><span class="k">class</span> <span class="nc">ModelSummary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to store regression model summary statistics.</span>
+
+<span class="sd">    The class can be printed to get a well formatted model summary.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : `numpy.array`</span>
+<span class="sd">        The design matrix.</span>
+<span class="sd">    beta : `numpy.array`</span>
+<span class="sd">        The estimated coefficients.</span>
+<span class="sd">    y : `numpy.array`</span>
+<span class="sd">        The response.</span>
+<span class="sd">    pred_cols : `list` [ `str` ]</span>
+<span class="sd">        List of predictor names.</span>
+<span class="sd">    pred_category : `dict`</span>
+<span class="sd">        Predictor category, returned by</span>
+<span class="sd">        `~greykite.algo.common.col_name_utils.create_pred_category`.</span>
+<span class="sd">    fit_algorithm : `str`</span>
+<span class="sd">        The name of algorithm to fit the regression.</span>
+<span class="sd">    ml_model : `class`</span>
+<span class="sd">        The trained machine learning model class.</span>
+<span class="sd">    max_colwidth : `int`</span>
+<span class="sd">        The maximum length for predictors to be shown in their original name.</span>
+<span class="sd">        If the maximum length of predictors exceeds this parameter, all</span>
+<span class="sd">        predictors name will be suppressed and only indices are shown.</span>
+<span class="sd">    info_dict : `dict`</span>
+<span class="sd">        The model summary dictionary, output of</span>
+<span class="sd">        `~greykite.algo.common.model_summary.ModelSummary._get_summary`</span>
+<span class="sd">    html_str : `str`</span>
+<span class="sd">        An html formatting of the string representation of the model summary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">y</span><span class="p">,</span>
+            <span class="n">pred_cols</span><span class="p">,</span>
+            <span class="n">pred_category</span><span class="p">,</span>
+            <span class="n">fit_algorithm</span><span class="p">,</span>
+            <span class="n">ml_model</span><span class="p">,</span>  <span class="c1"># needs to support cloning if ml_model implements a lasso method</span>
+            <span class="n">max_colwidth</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="c1"># process x, beta and pred_cols to include the intercept term</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ml_model</span><span class="p">,</span> <span class="s2">&quot;coef_&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">intercept</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ml_model</span><span class="p">,</span> <span class="s2">&quot;intercept_&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">beta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">pred_cols</span> <span class="o">=</span> <span class="n">process_intercept</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">pred_cols</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_cols</span> <span class="o">=</span> <span class="n">pred_cols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_category</span> <span class="o">=</span> <span class="n">pred_category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_algorithm</span> <span class="o">=</span> <span class="n">fit_algorithm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ml_model</span> <span class="o">=</span> <span class="n">ml_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_colwidth</span> <span class="o">=</span> <span class="n">max_colwidth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_summary</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;pre&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span><span class="si">}</span><span class="s2">&lt;/pre&gt;&quot;</span>
+
+<div class="viewcode-block" id="ModelSummary.__str__"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;print method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">print_summary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info_dict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_colwidth</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelSummary.__repr__"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;print method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">print_summary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info_dict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_colwidth</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelSummary._get_summary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary._get_summary">[docs]</a>    <span class="k">def</span> <span class="nf">_get_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the model summary from input.</span>
+<span class="sd">        This function is called during initialization.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        info_dict : `dict`</span>
+<span class="sd">            Includes direct and derived metrics about the trained model. For detailed keys, refer to</span>
+<span class="sd">            `~greykite.algo.common.model_summary_utils.get_info_dict_lm`</span>
+<span class="sd">            or</span>
+<span class="sd">            `~greykite.algo.common.model_summary_utils.get_info_dict_tree`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_algorithm</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span> <span class="s2">&quot;lasso&quot;</span><span class="p">,</span> <span class="s2">&quot;lars&quot;</span><span class="p">,</span> <span class="s2">&quot;lasso_lars&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;sgd&quot;</span><span class="p">,</span> <span class="s2">&quot;elastic_net&quot;</span><span class="p">,</span> <span class="s2">&quot;statsmodels_ols&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;statsmodels_wls&quot;</span><span class="p">,</span> <span class="s2">&quot;statsmodels_gls&quot;</span><span class="p">,</span> <span class="s2">&quot;statsmodels_glm&quot;</span><span class="p">]:</span>
+            <span class="n">info_dict</span> <span class="o">=</span> <span class="n">get_info_dict_lm</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="n">beta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span>
+                <span class="n">ml_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ml_model</span><span class="p">,</span>
+                <span class="n">fit_algorithm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_algorithm</span><span class="p">,</span>
+                <span class="n">pred_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_cols</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_algorithm</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;gradient_boosting&quot;</span><span class="p">]:</span>
+            <span class="n">info_dict</span> <span class="o">=</span> <span class="n">get_info_dict_tree</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                <span class="n">ml_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ml_model</span><span class="p">,</span>
+                <span class="n">fit_algorithm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_algorithm</span><span class="p">,</span>
+                <span class="n">pred_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_cols</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_algorithm</span><span class="si">}</span><span class="s2"> is not recognized, &quot;</span>
+                                      <span class="sa">f</span><span class="s2">&quot;summary is not implemented.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">info_dict</span></div>
+
+<div class="viewcode-block" id="ModelSummary.get_coef_summary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.model_summary.ModelSummary.get_coef_summary">[docs]</a>    <span class="k">def</span> <span class="nf">get_coef_summary</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">is_intercept</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_trend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_seasonality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_lag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_regressor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">is_interaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">return_df</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the coefficient summary filtered by conditions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        is_intercept : `bool` or `None`, default `None`</span>
+<span class="sd">            Intercept or not.</span>
+<span class="sd">        is_time_feature : `bool` or `None`, default `None`</span>
+<span class="sd">            Time features or not.</span>
+<span class="sd">            Time features belong to `~greykite.common.constants.TimeFeaturesEnum`.</span>
+<span class="sd">        is_event : `bool` or `None`, default `None`</span>
+<span class="sd">            Event features or not.</span>
+<span class="sd">            Event features have `~greykite.common.constants.EVENT_PREFIX`.</span>
+<span class="sd">        is_trend : `bool` or `None`, default `None`</span>
+<span class="sd">            Trend features or not.</span>
+<span class="sd">            Trend features have `~greykite.common.constants.CHANGEPOINT_COL_PREFIX` or &quot;cp\\d&quot;.</span>
+<span class="sd">        is_seasonality : `bool` or `None`, default `None`</span>
+<span class="sd">            Seasonality feature or not.</span>
+<span class="sd">            Seasonality features have `~greykite.common.constants.SEASONALITY_REGEX`.</span>
+<span class="sd">        is_lag : `bool` or `None`, default `None`</span>
+<span class="sd">            Lagged features or not.</span>
+<span class="sd">            Lagged features have &quot;lag&quot;.</span>
+<span class="sd">        is_regressor : 0 or 1</span>
+<span class="sd">            Extra features provided by users.</span>
+<span class="sd">            They are provided through ``extra_pred_cols`` in the fit function.</span>
+<span class="sd">        is_interaction : `bool` or `None`, default `None`</span>
+<span class="sd">            Interaction feature or not.</span>
+<span class="sd">            Interaction features have &quot;:&quot;.</span>
+<span class="sd">        return_df : `bool`, default `False`</span>
+<span class="sd">           If True, the filtered coefficient summary df is also returned.</span>
+<span class="sd">            Otherwise, the filtered coefficient summary df is printed only.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        filtered_coef_summary : `pandas.DataFrame` or `None`</span>
+<span class="sd">            If ``return_df`` is set to True, returns the filtered coefficient summary</span>
+<span class="sd">            df filtered by the given conditions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filtered_coef_summary</span> <span class="o">=</span> <span class="n">filter_coef_summary</span><span class="p">(</span>
+            <span class="n">coef_summary</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;coef_summary_df&quot;</span><span class="p">],</span>
+            <span class="n">pred_category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_category</span><span class="p">,</span>
+            <span class="n">is_intercept</span><span class="o">=</span><span class="n">is_intercept</span><span class="p">,</span>
+            <span class="n">is_time_feature</span><span class="o">=</span><span class="n">is_time_feature</span><span class="p">,</span>
+            <span class="n">is_event</span><span class="o">=</span><span class="n">is_event</span><span class="p">,</span>
+            <span class="n">is_trend</span><span class="o">=</span><span class="n">is_trend</span><span class="p">,</span>
+            <span class="n">is_seasonality</span><span class="o">=</span><span class="n">is_seasonality</span><span class="p">,</span>
+            <span class="n">is_lag</span><span class="o">=</span><span class="n">is_lag</span><span class="p">,</span>
+            <span class="n">is_regressor</span><span class="o">=</span><span class="n">is_regressor</span><span class="p">,</span>
+            <span class="n">is_interaction</span><span class="o">=</span><span class="n">is_interaction</span><span class="p">)</span>
+        <span class="c1"># excludes column categories</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">filtered_coef_summary</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;is_&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">format_summary_df</span><span class="p">(</span><span class="n">filtered_coef_summary</span><span class="p">[</span><span class="n">cols</span><span class="p">])</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">return_df</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">filtered_coef_summary</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

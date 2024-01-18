@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.algo.common.holiday_inferrer &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.algo.common.holiday_inferrer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.algo.common.holiday_inferrer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Automatically infers significant holidays.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">holidays_ext.get_holidays</span> <span class="kn">import</span> <span class="n">get_holiday_df</span>
+<span class="kn">from</span> <span class="nn">plotly</span> <span class="kn">import</span> <span class="n">graph_objs</span> <span class="k">as</span> <span class="n">go</span>
+<span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_DF_DATE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_DF_LABEL_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">EVENT_INDICATOR</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+
+
+<span class="n">HOLIDAY_POSITIVE_GROUP_NAME</span> <span class="o">=</span> <span class="s2">&quot;Holiday_positive_group&quot;</span>
+<span class="n">HOLIDAY_NEGATIVE_GROUP_NAME</span> <span class="o">=</span> <span class="s2">&quot;Holiday_negative_group&quot;</span>
+<span class="n">INFERRED_GROUPED_POSITIVE_HOLIDAYS_KEY</span> <span class="o">=</span> <span class="s2">&quot;together_holidays_positive&quot;</span>
+<span class="n">INFERRED_GROUPED_NEGATIVE_HOLIDAYS_KEY</span> <span class="o">=</span> <span class="s2">&quot;together_holidays_negative&quot;</span>
+<span class="n">INFERRED_INDEPENDENT_HOLIDAYS_KEY</span> <span class="o">=</span> <span class="s2">&quot;independent_holidays&quot;</span>
+
+
+<div class="viewcode-block" id="HolidayInferrer"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_inferrer.HolidayInferrer">[docs]</a><span class="k">class</span> <span class="nc">HolidayInferrer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements methods to automatically infer holiday effects.</span>
+
+<span class="sd">    The class works for daily and sub-daily data.</span>
+<span class="sd">    Sub-daily data is aggregated into daily data.</span>
+<span class="sd">    It pulls holiday candidates from `pypi:holidays-ext`,</span>
+<span class="sd">    and adds a pre-specified number of days before/after the holiday candidates</span>
+<span class="sd">    as the whole holiday candidates pool.</span>
+<span class="sd">    Every day in the candidate pool is compared with a pre-defined baseline imputed from surrounding days</span>
+<span class="sd">    (e.g. the average of -7 and +7 days)</span>
+<span class="sd">    and a score is generated to indicate deviation.</span>
+<span class="sd">    The score is averaged if a holiday has multiple occurrences through the timeseries period.</span>
+<span class="sd">    The holidays are ranked according to the magnitudes of the scores.</span>
+<span class="sd">    Holidays are classified into:</span>
+
+<span class="sd">        - model independently</span>
+<span class="sd">        - model together</span>
+<span class="sd">        - do not model</span>
+
+<span class="sd">    according to their score magnitudes.</span>
+<span class="sd">    For example, if the sum of the absolute scores is 1000,</span>
+<span class="sd">    and the threshold for independent holidays is 0.8,</span>
+<span class="sd">    the method keeps adding holidays to the independent modeling list</span>
+<span class="sd">    from the largest magnitude until the sum reaches 1000 x 0.8 = 800.</span>
+<span class="sd">    Then it continues to count the together modeling list.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    baseline_offsets : `list` [`int`] or None</span>
+<span class="sd">        The offsets in days to calculate baselines.</span>
+<span class="sd">    post_search_days : `int` or None</span>
+<span class="sd">        The number of days after each holiday to be counted as candidates.</span>
+<span class="sd">    pre_search_days : `int` or None</span>
+<span class="sd">        The number of days before each holiday to be counted as candidates.</span>
+<span class="sd">    independent_holiday_thres : `float` or None</span>
+<span class="sd">        A certain proportion of the total holiday effects that are allocated for holidays</span>
+<span class="sd">        that are modeled independently. For example, 0.8 means the holidays that contribute</span>
+<span class="sd">        to the first 80% of the holiday effects are modeled independently.</span>
+<span class="sd">    together_holiday_thres : `float` or None</span>
+<span class="sd">        A certain proportion of the total holiday effects that are allocated for holidays</span>
+<span class="sd">        that are modeled together. For example, if ``independent_holiday_thres`` is 0.8 and</span>
+<span class="sd">        ``together_holiday_thres`` is 0.9, then after the first 80% of the holiday effects</span>
+<span class="sd">        are counted, the rest starts to be allocated for the holidays that are modeled together</span>
+<span class="sd">        until the cum sum exceeds 0.9.</span>
+<span class="sd">    extra_years : `int`, default 2</span>
+<span class="sd">        Extra years after ``self.year_end`` to pull holidays in ``self.country_holiday_df``.</span>
+<span class="sd">        This can be used to cover the forecast periods.</span>
+<span class="sd">    df : `pandas.DataFrame` or None</span>
+<span class="sd">        The timeseries after daily aggregation.</span>
+<span class="sd">    time_col : `str` or None</span>
+<span class="sd">        The column name for timestamps in ``df``.</span>
+<span class="sd">    value_col : `str` or None</span>
+<span class="sd">        The column name for values in ``df``.</span>
+<span class="sd">    year_start : `int` or None</span>
+<span class="sd">        The year of the first timeseries observation in ``df``.</span>
+<span class="sd">    year_end : `int` or None</span>
+<span class="sd">        The year of the last timeseries observation in ``df``.</span>
+<span class="sd">    ts : `set` [`datetime`] or None</span>
+<span class="sd">        The existing timestamps in ``df`` for fast look up.</span>
+<span class="sd">    country_holiday_df : `pandas.DataFrame` or None</span>
+<span class="sd">        The holidays between ``year_start`` and ``year_end``.</span>
+<span class="sd">        This is the output from `pypi:holidays-ext`.</span>
+<span class="sd">        Duplicates are dropped.</span>
+<span class="sd">        Observed holidays are merged.</span>
+<span class="sd">    all_holiday_dates : `list` [`datetime`] or None</span>
+<span class="sd">        All holiday dates contained in ``country_holiday_df``.</span>
+<span class="sd">    holidays : `list` [`str`] or None</span>
+<span class="sd">        A list of holidays in ``country_holiday_df``.</span>
+<span class="sd">    score_result : `dict` [`str`, `list` [`float`]] or None</span>
+<span class="sd">        The scores from comparing holidays and their baselines.</span>
+<span class="sd">        The keys are holidays.</span>
+<span class="sd">        The values are a list of the scores for each occurrence.</span>
+<span class="sd">    score_result_avg : `dict` [`str`, `float`] or None</span>
+<span class="sd">        The scores from ``score_result`` where the values are averaged.</span>
+<span class="sd">    result : `dict` [`str`, any]</span>
+<span class="sd">        The output of the model. Includes:</span>
+
+<span class="sd">            - &quot;scores&quot;: `dict` [`str`, `list` [`float`]]</span>
+<span class="sd">                The ``score_result`` from ``self._get_scores_for_holidays``.</span>
+<span class="sd">            - &quot;country_holiday_df&quot;: `pandas.DataFrame`</span>
+<span class="sd">                The ``country_holiday_df`` from ``pypi:holidays_ext``.</span>
+<span class="sd">            - &quot;independent_holidays&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                The holidays to be modeled independently. Each item is in (country, holiday) format.</span>
+<span class="sd">            - &quot;together_holidays_positive&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                The holidays with positive effects to be modeled together. Each item is in (country, holiday) format.</span>
+<span class="sd">            - &quot;together_holidays_negative&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                The holidays with negative effects to be modeled together. Each item is in (country, holiday) format.</span>
+<span class="sd">            - &quot;fig&quot;: `plotly.graph_objs.Figure`</span>
+<span class="sd">                The visualization if activated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_offsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_search_days</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_search_days</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">independent_holiday_thres</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">together_holiday_thres</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_years</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_relative_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Data set info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year_start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year_end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Derived results</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_holiday_dates</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">holidays</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="HolidayInferrer.infer_holidays"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_inferrer.HolidayInferrer.infer_holidays">[docs]</a>    <span class="k">def</span> <span class="nf">infer_holidays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">countries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;US&quot;</span><span class="p">,),</span>
+            <span class="n">pre_search_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">post_search_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">baseline_offsets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+            <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">independent_holiday_thres</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="n">together_holiday_thres</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.99</span><span class="p">,</span>
+            <span class="n">extra_years</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">use_relative_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Infers significant holidays and holiday configurations.</span>
+
+<span class="sd">        The class works for daily and sub-daily data.</span>
+<span class="sd">        Sub-daily data is aggregated into daily data.</span>
+<span class="sd">        It pulls holiday candidates from `pypi:holidays-ext`,</span>
+<span class="sd">        and adds a pre-specified number of days before/after the holiday candidates</span>
+<span class="sd">        as the whole holiday candidates pool.</span>
+<span class="sd">        Every day in the candidate pool is compared with a pre-defined baseline imputed from surrounding days</span>
+<span class="sd">        (e.g. the average of -7 and +7 days)</span>
+<span class="sd">        and a score is generated to indicate deviation.</span>
+<span class="sd">        The score is averaged if a holiday has multiple occurrences through the timeseries period.</span>
+<span class="sd">        The holidays are ranked according to the magnitudes of the scores.</span>
+<span class="sd">        Holidays are classified into:</span>
+
+<span class="sd">            - model independently</span>
+<span class="sd">            - model together</span>
+<span class="sd">            - do not model</span>
+
+<span class="sd">        according to their score magnitudes.</span>
+<span class="sd">        For example, if the sum of the absolute scores is 1000,</span>
+<span class="sd">        and the threshold for independent holidays is 0.8,</span>
+<span class="sd">        the method keeps adding holidays to the independent modeling list</span>
+<span class="sd">        from the largest magnitude until the sum reaches 1000 x 0.8 = 800.</span>
+<span class="sd">        Then it continues to count the together modeling list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pd.DataFrame`</span>
+<span class="sd">            The input timeseries.</span>
+<span class="sd">        time_col : `str`, default `TIME_COL`</span>
+<span class="sd">            The column name for timestamps in ``df``.</span>
+<span class="sd">        value_col : `str`, default `VALUE_COL`</span>
+<span class="sd">            The column name for values in ``df``.</span>
+<span class="sd">        countries : `list` [`str`], default (&quot;UnitedStates&quot;,)</span>
+<span class="sd">            A list of countries to look up holiday candidates.</span>
+<span class="sd">            Available countries can be listed with</span>
+<span class="sd">            ``holidays_ext.get_holidays.get_available_holiday_lookup_countries()``.</span>
+<span class="sd">            Two-character country names are preferred.</span>
+<span class="sd">        pre_search_days : `int`, default 2</span>
+<span class="sd">            The number of days to include as holidays candidates before each holiday.</span>
+<span class="sd">        post_search_days : `int`, default 2</span>
+<span class="sd">            The number of days to include as holidays candidates after each holiday.</span>
+<span class="sd">        baseline_offsets : `list` [`int`], default (-7, 7)</span>
+<span class="sd">            The offsets in days as a baseline to compare with each holiday.</span>
+<span class="sd">        plot : `bool`, default False</span>
+<span class="sd">            Whether to generate visualization.</span>
+<span class="sd">        independent_holiday_thres : `float`, default 0.8</span>
+<span class="sd">            A certain proportion of the total holiday effects that are allocated for holidays</span>
+<span class="sd">            that are modeled independently. For example, 0.8 means the holidays that contribute</span>
+<span class="sd">            to the first 80% of the holiday effects are modeled independently.</span>
+<span class="sd">        together_holiday_thres : `float`, default 0.99</span>
+<span class="sd">            A certain proportion of the total holiday effects that are allocated for holidays</span>
+<span class="sd">            that are modeled together. For example, if ``independent_holiday_thres`` is 0.8 and</span>
+<span class="sd">            ``together_holiday_thres`` is 0.9, then after the first 80% of the holiday effects</span>
+<span class="sd">            are counted, the rest starts to be allocated for the holidays that are modeled together</span>
+<span class="sd">            until the cum sum exceeds 0.9.</span>
+<span class="sd">        extra_years : `int`, default 2</span>
+<span class="sd">            Extra years after ``self.year_end`` to pull holidays in ``self.country_holiday_df``.</span>
+<span class="sd">            This can be used to cover the forecast periods.</span>
+<span class="sd">        use_relative_score : `bool`, default False</span>
+<span class="sd">            Whether the holiday effect is calculated as a relative ratio.</span>
+<span class="sd">            If `False`, `~greykite.algo.common.holiday_inferrer.HolidayInferrer._get_score_for_dates`</span>
+<span class="sd">            will use absolute difference compared to the baseline as the score.</span>
+<span class="sd">            If `True`, it uses relative ratio compared to the baseline as the score.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict` [`str`, any] or None</span>
+<span class="sd">            A dictionary with the following keys:</span>
+
+<span class="sd">                - &quot;scores&quot;: `dict` [`str`, `list` [`float`]]</span>
+<span class="sd">                    The ``score_result`` from ``self._get_scores_for_holidays``.</span>
+<span class="sd">                - &quot;country_holiday_df&quot;: `pandas.DataFrame`</span>
+<span class="sd">                    The ``country_holiday_df`` from ``pypi:holidays_ext``.</span>
+<span class="sd">                - &quot;independent_holidays&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays to be modeled independently. Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;together_holidays_positive&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays with positive effects to be modeled together.</span>
+<span class="sd">                    Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;together_holidays_negative&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays with negative effects to be modeled together.</span>
+<span class="sd">                    Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;fig&quot;: `plotly.graph_objs.Figure`</span>
+<span class="sd">                    The visualization if activated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sets model parameters.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_offsets</span> <span class="o">=</span> <span class="n">baseline_offsets</span>
+        <span class="k">if</span> <span class="n">post_search_days</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">pre_search_days</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both &#39;post_search_days&#39; and &#39;pre_search_days&#39; must be non-negative integers.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_search_days</span> <span class="o">=</span> <span class="n">post_search_days</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_search_days</span> <span class="o">=</span> <span class="n">pre_search_days</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">independent_holiday_thres</span> <span class="o">&lt;=</span> <span class="n">together_holiday_thres</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both &#39;independent_holiday_thres&#39; and &#39;together_holiday_thres&#39; must be between &quot;</span>
+                             <span class="s2">&quot;0 and 1 (inclusive).&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">independent_holiday_thres</span> <span class="o">=</span> <span class="n">independent_holiday_thres</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">together_holiday_thres</span> <span class="o">=</span> <span class="n">together_holiday_thres</span>
+        <span class="k">if</span> <span class="n">extra_years</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># At least 1 year for completeness.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The parameter &#39;extra_years&#39; must be a positive integer.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_years</span> <span class="o">=</span> <span class="n">extra_years</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_relative_score</span> <span class="o">=</span> <span class="n">use_relative_score</span>
+
+        <span class="c1"># Pre-processes data.</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="n">min_increment</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
+        <span class="c1"># Holidays is not activated for frequencies greater than daily.</span>
+        <span class="k">if</span> <span class="n">min_increment</span> <span class="o">&gt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Data frequency is greater than daily, &quot;</span>
+                        <span class="s2">&quot;holiday inferring is skipped.&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Holidays are daily events.</span>
+        <span class="c1"># If data frequency is sub-daily,</span>
+        <span class="c1"># we aggregate into daily.</span>
+        <span class="k">if</span> <span class="n">min_increment</span> <span class="o">&lt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">time_col</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+
+        <span class="c1"># From now on, data is in daily frequency.</span>
+        <span class="c1"># Sets data attributes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year_start</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year_end</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span> <span class="o">=</span> <span class="n">time_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span> <span class="o">=</span> <span class="n">value_col</span>
+
+        <span class="c1"># Gets holiday candidates.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">holidays</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_candidate_holidays</span><span class="p">(</span><span class="n">countries</span><span class="o">=</span><span class="n">countries</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_holiday_dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;ts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># Gets scores for holidays.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scores_for_holidays</span><span class="p">()</span>
+        <span class="c1"># Gets the average scores over multiple occurrences for each holiday.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_averaged_scores</span><span class="p">()</span>
+        <span class="c1"># Gets significant holidays.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_infer_holidays</span><span class="p">()</span>
+        <span class="c1"># Makes plots if needed.</span>
+        <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;fig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;fig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">_infer_holidays</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;When the scores are computed,</span>
+<span class="sd">        calculates the contributions and classifies holidays into:</span>
+
+<span class="sd">            - model independently</span>
+<span class="sd">            - model together</span>
+<span class="sd">            - do not model</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict` [`str`, any]</span>
+<span class="sd">            A dictionary with the following keys:</span>
+
+<span class="sd">                - &quot;scores&quot;: `dict` [`str`, `list` [`float`]]</span>
+<span class="sd">                    The ``score_result`` from ``self._get_scores_for_holidays``.</span>
+<span class="sd">                - &quot;country_holiday_df&quot;: `pandas.DataFrame`</span>
+<span class="sd">                    The ``country_holiday_df`` from ``pypi:holidays_ext``.</span>
+<span class="sd">                - &quot;independent_holidays&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays to be modeled independently. Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;together_holidays_positive&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays with positive effects to be modeled together.</span>
+<span class="sd">                    Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;together_holidays_negative&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays with negative effects to be modeled together.</span>
+<span class="sd">                    Each item is in (country, holiday) format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">independent_holidays</span><span class="p">,</span> <span class="n">together_holidays_positive</span><span class="p">,</span> <span class="n">together_holidays_negative</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_significant_holidays</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;scores&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_result</span><span class="p">,</span>
+            <span class="s2">&quot;country_holiday_df&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span><span class="p">,</span>
+            <span class="n">INFERRED_INDEPENDENT_HOLIDAYS_KEY</span><span class="p">:</span> <span class="n">independent_holidays</span><span class="p">,</span>
+            <span class="n">INFERRED_GROUPED_POSITIVE_HOLIDAYS_KEY</span><span class="p">:</span> <span class="n">together_holidays_positive</span><span class="p">,</span>
+            <span class="n">INFERRED_GROUPED_NEGATIVE_HOLIDAYS_KEY</span><span class="p">:</span> <span class="n">together_holidays_negative</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_candidate_holidays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">countries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the candidate holidays from a list of countries.</span>
+<span class="sd">        Uses `pypi:holidays-ext`.</span>
+<span class="sd">        Duplicates are dropped.</span>
+<span class="sd">        Observed holidays are renamed to original holidays</span>
+<span class="sd">        and corresponding original holidays in the same years are removed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        countries : `list` [`str`]</span>
+<span class="sd">            A list of countries to look up candidate holidays.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `tuple`</span>
+<span class="sd">            Includes:</span>
+
+<span class="sd">                country_holiday_df : `pandas.DataFrame`</span>
+<span class="sd">                    The holidays between ``year_start`` and ``year_end``.</span>
+<span class="sd">                    This is the output from `pypi:holidays-ext`.</span>
+<span class="sd">                    Duplicates are dropped.</span>
+<span class="sd">                    Observed holidays are merged.</span>
+<span class="sd">                holidays : `list` [`str`]</span>
+<span class="sd">                    A list of holidays in ``country_holiday_df``.</span>
+<span class="sd">                    The holidays are in the format of &quot;{country_name}_{holiday_name}&quot;.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">country_holiday_df</span> <span class="o">=</span> <span class="n">get_holiday_df</span><span class="p">(</span>
+            <span class="n">country_list</span><span class="o">=</span><span class="n">countries</span><span class="p">,</span>
+            <span class="n">years</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">year_end</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_years</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="c1"># Drops duplications.</span>
+        <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ts&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Handles observed holidays.</span>
+        <span class="c1"># If observed holiday and original holiday are both listed in the same year,</span>
+        <span class="c1"># the observed holiday will be renamed to the original holiday</span>
+        <span class="c1"># and the original holiday in the same year will be removed.</span>
+
+        <span class="c1"># Sub-df that contains observed holidays only.</span>
+        <span class="n">observed_df</span> <span class="o">=</span> <span class="n">country_holiday_df</span><span class="p">[</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;holiday&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;(Observed)&quot;</span><span class="p">]</span>
+        <span class="c1"># Row indices to rename.</span>
+        <span class="n">rows_to_rename</span> <span class="o">=</span> <span class="n">observed_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># Date-holiday tuple to remove.</span>
+        <span class="c1"># &quot;:-11&quot; truncates the &quot; (Observed)&quot; suffix.</span>
+        <span class="c1"># This is used to identify rows to remove.</span>
+        <span class="n">date_holiday_to_remove</span> <span class="o">=</span> <span class="p">[(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;ts&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;holiday&quot;</span><span class="p">][:</span><span class="o">-</span><span class="mi">11</span><span class="p">])</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">observed_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+        <span class="c1"># Row indices to remove.</span>
+        <span class="c1"># For each (date, holiday) tuple, look up the match in ``country_holiday_df`` and record the row indices.</span>
+        <span class="c1"># The match happens when the holiday name matches and the time diff is at most 3 days.</span>
+        <span class="n">rows_to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">date</span><span class="p">,</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">date_holiday_to_remove</span>
+                          <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">country_holiday_df</span><span class="p">[</span>
+                              <span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;ts&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&amp;</span>
+                              <span class="p">(</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;holiday&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">holiday</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+        <span class="c1"># Renames and removes.</span>
+        <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows_to_rename</span><span class="p">,</span> <span class="s2">&quot;holiday&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+            <span class="n">rows_to_rename</span><span class="p">,</span> <span class="s2">&quot;holiday&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="o">-</span><span class="mi">11</span><span class="p">]</span>
+        <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows_to_rename</span><span class="p">,</span> <span class="s2">&quot;country_holiday&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+            <span class="n">rows_to_rename</span><span class="p">,</span> <span class="s2">&quot;country_holiday&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="o">-</span><span class="mi">11</span><span class="p">]</span>
+        <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+            <span class="n">rows_to_remove</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">country_holiday_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">holidays</span> <span class="o">=</span> <span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;country_holiday&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">country_holiday_df</span><span class="p">,</span> <span class="n">holidays</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_transform_country_holidays</span><span class="p">(</span>
+            <span class="n">country_holidays</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decouples a list of {country}_{holiday} names into a list of (country, holiday) tuple</span>
+<span class="sd">        or the other way around, depending on the input type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country_holidays : `list` [`str` or `tuple` [`str`, `str`]]</span>
+<span class="sd">            One of:</span>
+
+<span class="sd">                - A list of country-holiday strings of the format {country}_{holiday}.</span>
+<span class="sd">                  The country part is not expected to have &quot;_&quot;.</span>
+<span class="sd">                - A list of (country, holiday) tuples.</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        country_holiday_list : `list` [`tuple` [`str`, `str`] or `str`]</span>
+<span class="sd">            A list of (country, holiday) tuples or a list of {country}_{holiday} strings,</span>
+<span class="sd">            depending on the input type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">country_holiday_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">country_holiday</span> <span class="ow">in</span> <span class="n">country_holidays</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">country_holiday</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">split</span> <span class="o">=</span> <span class="n">country_holiday</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+                <span class="n">country</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">holiday</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                <span class="n">country_holiday_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">country</span><span class="p">,</span> <span class="n">holiday</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">country_holiday</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">country_holiday</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">country_holiday_item</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country_holiday</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">country_holiday</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">country_holiday_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">country_holiday_item</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Every item in ``country_holidays`` must be a string or a length-2 tuple.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">country_holiday_list</span>
+
+    <span class="k">def</span> <span class="nf">_get_score_for_dates</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">event_dates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the score for each day in ``event_dates``.</span>
+<span class="sd">        The score is defined as the observation on the day minus the baseline,</span>
+<span class="sd">        which is the average of the ``self.baseline_offsets`` offset observations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        event_dates : `list` [`pandas.Timestamp`]</span>
+<span class="sd">            The timestamps for a single event.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scores : `list` [`float`]</span>
+<span class="sd">            The scores for a list of occurrences of an event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">event_dates</span><span class="p">:</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Current holiday date: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+            <span class="c1"># Calculates the dates for baseline.</span>
+            <span class="n">baseline_dates</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseline_offsets</span><span class="p">:</span>
+                <span class="n">new_date</span> <span class="o">=</span> <span class="n">date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+                <span class="n">counter</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1"># If a baseline date falls on another holiday, it is moving further.</span>
+                <span class="c1"># But the total iterations cannot exceed 3.</span>
+                <span class="k">while</span> <span class="n">new_date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_holiday_dates</span> <span class="ow">and</span> <span class="n">counter</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">log_message</span><span class="p">(</span>
+                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="n">new_date</span><span class="si">}</span><span class="s2">, new date is </span><span class="si">{</span><span class="n">new_date</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span>
+                    <span class="p">)</span>
+                    <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">new_date</span> <span class="o">+=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+                <span class="n">baseline_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_date</span><span class="p">)</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Baseline dates are: </span><span class="si">{</span><span class="n">baseline_dates</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+            <span class="c1"># Calculates the average of the baseline observations.</span>
+            <span class="n">baseline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">baseline_dates</span><span class="p">)][</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="c1"># Calculates the score for the current occurrence.</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">date</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">baseline</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_relative_score</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">/=</span> <span class="n">baseline</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scores</span>
+
+    <span class="k">def</span> <span class="nf">_get_scores_for_holidays</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the scores for a list of events, each with multiple occurrences.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict` [`str`, `list` [`float`]]</span>
+<span class="sd">            A dictionary with keys being the holiday names and values</span>
+<span class="sd">            being the scores for all occurrences of the holiday.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">holidays</span><span class="p">:</span>
+            <span class="c1"># Gets all occurrences of the holiday</span>
+            <span class="n">holiday_dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;country_holiday&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">holiday</span><span class="p">][</span><span class="s2">&quot;ts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="c1"># Iterates over pre/post days to get the scores</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_search_days</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_search_days</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">event_dates</span> <span class="o">=</span> <span class="p">[(</span><span class="n">date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">holiday_dates</span><span class="p">]</span>
+                <span class="n">event_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">event_dates</span> <span class="k">if</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">]</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_score_for_dates</span><span class="p">(</span>
+                    <span class="n">event_dates</span><span class="o">=</span><span class="n">event_dates</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">holiday</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{0:+}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>  <span class="c1"># format is with +/- signs</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_get_averaged_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the average score for each event date.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `dict` [`str`, `float`]</span>
+<span class="sd">            A dictionary with keys being the holiday names and values</span>
+<span class="sd">            being the average scores.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">holiday</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">holiday</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_get_significant_holidays</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Classifies holidays into model independently, model together</span>
+<span class="sd">        and do not model according to their scores.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : `tuple`</span>
+<span class="sd">            A result tuple including:</span>
+
+<span class="sd">                - &quot;independent_holidays&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays to be modeled independently. Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;together_holidays_positive&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays with positive effects to be modeled together.</span>
+<span class="sd">                    Each item is in (country, holiday) format.</span>
+<span class="sd">                - &quot;together_holidays_negative&quot;: `list` [`tuple` [`str`, `str`]]</span>
+<span class="sd">                    The holidays with negative effects to be modeled together.</span>
+<span class="sd">                    Each item is in (country, holiday) format.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculates the total holiday deviations.</span>
+        <span class="n">total_changes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+        <span class="n">independent_holiday_thres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_holiday_thres</span> <span class="o">*</span> <span class="n">total_changes</span>
+        <span class="n">together_holiday_thres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">together_holiday_thres</span> <span class="o">*</span> <span class="n">total_changes</span>
+        <span class="c1"># Sorts the holidays by their magnitudes.</span>
+        <span class="n">ranked_effects</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Iterates over the sorted holidays until it reaches the thresholds.</span>
+        <span class="n">cum_effect</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># cumulative holiday deviations so far</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># index for the current holiday</span>
+        <span class="n">independent_holidays</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># stores holidays to be modeled independently</span>
+        <span class="n">together_holidays_positive</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># stores holidays with positive effects to be modeled together</span>
+        <span class="n">together_holidays_negative</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># stores holidays with negative effects to be modeled together</span>
+        <span class="c1"># Starts adding independent holidays until threshold</span>
+        <span class="k">while</span> <span class="n">cum_effect</span> <span class="o">&lt;</span> <span class="n">independent_holiday_thres</span> <span class="ow">and</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">independent_holidays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">cum_effect</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Starts adding together holidays until threshold</span>
+        <span class="k">while</span> <span class="n">cum_effect</span> <span class="o">&lt;</span> <span class="n">together_holiday_thres</span> <span class="ow">and</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">together_holidays_positive</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">together_holidays_negative</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">cum_effect</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ranked_effects</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transform_country_holidays</span><span class="p">(</span><span class="n">independent_holidays</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_transform_country_holidays</span><span class="p">(</span><span class="n">together_holidays_positive</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_transform_country_holidays</span><span class="p">(</span><span class="n">together_holidays_negative</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes a plot that includes the following two subplots:</span>
+
+<span class="sd">            - Bar chart for holiday effects grouped by holidays ordered by their holiday effects.</span>
+<span class="sd">            - Bar chart for holiday effects and their classifications</span>
+<span class="sd">              ranked by their effects.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objs`</span>
+<span class="sd">            The figure object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Makes the plot.</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">make_subplots</span><span class="p">(</span>
+            <span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">cols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">subplot_titles</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;Inferred holiday effects grouped by holiday&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Inferred holiday effects grouped by effects&quot;</span>
+            <span class="p">],</span>
+            <span class="n">vertical_spacing</span><span class="o">=</span><span class="mf">0.4</span>
+        <span class="p">)</span>
+        <span class="c1"># Adds the subplot: holiday effects grouped by holidays.</span>
+        <span class="c1"># Gets all holidays and their scores.</span>
+        <span class="n">holidays</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">holiday</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">holidays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">holiday</span><span class="p">)</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        <span class="c1"># Removes the pre/post numbers of days from the end of the holiday names.</span>
+        <span class="c1"># This is used to make the plot grouped by holidays.</span>
+        <span class="n">holidays_without_plus_minus</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">holiday</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">holidays</span><span class="p">]))</span>
+        <span class="c1"># Sorts holidays according to their effects.</span>
+        <span class="n">holidays_without_plus_minus</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">holidays_without_plus_minus</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">_+0&quot;</span><span class="p">]),</span>
+            <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Iterates over each holiday + i day to plot the bars.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_search_days</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_search_days</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;holiday&quot;</span>
+            <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;holiday </span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{0:+}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2"> day&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;holiday </span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{0:+}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2"> days&quot;</span>
+            <span class="c1"># Gets the list of holiday names with the current +/- day.</span>
+            <span class="n">holidays_with_plus_minus</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="s1">&#39;</span><span class="si">{0:+}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">holidays_without_plus_minus</span><span class="p">]</span>
+            <span class="c1"># Gets the corresponding scores for the current +/- day.</span>
+            <span class="n">current_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="n">holidays</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">holiday</span><span class="p">)</span> <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">holidays_with_plus_minus</span><span class="p">]]</span>
+            <span class="c1"># Adds to the plot.</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+                    <span class="c1"># Truncates the text for better view.</span>
+                    <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">holiday</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span> <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">holidays_without_plus_minus</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">current_values</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">legendgroup</span><span class="o">=</span><span class="mi">1</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="c1"># Adds the subplot: holiday effects grouped by effects.</span>
+        <span class="c1"># Sorts holidays by their effect magnitude.</span>
+        <span class="n">ranked_holidays</span><span class="p">,</span> <span class="n">ranked_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span>
+            <span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">score_result_avg</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+        <span class="c1"># Adds to the plot.</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+                <span class="c1"># Truncates the text for better view.</span>
+                <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">holiday</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:</span><span class="mi">30</span><span class="p">]</span> <span class="o">+</span> <span class="n">holiday</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">ranked_holidays</span><span class="p">],</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">ranked_scores</span><span class="p">,</span>
+                <span class="n">legendgroup</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;holidays&quot;</span>
+            <span class="p">),</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="c1"># Adds vertical regions to indicate the classification of the holidays.</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>  <span class="c1"># start of bar chart x axis</span>
+        <span class="n">independent_holidays_end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">INFERRED_INDEPENDENT_HOLIDAYS_KEY</span><span class="p">])</span>
+        <span class="n">together_holiday_end</span> <span class="o">=</span> <span class="p">(</span><span class="n">independent_holidays_end</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">INFERRED_GROUPED_POSITIVE_HOLIDAYS_KEY</span><span class="p">])</span>
+                                <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="n">INFERRED_GROUPED_NEGATIVE_HOLIDAYS_KEY</span><span class="p">]))</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">holidays</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_vrect</span><span class="p">(</span>
+            <span class="n">x0</span><span class="o">=</span><span class="n">start</span><span class="p">,</span>
+            <span class="n">x1</span><span class="o">=</span><span class="n">independent_holidays_end</span><span class="p">,</span>
+            <span class="n">annotation_text</span><span class="o">=</span><span class="s2">&quot;model independently&quot;</span><span class="p">,</span>
+            <span class="n">annotation_position</span><span class="o">=</span><span class="s2">&quot;top left&quot;</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+            <span class="n">line_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_vrect</span><span class="p">(</span>
+            <span class="n">x0</span><span class="o">=</span><span class="n">independent_holidays_end</span><span class="p">,</span>
+            <span class="n">x1</span><span class="o">=</span><span class="n">together_holiday_end</span><span class="p">,</span>
+            <span class="n">annotation_text</span><span class="o">=</span><span class="s2">&quot;model together&quot;</span><span class="p">,</span>
+            <span class="n">annotation_position</span><span class="o">=</span><span class="s2">&quot;top left&quot;</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+            <span class="n">line_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_vrect</span><span class="p">(</span>
+            <span class="n">x0</span><span class="o">=</span><span class="n">together_holiday_end</span><span class="p">,</span>
+            <span class="n">x1</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+            <span class="n">annotation_text</span><span class="o">=</span><span class="s2">&quot;do not model&quot;</span><span class="p">,</span>
+            <span class="n">annotation_position</span><span class="o">=</span><span class="s2">&quot;top left&quot;</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">fillcolor</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+            <span class="n">line_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">independent_holidays_end</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span>
+            <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_vline</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">together_holiday_end</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span>
+            <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="c1"># Adjusts layouts.</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Inferred holiday effects&quot;</span><span class="p">,</span>
+            <span class="n">legend_tracegroupgap</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
+            <span class="n">tickangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Holidays&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Effect&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
+            <span class="n">tickangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Holidays&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Effect&quot;</span><span class="p">,</span>
+            <span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">col</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span>
+
+    <span class="k">def</span> <span class="nf">_get_event_df_for_single_event</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">holiday</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">country_holiday_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the event df for a single holiday.</span>
+<span class="sd">        An event df has the format:</span>
+
+<span class="sd">        pd.DataFrame({</span>
+<span class="sd">            &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;],</span>
+<span class="sd">            &quot;event_name&quot;: &quot;is_event&quot;</span>
+<span class="sd">        })</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        holiday : `tuple` [`str`, `str`]</span>
+<span class="sd">            A tuple of length 2.</span>
+<span class="sd">            The first element is the country name.</span>
+<span class="sd">            The second element has the format of f&quot;{holiday}_{x}&quot;,</span>
+<span class="sd">            where &quot;x&quot; is a signed integer acting as a neighboring operator.</span>
+<span class="sd">            For example, (&quot;US&quot;, &quot;Christmas Day_+1&quot;) means the day after</span>
+<span class="sd">            every US&#39;s Christmas Day.</span>
+<span class="sd">            This is consistent with the output from ``self.infer_holidays``.</span>
+<span class="sd">        country_holiday_df : `pandas.DataFrame`</span>
+<span class="sd">            The dataframe that contains the country/holiday/dates information</span>
+<span class="sd">            for holidays. Must cover the periods need in training/forecasting</span>
+<span class="sd">            for all holidays.</span>
+<span class="sd">            This has the same format as ``self.country_holiday_df``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        event_df : `pandas.DataFrame`</span>
+<span class="sd">            The event df for a single holiday in the format of</span>
+
+<span class="sd">            pd.DataFrame({</span>
+<span class="sd">                &quot;date&quot;: [&quot;2020-12-24&quot;, &quot;2021-12-24&quot;],</span>
+<span class="sd">                &quot;event_name&quot;: &quot;US_Christmas Day_minus_1&quot;</span>
+<span class="sd">            })</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Splits holiday into country name, holiday name and neighboring offset days.</span>
+        <span class="n">country</span> <span class="o">=</span> <span class="n">holiday</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">holiday_split</span> <span class="o">=</span> <span class="n">holiday</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">holiday_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">holiday_split</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">neighboring_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">holiday_split</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># Gets holiday dates from ``country_holiday_df``.</span>
+        <span class="n">holiday_dates</span> <span class="o">=</span> <span class="n">country_holiday_df</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;country&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">country</span><span class="p">)</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">country_holiday_df</span><span class="p">[</span><span class="s2">&quot;holiday&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">holiday_name</span><span class="p">)][</span><span class="s2">&quot;ts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">holiday_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">neighboring_offset</span><span class="p">)</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">holiday_dates</span><span class="p">]</span>
+        <span class="c1"># Constructs the event df.</span>
+        <span class="c1"># The holiday name matches the column names</span>
+        <span class="c1"># constructed from `SimpleSilverkiteForecast`&#39;s holiday generating functions.</span>
+        <span class="k">if</span> <span class="n">neighboring_offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">holiday_name_adj</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">holiday_name</span><span class="si">}</span><span class="s2">_minus_</span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">neighboring_offset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">elif</span> <span class="n">neighboring_offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">holiday_name_adj</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">holiday_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">holiday_name_adj</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">country</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">holiday_name</span><span class="si">}</span><span class="s2">_plus_</span><span class="si">{</span><span class="n">neighboring_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">holiday_name_adj</span> <span class="o">=</span> <span class="n">holiday_name_adj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># Single quote conflicts patsy formula.</span>
+        <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="n">EVENT_DF_DATE_COL</span><span class="p">:</span> <span class="n">holiday_dates</span><span class="p">,</span>
+            <span class="n">EVENT_DF_LABEL_COL</span><span class="p">:</span> <span class="n">holiday_name_adj</span>
+        <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">event_df</span>
+
+<div class="viewcode-block" id="HolidayInferrer.generate_daily_event_dict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.common.holiday_inferrer.HolidayInferrer.generate_daily_event_dict">[docs]</a>    <span class="k">def</span> <span class="nf">generate_daily_event_dict</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">country_holiday_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">holiday_result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates daily event dict for all holidays inferred.</span>
+<span class="sd">        The daily event dict will contain:</span>
+
+<span class="sd">            - Single events for every holiday or holiday neighboring day</span>
+<span class="sd">              that is to be modeled independently.</span>
+<span class="sd">            - A single event for all holiday or holiday neighboring days</span>
+<span class="sd">              with positive effects that are modeled together.</span>
+<span class="sd">            - A single event for all holiday or holiday neighboring days</span>
+<span class="sd">              with negative effects that are modeled together.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        country_holiday_df : `pandas.DataFrame` or None, default None</span>
+<span class="sd">            The dataframe that contains the country/holiday/dates information</span>
+<span class="sd">            for holidays. Must cover the periods need in training/forecasting</span>
+<span class="sd">            for all holidays.</span>
+<span class="sd">            This has the same format as ``self.country_holiday_df``.</span>
+<span class="sd">            If None, it pulls from ``self.country_holiday_df``.</span>
+<span class="sd">        holiday_result : `dict` [`str`, `list` [`tuple` [`str`, `str`]]] or None, default None</span>
+<span class="sd">            A dictionary with the following keys:</span>
+
+<span class="sd">                - INFERRED_INDEPENDENT_HOLIDAYS_KEY</span>
+<span class="sd">                - INFERRED_GROUPED_POSITIVE_HOLIDAYS_KEY</span>
+<span class="sd">                - INFERRED_GROUPED_NEGATIVE_HOLIDAYS_KEY</span>
+
+<span class="sd">            Each key&#39;s value is a list of length-2 tuples of the format (country, holiday).</span>
+<span class="sd">            This format is the output of ``self.infer_holidays``.</span>
+<span class="sd">            If None, it pulls from ``self.result``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        daily_event_dict : `dict`</span>
+<span class="sd">            The daily event dict that is consumable by</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast` or</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.forecast_silverkite.SilverkiteForecast`.</span>
+<span class="sd">            The keys are the event names.</span>
+<span class="sd">            The values are dataframes with the event dates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">daily_event_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Gets default parameters.</span>
+        <span class="k">if</span> <span class="n">country_holiday_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">country_holiday_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">country_holiday_df</span>
+        <span class="k">if</span> <span class="n">holiday_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">holiday_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
+        <span class="k">if</span> <span class="n">country_holiday_df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">holiday_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both &#39;country_holiday_df&#39; and &#39;holidays&#39; must be given. &quot;</span>
+                             <span class="s2">&quot;Alternatively, you can run &#39;infer_holidays&#39; first and &quot;</span>
+                             <span class="s2">&quot;they will be pulled automatically.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Gets independent holidays.</span>
+        <span class="n">independent_holidays</span> <span class="o">=</span> <span class="n">holiday_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">INFERRED_INDEPENDENT_HOLIDAYS_KEY</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">independent_holidays</span><span class="p">:</span>
+            <span class="n">event_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_event_df_for_single_event</span><span class="p">(</span>
+                <span class="n">holiday</span><span class="o">=</span><span class="n">holiday</span><span class="p">,</span>
+                <span class="n">country_holiday_df</span><span class="o">=</span><span class="n">country_holiday_df</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">event_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">event_name</span> <span class="o">=</span> <span class="n">event_df</span><span class="p">[</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">daily_event_dict</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_df</span>
+
+        <span class="c1"># Gets positive together holidays.</span>
+        <span class="n">together_holidays_positive</span> <span class="o">=</span> <span class="n">holiday_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">INFERRED_GROUPED_POSITIVE_HOLIDAYS_KEY</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">together_holidays_positive</span><span class="p">:</span>
+            <span class="n">event_df_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_event_df_for_single_event</span><span class="p">(</span>
+                <span class="n">holiday</span><span class="o">=</span><span class="n">holiday</span><span class="p">,</span>
+                <span class="n">country_holiday_df</span><span class="o">=</span><span class="n">country_holiday_df</span>
+            <span class="p">)</span>
+            <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">event_df</span><span class="p">,</span> <span class="n">event_df_temp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">event_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">event_df</span><span class="p">[</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">EVENT_INDICATOR</span>
+            <span class="n">daily_event_dict</span><span class="p">[</span><span class="n">HOLIDAY_POSITIVE_GROUP_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Gets negative together holidays.</span>
+        <span class="n">together_holidays_negative</span> <span class="o">=</span> <span class="n">holiday_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">INFERRED_GROUPED_NEGATIVE_HOLIDAYS_KEY</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">together_holidays_negative</span><span class="p">:</span>
+            <span class="n">event_df_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_event_df_for_single_event</span><span class="p">(</span>
+                <span class="n">holiday</span><span class="o">=</span><span class="n">holiday</span><span class="p">,</span>
+                <span class="n">country_holiday_df</span><span class="o">=</span><span class="n">country_holiday_df</span>
+            <span class="p">)</span>
+            <span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">event_df</span><span class="p">,</span> <span class="n">event_df_temp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">event_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">event_df</span><span class="p">[</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">EVENT_INDICATOR</span>
+            <span class="n">daily_event_dict</span><span class="p">[</span><span class="n">HOLIDAY_NEGATIVE_GROUP_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">EVENT_DF_DATE_COL</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">daily_event_dict</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

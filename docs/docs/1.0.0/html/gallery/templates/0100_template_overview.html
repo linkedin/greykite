@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Overview &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="The Multistage Forecast Model" href="0200_multistage_forecast.html" />
+    <link rel="prev" title="Model Templates" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Model Templates</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Template Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-general-view-of-the-templates-and-the-forecastconfig-class">A General View of the Templates and the <code class="docutils literal notranslate"><span class="pre">ForecastConfig</span></code> Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-high-level-templates-in-silverkite">The High-level Templates in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auto-model-template">Auto model template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pre-defined-generic-high-level-silverkite-templates">Pre-defined Generic High-level <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#provide-a-list-of-templates">Provide a List of Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-low-level-templates-in-silverkite">The Low-level Templates in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-prophet-template">The <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extra-notes">Extra Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="0200_multistage_forecast.html">The Multistage Forecast Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0300_lag_forecast.html">Enhanced week over week models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0400_forecast_one_by_one.html">Forecast One By One</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Model Templates</a></li>
+      <li class="breadcrumb-item active">Template Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-gallery-templates-0100-template-overview-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="template-overview">
+<span id="sphx-glr-gallery-templates-0100-template-overview-py"></span><h1>Template Overview<a class="headerlink" href="#template-overview" title="Permalink to this heading"></a></h1>
+<p>This is a basic tutorial for utilizing model templates and adding additional customization.
+After reading this tutorial, you will be able to</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Choose the desired template(s) to use.</p></li>
+<li><p>Customize the parameters in the templates.</p></li>
+<li><p>Perform grid search via multiple templates/parameters.</p></li>
+</ul>
+</div></blockquote>
+<p>Model templates include parameters and their default values that are ready to use for forecast models.
+These templates can be run with the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.run_forecast_config" title="greykite.framework.templates.forecaster.Forecaster.run_forecast_config"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_forecast_config</span></code></a>
+function by defining the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig" title="greykite.framework.templates.autogen.forecast_config.ForecastConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForecastConfig</span></code></a> class.
+The intention of using these templates is to easily combine with our pipeline
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.pipeline.pipeline.forecast_pipeline" title="greykite.framework.pipeline.pipeline.forecast_pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forecast_pipeline</span></code></a> and do grid search, cross-validation and evaluation.
+In this tutorial, we will go over available templates, their default values and how to customize the parameters.</p>
+<section id="a-general-view-of-the-templates-and-the-forecastconfig-class">
+<h2>A General View of the Templates and the <code class="docutils literal notranslate"><span class="pre">ForecastConfig</span></code> Class<a class="headerlink" href="#a-general-view-of-the-templates-and-the-forecastconfig-class" title="Permalink to this heading"></a></h2>
+<p>Greykite supports a few forecast models, including <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code>, <code class="docutils literal notranslate"><span class="pre">PROPHET</span></code>, and <code class="docutils literal notranslate"><span class="pre">ARIMA</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> model has a high-level
+estimator named <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a>
+and a low-level estimator named <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator" title="greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteEstimator</span></code></a>.
+The <code class="docutils literal notranslate"><span class="pre">PROPHET</span></code> model has an estimator named
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator" title="greykite.sklearn.estimator.prophet_estimator.ProphetEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProphetEstimator</span></code></a>.
+The <code class="docutils literal notranslate"><span class="pre">ARIMA</span></code> model has an estimator named
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator" title="greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoArimaEstimator</span></code></a>.</p>
+<p>The estimators only implement fit and predict methods. They are used in the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.pipeline.pipeline.forecast_pipeline" title="greykite.framework.pipeline.pipeline.forecast_pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forecast_pipeline</span></code></a> function,
+for grid search, cross-validation, backtest, and forecast.
+To easily configure and run the forecast pipeline, pass
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig" title="greykite.framework.templates.autogen.forecast_config.ForecastConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForecastConfig</span></code></a>
+to the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.run_forecast_config" title="greykite.framework.templates.forecaster.Forecaster.run_forecast_config"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_forecast_config</span></code></a> function.</p>
+<p>The <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig" title="greykite.framework.templates.autogen.forecast_config.ForecastConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForecastConfig</span></code></a> class takes the following
+parameters</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">computation_param</span></code>: the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ComputationParam" title="greykite.framework.templates.autogen.forecast_config.ComputationParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComputationParam</span></code></a> class,
+defines the computation parameters of the pipeline.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coverage</span></code>: the forecast interval coverage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evaluation_metric_param</span></code>: the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam" title="greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EvaluationMetricParam</span></code></a> class,
+defines the metrics used to evaluate performance and choose the best model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evaluation_period_param</span></code>: the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam" title="greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EvaluationPeriodParam</span></code></a> class,
+defines the cross-validation and train-test-split rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">forecast_horizon</span></code>: the forecast horizon.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metadata_param</span></code>: the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.MetadataParam" title="greykite.framework.templates.autogen.forecast_config.MetadataParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetadataParam</span></code></a> class,
+defines the metadata of the training data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_components_param</span></code>: the <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> class,
+defines the model parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_template</span></code>: the name or dataclass of the base model template, corresponding to one or some pre-defined
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> class(es).</p></li>
+</ul>
+</div></blockquote>
+<p>Among these parameters, <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> and <code class="docutils literal notranslate"><span class="pre">model_template</span></code> define the parameters used in the estimators.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The full estimator parameters can be specified through the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> class,
+as described in <a class="reference internal" href="../../pages/model_components/0100_introduction.html"><span class="doc">Greykite models and components</span></a>.</p></li>
+<li><p>We have pre-defined <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> classes
+that serve as default estimator parameters for different use cases. These pre-defined <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> classes have names.</p></li>
+<li><p>You can specify in the <code class="docutils literal notranslate"><span class="pre">model_template</span></code> parameter a valid model template name.
+The function will automatically map the <code class="docutils literal notranslate"><span class="pre">model_template</span></code> input to the corresponding estimator and its default parameters.</p></li>
+<li><p>To override the default values, you can create a
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> class
+with only the parameters you want to override, and pass it to the <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> parameter.</p></li>
+</ol>
+</div></blockquote>
+<p>Note that you don’t have to specify all values in the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a>
+to override the defaults. If a parameter is not specified, the default value for the parameter
+specified by the model template name will be used.
+In the later sections we will go over the valid <code class="docutils literal notranslate"><span class="pre">model_template</span></code> and <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> for each of the
+three estimators.
+For details about how to configure the other parameters and how to use the <code class="docutils literal notranslate"><span class="pre">run_forecast_config</span></code> function, see
+<a class="reference internal" href="../tutorials/0100_forecast_tutorial.html"><span class="doc">Tune your first forecast model</span></a>.</p>
+<p>The three estimators accept different input for <code class="docutils literal notranslate"><span class="pre">model_template</span></code> and <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code>.
+Below are the valid input types for the <code class="docutils literal notranslate"><span class="pre">model_template</span></code> parameter.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>High-level <code class="docutils literal notranslate"><span class="pre">Silverkite</span></code> template: for the high-level <code class="docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code>, we have model templates named
+<code class="docutils literal notranslate"><span class="pre">&quot;AUTO&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_24&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_168&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_336&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_DAILY_1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_DAILY_90&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_WEEKLY&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_MONTHLY&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_EMPTY&quot;</span></code> and a set of
+generic naming following some rules. This type of model templates support list input for both
+<code class="docutils literal notranslate"><span class="pre">model_template</span></code> and <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> parameters.
+This type of model templates are most recommended for ease of use.</p></li>
+<li><p>Low-level <code class="docutils literal notranslate"><span class="pre">Silverkite</span></code> template: for the low-level <code class="docutils literal notranslate"><span class="pre">SilverkiteEstimator</span></code>, we have a model template
+named <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code>. This template allows you to configure lower-level parameters in the <code class="docutils literal notranslate"><span class="pre">Silverkite</span></code> model.
+This template does not support list input.</p></li>
+<li><p>Prophet template: for the <code class="docutils literal notranslate"><span class="pre">ProphetEstimator</span></code>, we have a model template named <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code>.
+This template does not support list input.</p></li>
+</ul>
+</div></blockquote>
+<p>To customize the default parameters in the templates, the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> dataclass
+takes the following parameters</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">growth</span></code>: defines how the trend of the time series grows.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seasonality</span></code>: defines the seasonality components and orders.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">changepoints</span></code>: defines when trend and/or seasonality should change, including automatic options.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">events</span></code>: defines short term events and holidays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">autoregression</span></code>: defines the lags and aggregations for the past values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regressors</span></code>: defines extra regressors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uncertainty</span></code>: defines the forecast interval parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">custom</span></code>: defines parameters that do not belong to the other sections.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code>: used to create overrides for the parameters specified above; useful in grid search.</p></li>
+</ul>
+<p>The model’s tuning parameters are set according to the categories above.
+However, different estimators take different types of values for these categories.
+We will go over each of the three types of templates, their default values, and how to customize the
+<code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> for them.
+For more general details, see <a class="reference internal" href="../../pages/model_components/0100_introduction.html"><span class="doc">Greykite models and components</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">115</span> <span class="c1"># Imports related libraries.</span>
+<span class="linenos">116</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos">117</span>
+<span class="linenos">118</span> <span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">GrowthColEnum</span>
+<span class="linenos">119</span> <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="linenos">120</span> <span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+<span class="linenos">121</span> <span class="kn">from</span> <span class="nn">greykite.framework.templates.model_templates</span> <span class="kn">import</span> <span class="n">ModelTemplateEnum</span>
+<span class="linenos">122</span> <span class="kn">from</span> <span class="nn">greykite.framework.templates.simple_silverkite_template</span> <span class="kn">import</span> <a href="https://docs.python.org/3.10/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">SimpleSilverkiteTemplate</span></a>
+</pre></div>
+</div>
+</section>
+<section id="the-high-level-templates-in-silverkite">
+<h2>The High-level Templates in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code><a class="headerlink" href="#the-high-level-templates-in-silverkite" title="Permalink to this heading"></a></h2>
+<p>The high-level templates in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> provides many good defaults that work under different scenarios.
+All templates in this section use <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a>.
+The two most basic templates are <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_EMPTY&quot;</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> is a template with automatic growth, seasonality, holidays, and interactions.
+It works best for hourly and daily frequencies.
+If you specify <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> as <code class="docutils literal notranslate"><span class="pre">model_template</span></code>, the following
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam" title="greykite.framework.templates.autogen.forecast_config.ModelComponentsParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code></a> class
+is used as default template values.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">137</span> <span class="n">model_components_param_silverkite</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+<span class="linenos">138</span>     <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">139</span>         <span class="s2">&quot;auto_seasonality&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="linenos">140</span>         <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">141</span>         <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">142</span>         <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">143</span>         <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">144</span>         <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">145</span>     <span class="p">},</span>
+<span class="linenos">146</span>     <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">147</span>         <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span></a>
+<span class="linenos">148</span>     <span class="p">},</span>
+<span class="linenos">149</span>     <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">150</span>         <span class="s2">&quot;auto_holiday&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="linenos">151</span>         <span class="s2">&quot;holidays_to_model_separately&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">152</span>         <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">153</span>         <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="linenos">154</span>         <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="linenos">155</span>         <span class="s2">&quot;holiday_pre_post_num_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">156</span>         <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">157</span>     <span class="p">},</span>
+<span class="linenos">158</span>     <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">159</span>         <span class="s2">&quot;auto_growth&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="linenos">160</span>         <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos">161</span>             <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">162</span>             <span class="s2">&quot;yearly_seasonality_order&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+<span class="linenos">163</span>             <span class="s2">&quot;resample_freq&quot;</span><span class="p">:</span> <span class="s2">&quot;3D&quot;</span><span class="p">,</span>
+<span class="linenos">164</span>             <span class="s2">&quot;regularization_strength&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+<span class="linenos">165</span>             <span class="s2">&quot;actual_changepoint_min_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;30D&quot;</span><span class="p">,</span>
+<span class="linenos">166</span>             <span class="s2">&quot;potential_changepoint_distance&quot;</span><span class="p">:</span> <span class="s2">&quot;15D&quot;</span><span class="p">,</span>
+<span class="linenos">167</span>             <span class="s2">&quot;no_changepoint_distance_from_end&quot;</span><span class="p">:</span> <span class="s2">&quot;90D&quot;</span>
+<span class="linenos">168</span>         <span class="p">},</span>
+<span class="linenos">169</span>         <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="linenos">170</span>     <span class="p">},</span>
+<span class="linenos">171</span>     <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">172</span>         <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">173</span>         <span class="s2">&quot;simulation_num&quot;</span><span class="p">:</span> <span class="mi">10</span>  <span class="c1"># simulation is not triggered with ``autoreg_dict=&quot;auto&quot;``</span>
+<span class="linenos">174</span>     <span class="p">},</span>
+<span class="linenos">175</span>     <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">176</span>         <span class="s2">&quot;regressor_cols&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="linenos">177</span>     <span class="p">},</span>
+<span class="linenos">178</span>     <span class="n">lagged_regressors</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">179</span>         <span class="s2">&quot;lagged_regressor_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="linenos">180</span>     <span class="p">},</span>
+<span class="linenos">181</span>     <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">182</span>         <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="linenos">183</span>     <span class="p">},</span>
+<span class="linenos">184</span>     <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">185</span>         <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos">186</span>             <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+<span class="linenos">187</span>             <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">188</span>         <span class="p">},</span>
+<span class="linenos">189</span>         <span class="s2">&quot;feature_sets_enabled&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># &quot;auto&quot; based on data freq and size</span>
+<span class="linenos">190</span>         <span class="s2">&quot;max_daily_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="linenos">191</span>         <span class="s2">&quot;max_weekly_seas_interaction_order&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="linenos">192</span>         <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="linenos">193</span>         <span class="s2">&quot;drop_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">194</span>         <span class="s2">&quot;explicit_pred_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">195</span>         <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">196</span>         <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">197</span>         <span class="s2">&quot;normalize_method&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_to_one&quot;</span>
+<span class="linenos">198</span>     <span class="p">}</span>
+<span class="linenos">199</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>To customize this template, create a <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> class like above with the parameters you would like to use
+to override the defaults, and feed it to the <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">ForecastConfig</span></code>. For example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">205</span> <span class="n">custom_model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+<span class="linenos">206</span>     <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">207</span>         <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="mi">15</span>
+<span class="linenos">208</span>     <span class="p">},</span>
+<span class="linenos">209</span>     <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">210</span>         <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos">211</span>             <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+<span class="linenos">212</span>             <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span>
+<span class="linenos">213</span>         <span class="p">}</span>
+<span class="linenos">214</span>     <span class="p">}</span>
+<span class="linenos">215</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>These two parameters can be put in the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig" title="greykite.framework.templates.autogen.forecast_config.ForecastConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForecastConfig</span></code></a> class.
+The parameters used by the model will be those in the <code class="docutils literal notranslate"><span class="pre">model_components_param_silverkite</span></code>
+with <code class="docutils literal notranslate"><span class="pre">&quot;yearly_seasonality&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;fit_algorithm_dict&quot;</span></code> overridden by the custom parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">223</span> <span class="n">forecast_config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+<span class="linenos">224</span>     <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+<span class="linenos">225</span>     <span class="n">model_components_param</span><span class="o">=</span><span class="n">custom_model_components</span>
+<span class="linenos">226</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Detailed explanations for these parameters are in <a class="reference internal" href="../../pages/model_components/0100_introduction.html"><span class="doc">Greykite models and components</span></a>. The following paragraphs
+briefly summarized what each parameter does.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">seasonality</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;yearly_seasonality&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;quarterly_seasonality&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;monthly_seasonality&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;weekly_seasonality&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;daily_seasonality&quot;</span></code>. Their values are the corresponding Fourier series values.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, the values are <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> and their defaults are defined in
+<a class="reference internal" href="../../pages/autodoc/doc.html#id15" title="greykite.algo.forecast.silverkite.constants.silverkite_seasonality.SilverkiteSeasonalityEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteSeasonalityEnum</span></code></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">growth</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;growth_term&quot;</span></code>, which describes the growth rate of the time series model.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, the value is <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> and indicates linear growth.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">events</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;holidays_to_model_separately&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;holiday_lookup_countries&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;holiday_pre_num_days&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;holiday_post_num_days&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;holiday_pre_post_num_dict&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;daily_event_df_dict&quot;</span></code>.
+More details can be found at <a class="reference internal" href="../../pages/model_components/0400_events.html"><span class="doc">Holidays and Events</span></a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, it automatically looks up holidays in a holiday dictionary and model major holidays
+plus minus 2 days with separate indicators.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">changepoints</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;changepoints_dict&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;seasonality_changepoints_dict&quot;</span></code>,
+which correspond to trend changepoints and seasonality changepoints.
+For more details of configuring these two parameters, see <a class="reference internal" href="../quickstart/01_exploration/0100_changepoint_detection.html"><span class="doc">Changepoint Detection</span></a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, both parameters are <code class="docutils literal notranslate"><span class="pre">None</span></code>, indicating that neither trend changepoints nor seasonality changepoints
+is included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">autoregression</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;autoreg_dict&quot;</span></code>. You can specify lags and aggregated lags through the
+dictionary to trigger autoregressive terms. Specify the value as <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> to automatically include recommended
+autoregressive terms for the data frequency and forecast horizon.
+Note that “auto” ensures that all the lag orders in the autoregressive terms are at least <code class="docutils literal notranslate"><span class="pre">forecast_horizon</span></code>.
+Therefore, simulation is not used in the prediction phase, hence <code class="docutils literal notranslate"><span class="pre">simulation_num</span></code> does not matter.
+More details can be found at <a class="reference internal" href="../../pages/model_components/0800_autoregression.html"><span class="doc">Auto-regression</span></a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, autoregression is not included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">regressors</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;regressor_cols&quot;</span></code>, which takes a list of regressor column names. These regressor columns
+have to be included in the training df for both training and forecast periods. For more details about regressors, see
+<a class="reference external" href="../../pages/model_components/0700_regressors.html#silverkite">Regressors</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, no regressors are included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lagged_regressors</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;lagged_regressor_dict&quot;</span></code>.
+It is a dictionary with keys being the regressor’s name, value being a dictionary that specifies the lag structure
+in a similar manner as <code class="docutils literal notranslate"><span class="pre">&quot;autoreg_dict&quot;</span></code>. For more details about lagged regressors, see
+<a class="reference external" href="../../pages/model_components/0700_regressors.html#silverkite">Regressors</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, no lagged regressors are included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">uncertainty</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;uncertainty_dict&quot;</span></code>, which takes a dictionary to specify how forecast intervals
+are calculated. For more details about uncertainty, see <a class="reference external" href="../../pages/model_components/0900_uncertainty.html#silverkite">Uncertainty</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> template, the default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in <code class="docutils literal notranslate"><span class="pre">ForecastConfig</span></code> is not None,
+the template uses a default setting based on data frequency. We will see how to set <code class="docutils literal notranslate"><span class="pre">coverage</span></code> later.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">custom</span></code> parameter recognizes specific keys for <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> type of templates that correspond to
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a>. These keys include</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fit_algorithm_dict&quot;</span></code> takes a dictionary to specify what regression method is used to fit the time series.
+The default is the ridge regression in <code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn</span></code>. For a detailed list of algorithms, see
+<a class="reference external" href="../../pages/model_components/0600_custom.html#fit-algorithm">Algorithms</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;feature_sets_enabled&quot;</span></code> defines the interaction terms to be included in the model. A list of pre-defined
+interaction terms can be found at <a class="reference external" href="../../pages/model_components/0600_custom.html#interactions">Feature sets</a>.
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, which automatically finds the proper interaction terms that fit the data frequency.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;max_daily_seas_interaction_order&quot;</span></code> is the maximum order of Fourier series components in daily seasonality to
+be used in interactions. The default is 5.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;max_weekly_seas_interaction_order&quot;</span></code> is the maximum order of Fourier series components in daily seasonality to
+be used in interactions. The default is 2.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;extra_pred_cols&quot;</span></code> defines extra predictor column names. For details, see
+<a class="reference external" href="../../pages/model_components/0600_custom.html#extra-predictors">Extra predictors</a>.
+The default is no extra predictors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;min_admissible_value&quot;</span></code> is the minimum admissible value in forecast. All values below this will be clipped at this value.
+The default is None.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;max_admissible_value&quot;</span></code> is the maximum admissible value in forecast. All values above this will be clipped at this value.
+The default is None.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;normalize_method&quot;</span></code> is the way of normalizing all columns in the feature matrix before fitting the model.
+Supported methods are “statistical”, “zero_to_one”, “minus_half_to_half” and “zero_at_origin”.
+The default is “zero_to_one”.</p></li>
+</ul>
+</div></blockquote>
+<p>All default high-level <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> templates are defined through this framework.
+The <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_EMPTY&quot;</span></code> template is an empty template that does not include any component.
+If you provide <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> via <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> with <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_EMPTY&quot;</span></code>,
+the final model parameter to be used will be exactly what you provided through <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code>.
+It’s not like <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code>, where the values you do not provide within <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> will
+be filled with the defaults in <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code>.
+If you choose to use the <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_EMPTY&quot;</span></code> template but do not provide any <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code>
+via <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code>, the model will only fit the intercept term.</p>
+</section>
+<section id="auto-model-template">
+<h2>Auto model template<a class="headerlink" href="#auto-model-template" title="Permalink to this heading"></a></h2>
+<p>The Greykite library supports auto model template selection.
+If you are not sure which model template to use,
+you can try out the auto model template selection.
+Simply specify “AUTO” for <code class="docutils literal notranslate"><span class="pre">model_template</span></code>,
+the model will automatically select the most appropriate
+model template based on the data frequency, forecast horizon and evaluation configs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">318</span> <span class="n">forecast_config_auto</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+<span class="linenos">319</span>     <span class="n">model_template</span><span class="o">=</span><a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">AUTO</span><span class="o">.</span><span class="n">name</span></a>
+<span class="linenos">320</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>The auto model template selection will always map to a high-level Silverkite model template.
+That means you can specify <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> to override the model configurations
+in the same way as if you specified a high-level Silverkite model template.</p>
+<p>The default model template is <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code>, with the following exceptions:</p>
+<ul class="simple">
+<li><p>Hourly data</p>
+<ul>
+<li><p>enough cv (cv splits &gt;= 5 and cv evaluation &gt;= 30 points)</p>
+<ul>
+<li><p>Forecast horizon == 1: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_1</span></code>.</p></li>
+<li><p>Forecast horizon &lt;= 48: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_24</span></code>.</p></li>
+<li><p>Forecast horizon &lt;= 192: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_168</span></code>.</p></li>
+<li><p>Forecast horizon &lt;= 504: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_336</span></code>.</p></li>
+</ul>
+</li>
+<li><p>not enough cv</p>
+<ul>
+<li><p>Forecast horizon == 1: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code>.</p></li>
+<li><p>Forecast horizon &lt;= 48: uses first template in <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_24</span></code>.</p></li>
+<li><p>Forecast horizon &lt;= 192: uses first template in <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_168</span></code>.</p></li>
+<li><p>Forecast horizon &lt;= 504: uses first template in <code class="docutils literal notranslate"><span class="pre">SILVERKITE_HOURLY_336</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Daily data</p>
+<ul>
+<li><p>enough cv (cv splits &gt;= 5 and cv evaluation &gt;= 30 points)</p>
+<ul>
+<li><p>Forecast horizon &lt;= 7: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_DAILY_1</span></code>.</p></li>
+<li><p>Forecast horizon &gt;= 90: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_DAILY_90</span></code>.</p></li>
+</ul>
+</li>
+<li><p>not enough cv</p>
+<ul>
+<li><p>Forecast horizon &lt;= 7: uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_DAILY_1_CONFIG_1</span></code>.</p></li>
+<li><p>Forecast horizon &gt;= 90: uses first template in <code class="docutils literal notranslate"><span class="pre">SILVERKITE_DAILY_90</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Weekly data</p>
+<ul>
+<li><p>enough cv (cv splits &gt;= 5 and cv evaluation &gt;= 30 points)</p>
+<ul>
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_WEEKLY</span></code>.</p></li>
+</ul>
+</li>
+<li><p>not enough cv</p>
+<ul>
+<li><p>Uses first template in <code class="docutils literal notranslate"><span class="pre">SILVERKITE_WEEKLY</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Monthly data</p>
+<ul>
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">SILVERKITE_MONTHLY</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<section id="pre-defined-generic-high-level-silverkite-templates">
+<h3>Pre-defined Generic High-level <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> Templates<a class="headerlink" href="#pre-defined-generic-high-level-silverkite-templates" title="Permalink to this heading"></a></h3>
+<p>It can happen that you would like to customize the <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> but are not sure
+which values to set for each parameter.
+The high-level <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> template pre-defines sets of values for different components,
+indexed by human-readable language.
+This allows you to try sensible options for the components using a directive language.
+For example, “setting seasonality to normal and changepoints to light” is specified by
+<code class="docutils literal notranslate"><span class="pre">sk.SEAS.value.NM</span></code> and <code class="docutils literal notranslate"><span class="pre">sk.CP.value.LT</span></code>.
+This option provides rough tuning knobs before fine tuning the exact parameter values.
+This type of template name must be initialized through the
+<a class="reference internal" href="../../pages/autodoc/doc.html#id0" title="greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteTemplateOptions</span></code></a>
+dataclass.
+You can choose a value for each component and assemble them as a template.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">387</span> <span class="kn">from</span> <span class="nn">greykite.framework.templates.simple_silverkite_template_config</span> \
+<span class="linenos">388</span>     <span class="kn">import</span> <span class="nn">SimpleSilverkiteTemplateOptions</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="linenos">389</span> <span class="kn">from</span> <span class="nn">greykite.framework.templates.simple_silverkite_template_config</span> \
+<span class="linenos">390</span>     <span class="kn">import</span> <span class="nn">SILVERKITE_COMPONENT_KEYWORDS</span> <span class="k">as</span> <span class="nn">sk</span>
+<span class="linenos">391</span> <span class="c1"># The model template specifies</span>
+<span class="linenos">392</span> <span class="c1"># hourly frequency, normal seasonality (no quarterly or monthly), linear growth, light trend changepoints,</span>
+<span class="linenos">393</span> <span class="c1"># separate holidays with plus/minus 2 days, automatic feature sets, ridge regression, automatic autoregression,</span>
+<span class="linenos">394</span> <span class="c1"># automatic max daily seasonality interaction order and automatic max weekly seasonality interaction order.</span>
+<span class="linenos">395</span> <span class="n">model_template</span> <span class="o">=</span> <span class="n">st</span><span class="p">(</span>
+<span class="linenos">396</span>     <span class="n">freq</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">FREQ</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HOURLY</span><span class="p">,</span>
+<span class="linenos">397</span>     <span class="n">seas</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">SEAS</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">NM</span><span class="p">,</span>
+<span class="linenos">398</span>     <span class="n">gr</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">GR</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">,</span>
+<span class="linenos">399</span>     <span class="n">cp</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">CP</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">LT</span><span class="p">,</span>
+<span class="linenos">400</span>     <span class="n">hol</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">HOL</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">SP2</span><span class="p">,</span>
+<span class="linenos">401</span>     <span class="n">feaset</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">FEASET</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">AUTO</span><span class="p">,</span>
+<span class="linenos">402</span>     <span class="n">algo</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">ALGO</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">RIDGE</span><span class="p">,</span>
+<span class="linenos">403</span>     <span class="n">ar</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">AR</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">AUTO</span><span class="p">,</span>
+<span class="linenos">404</span>     <span class="n">dsi</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">DSI</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">AUTO</span><span class="p">,</span>
+<span class="linenos">405</span>     <span class="n">wsi</span><span class="o">=</span><span class="n">sk</span><span class="o">.</span><span class="n">WSI</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">AUTO</span>
+<span class="linenos">406</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This option provides rough tuning knobs to intuitively try out different model component parameters.
+You can then fine tune the model using <code class="docutils literal notranslate"><span class="pre">ModelComponentsParams</span></code> directly.
+A complete list of the key-values are</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FREQ</span></code>: the data frequency, can be “HOURLY”, “DAILY” or “WEEKLY”, default “DAILY”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SEAS</span></code>: the seasonality, can be “LT”, “NM”, “HV”, “NONE”, “LTQM”, “NMQM” or “HVQM”, default “LT”.
+The “QM” versions include quarterly and monthly seasonality while the others do not.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GR</span></code>: the growth term, can be “LINEAR” or “NONE”, default “LINEAR”, corresponding to linear growth or constant growth.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CP</span></code>: the automatically detected trend change points, can be “NONE”, “LT”, “NM”, “HV”, default “NONE”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOL</span></code>: the holidays, can be “NONE”, “SP1”, “SP2”, “SP4” or “TG”, default “NONE”. The default configuration looks up
+popular holidays in a list of popular countries. The “SP{n}” values models major holidays
+with plus/minus n days around them separately, while “TG” models all holidays along with
+plus/minus 2 days together as one indicator.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FEASET</span></code>: the feature sets that defines the interaction terms, can be “AUTO”, “ON” or “OFF”, default “OFF”.
+“AUTO” choose the pre-defined interaction terms automatically, while “ON” and “OFF” includes
+or excludes all pre-defined interaction terms, respectively.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ALGO</span></code>: the algorithm used to fit the model, can be “LINEAR”, “RIDGE”, “SGD” or “LASSO”, default “LINEAR”.
+Ridge and Lasso use cross-validation to identify the tuning parameter, while “SGD”
+(stochastic gradient descent) implements L2 norm regularization with tuning parameter 0.001.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AR</span></code>: the autoregressive terms, can be “AUTO” or “OFF”, default “OFF”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DSI</span></code>: the maximum daily seasonality order used for interaction in feature sets, can be “AUTO” or “OFF”, default “AUTO”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WSI</span></code>: the maximum weekly seasonality order used for interaction in feature sets, can be “AUTO” or “OFF”, default “AUTO”.</p></li>
+</ul>
+</div></blockquote>
+<p>Note that if you do not specify any parameter, the default value will be used:
+<code class="docutils literal notranslate"><span class="pre">FREQ=DAILY</span></code>, <code class="docutils literal notranslate"><span class="pre">SEAS=LT</span></code>, <code class="docutils literal notranslate"><span class="pre">GR=LINEAR</span></code>, <code class="docutils literal notranslate"><span class="pre">CP=NONE</span></code>, <code class="docutils literal notranslate"><span class="pre">HOL=NONE</span></code>, <code class="docutils literal notranslate"><span class="pre">FEASET=OFF</span></code>, <code class="docutils literal notranslate"><span class="pre">ALGO=LINEAR</span></code>,
+<code class="docutils literal notranslate"><span class="pre">AR=OFF</span></code>, <code class="docutils literal notranslate"><span class="pre">DSI=AUTO</span></code>, <code class="docutils literal notranslate"><span class="pre">WSI=AUTO</span></code>.
+To see how these keywords are converted to these model component params, see
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template_config.COMMON_MODELCOMPONENTPARAM_PARAMETERS" title="greykite.framework.templates.simple_silverkite_template_config.COMMON_MODELCOMPONENTPARAM_PARAMETERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COMMON_MODELCOMPONENTPARAM_PARAMETERS</span></code></a>.
+However, you can print the <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> class for a model template with the util function
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_model_components_from_model_template" title="greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_model_components_from_model_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model_components_from_model_template</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">440</span> <span class="n">sst</span> <span class="o">=</span> <a href="https://docs.python.org/3.10/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">SimpleSilverkiteTemplate</span></a><span class="p">()</span>
+<span class="linenos">441</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_components</span></a> <span class="o">=</span> <span class="n">sst</span><span class="o">.</span><span class="n">get_model_components_from_model_template</span><span class="p">(</span><span class="s2">&quot;SILVERKITE_EMPTY&quot;</span><span class="p">)</span>
+<span class="linenos">442</span> <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_components</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># `model_components` is a list of length 1.</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ModelComponentsParam(autoregression={&#39;autoreg_dict&#39;: None, &#39;simulation_num&#39;: 10, &#39;fast_simulation&#39;: False}, changepoints={&#39;auto_growth&#39;: False, &#39;changepoints_dict&#39;: None, &#39;seasonality_changepoints_dict&#39;: None}, custom={&#39;feature_sets_enabled&#39;: False, &#39;fit_algorithm_dict&#39;: {&#39;fit_algorithm&#39;: &#39;linear&#39;, &#39;fit_algorithm_params&#39;: None}, &#39;max_daily_seas_interaction_order&#39;: 0, &#39;max_weekly_seas_interaction_order&#39;: 0, &#39;extra_pred_cols&#39;: [], &#39;drop_pred_cols&#39;: None, &#39;explicit_pred_cols&#39;: None, &#39;min_admissible_value&#39;: None, &#39;max_admissible_value&#39;: None, &#39;regression_weight_col&#39;: None, &#39;normalize_method&#39;: &#39;zero_to_one&#39;, &#39;remove_intercept&#39;: False}, events={&#39;auto_holiday&#39;: False, &#39;holidays_to_model_separately&#39;: [], &#39;holiday_lookup_countries&#39;: [], &#39;holiday_pre_num_days&#39;: 0, &#39;holiday_post_num_days&#39;: 0, &#39;holiday_pre_post_num_dict&#39;: None, &#39;daily_event_df_dict&#39;: None, &#39;auto_holiday_params&#39;: None, &#39;daily_event_neighbor_impact&#39;: None, &#39;daily_event_shifted_effect&#39;: None}, growth={&#39;growth_term&#39;: None}, hyperparameter_override=None, regressors={&#39;regressor_cols&#39;: []}, lagged_regressors={&#39;lagged_regressor_dict&#39;: None}, seasonality={&#39;auto_seasonality&#39;: False, &#39;yearly_seasonality&#39;: 0, &#39;quarterly_seasonality&#39;: 0, &#39;monthly_seasonality&#39;: 0, &#39;weekly_seasonality&#39;: 0, &#39;daily_seasonality&#39;: 0}, uncertainty={&#39;uncertainty_dict&#39;: None})
+</pre></div>
+</div>
+<p>You can also pass a dataclass.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">447</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_components</span></a> <span class="o">=</span> <span class="n">sst</span><span class="o">.</span><span class="n">get_model_components_from_model_template</span><span class="p">(</span><span class="n">model_template</span><span class="p">)</span>
+<span class="linenos">448</span> <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_components</span></a><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># `model_components` is a list of length 1.</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ModelComponentsParam(autoregression={&#39;autoreg_dict&#39;: &#39;auto&#39;, &#39;simulation_num&#39;: 10, &#39;fast_simulation&#39;: False}, changepoints={&#39;auto_growth&#39;: False, &#39;changepoints_dict&#39;: {&#39;method&#39;: &#39;auto&#39;, &#39;resample_freq&#39;: &#39;D&#39;, &#39;regularization_strength&#39;: 0.6, &#39;potential_changepoint_distance&#39;: &#39;7D&#39;, &#39;no_changepoint_distance_from_end&#39;: &#39;30D&#39;, &#39;yearly_seasonality_order&#39;: 15, &#39;yearly_seasonality_change_freq&#39;: None}, &#39;seasonality_changepoints_dict&#39;: None}, custom={&#39;feature_sets_enabled&#39;: &#39;auto&#39;, &#39;fit_algorithm_dict&#39;: {&#39;fit_algorithm&#39;: &#39;ridge&#39;, &#39;fit_algorithm_params&#39;: None}, &#39;max_daily_seas_interaction_order&#39;: 5, &#39;max_weekly_seas_interaction_order&#39;: 2, &#39;extra_pred_cols&#39;: [], &#39;drop_pred_cols&#39;: None, &#39;explicit_pred_cols&#39;: None, &#39;min_admissible_value&#39;: None, &#39;max_admissible_value&#39;: None, &#39;regression_weight_col&#39;: None, &#39;normalize_method&#39;: &#39;zero_to_one&#39;, &#39;remove_intercept&#39;: False}, events={&#39;auto_holiday&#39;: False, &#39;holidays_to_model_separately&#39;: &#39;auto&#39;, &#39;holiday_lookup_countries&#39;: &#39;auto&#39;, &#39;holiday_pre_num_days&#39;: 2, &#39;holiday_post_num_days&#39;: 2, &#39;holiday_pre_post_num_dict&#39;: None, &#39;daily_event_df_dict&#39;: None, &#39;auto_holiday_params&#39;: None, &#39;daily_event_neighbor_impact&#39;: None, &#39;daily_event_shifted_effect&#39;: None}, growth={&#39;growth_term&#39;: &#39;linear&#39;}, hyperparameter_override=None, regressors={&#39;regressor_cols&#39;: []}, lagged_regressors={&#39;lagged_regressor_dict&#39;: None}, seasonality={&#39;auto_seasonality&#39;: False, &#39;yearly_seasonality&#39;: 15, &#39;quarterly_seasonality&#39;: 0, &#39;monthly_seasonality&#39;: 0, &#39;weekly_seasonality&#39;: 4, &#39;daily_seasonality&#39;: 8}, uncertainty={&#39;uncertainty_dict&#39;: None})
+</pre></div>
+</div>
+</section>
+<section id="provide-a-list-of-templates">
+<h3>Provide a List of Templates<a class="headerlink" href="#provide-a-list-of-templates" title="Permalink to this heading"></a></h3>
+<p>For the high-level <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> templates through the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator" title="greykite.sklearn.estimator.simple_silverkite_estimator.SimpleSilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSilverkiteEstimator</span></code></a> estimator,
+you are allowed to provide a list of <code class="docutils literal notranslate"><span class="pre">model_template</span></code> or/and a list of <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code>.
+This option allows you to do grid search and compare over different templates/model component overrides
+at the same time.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">model_template</span></code>, you can provide a list of any templates defined above. For example, you can do</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">461</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_templates_list</span></a> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SILVERKITE&quot;</span><span class="p">,</span> <span class="s2">&quot;SILVERKITE_EMPTY&quot;</span><span class="p">,</span> <span class="n">model_template</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_model_components_from_model_template" title="greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate.get_model_components_from_model_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model_components_from_model_template</span></code></a>
+also takes a list as input.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">466</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_components</span></a> <span class="o">=</span> <span class="n">sst</span><span class="o">.</span><span class="n">get_model_components_from_model_template</span><span class="p">(</span><a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_templates_list</span></a><span class="p">)</span>
+<span class="linenos">467</span> <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_components</span></a><span class="p">)</span>  <span class="c1"># There are 3 elements.</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[ModelComponentsParam(autoregression={&#39;autoreg_dict&#39;: &#39;auto&#39;, &#39;simulation_num&#39;: 10, &#39;fast_simulation&#39;: False}, changepoints={&#39;auto_growth&#39;: False, &#39;changepoints_dict&#39;: {&#39;method&#39;: &#39;auto&#39;, &#39;yearly_seasonality_order&#39;: 15, &#39;resample_freq&#39;: &#39;3D&#39;, &#39;regularization_strength&#39;: 0.6, &#39;actual_changepoint_min_distance&#39;: &#39;30D&#39;, &#39;potential_changepoint_distance&#39;: &#39;15D&#39;, &#39;no_changepoint_distance_from_end&#39;: &#39;90D&#39;}, &#39;seasonality_changepoints_dict&#39;: None}, custom={&#39;fit_algorithm_dict&#39;: {&#39;fit_algorithm&#39;: &#39;ridge&#39;, &#39;fit_algorithm_params&#39;: None}, &#39;feature_sets_enabled&#39;: &#39;auto&#39;, &#39;max_daily_seas_interaction_order&#39;: 5, &#39;max_weekly_seas_interaction_order&#39;: 2, &#39;extra_pred_cols&#39;: [], &#39;drop_pred_cols&#39;: None, &#39;explicit_pred_cols&#39;: None, &#39;min_admissible_value&#39;: None, &#39;max_admissible_value&#39;: None, &#39;regression_weight_col&#39;: None, &#39;normalize_method&#39;: &#39;zero_to_one&#39;, &#39;remove_intercept&#39;: False}, events={&#39;auto_holiday&#39;: False, &#39;holidays_to_model_separately&#39;: &#39;auto&#39;, &#39;holiday_lookup_countries&#39;: &#39;auto&#39;, &#39;holiday_pre_num_days&#39;: 2, &#39;holiday_post_num_days&#39;: 2, &#39;holiday_pre_post_num_dict&#39;: None, &#39;daily_event_df_dict&#39;: None, &#39;auto_holiday_params&#39;: None, &#39;daily_event_neighbor_impact&#39;: None, &#39;daily_event_shifted_effect&#39;: None}, growth={&#39;growth_term&#39;: &#39;linear&#39;}, hyperparameter_override=None, regressors={&#39;regressor_cols&#39;: []}, lagged_regressors={&#39;lagged_regressor_dict&#39;: None}, seasonality={&#39;auto_seasonality&#39;: False, &#39;yearly_seasonality&#39;: &#39;auto&#39;, &#39;quarterly_seasonality&#39;: &#39;auto&#39;, &#39;monthly_seasonality&#39;: &#39;auto&#39;, &#39;weekly_seasonality&#39;: &#39;auto&#39;, &#39;daily_seasonality&#39;: &#39;auto&#39;}, uncertainty={&#39;uncertainty_dict&#39;: None}), ModelComponentsParam(autoregression={&#39;autoreg_dict&#39;: None, &#39;simulation_num&#39;: 10, &#39;fast_simulation&#39;: False}, changepoints={&#39;auto_growth&#39;: False, &#39;changepoints_dict&#39;: None, &#39;seasonality_changepoints_dict&#39;: None}, custom={&#39;feature_sets_enabled&#39;: False, &#39;fit_algorithm_dict&#39;: {&#39;fit_algorithm&#39;: &#39;linear&#39;, &#39;fit_algorithm_params&#39;: None}, &#39;max_daily_seas_interaction_order&#39;: 0, &#39;max_weekly_seas_interaction_order&#39;: 0, &#39;extra_pred_cols&#39;: [], &#39;drop_pred_cols&#39;: None, &#39;explicit_pred_cols&#39;: None, &#39;min_admissible_value&#39;: None, &#39;max_admissible_value&#39;: None, &#39;regression_weight_col&#39;: None, &#39;normalize_method&#39;: &#39;zero_to_one&#39;, &#39;remove_intercept&#39;: False}, events={&#39;auto_holiday&#39;: False, &#39;holidays_to_model_separately&#39;: [], &#39;holiday_lookup_countries&#39;: [], &#39;holiday_pre_num_days&#39;: 0, &#39;holiday_post_num_days&#39;: 0, &#39;holiday_pre_post_num_dict&#39;: None, &#39;daily_event_df_dict&#39;: None, &#39;auto_holiday_params&#39;: None, &#39;daily_event_neighbor_impact&#39;: None, &#39;daily_event_shifted_effect&#39;: None}, growth={&#39;growth_term&#39;: None}, hyperparameter_override=None, regressors={&#39;regressor_cols&#39;: []}, lagged_regressors={&#39;lagged_regressor_dict&#39;: None}, seasonality={&#39;auto_seasonality&#39;: False, &#39;yearly_seasonality&#39;: 0, &#39;quarterly_seasonality&#39;: 0, &#39;monthly_seasonality&#39;: 0, &#39;weekly_seasonality&#39;: 0, &#39;daily_seasonality&#39;: 0}, uncertainty={&#39;uncertainty_dict&#39;: None}), ModelComponentsParam(autoregression={&#39;autoreg_dict&#39;: &#39;auto&#39;, &#39;simulation_num&#39;: 10, &#39;fast_simulation&#39;: False}, changepoints={&#39;auto_growth&#39;: False, &#39;changepoints_dict&#39;: {&#39;method&#39;: &#39;auto&#39;, &#39;resample_freq&#39;: &#39;D&#39;, &#39;regularization_strength&#39;: 0.6, &#39;potential_changepoint_distance&#39;: &#39;7D&#39;, &#39;no_changepoint_distance_from_end&#39;: &#39;30D&#39;, &#39;yearly_seasonality_order&#39;: 15, &#39;yearly_seasonality_change_freq&#39;: None}, &#39;seasonality_changepoints_dict&#39;: None}, custom={&#39;feature_sets_enabled&#39;: &#39;auto&#39;, &#39;fit_algorithm_dict&#39;: {&#39;fit_algorithm&#39;: &#39;ridge&#39;, &#39;fit_algorithm_params&#39;: None}, &#39;max_daily_seas_interaction_order&#39;: 5, &#39;max_weekly_seas_interaction_order&#39;: 2, &#39;extra_pred_cols&#39;: [], &#39;drop_pred_cols&#39;: None, &#39;explicit_pred_cols&#39;: None, &#39;min_admissible_value&#39;: None, &#39;max_admissible_value&#39;: None, &#39;regression_weight_col&#39;: None, &#39;normalize_method&#39;: &#39;zero_to_one&#39;, &#39;remove_intercept&#39;: False}, events={&#39;auto_holiday&#39;: False, &#39;holidays_to_model_separately&#39;: &#39;auto&#39;, &#39;holiday_lookup_countries&#39;: &#39;auto&#39;, &#39;holiday_pre_num_days&#39;: 2, &#39;holiday_post_num_days&#39;: 2, &#39;holiday_pre_post_num_dict&#39;: None, &#39;daily_event_df_dict&#39;: None, &#39;auto_holiday_params&#39;: None, &#39;daily_event_neighbor_impact&#39;: None, &#39;daily_event_shifted_effect&#39;: None}, growth={&#39;growth_term&#39;: &#39;linear&#39;}, hyperparameter_override=None, regressors={&#39;regressor_cols&#39;: []}, lagged_regressors={&#39;lagged_regressor_dict&#39;: None}, seasonality={&#39;auto_seasonality&#39;: False, &#39;yearly_seasonality&#39;: 15, &#39;quarterly_seasonality&#39;: 0, &#39;monthly_seasonality&#39;: 0, &#39;weekly_seasonality&#39;: 4, &#39;daily_seasonality&#39;: 8}, uncertainty={&#39;uncertainty_dict&#39;: None})]
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code>, you can also create a list of <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> classes to override
+the base templates. Each single <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> is used to override each single base template.
+Therefore, if you provide a list of 4 <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> via <code class="docutils literal notranslate"><span class="pre">model_components_param</span></code> and the list
+of 3 base templates above via <code class="docutils literal notranslate"><span class="pre">model_template</span></code>, a total of 12 different sets of model parameters is expected.
+However, only unique sets of parameters will be kept.</p>
+<p>There are also pre-defined model templates that are defined through lists.
+The <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_DAILY_1&quot;</span></code> is a pre-tuned model template on daily data with 1 day forecast horizon.
+It is defined as a list of 3 model configs.
+The <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_DAILY_90&quot;</span></code> is a pre-tuned model template on daily data with 90 day’s forecast horizon.
+It is defined as a list of 4 model configs.
+The <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_WEEKLY&quot;</span></code> is a pre-tuned model template on weekly data.
+It is defined as a list of 4 model configs.
+The <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_1&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_24&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_168&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_336&quot;</span></code>
+are pre-tuned model templates on hourly data with horizons 1 hour, 1 day, 1 week and 2 weeks, respectively.
+They are defined as a list of 3 (for <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE_HOURLY_1&quot;</span></code>) or 4 (for others) model configs.</p>
+<p>You are also allowed to put these names in the <code class="docutils literal notranslate"><span class="pre">model_template</span></code> list, for example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">489</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model_templates_list2</span></a> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SILVERKITE_DAILY_90&quot;</span><span class="p">,</span> <span class="n">model_template</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This corresponds to 5 single base templates. Whenever you specify multiple sets of parameters
+(list of templates, list of model components, etc.), it’s best to have a sufficient number
+of cross validation folds so that the model does not pick a biased set of parameters.</p>
+</section>
+</section>
+<section id="the-low-level-templates-in-silverkite">
+<h2>The Low-level Templates in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code><a class="headerlink" href="#the-low-level-templates-in-silverkite" title="Permalink to this heading"></a></h2>
+<p>There is a pre-defined low-level template named <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> that takes low-level parameters and uses
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator" title="greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteEstimator</span></code></a>.</p>
+<p>The attributes in <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> are the same as in <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> but they take different
+types of inputs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">505</span> <span class="n">model_components_param_sk</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+<span class="linenos">506</span>     <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">507</span>     <span class="p">},</span>  <span class="c1"># growth does not accept any parameters, pass growth term via `extra_pred_cols` instead.</span>
+<span class="linenos">508</span>     <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">509</span>         <span class="s2">&quot;fs_components_df&quot;</span><span class="p">:</span> <span class="p">[</span><a href="https://pandas.pydata.org/pandas-docs/version/1.5.0/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">({</span>
+<span class="linenos">510</span>             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tod&quot;</span><span class="p">,</span> <span class="s2">&quot;tow&quot;</span><span class="p">,</span> <span class="s2">&quot;tom&quot;</span><span class="p">,</span> <span class="s2">&quot;toq&quot;</span><span class="p">,</span> <span class="s2">&quot;toy&quot;</span><span class="p">],</span>
+<span class="linenos">511</span>             <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">24.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="linenos">512</span>             <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="linenos">513</span>             <span class="s2">&quot;seas_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;daily&quot;</span><span class="p">,</span> <span class="s2">&quot;weekly&quot;</span><span class="p">,</span> <span class="s2">&quot;monthly&quot;</span><span class="p">,</span> <span class="s2">&quot;quarterly&quot;</span><span class="p">,</span> <span class="s2">&quot;yearly&quot;</span><span class="p">]})],</span>
+<span class="linenos">514</span>     <span class="p">},</span>
+<span class="linenos">515</span>     <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">516</span>         <span class="s2">&quot;changepoints_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+<span class="linenos">517</span>         <span class="s2">&quot;seasonality_changepoints_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="linenos">518</span>     <span class="p">},</span>
+<span class="linenos">519</span>     <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">520</span>         <span class="s2">&quot;daily_event_df_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="linenos">521</span>     <span class="p">},</span>
+<span class="linenos">522</span>     <span class="n">autoregression</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">523</span>         <span class="s2">&quot;autoreg_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="linenos">524</span>     <span class="p">},</span>
+<span class="linenos">525</span>     <span class="c1"># `regressors` does not take any input for SK template,</span>
+<span class="linenos">526</span>     <span class="c1"># please specify regressor columns in ``custom.extra_pred_cols`` below.</span>
+<span class="linenos">527</span>     <span class="n">regressors</span><span class="o">=</span><span class="p">{},</span>
+<span class="linenos">528</span>     <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">529</span>         <span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="linenos">530</span>     <span class="p">},</span>
+<span class="linenos">531</span>     <span class="n">custom</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">532</span>         <span class="s2">&quot;fit_algorithm_dict&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos">533</span>             <span class="s2">&quot;fit_algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+<span class="linenos">534</span>             <span class="s2">&quot;fit_algorithm_params&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos">535</span>         <span class="p">},</span>
+<span class="linenos">536</span>         <span class="s2">&quot;extra_pred_cols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ct1&quot;</span><span class="p">],</span>  <span class="c1"># extra predictor columns and regressors</span>
+<span class="linenos">537</span>         <span class="s2">&quot;min_admissible_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+<span class="linenos">538</span>         <span class="s2">&quot;max_admissible_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+<span class="linenos">539</span>     <span class="p">}</span>
+<span class="linenos">540</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">growth</span></code> parameter, the dictionary should be empty. The growth term’s name is specified
+via <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code> in <code class="docutils literal notranslate"><span class="pre">custom</span></code>. The default growth term is <code class="docutils literal notranslate"><span class="pre">&quot;ct1&quot;</span></code>, which corresponds to linear growth.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">seasonality</span></code> parameter, it recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;fs_components_df&quot;</span></code>, which is a pandas dataframe
+that specifies the fourier series generation information. For more information, see
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator" title="greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteEstimator</span></code></a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> template, the default includes daily, weekly, monthly, quarterly and yearly seasonality
+with orders 3, 3, 1, 1, 5, respectively.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">changepoints</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;changepoints_dict&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;seasonality_changepoints_dict&quot;</span></code>.
+Each of the two keys takes a parameter dictionary that corresponds to trend changepoints and seasonality changepoints.
+For more details of configuring these two parameters, see <a class="reference internal" href="../quickstart/01_exploration/0100_changepoint_detection.html"><span class="doc">Changepoint Detection</span></a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> template, both parameters are <code class="docutils literal notranslate"><span class="pre">None</span></code>, indicating that neither trend changepoints nor seasonality changepoints
+is included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">events</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;daily_event_df_dict&quot;</span></code>.
+Specify any events or holidays through the “daily_event_df_dict”. The usage is the same as this parameter in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> template, the default is no daily events (holidays).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">autoregression</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;autoreg_dict&quot;</span></code>. You can specify lags and aggregated lags through the
+dictionary to trigger autoregressive terms. Specify the value as <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> to automatically include the proper order of lags.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> template, autoregression is not included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">regressors</span></code> parameter does not recognize any key.
+If you have external regressors you would like to include,
+you need to include them in <code class="docutils literal notranslate"><span class="pre">custom.extra_pred_cols</span></code> instead of <code class="docutils literal notranslate"><span class="pre">regressors.regressor_cols</span></code>.
+For more details about regressors, see
+<a class="reference external" href="../../pages/model_components/0700_regressors.html#silverkite">Regressors</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> template, no regressors are included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">uncertainty</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;uncertainty_dict&quot;</span></code>, which takes a dictionary to specify how forecast intervals
+are calculated. For more details about uncertainty, see <a class="reference external" href="../../pages/model_components/0900_uncertainty.html#silverkite">Uncertainty</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> template, the default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in <code class="docutils literal notranslate"><span class="pre">ForecastConfig</span></code> is not None, it will automatically finds the
+most proper conditional residual to compute forecast intervals. We will see how to set <code class="docutils literal notranslate"><span class="pre">coverage</span></code> later.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">custom</span></code> parameter recognizes specific keys for <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> type of template that correspond to
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator" title="greykite.sklearn.estimator.silverkite_estimator.SilverkiteEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilverkiteEstimator</span></code></a>. These keys include</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;fit_algorithm_dict&quot;</span></code> takes a dictionary to specify what regression method is used to fit the time series.
+The default is the linear regression in <code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn</span></code>. For a detailed list of algorithms, see
+<a class="reference external" href="../../pages/model_components/0600_custom.html#fit-algorithm">Algorithms</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;extra_pred_cols&quot;</span></code> defines extra predictor column names. It accepts any valid patsy model formula term. Every column
+name needs to be either generated by <em class="xref py py-obj">build_silverkite_features</em>
+or included in the data df. For details, see
+<a class="reference external" href="../../pages/model_components/0600_custom.html#specify-model-terms">Extra predictors</a>.
+The default is <code class="docutils literal notranslate"><span class="pre">[&quot;ct1&quot;]</span></code>, which is the linear growth term.
+If you have external regressors, this is the place to include the regressor names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;min_admissible_value&quot;</span></code> is the minimum admissible value in forecast. All values below this will be clipped at this value.
+The default is None.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;max_admissible_value&quot;</span></code> is the maximum admissible value in forecast. All values above this will be clipped at this value.
+The default is None.</p></li>
+</ul>
+</div></blockquote>
+<p>A major difference between the high-level and low-level interfaces is that
+the lower-level interface does not have pre-defined holidays or feature sets (interaction terms),
+and takes more customizable seasonality information. Note that <code class="docutils literal notranslate"><span class="pre">&quot;SK&quot;</span></code> is the only low-level
+template in <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> estimators, and does not support a list of <code class="docutils literal notranslate"><span class="pre">model_template</span></code> or
+<code class="docutils literal notranslate"><span class="pre">model_components_param</span></code>.</p>
+</section>
+<section id="the-prophet-template">
+<h2>The <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> Template<a class="headerlink" href="#the-prophet-template" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template uses
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator" title="greykite.sklearn.estimator.prophet_estimator.ProphetEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProphetEstimator</span></code></a>,
+which is a wrapper for the <a class="reference external" href="https://facebook.github.io/prophet/docs/quick_start.html">Prophet model</a>.</p>
+<p>The attributes in <code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> are the same as in <code class="docutils literal notranslate"><span class="pre">&quot;SILVERKITE&quot;</span></code> but they take different
+types of inputs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">612</span> <span class="n">model_components_param_prophet</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+<span class="linenos">613</span>     <span class="n">growth</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">614</span>         <span class="s2">&quot;growth_term&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">]</span>
+<span class="linenos">615</span>     <span class="p">},</span>
+<span class="linenos">616</span>     <span class="n">seasonality</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">617</span>         <span class="s2">&quot;seasonality_mode&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;additive&quot;</span><span class="p">],</span>
+<span class="linenos">618</span>         <span class="s2">&quot;seasonality_prior_scale&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">],</span>
+<span class="linenos">619</span>         <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">],</span>
+<span class="linenos">620</span>         <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">],</span>
+<span class="linenos">621</span>         <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;auto&#39;</span><span class="p">],</span>
+<span class="linenos">622</span>         <span class="s2">&quot;add_seasonality_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="linenos">623</span>     <span class="p">},</span>
+<span class="linenos">624</span>     <span class="n">changepoints</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">625</span>         <span class="s2">&quot;changepoint_prior_scale&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">],</span>
+<span class="linenos">626</span>         <span class="s2">&quot;changepoints&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+<span class="linenos">627</span>         <span class="s2">&quot;n_changepoints&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">],</span>
+<span class="linenos">628</span>         <span class="s2">&quot;changepoint_range&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">]</span>
+<span class="linenos">629</span>     <span class="p">},</span>
+<span class="linenos">630</span>     <span class="n">events</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">631</span>         <span class="s2">&quot;holiday_lookup_countries&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<span class="linenos">632</span>         <span class="s2">&quot;holiday_pre_num_days&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="linenos">633</span>         <span class="s2">&quot;holiday_post_num_days&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="linenos">634</span>         <span class="s2">&quot;start_year&quot;</span><span class="p">:</span> <span class="mi">2015</span><span class="p">,</span>
+<span class="linenos">635</span>         <span class="s2">&quot;end_year&quot;</span><span class="p">:</span> <span class="mi">2030</span><span class="p">,</span>
+<span class="linenos">636</span>         <span class="s2">&quot;holidays_prior_scale&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.0</span><span class="p">]</span>
+<span class="linenos">637</span>     <span class="p">},</span>
+<span class="linenos">638</span>     <span class="n">regressors</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">639</span>         <span class="s2">&quot;add_regressor_dict&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="linenos">640</span>     <span class="p">},</span>
+<span class="linenos">641</span>     <span class="n">uncertainty</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos">642</span>         <span class="s2">&quot;mcmc_samples&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="linenos">643</span>         <span class="s2">&quot;uncertainty_samples&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1000</span><span class="p">]</span>
+<span class="linenos">644</span>     <span class="p">}</span>
+<span class="linenos">645</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">growth</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;growth_term&quot;</span></code>, which describes the growth rate of the time series model.
+For <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template, the value indicates linear growth.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">seasonality</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;seasonality_mode&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;seasonality_prior_scale&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;yearly_seasonality&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;weekly_seasonality&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;daily_seasonality&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;add_seasonality_dict&quot;</span></code>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template, the seasonality model is “additive” with prior scale 10 and automatic components.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">changepoints</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;changepoint_prior_scale&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;changepoints&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;n_changepoints&quot;</span></code>
+and <code class="docutils literal notranslate"><span class="pre">&quot;changepoint_range&quot;</span></code>.
+The Prophet model supports trend changepoints only.
+For <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template, it puts 25 potential trend changepoints uniformly over the first 80%
+data and use regularization with prior scale 0.05.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">events</span></code> parameter recognizes the keys <code class="docutils literal notranslate"><span class="pre">&quot;holiday_lookup_countries&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;holiday_pre_num_days&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;holiday_post_num_days&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;start_year&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;end_year&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;holidays_prior_scale&quot;</span></code>.
+The algorithm automatically looks up holidays in <code class="docutils literal notranslate"><span class="pre">&quot;holiday_lookup_countries&quot;</span></code>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template, it automatically looks up holidays between 2015 and 2030 with their
+plus/minus 2 days. The holiday prior scale is 10.</p>
+<p>The Prophet model does not support autoregression, so the <code class="docutils literal notranslate"><span class="pre">autoregression</span></code> value should be empty.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">regressors</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;add_regressor_dict&quot;</span></code>.
+For more details about regressors, see
+<a class="reference external" href="../../pages/model_components/0700_regressors.html#prophet">Regressors</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template, no regressors are included.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">uncertainty</span></code> parameter recognizes the key <code class="docutils literal notranslate"><span class="pre">&quot;mcmc_samples&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;uncertainty_samples&quot;</span></code>.
+For more details about uncertainty, see <a class="reference external" href="../../pages/model_components/0900_uncertainty.html#prophet">Uncertainty</a>.
+For <code class="docutils literal notranslate"><span class="pre">&quot;PROPHET&quot;</span></code> template, the default value is to sample 1000 uncertainty samples.</p>
+<p>The Prophet model does not have any specific value in the <code class="docutils literal notranslate"><span class="pre">custom</span></code> parameter.</p>
+</section>
+<section id="extra-notes">
+<h2>Extra Notes<a class="headerlink" href="#extra-notes" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>All templates take the <code class="docutils literal notranslate"><span class="pre">hyperparameter_override</span></code> key in their
+<code class="docutils literal notranslate"><span class="pre">ModelComponentsParam</span></code> class, which is used to define extra grid search options.
+For details, see <a class="reference internal" href="../quickstart/03_benchmark/0100_grid_search.html"><span class="doc">Grid Search</span></a>.</p></li>
+<li><p>To specify a string as a template name, it is recommended to use the
+<a class="reference internal" href="../../pages/autodoc/doc.html#greykite.framework.templates.model_templates.ModelTemplateEnum" title="greykite.framework.templates.model_templates.ModelTemplateEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelTemplateEnum</span></code></a>
+to avoid typos. For example,</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">691</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">silverkite_template</span></a> <span class="o">=</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE</span><span class="o">.</span><span class="n">name</span></a>
+<span class="linenos">692</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">silverkite_templates</span></a> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos">693</span>     <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE_EMPTY</span><span class="o">.</span><span class="n">name</span></a><span class="p">,</span>
+<span class="linenos">694</span>     <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE_DAILY_90</span><span class="o">.</span><span class="n">name</span></a>
+<span class="linenos">695</span> <span class="p">]</span>
+<span class="linenos">696</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prophet_template</span></a> <span class="o">=</span> <a href="https://docs.python.org/3.10/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">PROPHET</span><span class="o">.</span><span class="n">name</span></a>
+</pre></div>
+</div>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-templates-0100-template-overview-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/c5d261043ec409021ba9d93061722612/0100_template_overview.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">0100_template_overview.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5b160932e1fe667b5171d53dde71954a/0100_template_overview.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">0100_template_overview.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Model Templates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0200_multistage_forecast.html" class="btn btn-neutral float-right" title="The Multistage Forecast Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

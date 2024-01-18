@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_quickstart_04_postprocessing_sg_execution_times:
+
+Computation times
+=================
+**00:04.706** total execution time for **gallery_quickstart_04_postprocessing** files:
+
++--------------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_04_postprocessing_0100_reconcile_forecasts.py` (``0100_reconcile_forecasts.py``) | 00:04.706 | 0.0 MB |
++--------------------------------------------------------------------------------------------------------------------+-----------+--------+

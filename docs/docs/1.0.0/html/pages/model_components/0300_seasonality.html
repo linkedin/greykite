@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seasonality &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Holidays and Events" href="0400_events.html" />
+    <link rel="prev" title="Growth" href="0200_growth.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_growth.html">Growth</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Seasonality</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#silverkite">Silverkite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prophet">Prophet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Seasonality</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="seasonality">
+<h1>Seasonality<a class="headerlink" href="#seasonality" title="Permalink to this heading"></a></h1>
+<p>Use <code class="docutils literal notranslate"><span class="pre">model_components.seasonality</span></code> to specify the seasonality.</p>
+<p>Seasonality is used to model cyclical patterns in your data. These patterns
+are predictable and repeat over a fixed period of time (e.g. yearly seasonality is a
+cyclical pattern over 1 year).</p>
+<p>You can control each seasonality for different cycle lengths.</p>
+<p>To decide which types of seasonality to include, plot your input training data.
+Plot the values over each cycle and see if there are repeated patterns.
+See <a class="reference internal" href="../stepbystep/0300_input.html"><span class="doc">Examine Input Data</span></a> for details.</p>
+<section id="silverkite">
+<h2>Silverkite<a class="headerlink" href="#silverkite" title="Permalink to this heading"></a></h2>
+<p>Options (defaults shown for <code class="docutils literal notranslate"><span class="pre">SILVERKITE</span></code> template):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>seasonality: `dict` [`str`, `any`] or None, optional
+    Seasonality configuration dictionary, with the following optional keys.
+    (keys are `SilverkiteSeasonalityEnum` members in lower case).
+
+    The keys are parameters of
+    `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.forecast_simple_silverkite`.
+    Refer to that function for more details.
+
+    auto_seasonality: `bool`, default False
+        If set to True, will trigger automatic seasonality inferring.
+        The keys below are ignored unless the value is False to force turn the seasonality off.
+    yearly_seasonality: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;
+        Determines the yearly seasonality
+        &#39;auto&#39;, True, False, or a number for the Fourier order
+    quarterly_seasonality: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;
+        Determines the quarterly seasonality
+        &#39;auto&#39;, True, False, or a number for the Fourier order
+    monthly_seasonality: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;
+        Determines the monthly seasonality
+        &#39;auto&#39;, True, False, or a number for the Fourier order
+    weekly_seasonality: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;
+        Determines the weekly seasonality
+        &#39;auto&#39;, True, False, or a number for the Fourier order
+    daily_seasonality: `str` or `bool` or `int` or a list of such values for grid search, default &#39;auto&#39;
+        Determines the daily seasonality
+        &#39;auto&#39;, True, False, or a number for the Fourier order
+</pre></div>
+</div>
+<p>For each seasonality, you can choose <code class="docutils literal notranslate"><span class="pre">'auto',</span> <span class="pre">True,</span> <span class="pre">False,</span> <span class="pre">or</span> <span class="pre">a</span> <span class="pre">number</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">Fourier</span> <span class="pre">order</span></code>.
+Alternatively, you can choose to use automatic seasonality inferrer, which will infer
+all seasonality orders for you.
+Simply set <code class="docutils literal notranslate"><span class="pre">auto_seasonality=True</span></code>, and the seasonality orders will be populated automatically.
+For more details, see Seasonality Inferrer in <a class="reference internal" href="../../gallery/quickstart/01_exploration/0200_auto_configuration_tools.html"><span class="doc">Auto Configuration Tools</span></a>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True: model this seasonality with default Fourier order
+False: do not model this seasonality
+&quot;auto&quot;: let the template decide, based on input data frequency and
+        the amount of training data. As a general principle, it requires
+        at least 2 full seasonal cycles and multiple observations per cycle
+        (e.g. no weekly/daily seasonality for weekly data)
+int: model this seasonality with specified Fourier order
+</pre></div>
+</div>
+<p>The Fourier order is a tuning knob for the flexibility. For <code class="docutils literal notranslate"><span class="pre">Fourier</span> <span class="pre">order=k</span></code>,
+the model includes <code class="docutils literal notranslate"><span class="pre">2k</span></code> seasonality terms. Higher values result in a more flexible model,
+but may overfit to past data. Default fourier order is defined in
+<a class="reference internal" href="../autodoc/doc.html#id15" title="greykite.algo.forecast.silverkite.constants.silverkite_seasonality.SilverkiteSeasonalityEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">SilverkiteSeasonalityEnum</span></code></a>,
+and you can decide how to increase/decrease order by comparing to the defaults.
+The optimal value can be selected via hyperparameter tuning (CV grid search).</p>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example for daily data</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># turn seasonality &quot;on&quot;</span>
+    <span class="n">quarterly_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># turn seasonality &quot;off&quot;</span>
+    <span class="n">monthly_seasonality</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>   <span class="c1"># let the template decide</span>
+    <span class="c1"># weekly_seasonality=False,   # missing key is the same as &quot;auto&quot;</span>
+    <span class="n">daily_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>      <span class="c1"># it&#39;s not possible to have daily seasonality for daily observations</span>
+<span class="p">)</span>
+
+<span class="c1"># Example for hourly data with custom yearly seasonality</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="c1"># Leaves the rest up to the template (&quot;auto&quot;)</span>
+<span class="p">)</span>
+
+<span class="c1"># Example for weekly data with strong monthly patterns (e.g. Sales)</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">quarterly_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">monthly_seasonality</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># there are 4 weeks in a month, so the number of terms must not exceed 4</span>
+    <span class="n">weekly_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">daily_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Grid search is possible</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">quarterly_seasonality</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="n">monthly_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">weekly_seasonality</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">daily_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Auto seasonality</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">auto_seasonality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># automatically infers all seasonality orders</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># forces turning yearly seasonality off despite the inferring result</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Typical values are &lt;= 4, up to 12 for daily seasonality, and up to 15 for yearly seasonality.
+The forecast will not improve (and may get worse) if Fourier order is too high.</p>
+<p>The Fourier order <code class="docutils literal notranslate"><span class="pre">k</span></code> should satisfy <code class="docutils literal notranslate"><span class="pre">2k</span> <span class="pre">&lt;=</span> <span class="pre">n_levels+1</span></code>. <code class="docutils literal notranslate"><span class="pre">n_levels</span></code> is the
+number of possible values in a cycle. For example, if your input data is at
+<code class="docutils literal notranslate"><span class="pre">daily</span></code> frequency:</p>
+<ul class="simple">
+<li><p>monthly seasonality: <code class="docutils literal notranslate"><span class="pre">n_levels=31</span></code> days in a month.</p></li>
+<li><p>weekly seasonality: <code class="docutils literal notranslate"><span class="pre">n_levels=7</span></code> days in a week.</p></li>
+<li><p>daily seasonality: <code class="docutils literal notranslate"><span class="pre">n_levels=1</span></code> hours in a day.</p></li>
+</ul>
+<p>Furthermore, plot your timeseries to check how strong each seasonality effect is.
+Usually monthly seasonality has a weak effect, so we would limit its Fourier order to 2.</p>
+</div>
+</section>
+<section id="prophet">
+<h2>Prophet<a class="headerlink" href="#prophet" title="Permalink to this heading"></a></h2>
+<p>Options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>seasonality : `dict` [`str`, `any`] or None, optional
+    Seasonality config dictionary, with the following optional keys.
+
+    seasonality_mode: `str` or None or list of such values for grid search
+        Can be &#39;additive&#39; (default) or &#39;multiplicative&#39;.
+    seasonality_prior_scale: `float` or None or list of such values for grid search
+        Parameter modulating the strength of the seasonality model. 10.0 by default.
+        Larger values allow the model to fit larger seasonal fluctuations, smaller values dampen the seasonality.
+        Specify for individual seasonalities using add_seasonality_dict.
+    yearly_seasonality: `str` or `bool` or `int` or list of such values for grid search, default &#39;auto&#39;
+        Determines the yearly seasonality.
+        Can be &#39;auto&#39; (default), True, False, or a number of Fourier terms to generate.
+    weekly_seasonality: `str` or `bool` or `int` or list of such values for grid search, default &#39;auto&#39;
+        Determines the weekly seasonality
+        Can be &#39;auto&#39; (default), True, False, or a number of Fourier terms to generate.
+    daily_seasonality: `str` or `bool` or `int` or list of such values for grid search, default &#39;auto&#39;
+        Determines the daily seasonality
+        Can be &#39;auto&#39; (default), True, False, or a number of Fourier terms to generate.
+    add_seasonality_dict: `dict` or None or list of such values for grid search
+        dict of custom seasonality parameters to be added to the model, default=None
+        Key is the seasonality component name e.g. &#39;monthly&#39;; parameters are specified via dict.
+</pre></div>
+</div>
+<p>For more information on <code class="docutils literal notranslate"><span class="pre">add_seasonality_dict</span></code>,
+see <a class="reference internal" href="../autodoc/doc.html#greykite.sklearn.estimator.prophet_estimator.ProphetEstimator" title="greykite.sklearn.estimator.prophet_estimator.ProphetEstimator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProphetEstimator</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Refer to Silverkite section for Fourier order.</p>
+<p>To define other seasonalities (<code class="docutils literal notranslate"><span class="pre">monthly</span></code>, <code class="docutils literal notranslate"><span class="pre">quarterly</span></code>, etc),
+use <code class="docutils literal notranslate"><span class="pre">add_seasonality_dict</span></code>.</p>
+<p>To further customize or overwrite built-in seasonalities (<code class="docutils literal notranslate"><span class="pre">yearly</span></code>, <code class="docutils literal notranslate"><span class="pre">weekly</span></code>, <code class="docutils literal notranslate"><span class="pre">daily</span></code>),
+set them to <code class="docutils literal notranslate"><span class="pre">False</span></code> in <code class="docutils literal notranslate"><span class="pre">seasonalities</span></code> and define within <code class="docutils literal notranslate"><span class="pre">add_seasonality_dict</span></code>.
+See examples below.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If no seasonalities are provided or set as <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code>, Prophet:</p>
+<ul class="simple">
+<li><p>Turns on yearly seasonality if there is &gt;=2 years of history.</p></li>
+<li><p>Turns on weekly seasonality if there is &gt;=2 weeks of history,
+and the spacing between dates in the history is &lt;7 days.</p></li>
+<li><p>Turns on daily seasonality if there is &gt;=2 days of history,
+and the spacing between dates in the history is &lt;1 day.</p></li>
+</ul>
+<p>Seasonality values <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> result in similar behavior as Silverkite.</p>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># example for daily data</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">seasonality_mode</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;additive&quot;</span><span class="p">],</span>        <span class="c1"># seasonality effect is added to the trend to get forecast</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span>            <span class="c1"># turn seasonality &quot;on&quot;</span>
+    <span class="c1"># weekly_seasonality=[False],         # missing key is the same as &quot;auto&quot;</span>
+    <span class="n">daily_seasonality</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">],</span>            <span class="c1"># it&#39;s not possible to have daily seasonality for daily observations</span>
+    <span class="n">seasonality_prior_scale</span><span class="o">=</span><span class="p">[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">]</span>  <span class="c1"># grid search over seasonality strength options</span>
+<span class="p">)</span>
+
+<span class="c1"># example for hourly data with custom yearly, monthly, and quarterly seasonality</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">seasonality_mode</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;multiplicative&quot;</span><span class="p">],</span>  <span class="c1"># seasonality effect is multiplied</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+    <span class="n">add_seasonality_dict</span><span class="o">=</span><span class="p">[</span>
+    <span class="c1"># custom seasonality - specify period, and optionally fourier_order &amp; prior scale</span>
+    <span class="c1"># it is possible to model different `seasonality_mode`s for custom seasonalities</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mf">365.25</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s2">&quot;additive&quot;</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;quarterly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mf">365.25</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">15.0</span><span class="p">,</span>
+                <span class="s1">&#39;prior_scale&#39;</span><span class="p">:</span> <span class="mf">15.0</span><span class="p">,</span>
+                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s2">&quot;multiplicative&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}]</span>
+    <span class="c1"># leave the rest up to the template (&quot;auto&quot;)</span>
+<span class="p">)</span>
+
+<span class="c1"># example of disabling built-in weekly seasonality and customizing via add_seasonality_dict</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">weekly_seasonality</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+    <span class="n">seasonality_prior_scale</span><span class="o">=</span><span class="p">[</span><span class="mf">3.0</span><span class="p">],</span>      <span class="c1"># applies to daily and yearly (&quot;auto&quot;) seasonalities.</span>
+    <span class="n">add_seasonality_dict</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;weekly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+                <span class="s1">&#39;prior_scale&#39;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>     <span class="c1"># customized, otherwise defaults to seasonality_prior_scale</span>
+                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s2">&quot;multiplicative&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+<span class="c1"># example for weekly data with strong monthly patterns (e.g. Sales)</span>
+<span class="n">seasonality</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">seasonality_mode</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;additive&quot;</span><span class="p">,</span> <span class="s2">&quot;multiplicative&quot;</span><span class="p">],</span>  <span class="c1"># grid search over both</span>
+    <span class="n">yearly_seasonality</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="n">seasonality_prior_scale</span><span class="o">=</span><span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">],</span> <span class="c1"># grid search over multiple seasonality strength options</span>
+    <span class="n">add_seasonality_dict</span><span class="o">=</span><span class="p">[</span>              <span class="c1"># grid search over multiple custom seasonalities</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mf">365.25</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;quarterly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mf">365.25</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">3.0</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mf">365.25</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">2.0</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;quarterly&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mf">365.25</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span>
+                <span class="s1">&#39;fourier_order&#39;</span><span class="p">:</span> <span class="mf">7.0</span>
+            <span class="p">}</span>
+        <span class="p">}]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">fourier_order</span></code> and <code class="docutils literal notranslate"><span class="pre">prior_scale</span></code> to tune strength of seasonality effects.
+To model Seasonality that depends on other factors,
+see more details at <a class="reference external" href="https://facebook.github.io/prophet/docs/seasonality,_holiday_effects,_and_regressors.html#seasonalities-that-depend-on-other-factors">Prophet</a>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0200_growth.html" class="btn btn-neutral float-left" title="Growth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0400_events.html" class="btn btn-neutral float-right" title="Holidays and Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

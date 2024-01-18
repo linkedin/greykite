@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.templates.auto_arima_template &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.templates.auto_arima_template</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.templates.auto_arima_template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Sayan Patra</span>
+
+<span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">dictionaries_values_to_lists</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionaries</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ModelComponentsParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.base_template</span> <span class="kn">import</span> <span class="n">BaseTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.auto_arima_estimator</span> <span class="kn">import</span> <span class="n">AutoArimaEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+
+
+<div class="viewcode-block" id="AutoArimaTemplate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.auto_arima_template.AutoArimaTemplate">[docs]</a><span class="k">class</span> <span class="nc">AutoArimaTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A template for :class:`~greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator`.</span>
+
+<span class="sd">    Takes input data and optional configuration parameters</span>
+<span class="sd">    to customize the model. Returns a set of parameters to call</span>
+<span class="sd">    :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The attributes of a `~greykite.framework.templates.autogen.forecast_config.ForecastConfig` for</span>
+<span class="sd">    :class:`~greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator` are:</span>
+
+<span class="sd">        computation_param: `ComputationParam` or None, default None</span>
+<span class="sd">            How to compute the result. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ComputationParam`.</span>
+<span class="sd">        coverage: `float` or None, default None</span>
+<span class="sd">            Intended coverage of the prediction bands (0.0 to 1.0)</span>
+<span class="sd">            If None, the upper/lower predictions are not returned</span>
+<span class="sd">            Same as coverage in ``forecast_pipeline``</span>
+<span class="sd">        evaluation_metric_param: `EvaluationMetricParam` or None, default None</span>
+<span class="sd">            What metrics to evaluate. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam`.</span>
+<span class="sd">        evaluation_period_param: `EvaluationPeriodParam` or None, default None</span>
+<span class="sd">            How to split data for evaluation. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`.</span>
+<span class="sd">        forecast_horizon: `int` or None, default None</span>
+<span class="sd">            Number of periods to forecast into the future. Must be &gt; 0</span>
+<span class="sd">            If None, default is determined from input data frequency</span>
+<span class="sd">            Same as forecast_horizon in `forecast_pipeline`</span>
+<span class="sd">        metadata_param: `MetadataParam` or None, default None</span>
+<span class="sd">            Information about the input data. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.MetadataParam`.</span>
+<span class="sd">        model_components_param: `ModelComponentsParam` or None, default None</span>
+<span class="sd">            Parameters to tune the model. See</span>
+<span class="sd">            :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">            The fields are dictionaries with the following items.</span>
+
+<span class="sd">            seasonality: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Pass the relevant Auto Arima arguments via custom.</span>
+
+<span class="sd">            growth: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Pass the relevant Auto Arima arguments via custom.</span>
+
+<span class="sd">            events: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Pass the relevant Auto Arima arguments via custom.</span>
+
+<span class="sd">            changepoints: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Pass the relevant Auto Arima arguments via custom.</span>
+
+<span class="sd">            regressors: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Auto Arima template currently does not support regressors.</span>
+
+<span class="sd">            uncertainty: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Pass the relevant Auto Arima arguments via custom.</span>
+
+<span class="sd">            hyperparameter_override: `dict` [`str`, `any`] or None or `list` [`dict` [`str`, `any`] or None]</span>
+<span class="sd">                After the above model components are used to create a hyperparameter grid, the result is</span>
+<span class="sd">                updated by this dictionary, to create new keys or override existing ones.</span>
+<span class="sd">                Allows for complete customization of the grid search.</span>
+
+<span class="sd">                Keys should have format ``{named_step}__{parameter_name}`` for the named steps of the</span>
+<span class="sd">                `sklearn.pipeline.Pipeline` returned by this function. See `sklearn.pipeline.Pipeline`.</span>
+
+<span class="sd">                For example::</span>
+
+<span class="sd">                    hyperparameter_override={</span>
+<span class="sd">                        &quot;estimator__max_p&quot;: [8, 10],</span>
+<span class="sd">                        &quot;estimator__information_criterion&quot;: [&quot;bic&quot;],</span>
+<span class="sd">                    }</span>
+
+<span class="sd">                If a list of dictionaries, grid search will be done for each dictionary in the list.</span>
+<span class="sd">                Each dictionary in the list override the defaults. This enables grid search</span>
+<span class="sd">                over specific combinations of parameters to reduce the search space.</span>
+
+<span class="sd">                    * For example, the first dictionary could define combinations of parameters for a</span>
+<span class="sd">                      &quot;complex&quot; model, and the second dictionary could define combinations of parameters</span>
+<span class="sd">                      for a &quot;simple&quot; model, to prevent mixed combinations of simple and complex.</span>
+<span class="sd">                    * Or the first dictionary could grid search over fit algorithm, and the second dictionary</span>
+<span class="sd">                      could use a single fit algorithm and grid search over seasonality.</span>
+
+<span class="sd">                The result is passed as the ``param_distributions`` parameter</span>
+<span class="sd">                to `sklearn.model_selection.RandomizedSearchCV`.</span>
+<span class="sd">            autoregression: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Ignored. Pass the relevant Auto Arima arguments via custom.</span>
+<span class="sd">            custom: `dict` [`str`, `any`] or None</span>
+<span class="sd">                Any parameter in the</span>
+<span class="sd">                :class:`~greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator`</span>
+<span class="sd">                can be passed.</span>
+<span class="sd">        model_template: `str`</span>
+<span class="sd">            This class only accepts &quot;AUTO_ARIMA&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;AUTO_ARIMA&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">estimator</span><span class="p">:</span> <span class="n">BaseForecastEstimator</span> <span class="o">=</span> <span class="n">AutoArimaEstimator</span><span class="p">()):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_template_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;AutoArimaTemplate does not allow `config.model_template` to be a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_components_param_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;AutoArimaTemplate does not allow `config.model_components_param` to be a list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="AutoArimaTemplate.get_regressor_cols"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.auto_arima_template.AutoArimaTemplate.get_regressor_cols">[docs]</a>    <span class="k">def</span> <span class="nf">get_regressor_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns regressor column names from the model components.</span>
+
+<span class="sd">        Currently does not implement regressors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="AutoArimaTemplate.apply_auto_arima_model_components_defaults"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.auto_arima_template.AutoArimaTemplate.apply_auto_arima_model_components_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">apply_auto_arima_model_components_defaults</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets default values for ``model_components``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_components : :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam` or None, default None</span>
+<span class="sd">            Configuration of model growth, seasonality, events, etc.</span>
+<span class="sd">            See the docstring of this class for details.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_components : :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`</span>
+<span class="sd">            The provided ``model_components`` with default values set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">model_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="n">ModelComponentsParam</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># makes a copy to avoid mutating input</span>
+            <span class="n">model_components</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">model_components</span><span class="p">)</span>
+
+        <span class="n">default_custom</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="c1"># pmdarima fit parameters</span>
+            <span class="n">start_p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">start_q</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">max_p</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">max_d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">max_q</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">start_P</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">D</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">start_Q</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">max_P</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">max_D</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">max_Q</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">max_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">seasonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">stationary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">information_criterion</span><span class="o">=</span><span class="s1">&#39;aic&#39;</span><span class="p">,</span>
+            <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">test</span><span class="o">=</span><span class="s1">&#39;kpss&#39;</span><span class="p">,</span>
+            <span class="n">seasonal_test</span><span class="o">=</span><span class="s1">&#39;ocsb&#39;</span><span class="p">,</span>
+            <span class="n">stepwise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">start_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">trend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span>
+            <span class="n">maxiter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">offset_test_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">seasonal_test_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">error_action</span><span class="o">=</span><span class="s1">&#39;trace&#39;</span><span class="p">,</span>
+            <span class="n">trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">random</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">n_fits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">out_of_sample_size</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span>
+            <span class="n">scoring_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">with_intercept</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="c1"># pmdarima predict parameters</span>
+            <span class="n">return_conf_int</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">dynamic</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="n">default_custom</span><span class="p">,</span>
+            <span class="n">overwrite_dicts</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">custom</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Sets to {} if None, for each item if</span>
+        <span class="c1"># `model_components.hyperparameter_override` is a list of dictionaries</span>
+        <span class="n">model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+            <span class="n">default_dict</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">overwrite_dicts</span><span class="o">=</span><span class="n">model_components</span><span class="o">.</span><span class="n">hyperparameter_override</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model_components</span></div>
+
+<div class="viewcode-block" id="AutoArimaTemplate.get_hyperparameter_grid"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.auto_arima_template.AutoArimaTemplate.get_hyperparameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns hyperparameter grid.</span>
+
+<span class="sd">        Implements the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Uses ``self.time_properties`` and ``self.config`` to generate the hyperparameter grid.</span>
+
+<span class="sd">        Converts model components into</span>
+<span class="sd">        :class:`~greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator`.</span>
+<span class="sd">        hyperparameters.</span>
+
+<span class="sd">        The output dictionary values are lists, combined via grid search in</span>
+<span class="sd">        :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_components : :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam` or None, default None</span>
+<span class="sd">            Configuration of parameter space to search the order (p, d, q etc.) of SARIMAX model.</span>
+<span class="sd">            See :func:`~greykite.framework.templates.auto_arima_templates.auto_arima_template` for details.</span>
+
+<span class="sd">        coverage : `float` or None, default=0.95</span>
+<span class="sd">            Intended coverage of the prediction bands (0.0 to 1.0)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hyperparameter_grid : `dict` [`str`, `list` [`any`]] or None</span>
+<span class="sd">            :class:`~greykite.sklearn.estimator.auto_arima_estimator.AutoArimaEstimator`</span>
+<span class="sd">            hyperparameters.</span>
+
+<span class="sd">            See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">            The output dictionary values are lists, combined in grid search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_auto_arima_model_components_defaults</span><span class="p">(</span>
+            <span class="n">model_components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">)</span>
+        <span class="c1"># Returns a set of parameters for grid search</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="c1"># Additional parameters</span>
+            <span class="s2">&quot;estimator__freq&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span>
+            <span class="c1"># pmdarima fit parameters</span>
+            <span class="s2">&quot;estimator__start_p&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;start_p&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__start_q&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;start_q&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_p&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_p&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_d&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_q&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_q&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__start_P&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;start_P&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__D&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__start_Q&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;start_Q&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_P&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_P&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_D&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_D&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_Q&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_Q&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__max_order&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;max_order&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__m&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;m&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__seasonal&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__stationary&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;stationary&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__information_criterion&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;information_criterion&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__alpha&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__test&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__seasonal_test&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;seasonal_test&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__stepwise&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;stepwise&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__n_jobs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;n_jobs&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__start_params&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;start_params&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__trend&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__method&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__maxiter&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;maxiter&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__offset_test_args&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;offset_test_args&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__seasonal_test_args&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;seasonal_test_args&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__suppress_warnings&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;suppress_warnings&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__error_action&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;error_action&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__trace&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__random&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;random&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__random_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;random_state&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__n_fits&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;n_fits&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__out_of_sample_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;out_of_sample_size&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__scoring&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;scoring&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__scoring_args&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;scoring_args&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__with_intercept&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;with_intercept&quot;</span><span class="p">],</span>
+            <span class="c1"># pmdarima predict parameters</span>
+            <span class="s2">&quot;estimator__return_conf_int&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;return_conf_int&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;estimator__dynamic&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;dynamic&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Overwrites values by `model_components.hyperparameter_override`</span>
+        <span class="c1"># This may produce a list of dictionaries for grid search.</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid</span><span class="p">,</span>
+            <span class="n">overwrite_dicts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">hyperparameter_override</span><span class="p">,</span>
+            <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Ensures all items have the proper type for</span>
+        <span class="c1"># `sklearn.model_selection.RandomizedSearchCV`.</span>
+        <span class="c1"># List-type hyperparameters are specified below</span>
+        <span class="c1"># with their accepted non-list type values.</span>
+        <span class="n">hyperparameter_grid</span> <span class="o">=</span> <span class="n">dictionaries_values_to_lists</span><span class="p">(</span>
+            <span class="n">hyperparameter_grid</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">hyperparameter_grid</span></div>
+
+<div class="viewcode-block" id="AutoArimaTemplate.apply_template_decorator"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.auto_arima_template.AutoArimaTemplate.apply_template_decorator">[docs]</a>    <span class="k">def</span> <span class="nf">apply_template_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Decorator for ``apply_template_for_pipeline_params`` function.</span>
+
+<span class="sd">        Overrides the method in `~greykite.framework.templates.base_template.BaseTemplate`.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError if config.model_template != &quot;AUTO_ARIMA&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">process_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># sets defaults</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_forecast_config_defaults</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+            <span class="c1"># input validation</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">!=</span> <span class="s2">&quot;AUTO_ARIMA&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AutoArimaTemplate only supports config.model_template=&#39;AUTO_ARIMA&#39;, &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;found &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="n">pipeline_params</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">pipeline_params</span>
+        <span class="k">return</span> <span class="n">process_wrapper</span></div>
+
+<div class="viewcode-block" id="AutoArimaTemplate.apply_template_for_pipeline_params"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.auto_arima_template.AutoArimaTemplate.apply_template_for_pipeline_params">[docs]</a>    <span class="nd">@apply_template_decorator</span>
+    <span class="k">def</span> <span class="nf">apply_template_for_pipeline_params</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Explicitly calls the method in</span>
+<span class="sd">        `~greykite.framework.templates.base_template.BaseTemplate`</span>
+<span class="sd">        to make use of the decorator in this class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            The time series dataframe with ``time_col`` and ``value_col`` and optional regressor columns.</span>
+<span class="sd">        config : `~greykite.framework.templates.autogen.forecast_config.ForecastConfig`.</span>
+<span class="sd">            The `ForecastConfig` class that includes model training parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pipeline_parameters : `dict`</span>
+<span class="sd">            The pipeline parameters consumable by</span>
+<span class="sd">            `~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">apply_template_for_pipeline_params</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
+
+    <span class="n">apply_template_decorator</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">apply_template_decorator</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

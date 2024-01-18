@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Greykite Anomaly Detection model &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Quickstart" href="../../gallery/quickstart/index.html" />
+    <link rel="prev" title="The Greykite Forecast model" href="100_forecast_intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Greykite Anomaly Detection model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-does-the-algorithm-work">How does the algorithm work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advantages-of-using-the-greykite-ad">Advantages of using the Greykite AD</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">The Greykite Anomaly Detection model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-greykite-anomaly-detection-model">
+<h1>The Greykite Anomaly Detection model<a class="headerlink" href="#the-greykite-anomaly-detection-model" title="Permalink to this heading"></a></h1>
+<p><strong>Authors: Reza Hosseini, Sayan Patra</strong></p>
+<p>Greykite AD (Anomaly Detection) is an extension of the Greykite
+Forecasting library. It provides users with an interpretable, fast, robust and easy to use
+interface to monitor their metrics with minimal effort.</p>
+<p>Greykite AD improves upon the out-of-box confidence intervals generated by Silverkite, by automatically tuning the confidence intervals
+and other filters (e.g. based on <code class="docutils literal notranslate"><span class="pre">Absolute</span> <span class="pre">Percentage</span> <span class="pre">Error</span> <span class="pre">(APE)</span></code>) using expected alert rate information and/ or anomaly labels, if available.
+It allows the users to define robust objective function, constraints and parameter space to optimize the confidence intervals.
+For example user can target a minimal recall level of 80% while maximizing precision. Additionally, the users can specify a
+minimum error level to filter out anomalies that are not business relevant. The motivation to include criteria other than
+statistical significance is to bake in material/ business impact into the detection.</p>
+<p>The parameters of the model can be configured via a config file, which makes the model easy to
+serve in production environments. This approach has proved effective in real-world use cases at scale.</p>
+<section id="how-does-the-algorithm-work">
+<h2>How does the algorithm work?<a class="headerlink" href="#how-does-the-algorithm-work" title="Permalink to this heading"></a></h2>
+<p>The algorithm is based on the following steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Fit a forecast model using the given <code class="docutils literal notranslate"><span class="pre">ForecastConfig</span></code>.</p></li>
+<li><p>Fit a volatility model on forecast errors using the given <code class="docutils literal notranslate"><span class="pre">ADConfig</span></code>.
+This includes using expected alert rate and / or anomaly labels to optimize the confidence bands and
+other filters based on <code class="docutils literal notranslate"><span class="pre">APE</span></code> etc. The optimization can reflect complex user preferences
+e.g. target a minimum recall level while maximizing precision.</p></li>
+</ol>
+</div></blockquote>
+</section>
+<section id="advantages-of-using-the-greykite-ad">
+<h2>Advantages of using the Greykite AD<a class="headerlink" href="#advantages-of-using-the-greykite-ad" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>It works on any data frequency (e.g. daily, hourly, 15 minutes,
+5 minutes, 1 min) even with small amount of data.</p></li>
+<li><p>It can use user feedback (labels provided by the user) to adjust itself
+over time, but works without anomaly labels too.</p></li>
+<li><p>It takes into account seasonality, holidays, growth and other
+complex patterns when issuing alerts.</p></li>
+<li><p>It provides great flexibility in optimization metrics e.g. optimize recall
+subject to precision being at least 80 percent.</p></li>
+</ol>
+</div></blockquote>
+<p>One of the primary advantages of the Greykite AD is that it works for both supervised and unsupervised problems.
+In the supervised case, the user provides the labels for the anomalies. These labels are used to train, evaluate and
+update the model. The reward function is chosen to utilize these labels e.g. precision, recall, F1 score etc, or a
+combination of these. In the unsupervised case, when no labels are provided, the algorithm uses
+the percent of time points that are labeled as anomalies to optimize the model.</p>
+<p>The library is designed such that the users can provide flexible objective functions and constraints that
+suit their use case. It allows for the following:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Combining objective functions and constraints.</p>
+<p>For example, the user can specify to optimize <code class="docutils literal notranslate"><span class="pre">F1</span> <span class="pre">score</span></code> such that the <code class="docutils literal notranslate"><span class="pre">anomaly</span> <span class="pre">percent</span></code>
+is less than <code class="docutils literal notranslate"><span class="pre">5%</span></code> and the <code class="docutils literal notranslate"><span class="pre">recall</span></code> is at least <code class="docutils literal notranslate"><span class="pre">80%</span></code>.</p>
+</li>
+<li><p>Filter anomalies based on business requirements.</p>
+<p>It is possible that a statistically significant anomaly is not business relevant. For example, a statistically significant spike
+in the number of users on a website may not have enough business impact to warrant an alert.
+The user can filter such anomalies by specifying a minimum error level to trigger an alert.
+The library provides <code class="docutils literal notranslate"><span class="pre">Absolute</span> <span class="pre">Percentage</span> <span class="pre">Error</span> <span class="pre">(APE)</span></code> and <code class="docutils literal notranslate"><span class="pre">Symmetric</span> <span class="pre">Absolute</span> <span class="pre">Percentage</span> <span class="pre">Error</span> <span class="pre">(SAPE)</span></code>
+as two options for error level. The user can also pass a grid of values (e.g. <code class="docutils literal notranslate"><span class="pre">ADConfig.ape_grid</span></code>) and Greykite can use
+the grid in the optimization. In the supervised case, Greykite can use the labels to find the optimal combination of
+confidence interval coverage and <code class="docutils literal notranslate"><span class="pre">APE</span></code> filter based on the user labels. In the un-supervised case, it makes sense to
+optimize only over either coverage or a filter because the only input is the expected alert rate.</p>
+</li>
+<li><p>Soft version of metrics to bridge the gap between business requirements and statistical requirements.</p>
+<p>We developed soft version of well-known metrics that allows for margin of error in the detection process i.e.
+<code class="docutils literal notranslate"><span class="pre">soft</span> <span class="pre">precision</span></code>, <code class="docutils literal notranslate"><span class="pre">soft</span> <span class="pre">recall</span></code> and <code class="docutils literal notranslate"><span class="pre">soft</span> <span class="pre">F1</span> <span class="pre">score</span></code>.
+For example, if the user is satisfied that an anomaly is captured within 5 hours of its occurrence,
+then the user can specify a window of 5 hours in <code class="docutils literal notranslate"><span class="pre">soft</span> <span class="pre">recall</span></code>. The library will then consider an anomaly to
+be a true positive if it is detected within 5 hours of its occurrence. This often bridges the gap between
+the business requirements and the statistical requirements.</p>
+</li>
+</ol>
+</div></blockquote>
+<p>See <a class="reference internal" href="../../gallery/quickstart/0200_simple_anomaly_detection.html"><span class="doc">Simple Anomaly Detection</span></a> to get started.
+A more detailed tutorial for the anomaly detection process is
+at <a class="reference internal" href="../../gallery/tutorials/0400_anomaly_detection_tutorial.html"><span class="doc">Tune your first anomaly detection model</span></a>.
+You can follow that guide for advanced configuration.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="100_forecast_intro.html" class="btn btn-neutral float-left" title="The Greykite Forecast model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../gallery/quickstart/index.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

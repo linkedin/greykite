@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.algo.forecast.silverkite.forecast_simple_silverkite &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.algo.forecast.silverkite.forecast_simple_silverkite</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.algo.forecast.silverkite.forecast_simple_silverkite</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.algo.changepoint.adalasso.changepoint_detector</span> <span class="kn">import</span> <span class="n">get_changepoints_dict</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.auto_config</span> <span class="kn">import</span> <span class="n">get_auto_growth</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.auto_config</span> <span class="kn">import</span> <span class="n">get_auto_holidays</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.auto_config</span> <span class="kn">import</span> <span class="n">get_auto_seasonality</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_column</span> <span class="kn">import</span> <span class="n">SilverkiteColumn</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_constant</span> <span class="kn">import</span> <span class="n">SilverkiteConstant</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_constant</span> <span class="kn">import</span> <span class="n">default_silverkite_constant</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_holiday</span> <span class="kn">import</span> <span class="n">SilverkiteHoliday</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.constants.silverkite_time_frequency</span> <span class="kn">import</span> <span class="n">SilverkiteTimeFrequencyEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_silverkite</span> <span class="kn">import</span> <span class="n">SilverkiteForecast</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper</span> <span class="kn">import</span> <span class="n">cols_interact</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper</span> <span class="kn">import</span> <span class="n">generate_holiday_events</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper</span> <span class="kn">import</span> <span class="n">get_event_pred_cols</span>
+<span class="kn">from</span> <span class="nn">greykite.algo.forecast.silverkite.forecast_simple_silverkite_helper</span> <span class="kn">import</span> <span class="n">patsy_categorical_term</span>
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">GrowthColEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.enums</span> <span class="kn">import</span> <span class="n">SimpleTimeFrequencyEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.enums</span> <span class="kn">import</span> <span class="n">TimeEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_available_holidays_across_countries</span>
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_features</span> <span class="kn">import</span> <span class="n">get_changepoint_features_and_values_from_config</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">unique_elements_in_list</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionary</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties_forecast</span> <span class="kn">import</span> <span class="n">get_forecast_time_properties</span>
+
+
+<div class="viewcode-block" id="SimpleSilverkiteForecast"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast">[docs]</a><span class="k">class</span> <span class="nc">SimpleSilverkiteForecast</span><span class="p">(</span><span class="n">SilverkiteForecast</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A derived class of `~greykite.algo.forecast.silverkite.SilverkiteForecast`.</span>
+<span class="sd">    Provides an alternative interface with simplified configuration parameters.</span>
+<span class="sd">    Produces the same trained model output and uses the same predict functions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">constants</span><span class="p">:</span> <span class="n">SilverkiteConstant</span> <span class="o">=</span> <span class="n">default_silverkite_constant</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">constants</span><span class="o">=</span><span class="n">constants</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_time_frequency_enum</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span>
+            <span class="n">SilverkiteTimeFrequencyEnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">get_silverkite_time_frequency_enum</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_holiday</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">SilverkiteHoliday</span><span class="p">]</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">get_silverkite_holiday</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">SilverkiteColumn</span><span class="p">]</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">get_silverkite_column</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SimpleSilverkiteForecast.convert_params"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast.convert_params">[docs]</a>    <span class="k">def</span> <span class="nf">convert_params</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">time_properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">origin_for_time_vars</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">train_test_thresh</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">training_fraction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+            <span class="n">fit_algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ridge&quot;</span><span class="p">,</span>
+            <span class="n">fit_algorithm_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">auto_holiday</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">holidays_to_model_separately</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">holiday_lookup_countries</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">holiday_pre_num_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">holiday_post_num_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">holiday_pre_post_num_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">daily_event_df_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">auto_holiday_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">daily_event_neighbor_impact</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">daily_event_shifted_effect</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">auto_growth</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">changepoints_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">auto_seasonality</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">yearly_seasonality</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">quarterly_seasonality</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">monthly_seasonality</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">weekly_seasonality</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">daily_seasonality</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">max_daily_seas_interaction_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">max_weekly_seas_interaction_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">autoreg_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">past_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">lagged_regressor_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">seasonality_changepoints_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">min_admissible_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">max_admissible_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">uncertainty_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">normalize_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">growth_term</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">GrowthColEnum</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">feature_sets_enabled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]]]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">extra_pred_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">drop_pred_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">explicit_pred_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">regression_weight_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">simulation_based</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">simulation_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="n">fast_simulation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">remove_intercept</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts parameters of</span>
+<span class="sd">        :func:`~greykite.algo.forecast.silverkite.forecast_simple_silverkite` into those</span>
+<span class="sd">        of :func:`~greykite.algo.forecast.forecast_silverkite.SilverkiteForecast::forecast`.</span>
+
+<span class="sd">        Makes it easier to set parameters to ``SilverkiteForecast::forecast`` suitable for most forecasting problems.</span>
+<span class="sd">        Provides data-aware defaults for seasonality and interaction terms. Provides a simple</span>
+<span class="sd">        configuration of holidays from an internal holiday database, and user-friendly configuration</span>
+<span class="sd">        for growth and regressors.</span>
+
+<span class="sd">        These parameters can be set from a plain-text config (e.g. no pandas dataframes).</span>
+<span class="sd">        The parameter list is intentionally flat to facilitate hyperparameter grid search. Every</span>
+<span class="sd">        parameter is either a parameter of ``SilverkiteForecast::forecast`` or a tuning parameter.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The basic parameters are identical to ``SilverkiteForecast::forecast``.</span>
+<span class="sd">        The more complex parameters are specified via config parameters:</span>
+
+<span class="sd">        * ``daily_event_df_dict`` (via ``holiday*``)</span>
+<span class="sd">        * ``fs_components_df`` (via `*_seasonality``)</span>
+<span class="sd">        * ``extra_pred_cols`` (via ``holiday*``, ``*seas*``, ``growth_term``,</span>
+<span class="sd">          ``regressor_cols``, ``feature_sets_enabled``, ``extra_pred_cols``)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            A data frame which includes the timestamp column</span>
+<span class="sd">            as well as the value column. This is the ``df`` for</span>
+<span class="sd">            training the model, not for future prediction.</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            The column name in `df` representing time for the time series data</span>
+<span class="sd">            The time column can be anything that can be parsed by pandas DatetimeIndex</span>
+<span class="sd">        value_col: `str`</span>
+<span class="sd">            The column name which has the value of interest to be forecasted</span>
+<span class="sd">        time_properties : `dict` [`str`, `any`] or None, optional</span>
+<span class="sd">            Time properties dictionary (likely produced by</span>
+<span class="sd">            `~greykite.common.time_properties_forecast.get_forecast_time_properties`)</span>
+<span class="sd">            with keys:</span>
+
+<span class="sd">                ``&quot;ts&quot;`` : `UnivariateTimeSeries` or None</span>
+<span class="sd">                    ``df`` converted to a ``UnivariateTimeSeries``.</span>
+<span class="sd">                ``&quot;period&quot;`` : `int`</span>
+<span class="sd">                    Period of each observation (i.e. minimum time between observations, in seconds).</span>
+<span class="sd">                ``&quot;simple_freq&quot;`` : `SimpleTimeFrequencyEnum`</span>
+<span class="sd">                    ``SimpleTimeFrequencyEnum`` member corresponding to data frequency.</span>
+<span class="sd">                ``&quot;num_training_points&quot;`` : `int`</span>
+<span class="sd">                    Number of observations for training.</span>
+<span class="sd">                ``&quot;num_training_days&quot;`` : `int`</span>
+<span class="sd">                    Number of days for training.</span>
+<span class="sd">                ``&quot;start_year&quot;`` : `int`</span>
+<span class="sd">                    Start year of the training period.</span>
+<span class="sd">                ``&quot;end_year&quot;`` : `int`</span>
+<span class="sd">                    End year of the forecast period.</span>
+<span class="sd">                ``&quot;origin_for_time_vars&quot;`` : `float`</span>
+<span class="sd">                    Continuous time representation of the first date in ``df``.</span>
+
+<span class="sd">            In this function,</span>
+
+<span class="sd">                - ``start_year`` and ``end_year`` are used to define ``daily_event_df_dict``.</span>
+<span class="sd">                - ``simple_freq`` and ``num_training_days`` are used to define ``fs_components_df``.</span>
+<span class="sd">                - ``simple_freq`` and ``num_training_days`` are used to set default ``feature_sets_enabled``.</span>
+<span class="sd">                - ``origin_for_time_vars`` is used to set default ``origin_for_time_vars``.</span>
+<span class="sd">                - the other parameters are ignored</span>
+
+<span class="sd">            It is okay if ``num_training_points``, ``num_training_days``, ``start_year``, ``end_year``</span>
+<span class="sd">            are computed for a superset of ``df``. This allows CV splits and backtest, which train on</span>
+<span class="sd">            partial data, to use the same data-aware model parameters as the forecast on all training data.</span>
+
+<span class="sd">            If None, the values are computed for ``df``. This corresponds to using the same</span>
+<span class="sd">            modeling *approach* on the CV splits and backtest from `forecast_pipeline`, without</span>
+<span class="sd">            requiring the same parameters. In this case, make sure ``forecast_horizon`` is at</span>
+<span class="sd">            least as large as the test period for the split, to ensure all holidays are captured.</span>
+<span class="sd">        freq : `str` or None, optional, default `None`</span>
+<span class="sd">            Frequency of input data.</span>
+<span class="sd">            Used to compute ``time_properties`` only if ``time_properties is None``.</span>
+<span class="sd">            Frequency strings can have multiples, e.g. &#39;5H&#39;.</span>
+<span class="sd">            See https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases</span>
+<span class="sd">            for a list of frequency aliases.</span>
+<span class="sd">            If None, inferred by `pandas.infer_freq`.</span>
+<span class="sd">            Provide this parameter if ``df`` has missing timepoints.</span>
+<span class="sd">        forecast_horizon : `int` or None, optional, default `None`</span>
+<span class="sd">            Number of periods to forecast into the future. Must be &gt; 0.</span>
+<span class="sd">            Used to compute ``time_properties`` only if ``time_properties is None``.</span>
+<span class="sd">            If None, default is determined by input data frequency.</span>
+<span class="sd">            Used to determine forecast end date, to pull the appropriate holiday data.</span>
+<span class="sd">            Should be at least as large as the prediction period (if this function</span>
+<span class="sd">            is called from ``forecast_pipeline``, the prediction period for different</span>
+<span class="sd">            splits is set via ``cv_horizon``, ``test_horizon``, ``forecast_horizon``).</span>
+<span class="sd">        origin_for_time_vars : `float` or None, optional, default `None`</span>
+<span class="sd">            The time origin used to create continuous variables for time.</span>
+<span class="sd">            If None, uses the value from ``time_properties``.</span>
+<span class="sd">        train_test_thresh : `datetime.datetime` or None, optional, default `None`</span>
+<span class="sd">            e.g. datetime.datetime(2019, 6, 30)</span>
+<span class="sd">            The threshold for training and testing split.</span>
+<span class="sd">            Note that the final returned model is trained using all data.</span>
+<span class="sd">            If None, training split is based on ``training_fraction``.</span>
+<span class="sd">        training_fraction : `float` or None, optional, default 0.9</span>
+<span class="sd">            The fraction of data used for training (0.0 to 1.0)</span>
+<span class="sd">            Used only if ``train_test_thresh is None``.</span>
+<span class="sd">            If this is also None or 1.0, then we skip testing</span>
+<span class="sd">            and train on the entire dataset.</span>
+<span class="sd">        fit_algorithm : `str`, optional, default &quot;linear&quot;</span>
+<span class="sd">            The type of predictive model used in fitting.</span>
+
+<span class="sd">            See `~greykite.algo.common.ml_models.fit_model_via_design_matrix`</span>
+<span class="sd">            for available options and their parameters.</span>
+<span class="sd">        fit_algorithm_params : `dict` or None, optional, default None</span>
+<span class="sd">            Parameters passed to the requested fit_algorithm.</span>
+<span class="sd">            If None, uses the defaults in `~greykite.algo.common.ml_models.fit_model_via_design_matrix`.</span>
+<span class="sd">        auto_holiday : `bool`, default False</span>
+<span class="sd">            Whether to automatically infer holiday configuration based on the input timeseries.</span>
+<span class="sd">            If True, holiday groups will be constructed through estimated holiday effects. If False,</span>
+<span class="sd">            the other specified holiday configuration will be used to generate holiday features.</span>
+<span class="sd">            Notice that the following parameters serve different uses in two case:</span>
+
+<span class="sd">                * &quot;Daily_event_df_dict&quot;: When ``auto_holiday = False``, this specifies additional events that are</span>
+<span class="sd">                  ready for use in modeling; when ``auto_holiday = True``, this provides a list of holidays that</span>
+<span class="sd">                  can be processed and used as inputs for ``HolidayGrouper``.</span>
+<span class="sd">                * &quot;auto_holiday_params&quot;: It contains customized parameter values that can be used for ``HolidayGrouper``.</span>
+<span class="sd">                 When ``auto_holiday = False``, this will not be used.</span>
+
+<span class="sd">            For details, see `~greykite.algo.common.holiday_grouper.HolidayGrouper`.</span>
+<span class="sd">        holiday_lookup_countries : `list` [`str`] or &quot;auto&quot; or None, optional, default &quot;auto&quot;</span>
+<span class="sd">            The countries that contain the holidays you intend to model.</span>
+
+<span class="sd">                * If &quot;auto&quot;, uses a default list of countries</span>
+<span class="sd">                  that contain the default ``holidays_to_model_separately``.</span>
+<span class="sd">                  See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO`.</span>
+<span class="sd">                * If a list, must be a list of country names.</span>
+<span class="sd">                * If None or an empty list, no holidays are modeled.</span>
+
+<span class="sd">        holidays_to_model_separately : `list` [`str`] or &quot;auto&quot; or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None, optional, default &quot;auto&quot;  # noqa: E501</span>
+<span class="sd">            Which holidays to include in the model.</span>
+<span class="sd">            The model creates a separate key, value for each item in ``holidays_to_model_separately`` and their neighboring</span>
+<span class="sd">            days. If ``auto_holiday = False``, the other holidays in the countries are grouped together as a single effect.</span>
+<span class="sd">            If ``auto_holiday = True``, the other holidays will be processed by ``HolidayGrouper`` and assigned to</span>
+<span class="sd">            holiday groups based on their estimated impact.</span>
+
+<span class="sd">                * If &quot;auto&quot;, uses a default list of important holidays.</span>
+<span class="sd">                  See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.</span>
+<span class="sd">                * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,</span>
+<span class="sd">                  uses all available holidays in ``holiday_lookup_countries``. This can often create a model that has too many parameters,</span>
+<span class="sd">                  and should typically be avoided. This argument is only valid when ``auto_holiday = False``. When ``auto_holiday`` is</span>
+<span class="sd">                  set to `True`, a `ValueError` would be raised.</span>
+<span class="sd">                * If a list, must be a list of holiday names.</span>
+<span class="sd">                * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together</span>
+<span class="sd">                  as a single effect.</span>
+
+<span class="sd">            Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.</span>
+<span class="sd">        holiday_pre_num_days : `int`, default 2</span>
+<span class="sd">            Model holiday effects for ``holiday_pre_num_days`` days before the holiday. When ``auto_holiday = False``,</span>
+<span class="sd">            this also applies to the holidays passed in through `daily_event_df_dict`.</span>
+<span class="sd">        holiday_post_num_days : `int`, default 2</span>
+<span class="sd">            Model holiday effects for ``holiday_post_num_days`` days after the holiday. When ``auto_holiday = False``,</span>
+<span class="sd">            this also applies to the holidays passed in through `daily_event_df_dict`.</span>
+<span class="sd">        holiday_pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None</span>
+<span class="sd">            Overrides ``pre_num`` and ``post_num`` for each holiday in</span>
+<span class="sd">            ``holidays_to_model_separately``.</span>
+<span class="sd">            For example, if ``holidays_to_model_separately`` contains &quot;Thanksgiving&quot; and &quot;Labor Day&quot;,</span>
+<span class="sd">            this parameter can be set to ``{&quot;Thanksgiving&quot;: [1, 3], &quot;Labor Day&quot;: [1, 2]}``,</span>
+<span class="sd">            denoting that the &quot;Thanksgiving&quot; ``pre_num`` is 1 and ``post_num`` is 3, and &quot;Labor Day&quot;</span>
+<span class="sd">            ``pre_num`` is 1 and ``post_num`` is 2.</span>
+<span class="sd">            Holidays not specified use the default given by ``pre_num`` and ``post_num``.</span>
+<span class="sd">        daily_event_df_dict : `dict` [`str`, `pandas.DataFrame`] or None, default None</span>
+<span class="sd">            A dictionary of data frames, each representing events data for the corresponding key.</span>
+<span class="sd">            Specifies additional events to include besides the holidays specified above.</span>
+<span class="sd">            The usage and format requirement of `daily_event_df_dict` is different based on whether</span>
+<span class="sd">            ``auto_holiday`` is enabled.  When ``auto_holiday = False``, these events will be</span>
+<span class="sd">            directly appended in the return and used in modeling. When ``auto_holiday = True``, this</span>
+<span class="sd">            will be used as sources of holidays, together with holidays constructed through</span>
+<span class="sd">            `holiday_lookup_countries`. Holiday grouper will be run on all these holidays and their</span>
+<span class="sd">            neighboring days unless they are specified in `holidays_to_model_separately`.</span>
+
+<span class="sd">            When ``auto_holiday = False``, the format is the same as in</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">            The DataFrame has two columns:</span>
+
+<span class="sd">                - The first column contains event dates. Must be in a format</span>
+<span class="sd">                  recognized by `pandas.to_datetime`. Must be at daily</span>
+<span class="sd">                  frequency for proper join. It is joined against the time</span>
+<span class="sd">                  in ``df``, converted to a day:</span>
+<span class="sd">                  ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.</span>
+<span class="sd">                - The second column contains the event label for each date.</span>
+
+<span class="sd">            The column order is important; column names are ignored.</span>
+<span class="sd">            The event dates must span their occurrences in both the training</span>
+<span class="sd">            and future prediction period.</span>
+
+<span class="sd">            During modeling, each key in the dictionary is mapped to a categorical variable</span>
+<span class="sd">            named ``f&quot;{EVENT_PREFIX}_{key}&quot;``, whose value at each timestamp is specified</span>
+<span class="sd">            by the corresponding DataFrame.</span>
+
+<span class="sd">            For example, to manually specify a yearly event on September 1</span>
+<span class="sd">            during a training/forecast period that spans 2020-2022::</span>
+
+<span class="sd">                daily_event_df_dict = {</span>
+<span class="sd">                    &quot;custom_event&quot;: pd.DataFrame({</span>
+<span class="sd">                        &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;, &quot;2022-09-01&quot;],</span>
+<span class="sd">                        &quot;label&quot;: [&quot;is_event&quot;, &quot;is_event&quot;, &quot;is_event&quot;]</span>
+<span class="sd">                    })</span>
+<span class="sd">                }</span>
+
+<span class="sd">            It&#39;s possible to specify multiple events in the same df. Two events,</span>
+<span class="sd">            ``&quot;sep&quot;`` and ``&quot;oct&quot;`` are specified below for 2020-2021::</span>
+
+<span class="sd">                daily_event_df_dict = {</span>
+<span class="sd">                    &quot;custom_event&quot;: pd.DataFrame({</span>
+<span class="sd">                        &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2020-10-01&quot;, &quot;2021-09-01&quot;, &quot;2021-10-01&quot;],</span>
+<span class="sd">                        &quot;event_name&quot;: [&quot;sep&quot;, &quot;oct&quot;, &quot;sep&quot;, &quot;oct&quot;]</span>
+<span class="sd">                    })</span>
+<span class="sd">                }</span>
+
+<span class="sd">            Use multiple keys if two events may fall on the same date. These events</span>
+<span class="sd">            must be in separate DataFrames::</span>
+
+<span class="sd">                daily_event_df_dict = {</span>
+<span class="sd">                    &quot;fixed_event&quot;: pd.DataFrame({</span>
+<span class="sd">                        &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;, &quot;2022-09-01&quot;],</span>
+<span class="sd">                        &quot;event_name&quot;: &quot;fixed_event&quot;</span>
+<span class="sd">                    }),</span>
+<span class="sd">                    &quot;moving_event&quot;: pd.DataFrame({</span>
+<span class="sd">                        &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-08-28&quot;, &quot;2022-09-03&quot;],</span>
+<span class="sd">                        &quot;event_name&quot;: &quot;moving_event&quot;</span>
+<span class="sd">                    }),</span>
+<span class="sd">                }</span>
+
+<span class="sd">            The multiple event specification can be used even if events never overlap. An</span>
+<span class="sd">            equivalent specification to the second example::</span>
+
+<span class="sd">                daily_event_df_dict = {</span>
+<span class="sd">                    &quot;sep&quot;: pd.DataFrame({</span>
+<span class="sd">                        &quot;date&quot;: [&quot;2020-09-01&quot;, &quot;2021-09-01&quot;],</span>
+<span class="sd">                        &quot;event_name&quot;: &quot;is_event&quot;</span>
+<span class="sd">                    }),</span>
+<span class="sd">                    &quot;oct&quot;: pd.DataFrame({</span>
+<span class="sd">                        &quot;date&quot;: [&quot;2020-10-01&quot;, &quot;2021-10-01&quot;],</span>
+<span class="sd">                        &quot;event_name&quot;: &quot;is_event&quot;</span>
+<span class="sd">                    }),</span>
+<span class="sd">                }</span>
+
+<span class="sd">            Note: All these events are automatically added to the model. There is no need</span>
+<span class="sd">            to specify them in ``extra_pred_cols`` as you would for</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.</span>
+
+<span class="sd">            Note: Do not use `~greykite.common.constants.EVENT_DEFAULT`</span>
+<span class="sd">            in the second column. This is reserved to indicate dates that do not</span>
+<span class="sd">            correspond to an event.</span>
+
+<span class="sd">            When ``auto_holiday = True``, this dictionary is used to pass in holidays that will</span>
+<span class="sd">            be used by `HolidayGrouper`. Each key corresponds to a holiday name, and the</span>
+<span class="sd">            Dataframe has at least one column that contains event dates:</span>
+
+<span class="sd">                - The event date column used will be the first column in each data frame</span>
+<span class="sd">                  that can be recognized by `pandas.to_datetime`. Must be at daily</span>
+<span class="sd">                  frequency for proper join. It is joined against the time in ``df``,</span>
+<span class="sd">                  converted to a day:</span>
+<span class="sd">                  ``pd.to_datetime(pd.DatetimeIndex(df[time_col]).date)``.</span>
+<span class="sd">                - The other columns in the dataframe will be ignored.</span>
+
+<span class="sd">            The event dates must span their occurrences in both the training</span>
+<span class="sd">            and future prediction period.</span>
+<span class="sd">        auto_holiday_params : `dict` or None, default None</span>
+<span class="sd">            This dictionary takes in parameters that can be passed in and used by holiday grouper when</span>
+<span class="sd">            ``auto_holiday`` is set to `True`. When ``auto_holiday = False``, this will not be used. Please see</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast.__get_silverkite_holidays`</span>
+<span class="sd">            for more details.</span>
+<span class="sd">        daily_event_neighbor_impact : `int`, `list` [`int`], callable or None, default None</span>
+<span class="sd">            The impact of neighboring timestamps of the events in ``event_df_dict``.</span>
+<span class="sd">            This is for daily events so the units below are all in days.</span>
+
+<span class="sd">            For example, if the data is weekly (&quot;W-SUN&quot;) and an event is daily,</span>
+<span class="sd">            it may not exactly fall on the weekly date.</span>
+<span class="sd">            But you can specify for New Year&#39;s day on 1/1, it affects all dates</span>
+<span class="sd">            in the week, e.g. 12/31, 1/1, ..., 1/6, then it will be mapped to the weekly date.</span>
+<span class="sd">            In this case you may want to map a daily event&#39;s date to a few dates,</span>
+<span class="sd">            and can specify</span>
+<span class="sd">            ``neighbor_impact=lambda x: [x-timedelta(days=x.isocalendar()[2]-1) + timedelta(days=i) for i in range(7)]``.</span>
+
+<span class="sd">            Another example is that the data is rolling 7 day daily data,</span>
+<span class="sd">            thus a holiday may affect the t, t+1, ..., t+6 dates.</span>
+<span class="sd">            You can specify ``neighbor_impact=7``.</span>
+
+<span class="sd">            If input is `int`, the mapping is t, t+1, ..., t+neighbor_impact-1.</span>
+<span class="sd">            If input is `list`, the mapping is [t+x for x in neighbor_impact].</span>
+<span class="sd">            If input is a function, it maps each daily event&#39;s date to a list of dates.</span>
+<span class="sd">        daily_event_shifted_effect : `list` [`str`] or None, default None</span>
+<span class="sd">            Additional neighbor events based on given events.</span>
+<span class="sd">            For example, passing [&quot;-1D&quot;, &quot;7D&quot;] will add extra daily events which are 1 day before</span>
+<span class="sd">            and 7 days after the given events.</span>
+<span class="sd">            Offset format is {d}{freq} with any integer plus a frequency string.</span>
+<span class="sd">            Must be parsable by pandas ``to_offset``.</span>
+<span class="sd">            The new events&#39; names will be the current events&#39; names with suffix &quot;{offset}_before&quot; or &quot;{offset}_after&quot;.</span>
+<span class="sd">            For example, if we have an event named &quot;US_Christmas Day&quot;,</span>
+<span class="sd">            a &quot;7D&quot; shift will have name &quot;US_Christmas Day_7D_after&quot;.</span>
+<span class="sd">            This is useful when you expect an offset of the current holidays also has impact on the</span>
+<span class="sd">            time series, or you want to interact the lagged terms with autoregression.</span>
+<span class="sd">            If ``daily_event_neighbor_impact`` is also specified, this will be applied after adding neighboring days.</span>
+<span class="sd">        auto_growth : `bool`, default False</span>
+<span class="sd">            Whether to automatically infer growth configuration.</span>
+<span class="sd">            If True, the growth term and automatically changepoint detection configuration</span>
+<span class="sd">            will be inferred from input timeseries,</span>
+<span class="sd">            and the following parameters will be ignored:</span>
+
+<span class="sd">                * &quot;growth_term&quot;</span>
+<span class="sd">                * &quot;changepoints_dict&quot; (Except parameters that controls how custom changepoint</span>
+<span class="sd">                  are combined with automatically detected changepoints. These parameters include</span>
+<span class="sd">                  &quot;dates&quot;, &quot;combine_changepoint_min_distance&quot; and &quot;keep_detected&quot;.)</span>
+
+<span class="sd">            For detail, see</span>
+<span class="sd">            `~greykite.algo.changepoint.adalasso.auto_changepoint_params.generate_trend_changepoint_detection_params`.</span>
+<span class="sd">        changepoints_dict : `dict` or None, optional, default None</span>
+<span class="sd">            Specifies the changepoint configuration.</span>
+
+<span class="sd">            ``&quot;method&quot;``: `str`</span>
+<span class="sd">                The method to locate changepoints.</span>
+<span class="sd">                Valid options:</span>
+
+<span class="sd">                    - &quot;uniform&quot;. Places n_changepoints evenly spaced changepoints to allow growth to change.</span>
+<span class="sd">                    - &quot;custom&quot;. Places changepoints at the specified dates.</span>
+<span class="sd">                    - &quot;auto&quot;. Automatically detects change points. For configuration, see</span>
+<span class="sd">                      `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_trend_changepoints`</span>
+
+<span class="sd">                Additional keys to provide parameters for each particular method are described below.</span>
+<span class="sd">            ``&quot;continuous_time_col&quot;``: `str`, optional</span>
+<span class="sd">                Column to apply ``growth_func`` to, to generate changepoint features</span>
+<span class="sd">                Typically, this should match the growth term in the model</span>
+<span class="sd">            ``&quot;growth_func&quot;``: callable or None, optional</span>
+<span class="sd">                Growth function (scalar -&gt; scalar). Changepoint features are created</span>
+<span class="sd">                by applying ``growth_func`` to ``continuous_time_col`` with offsets.</span>
+<span class="sd">                If None, uses identity function to use ``continuous_time_col`` directly</span>
+<span class="sd">                as growth term</span>
+<span class="sd">                If changepoints_dict[&quot;method&quot;] == &quot;uniform&quot;, this other key is required:</span>
+
+<span class="sd">                    ``&quot;n_changepoints&quot;``: int</span>
+<span class="sd">                        number of changepoints to evenly space across training period</span>
+
+<span class="sd">                If changepoints_dict[&quot;method&quot;] == &quot;custom&quot;, this other key is required:</span>
+
+<span class="sd">                    ``&quot;dates&quot;``: Iterable[Union[int, float, str, datetime]]</span>
+<span class="sd">                        Changepoint dates. Must be parsable by pd.to_datetime.</span>
+<span class="sd">                        Changepoints are set at the closest time on or after these dates</span>
+<span class="sd">                        in the dataset.</span>
+
+<span class="sd">                If changepoints_dict[&quot;method&quot;] == &quot;auto&quot;, the keys that matches the parameters in</span>
+<span class="sd">                `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_trend_changepoints`,</span>
+<span class="sd">                except ``df``, ``time_col`` and ``value_col``, are optional.</span>
+<span class="sd">                Extra keys also include &quot;dates&quot;, &quot;combine_changepoint_min_distance&quot; and &quot;keep_detected&quot; to specify</span>
+<span class="sd">                additional custom trend changepoints. These three parameters correspond to the three parameters</span>
+<span class="sd">                &quot;custom_changepoint_dates&quot;, &quot;min_distance&quot; and &quot;keep_detected&quot; in</span>
+<span class="sd">                `~greykite.algo.changepoint.adalasso.changepoints_utils.combine_detected_and_custom_trend_changepoints`.</span>
+
+<span class="sd">        auto_seasonality : `bool`, default False</span>
+<span class="sd">            Whether to automatically infer seasonality orders.</span>
+<span class="sd">            If True, the seasonality orders will be automatically inferred from input timeseries</span>
+<span class="sd">            and the following parameters will be ignored unless the value is ``False``:</span>
+
+<span class="sd">                * &quot;yearly_seasonality&quot;</span>
+<span class="sd">                * &quot;quarterly_seasonality&quot;</span>
+<span class="sd">                * &quot;monthly_seasonality&quot;</span>
+<span class="sd">                * &quot;weekly_seasonality&quot;</span>
+<span class="sd">                * &quot;daily_seasonality&quot;</span>
+
+<span class="sd">            If any of the above parameter&#39;s value is ``False``,</span>
+<span class="sd">            the corresponding seasonality order will be forced to be zero,</span>
+<span class="sd">            regardless of the inferring result.</span>
+<span class="sd">            For detail, see `~greykite.algo.common.seasonality_inferrer.SeasonalityInferrer`.</span>
+<span class="sd">        yearly_seasonality : `str` or `bool` or `int`</span>
+<span class="sd">            Determines the yearly seasonality.</span>
+<span class="sd">            &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">        quarterly_seasonality : `str` or `bool` or `int`</span>
+<span class="sd">            Determines the quarterly seasonality.</span>
+<span class="sd">            &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">        monthly_seasonality : `str` or `bool` or `int`</span>
+<span class="sd">            Determines the monthly seasonality.</span>
+<span class="sd">            &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">        weekly_seasonality : `str` or `bool` or `int`</span>
+<span class="sd">            Determines the weekly seasonality.</span>
+<span class="sd">            &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">        daily_seasonality : `str` or `bool` or `int`</span>
+<span class="sd">            Determines the daily seasonality.</span>
+<span class="sd">            &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">        max_daily_seas_interaction_order : `int` or None, optional, default `None`</span>
+<span class="sd">            Max fourier order for interaction terms with daily seasonality.</span>
+<span class="sd">            If None, uses all available terms.</span>
+<span class="sd">        max_weekly_seas_interaction_order : `int` or None, optional, default `None`</span>
+<span class="sd">            Max fourier order for interaction terms with weekly seasonality.</span>
+<span class="sd">            If None, uses all available terms.</span>
+<span class="sd">        autoreg_dict : `dict` or `str` or None, optional, default `None`</span>
+<span class="sd">            If a `dict`: A dictionary with arguments for `~greykite.common.features.timeseries_lags.build_autoreg_df`.</span>
+<span class="sd">            That function&#39;s parameter ``value_col`` is inferred from the input of</span>
+<span class="sd">            current function ``self.forecast``. Other keys are:</span>
+
+<span class="sd">                ``&quot;lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                ``&quot;agg_lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                ``&quot;series_na_fill_func&quot;`` : callable</span>
+
+<span class="sd">            If a `str`: The string will represent a method and a dictionary will be</span>
+<span class="sd">            constructed using that `str`.</span>
+<span class="sd">            Currently only implemented method is &quot;auto&quot; which uses</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_autoreg_dict`</span>
+<span class="sd">            to create a dictionary.</span>
+<span class="sd">            See more details for above parameters in</span>
+<span class="sd">            `~greykite.common.features.timeseries_lags.build_autoreg_df`.</span>
+<span class="sd">        past_df : `pandas.DataFrame` or None, default None</span>
+<span class="sd">            The past df used for building autoregression features.</span>
+<span class="sd">            This is not necessarily needed since imputation is available,</span>
+<span class="sd">            however, if such data is available but not used in training for speed purposes,</span>
+<span class="sd">            they can be passed here to build more accurate autoregression features.</span>
+<span class="sd">        lagged_regressor_dict : `dict` or None, default None</span>
+<span class="sd">            A dictionary with arguments for `greykite.common.features.timeseries_lags.build_autoreg_df_multi`.</span>
+<span class="sd">            The keys of the dictionary are the target lagged regressor column names.</span>
+<span class="sd">            It can leverage the regressors included in ``df``.</span>
+<span class="sd">            The value of each key is either a `dict` or `str`.</span>
+<span class="sd">            If `dict`, it has the following keys:</span>
+
+<span class="sd">                ``&quot;lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                ``&quot;agg_lag_dict&quot;`` : `dict` or None</span>
+<span class="sd">                ``&quot;series_na_fill_func&quot;`` : callable</span>
+
+<span class="sd">            If `str`, it represents a method and a dictionary will be constructed using that `str`.</span>
+<span class="sd">            Currently the only implemented method is &quot;auto&quot; which uses</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.SilverkiteForecast.__get_default_lagged_regressor_dict`</span>
+<span class="sd">            to create a dictionary for each lagged regressor.</span>
+<span class="sd">            An example::</span>
+
+<span class="sd">                lagged_regressor_dict = {</span>
+<span class="sd">                    &quot;regressor1&quot;: {</span>
+<span class="sd">                        &quot;lag_dict&quot;: {&quot;orders&quot;: [1, 2, 3]},</span>
+<span class="sd">                        &quot;agg_lag_dict&quot;: {</span>
+<span class="sd">                            &quot;orders_list&quot;: [[7, 7 * 2, 7 * 3]],</span>
+<span class="sd">                            &quot;interval_list&quot;: [(8, 7 * 2)]},</span>
+<span class="sd">                        &quot;series_na_fill_func&quot;: lambda s: s.bfill().ffill()},</span>
+<span class="sd">                    &quot;regressor2&quot;: &quot;auto&quot;}</span>
+<span class="sd">        seasonality_changepoints_dict : `dict` or None, optional, default `None`</span>
+<span class="sd">            The parameter dictionary for seasonality change point detection. Parameters are in</span>
+<span class="sd">            `~greykite.algo.changepoint.adalasso.changepoint_detector.ChangepointDetector.find_seasonality_changepoints`.</span>
+<span class="sd">            Note ``df``, ``time_col``, ``value_col`` and ``trend_changepoints`` are auto populated,</span>
+<span class="sd">            and do not need to be provided.</span>
+<span class="sd">        min_admissible_value : `float` or None, optional, default `None`</span>
+<span class="sd">            The minimum admissible value to return during prediction.</span>
+<span class="sd">            If None, no limit is applied.</span>
+<span class="sd">        max_admissible_value : `float` or None, optional, default `None`</span>
+<span class="sd">            The maximum admissible value to return during prediction.</span>
+<span class="sd">            If None, no limit is applied.</span>
+<span class="sd">        uncertainty_dict : `dict` or None, optional, default `None`</span>
+<span class="sd">            How to fit the uncertainty model. A dictionary with keys:</span>
+<span class="sd">                ``&quot;uncertainty_method&quot;`` : `str`</span>
+<span class="sd">                    The title of the method.</span>
+<span class="sd">                    Only &quot;simple_conditional_residuals&quot; is implemented</span>
+<span class="sd">                    in ``fit_prediction_model`` which calculates CIs using residuals</span>
+<span class="sd">                ``&quot;params&quot;``: `dict`</span>
+<span class="sd">                    A dictionary of parameters needed for</span>
+<span class="sd">                    the requested ``uncertainty_method``. For example, for</span>
+<span class="sd">                    ``uncertainty_method=&quot;simple_conditional_residuals&quot;``, see</span>
+<span class="sd">                    parameters of `~greykite.algo.uncertainty.conditional.conf_interval.conf_interval`,</span>
+<span class="sd">                    listed briefly here:</span>
+
+<span class="sd">                        ``&quot;conditional_cols&quot;``</span>
+<span class="sd">                        ``&quot;quantiles&quot;``</span>
+<span class="sd">                        ``&quot;quantile_estimation_method&quot;``</span>
+<span class="sd">                        ``&quot;sample_size_thresh&quot;``</span>
+<span class="sd">                        ``&quot;small_sample_size_method&quot;``</span>
+<span class="sd">                        ``&quot;small_sample_size_quantile&quot;``</span>
+
+<span class="sd">            If None, no uncertainty intervals are calculated.</span>
+<span class="sd">        normalize_method : `str` or None, default None</span>
+<span class="sd">            If a string is provided, it will be used as the normalization method</span>
+<span class="sd">            in `~greykite.common.features.normalize.normalize_df`, passed via</span>
+<span class="sd">            the argument ``method``.</span>
+<span class="sd">            Available options are: &quot;zero_to_one&quot;, &quot;statistical&quot;, &quot;minus_half_to_half&quot;, &quot;zero_at_origin&quot;.</span>
+<span class="sd">            If None, no normalization will be performed.</span>
+<span class="sd">            See that function for more details.</span>
+<span class="sd">        growth_term : `str` or None, optional, default &quot;ct1&quot;</span>
+<span class="sd">            How to model the growth. Valid options are</span>
+<span class="sd">            {&quot;linear&quot;, &quot;quadratic&quot;, &quot;sqrt&quot;, &quot;cuberoot&quot;}.</span>
+<span class="sd">            See `~greykite.common.constants.GrowthColEnum`.</span>
+<span class="sd">        regressor_cols : `list` [`str`] or None, optional, default None</span>
+<span class="sd">            The columns in ``df`` to use as regressors.</span>
+<span class="sd">            These must be provided during prediction as well.</span>
+<span class="sd">        feature_sets_enabled: `dict` [`str`, `bool` or &quot;auto&quot; or None] or `bool` or &quot;auto&quot; or None, default &quot;auto&quot;</span>
+<span class="sd">            Whether to include interaction terms and categorical variables to increase model flexibility.</span>
+
+<span class="sd">            If a `dict`, boolean values indicate whether include various sets of features in the model.</span>
+<span class="sd">            The following keys are recognized</span>
+<span class="sd">            (from `~greykite.algo.forecast.silverkite.constants.silverkite_column.SilverkiteColumn`):</span>
+
+<span class="sd">                ``&quot;COLS_HOUR_OF_WEEK&quot;`` : `str`</span>
+<span class="sd">                    Constant hour of week effect</span>
+<span class="sd">                ``&quot;COLS_WEEKEND_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Daily seasonality interaction with is_weekend</span>
+<span class="sd">                ``&quot;COLS_DAY_OF_WEEK_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Daily seasonality interaction with day of week</span>
+<span class="sd">                ``&quot;COLS_TREND_DAILY_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow daily seasonality to change over time by is_weekend</span>
+<span class="sd">                ``&quot;COLS_EVENT_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow sub-daily event effects</span>
+<span class="sd">                ``&quot;COLS_EVENT_WEEKEND_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow sub-daily event effect to interact with is_weekend</span>
+<span class="sd">                ``&quot;COLS_DAY_OF_WEEK&quot;`` : `str`</span>
+<span class="sd">                    Constant day of week effect</span>
+<span class="sd">                ``&quot;COLS_TREND_WEEKEND&quot;`` : `str`</span>
+<span class="sd">                    Allow trend (growth, changepoints) to interact with is_weekend</span>
+<span class="sd">                ``&quot;COLS_TREND_DAY_OF_WEEK&quot;`` : `str`</span>
+<span class="sd">                    Allow trend to interact with day of week</span>
+<span class="sd">                ``&quot;COLS_TREND_WEEKLY_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow weekly seasonality to change over time</span>
+
+<span class="sd">            The following dictionary values are recognized:</span>
+
+<span class="sd">                - True: include the feature set in the model</span>
+<span class="sd">                - False: do not include the feature set in the model</span>
+<span class="sd">                - None: do not include the feature set in the model</span>
+<span class="sd">                - &quot;auto&quot; or not provided: use the default setting based on data frequency and size</span>
+
+<span class="sd">            If not a `dict`:</span>
+
+<span class="sd">                - if a boolean, equivalent to a dictionary with all values set to the boolean.</span>
+<span class="sd">                - if None, equivalent to a dictionary with all values set to False.</span>
+<span class="sd">                - if &quot;auto&quot;, equivalent to a dictionary with all values set to &quot;auto&quot;.</span>
+
+<span class="sd">        extra_pred_cols : `list` [`str`] or None, optional, default `None`</span>
+<span class="sd">            Columns to include in ``extra_pred_cols`` for ``SilverkiteForecast::forecast``.</span>
+<span class="sd">            Other columns are added to ``extra_pred_cols`` by the other</span>
+<span class="sd">            parameters of this function (i.e. ``holidays_*``, ``growth_term``,</span>
+<span class="sd">            ``regressors``, ``feature_sets_enabled``).</span>
+<span class="sd">            If `None`, treated is the same as [].</span>
+<span class="sd">        drop_pred_cols : `list` [`str`] or None, default None</span>
+<span class="sd">            Names of predictor columns to be dropped from the final model.</span>
+<span class="sd">            Ignored if None.</span>
+<span class="sd">        explicit_pred_cols : `list` [`str`] or None, default None</span>
+<span class="sd">            Names of the explicit predictor columns which will be</span>
+<span class="sd">            the only variables in the final model. Note that this overwrites</span>
+<span class="sd">            the generated predictors in the model and may include new</span>
+<span class="sd">            terms not appearing in the predictors (e.g. interaction terms).</span>
+<span class="sd">            Ignored if None.</span>
+<span class="sd">        regression_weight_col : `str` or None, default None</span>
+<span class="sd">            The column name for the weights to be used in weighted regression version</span>
+<span class="sd">            of applicable machine-learning models.</span>
+<span class="sd">        simulation_based : `bool`, default False</span>
+<span class="sd">            Boolean to specify if the future predictions are to be using simulations</span>
+<span class="sd">            or not.</span>
+<span class="sd">            Note that this is only used in deciding what parameters should be</span>
+<span class="sd">            used for certain components e.g. autoregression, if automatic methods</span>
+<span class="sd">            are requested. However, the auto-settings and the prediction settings</span>
+<span class="sd">            regarding using simulations should match.</span>
+<span class="sd">        simulation_num : `int`, default 10</span>
+<span class="sd">            The number of simulations for when simulations are used for generating</span>
+<span class="sd">            forecasts and prediction intervals.</span>
+<span class="sd">        fast_simulation: `bool`, default False</span>
+<span class="sd">            Deterimes if fast simulations are to be used. This only impacts models</span>
+<span class="sd">            which include auto-regression. This method will only generate one simulation</span>
+<span class="sd">            without any error being added and then add the error using the volatility</span>
+<span class="sd">            model. The advantage is a major boost in speed during inference and the</span>
+<span class="sd">            disadvantage is potentially less accurate prediction intervals.</span>
+<span class="sd">        remove_intercept : `bool`, default False</span>
+<span class="sd">            Whether to remove explicit and implicit intercepts.</span>
+<span class="sd">            By default, `patsy` will make the design matrix always full rank.</span>
+<span class="sd">            It will always include an intercept term unless we specify &quot;-1&quot; or &quot;+0&quot;.</span>
+<span class="sd">            However, if there are categorical variables, even we specify &quot;-1&quot; or &quot;+0&quot;,</span>
+<span class="sd">            it will include an implicit intercept by adding all levels of a categorical</span>
+<span class="sd">            variable into the design matrix.</span>
+<span class="sd">            Sometimes we don&#39;t want this to happen.</span>
+<span class="sd">            Setting this parameter to True will remove both explicit and implicit intercepts.</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        parameters : `dict`</span>
+<span class="sd">            Parameters to call :func:`~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">extra_pred_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">extra_pred_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Does not modify the input list</span>
+            <span class="n">extra_pred_cols</span> <span class="o">=</span> <span class="n">extra_pred_cols</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Specifies regressors (via ``extra_pred_cols``)</span>
+        <span class="k">if</span> <span class="n">regressor_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">extra_pred_cols</span> <span class="o">+=</span> <span class="n">regressor_cols</span>
+
+        <span class="k">if</span> <span class="n">time_properties</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># ``df`` only contains the dates for training,</span>
+            <span class="c1"># so we can use ``use_univariate_ts=False``.</span>
+            <span class="c1"># ``forecast_horizon`` must be at least as large as</span>
+            <span class="c1"># the actual size of the test set / forecast set</span>
+            <span class="c1"># in order to pull all holidays</span>
+            <span class="n">time_properties</span> <span class="o">=</span> <span class="n">get_forecast_time_properties</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
+                <span class="n">regressor_cols</span><span class="o">=</span><span class="n">regressor_cols</span><span class="p">,</span>
+                <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">time_properties</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">forecast_horizon</span> <span class="ow">or</span> <span class="n">time_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">origin_for_time_vars</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">origin_for_time_vars</span> <span class="o">=</span> <span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;origin_for_time_vars&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Specifies seasonality (added to ``extra_pred_cols`` by `SilverkiteForecast::forecast`)</span>
+        <span class="c1"># Seasonality orders are automatically inferred if ``auto_seasonality`` is True,</span>
+        <span class="c1"># and they are pulled from configuration if False.</span>
+        <span class="k">if</span> <span class="n">auto_seasonality</span><span class="p">:</span>
+            <span class="n">seasonality_dict</span> <span class="o">=</span> <span class="n">get_auto_seasonality</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">yearly_seasonality</span><span class="o">=</span><span class="p">(</span><span class="n">yearly_seasonality</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="n">quarterly_seasonality</span><span class="o">=</span><span class="p">(</span><span class="n">quarterly_seasonality</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="n">monthly_seasonality</span><span class="o">=</span><span class="p">(</span><span class="n">monthly_seasonality</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="n">weekly_seasonality</span><span class="o">=</span><span class="p">(</span><span class="n">weekly_seasonality</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="n">daily_seasonality</span><span class="o">=</span><span class="p">(</span><span class="n">daily_seasonality</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seasonality_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;yearly_seasonality&quot;</span><span class="p">:</span> <span class="n">yearly_seasonality</span><span class="p">,</span>
+                <span class="s2">&quot;quarterly_seasonality&quot;</span><span class="p">:</span> <span class="n">quarterly_seasonality</span><span class="p">,</span>
+                <span class="s2">&quot;monthly_seasonality&quot;</span><span class="p">:</span> <span class="n">monthly_seasonality</span><span class="p">,</span>
+                <span class="s2">&quot;weekly_seasonality&quot;</span><span class="p">:</span> <span class="n">weekly_seasonality</span><span class="p">,</span>
+                <span class="s2">&quot;daily_seasonality&quot;</span><span class="p">:</span> <span class="n">daily_seasonality</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="n">fs_components_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_silverkite_seasonality</span><span class="p">(</span>
+            <span class="n">simple_freq</span><span class="o">=</span><span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;simple_freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">num_days</span><span class="o">=</span><span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;num_training_days&quot;</span><span class="p">],</span>
+            <span class="n">seasonality</span><span class="o">=</span><span class="n">seasonality_dict</span><span class="p">)</span>
+
+        <span class="c1"># Specifies growth (via ``extra_pred_cols``)</span>
+        <span class="c1"># The ``growth_term`` and ``changepoints_dict`` are automatically inferred</span>
+        <span class="c1"># and overridden if ``auto_growth`` is True.</span>
+        <span class="k">if</span> <span class="n">auto_growth</span><span class="p">:</span>
+            <span class="n">growth_result</span> <span class="o">=</span> <span class="n">get_auto_growth</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>
+                <span class="n">changepoints_dict_override</span><span class="o">=</span><span class="n">changepoints_dict</span>
+            <span class="p">)</span>
+            <span class="n">growth_term</span> <span class="o">=</span> <span class="n">growth_result</span><span class="p">[</span><span class="s2">&quot;growth_term&quot;</span><span class="p">]</span>
+            <span class="n">changepoints_dict</span> <span class="o">=</span> <span class="n">growth_result</span><span class="p">[</span><span class="s2">&quot;changepoints_dict&quot;</span><span class="p">]</span>
+        <span class="n">growth_term_formula</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">growth_term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">growth_term_formula</span> <span class="o">=</span> <span class="n">GrowthColEnum</span><span class="p">[</span><span class="n">growth_term</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">extra_pred_cols</span> <span class="o">+=</span> <span class="p">[</span><span class="n">growth_term_formula</span><span class="p">]</span>
+
+        <span class="c1"># Specifies events (via ``daily_event_df_dict``, ``extra_pred_cols``).</span>
+        <span class="c1"># Constant daily effect.</span>
+        <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_silverkite_holidays</span><span class="p">(</span>
+            <span class="n">auto_holiday</span><span class="o">=</span><span class="n">auto_holiday</span><span class="p">,</span>
+            <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="n">holiday_lookup_countries</span><span class="p">,</span>
+            <span class="n">holidays_to_model_separately</span><span class="o">=</span><span class="n">holidays_to_model_separately</span><span class="p">,</span>
+            <span class="n">start_year</span><span class="o">=</span><span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;start_year&quot;</span><span class="p">],</span>
+            <span class="n">end_year</span><span class="o">=</span><span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;end_year&quot;</span><span class="p">],</span>
+            <span class="n">pre_num</span><span class="o">=</span><span class="n">holiday_pre_num_days</span><span class="p">,</span>
+            <span class="n">post_num</span><span class="o">=</span><span class="n">holiday_post_num_days</span><span class="p">,</span>
+            <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="n">holiday_pre_post_num_dict</span><span class="p">,</span>
+            <span class="n">auto_holiday_params</span><span class="o">=</span><span class="n">auto_holiday_params</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span><span class="p">)</span>
+
+        <span class="n">extra_pred_cols</span> <span class="o">+=</span> <span class="n">get_event_pred_cols</span><span class="p">(</span>
+            <span class="n">daily_event_df_dict</span><span class="p">,</span>
+            <span class="n">daily_event_shifted_effect</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Specifies ``extra_pred_cols`` (interactions and additional model terms).</span>
+        <span class="c1"># Seasonality interaction order is limited by the available order and max requested.</span>
+        <span class="n">daily_seas_interaction_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_seasonality_order_from_dataframe</span><span class="p">(</span>
+            <span class="n">seasonality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_seasonality_enum</span><span class="o">.</span><span class="n">DAILY_SEASONALITY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">fs</span><span class="o">=</span><span class="n">fs_components_df</span><span class="p">,</span>
+            <span class="n">max_order</span><span class="o">=</span><span class="n">max_daily_seas_interaction_order</span>
+        <span class="p">)</span>
+
+        <span class="n">weekly_seas_interaction_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_seasonality_order_from_dataframe</span><span class="p">(</span>
+            <span class="n">seasonality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_seasonality_enum</span><span class="o">.</span><span class="n">WEEKLY_SEASONALITY</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">fs</span><span class="o">=</span><span class="n">fs_components_df</span><span class="p">,</span>
+            <span class="n">max_order</span><span class="o">=</span><span class="n">max_weekly_seas_interaction_order</span>
+        <span class="p">)</span>
+
+        <span class="c1"># updates `changepoints_dict`, unchanged if not &quot;method&quot; == &quot;auto&quot;</span>
+        <span class="n">changepoints_dict</span><span class="p">,</span> <span class="n">changepoint_detector</span> <span class="o">=</span> <span class="n">get_changepoints_dict</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">)</span>
+
+        <span class="c1"># determines changepoint column names</span>
+        <span class="k">if</span> <span class="n">changepoints_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">changepoints</span> <span class="o">=</span> <span class="n">get_changepoint_features_and_values_from_config</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>  <span class="c1"># the training dataset</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">,</span>
+                <span class="n">origin_for_time_vars</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">)</span>
+            <span class="n">changepoint_cols</span> <span class="o">=</span> <span class="n">changepoints</span><span class="p">[</span><span class="s2">&quot;changepoint_cols&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">changepoint_cols</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">feature_sets_enabled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_feature_sets_enabled</span><span class="p">(</span>
+            <span class="n">simple_freq</span><span class="o">=</span><span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;simple_freq&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">num_days</span><span class="o">=</span><span class="n">time_properties</span><span class="p">[</span><span class="s2">&quot;num_training_days&quot;</span><span class="p">],</span>
+            <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="n">feature_sets_enabled</span><span class="p">)</span>
+
+        <span class="n">model_feature_terms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_feature_sets_terms</span><span class="p">(</span>
+            <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span><span class="p">,</span>
+            <span class="n">daily_seas_interaction_order</span><span class="o">=</span><span class="n">daily_seas_interaction_order</span><span class="p">,</span>
+            <span class="n">weekly_seas_interaction_order</span><span class="o">=</span><span class="n">weekly_seas_interaction_order</span><span class="p">,</span>
+            <span class="n">growth_term</span><span class="o">=</span><span class="n">growth_term_formula</span><span class="p">,</span>
+            <span class="n">changepoint_cols</span><span class="o">=</span><span class="n">changepoint_cols</span><span class="p">)</span>
+
+        <span class="c1"># extends ``extra_pred_cols`` by the requested feature sets from ``feature_sets_enabled``</span>
+        <span class="k">for</span> <span class="n">feature_set_name</span><span class="p">,</span> <span class="n">feature_set_terms</span> <span class="ow">in</span> <span class="n">model_feature_terms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">feature_sets_enabled</span><span class="p">[</span><span class="n">feature_set_name</span><span class="p">]:</span>
+                <span class="n">extra_pred_cols</span> <span class="o">+=</span> <span class="n">feature_set_terms</span>
+        <span class="n">extra_pred_cols</span> <span class="o">=</span> <span class="n">unique_elements_in_list</span><span class="p">(</span><span class="n">extra_pred_cols</span><span class="p">)</span>
+
+        <span class="c1"># the parameters to call ``SilverkiteForecast::forecast``</span>
+        <span class="c1"># parameters that are directly passed through are noted below</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">origin_for_time_vars</span><span class="o">=</span><span class="n">origin_for_time_vars</span><span class="p">,</span>
+            <span class="n">extra_pred_cols</span><span class="o">=</span><span class="n">extra_pred_cols</span><span class="p">,</span>
+            <span class="n">drop_pred_cols</span><span class="o">=</span><span class="n">drop_pred_cols</span><span class="p">,</span>
+            <span class="n">explicit_pred_cols</span><span class="o">=</span><span class="n">explicit_pred_cols</span><span class="p">,</span>
+            <span class="n">train_test_thresh</span><span class="o">=</span><span class="n">train_test_thresh</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">training_fraction</span><span class="o">=</span><span class="n">training_fraction</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">fit_algorithm</span><span class="o">=</span><span class="n">fit_algorithm</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">fit_algorithm_params</span><span class="o">=</span><span class="n">fit_algorithm_params</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span><span class="p">,</span>
+            <span class="n">daily_event_neighbor_impact</span><span class="o">=</span><span class="n">daily_event_neighbor_impact</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">daily_event_shifted_effect</span><span class="o">=</span><span class="n">daily_event_shifted_effect</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">fs_components_df</span><span class="o">=</span><span class="n">fs_components_df</span><span class="p">,</span>
+            <span class="n">autoreg_dict</span><span class="o">=</span><span class="n">autoreg_dict</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">past_df</span><span class="o">=</span><span class="n">past_df</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">lagged_regressor_dict</span><span class="o">=</span><span class="n">lagged_regressor_dict</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">changepoints_dict</span><span class="o">=</span><span class="n">changepoints_dict</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">seasonality_changepoints_dict</span><span class="o">=</span><span class="n">seasonality_changepoints_dict</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">changepoint_detector</span><span class="o">=</span><span class="n">changepoint_detector</span><span class="p">,</span>
+            <span class="n">min_admissible_value</span><span class="o">=</span><span class="n">min_admissible_value</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">max_admissible_value</span><span class="o">=</span><span class="n">max_admissible_value</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">uncertainty_dict</span><span class="o">=</span><span class="n">uncertainty_dict</span><span class="p">,</span>
+            <span class="n">normalize_method</span><span class="o">=</span><span class="n">normalize_method</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">regression_weight_col</span><span class="o">=</span><span class="n">regression_weight_col</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">simulation_based</span><span class="o">=</span><span class="n">simulation_based</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">simulation_num</span><span class="o">=</span><span class="n">simulation_num</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">fast_simulation</span><span class="o">=</span><span class="n">fast_simulation</span><span class="p">,</span>  <span class="c1"># pass-through</span>
+            <span class="n">remove_intercept</span><span class="o">=</span><span class="n">remove_intercept</span>  <span class="c1"># pass-through</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parameters</span></div>
+
+<div class="viewcode-block" id="SimpleSilverkiteForecast.forecast_simple"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast.forecast_simple">[docs]</a>    <span class="k">def</span> <span class="nf">forecast_simple</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A wrapper around ``SilverkiteForecast::forecast`` that simplifies some of the input parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : positional args</span>
+<span class="sd">            Positional args to pass to</span>
+<span class="sd">            :func:`~greykite.algo.forecast.silverkite.forecast_simple_silverkite.convert_simple_silverkite_params`.</span>
+<span class="sd">            See that function for details.</span>
+
+<span class="sd">        kwargs : keyword args</span>
+<span class="sd">            Keyword args to pass to</span>
+<span class="sd">            :func:`~greykite.algo.forecast.silverkite.forecast_simple_silverkite.convert_simple_silverkite_params`.</span>
+<span class="sd">            See that function for details.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        trained_model : `dict`</span>
+<span class="sd">            The return value of :func:`~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`</span>
+<span class="sd">            A dictionary that includes the fitted model from the function</span>
+<span class="sd">            :func:`~greykite.algo.common.ml_models.fit_ml_model_with_evaluation`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_params</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">trained_model</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">trained_model</span></div>
+
+    <span class="k">def</span> <span class="nf">__get_requested_seasonality_order</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">requested_seasonality</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">default_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">is_enabled_auto</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns requested seasonality fourier series order.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        requested_seasonality :  `str` or `bool` or `int` or None, default = &quot;auto&quot;</span>
+<span class="sd">            The requested seasonality.</span>
+<span class="sd">            &quot;auto&quot;, `True`, `False`, None (same as `False`) or a number for the Fourier order.</span>
+<span class="sd">        default_order : `int`</span>
+<span class="sd">            The default order to use for &quot;auto&quot; and True.</span>
+<span class="sd">        is_enabled_auto : `bool`</span>
+<span class="sd">            Whether the seasonality should be modeled for &quot;auto&quot; seasonality.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        order : `int`</span>
+<span class="sd">            Seasonality fourier series order.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">requested_seasonality</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span><span class="n">requested_seasonality</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span> <span class="ow">and</span> <span class="n">is_enabled_auto</span><span class="p">):</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="n">default_order</span>
+        <span class="k">elif</span> <span class="n">requested_seasonality</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="p">(</span><span class="n">requested_seasonality</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_enabled_auto</span><span class="p">):</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">requested_seasonality</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">requested_seasonality</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Requested seasonality order &#39;</span><span class="si">{</span><span class="n">requested_seasonality</span><span class="si">}</span><span class="s2">&#39; must be one of:&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot; &#39;auto&#39;, True, False, None, or int.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">order</span>
+
+    <span class="k">def</span> <span class="nf">__get_silverkite_seasonality</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">DAY</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">num_days</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">seasonality</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates `fs_components_df` parameter for `forecast_silverkite`</span>
+<span class="sd">        for modeling seasonality.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        simple_freq : `str`</span>
+<span class="sd">            SimpleTimeFrequencyEnum member that best matches the input data frequency</span>
+<span class="sd">            according to `get_simple_time_frequency_from_period`</span>
+<span class="sd">        num_days : `int`</span>
+<span class="sd">            Number of days of observations in the input data</span>
+<span class="sd">        seasonality : `dict` or None</span>
+<span class="sd">            Seasonality configuration dictionary, with the following optional keys.</span>
+<span class="sd">            (keys are SilverkiteSeasonalityEnum members in lower case):</span>
+
+<span class="sd">                - ``&quot;yearly_seasonality&quot;`` : `str` or `bool` or `int` or None, default = &#39;auto&#39;</span>
+<span class="sd">                    Determines the yearly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;quarterly_seasonality&quot;`` : `str` or `bool` or `int` or None, default = &#39;auto&#39;</span>
+<span class="sd">                    Determines the quarterly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;monthly_seasonality&quot;`` : `str` or `bool` or `int` or None, default = &#39;auto&#39;</span>
+<span class="sd">                    Determines the monthly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;weekly_seasonality&quot;`` : `str` or `bool` or `int` or None, default = &#39;auto&#39;</span>
+<span class="sd">                    Determines the weekly seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+<span class="sd">                ``&quot;daily_seasonality&quot;`` : `str` or `bool` or `int` or None, default = &#39;auto&#39;</span>
+<span class="sd">                    Determines the daily seasonality</span>
+<span class="sd">                    &#39;auto&#39;, True, False, or a number for the Fourier order</span>
+
+<span class="sd">            None is equivalent to &#39;auto&#39;. If &#39;auto&#39;, seasonality components are based on input data</span>
+<span class="sd">            (``num_days``, ``simple_freq``), according to</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.constants.silverkite_seasonality.SilverkiteSeasonalityEnum`.</span>
+<span class="sd">            and `~greykite.algo.forecast.silverkite.constants.silverkite_time_frequency.SilverkiteTimeFrequencyEnum`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fs_components_df : `pandas.DataFrame`</span>
+<span class="sd">            Contains fourier series specification. Columns:</span>
+
+<span class="sd">                - &quot;name&quot;</span>
+<span class="sd">                - &quot;period&quot;</span>
+<span class="sd">                - &quot;order&quot;</span>
+<span class="sd">                - &quot;seas_names&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">seasonality</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seasonality</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># recognized seasonalities for silverkite</span>
+        <span class="n">silverkite_seasonalities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_seasonality_enum</span><span class="o">.</span><span class="n">__members__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">silverkite_seasonalities</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">silverkite_seasonalities</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="c1"># valid seasonalities based on input data frequency</span>
+        <span class="n">freq_valid_seas_names</span> <span class="o">=</span> <span class="n">SimpleTimeFrequencyEnum</span><span class="p">[</span><span class="n">simple_freq</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">valid_seas</span>
+        <span class="n">freq_auto_seas_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_time_frequency_enum</span><span class="p">[</span><span class="n">simple_freq</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">auto_fourier_seas</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">seasonality</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">silverkite_seasonalities</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> must be one of </span><span class="si">{</span><span class="n">silverkite_seasonalities</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">seasonalities</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># seasonalities to add to the model</span>
+        <span class="k">for</span> <span class="n">seas</span> <span class="ow">in</span> <span class="n">silverkite_seasonalities</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># keys are SilverkiteSeasonalityEnum members in lower case</span>
+            <span class="n">seas_input</span> <span class="o">=</span> <span class="n">seasonality</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">seas</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+            <span class="c1"># under auto configuration, seasonality is added if it&#39;s recommended for both</span>
+            <span class="c1"># the input frequency and data size</span>
+            <span class="n">is_enabled_auto</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">num_days</span> <span class="o">&gt;=</span> <span class="n">seas</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">default_min_days</span>
+                    <span class="ow">and</span> <span class="n">seas</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">freq_auto_seas_names</span><span class="p">)</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_requested_seasonality_order</span><span class="p">(</span>
+                <span class="n">requested_seasonality</span><span class="o">=</span><span class="n">seas_input</span><span class="p">,</span>
+                <span class="n">default_order</span><span class="o">=</span><span class="n">seas</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">order</span><span class="p">,</span>
+                <span class="n">is_enabled_auto</span><span class="o">=</span><span class="n">is_enabled_auto</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">seas</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">freq_valid_seas_names</span><span class="p">:</span>
+                    <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">seas</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; is typically not valid for &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;data with &#39;</span><span class="si">{</span><span class="n">simple_freq</span><span class="si">}</span><span class="s2">&#39; frequency. Each seasonality period &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;should cover multiple observations in the data. To remove &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;these seasonality terms from the model, remove </span><span class="si">{</span><span class="n">seas</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">seas_input</span><span class="si">}</span><span class="s2"> &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;or set it to &#39;auto&#39; or 0.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+                <span class="n">seasonalities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">seas</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="n">seas</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">period</span><span class="p">,</span>
+                    <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="n">order</span><span class="p">,</span>  <span class="c1"># user is allowed to override default order</span>
+                    <span class="s2">&quot;seas_names&quot;</span><span class="p">:</span> <span class="n">seas</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">seas_names</span>
+                <span class="p">})</span>
+
+        <span class="c1"># constructs dataframe where each seasonality is a row</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seasonalities</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">seasonalities</span><span class="p">,</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;period&quot;</span><span class="p">,</span> <span class="s2">&quot;order&quot;</span><span class="p">,</span> <span class="s2">&quot;seas_names&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">fs</span>
+
+    <span class="k">def</span> <span class="nf">__get_seasonality_order_from_dataframe</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">seasonality</span><span class="p">,</span>
+            <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">max_order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns fourier series order from a `pandas.DataFrame`</span>
+<span class="sd">        fourier series specification. Return value is capped by ``max_order``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        seasonality : `SilverkiteSeasonalityEnum.Seasonality` namedtuple</span>
+<span class="sd">            Which seasonality to extract from ``fs``.</span>
+<span class="sd">            Has attributes ``name``, ``period``, ``order``, ``seas_names``</span>
+<span class="sd">            Can be a `SilverkiteSeasonalityEnum` member value.</span>
+<span class="sd">        fs : `pandas.DataFrame` or None, optional, default `None`</span>
+<span class="sd">            Columns: &quot;name&quot;, &quot;period&quot;, &quot;order&quot;, &quot;seas_names&quot;</span>
+<span class="sd">            Suitable for ``fs_components_df`` parameter for ``forecast_silverkite``</span>
+<span class="sd">            for modeling seasonality.</span>
+<span class="sd">            Could be returned by ``get_silverkite_seasonality``.</span>
+<span class="sd">            Assumes that ``name`` and ``seas_names`` uniquely identify a row.</span>
+<span class="sd">        max_order: `int` or None, optional, default `None`</span>
+<span class="sd">            Upper limit on seasonality_order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fs_order : `int`</span>
+<span class="sd">            The Fourier series order of the row with the given `name` and `seas_names`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">fs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name_match</span> <span class="o">=</span> <span class="p">(</span><span class="n">fs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">seas_match</span> <span class="o">=</span> <span class="p">((</span><span class="n">fs</span><span class="p">[</span><span class="s2">&quot;seas_names&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+                          <span class="k">if</span> <span class="n">seasonality</span><span class="o">.</span><span class="n">seas_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                          <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">fs</span><span class="p">[</span><span class="s2">&quot;seas_names&quot;</span><span class="p">]))</span>
+
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">name_match</span> <span class="o">&amp;</span> <span class="n">seas_match</span><span class="p">):</span>
+                <span class="n">order</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">name_match</span> <span class="o">&amp;</span> <span class="n">seas_match</span><span class="p">),</span> <span class="s2">&quot;order&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">max_order</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">order</span>
+
+    <span class="k">def</span> <span class="nf">__get_feature_sets_enabled</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">simple_freq</span><span class="o">=</span><span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">DAY</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">num_days</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">feature_sets_enabled</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns default feature sets based on training data frequency and size.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        simple_freq: `str`, default SimpleTimeFrequencyEnum.DAY.name</span>
+<span class="sd">            SimpleTimeFrequencyEnum member that best matches the input data frequency</span>
+<span class="sd">            according to `get_simple_time_frequency_from_period`</span>
+<span class="sd">        num_days: `int`, default 1000</span>
+<span class="sd">            Number of days of observations in the input data</span>
+<span class="sd">        feature_sets_enabled: `dict` [`str`, `bool` or &quot;auto&quot; or None] or `bool` or &quot;auto&quot; or None, default &quot;auto&quot;</span>
+<span class="sd">            Whether to include interaction terms and categorical variables to increase model flexibility.</span>
+
+<span class="sd">            If a `dict`, boolean values indicate whether include various sets of features in the model.</span>
+<span class="sd">            The following keys are recognized</span>
+<span class="sd">            (from `~greykite.algo.forecast.silverkite.constants.silverkite_column.SilverkiteColumn`):</span>
+
+<span class="sd">                ``&quot;COLS_HOUR_OF_WEEK&quot;`` : `str`</span>
+<span class="sd">                    Constant hour of week effect</span>
+<span class="sd">                ``&quot;COLS_WEEKEND_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Daily seasonality interaction with is_weekend</span>
+<span class="sd">                ``&quot;COLS_DAY_OF_WEEK_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Daily seasonality interaction with day of week</span>
+<span class="sd">                ``&quot;COLS_TREND_DAILY_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow daily seasonality to change over time by is_weekend</span>
+<span class="sd">                ``&quot;COLS_EVENT_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow sub-daily event effects</span>
+<span class="sd">                ``&quot;COLS_EVENT_WEEKEND_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow sub-daily event effect to interact with is_weekend</span>
+<span class="sd">                ``&quot;COLS_DAY_OF_WEEK&quot;`` : `str`</span>
+<span class="sd">                    Constant day of week effect</span>
+<span class="sd">                ``&quot;COLS_TREND_WEEKEND&quot;`` : `str`</span>
+<span class="sd">                    Allow trend (growth, changepoints) to interact with is_weekend</span>
+<span class="sd">                ``&quot;COLS_TREND_DAY_OF_WEEK&quot;`` : `str`</span>
+<span class="sd">                    Allow trend to interact with day of week</span>
+<span class="sd">                ``&quot;COLS_TREND_WEEKLY_SEAS&quot;`` : `str`</span>
+<span class="sd">                    Allow weekly seasonality to change over time</span>
+
+<span class="sd">            The following dictionary values are recognized:</span>
+
+<span class="sd">                - True: include the feature set in the model</span>
+<span class="sd">                - False: do not include the feature set in the model</span>
+<span class="sd">                - None: do not include the feature set in the model</span>
+<span class="sd">                - &quot;auto&quot; or not provided: use the default setting based on data frequency and size</span>
+
+<span class="sd">            If not a `dict`:</span>
+
+<span class="sd">                - if a boolean, equivalent to a dictionary with all values set to the boolean.</span>
+<span class="sd">                - if None, equivalent to a dictionary with all values set to False.</span>
+<span class="sd">                - if &quot;auto&quot;, equivalent to a dictionary with all values set to &quot;auto&quot;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        feature_sets_enabled : `dict` [`str`, `bool`]</span>
+<span class="sd">            Indicates which feature sets will be added to the model. Feature sets are determined</span>
+<span class="sd">            by `get_model_feature_terms` and may be empty (e.g. if there are no events,</span>
+<span class="sd">            there is no event:seasonality interaction)</span>
+<span class="sd">            Same valid options as `feature_sets_enabled` parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">feature_sets_enabled_default</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_HOUR_OF_WEEK</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_WEEKEND_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAILY_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_WEEKEND_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKEND</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAY_OF_WEEK</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKLY_SEAS</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">SimpleTimeFrequencyEnum</span><span class="p">[</span><span class="n">simple_freq</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="c1"># for sub-daily data</span>
+        <span class="k">if</span> <span class="p">(</span>
+                <span class="n">frequency</span><span class="o">.</span><span class="n">seconds_per_observation</span>
+                <span class="o">&lt;=</span> <span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">HOUR</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">seconds_per_observation</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">num_days</span> <span class="o">&gt;=</span> <span class="n">TimeEnum</span><span class="o">.</span><span class="n">ONE_MONTH_IN_DAYS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># hour of week offset, helps the fourier terms</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_HOUR_OF_WEEK</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># daily seasonality on weekday vs weekend</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_WEEKEND_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># daily seasonality by day of week</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># daily seasonality trend on weekday, weekend</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAILY_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">num_days</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">TimeEnum</span><span class="o">.</span><span class="n">ONE_YEAR_IN_DAYS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># holiday daily seasonality</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># holiday daily seasonality that depends on weekend/weekday</span>
+                <span class="c1">#   By pigeonhole principle, with reasonable assumption that a holiday must fall on a different</span>
+                <span class="c1">#   day of the week for any three consecutive years (or else always be on the same day of week),</span>
+                <span class="c1">#   it takes at most 3 years of training data to observe all weekend/weekday possibilities.</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_WEEKEND_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># for sub-weekly data</span>
+        <span class="k">if</span> <span class="p">(</span>
+                <span class="n">frequency</span><span class="o">.</span><span class="n">seconds_per_observation</span>
+                <span class="o">&lt;=</span> <span class="n">SimpleTimeFrequencyEnum</span><span class="o">.</span><span class="n">DAY</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">seconds_per_observation</span><span class="p">):</span>
+            <span class="c1"># day of week offset, helps the fourier terms</span>
+            <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># allows different trend on weekday vs weekend</span>
+            <span class="k">if</span> <span class="n">num_days</span> <span class="o">&gt;=</span> <span class="n">TimeEnum</span><span class="o">.</span><span class="n">ONE_MONTH_IN_DAYS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKEND</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># allows trend interaction with day of week</span>
+            <span class="k">if</span> <span class="n">num_days</span> <span class="o">&gt;=</span> <span class="n">TimeEnum</span><span class="o">.</span><span class="n">ONE_QUARTER_IN_DAYS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAY_OF_WEEK</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">num_days</span> <span class="o">&gt;=</span> <span class="n">TimeEnum</span><span class="o">.</span><span class="n">ONE_YEAR_IN_DAYS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># weekly seasonality trend over time</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKLY_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># None is treated the same as False.</span>
+        <span class="c1"># Intuitively, feature_sets_enabled=None should</span>
+        <span class="c1">#   mean no feature sets are enabled.</span>
+        <span class="k">if</span> <span class="n">feature_sets_enabled</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">feature_sets_enabled</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Overrides defaults with user provided dictionary</span>
+        <span class="k">if</span> <span class="n">feature_sets_enabled</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># uses the automatic defaults directly</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feature_sets_enabled</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="c1"># All values are set to the provided boolean value</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">feature_sets_enabled_default</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature_sets_enabled</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">feature_sets_enabled</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># Uses the boolean values in `feature_sets_enabled` to override `feature_sets_enabled_default`</span>
+            <span class="k">for</span> <span class="n">setting</span><span class="p">,</span> <span class="n">is_enabled</span> <span class="ow">in</span> <span class="n">feature_sets_enabled</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">setting</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">feature_sets_enabled_default</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognized feature set: &#39;</span><span class="si">{</span><span class="n">setting</span><span class="si">}</span><span class="s2">&#39;. Value feature sets are &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">feature_sets_enabled_default</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">is_enabled</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+                    <span class="c1"># &quot;auto&quot; values are considered not set by the user and fall back to the default</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">is_enabled</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="c1"># User explicitly turned on this feature set.</span>
+                    <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="n">setting</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">is_enabled</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">is_enabled</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># User explicitly turned off this feature set.</span>
+                    <span class="c1"># None values are treated the same as False.</span>
+                    <span class="n">feature_sets_enabled_default</span><span class="p">[</span><span class="n">setting</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unrecognized `feature_sets_enabled` dictionary value for key </span><span class="si">{</span><span class="n">setting</span><span class="si">}</span><span class="s2">: &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;expected bool or &#39;auto&#39; or None. Found: </span><span class="si">{</span><span class="n">is_enabled</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unrecognized type for `feature_sets_enabled`: expected bool, dict, &#39;auto&#39;, or None. Found: </span><span class="si">{</span><span class="n">feature_sets_enabled</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">feature_sets_enabled_default</span>
+
+    <span class="k">def</span> <span class="nf">__get_feature_sets_terms</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">daily_seas_interaction_order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">weekly_seas_interaction_order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">growth_term</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">changepoint_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Defines features sets for use in the `extra_pred_cols` parameter</span>
+<span class="sd">        to `forecast_silverkite`.</span>
+<span class="sd">        Derived from events, seasonality, and trend (growth + changepoints).</span>
+
+<span class="sd">        :param daily_event_df_dict: Optional[Dict[str, pd.DataFrame(&quot;date&quot;, &quot;event&quot;)]]</span>
+<span class="sd">            suitable for use as `daily_event_df_dict` parameter in `forecast_silverkite`</span>
+<span class="sd">            Each event is modeled as its own effect</span>
+<span class="sd">        :param daily_seas_interaction_order: int</span>
+<span class="sd">            Order on interaction terms with daily seasonality</span>
+<span class="sd">        :param weekly_seas_interaction_order: int</span>
+<span class="sd">            Order on interaction terms with weekly seasonality</span>
+<span class="sd">        :param growth_term: Optional[str]</span>
+<span class="sd">            How to model the growth. Valid options are &quot;linear&quot;, &quot;quadratic&quot;, &quot;sqrt&quot;, &quot;cubic&quot;, &quot;cuberoot&quot;.</span>
+<span class="sd">            See `~greykite.common.constants.GrowthColEnum`.</span>
+<span class="sd">        :param changepoint_cols: Optional[List[str]]</span>
+<span class="sd">            Names of the changepoint feature columns to be generated by `build_silverkite_features`</span>
+<span class="sd">        :return: Dict[str, List[str]]</span>
+<span class="sd">            The patsy model terms for each feature set</span>
+<span class="sd">            key: feature set name</span>
+<span class="sd">            value: list of patsy model terms</span>
+<span class="sd">                If there are no valid patsy model terms according to the input configuration,</span>
+<span class="sd">                the list is empty.</span>
+<span class="sd">                For example, if there are no events, the event related effects will be empty</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># enumerates all possible keys</span>
+        <span class="n">extra_pred_cols_grouped</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_HOUR_OF_WEEK</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_WEEKEND_SEAS</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK_SEAS</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAILY_SEAS</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_SEAS</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_WEEKEND_SEAS</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKEND</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAY_OF_WEEK</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKLY_SEAS</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
+
+        <span class="c1"># the columns which constitute the trend</span>
+        <span class="k">if</span> <span class="n">changepoint_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">changepoint_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">growth_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">growth_term</span><span class="p">]</span> <span class="k">if</span> <span class="n">growth_term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">trend_cols</span> <span class="o">=</span> <span class="n">growth_col</span> <span class="o">+</span> <span class="n">changepoint_cols</span>
+
+        <span class="c1"># all possible values of `dow` and `dow_hr` from `build_time_features_df`</span>
+        <span class="n">dow_levels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1-Mon&quot;</span><span class="p">,</span> <span class="s2">&quot;2-Tue&quot;</span><span class="p">,</span> <span class="s2">&quot;3-Wed&quot;</span><span class="p">,</span> <span class="s2">&quot;4-Thu&quot;</span><span class="p">,</span> <span class="s2">&quot;5-Fri&quot;</span><span class="p">,</span> <span class="s2">&quot;6-Sat&quot;</span><span class="p">,</span> <span class="s2">&quot;7-Sun&quot;</span><span class="p">]</span>
+        <span class="n">dow_hr_levels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">day</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="k">for</span> <span class="n">hour</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)]</span>
+        <span class="n">day_of_week</span> <span class="o">=</span> <span class="n">patsy_categorical_term</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">str_dow</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">dow_levels</span><span class="p">)</span>
+        <span class="n">hour_of_week</span> <span class="o">=</span> <span class="n">patsy_categorical_term</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">dow_hr</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">dow_hr_levels</span><span class="p">)</span>
+
+        <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">day_of_week</span><span class="p">]</span>
+        <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_HOUR_OF_WEEK</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">hour_of_week</span><span class="p">]</span>
+        <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKEND</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">is_weekend</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">trend_cols</span><span class="p">]</span>
+        <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAY_OF_WEEK</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">day_of_week</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">trend_cols</span><span class="p">]</span>
+
+        <span class="c1"># allows major holidays to have different daily seasonality</span>
+        <span class="c1"># interact with fourier series terms up to fs_daily_interaction_order</span>
+        <span class="n">daily_seasonality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_seasonality_enum</span><span class="o">.</span><span class="n">DAILY_SEASONALITY</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">weekly_seasonality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_seasonality_enum</span><span class="o">.</span><span class="n">WEEKLY_SEASONALITY</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">daily_seas_interaction_order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_holiday</span><span class="o">.</span><span class="n">HOLIDAYS_TO_INTERACT</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">daily_event_df_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">holiday</span> <span class="ow">in</span> <span class="n">daily_event_df_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">event_levels</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DEFAULT</span><span class="p">]</span>  <span class="c1"># reference level for non-event days, added by `add_daily_events`</span>
+                    <span class="c1"># This event&#39;s levels</span>
+                    <span class="n">event_levels</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">daily_event_df_dict</span><span class="p">[</span><span class="n">holiday</span><span class="p">][</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_DF_LABEL_COL</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+                    <span class="c1"># `term` matches new_col in `add_daily_events`</span>
+                    <span class="n">term</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">EVENT_PREFIX</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">holiday</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_SEAS</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cols_interact</span><span class="p">(</span>
+                        <span class="n">static_col</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">patsy_categorical_term</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">event_levels</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">fs_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">fs_order</span><span class="o">=</span><span class="n">daily_seas_interaction_order</span><span class="p">,</span>
+                        <span class="n">fs_seas_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+
+                    <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_EVENT_WEEKEND_SEAS</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cols_interact</span><span class="p">(</span>
+                        <span class="n">static_col</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">is_weekend</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">:&quot;</span>
+                                   <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">patsy_categorical_term</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="n">term</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">event_levels</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">fs_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">fs_order</span><span class="o">=</span><span class="n">daily_seas_interaction_order</span><span class="p">,</span>
+                        <span class="n">fs_seas_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+
+            <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_WEEKEND_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="n">cols_interact</span><span class="p">(</span>
+                <span class="n">static_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">is_weekend</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">fs_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">fs_order</span><span class="o">=</span><span class="n">daily_seas_interaction_order</span><span class="p">,</span>
+                <span class="n">fs_seas_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+
+            <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_DAY_OF_WEEK_SEAS</span><span class="p">]</span> <span class="o">=</span> <span class="n">cols_interact</span><span class="p">(</span>
+                <span class="n">static_col</span><span class="o">=</span><span class="n">day_of_week</span><span class="p">,</span>
+                <span class="n">fs_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">fs_order</span><span class="o">=</span><span class="n">daily_seas_interaction_order</span><span class="p">,</span>
+                <span class="n">fs_seas_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">trend_cols</span><span class="p">:</span>
+                <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_DAILY_SEAS</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cols_interact</span><span class="p">(</span>
+                    <span class="n">static_col</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">is_weekend</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">fs_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">fs_order</span><span class="o">=</span><span class="n">daily_seas_interaction_order</span><span class="p">,</span>
+                    <span class="n">fs_seas_name</span><span class="o">=</span><span class="n">daily_seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">weekly_seas_interaction_order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">trend_cols</span><span class="p">:</span>
+                <span class="n">extra_pred_cols_grouped</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_column</span><span class="o">.</span><span class="n">COLS_TREND_WEEKLY_SEAS</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cols_interact</span><span class="p">(</span>
+                    <span class="n">static_col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
+                    <span class="n">fs_name</span><span class="o">=</span><span class="n">weekly_seasonality</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">fs_order</span><span class="o">=</span><span class="n">weekly_seas_interaction_order</span><span class="p">,</span>
+                    <span class="n">fs_seas_name</span><span class="o">=</span><span class="n">weekly_seasonality</span><span class="o">.</span><span class="n">seas_names</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">extra_pred_cols_grouped</span>
+
+    <span class="k">def</span> <span class="nf">__get_silverkite_holidays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">auto_holiday</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">holidays_to_model_separately</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+            <span class="n">start_year</span><span class="o">=</span><span class="mi">2015</span><span class="p">,</span>
+            <span class="n">end_year</span><span class="o">=</span><span class="mi">2030</span><span class="p">,</span>
+            <span class="n">pre_num</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">post_num</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">auto_holiday_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates holidays dictionary for input to daily_event_df_dict parameter of silverkite model.</span>
+<span class="sd">        The main purpose is to provide reasonable defaults for the holiday names and countries</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auto_holiday : `bool`, default False</span>
+<span class="sd">            If `True`, an algorithm is used to automatically infer the holiday configuration. Holiday groups will be constructed through</span>
+<span class="sd">            estimated holiday effects for holidays and their neighboring days.</span>
+<span class="sd">            For details, see `~greykite.algo.common.holiday_grouper.HolidayGrouper`.</span>
+<span class="sd">            If `False`, the specified holiday configuration will be used to generate holiday features.</span>
+<span class="sd">        holiday_lookup_countries : `list` [`str`] or &quot;auto&quot; or None, optional, default &quot;auto&quot;</span>
+<span class="sd">            The countries that contain the holidays you intend to model.</span>
+
+<span class="sd">            * If &quot;auto&quot;, uses a default list of countries</span>
+<span class="sd">              that contain the default ``holidays_to_model_separately``.</span>
+<span class="sd">              See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAY_LOOKUP_COUNTRIES_AUTO`.</span>
+<span class="sd">            * If a list, must be a list of country names.</span>
+<span class="sd">            * If None or an empty list, no holidays are modeled.</span>
+
+<span class="sd">        holidays_to_model_separately : `list` [`str`] or &quot;auto&quot; or `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES` or None, optional, default &quot;auto&quot;  # noqa: E501</span>
+<span class="sd">            Which holidays to include in the model.</span>
+<span class="sd">            The model creates a separate key, value for each item in ``holidays_to_model_separately`` and their neighboring</span>
+<span class="sd">            days. If ``auto_holiday = False``, the other holidays in the countries are grouped together as a single effect.</span>
+<span class="sd">            If ``auto_holiday = True``, the other holidays will be processed by ``HolidayGrouper`` and assigned to</span>
+<span class="sd">            holiday groups based on their estimated impact.</span>
+
+<span class="sd">                * If &quot;auto&quot;, uses a default list of important holidays.</span>
+<span class="sd">                  See `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.HOLIDAYS_TO_MODEL_SEPARATELY_AUTO`.</span>
+<span class="sd">                * If `~greykite.algo.forecast.silverkite.constants.silverkite_holiday.SilverkiteHoliday.ALL_HOLIDAYS_IN_COUNTRIES`,</span>
+<span class="sd">                  uses all available holidays in ``holiday_lookup_countries``. This can often create a model that has too many parameters,</span>
+<span class="sd">                  and should typically be avoided. This argument is only valid when ``auto_holiday = False``. When ``auto_holiday`` is</span>
+<span class="sd">                  set to `True`, a `ValueError` would be raised.</span>
+<span class="sd">                * If a list, must be a list of holiday names.</span>
+<span class="sd">                * If None or an empty list, all holidays in ``holiday_lookup_countries`` are grouped together</span>
+<span class="sd">                  as a single effect.</span>
+
+<span class="sd">            Use ``holiday_lookup_countries`` to provide a list of countries where these holiday occur.</span>
+<span class="sd">        start_year : `int`, default 2015</span>
+<span class="sd">            Year of first training data point, used to generate holiday events.</span>
+<span class="sd">        end_year : `int`, default 2030</span>
+<span class="sd">            Year of last forecast data point, used to generate holiday events.</span>
+<span class="sd">        pre_num : `int`, default 2</span>
+<span class="sd">            Model holiday effects for ``pre_num`` days before the holiday. When ``auto_holiday = False``,</span>
+<span class="sd">            this also applies to the holidays passed in through ``daily_event_df_dict``.</span>
+<span class="sd">        post_num : `int`, default 2</span>
+<span class="sd">            Model holiday effects for ``post_num`` days after the holiday. When ``auto_holiday = False``,</span>
+<span class="sd">            this also applies to the holidays passed in through ``daily_event_df_dict``.</span>
+<span class="sd">        pre_post_num_dict : `dict` [`str`, (`int`, `int`)] or None, default None</span>
+<span class="sd">            Overrides ``pre_num`` and ``post_num`` for each holiday in</span>
+<span class="sd">            ``holidays_to_model_separately``.</span>
+<span class="sd">            For example, if ``holidays_to_model_separately`` contains &quot;Thanksgiving&quot; and &quot;Labor Day&quot;,</span>
+<span class="sd">            this parameter can be set to ``{&quot;Thanksgiving&quot;: [1, 3], &quot;Labor Day&quot;: [1, 2]}``,</span>
+<span class="sd">            denoting that the &quot;Thanksgiving&quot; ``pre_num`` is 1 and ``post_num`` is 3, and &quot;Labor Day&quot;</span>
+<span class="sd">            ``pre_num`` is 1 and ``post_num`` is 2.</span>
+<span class="sd">            Holidays not specified use the default given by ``pre_num`` and ``post_num``.</span>
+<span class="sd">        auto_holiday_params : `dict` or None, default None</span>
+<span class="sd">            This dictionary takes in parameters that can be passed in and used by holiday grouper when</span>
+<span class="sd">            ``auto_holiday`` is set to `True`. When ``auto_holiday = False``, this will not be used. Please see</span>
+<span class="sd">            `~greykite.algo.forecast.silverkite.forecast_simple_silverkite.SimpleSilverkiteForecast.__get_silverkite_holidays`</span>
+<span class="sd">            for more details.</span>
+<span class="sd">        df : `pandas.DataFrame` or None, default None.</span>
+<span class="sd">            The timeseries data that will be used by default for automatically inferring holiday configuration. This</span>
+<span class="sd">             will not be used if external ``df`` is specified through ``auto_holiday_params``.</span>
+<span class="sd">            This is not used when ``auto_holiday`` is `False`.</span>
+<span class="sd">        time_col : `str`, default `cst.TIME_COL`</span>
+<span class="sd">            The column name for timestamps in ``df``. This will not be used if ``time_col`` is specified through</span>
+<span class="sd">            ``auto_holiday_params``.</span>
+<span class="sd">            This is not used when ``auto_holiday`` is `False`.</span>
+<span class="sd">        value_col : `str`, default `cst.VALUE_COL`</span>
+<span class="sd">            The column name for values in ``df``. This will not be used if ``value_col`` is specified through</span>
+<span class="sd">            ``auto_holiday_params``.</span>
+<span class="sd">            This is not used when ``auto_holiday`` is `False`.</span>
+<span class="sd">        daily_event_df_dict : `dict` [`str`, `pandas.DataFrame`] or None, default None</span>
+<span class="sd">            A dictionary of data frames, each representing events data for the corresponding key.</span>
+<span class="sd">            Specifies additional events to include besides the holidays specified by other holiday configurations.</span>
+<span class="sd">            If ``auto_holiday`` is set to `False`, it will be directly appended to the returned result, and the</span>
+<span class="sd">            format is the same as in `~greykite.algo.forecast.silverkite.SilverkiteForecast.forecast`.</span>
+<span class="sd">            If ``auto_holiday`` is set to `True`, it provides a list of holidays that will be processed and</span>
+<span class="sd">            passed in as inputs for ``HolidayGrouper``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        daily_event_df_dict : `dict` [`str`, `pandas.DataFrame` [EVENT_DF_DATE_COL, EVENT_DF_LABEL_COL]]</span>
+<span class="sd">            Suitable for use as ``daily_event_df_dict`` parameter in ``forecast_silverkite``.</span>
+<span class="sd">            Each holiday is modeled as its own effect (not specific to each country).</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        `~greykite.common.features.timeseries_features.get_available_holiday_lookup_countries`</span>
+<span class="sd">        to list available countries for modeling.</span>
+
+<span class="sd">        `~greykite.common.features.timeseries_features.get_available_holidays_across_countries`</span>
+<span class="sd">        to see available holidays in those countries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Processes `holiday_lookup_countries`.</span>
+        <span class="k">if</span> <span class="n">holiday_lookup_countries</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># `None` will not model any holidays when `auto_holiday` is `False`. When `auto_holiday` is `True`, holidays</span>
+            <span class="c1"># has to be passed in through `holiday_lookup_countries` and/or `daily_event_df_dict`.</span>
+            <span class="n">holiday_lookup_countries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="n">holiday_lookup_countries</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="c1"># Countries that contain the default `holidays_to_model_separately`.</span>
+            <span class="n">holiday_lookup_countries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_holiday</span><span class="o">.</span><span class="n">HOLIDAY_LOOKUP_COUNTRIES_AUTO</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">holiday_lookup_countries</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`holiday_lookup_countries` should be a list, found </span><span class="si">{</span><span class="n">holiday_lookup_countries</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">auto_holiday</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">get_auto_holidays</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">,</span>
+                <span class="n">end_year</span><span class="o">=</span><span class="n">end_year</span><span class="p">,</span>
+                <span class="n">pre_num</span><span class="o">=</span><span class="n">pre_num</span><span class="p">,</span>
+                <span class="n">post_num</span><span class="o">=</span><span class="n">post_num</span><span class="p">,</span>
+                <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="n">pre_post_num_dict</span><span class="p">,</span>
+                <span class="n">holiday_lookup_countries</span><span class="o">=</span><span class="n">holiday_lookup_countries</span><span class="p">,</span>
+                <span class="n">holidays_to_model_separately</span><span class="o">=</span><span class="n">holidays_to_model_separately</span><span class="p">,</span>
+                <span class="n">daily_event_df_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span><span class="p">,</span>
+                <span class="n">auto_holiday_params</span><span class="o">=</span><span class="n">auto_holiday_params</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Processes `holidays_to_model_separately`.</span>
+            <span class="k">if</span> <span class="n">holidays_to_model_separately</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">holidays_to_model_separately</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">elif</span> <span class="n">holidays_to_model_separately</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+                <span class="c1"># important holidays.</span>
+                <span class="n">holidays_to_model_separately</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_holiday</span><span class="o">.</span><span class="n">HOLIDAYS_TO_MODEL_SEPARATELY_AUTO</span>
+            <span class="k">elif</span> <span class="n">holidays_to_model_separately</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_silverkite_holiday</span><span class="o">.</span><span class="n">ALL_HOLIDAYS_IN_COUNTRIES</span><span class="p">:</span>
+                <span class="n">holidays_to_model_separately</span> <span class="o">=</span> <span class="n">get_available_holidays_across_countries</span><span class="p">(</span>
+                    <span class="n">countries</span><span class="o">=</span><span class="n">holiday_lookup_countries</span><span class="p">,</span>
+                    <span class="n">year_start</span><span class="o">=</span><span class="n">start_year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">year_end</span><span class="o">=</span><span class="n">end_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">holidays_to_model_separately</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;`holidays_to_model_separately` should be a list, found </span><span class="si">{</span><span class="n">holidays_to_model_separately</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">holiday_df_dict</span> <span class="o">=</span> <span class="n">generate_holiday_events</span><span class="p">(</span>
+                <span class="n">countries</span><span class="o">=</span><span class="n">holiday_lookup_countries</span><span class="p">,</span>
+                <span class="n">holidays_to_model_separately</span><span class="o">=</span><span class="n">holidays_to_model_separately</span><span class="p">,</span>
+                <span class="n">year_start</span><span class="o">=</span><span class="n">start_year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># subtract 1 just in case, to ensure coverage of all holidays.</span>
+                <span class="n">year_end</span><span class="o">=</span><span class="n">end_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># add 1 just in case, to ensure coverage of all holidays.</span>
+                <span class="n">pre_num</span><span class="o">=</span><span class="n">pre_num</span><span class="p">,</span>
+                <span class="n">post_num</span><span class="o">=</span><span class="n">post_num</span><span class="p">,</span>
+                <span class="n">pre_post_num_dict</span><span class="o">=</span><span class="n">pre_post_num_dict</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">holiday_df_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Adds holidays to the user-specified events,</span>
+                <span class="c1"># giving preference to user events if there are conflicts.</span>
+                <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="n">update_dictionary</span><span class="p">(</span>
+                    <span class="n">holiday_df_dict</span><span class="p">,</span>
+                    <span class="n">overwrite_dict</span><span class="o">=</span><span class="n">daily_event_df_dict</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">daily_event_df_dict</span><span class="p">:</span>
+                <span class="c1"># Sets empty dictionary to &#39;None&#39;.</span>
+                <span class="n">daily_event_df_dict</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">daily_event_df_dict</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examine Input Data &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Configure a Forecast" href="0400_configuration.html" />
+    <link rel="prev" title="Choose a Model Template" href="0200_choose_template.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examine Input Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#expected-format">Expected format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inspect-data">Inspect data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-data">Load data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#simple-plot">Simple plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#anomalies">Anomalies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-trend">Check trend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-seasonality">Check seasonality</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Examine Input Data</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examine-input-data">
+<h1>Examine Input Data<a class="headerlink" href="#examine-input-data" title="Permalink to this heading"></a></h1>
+<section id="expected-format">
+<h2>Expected format<a class="headerlink" href="#expected-format" title="Permalink to this heading"></a></h2>
+<p>Your input <code class="docutils literal notranslate"><span class="pre">df</span></code> should be pandas DataFrame with a time column and value column.</p>
+<ul class="simple">
+<li><p>The <em class="xref py py-obj">time column</em> can have any format recognized by <a class="reference external" href="https://pandas.pydata.org/pandas-docs/version/1.5.0/reference/api/pandas.to_datetime.html#pandas.to_datetime" title="(in pandas v1.5.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.to_datetime</span></code></a></p></li>
+<li><p>The <em class="xref py py-obj">value column</em> should be numeric and non-negative. Missing values are allowed.</p></li>
+</ul>
+<p>Include regressors as columns in <code class="docutils literal notranslate"><span class="pre">df</span></code>. Forecasts will start after the date of the last
+non-null observation in <em class="xref py py-obj">value column</em>. The regressors must be available past this date
+to create a forecast.</p>
+<p>Your <code class="docutils literal notranslate"><span class="pre">df</span></code> will look like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(x) data point
+(-) missing data
+
+time_col    value_col    regressor1_col    regressor2_col
+x           x            x                 x
+x           -            x                 x       &lt;- missing values okay; let Greykite handle imputation
+x           x            -                 x       &lt;- missing values okay; let Greykite handle imputation
+x           x            x                 -       &lt;- missing values okay; let Greykite handle imputation
+x           x            x                 x
+x           x            x                 x
+-           -            -                 -       &lt;- missing values okay; let Greykite handle imputation
+x           x            x                 x
+x           x            x                 x
+x           -            x                 x       &lt;- forecast start date, continue to provide regressors
+x           -            x                 x
+x           -            -                 x       &lt;- Greykite will impute regressor1
+x           -            x                 x
+x           -            x                 -       &lt;- Greykite will impute regressor2
+x           -            x                 x
+x           -            -                 -       &lt;- Greykite will impute regressor1 and regressor2
+x           -            x                 x
+x           -            x                 x       &lt;- last date for prediction (no regressors after this point)
+x           -            -                 -       &lt;- no prediction
+x           -            -                 -       &lt;- no prediction
+x           -            -                 -       &lt;- no prediction
+
+note: for clarity, this diagram shows time_col sorted in ascending order. This is
+not required for your input data.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The input data frequency can be whatever you’d like. Hourly, daily, weekly, monthly,
+every 6 hours, etc.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Greykite handles missing values and even missing timestamps. You should <em>not</em> impute the missing
+values on your own.</p>
+<p>Greykite’s imputation methods prevent leakage of future information into the past during time-series
+cross validation and backtesting. They allow imputation based on future values, but only within each
+training set. See <a class="reference internal" href="../model_components/1000_override.html"><span class="doc">Pre-processing, Selective Grid Search</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As a rule of thumb, provide at least twice as much training data as you intend to forecast.</p>
+<p>A more nuanced answer considers seasonality: you need a few full seasonality cycles to properly model
+the seasonality patterns and distinguish them from other terms (e.g. growth). For example, if yearly
+seasonality is important to your problem, then provide at least 2 years of data.</p>
+<p>You can still create a forecast with fewer data points, e.g. 1 year for yearly seasonality, but
+it may be more challenging to train a good model or do proper historical validation.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Sometimes you may have a dataframe with additional columns not relevant to the forecast.</p>
+<p>When creating a forecast, subset the <code class="docutils literal notranslate"><span class="pre">df</span></code> to the relevant columns:
+<code class="docutils literal notranslate"><span class="pre">df[[time_col,</span> <span class="pre">value_col,</span> <span class="pre">regressor_col1,</span> <span class="pre">regressor_col2,</span> <span class="pre">...]].</span></code></p>
+</div>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># no regressors</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;ts&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2018-01-03&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1"># with regressors</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;ts&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2018-01-03-00&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;H&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;regressor1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.19</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.14</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.17</span><span class="p">],</span>
+    <span class="s2">&quot;regressor2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.18</span><span class="p">,</span> <span class="mf">1.12</span><span class="p">,</span> <span class="mf">1.14</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;regressor3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">2.17</span><span class="p">,</span> <span class="mf">2.12</span><span class="p">,</span> <span class="mf">2.14</span><span class="p">,</span> <span class="mf">2.16</span><span class="p">,</span> <span class="mf">2.17</span><span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="inspect-data">
+<h2>Inspect data<a class="headerlink" href="#inspect-data" title="Permalink to this heading"></a></h2>
+<p>We will be using
+<a class="reference internal" href="../autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries" title="greykite.framework.input.univariate_time_series.UnivariateTimeSeries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnivariateTimeSeries</span></code></a>
+to inspect the data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While following steps are not necessary to create a forecast, it’s
+always helpful to know what your data looks like.</p>
+<p>Greykite provides functions to visualize your input timeseries
+and examine the trend, seasonality, holidays.</p>
+</div>
+<section id="load-data">
+<h3>Load data<a class="headerlink" href="#load-data" title="Permalink to this heading"></a></h3>
+<p>Make sure your data loads correctly. First, check the printed logs of <code class="docutils literal notranslate"><span class="pre">load_data</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.input.univariate_time_series</span> <span class="kn">import</span> <span class="n">UnivariateTimeSeries</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">UnivariateTimeSeries</span><span class="p">()</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;ts&quot;</span><span class="p">,</span>
+    <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>  <span class="c1"># optional, but recommended if you have missing data points</span>
+               <span class="c1"># W for weekly, D for daily, H for hourly, etc. See `pd.date_range`.</span>
+</pre></div>
+</div>
+<p>Here is some example logging info for hourly data. The loaded data spans 2017-10-11 to 2020-02-23.
+11 missing dates were added.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Added</span> <span class="mi">11</span> <span class="n">missing</span> <span class="n">dates</span><span class="o">.</span> <span class="n">There</span> <span class="n">were</span> <span class="mi">20773</span> <span class="n">values</span> <span class="n">originally</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Input</span> <span class="n">time</span> <span class="n">stats</span><span class="p">:</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">data</span> <span class="n">points</span><span class="p">:</span> <span class="mi">20784</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">avg</span> <span class="n">increment</span> <span class="p">(</span><span class="n">sec</span><span class="p">):</span> <span class="mf">3600.00</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">start</span> <span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">11</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">end</span> <span class="n">date</span><span class="p">:</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">23</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Input</span> <span class="n">value</span> <span class="n">stats</span><span class="p">:</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">count</span>     <span class="mf">20773.000000</span>
+<span class="n">mean</span>     <span class="mf">234249.356472</span>
+<span class="n">std</span>       <span class="mf">30072.193941</span>
+<span class="nb">min</span>        <span class="mf">9169.000000</span>
+<span class="mi">25</span><span class="o">%</span>      <span class="mf">191494.000000</span>
+<span class="mi">50</span><span class="o">%</span>      <span class="mf">234046.000000</span>
+<span class="mi">75</span><span class="o">%</span>      <span class="mf">242572.000000</span>
+<span class="nb">max</span>      <span class="mf">34832.000000</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">last</span> <span class="n">date</span> <span class="k">for</span> <span class="n">fit</span><span class="p">:</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">23</span> <span class="mi">23</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">columns</span> <span class="n">available</span> <span class="n">to</span> <span class="n">use</span> <span class="k">as</span> <span class="n">regressors</span><span class="p">:</span> <span class="p">[]</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span>  <span class="n">last</span> <span class="n">date</span> <span class="k">for</span> <span class="n">regressors</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Alternatively, if you already have a forecast from
+<a class="reference internal" href="../autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster" title="greykite.framework.templates.forecaster.Forecaster"><code class="xref py py-class docutils literal notranslate"><span class="pre">Forecaster</span></code></a>,
+the time series is included in the result.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.forecaster</span> <span class="kn">import</span> <span class="n">Forecaster</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.model_templates</span> <span class="kn">import</span> <span class="n">ModelTemplateEnum</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">MetadataParam</span><span class="p">(</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;ts&quot;</span><span class="p">,</span>
+    <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span>
+<span class="p">)</span>
+<span class="n">forecaster</span> <span class="o">=</span> <span class="n">Forecaster</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">forecaster</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>  <span class="c1"># input data</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">ForecastConfig</span><span class="p">(</span>
+        <span class="n">model_template</span><span class="o">=</span><span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">AUTO</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">coverage</span><span class="o">=</span><span class="mf">0.95</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">timeseries</span>  <span class="c1"># a `UnivariateTimeSeries` instance</span>
+</pre></div>
+</div>
+<p>You can also check the information programatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">time_stats</span><span class="p">)</span>         <span class="c1"># time statistics</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">value_stats</span><span class="p">)</span>        <span class="c1"># value statistics</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>               <span class="c1"># frequency</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">)</span>     <span class="c1"># available regressors</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">last_date_for_fit</span><span class="p">)</span>  <span class="c1"># last date with value_col</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">last_date_for_reg</span><span class="p">)</span>  <span class="c1"># last date for any regressor</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>          <span class="c1"># the standardized dataset for forecasting</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">fit_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>      <span class="c1"># the standardized dataset for fitting and historical evaluation</span>
+</pre></div>
+</div>
+</section>
+<section id="simple-plot">
+<h3>Simple plot<a class="headerlink" href="#simple-plot" title="Permalink to this heading"></a></h3>
+<p>The best way to check your data is to plot it. You can do this interactively in a Jupyter notebook.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># Or simply `ts.plot()`</span>
+</pre></div>
+</div>
+</section>
+<section id="anomalies">
+<h3>Anomalies<a class="headerlink" href="#anomalies" title="Permalink to this heading"></a></h3>
+<p>An anomaly is a deviation in the metric that is not expected to occur again
+in the future. Check for anomalies using <code class="docutils literal notranslate"><span class="pre">ts.plot()</span></code> and label them before
+forecasting.</p>
+<p>You may label anomalies by passing <code class="docutils literal notranslate"><span class="pre">anomaly_info</span></code> to <code class="docutils literal notranslate"><span class="pre">load_data()</span></code>.
+An anomaly in a timeseries is defined by its time period (start, end).
+If you are able to estimate the hypothetical value had the
+anomaly not occurred, you may specify an adjustment to get this corrected value.
+Otherwise, the values during the anomalous period will simply be masked
+and properly handled when forecasting. It is important to provide the
+anomaly information, rather than correcting the data yourself.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ts.df</span></code> contains the values after adjustments, and <code class="docutils literal notranslate"><span class="pre">ts.df_before_adjustment</span></code> contains
+the values before adjustment.</p></li>
+<li><p>The plot function has an option to show the anomaly
+adjustment (<code class="docutils literal notranslate"><span class="pre">show_anomaly_adjustment=True</span></code>).</p></li>
+<li><p>The same <code class="docutils literal notranslate"><span class="pre">anomaly_info</span></code> can be used in the forecast configuration.
+See <a class="reference internal" href="0400_configuration.html#anomaly-info"><span class="std std-ref">Anomaly Configuration</span></a></p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">greykite.common.constants</span> <span class="k">as</span> <span class="nn">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.input.univariate_time_series</span> <span class="kn">import</span> <span class="n">UnivariateTimeSeries</span>
+
+<span class="c1"># Suppose 30.0 is an anomaly in &quot;value&quot; and we know the value should be lowered by 27.</span>
+<span class="c1"># Suppose 20.17 and 20.12 are an anomalies in &quot;regressor3&quot; and we don&#39;t know the true value,</span>
+<span class="c1"># so they should be replaced with np.nan.</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;ts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2018-07-13&quot;</span><span class="p">,</span> <span class="s2">&quot;2018-07-14&quot;</span><span class="p">,</span> <span class="s2">&quot;2018-07-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2018-07-16&quot;</span><span class="p">,</span> <span class="s2">&quot;2018-07-17&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;regressor1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.19</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.14</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.17</span><span class="p">],</span>
+    <span class="s2">&quot;regressor2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.18</span><span class="p">,</span> <span class="mf">1.12</span><span class="p">,</span> <span class="mf">1.14</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="s2">&quot;regressor3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">20.17</span><span class="p">,</span> <span class="mf">20.12</span><span class="p">,</span> <span class="mf">2.14</span><span class="p">,</span> <span class="mf">2.16</span><span class="p">,</span> <span class="mf">2.17</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="c1"># The corrected df should look like this:</span>
+<span class="c1"># df_adjusted = pd.DataFrame({</span>
+<span class="c1">#     &quot;ts&quot;: [&quot;2018-07-13&quot;, &quot;2018-07-14&quot;, &quot;2018-07-15&quot;, &quot;2018-07-16&quot;, &quot;2018-07-17&quot;],</span>
+<span class="c1">#     &quot;y&quot;: [1.0, 2.0, 3.0, None, None],</span>
+<span class="c1">#     &quot;regressor1&quot;: [0.19, None, 0.14, 0.16, 0.17],</span>
+<span class="c1">#     &quot;regressor2&quot;: [1.18, 1.12, 1.14, 1.16, None],</span>
+<span class="c1">#     &quot;regressor3&quot;: [None, None, 2.14, 2.16, 2.17]</span>
+<span class="c1"># })</span>
+
+<span class="c1"># Specify anomalies using `anomaly_df`.</span>
+<span class="c1"># Each row corresponds to an anomaly. The start date, end date,</span>
+<span class="c1"># and impact (if known) are provided. Extra columns can be</span>
+<span class="c1"># used to annotate information such as which metrics the</span>
+<span class="c1"># anomaly applies to.</span>
+<span class="n">anomaly_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="c1"># start and end date are inclusive</span>
+    <span class="n">cst</span><span class="o">.</span><span class="n">START_TIME_COL</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2018-07-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2018-07-13&quot;</span><span class="p">],</span>  <span class="c1"># inclusive</span>
+    <span class="n">cst</span><span class="o">.</span><span class="n">END_TIME_COL</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2018-07-15&quot;</span><span class="p">,</span> <span class="s2">&quot;2018-07-14&quot;</span><span class="p">],</span>    <span class="c1"># inclusive</span>
+    <span class="n">cst</span><span class="o">.</span><span class="n">ADJUSTMENT_DELTA_COL</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">27</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+    <span class="n">cst</span><span class="o">.</span><span class="n">METRIC_COL</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;regressor3&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="c1"># `anomaly_info` dictates which columns</span>
+<span class="c1"># in `df` to correct (`value_col` below), and which rows</span>
+<span class="c1"># in `anomaly_df` to use to correct them.</span>
+<span class="c1"># Rows are filtered using `filter_by_dict`.</span>
+<span class="n">anomaly_info</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;value_col&quot;</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anomaly_df&quot;</span><span class="p">:</span> <span class="n">anomaly_df</span><span class="p">,</span>
+        <span class="s2">&quot;adjustment_delta_col&quot;</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">ADJUSTMENT_DELTA_COL</span><span class="p">,</span>
+        <span class="s2">&quot;filter_by_dict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">cst</span><span class="o">.</span><span class="n">METRIC_COL</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;value_col&quot;</span><span class="p">:</span> <span class="s2">&quot;regressor3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anomaly_df&quot;</span><span class="p">:</span> <span class="n">anomaly_df</span><span class="p">,</span>
+        <span class="s2">&quot;adjustment_delta_col&quot;</span><span class="p">:</span> <span class="n">cst</span><span class="o">.</span><span class="n">ADJUSTMENT_DELTA_COL</span><span class="p">,</span>
+        <span class="s2">&quot;filter_by_dict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">cst</span><span class="o">.</span><span class="n">METRIC_COL</span><span class="p">:</span> <span class="s2">&quot;regressor3&quot;</span><span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># Passes `anomaly_info` to `load_data`.</span>
+<span class="c1"># Since our dataset has regressors, we pass `regressor_cols` as well.</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">UnivariateTimeSeries</span><span class="p">()</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="s2">&quot;ts&quot;</span><span class="p">,</span>
+    <span class="n">value_col</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+    <span class="n">regressor_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;regressor1&quot;</span><span class="p">,</span> <span class="s2">&quot;regressor2&quot;</span><span class="p">,</span> <span class="s2">&quot;regressor3&quot;</span><span class="p">],</span>
+    <span class="n">anomaly_info</span><span class="o">=</span><span class="n">anomaly_info</span><span class="p">)</span>
+
+<span class="c1"># Plots the dataset after correction</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Set show_anomaly_adjustment=True to show the dataset before correction</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_anomaly_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># The results are stored as attributes.</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">df</span>                    <span class="c1"># dataset after correction (same as `df_adjusted` above)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">df_before_adjustment</span>  <span class="c1"># dataset before correction (same as `df` above)</span>
+</pre></div>
+</div>
+</section>
+<section id="check-trend">
+<h3>Check trend<a class="headerlink" href="#check-trend" title="Permalink to this heading"></a></h3>
+<p>Plot your data over time to see how it trends.</p>
+<p>If you have daily or hourly data, it helps to aggregate.
+For example, look at weekly averages.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># aggregate daily data to weekly</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_grouping_evaluation</span><span class="p">(</span>
+    <span class="n">aggregation_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>  <span class="c1"># any aggregation function you want</span>
+    <span class="n">aggregation_func_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>  <span class="c1"># any aggregation window you want</span>
+                                    <span class="c1"># (7*24 for weekly aggregation of hourly data)</span>
+    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Weekly average of </span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For a more detailed examination, including automatic changepoint detection,
+see <a class="reference internal" href="../../gallery/quickstart/01_exploration/0100_changepoint_detection.html"><span class="doc">Changepoint Detection</span></a>.</p>
+</section>
+<section id="check-seasonality">
+<h3>Check seasonality<a class="headerlink" href="#check-seasonality" title="Permalink to this heading"></a></h3>
+<p>Look for cyclical patterns in your data (i.e. seasonality).</p>
+<p>For example, daily seasonality is a pattern that repeats once per day.
+To check daily seasonality, aggregate by hour of day and plot the average:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_grouping_evaluation</span><span class="p">(</span>
+    <span class="n">aggregation_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+    <span class="n">aggregation_func_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;hour&quot;</span><span class="p">,</span>  <span class="c1"># hour of day</span>
+    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;daily seasonality: mean of </span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To check weekly seasonality, group by day of week.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_grouping_evaluation</span><span class="p">(</span>
+    <span class="n">aggregation_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+    <span class="n">aggregation_func_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;str_dow&quot;</span><span class="p">,</span>  <span class="c1"># day of week</span>
+    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;weekly seasonality: mean of </span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To check yearly seasonality, group by week of year.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">plot_grouping_evaluation</span><span class="p">(</span>
+    <span class="n">aggregation_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+    <span class="n">aggregation_func_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="s2">&quot;woy&quot;</span><span class="p">,</span>  <span class="c1"># week of year</span>
+    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;yearly seasonality: mean of </span><span class="si">{</span><span class="n">value_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To see other features to group by:
+see <a class="reference internal" href="../autodoc/doc.html#greykite.common.features.timeseries_features.build_time_features_df" title="greykite.common.features.timeseries_features.build_time_features_df"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_time_features_df</span></code></a>.</p>
+<p>For a more detailed examination using a more powerful
+plotting function, see <a class="reference internal" href="../../gallery/quickstart/01_exploration/0300_seasonality_plots.html"><span class="doc">Seasonality Plots</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="0200_choose_template.html" class="btn btn-neutral float-left" title="Choose a Model Template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0400_configuration.html" class="btn btn-neutral float-right" title="Configure a Forecast" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

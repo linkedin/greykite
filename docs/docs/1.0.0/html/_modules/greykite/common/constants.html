@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.common.constants &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.common.constants</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.common.constants</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Constants used by code in `~greykite.common` or in multiple places:</span>
+<span class="sd">`~greykite.algo`, `~greykite.sklearn`,</span>
+<span class="sd">and/or `~greykite.framework`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+
+<span class="c1"># The time series data is represented in pandas dataframes</span>
+<span class="c1"># The default column names for the series are given below</span>
+<span class="n">TIME_COL</span> <span class="o">=</span> <span class="s2">&quot;ts&quot;</span>
+<span class="sd">&quot;&quot;&quot;The default name for the column with the timestamps of the time series.&quot;&quot;&quot;</span>
+<span class="n">VALUE_COL</span> <span class="o">=</span> <span class="s2">&quot;y&quot;</span>
+<span class="sd">&quot;&quot;&quot;The default name for the column with the values of the time series.&quot;&quot;&quot;</span>
+<span class="n">ACTUAL_COL</span> <span class="o">=</span> <span class="s2">&quot;actual&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing actual (observed) values.&quot;&quot;&quot;</span>
+<span class="n">PREDICTED_COL</span> <span class="o">=</span> <span class="s2">&quot;forecast&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing the predicted values.&quot;&quot;&quot;</span>
+<span class="n">RESIDUAL_COL</span> <span class="o">=</span> <span class="s2">&quot;residual&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing the forecast residuals.&quot;&quot;&quot;</span>
+<span class="n">PREDICTED_LOWER_COL</span> <span class="o">=</span> <span class="s2">&quot;forecast_lower&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing lower bounds of prediction interval.&quot;&quot;&quot;</span>
+<span class="n">PREDICTED_UPPER_COL</span> <span class="o">=</span> <span class="s2">&quot;forecast_upper&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing upper bounds of prediction interval.&quot;&quot;&quot;</span>
+<span class="n">NULL_PREDICTED_COL</span> <span class="o">=</span> <span class="s2">&quot;forecast_null&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing predicted values from null model.&quot;&quot;&quot;</span>
+<span class="n">ERR_STD_COL</span> <span class="o">=</span> <span class="s2">&quot;err_std&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing the error standard deviation from models.&quot;&quot;&quot;</span>
+<span class="n">QUANTILE_SUMMARY_COL</span> <span class="o">=</span> <span class="s2">&quot;quantile_summary&quot;</span>
+<span class="sd">&quot;&quot;&quot;The column name representing the quantile summary from models.&quot;&quot;&quot;</span>
+
+<span class="c1"># Evaluation metrics corresponding to `~greykite.common.evaluation`.</span>
+<span class="n">R2_null_model_score</span> <span class="o">=</span> <span class="s2">&quot;R2_null_model_score&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. Improvement in the specified loss function compared to the predictions of a null model.&quot;&quot;&quot;</span>
+<span class="n">FRACTION_OUTSIDE_TOLERANCE</span> <span class="o">=</span> <span class="s2">&quot;Outside Tolerance (fraction)&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. The fraction of predictions outside the specified tolerance level.&quot;&quot;&quot;</span>
+<span class="n">PREDICTION_BAND_WIDTH</span> <span class="o">=</span> <span class="s2">&quot;Prediction Band Width (%)&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. Relative size of prediction bands vs actual, as a percent.&quot;&quot;&quot;</span>
+<span class="n">PREDICTION_BAND_COVERAGE</span> <span class="o">=</span> <span class="s2">&quot;Prediction Band Coverage (fraction)&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. Fraction of observations within the bands.&quot;&quot;&quot;</span>
+<span class="n">LOWER_BAND_COVERAGE</span> <span class="o">=</span> <span class="s2">&quot;Coverage: Lower Band&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. Fraction of observations within the lower band.&quot;&quot;&quot;</span>
+<span class="n">UPPER_BAND_COVERAGE</span> <span class="o">=</span> <span class="s2">&quot;Coverage: Upper Band&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. Fraction of observations within the upper band.&quot;&quot;&quot;</span>
+<span class="n">COVERAGE_VS_INTENDED_DIFF</span> <span class="o">=</span> <span class="s2">&quot;Coverage Diff: Actual_Coverage - Intended_Coverage&quot;</span>
+<span class="sd">&quot;&quot;&quot;Evaluation metric. Difference between actual and intended coverage.&quot;&quot;&quot;</span>
+
+<span class="c1"># Column names used by `~greykite.common.features.timeseries_features`.</span>
+<span class="n">EVENT_DF_DATE_COL</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+<span class="sd">&quot;&quot;&quot;Name of date column for the DataFrames passed to silverkite `custom_daily_event_df_dict`.&quot;&quot;&quot;</span>
+<span class="n">EVENT_DF_LABEL_COL</span> <span class="o">=</span> <span class="s2">&quot;event_name&quot;</span>
+<span class="sd">&quot;&quot;&quot;Name of event column for the DataFrames passed to silverkite `custom_daily_event_df_dict`.&quot;&quot;&quot;</span>
+<span class="n">EVENT_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;events&quot;</span>
+<span class="sd">&quot;&quot;&quot;Prefix for naming event features.&quot;&quot;&quot;</span>
+<span class="n">EVENT_DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Label used for days without an event.&quot;&quot;&quot;</span>
+<span class="n">EVENT_INDICATOR</span> <span class="o">=</span> <span class="s2">&quot;event&quot;</span>
+<span class="sd">&quot;&quot;&quot;Binary indicator for an event.&quot;&quot;&quot;</span>
+<span class="n">IS_EVENT_COL</span> <span class="o">=</span> <span class="s2">&quot;is_event&quot;</span>
+<span class="sd">&quot;&quot;&quot;Indicator column in feature matrix, 1 if the day is an event or its neighboring days.&quot;&quot;&quot;</span>
+<span class="n">IS_EVENT_ADJACENT_COL</span> <span class="o">=</span> <span class="s2">&quot;is_event_adjacent&quot;</span>
+<span class="sd">&quot;&quot;&quot;Indicator column in feature matrix, 1 if the day is adjacent to an event.&quot;&quot;&quot;</span>
+<span class="n">IS_EVENT_EXACT_COL</span> <span class="o">=</span> <span class="s2">&quot;is_event_exact&quot;</span>
+<span class="sd">&quot;&quot;&quot;Indicator column in feature matrix, 1 if the day is an event but not its neighboring days.&quot;&quot;&quot;</span>
+<span class="n">EVENT_SHIFTED_SUFFIX_BEFORE</span> <span class="o">=</span> <span class="s2">&quot;_before&quot;</span>
+<span class="sd">&quot;&quot;&quot;The suffix for neighboring events before the events added to the event names.&quot;&quot;&quot;</span>
+<span class="n">EVENT_SHIFTED_SUFFIX_AFTER</span> <span class="o">=</span> <span class="s2">&quot;_after&quot;</span>
+<span class="sd">&quot;&quot;&quot;The suffix for neighboring events after the events added to the event names.&quot;&quot;&quot;</span>
+<span class="n">CHANGEPOINT_COL_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;changepoint&quot;</span>
+<span class="sd">&quot;&quot;&quot;Prefix for naming changepoint features.&quot;&quot;&quot;</span>
+<span class="n">CHANGEPOINT_COL_PREFIX_SHORT</span> <span class="o">=</span> <span class="s2">&quot;cp&quot;</span>
+<span class="sd">&quot;&quot;&quot;Short prefix for naming changepoint features.&quot;&quot;&quot;</span>
+<span class="n">LEVELSHIFT_COL_PREFIX_SHORT</span> <span class="o">=</span> <span class="s2">&quot;ctp&quot;</span>
+<span class="sd">&quot;&quot;&quot;Short prefix for naming levelshift features.&quot;&quot;&quot;</span>
+
+<span class="c1"># Column names used by</span>
+<span class="c1"># `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`.</span>
+<span class="n">START_TIME_COL</span> <span class="o">=</span> <span class="s2">&quot;start_time&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for anomaly start time in the anomaly dataframe.&quot;&quot;&quot;</span>
+<span class="n">END_TIME_COL</span> <span class="o">=</span> <span class="s2">&quot;end_time&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for anomaly end time in the anomaly dataframe.&quot;&quot;&quot;</span>
+<span class="n">ADJUSTMENT_DELTA_COL</span> <span class="o">=</span> <span class="s2">&quot;adjustment_delta&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for anomaly adjustment in the anomaly dataframe.&quot;&quot;&quot;</span>
+<span class="n">METRIC_COL</span> <span class="o">=</span> <span class="s2">&quot;metric&quot;</span>
+<span class="sd">&quot;&quot;&quot;Column to denote metric of interest.&quot;&quot;&quot;</span>
+<span class="n">DIMENSION_COL</span> <span class="o">=</span> <span class="s2">&quot;dimension&quot;</span>
+<span class="sd">&quot;&quot;&quot;Dimension column.&quot;&quot;&quot;</span>
+<span class="n">ANOMALY_COL</span> <span class="o">=</span> <span class="s2">&quot;is_anomaly&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for anomaly labels (boolean) in the time series.&quot;&quot;&quot;</span>
+<span class="n">PREDICTED_ANOMALY_COL</span> <span class="o">=</span> <span class="s2">&quot;is_anomaly_predicted&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for predicted anomaly labels (boolean) in the time series.&quot;&quot;&quot;</span>
+
+<span class="c1"># Column names used in anomaly dataframe during anomaly detection.</span>
+<span class="n">SEVERITY_SCORE_COL</span> <span class="o">=</span> <span class="s2">&quot;severity_score&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for anomaly severity score in the anomaly dataframe.&quot;&quot;&quot;</span>
+<span class="n">USER_REVIEWED_COL</span> <span class="o">=</span> <span class="s2">&quot;is_user_reviewed&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for whether an anomaly is reviewed by the user (boolean) in the anomaly dataframe.&quot;&quot;&quot;</span>
+<span class="n">NEW_PATTERN_ANOMALY_COL</span> <span class="o">=</span> <span class="s2">&quot;new_pattern_anomaly&quot;</span>
+<span class="sd">&quot;&quot;&quot;Default column name for whether an anomaly is a new pattern (boolean) in the anomaly dataframe.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="TimeFeaturesEnum"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.constants.TimeFeaturesEnum">[docs]</a><span class="k">class</span> <span class="nc">TimeFeaturesEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time features generated by</span>
+<span class="sd">    `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+
+<span class="sd">    The item names are lower-case letters (kept the same as the values) for easier check of existence.</span>
+<span class="sd">    To check if a string s is in this Enum,</span>
+<span class="sd">    use ``s in TimeFeaturesEnum.__dict__[&quot;_member_names_&quot;]``.</span>
+<span class="sd">    Direct check of existence ``s in TimeFeaturesEnum`` is deprecated in python 3.8.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Absolute time features</span>
+    <span class="n">datetime</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="s2">&quot;date&quot;</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+    <span class="n">year_length</span> <span class="o">=</span> <span class="s2">&quot;year_length&quot;</span>
+    <span class="n">quarter</span> <span class="o">=</span> <span class="s2">&quot;quarter&quot;</span>
+    <span class="n">quarter_start</span> <span class="o">=</span> <span class="s2">&quot;quarter_start&quot;</span>
+    <span class="n">quarter_length</span> <span class="o">=</span> <span class="s2">&quot;quarter_length&quot;</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="s2">&quot;month&quot;</span>
+    <span class="n">month_length</span> <span class="o">=</span> <span class="s2">&quot;month_length&quot;</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="s2">&quot;hour&quot;</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="s2">&quot;minute&quot;</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="s2">&quot;second&quot;</span>
+    <span class="n">year_quarter</span> <span class="o">=</span> <span class="s2">&quot;year_quarter&quot;</span>
+    <span class="n">year_month</span> <span class="o">=</span> <span class="s2">&quot;year_month&quot;</span>
+    <span class="n">woy</span> <span class="o">=</span> <span class="s2">&quot;woy&quot;</span>
+    <span class="n">doy</span> <span class="o">=</span> <span class="s2">&quot;doy&quot;</span>
+    <span class="n">doq</span> <span class="o">=</span> <span class="s2">&quot;doq&quot;</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="s2">&quot;dom&quot;</span>
+    <span class="n">dow</span> <span class="o">=</span> <span class="s2">&quot;dow&quot;</span>
+    <span class="n">str_dow</span> <span class="o">=</span> <span class="s2">&quot;str_dow&quot;</span>
+    <span class="n">str_doy</span> <span class="o">=</span> <span class="s2">&quot;str_doy&quot;</span>
+    <span class="n">is_weekend</span> <span class="o">=</span> <span class="s2">&quot;is_weekend&quot;</span>
+    <span class="c1"># Relative time features</span>
+    <span class="n">year_woy</span> <span class="o">=</span> <span class="s2">&quot;year_woy&quot;</span>
+    <span class="n">month_dom</span> <span class="o">=</span> <span class="s2">&quot;month_dom&quot;</span>
+    <span class="n">year_woy_dow</span> <span class="o">=</span> <span class="s2">&quot;year_woy_dow&quot;</span>
+    <span class="n">woy_dow</span> <span class="o">=</span> <span class="s2">&quot;woy_dow&quot;</span>
+    <span class="n">dow_hr</span> <span class="o">=</span> <span class="s2">&quot;dow_hr&quot;</span>
+    <span class="n">dow_hr_min</span> <span class="o">=</span> <span class="s2">&quot;dow_hr_min&quot;</span>
+    <span class="n">tod</span> <span class="o">=</span> <span class="s2">&quot;tod&quot;</span>
+    <span class="n">tow</span> <span class="o">=</span> <span class="s2">&quot;tow&quot;</span>
+    <span class="n">tom</span> <span class="o">=</span> <span class="s2">&quot;tom&quot;</span>
+    <span class="n">toq</span> <span class="o">=</span> <span class="s2">&quot;toq&quot;</span>
+    <span class="n">toy</span> <span class="o">=</span> <span class="s2">&quot;toy&quot;</span>
+    <span class="n">conti_year</span> <span class="o">=</span> <span class="s2">&quot;conti_year&quot;</span>
+    <span class="n">dow_grouped</span> <span class="o">=</span> <span class="s2">&quot;dow_grouped&quot;</span>
+    <span class="c1"># ISO time features</span>
+    <span class="n">year_iso</span> <span class="o">=</span> <span class="s2">&quot;year_iso&quot;</span>
+    <span class="n">year_woy_iso</span> <span class="o">=</span> <span class="s2">&quot;year_woy_iso&quot;</span>
+    <span class="n">year_woy_dow_iso</span> <span class="o">=</span> <span class="s2">&quot;year_woy_dow_iso&quot;</span>
+    <span class="c1"># Continuous time features</span>
+    <span class="n">ct1</span> <span class="o">=</span> <span class="s2">&quot;ct1&quot;</span>
+    <span class="n">ct2</span> <span class="o">=</span> <span class="s2">&quot;ct2&quot;</span>
+    <span class="n">ct3</span> <span class="o">=</span> <span class="s2">&quot;ct3&quot;</span>
+    <span class="n">ct_sqrt</span> <span class="o">=</span> <span class="s2">&quot;ct_sqrt&quot;</span>
+    <span class="n">ct_root3</span> <span class="o">=</span> <span class="s2">&quot;ct_root3&quot;</span>
+    <span class="n">us_dst</span> <span class="o">=</span> <span class="s2">&quot;us_dst&quot;</span>
+    <span class="n">eu_dst</span> <span class="o">=</span> <span class="s2">&quot;eu_dst&quot;</span></div>
+
+
+<div class="viewcode-block" id="GrowthColEnum"><a class="viewcode-back" href="../../../pages/autodoc/doc.html#greykite.common.constants.GrowthColEnum">[docs]</a><span class="k">class</span> <span class="nc">GrowthColEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Human-readable names for the growth columns generated by</span>
+<span class="sd">    `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+
+<span class="sd">    The names are the human-readable names, and the values are the corresponding</span>
+<span class="sd">    column names generated by `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">linear</span> <span class="o">=</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct1</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">quadratic</span> <span class="o">=</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct2</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">cubic</span> <span class="o">=</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct3</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">sqrt</span> <span class="o">=</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct_sqrt</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">cuberoot</span> <span class="o">=</span> <span class="n">TimeFeaturesEnum</span><span class="o">.</span><span class="n">ct_root3</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<span class="c1"># Column names used by</span>
+<span class="c1"># `~greykite.common.features.timeseries_lags`</span>
+<span class="n">LAG_INFIX</span> <span class="o">=</span> <span class="s2">&quot;_lag&quot;</span>
+<span class="sd">&quot;&quot;&quot;Infix for lagged feature names.&quot;&quot;&quot;</span>
+<span class="n">AGG_LAG_INFIX</span> <span class="o">=</span> <span class="s2">&quot;avglag&quot;</span>
+<span class="sd">&quot;&quot;&quot;Infix for aggregated lag feature names.&quot;&quot;&quot;</span>
+
+<span class="c1"># Patterns for categorizing timeseries features</span>
+<span class="n">TREND_REGEX</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CHANGEPOINT_COL_PREFIX</span><span class="si">}</span><span class="se">\\</span><span class="s2">d|ct</span><span class="se">\\</span><span class="s2">d|ct_|</span><span class="si">{</span><span class="n">CHANGEPOINT_COL_PREFIX_SHORT</span><span class="si">}</span><span class="se">\\</span><span class="s2">d&quot;</span>
+<span class="sd">&quot;&quot;&quot;Growth terms, including changepoints.&quot;&quot;&quot;</span>
+<span class="n">SEASONALITY_REGEX</span> <span class="o">=</span> <span class="s2">&quot;sin</span><span class="se">\\</span><span class="s2">d|cos</span><span class="se">\\</span><span class="s2">d&quot;</span>
+<span class="sd">&quot;&quot;&quot;Seasonality terms modeled by fourier series.&quot;&quot;&quot;</span>
+<span class="n">EVENT_REGEX</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">EVENT_PREFIX</span><span class="si">}</span><span class="s2">_&quot;</span>
+<span class="sd">&quot;&quot;&quot;Event terms.&quot;&quot;&quot;</span>
+<span class="n">LAG_REGEX</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">LAG_INFIX</span><span class="si">}</span><span class="se">\\</span><span class="s2">d|_</span><span class="si">{</span><span class="n">AGG_LAG_INFIX</span><span class="si">}</span><span class="s2">_</span><span class="se">\\</span><span class="s2">d&quot;</span>
+<span class="sd">&quot;&quot;&quot;Lag terms.&quot;&quot;&quot;</span>
+
+<span class="n">LOGGER_NAME</span> <span class="o">=</span> <span class="s2">&quot;Greykite&quot;</span>
+<span class="sd">&quot;&quot;&quot;Name used by the logger.&quot;&quot;&quot;</span>
+
+<span class="c1"># Default regex dictionary for component plots</span>
+<span class="n">DEFAULT_COMPONENTS_REGEX_DICT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Regressors&quot;</span><span class="p">:</span> <span class="s2">&quot;.*regressor.|regressor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Autoregressive&quot;</span><span class="p">:</span> <span class="s2">&quot;.*_lag.|.*avglag.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Event&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*</span><span class="si">{</span><span class="n">EVENT_REGEX</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Seasonality&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*tod.|.*tow.|.*dow.|.*is_weekend.|.*tom.|.*month.|.*toq.|.*quarter.|.*toy.|.*year.|.*yearly&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Trend&quot;</span><span class="p">:</span> <span class="n">TREND_REGEX</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Detailed seasonality regex dictionary for component plots</span>
+<span class="n">DETAILED_SEASONALITY_COMPONENTS_REGEX_DICT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Regressors&quot;</span><span class="p">:</span> <span class="s2">&quot;.*regressor.|regressor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Autoregressive&quot;</span><span class="p">:</span> <span class="s2">&quot;.*_lag.|.*avglag.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Event&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*</span><span class="si">{</span><span class="n">EVENT_REGEX</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Daily&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*tod.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Weekly&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*tow.|.*dow.|.*is_weekend.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Monthly&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*tom.|.*month.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Quarterly&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*toq.|.*quarter.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Yearly&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;.*toy.|.*year.|.*yearly&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Trend&quot;</span><span class="p">:</span> <span class="n">TREND_REGEX</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

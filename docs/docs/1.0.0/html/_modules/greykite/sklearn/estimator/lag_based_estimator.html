@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.sklearn.estimator.lag_based_estimator &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.sklearn.estimator.lag_based_estimator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.sklearn.estimator.lag_based_estimator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+<span class="sd">&quot;&quot;&quot;Lag based estimator.</span>
+<span class="sd">Uses past observations with aggregation function as predictions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.aggregation_function_enum</span> <span class="kn">import</span> <span class="n">AggregationFunctionEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">fill_missing_dates</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">infer_freq</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+
+
+<div class="viewcode-block" id="LagUnitEnum"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.lag_based_estimator.LagUnitEnum">[docs]</a><span class="k">class</span> <span class="nc">LagUnitEnum</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines the lag units available in</span>
+<span class="sd">    `~greykite.sklearn.estimator.lag_based_estimator.LagBasedEstimator`.</span>
+<span class="sd">    The keys are available string names and the values are the corresponding</span>
+<span class="sd">    `dateutil.relativedelta.relativedelta` objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">week</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LagBasedEstimator"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.lag_based_estimator.LagBasedEstimator">[docs]</a><span class="k">class</span> <span class="nc">LagBasedEstimator</span><span class="p">(</span><span class="n">BaseForecastEstimator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The lag based estimator, using lagged observations with aggregation functions</span>
+<span class="sd">    to forecast the future. This estimator includes the common week-over-week estimation method.</span>
+
+<span class="sd">    The algorithm support specifying the following:</span>
+
+<span class="sd">        lag_unit : the unit to calculate lagged values. One of the values in</span>
+<span class="sd">            `~greykite.sklearn.estimator.lag_based_estimator.LagUnitEnum`.</span>
+<span class="sd">        lags : a list of lags indicating which lagged ``lag_unit`` data are used in prediction.</span>
+<span class="sd">            For example, [1, 2] indicating using the past two ``lag_unit`` same time data.</span>
+<span class="sd">        agg_func : the aggregation function used over the lagged observations.</span>
+<span class="sd">        agg_func_params : extra parameters used for ``agg_func``.</span>
+
+
+<span class="sd">    When certain lags are not available, extra data will be extrapolated.</span>
+<span class="sd">    When predicting into the future and future data is not available,</span>
+<span class="sd">    predicted values will be used.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    freq : `str` or None, default None</span>
+<span class="sd">        The data frequency, used to validate lags.</span>
+<span class="sd">    lag_unit : `str`, default &quot;week&quot;</span>
+<span class="sd">        The unit to calculate lagged observations.</span>
+<span class="sd">        Available options are in `~greykite.sklearn.estimator.lag_based_estimator.LagUnitEnum`.</span>
+<span class="sd">    lags : `list` [`int`] or None, default None</span>
+<span class="sd">        The lags in ``lag_unit``&#39;s. [1, 2] indicates using the past two ``lag_unit`` same time values.</span>
+<span class="sd">        If not provided, the default is to use lag 1 observation only.</span>
+<span class="sd">    agg_func : `str` or callable, default &quot;mean&quot;</span>
+<span class="sd">        The aggregation functions used over lagged observations.</span>
+<span class="sd">    agg_func_params : `dict` or None, default None</span>
+<span class="sd">        Extra parameters used for ``agg_func``.</span>
+<span class="sd">    uncertainty_dict: `dict` or None, default None</span>
+<span class="sd">        How to fit the uncertainty model.</span>
+<span class="sd">        See `~greykite.sklearn.uncertainty.uncertainty_methods.UncertaintyMethodEnum`.</span>
+<span class="sd">        If not provided but ``coverage`` is given, this falls back to</span>
+<span class="sd">        `~greykite.sklearn.uncertainty.simple_conditional_residuals_model.SimpleConditionalResidualsModel`.</span>
+<span class="sd">    past_df : `pandas.DataFrame` or None, default None</span>
+<span class="sd">        The past data used to append to the training data.</span>
+<span class="sd">        If not provided the past data needed will be interpolated.</span>
+<span class="sd">    series_na_fill_func : `callable` or None, default `lambda s: s.bfill().ffill()`</span>
+<span class="sd">        The function to fill NAs when they exist.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame` or None</span>
+<span class="sd">        The fitted and interpolated training data.</span>
+<span class="sd">    uncertainty_model : any or None</span>
+<span class="sd">        The trained uncertainty model.</span>
+<span class="sd">    max_lag_order : `int` or None</span>
+<span class="sd">        The maximum lag order.</span>
+<span class="sd">    min_lag_order : `int` or None</span>
+<span class="sd">        The minimum lag order.</span>
+<span class="sd">    train_start : `pandas.Timestamp` or None</span>
+<span class="sd">        The training start timestamp.</span>
+<span class="sd">    train_end : `pandas.Timestamp` or None</span>
+<span class="sd">        The training end timestamp.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">mean_squared_error</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">lag_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span>
+            <span class="n">lags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+            <span class="n">agg_func_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">uncertainty_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">past_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">series_na_fill_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">score_func</span><span class="o">=</span><span class="n">score_func</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit</span> <span class="o">=</span> <span class="n">lag_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lags</span> <span class="o">=</span> <span class="n">lags</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span> <span class="o">=</span> <span class="n">agg_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_params</span> <span class="o">=</span> <span class="n">agg_func_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="n">uncertainty_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">past_df</span> <span class="o">=</span> <span class="n">past_df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">series_na_fill_func</span> <span class="o">=</span> <span class="n">series_na_fill_func</span>
+
+        <span class="c1"># set by ``fit`` method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit_delta</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_wrapper</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_lag_order</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_lag_order</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_start</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="LagBasedEstimator.fit"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.lag_based_estimator.LagBasedEstimator.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fits the lag based forecast model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries, with timestamp column and value column.</span>
+<span class="sd">            The value column is the response, included in</span>
+<span class="sd">            ``X`` to allow transformation by `sklearn.pipeline`.</span>
+<span class="sd">        y: ignored</span>
+<span class="sd">            The original timeseries values, ignored.</span>
+<span class="sd">            (The ``y`` for fitting is included in ``X``).</span>
+<span class="sd">        time_col: `str`</span>
+<span class="sd">            Time column name in ``X``.</span>
+<span class="sd">        value_col: `str`</span>
+<span class="sd">            Value column name in ``X``.</span>
+<span class="sd">        fit_params: `dict`</span>
+<span class="sd">            additional parameters for null model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : self</span>
+<span class="sd">            Fitted class instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">fit_params</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input df is empty!&quot;</span><span class="p">)</span>
+        <span class="c1"># Validates model parameters.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">X</span><span class="p">[[</span><span class="n">time_col</span><span class="p">,</span> <span class="n">value_col</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Prepares input data for prediction.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_df</span><span class="p">()</span>
+        <span class="c1"># Fits the uncertainty model.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fit_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_predictions</span><span class="p">(</span><span class="n">fut_df</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fit_uncertainty</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">fit_df</span><span class="p">,</span>
+                <span class="n">uncertainty_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_dict</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="LagBasedEstimator.predict"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.lag_based_estimator.LagBasedEstimator.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates forecast for the dates specified in ``X``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X: `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries with timestamp column.</span>
+<span class="sd">            Timestamps are the dates for prediction.</span>
+<span class="sd">            Value column, if provided in ``X``, is ignored.</span>
+<span class="sd">        y: ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions: `pandas.DataFrame`</span>
+<span class="sd">            Forecasted values for the dates in ``X``. Columns:</span>
+
+<span class="sd">                - ``TIME_COL``: dates</span>
+<span class="sd">                - ``PREDICTED_COL``: predictions</span>
+<span class="sd">                - ``PREDICTED_LOWER_COL``: lower bound of predictions, optional</span>
+<span class="sd">                - ``PREDICTED_UPPER_COL``: upper bound of predictions, optional</span>
+
+<span class="sd">            ``PREDICTED_LOWER_COL`` and ``PREDICTED_UPPER_COL`` are present</span>
+<span class="sd">            if ``self.coverage`` is not None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Please run ``fit`` first.&quot;</span><span class="p">)</span>
+        <span class="c1"># Uses cached predictions if available.</span>
+        <span class="n">cached_predictions</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cached_predictions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cached_predictions</span>
+
+        <span class="c1"># Gets the predictions.</span>
+        <span class="n">pred_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_predictions</span><span class="p">(</span><span class="n">fut_df</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="c1"># Fits the uncertainty model.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pred_with_uncertainty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_uncertainty</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">pred_df</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">pred_with_uncertainty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pred_df</span> <span class="o">=</span> <span class="n">pred_with_uncertainty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_predictions_</span> <span class="o">=</span> <span class="n">pred_df</span>
+        <span class="k">return</span> <span class="n">pred_df</span></div>
+
+    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates model parameters.</span>
+
+<span class="sd">        This function checks the following class attributes:</span>
+
+<span class="sd">            - self.lag_unit</span>
+<span class="sd">            - self.lags</span>
+<span class="sd">            - self.agg_func</span>
+<span class="sd">            - self.agg_func_params</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Validates lags.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit_delta</span> <span class="o">=</span> <span class="n">LagUnitEnum</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lag_unit</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The lag unit &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lag_unit</span><span class="si">}</span><span class="s2">&#39; is not recognized.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If no customized lags is provided,</span>
+            <span class="c1"># the default is 1.</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Lags not provided, setting lags = [1].&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lags</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The lags must be a list of integers, found &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="c1"># All lags must be able to be converted to integers.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lags</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not all lags in &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="si">}</span><span class="s2">&#39; can be converted to integers.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_lag_order</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_lag_order</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_lag_order</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All lags must be positive integers.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Validates aggregation function.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_wrapper</span> <span class="o">=</span> <span class="n">AggregationFunctionEnum</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The aggregation function &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span><span class="si">}</span><span class="s2">&#39; is not recognized as a string. &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;Please either pass a known string or a function.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_wrapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The aggregation function must be a valid string or a callable.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_prepare_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes the training data. Including appending ``past_df``, interpolation, etc.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        This function modifies class instance attributes and does not return anything.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Infers data frequency.</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">infer_freq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="k">if</span> <span class="n">freq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">!=</span> <span class="n">freq</span><span class="p">:</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The inferred frequency &#39;</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&#39; is different from the provided &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Using the provided frequency.&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Frequency can not be inferred. Please provide frequency.&quot;</span><span class="p">)</span>
+        <span class="c1"># Currently &quot;M&quot; frequency is not handled well with `dateutil.relativedelta`.</span>
+        <span class="c1"># For example, 2020-02-29 minus 1 month is 2020-01-29 instead of 2020-01-31,</span>
+        <span class="c1"># which does not match the last data point.</span>
+        <span class="c1"># Since this is not a typical use case, we will fix it later and raise a warning for now.</span>
+        <span class="c1"># &quot;MS&quot; is preferred.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">==</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;The data frequency is &#39;M&#39; which may lead to unexpected behaviors. &quot;</span>
+                        <span class="s2">&quot;Please convert to &#39;MS&#39; if applicable.&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+            <span class="p">)</span>
+        <span class="c1"># Checks ``self.lag_unit`` is at least ``self.freq``.</span>
+        <span class="n">example_ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># makes a ts with data frequency</span>
+        <span class="k">if</span> <span class="n">example_ts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit_delta</span> <span class="o">&lt;</span> <span class="n">example_ts</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The lag unit &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lag_unit</span><span class="si">}</span><span class="s2">&#39; must be at least equal to the data frequency &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="c1"># Gets the earliest timestamp needed.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">earliest_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_start</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit_delta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lag_order</span>
+        <span class="n">df_earliest_timestamp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">:</span> <span class="p">[</span><span class="n">earliest_timestamp</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+        <span class="p">})</span>
+        <span class="c1"># Gets all timestamps needed.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">fill_missing_dates</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_earliest_timestamp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Takes values from ``past_df`` if exist.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">past_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">past_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">past_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">past_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">past_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">past_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">merge_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">past_df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+                    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="si">}</span><span class="s2">_p&quot;</span><span class="p">}),</span>
+                <span class="n">on</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span>
+                <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]</span> <span class="o">=</span> <span class="n">merge_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span><span class="n">merge_df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="si">}</span><span class="s2">_p&quot;</span><span class="p">])</span>
+        <span class="c1"># Fills missing values.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">series_na_fill_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">series_na_fill_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_get_predictions</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">fut_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the lag based predictions.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fut_df : `pandas.DataFrame`</span>
+<span class="sd">            The input data that contains ``self.time_col_`` as the prediction periods.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions: `pandas.DataFrame`</span>
+<span class="sd">            Forecasted values for the dates in ``fut_df``. Columns:</span>
+
+<span class="sd">                - ``TIME_COL``: dates</span>
+<span class="sd">                - ``PREDICTED_COL``: predictions</span>
+<span class="sd">                - ``PREDICTED_LOWER_COL``: lower bound of predictions, optional</span>
+<span class="sd">                - ``PREDICTED_UPPER_COL``: upper bound of predictions, optional</span>
+
+<span class="sd">            ``PREDICTED_LOWER_COL`` and ``PREDICTED_UPPER_COL`` are present</span>
+<span class="sd">            if ``self.coverage`` is not None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Gets the full df from the earliest timestamp during training to the</span>
+        <span class="c1"># last timestamp in prediction.</span>
+        <span class="n">pred_df</span> <span class="o">=</span> <span class="n">fut_df</span><span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">])</span>
+        <span class="n">pred_df</span> <span class="o">=</span> <span class="n">pred_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_start</span><span class="p">:</span>
+            <span class="c1"># Does not predict before the training period.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The lag based estimator does not support hindcasting.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end</span><span class="p">:</span>
+            <span class="n">df_end_timestamp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">:</span> <span class="p">[</span><span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+            <span class="p">})</span>
+            <span class="c1"># Fills the timestamps using frequency, in case the prediction df has wrong frequencies.</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">df_end_timestamp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">fill_missing_dates</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                <span class="n">time_col</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">,</span>
+                <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Gets the predicted values.</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="c1"># Gets the number of prediction rounds in case lag is not enough for forecast horizon.</span>
+        <span class="n">n_rounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_n_rounds</span><span class="p">(</span><span class="n">pred_df</span><span class="o">=</span><span class="n">pred_df</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_rounds</span><span class="p">):</span>
+            <span class="c1"># The past timestamps needed in lags.</span>
+            <span class="c1"># Uses time-based calculations to avoid messing up daylight saving times.</span>
+            <span class="n">past_timestamps</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit_delta</span> <span class="o">*</span> <span class="n">lag</span><span class="p">)</span> <span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="p">]</span>
+            <span class="c1"># Gets the available past values.</span>
+            <span class="n">available_past</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)][</span><span class="bp">self</span><span class="o">.</span><span class="n">value_col_</span><span class="p">]</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">timestamps</span><span class="p">)][</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">timestamps</span> <span class="ow">in</span> <span class="n">past_timestamps</span>
+            <span class="p">]</span>
+            <span class="c1"># Fills NAs for the earliest unavailable timestamps to match the lengths.</span>
+            <span class="n">available_past</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">past</span><span class="p">))),</span> <span class="n">past</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">past</span> <span class="ow">in</span> <span class="n">available_past</span>
+            <span class="p">]</span>
+            <span class="c1"># Makes a dataframe.</span>
+            <span class="n">available_past</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">available_past</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># Applies aggregation function for prediction.</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_func_wrapper</span><span class="p">(</span>
+                <span class="n">available_past</span><span class="p">,</span>
+                <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_func_params</span>
+            <span class="p">)</span>
+            <span class="c1"># Writes to ``df``.</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">cst</span><span class="o">.</span><span class="n">PREDICTED_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span>
+        <span class="c1"># Gets the predictions during the input periods.</span>
+        <span class="n">pred_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">])]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred_df</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">fut_df</span><span class="p">):</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Some timestamps in the provided time periods for prediction do not match the &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;training frequency. Returning the matched timestamps.&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pred_df</span>
+
+<div class="viewcode-block" id="LagBasedEstimator.summary"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.sklearn.estimator.lag_based_estimator.LagBasedEstimator.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The summary of model.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;This is a lag based forecast model that uses lags &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lags</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;with unit &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lag_unit</span><span class="si">}</span><span class="s2">&#39; and aggregation function &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_n_rounds</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">pred_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the number of rounds of predictions needed.</span>
+
+<span class="sd">        For example, when the prediction is 3 weeks while the lag is 1 week,</span>
+<span class="sd">        it will need to make prediction for the first week in the first round.</span>
+<span class="sd">        Then it uses the predictions of the first week to predict the second week, etc.</span>
+<span class="sd">        The number of rounds here is 3.</span>
+
+<span class="sd">        If the prediction period is within training or at most ``self.lag_unit_delta`` * ``self.min_lag_order``</span>
+<span class="sd">        more than the training period, then just one round is needed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pred_df : `pandas.DataFrame`</span>
+<span class="sd">            The prediction df with ``self.time_col_``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_rounds : `int`</span>
+<span class="sd">            The number of rounds of predictions needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">train_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end</span>
+        <span class="n">step_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lag_unit_delta</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_lag_order</span>
+        <span class="n">pred_end</span> <span class="o">=</span> <span class="n">pred_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">time_col_</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">n_rounds</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">train_end</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">&lt;</span> <span class="n">pred_end</span><span class="p">:</span>
+            <span class="n">train_end</span> <span class="o">+=</span> <span class="n">step_size</span>
+            <span class="n">n_rounds</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">n_rounds</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
