@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.templates.forecaster &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.templates.forecaster</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.templates.forecaster</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Main entry point to create a forecast.</span>
+<span class="sd">Generates a forecast from input data and config and stores the result.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">unique_elements_in_list</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.pipeline</span> <span class="kn">import</span> <span class="n">ForecastResult</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.pipeline</span> <span class="kn">import</span> <span class="n">forecast_pipeline</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.pipeline.utils</span> <span class="kn">import</span> <span class="n">get_basic_pipeline</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.auto_model_template</span> <span class="kn">import</span> <span class="n">get_auto_silverkite_model_template</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">forecast_config_from_dict</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.forecast_config_defaults</span> <span class="kn">import</span> <span class="n">ForecastConfigDefaults</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.model_templates</span> <span class="kn">import</span> <span class="n">ModelTemplateEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.pickle_utils</span> <span class="kn">import</span> <span class="n">dump_obj</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.pickle_utils</span> <span class="kn">import</span> <span class="n">load_obj</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.simple_silverkite_template</span> <span class="kn">import</span> <span class="n">SimpleSilverkiteTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.template_interface</span> <span class="kn">import</span> <span class="n">TemplateInterface</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.one_by_one_estimator</span> <span class="kn">import</span> <span class="n">OneByOneEstimator</span>
+
+
+<div class="viewcode-block" id="Forecaster"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster">[docs]</a><span class="k">class</span> <span class="nc">Forecaster</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The main entry point to create a forecast.</span>
+
+<span class="sd">    Call the :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`</span>
+<span class="sd">    method to create a forecast. It takes a dataset and forecast configuration parameters.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This class can create forecasts using any of the model templates in</span>
+<span class="sd">    `~greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+<span class="sd">    Model templates provide suitable default values for the available</span>
+<span class="sd">    forecast estimators depending on the data characteristics.</span>
+
+<span class="sd">    The model template is selected via the ``config.model_template``</span>
+<span class="sd">    parameter to :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`.</span>
+
+<span class="sd">    To add your own custom algorithms or template classes in our framework,</span>
+<span class="sd">    pass ``model_template_enum`` and ``default_model_template_name``</span>
+<span class="sd">    to the constructor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">model_template_enum</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModelTemplateEnum</span><span class="p">,</span>
+            <span class="n">default_model_template_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">AUTO</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+        <span class="c1"># Optional user input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_template_enum</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_template_enum</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The available template names. An Enum class where names are template names, and values are of type</span>
+<span class="sd">        `~greykite.framework.templates.model_templates.ModelTemplate`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_model_template_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">default_model_template_name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The default template name if not provided by ``config.model_template``.</span>
+<span class="sd">        Should be a name in ``model_template_enum`` or &quot;auto&quot;.</span>
+<span class="sd">        Used by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.__get_template_class`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># The following are set by `self.run_forecast_config`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template_class</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">TemplateInterface</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Template class used. Must implement</span>
+<span class="sd">        `~greykite.framework.templates.template_interface.TemplateInterface`</span>
+<span class="sd">        and be one of the classes in ``self.model_template_enum``.</span>
+<span class="sd">        Available for debugging purposes.</span>
+<span class="sd">        Set by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TemplateInterface</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instance of ``template_class`` used to run the forecast.</span>
+<span class="sd">        See the docstring of the specific template class used.</span>
+
+<span class="sd">            - `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`</span>
+<span class="sd">            - `~greykite.framework.templates.silverkite_template.SilverkiteTemplate`</span>
+<span class="sd">            - `~greykite.framework.templates.prophet_template.ProphetTemplate`</span>
+<span class="sd">            - etc.</span>
+
+<span class="sd">        Available for debugging purposes.</span>
+<span class="sd">        Set by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;`~greykite.framework.templates.autogen.forecast_config.ForecastConfig`</span>
+<span class="sd">        passed to the template class.</span>
+<span class="sd">        Set by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parameters used to call :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        Available for debugging purposes.</span>
+<span class="sd">        Set by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastResult</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The forecast result, returned by :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        Set by :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__get_config_with_default_model_template_and_components</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForecastConfig</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets config with default value for `model_template` and `model_components_param` if not provided.</span>
+
+<span class="sd">            - model_template : default value is ``self.default_model_template_name``.</span>
+<span class="sd">            - model_components_param : default value is an empty ModelComponentsParam().</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig` or None</span>
+<span class="sd">            Config object for template class to use.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+<span class="sd">            If None, uses an empty ForecastConfig.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig`</span>
+<span class="sd">            Input ``config`` with default ``model_template`` populated.</span>
+<span class="sd">            If ``config.model_template`` is None, it is set to ``self.default_model_template_name``.</span>
+<span class="sd">            If ``config.model_components_param`` is None, it is set to ``ModelComponentsParam()``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ForecastConfig</span><span class="p">()</span>
+        <span class="c1"># Unpacks list of a single element and sets default value if None.</span>
+        <span class="c1"># NB: Does not call `apply_forecast_config_defaults`.</span>
+        <span class="c1">#   Only sets `model_template` and `model_components_param`.</span>
+        <span class="c1">#   The template class may have its own implementation of forecast config defaults.</span>
+        <span class="n">forecast_config_defaults</span> <span class="o">=</span> <span class="n">ForecastConfigDefaults</span><span class="p">()</span>
+        <span class="n">forecast_config_defaults</span><span class="o">.</span><span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_model_template_name</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">=</span> <span class="n">forecast_config_defaults</span><span class="o">.</span><span class="n">apply_model_template_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span> <span class="o">=</span> <span class="n">forecast_config_defaults</span><span class="o">.</span><span class="n">apply_model_components_defaults</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span>
+
+    <span class="k">def</span> <span class="nf">__get_template_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">TemplateInterface</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts template class (e.g. `SimpleSilverkiteTemplate`) from the config.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig` or None</span>
+<span class="sd">            Config object for template class to use.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        template_class : Type[`~greykite.framework.templates.template_interface.TemplateInterface`]</span>
+<span class="sd">            An implementation of `~greykite.framework.templates.template_interface.TemplateInterface`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_config_with_default_model_template_and_components</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># Parses `config.model_template` to extract the template class, with validation.</span>
+            <span class="c1"># Handles a list of model templates.</span>
+            <span class="n">template_classes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_template_class</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">ForecastConfig</span><span class="p">(</span><span class="n">model_template</span><span class="o">=</span><span class="n">mt</span><span class="p">))</span>
+                                <span class="k">for</span> <span class="n">mt</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">template_classes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tc</span> <span class="o">!=</span> <span class="n">template_classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All model templates must use the same template class. &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">template_classes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">template_class</span> <span class="o">=</span> <span class="n">template_classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">template_class</span><span class="p">()</span><span class="o">.</span><span class="n">allow_model_template_list</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The template class </span><span class="si">{</span><span class="n">template_class</span><span class="si">}</span><span class="s2"> does not allow `model_template` to be a list. &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;Pass a string instead.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Handles other situations (string, data class).</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Tries to look up in `self.model_template_enum`.</span>
+                <span class="n">template_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_template_enum</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">template_class</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                <span class="c1"># Template is not found in the enum.</span>
+                <span class="c1"># NB: The logic in this clause is written for the default `self.model_template_enum`,</span>
+                <span class="c1">#   which contains only one template class that is a subclass of SimpleSilverkiteTemplate.</span>
+                <span class="c1">#   If a custom `self.model_template_enum` is provided it may be useful to override this logic.</span>
+                <span class="n">valid_names</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_template_enum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_member_names_&quot;</span><span class="p">])</span>
+                <span class="c1"># Checks if template enum has a template class that supports generic naming</span>
+                <span class="c1">#   i.e. a subclass of `SimpleSilverkiteTemplate`.</span>
+                <span class="n">subclass_simple_silverkite</span> <span class="o">=</span> <span class="p">[</span><span class="n">mte</span> <span class="k">for</span> <span class="n">mte</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_template_enum</span>
+                                              <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">mte</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">template_class</span><span class="p">,</span> <span class="n">SimpleSilverkiteTemplate</span><span class="p">)]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subclass_simple_silverkite</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model template </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2"> is not found in the template enum. &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;Checking if model template is suitable for `SimpleSilverkiteTemplate`.&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+                        <span class="n">SimpleSilverkiteTemplate</span><span class="p">()</span><span class="o">.</span><span class="n">check_template_type</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">)</span>
+                        <span class="n">possible_template_classes</span> <span class="o">=</span> <span class="n">unique_elements_in_list</span><span class="p">([</span><span class="n">mte</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">template_class</span>
+                                                                             <span class="k">for</span> <span class="n">mte</span> <span class="ow">in</span> <span class="n">subclass_simple_silverkite</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_template_classes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiple template classes could be used for the model &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;template </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">possible_template_classes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+                        <span class="c1"># arbitrarily take a class that supports generic naming</span>
+                        <span class="n">template_class</span> <span class="o">=</span> <span class="n">subclass_simple_silverkite</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">template_class</span>
+                        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using template class </span><span class="si">{</span><span class="n">template_class</span><span class="si">}</span><span class="s2"> for the model &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;template </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model Template &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">&#39; is not recognized! Must be one of: </span><span class="si">{</span><span class="n">valid_names</span><span class="si">}</span><span class="s2">&quot;</span>
+                                         <span class="s2">&quot; or satisfy the `SimpleSilverkiteTemplate` rules.&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model Template &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">&#39; is not recognized! Must be one of: </span><span class="si">{</span><span class="n">valid_names</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Validates `model_components_param` compatibility with the template</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">template_class</span><span class="p">()</span><span class="o">.</span><span class="n">allow_model_components_param_list</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model template </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2"> does not support a list of `ModelComponentsParam`.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">template_class</span>
+
+    <span class="k">def</span> <span class="nf">__apply_forecast_one_by_one_to_pipeline_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If forecast_one_by_one is activated,</span>
+
+<span class="sd">            1. replaces the estimator with ``OneByOneEstimator`` in pipeline.</span>
+<span class="sd">            2. Adds one by one estimator&#39;s parameters to ``hyperparameter_grid``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_one_by_one</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">pipeline</span> <span class="o">=</span> <span class="n">get_basic_pipeline</span><span class="p">(</span>
+                <span class="n">estimator</span><span class="o">=</span><span class="n">OneByOneEstimator</span><span class="p">(</span>
+                    <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                    <span class="n">forecast_horizon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">),</span>
+                <span class="n">score_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">score_func</span><span class="p">,</span>
+                <span class="n">score_func_greater_is_better</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">score_func_greater_is_better</span><span class="p">,</span>
+                <span class="n">agg_periods</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">agg_periods</span><span class="p">,</span>
+                <span class="n">agg_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">agg_func</span><span class="p">,</span>
+                <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">relative_error_tolerance</span><span class="p">,</span>
+                <span class="n">coverage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">coverage</span><span class="p">,</span>
+                <span class="n">null_model_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="o">.</span><span class="n">null_model_params</span><span class="p">,</span>
+                <span class="n">regressor_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pipeline</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">])):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;estimator__forecast_horizon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;estimator__estimator_map&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_one_by_one</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">][</span><span class="s2">&quot;estimator__forecast_horizon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span><span class="p">[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">][</span><span class="s2">&quot;estimator__estimator_map&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_one_by_one</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__get_model_template</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">ForecastConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the default model template when &quot;auto&quot; is given.</span>
+
+<span class="sd">        This is called after ``config`` has been filled with the default values</span>
+<span class="sd">        and all fields are not None.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            Timeseries data to forecast.</span>
+<span class="sd">            Contains columns [`time_col`, `value_col`], and optional regressor columns</span>
+<span class="sd">            Regressor columns should include future values for prediction</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig`</span>
+<span class="sd">            Config object for template class to use.</span>
+<span class="sd">            Must be an instance with all fields not None.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        model_template : `str`</span>
+<span class="sd">            The corresponding model template.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Gets the model template from config.</span>
+        <span class="c1"># Model template should already be a string when this function is called,</span>
+        <span class="c1"># which is handled by `self.__get_config_with_default_model_template_and_components`.</span>
+        <span class="n">model_template</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model_template</span>
+
+        <span class="c1"># Returns the model template if it&#39;s not &quot;auto&quot;.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_template</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model_template</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">model_template</span>
+
+        <span class="c1"># Handles the &quot;auto&quot; case.</span>
+        <span class="c1"># Since `get_auto_silverkite_model_template` resolves &quot;AUTO&quot; to</span>
+        <span class="c1"># a specific SILVERKITE template, the fallback template passed to it cannot be &quot;AUTO&quot;.</span>
+        <span class="c1"># We use SILVERKITE if `self.default_model_template_name` is &quot;AUTO&quot;.</span>
+        <span class="n">default_template_for_auto</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_model_template_name</span>
+                                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_model_template_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;auto&quot;</span>
+                                     <span class="k">else</span> <span class="n">ModelTemplateEnum</span><span class="o">.</span><span class="n">SILVERKITE</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">model_template</span> <span class="o">=</span> <span class="n">get_auto_silverkite_model_template</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">default_model_template_name</span><span class="o">=</span><span class="n">default_template_for_auto</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model_template</span>
+
+<div class="viewcode-block" id="Forecaster.apply_forecast_config"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.apply_forecast_config">[docs]</a>    <span class="k">def</span> <span class="nf">apply_forecast_config</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches pipeline parameters from the ``df`` and ``config``,</span>
+<span class="sd">        but does not run the pipeline to generate a forecast.</span>
+
+<span class="sd">        :py:meth:`~greykite.framework.templates.forecaster.Forecaster.run_forecast_config`</span>
+<span class="sd">        calls this function and also runs the forecast pipeline.</span>
+
+<span class="sd">        Available for debugging purposes to check pipeline parameters before</span>
+<span class="sd">        running a forecast. Sets these attributes for debugging:</span>
+
+<span class="sd">            - ``pipeline_params`` : the parameters passed to</span>
+<span class="sd">              :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">            - ``template_class``, ``template`` : the template class used to generate the</span>
+<span class="sd">              pipeline parameters.</span>
+<span class="sd">            - ``config`` : the :class:`~greykite.framework.templates.model_templates.ForecastConfig`</span>
+<span class="sd">              passed as input to template class, to translate into pipeline parameters.</span>
+
+<span class="sd">        Provides basic validation on the compatibility of ``config.model_template``</span>
+<span class="sd">        with ``config.model_components_param``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            Timeseries data to forecast.</span>
+<span class="sd">            Contains columns [`time_col`, `value_col`], and optional regressor columns</span>
+<span class="sd">            Regressor columns should include future values for prediction</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig` or None</span>
+<span class="sd">            Config object for template class to use.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pipeline_params : `dict` [`str`, `any`]</span>
+<span class="sd">            Input to :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_config_with_default_model_template_and_components</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_model_template</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_template_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_class</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">apply_template_for_pipeline_params</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__apply_forecast_one_by_one_to_pipeline_parameters</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_params</span></div>
+
+<div class="viewcode-block" id="Forecaster.run_forecast_config"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.run_forecast_config">[docs]</a>    <span class="k">def</span> <span class="nf">run_forecast_config</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ForecastConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForecastResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a forecast from input data and config.</span>
+<span class="sd">        The result is also stored as ``self.forecast_result``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            Timeseries data to forecast.</span>
+<span class="sd">            Contains columns [`time_col`, `value_col`], and optional regressor columns</span>
+<span class="sd">            Regressor columns should include future values for prediction</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig`</span>
+<span class="sd">            Config object for template class to use.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        forecast_result : :class:`~greykite.framework.pipeline.pipeline.ForecastResult`</span>
+<span class="sd">            Forecast result, an object of type</span>
+<span class="sd">            :class:`~greykite.framework.pipeline.pipeline.ForecastResult`.</span>
+
+<span class="sd">            The output of :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">            according to the ``df`` and ``config`` configuration parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pipeline_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_forecast_config</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span> <span class="o">=</span> <span class="n">forecast_pipeline</span><span class="p">(</span><span class="o">**</span><span class="n">pipeline_parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span></div>
+
+<div class="viewcode-block" id="Forecaster.run_forecast_json"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.run_forecast_json">[docs]</a>    <span class="k">def</span> <span class="nf">run_forecast_json</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">json_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForecastResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`</span>
+<span class="sd">        according to the ``json_str`` configuration parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            Timeseries data to forecast.</span>
+<span class="sd">            Contains columns [`time_col`, `value_col`], and optional regressor columns</span>
+<span class="sd">            Regressor columns should include future values for prediction</span>
+<span class="sd">        json_str : `str`</span>
+<span class="sd">            Json string of the config object for Forecast to use.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        forecast_result : :class:`~greykite.framework.pipeline.pipeline.ForecastResult`</span>
+<span class="sd">            Forecast result.</span>
+<span class="sd">            The output of :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`,</span>
+<span class="sd">            called using the template class with specified configuration.</span>
+<span class="sd">            See :class:`~greykite.framework.pipeline.pipeline.ForecastResult`</span>
+<span class="sd">            for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">forecast_config_from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_forecast_config</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span></div>
+
+<div class="viewcode-block" id="Forecaster.dump_forecast_result"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.dump_forecast_result">[docs]</a>    <span class="k">def</span> <span class="nf">dump_forecast_result</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">destination_dir</span><span class="p">,</span>
+            <span class="n">object_name</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+            <span class="n">dump_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">overwrite_exist_dir</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dumps ``self.forecast_result`` to local pickle files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        destination_dir : `str`</span>
+<span class="sd">            The pickle destination directory.</span>
+<span class="sd">        object_name : `str`</span>
+<span class="sd">            The stored file name.</span>
+<span class="sd">        dump_design_info : `bool`, default True</span>
+<span class="sd">            Whether to dump design info.</span>
+<span class="sd">            Design info is a patsy class that includes the design matrix information.</span>
+<span class="sd">            It takes longer to dump design info.</span>
+<span class="sd">        overwrite_exist_dir : `bool`, default False</span>
+<span class="sd">            What to do when ``destination_dir`` already exists.</span>
+<span class="sd">            Removes the original directory when exists, if set to True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        This function writes to local files and does not return anything.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;self.forecast_result is None, nothing to dump.&quot;</span><span class="p">)</span>
+        <span class="n">dump_obj</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span><span class="p">,</span>
+            <span class="n">dir_name</span><span class="o">=</span><span class="n">destination_dir</span><span class="p">,</span>
+            <span class="n">obj_name</span><span class="o">=</span><span class="n">object_name</span><span class="p">,</span>
+            <span class="n">dump_design_info</span><span class="o">=</span><span class="n">dump_design_info</span><span class="p">,</span>
+            <span class="n">overwrite_exist_dir</span><span class="o">=</span><span class="n">overwrite_exist_dir</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Forecaster.load_forecast_result"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.forecaster.Forecaster.load_forecast_result">[docs]</a>    <span class="k">def</span> <span class="nf">load_forecast_result</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">source_dir</span><span class="p">,</span>
+            <span class="n">load_design_info</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads ``self.forecast_result`` from local files created by ``self.dump_result``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        source_dir : `str`</span>
+<span class="sd">            The source file directory.</span>
+<span class="sd">        load_design_info : `bool`, default True</span>
+<span class="sd">            Whether to load design info.</span>
+<span class="sd">            Design info is a patsy class that includes the design matrix information.</span>
+<span class="sd">            It takes longer to load design info.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;self.forecast_result is not None, please create a new instance.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast_result</span> <span class="o">=</span> <span class="n">load_obj</span><span class="p">(</span>
+            <span class="n">dir_name</span><span class="o">=</span><span class="n">source_dir</span><span class="p">,</span>
+            <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">load_design_info</span><span class="o">=</span><span class="n">load_design_info</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

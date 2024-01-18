@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.input.univariate_time_series &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.input.univariate_time_series</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.input.univariate_time_series</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Input timeseries.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">TIME_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.constants</span> <span class="kn">import</span> <span class="n">VALUE_COL</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">describe_timeseries</span>
+<span class="kn">from</span> <span class="nn">greykite.common.time_properties</span> <span class="kn">import</span> <span class="n">get_canonical_data</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">add_groupby_column</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">flexible_grouping_evaluation</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">grouping_evaluation</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_multivariate</span>
+<span class="kn">from</span> <span class="nn">greykite.common.viz.timeseries_plotting</span> <span class="kn">import</span> <span class="n">plot_univariate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">MEAN_COL_GROUP</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">OVERLAY_COL_GROUP</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.constants</span> <span class="kn">import</span> <span class="n">QUANTILE_COL_GROUP</span>
+
+
+<div class="viewcode-block" id="UnivariateTimeSeries"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries">[docs]</a><span class="k">class</span> <span class="nc">UnivariateTimeSeries</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines univariate time series input. The dataset can include regressors,</span>
+<span class="sd">    but only one metric is designated as the target metric to forecast.</span>
+
+<span class="sd">    Loads time series into a standard format. Provides statistics, plotting</span>
+<span class="sd">    functions, and ability to generate future dataframe for prediction.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: `pandas.DataFrame`</span>
+<span class="sd">        Data frame containing timestamp and value, with standardized column names for internal use</span>
+<span class="sd">        (TIME_COL, VALUE_COL). Rows are sorted by time index, and missing gaps between dates are filled</span>
+<span class="sd">        in so that dates are spaced at regular intervals. Values are adjusted for anomalies</span>
+<span class="sd">        according to ``anomaly_info``.</span>
+<span class="sd">        The index can be timezone aware (but TIME_COL is not).</span>
+<span class="sd">    y: `pandas.Series`, dtype float64</span>
+<span class="sd">        Value of time series to forecast.</span>
+<span class="sd">    time_stats: `dict`</span>
+<span class="sd">        Summary statistics about the timestamp column.</span>
+<span class="sd">    value_stats: `dict`</span>
+<span class="sd">        Summary statistics about the value column.</span>
+<span class="sd">    original_time_col: `str`</span>
+<span class="sd">        Name of time column in original input data.</span>
+<span class="sd">    original_value_col: `str`</span>
+<span class="sd">        Name of value column in original input data.</span>
+<span class="sd">    regressor_cols: `list` [`str`]</span>
+<span class="sd">        A list of regressor columns in the training and prediction DataFrames.</span>
+<span class="sd">    lagged_regressor_cols: `list` [`str`]</span>
+<span class="sd">        A list of additional columns needed for lagged regressors in the training and prediction DataFrames.</span>
+<span class="sd">    last_date_for_val: `datetime.datetime` or None, default None</span>
+<span class="sd">        Date or timestamp corresponding  to last non-null value in ``df[original_value_col]``.</span>
+<span class="sd">    last_date_for_reg: `datetime.datetime` or None, default None</span>
+<span class="sd">        Date or timestamp corresponding to last non-null value in ``df[regressor_cols]``.</span>
+<span class="sd">        If ``regressor_cols`` is None, ``last_date_for_reg`` is None.</span>
+<span class="sd">    last_date_for_lag_reg: `datetime.datetime` or None, default None</span>
+<span class="sd">        Date or timestamp corresponding to last non-null value in ``df[lagged_regressor_cols]``.</span>
+<span class="sd">        If ``lagged_regressor_cols`` is None, ``last_date_for_lag_reg`` is None.</span>
+<span class="sd">    train_end_date: `datetime.datetime`</span>
+<span class="sd">        Last date or timestamp in ``fit_df``. It is always less than or equal to</span>
+<span class="sd">        minimum non-null values of ``last_date_for_val`` and ``last_date_for_reg``.</span>
+<span class="sd">    fit_cols: `list` [`str`]</span>
+<span class="sd">        A list of columns used in the training and prediction DataFrames.</span>
+<span class="sd">    fit_df: `pandas.DataFrame`</span>
+<span class="sd">        Data frame containing timestamp and value, with standardized column names for internal use.</span>
+<span class="sd">        Will be used for fitting (train, cv, backtest).</span>
+<span class="sd">    fit_y: `pandas.Series`, dtype float64</span>
+<span class="sd">        Value of time series for fit_df.</span>
+<span class="sd">    freq: `str`</span>
+<span class="sd">        timeseries frequency, DateOffset alias, e.g. {&#39;T&#39; (minute), &#39;H&#39;, D&#39;, &#39;W&#39;, &#39;M&#39; (month end), &#39;MS&#39; (month start),</span>
+<span class="sd">        &#39;Y&#39; (year end), &#39;Y&#39; (year start)}</span>
+<span class="sd">        See https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases</span>
+<span class="sd">    anomaly_info : `dict` or `list` [`dict`] or None, default None</span>
+<span class="sd">        Anomaly adjustment info. Anomalies in ``df``</span>
+<span class="sd">        are corrected before any forecasting is done.</span>
+<span class="sd">        See ``self.load_data()``</span>
+<span class="sd">    df_before_adjustment : `pandas.DataFrame` or None, default None</span>
+<span class="sd">        ``self.df`` before adjustment by ``anomaly_info``.</span>
+<span class="sd">        Used by ``self.plot()`` to show the adjustment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_stats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_stats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_time_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_reg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_lag_reg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_y</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anomaly_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_before_adjustment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.load_data"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">tz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">regressor_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">anomaly_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads data to internal representation. Parses date column,</span>
+<span class="sd">        sets timezone aware index.</span>
+<span class="sd">        Checks for irregularities and raises an error if input is invalid.</span>
+<span class="sd">        Adjusts for anomalies according to ``anomaly_info``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : `pandas.DataFrame`</span>
+<span class="sd">            Input timeseries. A data frame which includes the timestamp column</span>
+<span class="sd">            as well as the value column.</span>
+<span class="sd">        time_col : `str`</span>
+<span class="sd">            The column name in ``df`` representing time for the time series data.</span>
+<span class="sd">            The time column can be anything that can be parsed by pandas DatetimeIndex.</span>
+<span class="sd">        value_col: `str`</span>
+<span class="sd">            The column name which has the value of interest to be forecasted.</span>
+<span class="sd">        freq : `str` or None, default None</span>
+<span class="sd">            Timeseries frequency, DateOffset alias, If None automatically inferred.</span>
+<span class="sd">        date_format : `str` or None, default None</span>
+<span class="sd">            strftime format to parse time column, eg ``%m/%d/%Y``.</span>
+<span class="sd">            Note that ``%f`` will parse all the way up to nanoseconds.</span>
+<span class="sd">            If None (recommended), inferred by `pandas.to_datetime`.</span>
+<span class="sd">        tz : `str` or pytz.timezone object or None, default None</span>
+<span class="sd">            Passed to `pandas.tz_localize` to localize the timestamp.</span>
+<span class="sd">        train_end_date : `str` or `datetime.datetime` or None, default None</span>
+<span class="sd">            Last date to use for fitting the model. Forecasts are generated after this date.</span>
+<span class="sd">            If None, it is set to the minimum of ``self.last_date_for_val`` and</span>
+<span class="sd">            ``self.last_date_for_reg``.</span>
+<span class="sd">        regressor_cols: `list` [`str`] or None, default None</span>
+<span class="sd">            A list of regressor columns used in the training and prediction DataFrames.</span>
+<span class="sd">            If None, no regressor columns are used.</span>
+<span class="sd">            Regressor columns that are unavailable in ``df`` are dropped.</span>
+<span class="sd">        lagged_regressor_cols: `list` [`str`] or None, default None</span>
+<span class="sd">            A list of additional columns needed for lagged regressors in the training and prediction DataFrames.</span>
+<span class="sd">            This list can have overlap with ``regressor_cols``.</span>
+<span class="sd">            If None, no additional columns are added to the DataFrame.</span>
+<span class="sd">            Lagged regressor columns that are unavailable in ``df`` are dropped.</span>
+<span class="sd">        anomaly_info : `dict` or `list` [`dict`] or None, default None</span>
+<span class="sd">            Anomaly adjustment info. Anomalies in ``df``</span>
+<span class="sd">            are corrected before any forecasting is done.</span>
+
+<span class="sd">            If None, no adjustments are made.</span>
+
+<span class="sd">            A dictionary containing the parameters to</span>
+<span class="sd">            `~greykite.common.features.adjust_anomalous_data.adjust_anomalous_data`.</span>
+<span class="sd">            See that function for details.</span>
+<span class="sd">            The possible keys are:</span>
+
+<span class="sd">                ``&quot;value_col&quot;`` : `str`</span>
+<span class="sd">                    The name of the column in ``df`` to adjust. You may adjust the value</span>
+<span class="sd">                    to forecast as well as any numeric regressors.</span>
+<span class="sd">                ``&quot;anomaly_df&quot;`` : `pandas.DataFrame`</span>
+<span class="sd">                    Adjustments to correct the anomalies.</span>
+<span class="sd">                ``&quot;start_time_col&quot;``: `str`, default START_TIME_COL</span>
+<span class="sd">                    Start date column in ``anomaly_df``.</span>
+<span class="sd">                ``&quot;end_time_col&quot;``: `str`, default END_TIME_COL</span>
+<span class="sd">                    End date column in ``anomaly_df``.</span>
+<span class="sd">                ``&quot;adjustment_delta_col&quot;``: `str` or None, default None</span>
+<span class="sd">                    Impact column in ``anomaly_df``.</span>
+<span class="sd">                ``&quot;filter_by_dict&quot;``: `dict` or None, default None</span>
+<span class="sd">                    Used to filter ``anomaly_df`` to the relevant anomalies for</span>
+<span class="sd">                    the ``value_col`` in this dictionary.</span>
+<span class="sd">                    Key specifies the column name, value specifies the filter value.</span>
+<span class="sd">                ``&quot;filter_by_value_col&quot;&quot;``: `str` or None, default None</span>
+<span class="sd">                    Adds ``{filter_by_value_col: value_col}`` to ``filter_by_dict``</span>
+<span class="sd">                    if not None, for the ``value_col`` in this dictionary.</span>
+<span class="sd">                ``&quot;adjustment_method&quot;`` : `str` (&quot;add&quot; or &quot;subtract&quot;), default &quot;add&quot;</span>
+<span class="sd">                    How to make the adjustment, if ``adjustment_delta_col`` is provided.</span>
+
+<span class="sd">            Accepts a list of such dictionaries to adjust multiple columns in ``df``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : Returns self.</span>
+<span class="sd">            Sets ``self.df`` with standard column names,</span>
+<span class="sd">            value adjusted for anomalies, and time gaps filled in,</span>
+<span class="sd">            sorted by time index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_time_col</span> <span class="o">=</span> <span class="n">time_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_value_col</span> <span class="o">=</span> <span class="n">value_col</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anomaly_info</span> <span class="o">=</span> <span class="n">anomaly_info</span>
+
+        <span class="n">canonical_data_dict</span> <span class="o">=</span> <span class="n">get_canonical_data</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+            <span class="n">tz</span><span class="o">=</span><span class="n">tz</span><span class="p">,</span>
+            <span class="n">train_end_date</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">train_end_date</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">date_format</span><span class="p">),</span>
+            <span class="n">regressor_cols</span><span class="o">=</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">lagged_regressor_cols</span><span class="o">=</span><span class="n">lagged_regressor_cols</span><span class="p">,</span>
+            <span class="n">anomaly_info</span><span class="o">=</span><span class="n">anomaly_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_before_adjustment</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;df_before_adjustment&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;fit_df&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_stats</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;time_stats&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;regressor_cols&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_cols</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;fit_cols&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;train_end_date&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_val</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;last_date_for_val&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_reg</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;last_date_for_reg&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_lag_reg</span> <span class="o">=</span> <span class="n">canonical_data_dict</span><span class="p">[</span><span class="s2">&quot;last_date_for_lag_reg&quot;</span><span class="p">]</span>
+
+        <span class="c1"># y (possibly with null values) after gaps have been filled in and anomalies corrected</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span>
+
+        <span class="c1"># computes statistics of processed dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe_time_col</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe_value_col</span><span class="p">()</span>  <span class="c1"># compute value statistics</span>
+
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;last date for fit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;last date for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">original_value_col</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;last date with any regressor: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_reg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;columns available to use as regressors: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;columns available to use as lagged regressors: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressor_cols</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.describe_time_col"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.describe_time_col">[docs]</a>    <span class="k">def</span> <span class="nf">describe_time_col</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Basic descriptive stats on the timeseries time column.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        time_stats: `dict`</span>
+<span class="sd">            Dictionary with descriptive stats on the timeseries time column.</span>
+
+<span class="sd">                * data_points: int</span>
+<span class="sd">                    number of time points</span>
+<span class="sd">                * mean_increment_secs: float</span>
+<span class="sd">                    mean frequency</span>
+<span class="sd">                * min_timestamp: datetime64</span>
+<span class="sd">                    start date</span>
+<span class="sd">                * max_timestamp: datetime64</span>
+<span class="sd">                    end date</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Must load data before describing dataset&quot;</span><span class="p">)</span>
+
+        <span class="n">timeseries_info</span> <span class="o">=</span> <span class="n">describe_timeseries</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">)</span>
+        <span class="n">data_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mean_increment_secs</span> <span class="o">=</span> <span class="n">timeseries_info</span><span class="p">[</span><span class="s2">&quot;mean_increment_secs&quot;</span><span class="p">]</span>
+        <span class="n">min_timestamp</span> <span class="o">=</span> <span class="n">timeseries_info</span><span class="p">[</span><span class="s2">&quot;min_timestamp&quot;</span><span class="p">]</span>
+        <span class="n">max_timestamp</span> <span class="o">=</span> <span class="n">timeseries_info</span><span class="p">[</span><span class="s2">&quot;max_timestamp&quot;</span><span class="p">]</span>
+
+        <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Input time stats:&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  data points: </span><span class="si">{</span><span class="n">data_points</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  avg increment (sec): </span><span class="si">{</span><span class="n">mean_increment_secs</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  start date: </span><span class="si">{</span><span class="n">min_timestamp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  end date: </span><span class="si">{</span><span class="n">max_timestamp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="n">time_stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data_points&quot;</span><span class="p">:</span> <span class="n">data_points</span><span class="p">,</span>  <span class="c1"># total number of time points, including missing ones</span>
+            <span class="s2">&quot;mean_increment_secs&quot;</span><span class="p">:</span> <span class="n">mean_increment_secs</span><span class="p">,</span>  <span class="c1"># after filling in gaps</span>
+            <span class="s2">&quot;min_timestamp&quot;</span><span class="p">:</span> <span class="n">min_timestamp</span><span class="p">,</span>
+            <span class="s2">&quot;max_timestamp&quot;</span><span class="p">:</span> <span class="n">max_timestamp</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_stats</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">time_stats</span><span class="p">)</span>  <span class="c1"># compute time statistics</span>
+        <span class="k">return</span> <span class="n">time_stats</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.describe_value_col"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.describe_value_col">[docs]</a>    <span class="k">def</span> <span class="nf">describe_value_col</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Basic descriptive stats on the timeseries value column.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        value_stats : `dict` [`str`, `float`]</span>
+<span class="sd">            Dict with keys: count, mean, std, min, 25%, 50%, 75%, max</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Must load data before describing values&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>  <span class="c1"># count is the total number of provided timepoints</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Input value stats:&quot;</span><span class="p">,</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log_message</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_stats</span><span class="p">),</span> <span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_stats</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.make_future_dataframe"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.make_future_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">make_future_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">periods</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_history</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extends the input data for prediction into the future.</span>
+
+<span class="sd">        Includes the historical values (VALUE_COL) so this can be fed</span>
+<span class="sd">        into a Pipeline that transforms input data for fitting, and for</span>
+<span class="sd">        use in evaluation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        periods : int or None</span>
+<span class="sd">            Number of periods to forecast.</span>
+<span class="sd">            If there are no regressors, default is 30.</span>
+<span class="sd">            If there are regressors, default is to predict all available dates.</span>
+<span class="sd">        include_history : bool</span>
+<span class="sd">            Whether to return historical dates and values with future dates.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        future_df : `pandas.DataFrame`</span>
+<span class="sd">            Dataframe with future timestamps for prediction.</span>
+<span class="sd">            Contains columns for:</span>
+
+<span class="sd">                * prediction dates (``TIME_COL``),</span>
+<span class="sd">                * values (``VALUE_COL``),</span>
+<span class="sd">                * optional regressors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Must load data before generating future dates.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># determines the number of future periods to predict</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">:</span>
+            <span class="n">max_regressor_periods</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">)</span>
+                <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_date_for_reg</span><span class="p">)</span>
+            <span class="p">])</span>
+            <span class="k">if</span> <span class="n">periods</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">periods</span> <span class="o">=</span> <span class="n">max_regressor_periods</span>
+            <span class="k">elif</span> <span class="n">periods</span> <span class="o">&gt;</span> <span class="n">max_regressor_periods</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Provided periods &#39;</span><span class="si">{</span><span class="n">periods</span><span class="si">}</span><span class="s2">&#39; is more than allowed (&#39;</span><span class="si">{</span><span class="n">max_regressor_periods</span><span class="si">}</span><span class="s2">&#39;) due to &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;the length of regressor columns. Using &#39;</span><span class="si">{</span><span class="n">max_regressor_periods</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">,</span>
+                    <span class="ne">UserWarning</span><span class="p">)</span>
+                <span class="n">periods</span> <span class="o">=</span> <span class="n">max_regressor_periods</span>
+        <span class="k">elif</span> <span class="n">periods</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">periods</span> <span class="o">=</span> <span class="mi">30</span>
+
+        <span class="c1"># the future dates for prediction</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">,</span>
+            <span class="n">periods</span><span class="o">=</span><span class="n">periods</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># an extra in case we include start</span>
+            <span class="n">freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="n">dates</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">]</span>  <span class="c1"># drops values up to train_end_date</span>
+        <span class="n">dates</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[:</span><span class="n">periods</span><span class="p">]</span>  <span class="c1"># returns the correct number of periods</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">regressor_cols</span><span class="p">:</span>
+            <span class="c1"># return TIME_COL, VALUE_COL, and regressors</span>
+            <span class="n">last_date_for_predict</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">include_history</span><span class="p">:</span>
+                <span class="n">valid_indices</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">last_date_for_predict</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">valid_indices</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">)</span>
+                                 <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">last_date_for_predict</span><span class="p">))</span>
+            <span class="n">future_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">valid_indices</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># return TIME_COL, VALUE_COL</span>
+            <span class="n">future_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">dates</span><span class="p">)</span>
+            <span class="n">future_df</span><span class="p">[</span><span class="n">TIME_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">future_df</span><span class="o">.</span><span class="n">index</span>
+            <span class="k">if</span> <span class="n">include_history</span><span class="p">:</span>
+                <span class="n">future_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_df</span><span class="p">,</span> <span class="n">future_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">future_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_cols</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.plot"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;rgb(32, 149, 212)&quot;</span><span class="p">,</span>
+            <span class="n">show_anomaly_adjustment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns interactive plotly graph of the value against time.</span>
+
+<span class="sd">        If anomaly info is provided, there is an option to show the anomaly adjustment.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        color : `str`, default &quot;rgb(32, 149, 212)&quot; (light blue)</span>
+<span class="sd">            Color of the value line (after adjustment, if applicable).</span>
+<span class="sd">        show_anomaly_adjustment : `bool`, default False</span>
+<span class="sd">            Whether to show the anomaly adjustment.</span>
+<span class="sd">        kwargs : additional parameters</span>
+<span class="sd">            Additional parameters to pass to</span>
+<span class="sd">            `~greykite.common.viz.timeseries_plotting.plot_univariate`</span>
+<span class="sd">            such as title and color.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            Interactive plotly graph of the value against time.</span>
+
+<span class="sd">            See `~greykite.common.viz.timeseries_plotting.plot_forecast_vs_actual`</span>
+<span class="sd">            return value for how to plot the figure and add customization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Plots value after anomaly adjustment</span>
+        <span class="n">y_col_style_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">VALUE_COL</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">show_anomaly_adjustment</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anomaly_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Adds value before adjustment to ``df``</span>
+                <span class="n">postfix</span> <span class="o">=</span> <span class="s2">&quot;_unadjusted&quot;</span>
+                <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VALUE_COL</span><span class="si">}{</span><span class="n">postfix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_before_adjustment</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">]</span>
+                <span class="n">y_col_style_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VALUE_COL</span><span class="si">}{</span><span class="n">postfix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">original_value_col</span><span class="si">}{</span><span class="n">postfix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#B3B3B3&quot;</span><span class="p">,</span>  <span class="c1"># light gray</span>
+                    <span class="p">),</span>
+                    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;There is no `anomaly_info` to show. `show_anomaly_adjustment` must be False.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">,</span>
+            <span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_time_col</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">original_value_col</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.get_grouping_evaluation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.get_grouping_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">get_grouping_evaluation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">aggregation_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">,</span>
+            <span class="n">aggregation_func_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Group-wise computation of aggregated timeSeries value.</span>
+<span class="sd">        Can be used to evaluate error/ aggregated value by a time feature,</span>
+<span class="sd">        over time, or by a user-provided column.</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        aggregation_func : callable, optional, default ``numpy.nanmean``</span>
+<span class="sd">            Function that aggregates an array to a number.</span>
+<span class="sd">            Signature (y: array) -&gt; aggregated value: float.</span>
+<span class="sd">        aggregation_func_name : `str` or None, optional, default &quot;mean&quot;</span>
+<span class="sd">            Name of grouping function, used to report results.</span>
+<span class="sd">            If None, defaults to &quot;aggregation&quot;.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        grouped_df : `pandas.DataFrame` with two columns:</span>
+
+<span class="sd">            (1) grouping_func_name:</span>
+<span class="sd">                evaluation metric for aggregation of timeseries.</span>
+<span class="sd">            (2) group name:</span>
+<span class="sd">                group name depends on the grouping method:</span>
+<span class="sd">                ``groupby_time_feature`` for ``groupby_time_feature``</span>
+<span class="sd">                ``cst.TIME_COL`` for ``groupby_sliding_window_size``</span>
+<span class="sd">                ``groupby_custom_column.name`` for ``groupby_custom_column``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">aggregation_func_name</span><span class="p">:</span>
+            <span class="n">grouping_func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">aggregation_func_name</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">VALUE_COL</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">grouping_func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;aggregation of </span><span class="si">{</span><span class="n">VALUE_COL</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">def</span> <span class="nf">grouping_func</span><span class="p">(</span><span class="n">grp</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">aggregation_func</span><span class="p">(</span><span class="n">grp</span><span class="p">[</span><span class="n">VALUE_COL</span><span class="p">])</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">add_groupby_column</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">grouping_evaluation</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">],</span>
+            <span class="n">groupby_col</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;groupby_col&quot;</span><span class="p">],</span>
+            <span class="n">grouping_func</span><span class="o">=</span><span class="n">grouping_func</span><span class="p">,</span>
+            <span class="n">grouping_func_name</span><span class="o">=</span><span class="n">grouping_func_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grouped_df</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.plot_grouping_evaluation"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_grouping_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">plot_grouping_evaluation</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">aggregation_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">,</span>
+            <span class="n">aggregation_func_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes aggregated timeseries by group and plots the result.</span>
+<span class="sd">        Can be used to plot aggregated timeseries by a time feature, over time,</span>
+<span class="sd">        or by a user-provided column.</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        aggregation_func : callable, optional, default ``numpy.nanmean``</span>
+<span class="sd">            Function that aggregates an array to a number.</span>
+<span class="sd">            Signature (y: array) -&gt; aggregated value: float.</span>
+<span class="sd">        aggregation_func_name : `str` or None, optional, default &quot;mean&quot;</span>
+<span class="sd">            Name of grouping function, used to report results.</span>
+<span class="sd">            If None, defaults to &quot;aggregation&quot;.</span>
+<span class="sd">        groupby_time_feature : `str` or None, optional</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, optional</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, optional</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        xlabel : `str`, optional, default None</span>
+<span class="sd">            X-axis label of the plot.</span>
+<span class="sd">        ylabel : `str`, optional, default None</span>
+<span class="sd">            Y-axis label of the plot.</span>
+<span class="sd">        title : `str` or None, optional</span>
+<span class="sd">            Plot title. If None, default is based on axis labels.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            plotly graph object showing aggregated timeseries by group.</span>
+<span class="sd">            x-axis label depends on the grouping method:</span>
+<span class="sd">            ``groupby_time_feature`` for ``groupby_time_feature``</span>
+<span class="sd">            ``TIME_COL`` for ``groupby_sliding_window_size``</span>
+<span class="sd">            ``groupby_custom_column.name`` for ``groupby_custom_column``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grouping_evaluation</span><span class="p">(</span>
+            <span class="n">aggregation_func</span><span class="o">=</span><span class="n">aggregation_func</span><span class="p">,</span>
+            <span class="n">aggregation_func_name</span><span class="o">=</span><span class="n">aggregation_func_name</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+
+        <span class="n">xcol</span><span class="p">,</span> <span class="n">ycol</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_univariate</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">grouped_df</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">xcol</span><span class="p">,</span>
+            <span class="n">y_col</span><span class="o">=</span><span class="n">ycol</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.get_quantiles_and_overlays"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.get_quantiles_and_overlays">[docs]</a>    <span class="k">def</span> <span class="nf">get_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">overlay_label_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">overlay_label_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">mean_col_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+            <span class="n">quantile_col_prefix</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">overlay_pivot_table_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes mean, quantiles, and overlays by the requested grouping dimension.</span>
+
+<span class="sd">        Overlays are best explained in the plotting context. The grouping dimension goes on</span>
+<span class="sd">        the x-axis, and one line is shown for each level of the overlay dimension. This</span>
+<span class="sd">        function returns a column for each line to plot (e.g. mean, each quantile,</span>
+<span class="sd">        each overlay value).</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided as the grouping dimension.</span>
+
+<span class="sd">        If ``show_overlays`` is True, exactly one of: ``overlay_label_time_feature``,</span>
+<span class="sd">        ``overlay_label_sliding_window_size``, ``overlay_label_custom_column`` can be</span>
+<span class="sd">        provided to specify the ``label_col`` (overlay dimension). Internally, the</span>
+<span class="sd">        function calls `pandas.DataFrame.pivot_table` with ``index=groupby_col``,</span>
+<span class="sd">        ``columns=label_col``, ``values=value_col`` to get the overlay values for plotting.</span>
+<span class="sd">        You can pass additional parameters to `pandas.DataFrame.pivot_table` via</span>
+<span class="sd">        ``overlay_pivot_table_kwargs``, e.g. to change the aggregation method. If an explicit</span>
+<span class="sd">        label is not provided, the records are labeled by their position within the group.</span>
+
+<span class="sd">        For example, to show yearly seasonality mean, quantiles, and overlay plots for</span>
+<span class="sd">        each individual year, use::</span>
+
+<span class="sd">            self.get_quantiles_and_overlays(</span>
+<span class="sd">                groupby_time_feature=&quot;doy&quot;,         # Rows: a row for each day of year (1, 2, ..., 366)</span>
+<span class="sd">                show_mean=True,                     # mean value on that day</span>
+<span class="sd">                show_quantiles=[0.1, 0.9],          # quantiles of the observed distribution on that day</span>
+<span class="sd">                show_overlays=True,                 # Include overlays defined by ``overlay_label_time_feature``</span>
+<span class="sd">                overlay_label_time_feature=&quot;year&quot;)  # One column for each observed &quot;year&quot; (2016, 2017, 2018, ...)</span>
+
+<span class="sd">        To show weekly seasonality over time, use::</span>
+
+<span class="sd">            self.get_quantiles_and_overlays(</span>
+<span class="sd">                groupby_time_feature=&quot;dow&quot;,            # Rows: a row for each day of week (1, 2, ..., 7)</span>
+<span class="sd">                show_mean=True,                        # mean value on that day</span>
+<span class="sd">                show_quantiles=[0.1, 0.5, 0.9],        # quantiles of the observed distribution on that day</span>
+<span class="sd">                show_overlays=True,                    # Include overlays defined by ``overlay_label_time_feature``</span>
+<span class="sd">                overlay_label_sliding_window_size=90,  # One column for each 90 period sliding window in the dataset,</span>
+<span class="sd">                aggfunc=&quot;median&quot;)                      # overlay value is the median value for the dow over the period (default=&quot;mean&quot;).</span>
+
+
+<span class="sd">        It may be difficult to assess the weekly seasonality from the previous result,</span>
+<span class="sd">        because overlays shift up/down over time due to trend/yearly seasonality.</span>
+<span class="sd">        Use ``center_values=True`` to adjust each overlay so its average value is centered at 0.</span>
+<span class="sd">        Mean and quantiles are shifted by a single constant to center the mean at 0, while</span>
+<span class="sd">        preserving their relative values::</span>
+
+<span class="sd">            self.get_quantiles_and_overlays(</span>
+<span class="sd">                groupby_time_feature=&quot;dow&quot;,</span>
+<span class="sd">                show_mean=True,</span>
+<span class="sd">                show_quantiles=[0.1, 0.5, 0.9],</span>
+<span class="sd">                show_overlays=True,</span>
+<span class="sd">                overlay_label_sliding_window_size=90,</span>
+<span class="sd">                aggfunc=&quot;median&quot;,</span>
+<span class="sd">                center_values=True)  # Centers the output</span>
+
+<span class="sd">        Centering reduces the variability in the overlays to make it easier to isolate</span>
+<span class="sd">        the effect by the groupby column. As a result, centered overlays have smaller</span>
+<span class="sd">        variability than that reported by the quantiles, which operate on the original,</span>
+<span class="sd">        uncentered data points. Similarly, if overlays are aggregates of individual values</span>
+<span class="sd">        (i.e. ``aggfunc`` is needed in the call to `pandas.DataFrame.pivot_table`),</span>
+<span class="sd">        the quantiles of overlays will be less extreme than those of the original data.</span>
+
+<span class="sd">            - To assess variability conditioned on the groupby value, check the quantiles.</span>
+<span class="sd">            - To assess variability conditioned on both the groupby and overlay value,</span>
+<span class="sd">              after any necessary aggregation, check the variability of the overlay values.</span>
+<span class="sd">              Compute quantiles of overlays from the return value if desired.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        groupby_time_feature : `str` or None, default None</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, default None</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, default None</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        show_mean : `bool`, default False</span>
+<span class="sd">            Whether to return the mean value by the groupby column.</span>
+<span class="sd">        show_quantiles : `bool` or `list` [`float`] or `numpy.array`, default False</span>
+<span class="sd">            Whether to return the quantiles of the value by the groupby column.</span>
+<span class="sd">            If False, does not return quantiles. If True, returns default</span>
+<span class="sd">            quantiles (0.1 and 0.9). If array-like, a list of quantiles</span>
+<span class="sd">            to compute (e.g. (0.1, 0.25, 0.75, 0.9)).</span>
+<span class="sd">        show_overlays : `bool` or `int` or array-like [`int` or `str`] or None, default False</span>
+<span class="sd">            Whether to return overlays of the value by the groupby column.</span>
+
+<span class="sd">            If False, no overlays are shown.</span>
+
+<span class="sd">            If True and ``label_col`` is defined, calls `pandas.DataFrame.pivot_table` with</span>
+<span class="sd">            ``index=groupby_col``, ``columns=label_col``, ``values=value_col``.</span>
+<span class="sd">            ``label_col`` is defined by one of ``overlay_label_time_feature``,</span>
+<span class="sd">            ``overlay_label_sliding_window_size``, or ``overlay_label_custom_column``.</span>
+<span class="sd">            Returns one column for each value of the ``label_col``.</span>
+
+<span class="sd">            If True and the ``label_col`` is not defined, returns the raw values within</span>
+<span class="sd">            each group. Values across groups are put into columns by their position in</span>
+<span class="sd">            the group (1st element in group, 2nd, 3rd, etc.). Positional order in a group</span>
+<span class="sd">            is not guaranteed to correspond to anything meaningful, so the items within a</span>
+<span class="sd">            column may not have anything in common. It is better to specify one of ``overlay_*``</span>
+<span class="sd">            to explicitly define the overlay labels.</span>
+
+<span class="sd">            If an integer, the number of overlays to randomly sample. The same as True,</span>
+<span class="sd">            then randomly samples up to `int` columns. This is useful if there are too many values.</span>
+
+<span class="sd">            If a list [int], a list of column indices (int type). The same as True,</span>
+<span class="sd">            then selects the specified columns by index.</span>
+
+<span class="sd">            If a list [str], a list of column names. Column names are matched by their</span>
+<span class="sd">            string representation to the names in this list. The same as True,</span>
+<span class="sd">            then selects the specified columns by name.</span>
+<span class="sd">        overlay_label_time_feature : `str` or None, default None</span>
+<span class="sd">            If ``show_overlays`` is True, can be used to define ``label_col``,</span>
+<span class="sd">            i.e. which dimension to show separately as overlays.</span>
+
+<span class="sd">            If provided, uses a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        overlay_label_sliding_window_size : `int` or None, default None</span>
+<span class="sd">            If ``show_overlays`` is True, can be used to define ``label_col``,</span>
+<span class="sd">            i.e. which dimension to show separately as overlays.</span>
+
+<span class="sd">            If provided, uses a column that sequentially partitions data into groups</span>
+<span class="sd">            of size ``groupby_sliding_window_size``.</span>
+<span class="sd">        overlay_label_custom_column : `pandas.Series` or None, default None</span>
+<span class="sd">            If ``show_overlays`` is True, can be used to define ``label_col``,</span>
+<span class="sd">            i.e. which dimension to show separately as overlays.</span>
+
+<span class="sd">            If provided, uses this column value. Should be same length as the DataFrame.</span>
+
+<span class="sd">        value_col : `str`, default VALUE_COL</span>
+<span class="sd">            The column name for the value column. By default,</span>
+<span class="sd">            shows the univariate time series value, but it can be any</span>
+<span class="sd">            other column in ``self.df``.</span>
+
+<span class="sd">        mean_col_name : `str`, default &quot;mean&quot;</span>
+<span class="sd">            The name to use for the mean column in the output.</span>
+<span class="sd">            Applies if ``show_mean=True``.</span>
+
+<span class="sd">        quantile_col_prefix : `str`, default &quot;Q&quot;</span>
+<span class="sd">            The prefix to use for quantile column names in the output.</span>
+<span class="sd">            Columns are named with this prefix followed by the quantile,</span>
+<span class="sd">            rounded to 2 decimal places.</span>
+
+<span class="sd">        center_values : `bool`, default False</span>
+<span class="sd">            Whether to center the return values.</span>
+<span class="sd">            If True, shifts each overlay so its average value is centered at 0.</span>
+<span class="sd">            Shifts mean and quantiles by a constant to center the mean at 0, while</span>
+<span class="sd">            preserving their relative values.</span>
+
+<span class="sd">            If False, values are not centered.</span>
+
+<span class="sd">        overlay_pivot_table_kwargs : additional parameters</span>
+<span class="sd">            Additional keyword parameters to pass to `pandas.DataFrame.pivot_table`,</span>
+<span class="sd">            used in generating the overlays. See above description for details.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        grouped_df : `pandas.DataFrame`</span>
+<span class="sd">            Dataframe with mean, quantiles, and overlays by the grouping column. Overlays</span>
+<span class="sd">            are defined by the grouping column and overlay dimension.</span>
+
+<span class="sd">            ColumnIndex is a multiindex with first level as the &quot;category&quot;, a subset of</span>
+<span class="sd">            [MEAN_COL_GROUP, QUANTILE_COL_GROUP, OVERLAY_COL_GROUP] depending on what is requests.</span>
+
+<span class="sd">                - grouped_df[MEAN_COL_GROUP] = df with single column, named ``mean_col_name``.</span>
+
+<span class="sd">                - grouped_df[QUANTILE_COL_GROUP] = df with a column for each quantile, named</span>
+<span class="sd">                  f&quot;{quantile_col_prefix}{round(str(q))}&quot;, where ``q`` is the quantile.</span>
+
+<span class="sd">                - grouped_df[OVERLAY_COL_GROUP] = df with one column per overlay value, named</span>
+<span class="sd">                  by the overlay value.</span>
+
+<span class="sd">            For example, it might look like::</span>
+
+<span class="sd">                category    mean    quantile        overlay</span>
+<span class="sd">                name        mean    Q0.1    Q0.9    2007    2008    2009</span>
+<span class="sd">                doy</span>
+<span class="sd">                1	        8.42	7.72    9.08	8.29	7.75	8.33</span>
+<span class="sd">                2	        8.82	8.20    9.56	8.43	8.80	8.53</span>
+<span class="sd">                3	        8.95	8.25    9.88	8.26	9.12	8.70</span>
+<span class="sd">                4	        9.07	8.60    9.49	8.10	9.99	8.73</span>
+<span class="sd">                5	        8.73	8.29    9.24	7.95	9.26	8.37</span>
+<span class="sd">                ...         ...     ...     ...     ...     ...     ...</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Default quantiles to show if `show_quantiles` is boolean</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">show_quantiles</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">show_quantiles</span><span class="p">:</span>
+                <span class="n">show_quantiles</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">show_quantiles</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Adds grouping dimension</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">add_groupby_column</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>  <span class="c1"># Already standardized</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span>
+        <span class="n">groupby_col</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;groupby_col&quot;</span><span class="p">]</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Whether an overlay label is provided</span>
+        <span class="n">add_overlay_label</span> <span class="o">=</span> <span class="p">(</span><span class="n">overlay_label_time_feature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> \
+            <span class="p">(</span><span class="n">overlay_label_sliding_window_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> \
+            <span class="p">(</span><span class="n">overlay_label_custom_column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">overlay_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Defines an aggregation function to compute mean, quantiles, and overlays</span>
+        <span class="n">agg_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">show_mean</span><span class="p">:</span>
+            <span class="n">agg_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">mean_col_name</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NamedAgg</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">)})</span>
+        <span class="k">if</span> <span class="n">show_quantiles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Returns the quantiles of the group&#39;s `value_col` as a list</span>
+            <span class="n">agg_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">quantile_col_prefix</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NamedAgg</span><span class="p">(</span>
+                <span class="n">column</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                <span class="n">aggfunc</span><span class="o">=</span><span class="k">lambda</span> <span class="n">grp_values</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanquantile</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">show_quantiles</span><span class="p">)(</span><span class="n">grp_values</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())})</span>
+        <span class="k">if</span> <span class="n">show_overlays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">add_overlay_label</span><span class="p">:</span>
+                <span class="c1"># Uses DataFrame pivot_table to get overlay labels as columns, `groupby_col` as index</span>
+                <span class="n">label_result</span> <span class="o">=</span> <span class="n">add_groupby_column</span><span class="p">(</span>
+                    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+                    <span class="n">time_col</span><span class="o">=</span><span class="n">TIME_COL</span><span class="p">,</span>
+                    <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">overlay_label_time_feature</span><span class="p">,</span>
+                    <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">overlay_label_sliding_window_size</span><span class="p">,</span>
+                    <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">overlay_label_custom_column</span><span class="p">)</span>
+                <span class="n">label_col</span> <span class="o">=</span> <span class="n">label_result</span><span class="p">[</span><span class="s2">&quot;groupby_col&quot;</span><span class="p">]</span>
+                <span class="n">overlay_df</span> <span class="o">=</span> <span class="n">label_result</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+                    <span class="n">index</span><span class="o">=</span><span class="n">groupby_col</span><span class="p">,</span>
+                    <span class="n">columns</span><span class="o">=</span><span class="n">label_col</span><span class="p">,</span>
+                    <span class="n">values</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">overlay_pivot_table_kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Uses aggregation to get overlays.</span>
+                <span class="c1"># Takes original values within each group.</span>
+                <span class="c1"># Values across groups are put into columns by their position</span>
+                <span class="c1"># within the group (1st element in group, 2nd, 3rd, etc.)</span>
+                <span class="n">agg_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;overlay&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">NamedAgg</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="nb">tuple</span><span class="p">)})</span>
+
+        <span class="c1"># Names the quantile columns</span>
+        <span class="c1"># Keeps to 2 decimal places to handle numerical imprecision.</span>
+        <span class="n">list_names_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">quantile_col_prefix</span><span class="p">:</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">quantile_col_prefix</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">show_quantiles</span><span class="p">]}</span>\
+            <span class="k">if</span> <span class="n">show_quantiles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">agg_kwargs</span><span class="p">:</span>
+            <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">flexible_grouping_evaluation</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">],</span>
+                <span class="n">map_func_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">groupby_col</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;groupby_col&quot;</span><span class="p">],</span>
+                <span class="n">agg_kwargs</span><span class="o">=</span><span class="n">agg_kwargs</span><span class="p">,</span>
+                <span class="n">extend_col_names</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">unpack_list</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">list_names_dict</span><span class="o">=</span><span class="n">list_names_dict</span><span class="p">)</span>
+        <span class="c1"># Adds overlays if requested and not already computed during aggregation</span>
+        <span class="k">if</span> <span class="n">overlay_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">overlay_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">overlay_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="c1"># Either overlay_df or grouped_df is populated</span>
+        <span class="k">if</span> <span class="n">grouped_df</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">overlay_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must enable at least one of: show_mean, show_quantiles, show_overlays.&quot;</span><span class="p">)</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">grouped_df</span><span class="p">,</span> <span class="n">overlay_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Creates MultiIndex for column names to categorize the column names by their type</span>
+        <span class="n">mean_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean_col_name</span><span class="p">]</span> <span class="k">if</span> <span class="n">show_mean</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">quantile_cols</span> <span class="o">=</span> <span class="n">list_names_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quantile_col_prefix</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">overlay_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mean_cols</span> <span class="o">+</span> <span class="n">quantile_cols</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">show_overlays</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">show_overlays</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="c1"># Samples from `overlay_cols`</span>
+            <span class="n">which_overlays</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">overlay_cols</span><span class="p">)),</span>
+                <span class="n">size</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">show_overlays</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">overlay_cols</span><span class="p">)),</span>
+                <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="n">overlay_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">overlay_cols</span><span class="p">)[</span><span class="n">which_overlays</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">show_overlays</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="c1"># Selects from `overlay_cols`</span>
+            <span class="n">all_integers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">show_overlays</span><span class="p">)</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">all_integers</span><span class="p">:</span>
+                <span class="n">overlay_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">overlay_cols</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">show_overlays</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">overlay_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">overlay_cols</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="n">show_overlays</span><span class="p">]</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">mean_cols</span> <span class="o">+</span> <span class="n">quantile_cols</span> <span class="o">+</span> <span class="n">overlay_cols</span>  <span class="c1"># Reorders columns by group</span>
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">MEAN_COL_GROUP</span><span class="p">,</span> <span class="n">QUANTILE_COL_GROUP</span><span class="p">,</span> <span class="n">OVERLAY_COL_GROUP</span><span class="p">],</span>  <span class="c1"># Labels columns by category</span>
+            <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">mean_cols</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">quantile_cols</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">overlay_cols</span><span class="p">)]))</span>
+        <span class="n">cateory_col_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([</span><span class="n">categories</span><span class="p">,</span> <span class="n">cols</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cateory_col_index</span>
+
+        <span class="k">if</span> <span class="n">center_values</span><span class="p">:</span>
+            <span class="c1"># Each overlay is independently shifted to have mean 0.</span>
+            <span class="k">if</span> <span class="n">OVERLAY_COL_GROUP</span> <span class="ow">in</span> <span class="n">grouped_df</span><span class="p">:</span>
+                <span class="n">grouped_df</span><span class="p">[</span><span class="n">OVERLAY_COL_GROUP</span><span class="p">]</span> <span class="o">-=</span> <span class="n">grouped_df</span><span class="p">[</span><span class="n">OVERLAY_COL_GROUP</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="c1"># Mean and quantiles are shifted by the same constant, so the mean column is centered at 0.</span>
+            <span class="k">if</span> <span class="n">MEAN_COL_GROUP</span> <span class="ow">in</span> <span class="n">grouped_df</span><span class="p">:</span>
+                <span class="n">mean_shift</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="p">[</span><span class="n">MEAN_COL_GROUP</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">grouped_df</span><span class="p">[</span><span class="n">MEAN_COL_GROUP</span><span class="p">]</span> <span class="o">-=</span> <span class="n">mean_shift</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mean_shift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">QUANTILE_COL_GROUP</span> <span class="ow">in</span> <span class="n">grouped_df</span><span class="p">:</span>
+                <span class="n">grouped_df</span><span class="p">[</span><span class="n">QUANTILE_COL_GROUP</span><span class="p">]</span> <span class="o">-=</span> <span class="n">mean_shift</span>
+
+        <span class="k">return</span> <span class="n">grouped_df</span></div>
+
+<div class="viewcode-block" id="UnivariateTimeSeries.plot_quantiles_and_overlays"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.input.univariate_time_series.UnivariateTimeSeries.plot_quantiles_and_overlays">[docs]</a>    <span class="k">def</span> <span class="nf">plot_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">overlay_label_sliding_window_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">overlay_label_custom_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">VALUE_COL</span><span class="p">,</span>
+            <span class="n">mean_col_name</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+            <span class="n">quantile_col_prefix</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span>
+            <span class="n">mean_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">quantile_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">overlay_style</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">overlay_pivot_table_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plots mean, quantiles, and overlays by the requested grouping dimension.</span>
+
+<span class="sd">        The grouping dimension goes on the x-axis, and one line is shown for the mean,</span>
+<span class="sd">        each quantile, and each level of the overlay dimension, as requested. By default,</span>
+<span class="sd">        shading is applied between the quantiles.</span>
+
+<span class="sd">        Exactly one of: ``groupby_time_feature``, ``groupby_sliding_window_size``,</span>
+<span class="sd">        ``groupby_custom_column`` must be provided as the grouping dimension.</span>
+
+<span class="sd">        If ``show_overlays`` is True, exactly one of: ``overlay_label_time_feature``,</span>
+<span class="sd">        ``overlay_label_sliding_window_size``, ``overlay_label_custom_column`` can be</span>
+<span class="sd">        provided to specify the ``label_col`` (overlay dimension). Internally, the</span>
+<span class="sd">        function calls `pandas.DataFrame.pivot_table` with ``index=groupby_col``,</span>
+<span class="sd">        ``columns=label_col``, ``values=value_col`` to get the overlay values for plotting.</span>
+<span class="sd">        You can pass additional parameters to `pandas.DataFrame.pivot_table` via</span>
+<span class="sd">        ``overlay_pivot_table_kwargs``, e.g. to change the aggregation method. If an explicit</span>
+<span class="sd">        label is not provided, the records are labeled by their position within the group.</span>
+
+<span class="sd">        For example, to show yearly seasonality mean, quantiles, and overlay plots for</span>
+<span class="sd">        each individual year, use::</span>
+
+<span class="sd">            self.plot_quantiles_and_overlays(</span>
+<span class="sd">                groupby_time_feature=&quot;doy&quot;,         # Rows: a row for each day of year (1, 2, ..., 366)</span>
+<span class="sd">                show_mean=True,                     # mean value on that day</span>
+<span class="sd">                show_quantiles=[0.1, 0.9],          # quantiles of the observed distribution on that day</span>
+<span class="sd">                show_overlays=True,                 # Include overlays defined by ``overlay_label_time_feature``</span>
+<span class="sd">                overlay_label_time_feature=&quot;year&quot;)  # One column for each observed &quot;year&quot; (2016, 2017, 2018, ...)</span>
+
+<span class="sd">        To show weekly seasonality over time, use::</span>
+
+<span class="sd">            self.plot_quantiles_and_overlays(</span>
+<span class="sd">                groupby_time_feature=&quot;dow&quot;,            # Rows: a row for each day of week (1, 2, ..., 7)</span>
+<span class="sd">                show_mean=True,                        # mean value on that day</span>
+<span class="sd">                show_quantiles=[0.1, 0.5, 0.9],        # quantiles of the observed distribution on that day</span>
+<span class="sd">                show_overlays=True,                    # Include overlays defined by ``overlay_label_time_feature``</span>
+<span class="sd">                overlay_label_sliding_window_size=90,  # One column for each 90 period sliding window in the dataset,</span>
+<span class="sd">                aggfunc=&quot;median&quot;)                      # overlay value is the median value for the dow over the period (default=&quot;mean&quot;).</span>
+
+<span class="sd">        It may be difficult to assess the weekly seasonality from the previous result,</span>
+<span class="sd">        because overlays shift up/down over time due to trend/yearly seasonality.</span>
+<span class="sd">        Use ``center_values=True`` to adjust each overlay so its average value is centered at 0.</span>
+<span class="sd">        Mean and quantiles are shifted by a single constant to center the mean at 0, while</span>
+<span class="sd">        preserving their relative values::</span>
+
+<span class="sd">            self.plot_quantiles_and_overlays(</span>
+<span class="sd">                groupby_time_feature=&quot;dow&quot;,</span>
+<span class="sd">                show_mean=True,</span>
+<span class="sd">                show_quantiles=[0.1, 0.5, 0.9],</span>
+<span class="sd">                show_overlays=True,</span>
+<span class="sd">                overlay_label_sliding_window_size=90,</span>
+<span class="sd">                aggfunc=&quot;median&quot;,</span>
+<span class="sd">                center_values=True)  # Centers the output</span>
+
+<span class="sd">        Centering reduces the variability in the overlays to make it easier to isolate</span>
+<span class="sd">        the effect by the groupby column. As a result, centered overlays have smaller</span>
+<span class="sd">        variability than that reported by the quantiles, which operate on the original,</span>
+<span class="sd">        uncentered data points. Similarly, if overlays are aggregates of individual values</span>
+<span class="sd">        (i.e. ``aggfunc`` is needed in the call to `pandas.DataFrame.pivot_table`),</span>
+<span class="sd">        the quantiles of overlays will be less extreme than those of the original data.</span>
+
+<span class="sd">            - To assess variability conditioned on the groupby value, check the quantiles.</span>
+<span class="sd">            - To assess variability conditioned on both the groupby and overlay value,</span>
+<span class="sd">              after any necessary aggregation, check the variability of the overlay values.</span>
+<span class="sd">              Compute quantiles of overlays from the return value if desired.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        groupby_time_feature : `str` or None, default None</span>
+<span class="sd">            If provided, groups by a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        groupby_sliding_window_size : `int` or None, default None</span>
+<span class="sd">            If provided, sequentially partitions data into groups of size</span>
+<span class="sd">            ``groupby_sliding_window_size``.</span>
+<span class="sd">        groupby_custom_column : `pandas.Series` or None, default None</span>
+<span class="sd">            If provided, groups by this column value. Should be same length as the DataFrame.</span>
+<span class="sd">        show_mean : `bool`, default False</span>
+<span class="sd">            Whether to return the mean value by the groupby column.</span>
+<span class="sd">        show_quantiles : `bool` or `list` [`float`] or `numpy.array`, default False</span>
+<span class="sd">            Whether to return the quantiles of the value by the groupby column.</span>
+<span class="sd">            If False, does not return quantiles. If True, returns default</span>
+<span class="sd">            quantiles (0.1 and 0.9). If array-like, a list of quantiles</span>
+<span class="sd">            to compute (e.g. (0.1, 0.25, 0.75, 0.9)).</span>
+<span class="sd">        show_overlays : `bool` or `int` or array-like [`int` or `str`], default False</span>
+<span class="sd">            Whether to return overlays of the value by the groupby column.</span>
+
+<span class="sd">            If False, no overlays are shown.</span>
+
+<span class="sd">            If True and ``label_col`` is defined, calls `pandas.DataFrame.pivot_table` with</span>
+<span class="sd">            ``index=groupby_col``, ``columns=label_col``, ``values=value_col``.</span>
+<span class="sd">            ``label_col`` is defined by one of ``overlay_label_time_feature``,</span>
+<span class="sd">            ``overlay_label_sliding_window_size``, or ``overlay_label_custom_column``.</span>
+<span class="sd">            Returns one column for each value of the ``label_col``.</span>
+
+<span class="sd">            If True and the ``label_col`` is not defined, returns the raw values within</span>
+<span class="sd">            each group. Values across groups are put into columns by their position in</span>
+<span class="sd">            the group (1st element in group, 2nd, 3rd, etc.). Positional order in a group</span>
+<span class="sd">            is not guaranteed to correspond to anything meaningful, so the items within a</span>
+<span class="sd">            column may not have anything in common. It is better to specify one of ``overlay_*``</span>
+<span class="sd">            to explicitly define the overlay labels.</span>
+
+<span class="sd">            If an integer, the number of overlays to randomly sample. The same as True,</span>
+<span class="sd">            then randomly samples up to `int` columns. This is useful if there are too many values.</span>
+
+<span class="sd">            If a list [int], a list of column indices (int type). The same as True,</span>
+<span class="sd">            then selects the specified columns by index.</span>
+
+<span class="sd">            If a list [str], a list of column names. Column names are matched by their</span>
+<span class="sd">            string representation to the names in this list. The same as True,</span>
+<span class="sd">            then selects the specified columns by name.</span>
+
+<span class="sd">        overlay_label_time_feature : `str` or None, default None</span>
+<span class="sd">            If ``show_overlays`` is True, can be used to define ``label_col``,</span>
+<span class="sd">            i.e. which dimension to show separately as overlays.</span>
+
+<span class="sd">            If provided, uses a column generated by</span>
+<span class="sd">            `~greykite.common.features.timeseries_features.build_time_features_df`.</span>
+<span class="sd">            See that function for valid values.</span>
+<span class="sd">        overlay_label_sliding_window_size : `int` or None, default None</span>
+<span class="sd">            If ``show_overlays`` is True, can be used to define ``label_col``,</span>
+<span class="sd">            i.e. which dimension to show separately as overlays.</span>
+
+<span class="sd">            If provided, uses a column that sequentially partitions data into groups</span>
+<span class="sd">            of size ``groupby_sliding_window_size``.</span>
+<span class="sd">        overlay_label_custom_column : `pandas.Series` or None, default None</span>
+<span class="sd">            If ``show_overlays`` is True, can be used to define ``label_col``,</span>
+<span class="sd">            i.e. which dimension to show separately as overlays.</span>
+
+<span class="sd">            If provided, uses this column value. Should be same length as the DataFrame.</span>
+
+<span class="sd">        value_col : `str`, default VALUE_COL</span>
+<span class="sd">            The column name for the value column. By default,</span>
+<span class="sd">            shows the univariate time series value, but it can be any</span>
+<span class="sd">            other column in ``self.df``.</span>
+
+<span class="sd">        mean_col_name : `str`, default &quot;mean&quot;</span>
+<span class="sd">            The name to use for the mean column in the output.</span>
+<span class="sd">            Applies if ``show_mean=True``.</span>
+
+<span class="sd">        quantile_col_prefix : `str`, default &quot;Q&quot;</span>
+<span class="sd">            The prefix to use for quantile column names in the output.</span>
+<span class="sd">            Columns are named with this prefix followed by the quantile,</span>
+<span class="sd">            rounded to 2 decimal places.</span>
+
+<span class="sd">        center_values : `bool`, default False</span>
+<span class="sd">            Whether to center the return values.</span>
+<span class="sd">            If True, shifts each overlay so its average value is centered at 0.</span>
+<span class="sd">            Shifts mean and quantiles by a constant to center the mean at 0, while</span>
+<span class="sd">            preserving their relative values.</span>
+
+<span class="sd">            If False, values are not centered.</span>
+
+<span class="sd">        mean_style: `dict` or None, default None</span>
+<span class="sd">            How to style the mean line, passed as keyword arguments to</span>
+<span class="sd">            `plotly.graph_objects.Scatter`. If None, the default is::</span>
+
+<span class="sd">                mean_style = {</span>
+<span class="sd">                    &quot;line&quot;: dict(</span>
+<span class="sd">                        width=2,</span>
+<span class="sd">                        color=&quot;#595959&quot;),  # gray</span>
+<span class="sd">                    &quot;legendgroup&quot;: MEAN_COL_GROUP}</span>
+
+<span class="sd">        quantile_style: `dict` or None, default None</span>
+<span class="sd">            How to style the quantile lines, passed as keyword arguments to</span>
+<span class="sd">            `plotly.graph_objects.Scatter`. If None, the default is::</span>
+
+<span class="sd">                quantile_style = {</span>
+<span class="sd">                    &quot;line&quot;: dict(</span>
+<span class="sd">                        width=2,</span>
+<span class="sd">                        color=&quot;#1F9AFF&quot;,  # blue</span>
+<span class="sd">                        dash=&quot;solid&quot;),</span>
+<span class="sd">                    &quot;legendgroup&quot;: QUANTILE_COL_GROUP,  # show/hide them together</span>
+<span class="sd">                    &quot;fill&quot;: &quot;tonexty&quot;}</span>
+
+<span class="sd">            Note that fill style is removed from to the first quantile line, to</span>
+<span class="sd">            fill only between items in the same category.</span>
+
+<span class="sd">        overlay_style: `dict` or None, default None</span>
+<span class="sd">            How to style the overlay lines, passed as keyword arguments to</span>
+<span class="sd">            `plotly.graph_objects.Scatter`. If None, the default is::</span>
+
+<span class="sd">                overlay_style = {</span>
+<span class="sd">                    &quot;opacity&quot;: 0.5,  # makes it easier to see density</span>
+<span class="sd">                    &quot;line&quot;: dict(</span>
+<span class="sd">                        width=1,</span>
+<span class="sd">                        color=&quot;#B3B3B3&quot;,  # light gray</span>
+<span class="sd">                        dash=&quot;solid&quot;),</span>
+<span class="sd">                    &quot;legendgroup&quot;: OVERLAY_COL_GROUP}</span>
+
+<span class="sd">        xlabel : `str`, optional, default None</span>
+<span class="sd">            X-axis label of the plot.</span>
+<span class="sd">        ylabel : `str`, optional, default None</span>
+<span class="sd">            Y-axis label of the plot. If None, uses ``value_col``.</span>
+<span class="sd">        title : `str` or None, default None</span>
+<span class="sd">            Plot title. If None, default is based on axis labels.</span>
+<span class="sd">        showlegend : `bool`, default True</span>
+<span class="sd">            Whether to show the legend.</span>
+<span class="sd">        overlay_pivot_table_kwargs : additional parameters</span>
+<span class="sd">            Additional keyword parameters to pass to `pandas.DataFrame.pivot_table`,</span>
+<span class="sd">            used in generating the overlays.</span>
+<span class="sd">            See `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.get_quantiles_and_overlays`</span>
+<span class="sd">            description for details.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        fig : `plotly.graph_objects.Figure`</span>
+<span class="sd">            plotly graph object showing the mean, quantiles, and overlays.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        `~greykite.framework.input.univariate_time_series.UnivariateTimeSeries.get_quantiles_and_overlays`</span>
+<span class="sd">            To get the mean, quantiles, and overlays as a `pandas.DataFrame` without plotting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ylabel</span> <span class="o">=</span> <span class="n">value_col</span>
+
+        <span class="n">grouped_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_quantiles_and_overlays</span><span class="p">(</span>
+            <span class="n">groupby_time_feature</span><span class="o">=</span><span class="n">groupby_time_feature</span><span class="p">,</span>
+            <span class="n">groupby_sliding_window_size</span><span class="o">=</span><span class="n">groupby_sliding_window_size</span><span class="p">,</span>
+            <span class="n">groupby_custom_column</span><span class="o">=</span><span class="n">groupby_custom_column</span><span class="p">,</span>
+            <span class="n">show_mean</span><span class="o">=</span><span class="n">show_mean</span><span class="p">,</span>
+            <span class="n">show_quantiles</span><span class="o">=</span><span class="n">show_quantiles</span><span class="p">,</span>
+            <span class="n">show_overlays</span><span class="o">=</span><span class="n">show_overlays</span><span class="p">,</span>
+            <span class="n">overlay_label_time_feature</span><span class="o">=</span><span class="n">overlay_label_time_feature</span><span class="p">,</span>
+            <span class="n">overlay_label_sliding_window_size</span><span class="o">=</span><span class="n">overlay_label_sliding_window_size</span><span class="p">,</span>
+            <span class="n">overlay_label_custom_column</span><span class="o">=</span><span class="n">overlay_label_custom_column</span><span class="p">,</span>
+            <span class="n">center_values</span><span class="o">=</span><span class="n">center_values</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">mean_col_name</span><span class="o">=</span><span class="n">mean_col_name</span><span class="p">,</span>
+            <span class="n">quantile_col_prefix</span><span class="o">=</span><span class="n">quantile_col_prefix</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">overlay_pivot_table_kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mean_style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mean_style</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#595959&quot;</span><span class="p">),</span>  <span class="c1"># gray</span>
+                <span class="s2">&quot;legendgroup&quot;</span><span class="p">:</span> <span class="n">MEAN_COL_GROUP</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">quantile_style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">quantile_style</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1F9AFF&quot;</span><span class="p">,</span>  <span class="c1"># blue</span>
+                    <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;legendgroup&quot;</span><span class="p">:</span> <span class="n">QUANTILE_COL_GROUP</span><span class="p">,</span>  <span class="c1"># show/hide them together</span>
+                <span class="s2">&quot;fill&quot;</span><span class="p">:</span> <span class="s2">&quot;tonexty&quot;</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">overlay_style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">overlay_style</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;opacity&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># makes it easier to see density</span>
+                <span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#B3B3B3&quot;</span><span class="p">,</span>  <span class="c1"># light gray</span>
+                    <span class="n">dash</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;legendgroup&quot;</span><span class="p">:</span> <span class="n">OVERLAY_COL_GROUP</span><span class="p">}</span>
+        <span class="n">style_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">MEAN_COL_GROUP</span><span class="p">:</span> <span class="n">mean_style</span><span class="p">,</span>
+            <span class="n">QUANTILE_COL_GROUP</span><span class="p">:</span> <span class="n">quantile_style</span><span class="p">,</span>
+            <span class="n">OVERLAY_COL_GROUP</span><span class="p">:</span> <span class="n">overlay_style</span><span class="p">}</span>
+
+        <span class="n">y_col_style_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># All categories in grouped_df. Reverses the order so the first category is plotted last (on top).</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">style_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">if</span> <span class="s2">&quot;fill&quot;</span> <span class="ow">in</span> <span class="n">style</span><span class="p">:</span>
+                <span class="c1"># If fill is part of the style, plotly fills the area between this line and</span>
+                <span class="c1"># the previous line added to the plot.</span>
+                <span class="c1"># Since we only want to fill between lines in the same category (e.g. between quantiles),</span>
+                <span class="c1"># we remove the &quot;fill&quot; from the first line within each category. Otherwise the first</span>
+                <span class="c1"># line in this category would fill to the last line in the previous category.</span>
+                <span class="n">category_style_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">grouped_df</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">style</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">&quot;fill&quot;</span><span class="p">}}</span>
+                <span class="n">category_style_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">col</span><span class="p">:</span> <span class="n">style</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">grouped_df</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">category_style_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="n">style</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">grouped_df</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+            <span class="n">y_col_style_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">category_style_dict</span><span class="p">)</span>
+
+        <span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grouped_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># MultiIndex is not needed for plotting</span>
+        <span class="n">x_col</span> <span class="o">=</span> <span class="n">grouped_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">grouped_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_multivariate</span><span class="p">(</span>
+            <span class="n">grouped_df</span><span class="p">,</span>
+            <span class="n">x_col</span><span class="o">=</span><span class="n">x_col</span><span class="p">,</span>
+            <span class="n">y_col_style_dict</span><span class="o">=</span><span class="n">y_col_style_dict</span><span class="p">,</span>
+            <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+            <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+            <span class="n">showlegend</span><span class="o">=</span><span class="n">showlegend</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

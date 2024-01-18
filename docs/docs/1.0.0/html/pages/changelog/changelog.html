@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.0.0 (2024-01-07) &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Docs" href="../autodoc/doc.html" />
+    <link rel="prev" title="Model store and load" href="../miscellaneous/store_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">1.0.0 (2024-01-07)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>1.0.0 (2024-01-07)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p>Greykite AD (Anomaly Detection) is now available.</p></li>
+</ul>
+<p>It improves upon the out-of-box confidence intervals generated by Silverkite, by automatically tuning the confidence intervals
+and other filters (e.g. based on <code class="docutils literal notranslate"><span class="pre">Absolute</span> <span class="pre">Percentage</span> <span class="pre">Error</span> <span class="pre">(APE)</span></code>) using expected alert rate information and/ or anomaly labels, if available.
+It allows the users to define robust objective function, constraints and parameter space to optimize the confidence intervals.
+For example user can target a minimal recall level of 80% while maximizing precision. Additionally, the users can specify a
+minimum error level to filter out anomalies that are not business relevant. The motivation to include criteria other than
+statistical significance is to bake in material/ business impact into the detection.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>&#64;Reza Hosseini: Devised the core anomaly detection library structure. Added base <code class="docutils literal notranslate"><span class="pre">Detector</span></code> module.</p></li>
+<li><p>&#64;Reza Hosseini: Added <code class="xref py py-obj docutils literal notranslate"><span class="pre">Reward</span></code> that allows users to specify and optimize robust anomaly detection objectives.</p></li>
+<li><p>&#64;Sayan Patra: Added <code class="docutils literal notranslate"><span class="pre">GreykiteDetector</span></code> module that builds anomaly detection based on Greykite forecasting.</p></li>
+<li><p>&#64;Sayan Patra: Added tutorials for Greykite anomaly detection.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>New features and methodss</dt><dd><ul>
+<li><p>&#64;Reza Hosseini: Added <code class="xref py py-obj docutils literal notranslate"><span class="pre">ZScoreOutlierDetector</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">TukeyOutlierDetector</span></code>, improved outlier detection modules.</p></li>
+<li><p>&#64;Sayan Patra: Added <code class="xref py py-obj docutils literal notranslate"><span class="pre">GreykitePickler</span></code>. This improves the pickling function for Greykite models and allows to store the model in a single file.</p></li>
+<li><p>&#64;Yi-Wei Lu: Added <code class="docutils literal notranslate"><span class="pre">DifferenceBasedOutlierTransformer</span></code> that can identify outliers in the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> pipeline.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Library Enhancements</dt><dd><ul>
+<li><p>&#64;Kaixu Yang: Added <code class="docutils literal notranslate"><span class="pre">scipy</span></code> solver to make quantile regression more stable.</p></li>
+<li><p>&#64;Qiang Fei: Updated <code class="docutils literal notranslate"><span class="pre">auto_holiday</span></code> functionality to use holiday groupers for improved forecast performance in holiday periods.</p></li>
+<li><p>&#64;Katherine Li: Improved changepoint detection method that can identify level shift.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bug fixes</dt><dd><ul>
+<li><p>&#64;Reza Hosseini &#64;Sayan Patra &#64;Yi Su &#64;Qiang Fei &#64;Kaixu Yang &#64;Phil Gaudreau: Other library enhancements and bug fixes.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h1>0.5.1 (2023-06-01)<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h1>
+<p>Loosen dill package requirements.</p>
+</section>
+<section id="id3">
+<h1>0.5.0 (2023-04-03)<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h1>
+<p>Python 3.10 support.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>New features and methods</dt><dd><ul>
+<li><dl class="simple">
+<dt>Improvements on modeling holidays</dt><dd><ul>
+<li><p>&#64;Yi Su: Added <a class="reference internal" href="../autodoc/doc.html#greykite.algo.common.holiday_grouper.HolidayGrouper" title="greykite.algo.common.holiday_grouper.HolidayGrouper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HolidayGrouper</span></code></a>. Holidays with a similar effect are grouped together to have fewer and more robust coefficients. With this feature, holidays are better modeled with improved forecast accuracy. See instructions in <a class="reference internal" href="../../gallery/quickstart/01_exploration/0200_auto_configuration_tools.html"><span class="doc">Auto Configuration Tools</span></a>.</p></li>
+<li><p>&#64;Kaixu Yang: Added support for holiday neighboring impact for data with frequency longer than daily through the <code class="docutils literal notranslate"><span class="pre">daily_event_neighbor_impact</span></code> parameter (e.g. this enables modeling holidays on weekly data where the event dates may not fall on the exact timestamps); added holiday neighboring events (i.e. the lags of an actual holiday can be specified in the model) through the <code class="docutils literal notranslate"><span class="pre">daily_event_shifted_effect</span></code> parameter. See details at <a class="reference internal" href="../model_components/0400_events.html"><span class="doc">Holidays and Events</span></a>.</p></li>
+<li><p>&#64;Yi Su: Added holiday indicators. Now users can specify “is_event_exact”, “is_event_adjacent”, “is_event” (a union of both) as <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code> in the model. See details at <a class="reference internal" href="../model_components/0400_events.html"><span class="doc">Holidays and Events</span></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>&#64;Reza Hosseini: Added DST indicators. Now users can specify “us_dst” or “eu_dst” in <code class="docutils literal notranslate"><span class="pre">extra_pred_cols</span></code>. You may also use <code class="docutils literal notranslate"><span class="pre">get_us_dst_start/end</span></code>, <code class="docutils literal notranslate"><span class="pre">get_eu_dst_start/end</span></code> functions in <a class="reference internal" href="../autodoc/doc.html#module-greykite.common.features.timeseries_features" title="greykite.common.features.timeseries_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeseries_features</span></code></a> to get the dates.</p></li>
+<li><p>&#64;Yi Su: Theoretical improvements for the volatility model in linear and ridge algorithm for more accurate variance estimate and prediction intervals.</p></li>
+<li><p>&#64;Phil Gaudreau: Added new evaluation metric: <a class="reference internal" href="../autodoc/doc.html#greykite.common.evaluation.mean_interval_score" title="greykite.common.evaluation.mean_interval_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean_interval_score</span></code></a>.</p></li>
+<li><p>&#64;Brian Vegetabile: Enhanced components plot that consolidates previous forecast breakdown functionality. The redesign provides a cleaner visual and allows for flexible breakdowns via regular expressions. See examples in <a class="reference internal" href="../../gallery/quickstart/0100_simple_forecast.html"><span class="doc">Simple Forecast</span></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Library enhancements</dt><dd><ul>
+<li><p>&#64;Kaixu Yang: Python 3.10 support. Deprecated support for lower Python versions.</p></li>
+<li><p>&#64;Sayan Patra: New utility function: <a class="reference internal" href="../autodoc/doc.html#greykite.framework.utils.exploratory_data_analysis.get_exploratory_plots" title="greykite.framework.utils.exploratory_data_analysis.get_exploratory_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_exploratory_plots</span></code></a> to easily generate exploratory data analysis (EDA) plots in HTML.</p></li>
+<li><p>&#64;Kaixu Yang: Added <code class="docutils literal notranslate"><span class="pre">optimize_mape</span></code> option to quantile regression. It uses 1 over y as weights in the loss function. See <a class="reference internal" href="../autodoc/doc.html#greykite.algo.common.l1_quantile_regression.QuantileRegression" title="greykite.algo.common.l1_quantile_regression.QuantileRegression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantileRegression</span></code></a> for details.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bug fixes</dt><dd><ul>
+<li><p>&#64;Qiang Fei: In case of simulation, now <code class="docutils literal notranslate"><span class="pre">min_adimissible_value</span></code> and <code class="docutils literal notranslate"><span class="pre">max_adimissible_value</span></code> will correctly cap the simulated values. Additionally, errors are propagated through simulation steps to make the intervals more accurate.</p></li>
+<li><p>&#64;Yi Su, &#64;Sayan Patra: Now <code class="docutils literal notranslate"><span class="pre">train_end_date</span></code> is always respected if specified by the user. Previously it got ignored if there are trailing NA’s in training data or <code class="docutils literal notranslate"><span class="pre">anomaly_df</span></code> imputes the anomalous points to NA. Also, now <code class="docutils literal notranslate"><span class="pre">train_end_date</span></code> accepts a string value.</p></li>
+<li><p>&#64;Yi Su: The seasonality order now takes <em class="xref py py-obj">None</em> without raising an error. It will be treated the same as <em class="xref py py-obj">False</em> or zero.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id4">
+<h1>0.4.0 (2022-07-15)<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><dl class="simple">
+<dt>New features and methods</dt><dd><ul>
+<li><p>&#64;Reza Hosseini: Forecast interpretability. Forecasts can now be broken down to grouped components: trend, seasonality, events, autoregression, regressors, intercept, etc.</p></li>
+<li><p>&#64;Sayan Patra: Enhanced components plot. Now supports autoregression, lagged regressors, residuals; adds support for centering.</p></li>
+<li><p>&#64;Kaixu Yang: Auto model components. (1) seasonality inferrer (2) holiday inferrer (3) automatic growth.</p></li>
+<li><p>&#64;Kaixu Yang: Lag-based estimator. Supports lag-based forecasts such as week-over-week.</p></li>
+<li><p>&#64;Reza Hosseini: Fast simulation option. Provides a better accuracy and speed for mean prediction when simulation is used in autoregression.</p></li>
+<li><p>&#64;Kaixu Yang: Quantile regression option for Silverkite <em class="xref py py-obj">fit_algorithm</em>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>New model templates</dt><dd><ul>
+<li><p>&#64;Kaixu Yang: AUTO. Automatically chooses templates based on the data frequency, forecast horizon and evaluation configs.</p></li>
+<li><p>&#64;Reza Hosseini, &#64;Kaixu Yang: SILVERKITE_MONTHLY - a SimpleSilverkite template designed for monthly time series.</p></li>
+<li><p>&#64;Kaixu Yang: SILVERKITE_WOW. Uses Silverkite to model seasonality, growth and holiday effects, and then uses week-over-week to fit the residuals. The final prediction is the total of the two models.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>New datasets</dt><dd><ul>
+<li><p>4 hourly datasets: Solar Power, Wind Power, Electricity, San Francisco Bay Area Traffic.</p></li>
+<li><p>1 daily dataset: Bitcoin Transactions.</p></li>
+<li><p>2 monthly datasets: Sunspot, FRED House Supply.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Library enhancements and bug fixes</dt><dd><ul>
+<li><p>The SILVERKITE template has been updated to include automatic autoregression and changepoint detection.</p></li>
+<li><p>Renamed <em class="xref py py-obj">SilverkiteMultistageEstimator</em> to <em class="xref py py-obj">MultistageForecastEstimator</em>.</p></li>
+<li><p>Renamed the normalization method “min_max” to “zero_to_one”.</p></li>
+<li><p>&#64;Reza Hosseini: Added normalization methods: “minus_half_to_half”, “zero_at_origin”.</p></li>
+<li><p>&#64;Albert Chen: Updated tutorials.</p></li>
+<li><p>&#64;Yi Su: Upgraded fbprophet 0.5 to prophet 1.0.</p></li>
+<li><p>&#64;Yi Su: Upgraded holidays to 0.13.</p></li>
+<li><p>&#64;Albert Chen &#64;Kaixu Yang &#64;Yi Su: Speed optimization for Silverkite algorithms.</p></li>
+<li><p>&#64;Albert Chen &#64;Reza Hosseini &#64;Kaixu Yang &#64;Sayan Patra &#64;Yi Su: Other library enhancements and bug fixes.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id5">
+<h1>0.3.0 (2021-12-14)<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><dl class="simple">
+<dt>New tutorials</dt><dd><ul>
+<li><p>&#64;Reza Hosseini: Monthly time series forecast.</p></li>
+<li><p>&#64;Yi Su: Weekly time series forecast.</p></li>
+<li><p>&#64;Albert Chen: Forecast reconciliation.</p></li>
+<li><p>&#64;Kaixu Yang: Forecast one-by-one method.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>New methods</dt><dd><ul>
+<li><p>&#64;Yi Su: Lagged regressor (method was released in 0.2.0 but documentation was added in this release).</p></li>
+<li><p>&#64;Kaixu Yang &#64;Saad Eddin Al Orjany: Model storage (method was released in 0.2.0 but documentation was added in this release).</p></li>
+<li><p>&#64;Kaixu Yang: Silverkite Multistage method for fast training on small granularity data (with tutorial).</p></li>
+<li><p>&#64;Albert Chen: Forecast reconciliation with interface and defaults optimized.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>New model templates</dt><dd><ul>
+<li><p>&#64;Yi Su: <em class="xref py py-obj">SILVERKITE_WITH_AR</em>: The <em class="xref py py-obj">SILVERKITE</em> template with autoregression.</p></li>
+<li><p>&#64;Yi Su: <em class="xref py py-obj">SILVERKITE_DAILY_1</em>: A SimpleSilverkite template designed for daily data with forecast horizon 1.</p></li>
+<li><p>&#64;Kaixu Yang: <em class="xref py py-obj">SILVERKITE_TWO_STAGE</em>: A two stage model using the Silverkite Multistage method that is good for sub-daily data with a long history.</p></li>
+<li><p>&#64;Kaixu Yang: <em class="xref py py-obj">SILVERKITE_MULTISTAGE_EMPTY</em>: A base template for the Silverkite Multistage method.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Library enhancements and bug fixes</dt><dd><ul>
+<li><p>&#64;Yi Su: Updated plotly to v5.</p></li>
+<li><p>&#64;Reza Hosseini: Use <em class="xref py py-obj">explicit_pred_cols</em>, <em class="xref py py-obj">drop_pred_cols</em> to directly specify or exclude model formula terms (see Custom Parameters).</p></li>
+<li><p>&#64;Reza Hosseini: Use <em class="xref py py-obj">simulation_num</em> to specify number of simulations to use for generating forecasts and prediction intervals. Applies only if any of the lags in <em class="xref py py-obj">autoreg_dict</em> are smaller than forecast_horizon (see Auto-regression).</p></li>
+<li><p>&#64;Reza Hosseini: Use <em class="xref py py-obj">normalize_method</em> to normalize the design matrix (see Custom Parameters).</p></li>
+<li><p>&#64;Yi Su: Allow no CV and no backtest in pipeline.</p></li>
+<li><p>&#64;Albert Chen: Added synthetic hierarchical dataset.</p></li>
+<li><p>Bug fix: <em class="xref py py-obj">cv_use_most_recent_splits</em> in EvaluationPeriodParam was previously ignored.</p></li>
+<li><p>&#64;Albert Chen &#64;Kaixu Yang &#64;Reza Hosseini &#64;Saad Eddin Al Orjany &#64;Sayan Patra &#64;Yi Su: Other library enhancements and bug fixes.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="id6">
+<h1>0.2.0 (2021-06-30)<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p>&#64;Kaixu Yang: Removed the dependency on <em class="xref py py-obj">fbprophet</em> and change it to optional.</p></li>
+<li><p>&#64;Kaixu Yang &#64;Saad Eddin Al Orjany: Added model dumping and loading for storing (see <em class="xref py py-obj">Forecaster.dump_forecast_result</em> and <em class="xref py py-obj">Forecaster.load_forecast_result</em>).</p></li>
+<li><p>&#64;Kaixu Yang &#64;Reza Hosseini: Added forecast one-by-one method.</p></li>
+<li><p>&#64;Sayan Patra: Added the support of AutoArima by <code class="xref py py-obj docutils literal notranslate"><span class="pre">pmdarima</span></code>, see the <em class="xref py py-obj">AUTO_ARIMA</em> template.</p></li>
+</ul>
+</section>
+<section id="id7">
+<h1>0.1.1 (2021-05-12)<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p>First release on PyPI.</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../miscellaneous/store_model.html" class="btn btn-neutral float-left" title="Model store and load" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../autodoc/doc.html" class="btn btn-neutral float-right" title="Docs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

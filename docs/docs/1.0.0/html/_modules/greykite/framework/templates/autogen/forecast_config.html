@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.templates.autogen.forecast_config &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.templates.autogen.forecast_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.templates.autogen.forecast_config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># flake8: noqa</span>
+<span class="c1"># To use this code, make sure you</span>
+<span class="c1">#</span>
+<span class="c1">#     import json</span>
+<span class="c1">#</span>
+<span class="c1"># and then, to convert JSON from a string, do</span>
+<span class="c1">#</span>
+<span class="c1">#     result = forecast_config_from_dict(json.loads(json_string))</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">assert_equal</span>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">from_int</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_none</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_union</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">assert</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">from_list_dict</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses list of dictionaries, applying `f` to the dictionary values.</span>
+<span class="sd">    All items must be dictionaries.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">}</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">from_list_dict_or_none</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">T</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses list of dictionaries or None elements, applying `f` to the dictionary values.</span>
+<span class="sd">    If an element in the list is None, it is returned directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">}</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">from_str</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_list_str</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_list_int</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_float</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">to_float</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_bool</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">to_class</span><span class="p">(</span><span class="n">c</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">from_list_float</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses a list of floats&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">from_list_list_str</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses a list that contains lists of strings&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">from_list_str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<div class="viewcode-block" id="ComputationParam"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ComputationParam">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ComputationParam</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;How to compute the result.&quot;&quot;&quot;</span>
+    <span class="n">hyperparameter_budget</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">n_jobs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ComputationParam&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">hyperparameter_budget</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hyperparameter_budget&quot;</span><span class="p">))</span>
+        <span class="n">n_jobs</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_jobs&quot;</span><span class="p">))</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ComputationParam</span><span class="p">(</span>
+            <span class="n">hyperparameter_budget</span><span class="o">=</span><span class="n">hyperparameter_budget</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;hyperparameter_budget&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_budget</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;n_jobs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="EvaluationMetricParam"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">EvaluationMetricParam</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What metrics to evaluate&quot;&quot;&quot;</span>
+    <span class="n">agg_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">agg_periods</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_report_metrics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See `score_func` in :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_selection_metric</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See `score_func` in :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">null_model_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">relative_error_tolerance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;EvaluationMetricParam&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">agg_func</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;agg_func&quot;</span><span class="p">))</span>
+        <span class="n">agg_periods</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;agg_periods&quot;</span><span class="p">))</span>
+        <span class="n">cv_report_metrics</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_list_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_report_metrics&quot;</span><span class="p">))</span>
+        <span class="n">cv_selection_metric</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_selection_metric&quot;</span><span class="p">))</span>
+        <span class="n">null_model_params</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;null_model_params&quot;</span><span class="p">))</span>
+        <span class="n">relative_error_tolerance</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_float</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relative_error_tolerance&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">EvaluationMetricParam</span><span class="p">(</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">agg_periods</span><span class="o">=</span><span class="n">agg_periods</span><span class="p">,</span>
+            <span class="n">cv_report_metrics</span><span class="o">=</span><span class="n">cv_report_metrics</span><span class="p">,</span>
+            <span class="n">cv_selection_metric</span><span class="o">=</span><span class="n">cv_selection_metric</span><span class="p">,</span>
+            <span class="n">null_model_params</span><span class="o">=</span><span class="n">null_model_params</span><span class="p">,</span>
+            <span class="n">relative_error_tolerance</span><span class="o">=</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;agg_func&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_func</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;agg_periods&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_periods</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_report_metrics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_list_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_report_metrics</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_selection_metric&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_selection_metric</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;null_model_params&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_model_params</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;relative_error_tolerance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">to_float</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_error_tolerance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="EvaluationPeriodParam"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">EvaluationPeriodParam</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;How to split data for evaluation.&quot;&quot;&quot;</span>
+    <span class="n">cv_expanding_window</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_horizon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_max_splits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_min_train_periods</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_periods_between_splits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_periods_between_train_test</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">cv_use_most_recent_splits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+    <span class="n">periods_between_train_test</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`&quot;&quot;&quot;</span>
+    <span class="n">test_horizon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;EvaluationPeriodParam&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">cv_expanding_window</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_bool</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_expanding_window&quot;</span><span class="p">))</span>
+        <span class="n">cv_horizon</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_horizon&quot;</span><span class="p">))</span>
+        <span class="n">cv_max_splits</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_max_splits&quot;</span><span class="p">))</span>
+        <span class="n">cv_min_train_periods</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_min_train_periods&quot;</span><span class="p">))</span>
+        <span class="n">cv_periods_between_splits</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_periods_between_splits&quot;</span><span class="p">))</span>
+        <span class="n">cv_periods_between_train_test</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_periods_between_train_test&quot;</span><span class="p">))</span>
+        <span class="n">cv_use_most_recent_splits</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_bool</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cv_use_most_recent_splits&quot;</span><span class="p">))</span>
+        <span class="n">periods_between_train_test</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">))</span>
+        <span class="n">test_horizon</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_horizon&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">EvaluationPeriodParam</span><span class="p">(</span>
+            <span class="n">cv_expanding_window</span><span class="o">=</span><span class="n">cv_expanding_window</span><span class="p">,</span>
+            <span class="n">cv_horizon</span><span class="o">=</span><span class="n">cv_horizon</span><span class="p">,</span>
+            <span class="n">cv_max_splits</span><span class="o">=</span><span class="n">cv_max_splits</span><span class="p">,</span>
+            <span class="n">cv_min_train_periods</span><span class="o">=</span><span class="n">cv_min_train_periods</span><span class="p">,</span>
+            <span class="n">cv_periods_between_splits</span><span class="o">=</span><span class="n">cv_periods_between_splits</span><span class="p">,</span>
+            <span class="n">cv_periods_between_train_test</span><span class="o">=</span><span class="n">cv_periods_between_train_test</span><span class="p">,</span>
+            <span class="n">cv_use_most_recent_splits</span><span class="o">=</span><span class="n">cv_use_most_recent_splits</span><span class="p">,</span>
+            <span class="n">periods_between_train_test</span><span class="o">=</span><span class="n">periods_between_train_test</span><span class="p">,</span>
+            <span class="n">test_horizon</span><span class="o">=</span><span class="n">test_horizon</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_expanding_window&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_bool</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_expanding_window</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_horizon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_horizon</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_max_splits&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_max_splits</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_min_train_periods&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_min_train_periods</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_periods_between_splits&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_periods_between_splits</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_periods_between_train_test&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_periods_between_train_test</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;cv_use_most_recent_splits&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_bool</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cv_use_most_recent_splits</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;periods_between_train_test&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">periods_between_train_test</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;test_horizon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_horizon</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="MetadataParam"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.MetadataParam">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MetadataParam</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Properties of the input data&quot;&quot;&quot;</span>
+    <span class="n">anomaly_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Anomaly adjustment info. Anomalies in ``df`` are corrected before any forecasting is</span>
+<span class="sd">    done. If None, no adjustments are made.</span>
+<span class="sd">    See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">date_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`&quot;&quot;&quot;</span>
+    <span class="n">freq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`&quot;&quot;&quot;</span>
+    <span class="n">time_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`&quot;&quot;&quot;</span>
+    <span class="n">train_end_date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Last date to use for fitting the model. Forecasts are generated after this date.</span>
+<span class="sd">    If None, it is set to the last date with a non-null value in value_col df.</span>
+<span class="sd">    See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;MetadataParam&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">anomaly_info</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_list_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;anomaly_info&quot;</span><span class="p">))</span>
+        <span class="n">date_format</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_format&quot;</span><span class="p">))</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;freq&quot;</span><span class="p">))</span>
+        <span class="n">time_col</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time_col&quot;</span><span class="p">))</span>
+        <span class="n">train_end_date</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;train_end_date&quot;</span><span class="p">))</span>
+        <span class="n">value_col</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value_col&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">MetadataParam</span><span class="p">(</span><span class="n">anomaly_info</span><span class="p">,</span> <span class="n">date_format</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">time_col</span><span class="p">,</span> <span class="n">train_end_date</span><span class="p">,</span> <span class="n">value_col</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;anomaly_info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_list_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">anomaly_info</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;date_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_format</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;time_col&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_col</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;train_end_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_end_date</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;value_col&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_col</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="ModelComponentsParam"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ModelComponentsParam">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ModelComponentsParam</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters to tune the model.&quot;&quot;&quot;</span>
+    <span class="n">autoregression</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling autoregression, see template for details&quot;&quot;&quot;</span>
+    <span class="n">changepoints</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling changepoints, see template for details&quot;&quot;&quot;</span>
+    <span class="n">custom</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Additional parameters used by template, see template for details&quot;&quot;&quot;</span>
+    <span class="n">events</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling events, see template for details&quot;&quot;&quot;</span>
+    <span class="n">growth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling growth (trend), see template for details&quot;&quot;&quot;</span>
+    <span class="n">hyperparameter_override</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;After the above model components are used to create a hyperparameter grid,</span>
+<span class="sd">    the result is updated by this dictionary, to create new keys or override existing ones.</span>
+<span class="sd">    Allows for complete customization of the grid search.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">regressors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling regressors, see template for details&quot;&quot;&quot;</span>
+    <span class="n">lagged_regressors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling lagged regressors, see template for details&quot;&quot;&quot;</span>
+    <span class="n">seasonality</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling seasonality, see template for details&quot;&quot;&quot;</span>
+    <span class="n">uncertainty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For modeling uncertainty, see template for details&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ModelComponentsParam&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">autoregression</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;autoregression&quot;</span><span class="p">))</span>
+        <span class="n">changepoints</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;changepoints&quot;</span><span class="p">))</span>
+        <span class="n">custom</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">))</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">))</span>
+        <span class="n">growth</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;growth&quot;</span><span class="p">))</span>
+        <span class="n">hyperparameter_override</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_list_dict_or_none</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hyperparameter_override&quot;</span><span class="p">))</span>
+        <span class="n">regressors</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regressors&quot;</span><span class="p">))</span>
+        <span class="n">lagged_regressors</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lagged_regressors&quot;</span><span class="p">))</span>
+        <span class="n">seasonality</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonality&quot;</span><span class="p">))</span>
+        <span class="n">uncertainty</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ModelComponentsParam</span><span class="p">(</span>
+            <span class="n">autoregression</span><span class="o">=</span><span class="n">autoregression</span><span class="p">,</span>
+            <span class="n">changepoints</span><span class="o">=</span><span class="n">changepoints</span><span class="p">,</span>
+            <span class="n">custom</span><span class="o">=</span><span class="n">custom</span><span class="p">,</span>
+            <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="p">,</span>
+            <span class="n">growth</span><span class="o">=</span><span class="n">growth</span><span class="p">,</span>
+            <span class="n">hyperparameter_override</span><span class="o">=</span><span class="n">hyperparameter_override</span><span class="p">,</span>
+            <span class="n">regressors</span><span class="o">=</span><span class="n">regressors</span><span class="p">,</span>
+            <span class="n">lagged_regressors</span><span class="o">=</span><span class="n">lagged_regressors</span><span class="p">,</span>
+            <span class="n">seasonality</span><span class="o">=</span><span class="n">seasonality</span><span class="p">,</span>
+            <span class="n">uncertainty</span><span class="o">=</span><span class="n">uncertainty</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;autoregression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoregression</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;changepoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">changepoints</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;events&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;growth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">growth</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;hyperparameter_override&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_list_dict_or_none</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span>
+            <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameter_override</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;regressors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">regressors</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;lagged_regressors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lagged_regressors</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;seasonality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">seasonality</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">from_dict</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="ForecastConfig"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ForecastConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config for providing parameters to the Forecast library&quot;&quot;&quot;</span>
+    <span class="n">computation_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ComputationParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;How to compute the result. See</span>
+<span class="sd">    :class:`~greykite.framework.templates.autogen.forecast_config.ComputationParam`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coverage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intended coverage of the prediction bands (0.0 to 1.0).</span>
+<span class="sd">    If None, the upper/lower predictions are not returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">evaluation_metric_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EvaluationMetricParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What metrics to evaluate. See</span>
+<span class="sd">    :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationMetricParam`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">evaluation_period_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EvaluationPeriodParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;How to split data for evaluation. See</span>
+<span class="sd">    :class:`~greykite.framework.templates.autogen.forecast_config.EvaluationPeriodParam`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">forecast_horizon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of periods to forecast into the future. Must be &gt; 0.</span>
+<span class="sd">    If None, default is determined from input data frequency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">forecast_one_by_one</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The options to activate the forecast one-by-one algorithm.</span>
+<span class="sd">    See :class:`~greykite.sklearn.estimator.one_by_one_estimator.OneByOneEstimator`.</span>
+<span class="sd">    Can be boolean, int, of list of int.</span>
+<span class="sd">    If int, it has to be less than or equal to the forecast horizon.</span>
+<span class="sd">    If list of int, the sum has to be the forecast horizon.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">metadata_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetadataParam</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information about the input data. See</span>
+<span class="sd">    :class:`~greykite.framework.templates.autogen.forecast_config.MetadataParam`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_components_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">ModelComponentsParam</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModelComponentsParam</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters to tune the model. Typically a single ModelComponentsParam, but the `SimpleSilverkiteTemplate`</span>
+<span class="sd">    template also allows a list of ModelComponentsParam for grid search. A single ModelComponentsParam</span>
+<span class="sd">    corresponds to one grid, and a list corresponds to a list of grids.</span>
+<span class="sd">    See :class:`~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Name of the model template. Typically a single string, but the `SimpleSilverkiteTemplate`</span>
+<span class="sd">    template also allows a list of string for grid search.</span>
+<span class="sd">    See :class:`~greykite.framework.templates.model_templates.ModelTemplateEnum`</span>
+<span class="sd">    for valid names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ForecastConfig&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="n">computation_param</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">ComputationParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;computation_param&quot;</span><span class="p">))</span>
+        <span class="n">coverage</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_float</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coverage&quot;</span><span class="p">))</span>
+        <span class="n">evaluation_metric_param</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">EvaluationMetricParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;evaluation_metric_param&quot;</span><span class="p">))</span>
+        <span class="n">evaluation_period_param</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">EvaluationPeriodParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;evaluation_period_param&quot;</span><span class="p">))</span>
+        <span class="n">forecast_horizon</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">))</span>
+        <span class="n">forecast_one_by_one</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_bool</span><span class="p">,</span> <span class="n">from_none</span><span class="p">,</span> <span class="n">from_list_int</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;forecast_one_by_one&quot;</span><span class="p">))</span>
+        <span class="n">metadata_param</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">MetadataParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metadata_param&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_components_param&quot;</span><span class="p">),</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">model_components_param</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">ModelComponentsParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_components_param&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">model_components_param</span> <span class="o">=</span> <span class="p">[</span><span class="n">from_union</span><span class="p">([</span><span class="n">ModelComponentsParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">mcp</span><span class="p">)</span> <span class="k">for</span> <span class="n">mcp</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_components_param&quot;</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_template&quot;</span><span class="p">),</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">model_template</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_template&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">model_template</span> <span class="o">=</span> <span class="p">[</span><span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">mt</span><span class="p">)</span> <span class="k">for</span> <span class="n">mt</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model_template&quot;</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+            <span class="n">computation_param</span><span class="o">=</span><span class="n">computation_param</span><span class="p">,</span>
+            <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span>
+            <span class="n">evaluation_metric_param</span><span class="o">=</span><span class="n">evaluation_metric_param</span><span class="p">,</span>
+            <span class="n">evaluation_period_param</span><span class="o">=</span><span class="n">evaluation_period_param</span><span class="p">,</span>
+            <span class="n">forecast_horizon</span><span class="o">=</span><span class="n">forecast_horizon</span><span class="p">,</span>
+            <span class="n">forecast_one_by_one</span><span class="o">=</span><span class="n">forecast_one_by_one</span><span class="p">,</span>
+            <span class="n">metadata_param</span><span class="o">=</span><span class="n">metadata_param</span><span class="p">,</span>
+            <span class="n">model_components_param</span><span class="o">=</span><span class="n">model_components_param</span><span class="p">,</span>
+            <span class="n">model_template</span><span class="o">=</span><span class="n">model_template</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;computation_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">to_class</span><span class="p">(</span><span class="n">ComputationParam</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">computation_param</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;coverage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">to_float</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;evaluation_metric_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">to_class</span><span class="p">(</span><span class="n">EvaluationMetricParam</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluation_metric_param</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;evaluation_period_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">to_class</span><span class="p">(</span><span class="n">EvaluationPeriodParam</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluation_period_param</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;forecast_horizon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;forecast_one_by_one&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="n">from_int</span><span class="p">,</span> <span class="n">from_bool</span><span class="p">,</span> <span class="n">from_none</span><span class="p">,</span> <span class="n">from_list_int</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast_one_by_one</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">to_class</span><span class="p">(</span><span class="n">MetadataParam</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_param</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_components_param</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;model_components_param&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">from_union</span><span class="p">([</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">to_class</span><span class="p">(</span><span class="n">ModelComponentsParam</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">mcp</span><span class="p">)</span> <span class="k">for</span> <span class="n">mcp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_components_param</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_template</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model_template</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;model_template&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">from_union</span><span class="p">([</span><span class="n">from_str</span><span class="p">,</span> <span class="n">from_none</span><span class="p">],</span> <span class="n">mt</span><span class="p">)</span> <span class="k">for</span> <span class="n">mt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_template</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+<div class="viewcode-block" id="ForecastConfig.from_json"><a class="viewcode-back" href="../../../../../pages/autodoc/doc.html#greykite.framework.templates.autogen.forecast_config.ForecastConfig.from_json">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ForecastConfig&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts a json string to the corresponding instance of the `ForecastConfig` class.</span>
+<span class="sd">        Raises ValueError if the input is not a json string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">forecast_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The input (</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">) is not a json string.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ForecastConfig</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">forecast_dict</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">forecast_config_from_dict</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForecastConfig</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">ForecastConfig</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">forecast_config_to_dict</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ForecastConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">to_class</span><span class="p">(</span><span class="n">ForecastConfig</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">assert_equal_forecast_config</span><span class="p">(</span>
+        <span class="n">forecast_config_1</span><span class="p">:</span> <span class="n">ForecastConfig</span><span class="p">,</span>
+        <span class="n">forecast_config_2</span><span class="p">:</span> <span class="n">ForecastConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Asserts equality between two instances of `ForecastConfig`.</span>
+<span class="sd">    Raises an error in case of parameter mismatch.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    forecast_config_1: `ForecastConfig`</span>
+<span class="sd">        First instance of the</span>
+<span class="sd">        :class:`~greykite.framework.templates.model_templates.ForecastConfig` for comparing.</span>
+<span class="sd">    forecast_config_2: `ForecastConfig`</span>
+<span class="sd">        Second instance of the</span>
+<span class="sd">        :class:`~greykite.framework.templates.model_templates.ForecastConfig` for comparing.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    -------</span>
+<span class="sd">    AssertionError</span>
+<span class="sd">        If `ForecastConfig`s do not match, else returns None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">forecast_config_1</span><span class="p">,</span> <span class="n">ForecastConfig</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The input (</span><span class="si">{</span><span class="n">forecast_config_1</span><span class="si">}</span><span class="s2">) is not a member of &#39;ForecastConfig&#39; class.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">forecast_config_2</span><span class="p">,</span> <span class="n">ForecastConfig</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The input (</span><span class="si">{</span><span class="n">forecast_config_2</span><span class="si">}</span><span class="s2">) is not a member of &#39;ForecastConfig&#39; class.&quot;</span><span class="p">)</span>
+
+    <span class="n">assert_equal</span><span class="p">(</span><span class="n">forecast_config_1</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">forecast_config_2</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

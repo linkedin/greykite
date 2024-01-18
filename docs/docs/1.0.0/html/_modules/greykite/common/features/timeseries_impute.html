@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.common.features.timeseries_impute &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.common.features.timeseries_impute</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.common.features.timeseries_impute</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Reza Hosseini</span>
+<span class="sd">&quot;&quot;&quot;Functions to impute missing data using past data.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.features.timeseries_lags</span> <span class="kn">import</span> <span class="n">build_agg_lag_df</span>
+
+
+<div class="viewcode-block" id="impute_with_lags"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_impute.impute_with_lags">[docs]</a><span class="k">def</span> <span class="nf">impute_with_lags</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">value_col</span><span class="p">,</span>
+        <span class="n">orders</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+        <span class="n">iter_num</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function to impute timeseries values (given in ``df``) and in ``value_col``</span>
+<span class="sd">    with chosen lagged values or an aggregated of those.</span>
+<span class="sd">    For example for daily data one could use the 7th lag to impute using the</span>
+<span class="sd">    value of the same day of past week as opposed to the closest value available</span>
+<span class="sd">    which can be inferior for business related timeseries.</span>
+
+<span class="sd">    The imputation can be done multiple times by specifying ``iter_num``</span>
+<span class="sd">    to decrease the number of missing in some cases.</span>
+<span class="sd">    Note that there are no guarantees to impute all missing values with this</span>
+<span class="sd">    method by design.</span>
+<span class="sd">    However the original number of missing values and the final number of missing</span>
+<span class="sd">    values are returned by the function along with the imputed dataframe.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Input dataframe which must include `value_col` as a column.</span>
+<span class="sd">    value_col : `str`</span>
+<span class="sd">        The column name in ``df`` representing the values of the timeseries.</span>
+<span class="sd">    orders : list of `int`</span>
+<span class="sd">        The lag orders to be used for aggregation.</span>
+<span class="sd">    agg_func : &quot;mean&quot; or callable, default: &quot;mean&quot;</span>
+<span class="sd">        `pandas.Series` -&gt; `float`</span>
+<span class="sd">        An aggregation function to aggregate the chosen lags.</span>
+<span class="sd">        If &quot;mean&quot;, uses `pandas.DataFrame.mean`.</span>
+<span class="sd">    iter_num : `int`, default `1`</span>
+<span class="sd">        Maximum number of iterations to impute the series.</span>
+<span class="sd">        Each iteration represent an imputation of the series using the provided</span>
+<span class="sd">        lag orders (``orders``) and return an imputed dataframe.</span>
+<span class="sd">        It might be the case that with one iterations some values</span>
+<span class="sd">        are not imputed but with more iterations one can achieve more</span>
+<span class="sd">        imputed values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    impute_info : `dict`</span>
+<span class="sd">        A dictionary with following items:</span>
+
+<span class="sd">        &quot;df&quot; : `pandas.DataFrame`</span>
+<span class="sd">            A dataframe with the imputed values.</span>
+<span class="sd">        &quot;initial_missing_num&quot; : `int`</span>
+<span class="sd">            Initial number of missing values.</span>
+<span class="sd">        &quot;final_missing_num&quot; : `int`</span>
+<span class="sd">            Final number of missing values after imputations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">nan_index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+    <span class="n">missing_num</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nan_index</span><span class="p">)</span>
+    <span class="n">initial_missing_num</span> <span class="o">=</span> <span class="n">missing_num</span>
+
+    <span class="k">def</span> <span class="nf">nan_agg_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;To avoid warnings due to aggregation performed on sub-series</span>
+<span class="sd">        with only NAs, we define an internal modified version of ``agg_func``.</span>
+
+<span class="sd">        Note that `np.mean` passed to `pandas.DataFrame.apply` ignores NAs and</span>
+<span class="sd">        already has the same effect as `np.nanmean`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">agg_func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">safe_agg_func</span> <span class="o">=</span> <span class="n">agg_func</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">agg_func</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">nan_agg_func</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iter_num</span> <span class="ow">and</span> <span class="n">missing_num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">agg_lag_info</span> <span class="o">=</span> <span class="n">build_agg_lag_df</span><span class="p">(</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">orders_list</span><span class="o">=</span><span class="p">[</span><span class="n">orders</span><span class="p">],</span>
+            <span class="n">interval_list</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">safe_agg_func</span><span class="p">,</span>
+            <span class="n">agg_name</span><span class="o">=</span><span class="s2">&quot;avglag&quot;</span><span class="p">)</span>
+
+        <span class="n">agg_lag_df</span> <span class="o">=</span> <span class="n">agg_lag_info</span><span class="p">[</span><span class="s2">&quot;agg_lag_df&quot;</span><span class="p">]</span>
+        <span class="c1"># In this case the lagged dataframe will have only one column</span>
+        <span class="c1"># which can be extracted from the list given in the ``&quot;col_names&quot;`` item</span>
+        <span class="n">agg_col_name</span> <span class="o">=</span> <span class="n">agg_lag_info</span><span class="p">[</span><span class="s2">&quot;col_names&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nan_index</span><span class="p">,</span> <span class="n">value_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">agg_lag_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">nan_index</span><span class="p">,</span> <span class="n">agg_col_name</span><span class="p">]</span>
+        <span class="n">nan_index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">value_col</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="n">missing_num</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nan_index</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">,</span>
+        <span class="s2">&quot;initial_missing_num&quot;</span><span class="p">:</span> <span class="n">initial_missing_num</span><span class="p">,</span>
+        <span class="s2">&quot;final_missing_num&quot;</span><span class="p">:</span> <span class="n">missing_num</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="impute_with_lags_multi"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.common.features.timeseries_impute.impute_with_lags_multi">[docs]</a><span class="k">def</span> <span class="nf">impute_with_lags_multi</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">orders</span><span class="p">,</span>
+        <span class="n">agg_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+        <span class="n">iter_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Imputes every column of ``df`` using</span>
+<span class="sd">    `~greykite.common.features.timeseries_impute.impute_with_lags`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Input dataframe which must include `value_col` as a column.</span>
+<span class="sd">    orders : list of `int`</span>
+<span class="sd">        The lag orders to be used for aggregation.</span>
+<span class="sd">    agg_func : callable, default `np.mean`</span>
+<span class="sd">        `pandas.Series` -&gt; `float`</span>
+<span class="sd">        An aggregation function to aggregate the chosen lags.</span>
+<span class="sd">    iter_num : `int`, default `1`</span>
+<span class="sd">        Maximum number of iterations to impute the series.</span>
+<span class="sd">        Each iteration represent an imputation of the series using the provided</span>
+<span class="sd">        lag orders (``orders``) and return an imputed dataframe.</span>
+<span class="sd">        It might be the case that with one iterations some values</span>
+<span class="sd">        are not imputed but with more iterations one can achieve more</span>
+<span class="sd">        imputed values.</span>
+<span class="sd">    cols : `list` [`str`] or None, default None</span>
+<span class="sd">        Which columns to impute. If None, imputes all columns.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    impute_info : `dict`</span>
+<span class="sd">        A dictionary with following items:</span>
+
+<span class="sd">        &quot;df&quot; : `pandas.DataFrame`</span>
+<span class="sd">            A dataframe with the imputed values.</span>
+<span class="sd">        &quot;missing_info&quot; : `dict`</span>
+<span class="sd">            Dictionary with information about the missing info.</span>
+
+<span class="sd">            Key = name of a column in ``df``</span>
+<span class="sd">            Value = dictionary containing:</span>
+
+<span class="sd">                &quot;initial_missing_num&quot; : `int`</span>
+<span class="sd">                    Initial number of missing values.</span>
+<span class="sd">                &quot;final_missing_num&quot; : `int`</span>
+<span class="sd">                    Final number of missing values after imputation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">impute_info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+        <span class="s2">&quot;missing_info&quot;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="c1"># updates each column with the imputed values</span>
+        <span class="n">col_impute_info</span> <span class="o">=</span> <span class="n">impute_with_lags</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="n">orders</span><span class="p">,</span>
+            <span class="n">agg_func</span><span class="o">=</span><span class="n">agg_func</span><span class="p">,</span>
+            <span class="n">iter_num</span><span class="o">=</span><span class="n">iter_num</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">impute_info</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_impute_info</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+        <span class="n">impute_info</span><span class="p">[</span><span class="s2">&quot;missing_info&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;initial_missing_num&quot;</span><span class="p">:</span> <span class="n">col_impute_info</span><span class="p">[</span><span class="s2">&quot;initial_missing_num&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;final_missing_num&quot;</span><span class="p">:</span> <span class="n">col_impute_info</span><span class="p">[</span><span class="s2">&quot;final_missing_num&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="n">impute_info</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

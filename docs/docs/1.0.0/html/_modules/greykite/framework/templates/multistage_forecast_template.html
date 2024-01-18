@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.framework.templates.multistage_forecast_template &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.framework.templates.multistage_forecast_template</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.framework.templates.multistage_forecast_template</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Kaixu Yang</span>
+
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common</span> <span class="kn">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">cst</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">LoggingLevelEnum</span>
+<span class="kn">from</span> <span class="nn">greykite.common.logging</span> <span class="kn">import</span> <span class="n">log_message</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">unique_in_list</span>
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">update_dictionaries</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">ForecastConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.autogen.forecast_config</span> <span class="kn">import</span> <span class="n">MetadataParam</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.base_template</span> <span class="kn">import</span> <span class="n">BaseTemplate</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.multistage_forecast_template_config</span> <span class="kn">import</span> <span class="n">MultistageForecastTemplateConfig</span>
+<span class="kn">from</span> <span class="nn">greykite.framework.templates.multistage_forecast_template_config</span> <span class="kn">import</span> <span class="n">MultistageForecastTemplateConstants</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.base_forecast_estimator</span> <span class="kn">import</span> <span class="n">BaseForecastEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.multistage_forecast_estimator</span> <span class="kn">import</span> <span class="n">MultistageForecastEstimator</span>
+<span class="kn">from</span> <span class="nn">greykite.sklearn.estimator.multistage_forecast_estimator</span> <span class="kn">import</span> <span class="n">MultistageForecastModelConfig</span>
+
+
+<div class="viewcode-block" id="MultistageForecastTemplate"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.multistage_forecast_template.MultistageForecastTemplate">[docs]</a><span class="k">class</span> <span class="nc">MultistageForecastTemplate</span><span class="p">(</span><span class="n">BaseTemplate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The model template for Multistage Forecast Estimator.&quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_MODEL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;SILVERKITE_TWO_STAGE&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">constants</span><span class="p">:</span> <span class="n">MultistageForecastTemplateConstants</span> <span class="o">=</span> <span class="n">MultistageForecastTemplateConstants</span><span class="p">,</span>
+            <span class="c1"># The parameters here don&#39;t matter. They are set for compatibility.</span>
+            <span class="n">estimator</span><span class="p">:</span> <span class="n">BaseForecastEstimator</span> <span class="o">=</span> <span class="n">MultistageForecastEstimator</span><span class="p">(</span>
+                <span class="n">forecast_horizon</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">model_configs</span><span class="o">=</span><span class="p">[]</span>
+            <span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The init function.</span>
+
+<span class="sd">        The estimator parameters in init is just for compatibility.</span>
+<span class="sd">        It does not affect the results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constants</span> <span class="o">=</span> <span class="n">constants</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MultistageForecastTemplateConstants</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constants used by the template class. Includes the model templates and their default values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constants</span>
+
+    <span class="k">def</span> <span class="nf">__get_regressor_templates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the model templates for each sub-model.</span>
+
+<span class="sd">        These templates are for ``self.get_regressor_cols`` and ``self.get_lagged_regressor_info``</span>
+<span class="sd">        to use to extract those information from each single model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        templates : `list` [`~greykite.framework.templates.base_template.BaseTemplate`]</span>
+<span class="sd">            A list of model template class instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">multistage_forecast_configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span><span class="o">.</span><span class="n">custom</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;multistage_forecast_configs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">multistage_forecast_configs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">multistage_forecast_configs</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">multistage_forecast_configs</span><span class="p">,</span> <span class="n">MultistageForecastTemplateConfig</span><span class="p">):</span>
+            <span class="n">multistage_forecast_configs</span> <span class="o">=</span> <span class="p">[</span><span class="n">multistage_forecast_configs</span><span class="p">]</span>
+        <span class="n">templates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">multistage_forecast_configs</span><span class="p">:</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_template_class</span><span class="p">(</span><span class="n">ForecastConfig</span><span class="p">(</span><span class="n">model_template</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">))()</span>
+            <span class="n">template</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span>
+            <span class="n">template</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">ForecastConfig</span><span class="p">(</span>
+                <span class="n">model_template</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">,</span>
+                <span class="n">model_components_param</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model_components</span><span class="p">)</span>
+            <span class="n">templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">templates</span>
+
+<div class="viewcode-block" id="MultistageForecastTemplate.get_regressor_cols"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.multistage_forecast_template.MultistageForecastTemplate.get_regressor_cols">[docs]</a>    <span class="k">def</span> <span class="nf">get_regressor_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the regressor columns in the model.</span>
+
+<span class="sd">        Iterates over each submodel to extract the regressor columns.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        regressor_cols : `list` [`str`]</span>
+<span class="sd">            A list of the regressor column names used in any of the submodels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">templates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_regressor_templates</span><span class="p">()</span>
+        <span class="n">regressor_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">templates</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">templates</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">templates</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">regressors</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">get_regressor_cols</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">regressor_cols</span> <span class="o">+=</span> <span class="n">regressors</span> <span class="k">if</span> <span class="n">regressors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">unique_in_list</span><span class="p">(</span>
+            <span class="n">array</span><span class="o">=</span><span class="n">regressor_cols</span><span class="p">,</span>
+            <span class="n">ignored_elements</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span></div>
+
+<div class="viewcode-block" id="MultistageForecastTemplate.get_lagged_regressor_info"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.multistage_forecast_template.MultistageForecastTemplate.get_lagged_regressor_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_lagged_regressor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the lagged regressor info for the model</span>
+
+<span class="sd">        Iterates over each submodel to extract the lagged regressor info.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lagged_regressor_info : `dict`</span>
+<span class="sd">            The combined lagged regressor info from all submodels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">templates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_regressor_templates</span><span class="p">()</span>
+        <span class="n">lagged_regressor_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">templates</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">templates</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="n">lagged_regressor_info</span>
+        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">templates</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">get_lagged_regressor_info</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># Combines the ``lagged_regressor_info`` from each model.</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">]</span>
+            <span class="n">min_order</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">]</span>
+            <span class="n">max_order</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cols</span>
+            <span class="k">elif</span> <span class="n">cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;lagged_regressor_cols&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cols</span>
+            <span class="k">if</span> <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_order</span>
+            <span class="k">elif</span> <span class="n">min_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                    <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_min_lag_order&quot;</span><span class="p">],</span> <span class="n">min_order</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_order</span>
+            <span class="k">elif</span> <span class="n">min_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                    <span class="n">lagged_regressor_info</span><span class="p">[</span><span class="s2">&quot;overall_max_lag_order&quot;</span><span class="p">],</span> <span class="n">max_order</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lagged_regressor_info</span></div>
+
+<div class="viewcode-block" id="MultistageForecastTemplate.get_hyperparameter_grid"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.framework.templates.multistage_forecast_template.MultistageForecastTemplate.get_hyperparameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">get_hyperparameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the hyperparameter grid for the Multistage Forecast Model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        hyperparameter_grid : `dict` [`str`, `list` [`any`]] or `list` [ `dict` [`str`, `list` [`any`]] ]</span>
+<span class="sd">            hyperparameter_grid for grid search in</span>
+<span class="sd">            :func:`~greykite.framework.pipeline.pipeline.forecast_pipeline`.</span>
+<span class="sd">            The output dictionary values are lists, combined in grid search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forecast config must be provided, but `self.config` is `None`.&quot;</span><span class="p">)</span>
+        <span class="n">model_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span>
+        <span class="n">model_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_components_param</span>
+
+        <span class="c1"># Gets the model components from model template.</span>
+        <span class="n">default_model_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_default_model_components</span><span class="p">(</span><span class="n">model_template</span><span class="p">)</span>
+        <span class="n">default_multistage_forecast_configs</span> <span class="o">=</span> <span class="n">default_model_components</span><span class="o">.</span><span class="n">custom</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multistage_forecast_configs&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Checks if any parameter is specified in fields other than &quot;custom&quot;.</span>
+        <span class="n">not_none_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">model_components</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="p">{}</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">]:</span>
+                <span class="n">not_none_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">not_none_parameters</span><span class="p">:</span>
+            <span class="n">log_message</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Multistage Forecast template only takes configuration through ``custom`` &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;and ``uncertainty`` in ``model_components_param``. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;The following inputs are ignored </span><span class="se">\n</span><span class="si">{</span><span class="n">not_none_parameters</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+            <span class="p">)</span>
+
+        <span class="c1"># When ``custom`` is not None, we look for the ``multistage_forecast_configs`` key.</span>
+        <span class="n">custom</span> <span class="o">=</span> <span class="n">model_components</span><span class="o">.</span><span class="n">custom</span>
+        <span class="c1"># Gets the ``multistage_forecast_configs`` from ``default_multistage_forecast_configs`` and</span>
+        <span class="c1"># overriden by ``custom[&quot;multistage_forecast_configs&quot;]``.</span>
+        <span class="c1"># If no customized configs, the default configs will be ``new_configs``.</span>
+        <span class="n">new_configs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_multistage_forecast_configs_override</span><span class="p">(</span>
+            <span class="n">custom</span><span class="o">=</span><span class="n">custom</span><span class="p">,</span>
+            <span class="n">model_template</span><span class="o">=</span><span class="n">model_template</span><span class="p">,</span>
+            <span class="n">default_multistage_forecast_configs</span><span class="o">=</span><span class="n">default_multistage_forecast_configs</span><span class="p">)</span>
+
+        <span class="c1"># Converts template configs into estimator parameters.</span>
+        <span class="n">estimator_list</span><span class="p">,</span> <span class="n">estimator_params_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_estimators_and_params_from_template_configs</span><span class="p">(</span>
+            <span class="n">new_configs</span><span class="o">=</span><span class="n">new_configs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Now the estimator parameters may contain grids, i.e., list of parameters from template classes.</span>
+        <span class="c1"># We need to flatten them and wrap them into list of parameters for `MultistageForecastEstimator`.</span>
+        <span class="c1"># The following function call gets the flattened estimator parameters,</span>
+        <span class="c1"># in the format of a list of lists (different sets of parameters) of dictionaries (different stage models).</span>
+        <span class="n">flattened_dictionaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__flatten_estimator_params_list</span><span class="p">(</span>
+            <span class="n">estimator_params_list</span><span class="o">=</span><span class="n">estimator_params_list</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Then we construct the `MultistageForecastEstimator` parameters.</span>
+        <span class="n">multistage_model_configs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">grid</span> <span class="ow">in</span> <span class="n">flattened_dictionaries</span><span class="p">:</span>
+            <span class="n">list_of_model_configs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_configs</span><span class="p">):</span>
+                <span class="c1"># This is a single ``MultistageForecastModelConfig`` that corresponds to</span>
+                <span class="c1"># a single stage model in a set of configuration.</span>
+                <span class="n">model_config</span> <span class="o">=</span> <span class="n">MultistageForecastModelConfig</span><span class="p">(</span>
+                    <span class="n">train_length</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">train_length</span><span class="p">,</span>
+                    <span class="n">fit_length</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">fit_length</span><span class="p">,</span>
+                    <span class="n">agg_func</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">agg_func</span><span class="p">,</span>
+                    <span class="n">agg_freq</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">agg_freq</span><span class="p">,</span>
+                    <span class="n">estimator</span><span class="o">=</span><span class="n">estimator_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">estimator_params</span><span class="o">=</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="c1"># Appends this single ``MultistageForecastModelConfig`` to get all stage of models.</span>
+                <span class="n">list_of_model_configs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
+            <span class="c1"># The hyperparameter grid consists of a list of all stage of models for grid search.</span>
+            <span class="c1"># This corresponds to different sets of configurations.</span>
+            <span class="n">multistage_model_configs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_of_model_configs</span><span class="p">)</span>
+        <span class="c1"># ``freq`` is the data frequency, which is from ``metadata_param``.</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">freq</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># Gets the uncertainty parameter.</span>
+        <span class="n">uncertainty</span> <span class="o">=</span> <span class="n">model_components</span><span class="o">.</span><span class="n">uncertainty</span>
+        <span class="k">if</span> <span class="n">uncertainty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="n">uncertainty</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;uncertainty_dict&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">uncertainty_dict</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Gets the hyperparameter grid.</span>
+        <span class="n">multistage_forecast_hyperparameter_grid</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">estimator__forecast_horizon</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">forecast_horizon</span><span class="p">],</span>
+            <span class="n">estimator__freq</span><span class="o">=</span><span class="p">[</span><span class="n">freq</span><span class="p">],</span>
+            <span class="n">estimator__model_configs</span><span class="o">=</span><span class="n">multistage_model_configs</span><span class="p">,</span>
+            <span class="n">estimator__uncertainty_dict</span><span class="o">=</span><span class="p">[</span><span class="n">uncertainty_dict</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">multistage_forecast_hyperparameter_grid</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__get_multistage_forecast_configs_override</span><span class="p">(</span>
+            <span class="n">custom</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">],</span>
+            <span class="n">model_template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">default_multistage_forecast_configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MultistageForecastTemplateConfig</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the overriden Multistage Forecast configs by ``custom``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        custom : `dict` [`str`, any]</span>
+<span class="sd">            The custom dictionary in `ModelComponentsParam`.</span>
+<span class="sd">            The only recognizable key is ``multistage_forecast_configs``,</span>
+<span class="sd">            which takes a list of</span>
+<span class="sd">            `~greykite.framework.templates.multistage_forecast_template_config.MultistageForecastTemplateConfig`.</span>
+<span class="sd">        model_template : `str`</span>
+<span class="sd">            The model template used in Multistage Forecast template.</span>
+<span class="sd">        default_multistage_forecast_configs : `list` [</span>
+<span class="sd">        `~greykite.framework.templates.multistage_forecast_template_config.MultistageForecastTemplateConfig`]</span>
+<span class="sd">            The default Multistage Forecast configs from ``model_template``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_configs : `list` [</span>
+<span class="sd">        `~greykite.framework.templates.multistage_forecast_template_config.MultistageForecastTemplateConfig`]</span>
+<span class="sd">            The Multistage Forecast configs overriden by the ``multistage_forecast_configs`` in ``custom``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">custom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Checks if any parameter is specified in &quot;custom&quot; other than &quot;multistage_forecast_config&quot;.</span>
+            <span class="n">not_none_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">custom</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="p">[]</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;multistage_forecast_configs&quot;</span><span class="p">:</span>
+                    <span class="n">not_none_parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">not_none_parameters</span><span class="p">:</span>
+                <span class="n">log_message</span><span class="p">(</span>
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Multistage Forecast template only takes configurations through &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;``custom.multistage_forecast_configs``. The following inputs are &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;ignored </span><span class="se">\n</span><span class="si">{</span><span class="n">not_none_parameters</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                    <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+                <span class="p">)</span>
+            <span class="c1"># Uses ``multistage_forecast_configs`` to override the default components if it&#39;s not None.</span>
+            <span class="n">multistage_forecast_configs</span> <span class="o">=</span> <span class="n">custom</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multistage_forecast_configs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">multistage_forecast_configs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">multistage_forecast_configs</span> <span class="o">==</span> <span class="p">[])</span>
+                    <span class="ow">and</span> <span class="n">model_template</span> <span class="o">==</span> <span class="s2">&quot;MULTISTAGE_EMPTY&quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;``MULTISTAGE_EMPTY`` can not be used without overriding. &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;You must provide parameters in &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;``ModelComponentsParam.custom.multistage_forecast_configs``.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">multistage_forecast_configs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Wraps in a list if it&#39;s a single ``MultistageForecastTemplateConfig``.</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">multistage_forecast_configs</span><span class="p">,</span> <span class="n">MultistageForecastTemplateConfig</span><span class="p">):</span>
+                    <span class="n">multistage_forecast_configs</span> <span class="o">=</span> <span class="p">[</span><span class="n">multistage_forecast_configs</span><span class="p">]</span>
+                <span class="c1"># Must be a list.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">multistage_forecast_configs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The ``multistage_forecast_configs`` parameter must be a list of &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;``MultistageForecastTemplateConfig`` objects, found &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">multistage_forecast_configs</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="c1"># Checks the lengths of default configs and overriding configs.</span>
+                <span class="n">num_configs_in_default</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">default_multistage_forecast_configs</span><span class="p">)</span>
+                <span class="n">num_configs_in_override</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">multistage_forecast_configs</span><span class="p">)</span>
+                <span class="n">extra_configs</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">num_configs_in_default</span> <span class="o">!=</span> <span class="n">num_configs_in_override</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">num_configs_in_default</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">log_message</span><span class="p">(</span>
+                            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The number of configs in ``ModelComponentsParam`` (</span><span class="si">{</span><span class="n">num_configs_in_override</span><span class="si">}</span><span class="s2">) &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;does not match the number of configs in the default template &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">num_configs_in_default</span><span class="si">}</span><span class="s2">). Appending extra configs to the end.&quot;</span><span class="p">,</span>
+                            <span class="n">level</span><span class="o">=</span><span class="n">LoggingLevelEnum</span><span class="o">.</span><span class="n">WARNING</span>
+                        <span class="p">)</span>
+                    <span class="c1"># These configs are extra configs, either from the default or from overriding.</span>
+                    <span class="c1"># No matter where they come from, they will be appended to the end.</span>
+                    <span class="n">extra_configs</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">multistage_forecast_configs</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">num_configs_in_override</span> <span class="o">-</span> <span class="n">num_configs_in_default</span><span class="p">):]</span>
+                        <span class="k">if</span> <span class="n">num_configs_in_override</span> <span class="o">&gt;=</span> <span class="n">num_configs_in_default</span>
+                        <span class="k">else</span> <span class="n">default_multistage_forecast_configs</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">num_configs_in_default</span> <span class="o">-</span> <span class="n">num_configs_in_override</span><span class="p">):]</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># Overrides the default ``MultistageForecastTemplateConfig`` objects.</span>
+                <span class="n">num_to_override</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">num_configs_in_default</span><span class="p">,</span> <span class="n">num_configs_in_override</span><span class="p">)</span>
+                <span class="n">new_configs</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_to_override</span><span class="p">):</span>
+                    <span class="n">default_config</span> <span class="o">=</span> <span class="n">default_multistage_forecast_configs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">new_config</span> <span class="o">=</span> <span class="n">multistage_forecast_configs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="c1"># Overrides the original parameters.</span>
+                    <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train_length&quot;</span><span class="p">,</span> <span class="s2">&quot;fit_length&quot;</span><span class="p">,</span> <span class="s2">&quot;agg_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;agg_func&quot;</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_config</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="nb">setattr</span><span class="p">(</span><span class="n">default_config</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_config</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+                    <span class="c1"># For ``model_template`` and ``model_components``,</span>
+                    <span class="c1"># both will be overriden if the new ``model_template`` is different</span>
+                    <span class="c1"># from the default ``model_template``. However, if both ``model_templates``</span>
+                    <span class="c1"># are the same, the keys/values in the new ``model_components`` will be</span>
+                    <span class="c1"># used to override the keys/values in the default ``model_components``,</span>
+                    <span class="c1"># instead of replacing the entire default ``model_components`` with the new ``model_components``.</span>
+                    <span class="c1"># The consideration here is that if one only specifies partial ``model_components`` and hope</span>
+                    <span class="c1"># the rest can be kept as the default, this is the right way to do. If one hopes to</span>
+                    <span class="c1"># use only the parameters specified in the new ``model_components`` and do not apply defaults,</span>
+                    <span class="c1"># they should have used the ``MULTISTAGE_EMPTY`` template,</span>
+                    <span class="c1"># and this is also the correct behavior.</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">new_config</span><span class="o">.</span><span class="n">model_template</span> <span class="o">!=</span> <span class="n">default_config</span><span class="o">.</span><span class="n">model_template</span>
+                            <span class="ow">or</span> <span class="n">default_config</span><span class="o">.</span><span class="n">model_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;model_template&quot;</span><span class="p">,</span> <span class="s2">&quot;model_components&quot;</span><span class="p">]:</span>
+                            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_config</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="nb">setattr</span><span class="p">(</span><span class="n">default_config</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_config</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">new_config</span><span class="o">.</span><span class="n">model_components</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">allow_unknown_keys</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;hyperparameter_override&quot;</span><span class="p">)</span>
+                            <span class="n">updated_value</span> <span class="o">=</span> <span class="n">update_dictionaries</span><span class="p">(</span>
+                                <span class="n">default_dict</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">default_config</span><span class="o">.</span><span class="n">model_components</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="p">{})</span> <span class="ow">or</span> <span class="p">{},</span>
+                                <span class="n">overwrite_dicts</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">new_config</span><span class="o">.</span><span class="n">model_components</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
+                                <span class="n">allow_unknown_keys</span><span class="o">=</span><span class="n">allow_unknown_keys</span><span class="p">)</span>
+                            <span class="nb">setattr</span><span class="p">(</span><span class="n">default_config</span><span class="o">.</span><span class="n">model_components</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">updated_value</span><span class="p">)</span>
+                    <span class="n">new_configs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">default_config</span><span class="p">)</span>
+                <span class="n">new_configs</span> <span class="o">+=</span> <span class="n">extra_configs</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If `ModelComponentsParam.custom[&quot;multistage_forecast_configs]&quot;` is None,</span>
+                <span class="c1"># use the default from template.</span>
+                <span class="n">new_configs</span> <span class="o">=</span> <span class="n">default_multistage_forecast_configs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If `ModelComponentsParam.custom` is None,</span>
+            <span class="c1"># use the default from template.</span>
+            <span class="n">new_configs</span> <span class="o">=</span> <span class="n">default_multistage_forecast_configs</span>
+        <span class="k">return</span> <span class="n">new_configs</span>
+
+    <span class="k">def</span> <span class="nf">__get_estimators_and_params_from_template_configs</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">new_configs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MultistageForecastTemplateConfig</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the estimators and estimator parameters from ``MultistageForecastTemplateConfig`` objects.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_configs : `list` [</span>
+<span class="sd">        `~greykite.framework.templates.multistage_forecast_template_config.MultistageForecastTemplateConfig`]</span>
+<span class="sd">            The Multistage Forecast configs overriden by the ``multistage_forecast_configs`` in ``custom``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        estimators : `list` [`~greykite.sklearn.estimator.base_forecast_estimator.BaseForecastEstimator`]</span>
+<span class="sd">            The estimator classes in each stage.</span>
+<span class="sd">        estimator_params : `list` [`dict` [`str`, any]]</span>
+<span class="sd">            The estimator parameters in each stage.</span>
+<span class="sd">            These parameters are in ``hyperparameter_grid`` format and may contain nested grids.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">estimator_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">estimator_params_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">new_configs</span><span class="p">:</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_template_class</span><span class="p">(</span><span class="n">ForecastConfig</span><span class="p">(</span><span class="n">model_template</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">))()</span>
+            <span class="n">estimator</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">_estimator</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="c1"># It&#39;s not common that `self.config.metadata_param` is None,</span>
+            <span class="c1"># but since `get_hyperparameter_grid` is a public method,</span>
+            <span class="c1"># in case people call it directly, we set the value defaults.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">time_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">time_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">time_col</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time_col</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">TIME_COL</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">value_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">value_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">value_col</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value_col</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">VALUE_COL</span>
+            <span class="n">date_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span><span class="o">.</span><span class="n">date_format</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">metadata_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="c1"># Creates a sample df for the template class to generate hyperparameter grid.</span>
+            <span class="c1"># The ``apply_template_for_pipeline_params`` function does not use any information from ``df``</span>
+            <span class="c1"># when generating the hyperparameter grid.</span>
+            <span class="n">sample_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+                <span class="n">time_col</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+                    <span class="n">end</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="n">time_col</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span>
+                    <span class="n">periods</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">freq</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">agg_freq</span>
+                <span class="p">),</span>
+                <span class="n">value_col</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">})</span>
+            <span class="n">estimator_params_grid</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">apply_template_for_pipeline_params</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">sample_df</span><span class="p">,</span>
+                <span class="c1"># Here we ignore the ``forecast_horizon`` parameter.</span>
+                <span class="c1"># Even the wrong ``forecast_horizon`` is inferred for this model,</span>
+                <span class="c1"># the correct ``forecast_horizon`` will be used to override in the estimator&#39;s ``fit``</span>
+                <span class="c1"># method.</span>
+                <span class="n">config</span><span class="o">=</span><span class="n">ForecastConfig</span><span class="p">(</span>
+                    <span class="n">metadata_param</span><span class="o">=</span><span class="n">MetadataParam</span><span class="p">(</span>
+                        <span class="n">time_col</span><span class="o">=</span><span class="n">time_col</span><span class="p">,</span>
+                        <span class="n">value_col</span><span class="o">=</span><span class="n">value_col</span><span class="p">,</span>
+                        <span class="n">freq</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">agg_freq</span><span class="p">,</span>
+                        <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+                    <span class="p">),</span>
+                    <span class="n">model_template</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">,</span>
+                    <span class="n">model_components_param</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model_components</span>
+                <span class="p">)</span>
+            <span class="p">)[</span><span class="s2">&quot;hyperparameter_grid&quot;</span><span class="p">]</span>
+            <span class="n">estimator_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+            <span class="n">estimator_params_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimator_params_grid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">estimator_list</span><span class="p">,</span> <span class="n">estimator_params_list</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__flatten_estimator_params_list</span><span class="p">(</span>
+            <span class="n">estimator_params_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">any</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Flattens the ``estimator_params_list``.</span>
+
+<span class="sd">        The ``estimator_params_list`` is from ``self.__get_estimators_and_params_from_template_configs``,</span>
+<span class="sd">        and may contain nested grids within each parameter.</span>
+<span class="sd">        This function flattens it into the format of list of lists of ``estimator_params``.</span>
+
+<span class="sd">        For example, the original ``estimator_params_list`` is</span>
+
+<span class="sd">            [{&quot;a&quot;: [1], &quot;b&quot;: [2, 3]}, {&quot;c&quot;: [4, 5]}]</span>
+
+<span class="sd">        It consists of 2 stages of models. Each stage of model&#39;s parameters are in a dictionary.</span>
+<span class="sd">        The parameter values are in lists and could have multiple possible values.</span>
+
+<span class="sd">        After flattening the ``estimator_params_list``, it becomes</span>
+
+<span class="sd">            [[{&quot;a&quot;: 1, &quot;b&quot;: 2}, {&quot;c&quot;: 4}], [{&quot;a&quot;: 1, &quot;b&quot;: 3}, {&quot;c&quot;: 4}],</span>
+<span class="sd">             [{&quot;a&quot;: 1, &quot;b&quot;: 2}, {&quot;c&quot;: 5}], [{&quot;a&quot;: 1, &quot;b&quot;: 3}, {&quot;c&quot;: 5}]]</span>
+
+<span class="sd">        There are 2 x 2 = 4 sets of parameters, i.e., 4 sets of ``estimator_params``,</span>
+<span class="sd">        each of which includes two dictionaries which correspond to the two stages of models.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        estimator_params_list : `list` [`dict` [`str`, any]]</span>
+<span class="sd">            The estimator parameter list in hyperparameter grids.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        flattened_estimator_params : `list` [`list` [`dict` [`str`, any]]]</span>
+<span class="sd">            The flattened list of lists of estimator parameter dictionaries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Although Python 3.7 keeps the order in dictionary from insertion,</span>
+        <span class="c1"># to be more compatible, we use lists to ensure the keys and values are matched.</span>
+        <span class="c1"># For example, we have</span>
+        <span class="c1"># [{&quot;a&quot;: [1], &quot;b&quot;: [2, 3]}, {&quot;c&quot;: [4, 5]}]</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">dictionary</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">estimator_params_list</span><span class="p">):</span>
+            <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># ``time_properties`` are automatically inferred from the other parameters.</span>
+                <span class="k">if</span> <span class="s2">&quot;estimator__&quot;</span> <span class="ow">in</span> <span class="n">key</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;estimator__time_properties&quot;</span><span class="p">:</span>
+                    <span class="n">keys</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">params</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># Here we get a list of flattened values.</span>
+        <span class="c1"># [((1, 2), (4)), ((1, 3), (4)), ((1, 2), (5)), ((1, 3), (5))]</span>
+        <span class="c1"># The inner product gets all cross products for the value combinations within a stage.</span>
+        <span class="c1"># The outer product gets all cross products for the value combinations across stages.</span>
+        <span class="n">flattened_params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">))</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">]))</span>
+        <span class="c1"># Then we map the flattened parameters with their keys and flatten them.</span>
+        <span class="c1"># [[{&quot;a&quot;: 1, &quot;b&quot;: 2}, {&quot;c&quot;: 4}], [{&quot;a&quot;: 1, &quot;b&quot;: 3}, {&quot;c&quot;: 4}],</span>
+        <span class="c1">#  [{&quot;a&quot;: 1, &quot;b&quot;: 2}, {&quot;c&quot;: 5}], [{&quot;a&quot;: 1, &quot;b&quot;: 3}, {&quot;c&quot;: 5}]]</span>
+        <span class="n">flattened_dictionaries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">subkeys</span><span class="p">,</span> <span class="n">subvalues</span><span class="p">)}</span>
+                <span class="k">for</span> <span class="n">subkeys</span><span class="p">,</span> <span class="n">subvalues</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">single_value</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">for</span> <span class="n">single_value</span> <span class="ow">in</span> <span class="n">flattened_params</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">flattened_dictionaries</span>
+
+    <span class="k">def</span> <span class="nf">__get_default_model_components</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the default model components from a model template name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        template : `str`</span>
+<span class="sd">            The model template name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        template : `~greykite.framework.templates.base_template.BaseTemplate`</span>
+<span class="sd">            The model template class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_constants</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The template name </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2"> is not recognized!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">template</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_template_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">allow_model_components_param_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__get_template_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ForecastConfig</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseTemplate</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts template class (e.g. `SimpleSilverkiteTemplate`) from the config.</span>
+<span class="sd">        Currently only supports single templates in</span>
+<span class="sd">        `~greykite.framework.templates.model_templates.ModelTemplateEnum`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        config : :class:`~greykite.framework.templates.model_templates.ForecastConfig` or None</span>
+<span class="sd">            Config object for template class to use.</span>
+<span class="sd">            See :class:`~greykite.framework.templates.model_templates.ForecastConfig`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        template_class : Type[`~greykite.framework.templates.base_template.BaseTemplate`]</span>
+<span class="sd">            An implementation of `~greykite.framework.templates.template_interface.TemplateInterface`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_template_enum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constants</span><span class="o">.</span><span class="n">MultistageForecastModelTemplateEnum</span>
+        <span class="n">valid_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model_template_enum</span><span class="o">.</span><span class="n">__members__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">model_template</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Currently Multistage Forecast only supports a known string of single model template. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Model Template &#39;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="si">}</span><span class="s2">&#39; is not recognized! Must be one of: </span><span class="si">{</span><span class="n">valid_names</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">template_class</span> <span class="o">=</span> <span class="n">model_template_enum</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">model_template</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">template_class</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

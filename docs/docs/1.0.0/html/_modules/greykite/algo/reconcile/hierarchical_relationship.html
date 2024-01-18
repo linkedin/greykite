@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>greykite.algo.reconcile.hierarchical_relationship &mdash; Greykite Library  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Greykite Library
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/100_forecast_intro.html">The Greykite Forecast model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/overview/200_ad_intro.html">The Greykite Anomaly Detection model</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quick Start</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/quickstart/index.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery/templates/index.html">Model Templates</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Step by Step</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0000_stepbystep.html">Forecasting Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0100_choose_model.html">Choose a Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0200_choose_template.html">Choose a Model Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0300_input.html">Examine Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0400_configuration.html">Configure a Forecast</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0500_output.html">Check Forecast Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/stepbystep/0600_debug.html">Debugging</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tuning the Model Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0100_introduction.html">Greykite models and components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0200_growth.html">Growth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0300_seasonality.html">Seasonality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0400_events.html">Holidays and Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0500_changepoints.html">Changepoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0600_custom.html">Custom Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0700_regressors.html">Regressors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0800_autoregression.html">Auto-regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/0900_uncertainty.html">Uncertainty Intervals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/model_components/1000_override.html">Pre-processing, Selective Grid Search</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Benchmarking</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/benchmarking/benchmarking.html">Benchmarking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/reconcile_forecasts.html">Reconcile Forecasts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/miscellaneous/store_model.html">Model store and load</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Changelog</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html">1.0.0 (2024-01-07)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id2">0.5.1 (2023-06-01)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id3">0.5.0 (2023-04-03)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id4">0.4.0 (2022-07-15)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id5">0.3.0 (2021-12-14)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id6">0.2.0 (2021-06-30)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/changelog/changelog.html#id7">0.1.1 (2021-05-12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pages/autodoc/doc.html">Docs</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Greykite Library</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">greykite.algo.reconcile.hierarchical_relationship</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for greykite.algo.reconcile.hierarchical_relationship</h1><div class="highlight"><pre>
+<span></span><span class="c1"># BSD 2-CLAUSE LICENSE</span>
+
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+
+<span class="c1"># Redistributions of source code must retain the above copyright notice, this</span>
+<span class="c1"># list of conditions and the following disclaimer.</span>
+<span class="c1"># Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1"># this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1"># and/or other materials provided with the distribution.</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND</span>
+<span class="c1"># ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED</span>
+<span class="c1"># WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE</span>
+<span class="c1"># DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR</span>
+<span class="c1"># #ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES</span>
+<span class="c1"># (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;</span>
+<span class="c1"># LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND</span>
+<span class="c1"># ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT</span>
+<span class="c1"># (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1"># original author: Albert Chen</span>
+<span class="sd">&quot;&quot;&quot;Represents hierarchical relationships between nodes.</span>
+<span class="sd">Each node corresponds to a time series.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">greykite.common.python_utils</span> <span class="kn">import</span> <span class="n">flatten_list</span>
+
+
+<div class="viewcode-block" id="HierarchicalRelationship"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.reconcile.hierarchical_relationship.HierarchicalRelationship">[docs]</a><span class="k">class</span> <span class="nc">HierarchicalRelationship</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents hierarchical relationships between nodes (time series).</span>
+
+<span class="sd">    Nodes are indexed by their position in the tree, in breadth-first search (BFS) order.</span>
+<span class="sd">    Matrix attributes such as ``bottom_up_transform`` are applied from the</span>
+<span class="sd">    left against tree values, represented as a `numpy.array` 2D array with</span>
+<span class="sd">    the values of each node as a row.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    levels : `list` [`list` [`int]] or None</span>
+<span class="sd">        Specifies the number of children of each parent (internal) node in the tree.</span>
+<span class="sd">        The number of inner lists is the height of the tree. The ith inner list provides the number</span>
+<span class="sd">        of children of each node at depth i.</span>
+<span class="sd">        For example::</span>
+
+<span class="sd">            # root node with 3 children</span>
+<span class="sd">            levels = [[3]]</span>
+
+<span class="sd">            # root node with 3 children, who have 2, 3, 3 children respectively</span>
+<span class="sd">            levels = [[3], [2, 3, 3]]</span>
+<span class="sd">            # These children are ordered from &quot;left&quot; to &quot;right&quot;, so that the one with</span>
+<span class="sd">            # 2 children is the first in the 2nd level.</span>
+<span class="sd">            # This will be used as our running example.</span>
+<span class="sd">            #           0                # level 0</span>
+<span class="sd">            #   1       2        3       # level 1</span>
+<span class="sd">            #  4 5    6 7 8    9 10 11   # level 2</span>
+
+<span class="sd">        All leaf nodes must have the same depth. Thus, the first sublist must have one</span>
+<span class="sd">        integer, the length of a sublist must equal the sum of the previous sublist,</span>
+<span class="sd">        and all integers in ``levels`` must be positive.</span>
+
+<span class="sd">    num_children_per_parent : `list` [`int`]</span>
+<span class="sd">        Flattened version of ``levels``.</span>
+<span class="sd">        The number of children for each parent (internal) node.</span>
+<span class="sd">        [3, 2, 3, 3] in our example.</span>
+<span class="sd">    num_internal_nodes : `int`</span>
+<span class="sd">        The number of internal (parent) nodes (i.e. with children).</span>
+<span class="sd">        4 in our example.</span>
+<span class="sd">    num_leaf_nodes : `int`</span>
+<span class="sd">        The number of leaf nodes (i.e. without children).</span>
+<span class="sd">        8 in our example.</span>
+<span class="sd">    num_nodes : `int`</span>
+<span class="sd">        The total number of nodes.</span>
+<span class="sd">        12 in our example.</span>
+<span class="sd">    nodes_per_level : `list` [`int`]</span>
+<span class="sd">        The number of nodes at each level of the tree.</span>
+<span class="sd">        [1, 3, 8] in our example.</span>
+<span class="sd">    starting_index_per_level : `list` [`int`]</span>
+<span class="sd">        The index of the first node in each level.</span>
+<span class="sd">        [0, 1, 4] in our example.</span>
+<span class="sd">    starting_child_index_per_parent : `list` [`int`]</span>
+<span class="sd">        For each parent node, the index of its first child.</span>
+<span class="sd">        [1, 4, 6, 9]  in our example.</span>
+<span class="sd">    sum_matrix : `numpy.array`, shape (``self.num_nodes``, ``self.num_leaf_nodes``)</span>
+<span class="sd">        Sum matrix used to compute values of all nodes from the leaf nodes. When</span>
+<span class="sd">        applied to a matrix with the values for leaf nodes, returns values for every</span>
+<span class="sd">        node by bubbling up leaf node values to the internal nodes. A node&#39;s value is</span>
+<span class="sd">        equal to the sum of its corresponding leaf nodes&#39; values.</span>
+
+<span class="sd">        ``Y_{all} = sum_matrix @ Y_{leaf}``</span>
+<span class="sd">        In our example::</span>
+
+<span class="sd">            # 4   5   6   7   8   9   10  11  (leaf nodes)</span>
+<span class="sd">            [[1., 1., 1., 1., 1., 1., 1., 1.], # 0</span>
+<span class="sd">             [1., 1., 0., 0., 0., 0., 0., 0.], # 1</span>
+<span class="sd">             [0., 0., 1., 1., 1., 0., 0., 0.], # 2</span>
+<span class="sd">             [0., 0., 0., 0., 0., 1., 1., 1.], # 3</span>
+<span class="sd">             [1., 0., 0., 0., 0., 0., 0., 0.], # 4</span>
+<span class="sd">             [0., 1., 0., 0., 0., 0., 0., 0.], # 5</span>
+<span class="sd">             [0., 0., 1., 0., 0., 0., 0., 0.], # 6</span>
+<span class="sd">             [0., 0., 0., 1., 0., 0., 0., 0.], # 7</span>
+<span class="sd">             [0., 0., 0., 0., 1., 0., 0., 0.], # 8</span>
+<span class="sd">             [0., 0., 0., 0., 0., 1., 0., 0.], # 9</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 1., 0.], # 10</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 1.]] # 11 (all nodes)</span>
+
+<span class="sd">    leaf_projection_matrix : `numpy.array`, shape (``self.num_leaf_nodes``, ``self.num_nodes``)</span>
+<span class="sd">        Projection matrix to get leaf nodes. When applied to a matrix with the values for</span>
+<span class="sd">        all nodes, the projection matrix selects only the rows corresponding to leaf nodes.</span>
+
+<span class="sd">        ``Y_{leaf} = leaf_projection_matrix @ Y_{actual}``</span>
+<span class="sd">        In our example::</span>
+
+<span class="sd">            # 0   1   2   3   4   5   6   7   8   9   10  11  (all nodes)</span>
+<span class="sd">            [[0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0.],  # 4</span>
+<span class="sd">             [0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0.],  # 5</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0.],  # 6</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0.],  # 7</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0.],  # 8</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0.],  # 9</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0.],  # 10</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1.]]  # 11 (leaf nodes)</span>
+
+<span class="sd">    bottom_up_transform: `numpy.array`, shape (``self.num_nodes,`` ``self.num_nodes``)</span>
+<span class="sd">        Bottom-up transformation matrix. When applied to a matrix with the values for</span>
+<span class="sd">        all nodes, returns values for every node by bubbling up leaf node values to the</span>
+<span class="sd">        internal nodes. The original values of internal nodes are ignored.</span>
+
+<span class="sd">        ``Y_{bu} = bottom_up_transform @ Y_{actual}``</span>
+<span class="sd">        Note that ``bottom_up_transform = sum_matrix @ leaf_projection_matrix``.</span>
+<span class="sd">        In our example::</span>
+
+<span class="sd">            # 0   1   2   3   4   5   6   7   8   9   10  11  (all nodes)</span>
+<span class="sd">            [[0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.], # 0</span>
+<span class="sd">             [0., 0., 0., 0., 1., 1., 0., 0., 0., 0., 0., 0.], # 1</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 1., 1., 1., 0., 0., 0.], # 2</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1.], # 3</span>
+<span class="sd">             [0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0.], # 4</span>
+<span class="sd">             [0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0.], # 5</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0.], # 6</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0.], # 7</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0.], # 8</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0.], # 9</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0.], # 10</span>
+<span class="sd">             [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1.]] # 11 (all nodes)</span>
+
+<span class="sd">    constraint_matrix : `numpy.array`, shape (``self.num_internal_nodes``, ``self.num_nodes``)</span>
+<span class="sd">        Constraint matrix representing hierarchical additive constraints, where a parent&#39;s value</span>
+<span class="sd">        is equal the sum of its leaf nodes&#39; values.</span>
+<span class="sd">        ``constraint_matrix @ Y_{all} = 0`` if ``Y_{all}`` satisfies the constraints.</span>
+<span class="sd">        In our example::</span>
+
+<span class="sd">            #  0    1    2    3    4    5    6    7    8    9    10   11  (all nodes)</span>
+<span class="sd">            [[-1.,  0.,  0.,  0.,  1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],  # 0</span>
+<span class="sd">             [ 0., -1.,  0.,  0.,  1.,  1.,  0.,  0.,  0.,  0.,  0.,  0.],  # 1</span>
+<span class="sd">             [ 0.,  0., -1.,  0.,  0.,  0.,  1.,  1.,  1.,  0.,  0.,  0.],  # 2</span>
+<span class="sd">             [ 0.,  0.,  0., -1.,  0.,  0.,  0.,  0.,  0.,  1.,  1.,  1.]]  # 3 (internal nodes)</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    get_level_of_node : callable</span>
+<span class="sd">        Returns a node&#39;s level in the tree</span>
+<span class="sd">    get_child_nodes : callable</span>
+<span class="sd">        Returns the indices of a node&#39;s children in the tree</span>
+<span class="sd">    __set_sum_matrix : callable</span>
+<span class="sd">        Constructs the summing matrix to compute values of all nodes from the leaf nodes.</span>
+<span class="sd">    __set_leaf_projection_matrix : callable</span>
+<span class="sd">        Constructs leaf projection matrix to retain only values of leaf nodes.</span>
+<span class="sd">    __set_constraint_matrix : callable</span>
+<span class="sd">        Constructs constraint matrix that requires each parent&#39;s</span>
+<span class="sd">        value to be the sum of its leaf node&#39;s values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">levels</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes attributes given the tree structure in ``levels``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        levels : `list` [`list` [`int]] or None</span>
+<span class="sd">            See above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`levels` must contain at least one list&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="n">levels</span>
+
+        <span class="c1"># Flatten the list to get the number of children for each parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_children_per_parent</span> <span class="o">=</span> <span class="n">flatten_list</span><span class="p">(</span><span class="n">levels</span><span class="p">)</span>
+
+        <span class="c1"># Does not allow a node to have 0 children.</span>
+        <span class="c1"># This requirement could be relaxed in the future.</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_children_per_parent</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Every parent node must have at least one child, &quot;</span>
+                             <span class="s2">&quot;so that leaf nodes are at the same depth.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_children_per_parent</span><span class="p">)</span>
+        <span class="c1"># The leaf nodes are children of the last level of parents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span>
+
+        <span class="c1"># There is one root node. Sum the number of children at each level to get the number of nodes at the next level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes_per_level</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">]</span>
+        <span class="c1"># Alternatively, directly count the number of nodes per level</span>
+        <span class="n">alt_nodes_per_level</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_per_level</span> <span class="o">!=</span> <span class="n">alt_nodes_per_level</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The number of children does not match the expected length. Found </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes_per_level</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">alt_nodes_per_level</span><span class="si">}</span><span class="s2">. The length of a sublist must equal the sum&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;of the numbers in the preceding sublist.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Indexes nodes starting from 0 for the root node, and continuing in BFS order.</span>
+        <span class="c1"># The first index of each level is the number of nodes in all previous levels.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">starting_index_per_level</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes_per_level</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>  <span class="c1"># 0-indexed, length # levels</span>
+
+        <span class="c1"># For each parent node, the index of its first child relative to the first node in</span>
+        <span class="c1"># the next level (e.g. 0th in level, 2nd in level). length self.num_internal_nodes</span>
+        <span class="n">within_level_child_index_per_parent</span> <span class="o">=</span> <span class="n">flatten_list</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">])</span>
+        <span class="c1"># For each parent node, the index of its first child, length self.num_internal_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">starting_child_index_per_parent</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="c1"># the index of the next level plus the relative offset to its first child</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">starting_index_per_level</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_level_of_node</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">within_level_child_index_per_parent</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span><span class="p">)]</span>
+
+        <span class="c1"># Sum matrix to compute all nodes from leaf nodes. Y_{all} = self.sum_matrix @ Y_{leaf}</span>
+        <span class="c1"># Shape (self.num_nodes, self.num_leaf_nodes)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sum_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__set_sum_matrix</span><span class="p">()</span>
+
+        <span class="c1"># Projection matrix to get leaf nodes. Y_{leaf} = self.leaf_projection_matrix @ Y_{all}</span>
+        <span class="c1"># Shape (self.num_leaf_nodes, self.num_nodes)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf_projection_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__set_leaf_projection_matrix</span><span class="p">()</span>
+
+        <span class="c1"># Transform for bottom-up transform. Y_{bu} = self.bottom_up_transform @ Y_{all}</span>
+        <span class="c1"># Shape (self.num_nodes, self.num_nodes)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_up_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_matrix</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">leaf_projection_matrix</span>
+
+        <span class="c1"># Constraint matrix. self.constraint_matrix @ Y_{all} is 0 if Y_{all} satisfies the constraints.</span>
+        <span class="c1"># Shape (self.num_internal_nodes, self.num_nodes)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraint_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__set_constraint_matrix</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HierarchicalRelationship.get_level_of_node"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.reconcile.hierarchical_relationship.HierarchicalRelationship.get_level_of_node">[docs]</a>    <span class="k">def</span> <span class="nf">get_level_of_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a node&#39;s level in the tree.</span>
+<span class="sd">        Level is defined as the length of the path to the root.</span>
+<span class="sd">        The root is at level 0.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : `int`</span>
+<span class="sd">            Index of the node.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        level : `int`</span>
+<span class="sd">            The level of the node in the tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="n">level</span> <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">start_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">starting_index_per_level</span><span class="p">)</span> <span class="k">if</span> <span class="n">node</span> <span class="o">&gt;=</span> <span class="n">start_index</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="HierarchicalRelationship.get_child_nodes"><a class="viewcode-back" href="../../../../pages/autodoc/doc.html#greykite.algo.reconcile.hierarchical_relationship.HierarchicalRelationship.get_child_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_child_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the indices of a node&#39;s children in the tree.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node : `int`</span>
+<span class="sd">            Index of the node.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        child_nodes : `list` [`int`]</span>
+<span class="sd">            Indices of all the node&#39;s children.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">first_child_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_child_index_per_parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="n">num_children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_children_per_parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+        <span class="n">child_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">first_child_index</span><span class="p">,</span> <span class="n">first_child_index</span> <span class="o">+</span> <span class="n">num_children</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">child_nodes</span></div>
+
+    <span class="k">def</span> <span class="nf">__set_sum_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs the summing matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sum_matrix : `numpy.array`, shape (``self.num_nodes``, ``self.num_leaf_nodes``)</span>
+<span class="sd">            Sum matrix used to compute values of all nodes from the leaf nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sum_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">set_matrix_row</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Sets the final value of row ``i`` in ``matrix``.</span>
+
+<span class="sd">            Consider the entry [i, j] in the matrix.</span>
+<span class="sd">            matrix[i, j] = 1 if j is a leaf node and (i==j or j is a descendant of i),</span>
+<span class="sd">            0 otherwise.</span>
+
+<span class="sd">            Also recursively sets the values for all children of node ``i``.</span>
+<span class="sd">            The matrix is defined bottoms-up using DFS.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            i : `int`</span>
+<span class="sd">                Node index. The function updates the row for</span>
+<span class="sd">                this node and all its descendants.</span>
+<span class="sd">            matrix : `numpy.array`, shape (self.num_nodes, self.num_leaf_nodes)</span>
+<span class="sd">                Sum matrix to fill in. Passed by reference in the recursion.</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            matrix[i] : `numpy.array`</span>
+<span class="sd">                Row i of the matrix, after filling in the proper entries.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span><span class="p">:</span>
+                <span class="c1"># leaf node is equal to itself</span>
+                <span class="n">leaf_node_index</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span><span class="p">)</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">leaf_node_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">child_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_child_nodes</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="c1"># parent node&#39;s leaves are its children&#39;s leaves</span>
+                <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">set_matrix_row</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">matrix</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">child_nodes</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">set_matrix_row</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sum_matrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sum_matrix</span>
+
+    <span class="k">def</span> <span class="nf">__set_leaf_projection_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs leaf projection matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        leaf_projection_matrix : `numpy.array`, shape (``self.num_leaf_nodes``, ``self.num_nodes``)</span>
+<span class="sd">            Projection matrix to get leaf nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span><span class="p">]),</span>  <span class="c1"># removes the parent nodes</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_leaf_nodes</span><span class="p">)</span>  <span class="c1"># projects the leaf nodes</span>
+        <span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set_constraint_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs constraint matrix that requires each parent nodes&#39;s</span>
+<span class="sd">        value to be the sum of its leaf nodes&#39; values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        constraint_matrix : `numpy.array`, shape (``self.num_internal_nodes``, ``self.num_nodes``)</span>
+<span class="sd">            Constraint matrix representing hierarchical additive constraints,</span>
+<span class="sd">            where a parent&#39;s value equals the sum of its leaf nodes&#39; values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;bottom_up_transform&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_up_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_up_transform</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_up_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">arr</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">num_internal_nodes</span><span class="p">,</span> <span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, LinkedIn.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

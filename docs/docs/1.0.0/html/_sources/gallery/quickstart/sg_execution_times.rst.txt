@@ -1,0 +1,14 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_quickstart_sg_execution_times:
+
+Computation times
+=================
+**07:56.578** total execution time for **gallery_quickstart** files:
+
++------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_0200_simple_anomaly_detection.py` (``0200_simple_anomaly_detection.py``) | 07:16.539 | 0.0 MB |
++------------------------------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_gallery_quickstart_0100_simple_forecast.py` (``0100_simple_forecast.py``)                   | 00:40.039 | 0.0 MB |
++------------------------------------------------------------------------------------------------------------+-----------+--------+
