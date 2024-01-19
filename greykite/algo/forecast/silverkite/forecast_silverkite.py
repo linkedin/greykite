@@ -3208,8 +3208,7 @@ class SilverkiteForecast():
 
         if forecast_horizon_in_days <= 30:
             autoreg_dict = {}
-            autoreg_dict["lag_dict"] = None
-            autoreg_dict["agg_lag_dict"] = None
+            autoreg_dict["agg_lag_dict"] = autoreg_dict["lag_dict"] = None
             if orders is not None:
                 autoreg_dict["lag_dict"] = {"orders": orders}
             if len(orders_list) > 0 or len(interval_list) > 0:
