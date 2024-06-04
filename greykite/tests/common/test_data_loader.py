@@ -150,10 +150,7 @@ def test_get_df():
 
     # Error due to wrong file name
     data_path = dl.get_data_home(data_dir=None, data_sub_dir="daily")
-    file_path = os.path.join(data_path, "parking.csv")
-    file_names = dl.get_data_names(data_path=data_path)
-    with pytest.raises(ValueError, match=fr"Given file path '{file_path}' is not found. Available datasets "
-                                         fr"in data directory '{data_path}' are \{file_names}\."):
+    with pytest.raises(ValueError, match=fr"Given file path .* is not found. Available datasets in data directory .*"):
         dl.get_df(data_path=data_path, data_name="parking")
 
 

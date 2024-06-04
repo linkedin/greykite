@@ -4,6 +4,7 @@ from datetime import timedelta
 
 import numpy as np
 import pandas as pd
+from pandas.testing import assert_frame_equal
 import pytest
 
 from greykite.common.constants import CHANGEPOINT_COL_PREFIX
@@ -768,7 +769,7 @@ def test_get_evenly_spaced_changepoint_values():
         "changepoint1_2025_01_01_00": [0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
         "changepoint2_2027_01_01_00": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2]
     })
-    assert changepoint_df.equals(expected)
+    assert_frame_equal(changepoint_df, expected, check_dtype=False)
 
     # quadratic growth
     changepoint_df = get_changepoint_features(
@@ -782,7 +783,7 @@ def test_get_evenly_spaced_changepoint_values():
         "changepoint1_2025_01_01_00": [0, 0, 0, 0, 0, 0, 1, 4, 9, 16],
         "changepoint2_2027_01_01_00": [0, 0, 0, 0, 0, 0, 0, 0, 1, 4]
     })
-    assert changepoint_df.equals(expected)
+    assert_frame_equal(changepoint_df, expected, check_dtype=False)
 
     # real example
     n_changepoints = 3

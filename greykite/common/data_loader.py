@@ -71,7 +71,7 @@ class DataLoader:
             data_home = os.path.abspath(os.path.join(data_dir, data_sub_dir))
 
         if not os.path.exists(data_home):
-            raise ValueError(f"Requested data directory '{data_home}' does not exist.")
+            raise ValueError(f"Requested data directory '{data_dir}' does not exist.")
 
         return data_home
 
@@ -174,7 +174,7 @@ class DataLoader:
     def get_df(self, data_path, data_name):
         """Returns a ``pandas.DataFrame`` containing the dataset from ``data_path/data_name``.
         The input data must be in ``.csv`` or ``.csv.xz`` format.
-        Raises a ValueError if the the specified input file is not found.
+        Raises a ValueError if the specified input file is not found.
 
         Parameters
         ----------

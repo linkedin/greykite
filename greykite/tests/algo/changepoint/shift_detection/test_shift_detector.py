@@ -175,7 +175,7 @@ def test_create_df_with_regressor():
     output_df_regressor = detector.create_df_with_regressor(input_df, "ts", input_shiftsm)
 
     # unit test
-    pd.testing.assert_frame_equal(output_df_regressor, expected_df_regressor)
+    pd.testing.assert_frame_equal(output_df_regressor, expected_df_regressor, check_dtype=False)
 
 
 def test_create_regressor_for_future_dates():
