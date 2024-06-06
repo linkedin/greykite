@@ -6,10 +6,36 @@ authors = [
     "MichaelaH <michaela.honkova@lynt.cz>",
     "Jan Smitka <jan.smitka@lynt.cz>"
 ]
-readme = "README.md"
-
+repository = "https://github.com/LyntServices/greykite.git"
 
 [tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+cvxpy = ">=1.2.1"
+dill = ">=0.3.1.1"
+holidays = "<0.25"
+holidays-ext = ">=0.0.7"
+ipython = ">=7.31.1"
+matplotlib = ">=3.4.1"
+numpy = ">=1.22.0,<1.25.0"
+osqp = ">=0.6.2"
+overrides = ">=2.8.0"
+pandas = ">=1.5.0,<2.0.0"
+patsy = ">=0.5.1"
+plotly = ">=4.12.0"
+pmdarima = ">=1.8.0,<=1.8.5"
+pytest = ">=4.6.5"
+pytest-runner = ">=5.1"
+scipy = ">=1.5.4,<1.11.0"
+six = ">=1.15.0"
+scikit-learn = ">=0.24.1"
+statsmodels = ">=0.12.2"
+testfixtures = ">=6.14.2"
+tqdm = ">=4.52.0"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
 python = ">=3.10,<3.11"
 pytest = "7.1.2"
 numpy = "1.23.2"
@@ -60,7 +86,6 @@ patsy = "0.5.2"
 pandas = "1.5.0"
 overrides = "7.3.1"
 cmake = "^3.29.3"
-
 
 [build-system]
 requires = ["poetry-core"]
