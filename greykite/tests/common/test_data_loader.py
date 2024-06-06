@@ -26,7 +26,7 @@ def test_get_data_home():
 
     # Error due to non existing folder
     data_dir = "/home/data"
-    with pytest.raises(ValueError, match=f"Requested data directory '{data_dir}' does not exist."):
+    with pytest.raises(ValueError, match=f"Requested data home directory .* does not exist."):
         dl.get_data_home(data_dir=data_dir)
 
 
