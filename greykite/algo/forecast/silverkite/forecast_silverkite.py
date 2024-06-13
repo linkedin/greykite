@@ -901,7 +901,7 @@ class SilverkiteForecast():
                         last_timestamp_df = pd.DataFrame({
                             col: [np.nan] if col != time_col else [expected_last_timestamp] for col in past_df.columns
                         })
-                        past_df = past_df.append(last_timestamp_df).reset_index(drop=True)
+                        past_df = pd.concat([past_df, last_timestamp_df]).reset_index(drop=True)
                     past_df = fill_missing_dates(
                         df=past_df,
                         time_col=time_col,
@@ -2136,8 +2136,7 @@ class SilverkiteForecast():
             if past_df[time_col].max() > training_past_df[time_col].max():
                 raise ValueError("``past_df`` can not have timestamps later than the training end timestamp.")
             # Combines ``past_df`` with ``training_past_df`` to get all available values.
-            past_df = (past_df
-                       .append(training_past_df)
+            past_df = (pd.concat([past_df, training_past_df])
                        .dropna(subset=[value_col])
                        # When there are duplicates, the value passed from ``past_df`` is kept.
                        .drop_duplicates(subset=time_col)
@@ -2678,6 +2677,9 @@ class SilverkiteForecast():
             # otherwise it causes error with pandas>=1.4.
             fut_df_expanded.loc[:, fut_df_expanded.columns != time_col] = na_fill_func(
                 fut_df_expanded.loc[:, fut_df_expanded.columns != time_col])
+            # Turn 'bool' columns from dtype object to bool
+            bool_col_names = [col for col in fut_df_expanded.columns if 'bool' in col]
+            fut_df_expanded[bool_col_names] = fut_df_expanded[bool_col_names].astype(bool)
             index = (
                     [False] * fut_df_within_training.shape[0] +
                     [True] * fut_df_gap.shape[0] +

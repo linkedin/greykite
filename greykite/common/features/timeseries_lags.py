@@ -314,6 +314,9 @@ def build_agg_lag_df(
 
     if df is not None:
         agg_lag_df = pd.concat(objs=agg_lag_df_list, axis=1, ignore_index=False)
+        # cast dtype to 'float' instead of 'object' for mean
+        if agg_func == "mean":
+            agg_lag_df = agg_lag_df.astype(float)
 
     return {
         "agg_lag_df": agg_lag_df,

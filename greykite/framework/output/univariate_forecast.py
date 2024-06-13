@@ -161,11 +161,11 @@ class UnivariateForecast:
         self.estimator = estimator
         self.relative_error_tolerance = relative_error_tolerance
 
-        self.df[self.time_col] = pd.to_datetime(df[time_col], infer_datetime_format=True)
+        self.df[self.time_col] = pd.to_datetime(df[time_col])
         if train_end_date is None:
             self.train_end_date = df[self.time_col].max()
         else:
-            self.train_end_date = pd.to_datetime(train_end_date, infer_datetime_format=True)
+            self.train_end_date = pd.to_datetime(train_end_date)
         self.df_train = df[df[time_col] <= self.train_end_date]
 
         if test_start_date is None:
@@ -177,7 +177,7 @@ class UnivariateForecast:
                 periods=2,
                 freq=inferred_freq)[-1]
         else:
-            self.test_start_date = pd.to_datetime(test_start_date, infer_datetime_format=True)
+            self.test_start_date = pd.to_datetime(test_start_date)
         self.df_test = df[df[time_col] >= self.test_start_date]
 
         self.test_na_count = self.df_test[actual_col].isna().sum()

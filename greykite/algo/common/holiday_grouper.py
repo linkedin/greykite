@@ -394,8 +394,9 @@ class HolidayGrouper:
                     "original_name": key_without_plus_minus,
                     "avg_score": value
                 })
-                daily_event_df_dict_raw[group_name] = daily_event_df_dict_raw[group_name].append(
-                    event_df, ignore_index=True)
+                daily_event_df_dict_raw[group_name] = pd.concat(
+                    [daily_event_df_dict_raw[group_name], event_df],
+                    ignore_index=True)
             # Removes potential empty groups.
             daily_event_df_dict = {}
             new_idx = 0

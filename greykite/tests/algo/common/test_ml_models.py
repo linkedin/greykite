@@ -1557,7 +1557,7 @@ def test_dummy():
         df[["a", "b", "c_a", "c_b"]]
     ], axis=1))
     y_fitted = X @ expected_coefs
-    assert np.array_equal(np.array(df["y"]), y_fitted.round(8))
+    assert np.array_equal(np.array(df["y"]), y_fitted.astype('float').round(8))
 
     n = df.shape[0]
     p_effective = trained_model["p_effective"]

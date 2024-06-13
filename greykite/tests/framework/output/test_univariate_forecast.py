@@ -281,7 +281,7 @@ def test_get_grouping_evaluation(df2):
         which="train",
         groupby_time_feature="dow")
     expected = pd.DataFrame({
-        "dow": [1, 2, 3, 4, 5],  # Monday, Tuesday, etc. Time feature is used as column name
+        "dow": pd.Series([1, 2, 3, 4, 5], dtype=int),  # Monday, Tuesday, etc. Time feature is used as column name
         f"train {metric_name}": [0.0, 100.0, 0.0, 50.0, 40.0]
     })
     assert_equal(grouped_df, expected)
@@ -465,7 +465,7 @@ def test_get_flexible_grouping_evaluation(df2):
         "MSE": [0.0, 4.0, 0.0, 4.0, 4.0],
         "median_squared_error": [0.0, 4.0, 0.0, 4.0, 4.0],
         "coverage": [0.0, 1.0, 1.0, 0.0, 0.0],
-    }, index=pd.Series([1, 2, 3, 4, 5], name="dow"))
+    }, index=pd.Series([1, 2, 3, 4, 5], name="dow", dtype=int))
     assert_frame_equal(result, expected)
 
     # Equivalent way to specify `map_func_dict` (without autocomplete)

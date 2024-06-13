@@ -370,10 +370,10 @@ class ChangepointDetector:
         # The try except below speeds up unnecessary datetime transformation.
         if resample_freq is not None:
             try:
-                df_resample = df.resample(resample_freq, on=time_col).mean().reset_index()
+                df_resample = df.resample(resample_freq, on=time_col).mean(numeric_only=True).reset_index()
             except TypeError:
                 df[time_col] = pd.to_datetime(df[time_col])
-                df_resample = df.resample(resample_freq, on=time_col).mean().reset_index()
+                df_resample = df.resample(resample_freq, on=time_col).mean(numeric_only=True).reset_index()
         else:
             df[time_col] = pd.to_datetime(df[time_col])
             df_resample = df.copy()
@@ -814,7 +814,7 @@ class ChangepointDetector:
         df_without_trend = df.copy()
         df_without_trend[value_col] -= trend_estimation.values
         # Aggregates df.
-        df_resample = df_without_trend.resample(resample_freq, on=time_col).mean().reset_index()
+        df_resample = df_without_trend.resample(resample_freq, on=time_col).mean(numeric_only=True).reset_index()
         df_resample = df_resample.dropna()
         # Removes daily component from seasonality_components_df if data has minimum freq daily.
         freq_at_least_day = (min(np.diff(df_resample[time_col]).astype("timedelta64[s]")) >= timedelta(days=1))

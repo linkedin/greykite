@@ -607,7 +607,7 @@ def test_get_grouping_evaluation():
         aggregation_func_name="mean",
         groupby_time_feature="dow")
     expected = pd.DataFrame({
-        "dow": [1, 2, 3, 4, 5],  # Monday, Tuesday, etc. Time feature is used as column name
+        "dow": pd.Series([1, 2, 3, 4, 5], dtype=int),  # Monday, Tuesday, etc. Time feature is used as column name
         f"mean of {VALUE_COL}": [1.0, 2.0, 3.0, 4.0, 5.0]
     })
     assert_equal(grouped_df, expected)

@@ -1004,7 +1004,7 @@ def get_custom_changepoints_values(
         values of df[continuous_time_col] at the changepoints
     """
     ts = pd.to_datetime(df[time_col])
-    changepoint_dates = pd.to_datetime(changepoint_dates)
+    changepoint_dates = pd.to_datetime(changepoint_dates, format='mixed')
     # maps each changepoint to first date >= changepoint in the dataframe
     # if there is no such date, the changepoint is dropped (it would not be useful anyway)
     changepoint_ts = [ts[ts >= date].min() for date in changepoint_dates if any(ts >= date)]
@@ -1030,7 +1030,7 @@ def get_changepoint_string(changepoint_dates):
     date_strings : `list[`str`]`
         List of string formatted changepoint dates.
     """
-    changepoint_dates = list(pd.to_datetime(changepoint_dates))
+    changepoint_dates = list(pd.to_datetime(changepoint_dates, format='mixed'))
     time_format = "_%Y_%m_%d_%H"
     if any([stamp.second != 0 for stamp in changepoint_dates]):
         time_format += "_%M_%S"
@@ -1275,7 +1275,7 @@ def get_changepoint_features_and_values_from_config(
         if changepoints_dict is None:
             changepoint_dates = None
         elif changepoints_dict["method"] == "custom":
-            changepoint_dates = list(pd.to_datetime(changepoints_dict["dates"]))
+            changepoint_dates = list(pd.to_datetime(changepoints_dict["dates"], format='mixed'))
         elif changepoints_dict["method"] == "uniform":
             changepoint_dates = get_evenly_spaced_changepoints_dates(
                 df=df,

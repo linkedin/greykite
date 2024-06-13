@@ -499,7 +499,7 @@ class HolidayInferrer:
                 counter = 1
                 # If a baseline date falls on another holiday, it is moving further.
                 # But the total iterations cannot exceed 3.
-                while new_date in self.all_holiday_dates and counter <= 3:
+                while pd.to_datetime(new_date) in self.all_holiday_dates and counter <= 3:
                     log_message(
                         message=f"Skipping {new_date}, new date is {new_date + timedelta(days=offset)}.\n",
                         level=LoggingLevelEnum.DEBUG

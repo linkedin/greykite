@@ -271,7 +271,7 @@ def test_adjust_anomalous_data(data):
     with pytest.warns(
             UserWarning,
             match=r"Dates could not be parsed by `pandas.to_datetime`, using string comparison "
-                  r"for dates instead. Error message:\nUnknown string format: 999/999/2018"):
+                  r"for dates instead. Error message:\nUnknown datetime string format, unable to parse: 999/999/2018"):
         value_col = "y"
         adjust_anomalous_data(
             df=df_raw,

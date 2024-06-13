@@ -40,7 +40,7 @@ def test_BuildTimeseriesFeaturesTransformer_2():
         timeseries_transform.transform(df)
 
     result = timeseries_transform.fit_transform(df)
-    assert result["year"].equals(pd.Series([2018, 2018, 2018, 2018]))
-    assert result["month"].equals(pd.Series([1, 1, 1, 1]))
-    assert result["dom"].equals(pd.Series([1, 2, 3, 4]))
-    assert result["hour"].equals(pd.Series([1, 2, 4, 10]))
+    assert result["year"].equals(pd.Series([2018, 2018, 2018, 2018], dtype=int))
+    assert result["month"].equals(pd.Series([1, 1, 1, 1], dtype=int))
+    assert result["dom"].equals(pd.Series([1, 2, 3, 4], dtype=int))
+    assert result["hour"].equals(pd.Series([1, 2, 4, 10], dtype=int))

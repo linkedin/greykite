@@ -691,7 +691,7 @@ def test_plot_precision_recall_curve():
         "recall": recall,
         "key": 1})
     groups_df = pd.DataFrame({"groups": ["A", "B", "C"], "key": 1})
-    df = pr_df.merge(groups_df, how="inner", on="key").reset_index(drop=True).drop("key", 1)
+    df = pr_df.merge(groups_df, how="inner", on="key").reset_index(drop=True).drop(labels="key", axis=1)
     # Generates the precision recall curve.
     fig = plot_precision_recall_curve(
         df=df,

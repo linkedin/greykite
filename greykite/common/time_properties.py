@@ -341,8 +341,7 @@ def get_canonical_data(
     }, axis=1)
     df_standardized[TIME_COL] = pd.to_datetime(
         df_standardized[TIME_COL],
-        format=date_format,
-        infer_datetime_format=True)
+        format=date_format)
     # Drops data points from duplicate time stamps
     df_standardized.drop_duplicates(
         subset=[TIME_COL],

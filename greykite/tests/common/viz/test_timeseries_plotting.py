@@ -429,7 +429,7 @@ def test_add_groupby_column():
         groupby_custom_column=None)
     expected_col = "dow"  # ``groupby_time_feature`` is used as the column name
     expected = df.copy()
-    expected[expected_col] = pd.Series([1, 2, 3, 4, 5])  # Monday, Tuesday, etc.
+    expected[expected_col] = pd.Series([1, 2, 3, 4, 5], dtype=int)  # Monday, Tuesday, etc.
     assert_frame_equal(result["df"], expected)
     assert result["groupby_col"] == expected_col
 
@@ -813,18 +813,22 @@ def test_flexible_grouping_evaluation():
             list_names_dict=list_names_dict)
 
     # `agg_kwargs` with string format
+    agg_dict = {
+        "actual": "mean",
+        "forecast": "mean",
+    }
     eval_df = flexible_grouping_evaluation(
         df=df,
         map_func_dict=None,
         groupby_col="groups",
-        agg_kwargs={"func": "mean"})
+        agg_kwargs={"func": agg_dict})
     assert list(eval_df.columns) == ["actual", "forecast"]
     # only one level, no extension
     eval_df = flexible_grouping_evaluation(
         df=df,
         map_func_dict=None,
         groupby_col="groups",
-        agg_kwargs={"func": "mean"},
+        agg_kwargs={"func": agg_dict},
         extend_col_names=True)
     assert list(eval_df.columns) == ["actual", "forecast"]
 

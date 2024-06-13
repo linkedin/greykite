@@ -1015,12 +1015,12 @@ def test_get_trend_changepoint_dates_from_cols():
     # hourly changepoints
     changepoint_cols = ["ct1", "changepoint0_2020_01_05_03", "changepoint1_2020_02_08_00"]
     changepoint_dates = get_trend_changepoint_dates_from_cols(changepoint_cols)
-    expected_changepoint_dates = list(pd.to_datetime(["2020-01-05-03", "2020-02-08"]))
+    expected_changepoint_dates = list(pd.to_datetime(["2020-01-05-03", "2020-02-08"], format='mixed'))
     assert changepoint_dates == expected_changepoint_dates
     # minute level changepoints
     changepoint_cols = ["ct1", "changepoint0_2020_01_05_03_05", "changepoint1_2020_02_08_00"]
     changepoint_dates = get_trend_changepoint_dates_from_cols(changepoint_cols)
-    expected_changepoint_dates = list(pd.to_datetime(["2020-01-05 03:05", "2020-02-08"]))
+    expected_changepoint_dates = list(pd.to_datetime(["2020-01-05 03:05", "2020-02-08"], format='mixed'))
     assert changepoint_dates == expected_changepoint_dates
     # no changepoints
     changepoint_cols = ["ct1"]

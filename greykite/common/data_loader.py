@@ -257,7 +257,7 @@ class DataLoader:
         df["LastUpdated"] = pd.to_datetime(df["LastUpdated"]).dt.round("30min")
         df["OccupancyRatio"] = df["Occupancy"] / df["Capacity"]
         if system_code_number is None:
-            df = df.groupby("LastUpdated", as_index=False).mean()
+            df = df.groupby("LastUpdated", as_index=False).mean(numeric_only=True)
         else:
             df = df[df["SystemCodeNumber"] == system_code_number].reset_index(drop=True)
         return df

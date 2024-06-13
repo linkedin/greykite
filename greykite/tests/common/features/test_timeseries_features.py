@@ -327,7 +327,7 @@ def test_build_time_features_df():
         92, 92,
         90, 90,
         91, 92,
-    ]), check_names=False)
+    ], dtype=int), check_names=False)
     assert_equal(time_df["doq"], pd.Series([
         1, 91,
         1, 91,
@@ -335,7 +335,7 @@ def test_build_time_features_df():
         1, 92,
         1, 90,
         43, 34,
-    ]), check_names=False)
+    ], dtype=int), check_names=False)
     assert_equal(time_df["toq"], pd.Series([
         0.0, 90.0 / 91.0,
         0.0, 90.0 / 91.0,
@@ -830,7 +830,7 @@ def test_get_custom_changepoints():
 
     # dates as datetime
     changepoint_dates = pd.to_datetime(
-        ["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"])
+        ["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"], format='mixed')
     result = get_custom_changepoints_values(
         df=df,
         changepoint_dates=changepoint_dates,
@@ -893,7 +893,7 @@ def test_get_custom_changepoints():
 
     # dates as datetime
     changepoint_dates = pd.to_datetime(
-        ["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"])
+        ["2018-01-01", "2019-01-02-16", "2019-01-03", "2019-02-01"], format='mixed')
     result = get_custom_changepoints_values(
         df=df,
         changepoint_dates=changepoint_dates,
