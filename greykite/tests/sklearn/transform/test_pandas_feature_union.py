@@ -71,8 +71,8 @@ def test_feature_union(X):
                              ("select_time_again", select_time)])
 
     fs.fit(X)
-    X_transformed = fs.transform(X)
 
+    X_transformed = fs.transform(X)
     assert X_transformed.shape == (X.shape[0], 4)
     # note that columns are selected in the order specified. There is no column renaming by default
     assert np.all(X_transformed.columns.values == np.array([VALUE_COL, ACTUAL_COL, TIME_COL, TIME_COL]))

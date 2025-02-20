@@ -25,6 +25,7 @@ from itertools import product
 from typing import Dict
 from typing import List
 from typing import Type
+from typing import Optional
 
 import pandas as pd
 
@@ -49,18 +50,21 @@ class MultistageForecastTemplate(BaseTemplate):
     DEFAULT_MODEL_TEMPLATE = "SILVERKITE_TWO_STAGE"
 
     def __init__(
-            self,
-            constants: MultistageForecastTemplateConstants = MultistageForecastTemplateConstants,
-            # The parameters here don't matter. They are set for compatibility.
-            estimator: BaseForecastEstimator = MultistageForecastEstimator(
+        self,
+        constants: Optional[MultistageForecastTemplateConstants] = None,
+        estimator: Optional[BaseForecastEstimator] = None
+    ):
+        if constants is None:
+            constants = MultistageForecastTemplateConstants()  # Create inside __init__
+        if estimator is None:
+            estimator = MultistageForecastEstimator(
                 forecast_horizon=1,
                 model_configs=[]
-            )):
-        """The init function.
+            )
 
-        The estimator parameters in init is just for compatibility.
-        It does not affect the results.
-        """
+        self.constants = constants
+        self.estimator = estimator
+        
         super().__init__(estimator=estimator)
         self._constants = constants()
 

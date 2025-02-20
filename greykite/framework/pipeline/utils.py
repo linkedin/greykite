@@ -218,7 +218,7 @@ def get_default_time_parameters(
 
 
 def get_basic_pipeline(
-        estimator=SimpleSilverkiteEstimator(),
+        estimator=None,
         score_func=EvaluationMetricEnum.MeanAbsolutePercentError.name,
         score_func_greater_is_better=False,
         agg_periods=None,
@@ -325,6 +325,8 @@ def get_basic_pipeline(
     pipeline : `sklearn.pipeline.Pipeline`
         sklearn Pipeline for univariate forecasting.
     """
+    if estimator is None:
+        estimator = SimpleSilverkiteEstimator()
     score_func, _, _ = get_score_func_with_aggregation(
         score_func=score_func,
         greater_is_better=score_func_greater_is_better,

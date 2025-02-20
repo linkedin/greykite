@@ -1,4 +1,6 @@
 import datetime
+import pytest
+import sys
 
 import numpy as np
 import pandas as pd
@@ -12,7 +14,6 @@ from greykite.common.testing_utils import generate_df_for_tests
 from greykite.common.testing_utils import generate_df_with_reg_for_tests
 from greykite.framework.constants import COMPUTATION_N_JOBS
 from greykite.framework.constants import CV_REPORT_METRICS_ALL
-from greykite.framework.templates.auto_arima_template import AutoArimaTemplate
 from greykite.framework.templates.autogen.forecast_config import ComputationParam
 from greykite.framework.templates.autogen.forecast_config import EvaluationMetricParam
 from greykite.framework.templates.autogen.forecast_config import EvaluationPeriodParam
@@ -22,9 +23,19 @@ from greykite.framework.templates.autogen.forecast_config import ModelComponents
 from greykite.framework.templates.forecaster import Forecaster
 from greykite.framework.templates.model_templates import ModelTemplateEnum
 from greykite.framework.utils.framework_testing_utils import assert_basic_pipeline_equal
-from greykite.sklearn.estimator.auto_arima_estimator import AutoArimaEstimator
 
 
+try:
+    import pmdarima
+    from greykite.framework.templates.auto_arima_template import AutoArimaTemplate
+    from greykite.sklearn.estimator.auto_arima_estimator import AutoArimaEstimator
+except ModuleNotFoundError:
+    pass
+
+
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaTemplate' skipped.")
 def test_property():
     """Tests properties"""
     assert AutoArimaTemplate().allow_model_template_list is False
@@ -42,6 +53,9 @@ def test_property():
     assert template.estimator is estimator
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_get_regressor_cols():
     """Tests get_regressor_names"""
     template = AutoArimaTemplate()
@@ -55,6 +69,9 @@ def test_get_regressor_cols():
     assert template.get_regressor_cols() is None
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_auto_arima_hyperparameter_grid_default():
     """Tests get_hyperparameter_grid and apply_prophet_model_components_defaults"""
     template = AutoArimaTemplate()
@@ -111,6 +128,9 @@ def test_auto_arima_hyperparameter_grid_default():
     assert_equal(actual=hyperparameter_grid, expected=expected_grid)
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_auto_arima_template_default():
     """Tests auto_arima_template with default values, for limited data"""
     num_days = 10
@@ -169,6 +189,9 @@ def test_auto_arima_template_default():
     assert_equal(params, expected_params)
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_auto_arima_template_custom():
     """Tests auto arima template with custom values, with long range input"""
     # prepares input data
@@ -367,6 +390,9 @@ def test_auto_arima_template_custom():
     assert_equal(params, expected_params)
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_run_auto_arima_template_custom():
     """Tests running auto arima template through the pipeline"""
     data = generate_df_with_reg_for_tests(
@@ -463,6 +489,9 @@ def test_run_auto_arima_template_custom():
     assert result.forecast.train_evaluation["MSE"] is not None
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_run_auto_arima_template_default():
     """Tests running default auto arima template through the pipeline"""
     df = generate_df_for_tests(

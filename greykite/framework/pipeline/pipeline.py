@@ -114,7 +114,7 @@ def validate_pipeline_input(pipeline_function):
             pipeline=None,
             regressor_cols=None,
             lagged_regressor_cols=None,
-            estimator=SimpleSilverkiteEstimator(),
+            estimator=None,
             hyperparameter_grid=None,
             hyperparameter_budget=None,
             n_jobs=COMPUTATION_N_JOBS,
@@ -140,6 +140,10 @@ def validate_pipeline_input(pipeline_function):
             cv_periods_between_splits=None,
             cv_periods_between_train_test=0,
             cv_max_splits=3):
+
+        if estimator is None:
+            estimator = SimpleSilverkiteEstimator()
+
         if coverage is not None and (coverage < 0 or coverage > 1):
             raise ValueError(f"coverage must be between 0 and 1, found {coverage}")
         if relative_error_tolerance is not None and relative_error_tolerance < 0:
@@ -260,7 +264,7 @@ def forecast_pipeline(
         pipeline=None,
         regressor_cols=None,
         lagged_regressor_cols=None,
-        estimator=SimpleSilverkiteEstimator(),
+        estimator=None,
         hyperparameter_grid=None,
         hyperparameter_budget=None,
         n_jobs=COMPUTATION_N_JOBS,
@@ -596,6 +600,9 @@ def forecast_pipeline(
               set of parameters to skip cross-validation.
             * If ``test_horizon=0``, ``forecast_result.backtest`` is None.
     """
+    if estimator is None:
+        estimator = SimpleSilverkiteEstimator()
+    
     if hyperparameter_grid is None or hyperparameter_grid == []:
         hyperparameter_grid = {}
     # When hyperparameter_grid is a singleton list, unlist it

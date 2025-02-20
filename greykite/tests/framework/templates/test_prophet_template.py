@@ -35,8 +35,10 @@ except ModuleNotFoundError:
     pass
 
 
-@pytest.mark.skipif("prophet" not in sys.modules,
-                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif(
+    "prophet" not in sys.modules,
+    reason="Module 'prophet' not installed, pytest for 'ProphetEstimator' skipped.")
+
 @pytest.fixture
 def default_holidays():
     """Default holidays by country params"""

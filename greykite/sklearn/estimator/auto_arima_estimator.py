@@ -18,6 +18,12 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # original author: Sayan Patra
 
+try:
+    import pmdarima
+    from pmdarima.arima import AutoARIMA
+except ModuleNotFoundError:
+    pass
+
 
 from typing import Dict
 from typing import List
@@ -26,7 +32,6 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
-from pmdarima.arima import AutoARIMA
 from sklearn.metrics import mean_squared_error
 
 from greykite.common.constants import PREDICTED_COL
@@ -321,14 +326,14 @@ class AutoArimaEstimator(BaseForecastEstimator):
         if append_length > 0:
             pred_df = pd.DataFrame({
                 TIME_COL: X[self.time_col_],
-                PREDICTED_COL: np.append(np.repeat(np.nan, append_length), predictions[0]),
+                PREDICTED_COL: np.append(np.repeat(np.nan, append_length), predictions[0].values),
                 PREDICTED_LOWER_COL: np.append(np.repeat(np.nan, append_length), predictions[1][:, 0]),
                 PREDICTED_UPPER_COL: np.append(np.repeat(np.nan, append_length), predictions[1][:, 1])
             })
         else:
             pred_df = pd.DataFrame({
                 TIME_COL: X[self.time_col_],
-                PREDICTED_COL: predictions[0],
+                PREDICTED_COL: predictions[0].values,
                 PREDICTED_LOWER_COL: predictions[1][:, 0],
                 PREDICTED_UPPER_COL: predictions[1][:, 1]
             })

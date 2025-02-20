@@ -1137,7 +1137,7 @@ for a single template.
 """
 
 
-@dataclass
+@dataclass(frozen=True)
 class SimpleSilverkiteTemplateConstants:
     """Constants used by
     `~greykite.framework.templates.simple_silverkite_template.SimpleSilverkiteTemplate`.
@@ -1164,27 +1164,27 @@ class SimpleSilverkiteTemplateConstants:
         - Values correspond to a list of
           `~greykite.framework.templates.autogen.forecast_config.ModelComponentsParam`.
     """
-    SILVERKITE: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE
+    SILVERKITE: SINGLE_MODEL_TEMPLATE_TYPE = mutable_field(SILVERKITE)
     """Defines the ``"SILVERKITE"`` template. Contains automatic growth,
     seasonality, holidays, autoregression and interactions.
     Uses "zero_to_one" normalization method.
     Best for hourly and daily frequencies. Uses `SimpleSilverkiteEstimator`.
     """
-    SILVERKITE_MONTHLY: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_MONTHLY
+    SILVERKITE_MONTHLY: SINGLE_MODEL_TEMPLATE_TYPE = mutable_field(SILVERKITE_MONTHLY)
     """Defines the ``SILVERKITE_MONTHLY`` template.
     Best for monthly forecasts. Uses `SimpleSilverkiteEstimator`.
     """
-    SILVERKITE_DAILY_1_CONFIG_1: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_1
+    SILVERKITE_DAILY_1_CONFIG_1: SINGLE_MODEL_TEMPLATE_TYPE = mutable_field(SILVERKITE_DAILY_1_CONFIG_1)
     """Config 1 in template ``SILVERKITE_DAILY_1``.
     Compared to ``SILVERKITE``, it adds change points and uses parameters
     specifically tuned for daily data and 1-day forecast.
     """
-    SILVERKITE_DAILY_1_CONFIG_2: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_2
+    SILVERKITE_DAILY_1_CONFIG_2: SINGLE_MODEL_TEMPLATE_TYPE = mutable_field(SILVERKITE_DAILY_1_CONFIG_2)
     """Config 2 in template ``SILVERKITE_DAILY_1``.
     Compared to ``SILVERKITE``, it adds change points and uses parameters
     specifically tuned for daily data and 1-day forecast.
     """
-    SILVERKITE_DAILY_1_CONFIG_3: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_DAILY_1_CONFIG_3
+    SILVERKITE_DAILY_1_CONFIG_3: SINGLE_MODEL_TEMPLATE_TYPE = mutable_field(SILVERKITE_DAILY_1_CONFIG_3)
     """Config 3 in template ``SILVERKITE_DAILY_1``.
     Compared to ``SILVERKITE``, it adds change points and uses parameters
     specifically tuned for daily data and 1-day forecast.
@@ -1195,13 +1195,13 @@ class SimpleSilverkiteTemplateConstants:
     Can be used to create an instance of
     `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.
     """
-    SILVERKITE_EMPTY: SINGLE_MODEL_TEMPLATE_TYPE = SILVERKITE_EMPTY
+    SILVERKITE_EMPTY: SINGLE_MODEL_TEMPLATE_TYPE = mutable_field(SILVERKITE_EMPTY)
     """Defines the ``"SILVERKITE_EMPTY"`` template. Everything here is None or off."""
     VALID_FREQ: List = mutable_field(VALID_FREQ)
     """Valid non-default values for simple silverkite template string name frequency.
     `~greykite.framework.templates.simple_silverkite_template_config.SimpleSilverkiteTemplateOptions`.
     """
-    SimpleSilverkiteTemplateOptions: dataclass = SimpleSilverkiteTemplateOptions
+    SimpleSilverkiteTemplateOptions: dataclass = mutable_field(SimpleSilverkiteTemplateOptions)
     """Defines generic simple silverkite template options.
     Attributes can be set to different values using
     `~greykite.framework.templates.simple_silverkite_template_config.SILVERKITE_COMPONENT_KEYWORDS`

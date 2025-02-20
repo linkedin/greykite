@@ -27,7 +27,7 @@ and returns parameters to call
 
 import dataclasses
 import warnings
-from typing import Type
+from typing import Type, Optional
 
 import numpy as np
 
@@ -601,8 +601,14 @@ class SimpleSilverkiteTemplate(BaseTemplate):
     """
     def __init__(
             self,
-            constants: SimpleSilverkiteTemplateConstants = SimpleSilverkiteTemplateConstants(),
-            estimator: BaseForecastEstimator = SimpleSilverkiteEstimator()):
+            estimator: Optional[BaseForecastEstimator] = None,
+            constants: Optional[SimpleSilverkiteTemplateConstants] = None,
+            **kwargs):
+        if constants is None:
+            constants = SimpleSilverkiteTemplateConstants()
+        if estimator is None:
+            estimator = SimpleSilverkiteEstimator()
+
         super().__init__(estimator=estimator)
         self._constants = constants
         """Constants used by the template class. Includes the model templates and their default values."""

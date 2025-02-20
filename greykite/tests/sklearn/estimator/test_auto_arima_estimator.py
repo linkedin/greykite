@@ -1,7 +1,7 @@
+import sys
 import numpy as np
 import pandas as pd
 import pytest
-from pmdarima.arima import AutoARIMA
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from testfixtures import LogCapture
@@ -17,7 +17,19 @@ from greykite.common.evaluation import calc_pred_err
 from greykite.common.logging import LoggingLevelEnum
 from greykite.common.python_utils import assert_equal
 from greykite.common.testing_utils import generate_df_for_tests
-from greykite.sklearn.estimator.auto_arima_estimator import AutoArimaEstimator
+
+
+try:
+    import pmdarima
+    from pmdarima.arima import AutoARIMA
+    from greykite.sklearn.estimator.auto_arima_estimator import AutoArimaEstimator
+except ModuleNotFoundError:
+    pass
+
+
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 
 
 @pytest.fixture
@@ -94,6 +106,9 @@ def X():
     })
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_arima_setup(params, X):
     """Checks if parameters are passed to Auto-Arima correctly"""
     coverage = 0.99
@@ -159,6 +174,9 @@ def test_arima_setup(params, X):
     assert model_params["kwargs"] == direct_model_params["kwargs"]
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_null_model(X):
     """Checks null model"""
     model = AutoArimaEstimator(null_model_params={
@@ -171,16 +189,21 @@ def test_null_model(X):
     assert null_score == mean_squared_error(y, np.repeat(9.0, X.shape[0]))
 
     # tests if different score function gets propagated to null model
-    model = AutoArimaEstimator(score_func=mean_absolute_error,
-                               null_model_params={"strategy": "quantile",
-                                                  "constant": None,
-                                                  "quantile": 0.8})
+    model = AutoArimaEstimator(
+        score_func=mean_absolute_error,
+        null_model_params={
+        "strategy": "quantile",
+        "constant": None,
+        "quantile": 0.8})
     model.fit(X)
     y = np.repeat(2.0, X.shape[0])
     null_score = model.null_model.score(X, y=y)
     assert null_score == mean_absolute_error(y, np.repeat(9.0, X.shape[0]))
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_score_function(daily_data):
     """Checks score function accuracy"""
     # with null model
@@ -202,6 +225,9 @@ def test_score_function(daily_data):
     assert score < 9.0
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_summary(daily_data):
     """Checks summary function output without error"""
     model = AutoArimaEstimator()
@@ -212,6 +238,9 @@ def test_summary(daily_data):
     model.summary()
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_fit_predict(daily_data, monthly_data):
     """Tests fit and predict."""
     for data in daily_data, monthly_data:
@@ -264,6 +293,9 @@ def test_fit_predict(daily_data, monthly_data):
         assert model.cached_predictions_ is None
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_predict_interaction(daily_data):
     """Tests interaction between predict date and parameter `d`.
     Arima can not predict below `d`."""
@@ -276,7 +308,6 @@ def test_predict_interaction(daily_data):
     # predict start date < d
     # Predicted, lower and upper CI values of the first 4 (10-6) days should be NaN
     predicted = model.predict(df[6:])
-    print(predicted.head(10))
     assert (predicted[[PREDICTED_COL, PREDICTED_LOWER_COL, PREDICTED_UPPER_COL]][0:4]).isnull().values.all()
     assert not (predicted[[PREDICTED_COL, PREDICTED_LOWER_COL, PREDICTED_UPPER_COL]][5:10]).isnull().values.any()
 
@@ -291,6 +322,9 @@ def test_predict_interaction(daily_data):
     assert not (predicted[[PREDICTED_COL, PREDICTED_LOWER_COL, PREDICTED_UPPER_COL]][0:4]).isnull().values.any()
 
 
+@pytest.mark.skipif(
+    "pmdarima" not in sys.modules,
+    reason="Module 'pmdarima' not installed, pytest for 'AutoArimaEstimator' skipped.")
 def test_forecast_via_arima_freq(params):
     frequencies = ["H", "D", "M"]
     for freq in frequencies:
