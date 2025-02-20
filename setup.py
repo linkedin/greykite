@@ -38,7 +38,7 @@ test_requirements = ["pytest>=3"]
 setup(
     python_requires=">=3.10",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 6 - Mature",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
