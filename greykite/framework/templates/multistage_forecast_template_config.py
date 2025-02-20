@@ -375,7 +375,7 @@ class MultistageForecastModelTemplateEnum(Enum):
     """Default model template for `LagBasedTemplate`."""
 
 
-@dataclass
+@dataclass(frozen=True)
 class MultistageForecastTemplateConstants:
     """Constants used by
     `~greykite.framework.templates.multistage_forecast_template.MultistageForecastTemplate`.

@@ -28,8 +28,10 @@ except ModuleNotFoundError:
     pass
 
 
-@pytest.mark.skipif("prophet" not in sys.modules,
-                    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
+@pytest.mark.skipif(
+    "prophet" not in sys.modules,
+    reason="Module 'prophet' not installed, pytest for 'ProphetTemplate' skipped.")
+
 @pytest.fixture
 def params():
     holidays = pd.DataFrame({

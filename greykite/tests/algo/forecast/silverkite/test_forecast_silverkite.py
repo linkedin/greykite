@@ -4220,24 +4220,23 @@ def test_build_silverkite_features():
     daily_event_df_dict = get_holidays(["US"], year_start=2015, year_end=2025)
 
     # simple test
-    with pytest.warns(None) as record:
-        df = generate_df_for_tests(
-            freq="D",
-            periods=20)
-        explan_df = silverkite._SilverkiteForecast__build_silverkite_features(
-            df=df["train_df"],
-            time_col=TIME_COL,
-            origin_for_time_vars=2017,
-            daily_event_df_dict=daily_event_df_dict,
-            changepoint_values=None,
-            continuous_time_col=None,
-            growth_func=None,
-            fs_func=None)
+    df = generate_df_for_tests(
+        freq="D",
+        periods=20)
+    explan_df = silverkite._SilverkiteForecast__build_silverkite_features(
+        df=df["train_df"],
+        time_col=TIME_COL,
+        origin_for_time_vars=2017,
+        daily_event_df_dict=daily_event_df_dict,
+        changepoint_values=None,
+        continuous_time_col=None,
+        growth_func=None,
+        fs_func=None)
 
-        assert list(explan_df[:3]["ct1"].round(4).values) == [1.4959, 1.4986, 1.5014]
-        assert list(explan_df[:3]["dow"].values) == [7, 1, 2]
-        assert list(explan_df[:3]["hour"].values) == [0, 0, 0]
-        assert len(record) == 0  # no warnings
+    assert list(explan_df[:3]["ct1"].round(4).values) == [1.4959, 1.4986, 1.5014]
+    assert list(explan_df[:3]["dow"].values) == [7, 1, 2]
+    assert list(explan_df[:3]["hour"].values) == [0, 0, 0]
+    assert len(record) == 0  # no warnings
 
     # warning message for greater than daily data
     with pytest.warns(Warning) as record:

@@ -30,8 +30,13 @@ from greykite.common.python_utils import update_dictionaries
 from greykite.framework.templates.autogen.forecast_config import ForecastConfig
 from greykite.framework.templates.autogen.forecast_config import ModelComponentsParam
 from greykite.framework.templates.base_template import BaseTemplate
-from greykite.sklearn.estimator.auto_arima_estimator import AutoArimaEstimator
 from greykite.sklearn.estimator.base_forecast_estimator import BaseForecastEstimator
+
+try:
+    import pmdarima
+    from greykite.sklearn.estimator.auto_arima_estimator import AutoArimaEstimator
+except ModuleNotFoundError:
+    pass
 
 
 class AutoArimaTemplate(BaseTemplate):
@@ -129,7 +134,9 @@ class AutoArimaTemplate(BaseTemplate):
 
     def __init__(
             self,
-            estimator: BaseForecastEstimator = AutoArimaEstimator()):
+            estimator: Optional[BaseForecastEstimator] = None):
+        if estimator is None:
+            estimator = AutoArimaEstimator()
         super().__init__(estimator=estimator)
 
     @property

@@ -1,3 +1,26 @@
+1.1.0 (2025-02-19)
+------------------
+
+Python 3.11 and 3.12 support.
+
+* **Dependency Updates and Compatibility Improvements:**
+    * Resolved compatibility issues with Python 3.12, including fixes for Scikit-learn/SciPy transformer issues (addressed via [scikit-learn PR #30610](https://github.com/scikit-learn/scikit-learn/pull/30610/files)), and NumPy version conflicts. Users should update NumPy to the latest version.
+    * Improved pmdarima compatibility with Python 3.12 (updated to pmdarima==2.0.4). Note that pmdarima is now an optional dependency.
+    * Updated pytest to resolve compatibility issue with python 3.12.
+* **Code Improvements:**
+    * Addressed issues related to mutable default arguments, enhancing code stability.
+    * Adapted code to handle changes in pmdarima's `predict` method output.
+    * Improved pytest warnings handling, replacing bad practices like `pytest.warns(None)` with more specific warning checks.
+* **pmdarima:**
+    * pmdarima==2.0.4 is tested and works, but it's important to note that it's now an optional dependency. This means that while it's compatible and can be used, Greykite can also function without it.
+    This will make the library less likely to fail in the future.
+* **Testing:**
+    * Tested installs and test files on Mac/Linux on 3.10, 3.11 and 3.12 and it worked.
+
+
+Changes done by: @Reza Hosseini
+
+
 1.0.0 (2024-01-07)
 ------------------
 
