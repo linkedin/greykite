@@ -19,6 +19,8 @@ from greykite.framework.templates.forecaster import Forecaster
 from greykite.framework.templates.multistage_forecast_template import MultistageForecastTemplate
 from greykite.framework.templates.multistage_forecast_template_config import SILVERKITE_TWO_STAGE
 from greykite.framework.templates.multistage_forecast_template_config import MultistageForecastTemplateConfig
+from greykite.framework.templates.multistage_forecast_template_config import MultistageForecastTemplateConstants
+from greykite.sklearn.estimator.multistage_forecast_estimator import MultistageForecastEstimator
 from greykite.framework.templates.simple_silverkite_template import SimpleSilverkiteTemplate
 from greykite.sklearn.estimator.simple_silverkite_estimator import SimpleSilverkiteEstimator
 from greykite.sklearn.uncertainty.uncertainty_methods import UncertaintyMethodEnum
@@ -192,6 +194,28 @@ def forecast_config(multistage_forecast_configs):
         )
     )
     return forecast_config
+
+
+def test_multistage_forecast_template_init():
+    """Tests MultistageForecastTemplate initialization and constants lifecycle."""
+    # 1. Default initialization
+    template = MultistageForecastTemplate()
+    assert isinstance(template.constants, MultistageForecastTemplateConstants)
+    assert isinstance(template.estimator, MultistageForecastEstimator)
+
+    # 2. Initialization with class (backwards compatibility)
+    template_cls = MultistageForecastTemplate(constants=MultistageForecastTemplateConstants)
+    assert isinstance(template_cls.constants, MultistageForecastTemplateConstants)
+
+    # 3. Initialization with custom constants instance
+    custom_constants = MultistageForecastTemplateConstants()
+    template_custom = MultistageForecastTemplate(constants=custom_constants)
+    assert template_custom.constants is custom_constants
+
+    # 4. Property setter
+    new_constants = MultistageForecastTemplateConstants()
+    template.constants = new_constants
+    assert template.constants is new_constants
 
 
 def test_get_regressor_cols(df, forecast_config):

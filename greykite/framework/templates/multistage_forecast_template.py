@@ -56,23 +56,26 @@ class MultistageForecastTemplate(BaseTemplate):
     ):
         if constants is None:
             constants = MultistageForecastTemplateConstants()  # Create inside __init__
+        elif callable(constants):
+            constants = constants()
         if estimator is None:
             estimator = MultistageForecastEstimator(
                 forecast_horizon=1,
                 model_configs=[]
             )
 
-        self.constants = constants
-        self.estimator = estimator
-        
         super().__init__(estimator=estimator)
-        self._constants = constants()
+        self._constants = constants
 
     @property
     def constants(self) -> MultistageForecastTemplateConstants:
         """Constants used by the template class. Includes the model templates and their default values.
         """
         return self._constants
+
+    @constants.setter
+    def constants(self, constants: MultistageForecastTemplateConstants):
+        self._constants = constants
 
     def __get_regressor_templates(self):
         """Gets the model templates for each sub-model.
